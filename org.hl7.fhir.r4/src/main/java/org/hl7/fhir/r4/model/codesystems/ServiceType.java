@@ -4222,6 +4222,7 @@ public enum ServiceType {
             case _627: return "627";
             case _628: return "628";
             case _629: return "629";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -4826,6 +4827,7 @@ public enum ServiceType {
             case _627: return "Training-Travel Independence";
             case _628: return "Vehicle modifications";
             case _629: return "Vision Equipment";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -5427,6 +5429,7 @@ public enum ServiceType {
             case _627: return "Training-Travel Independence";
             case _628: return "Vehicle modifications";
             case _629: return "Vision Equipment";
+            case NULL: return null;
             default: return "?";
           }
     }

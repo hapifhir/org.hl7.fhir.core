@@ -102,6 +102,7 @@ public class TestReport extends DomainResource {
             case WAITING: return "waiting";
             case STOPPED: return "stopped";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -112,6 +113,7 @@ public class TestReport extends DomainResource {
             case WAITING: return "http://hl7.org/fhir/report-status-codes";
             case STOPPED: return "http://hl7.org/fhir/report-status-codes";
             case ENTEREDINERROR: return "http://hl7.org/fhir/report-status-codes";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +124,7 @@ public class TestReport extends DomainResource {
             case WAITING: return "A test operation is waiting for an external client request.";
             case STOPPED: return "The test script execution was manually stopped.";
             case ENTEREDINERROR: return "This test report was entered or created in error.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -132,6 +135,7 @@ public class TestReport extends DomainResource {
             case WAITING: return "Waiting";
             case STOPPED: return "Stopped";
             case ENTEREDINERROR: return "Entered In Error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -228,6 +232,7 @@ public class TestReport extends DomainResource {
             case PASS: return "pass";
             case FAIL: return "fail";
             case PENDING: return "pending";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -236,6 +241,7 @@ public class TestReport extends DomainResource {
             case PASS: return "http://hl7.org/fhir/report-result-codes";
             case FAIL: return "http://hl7.org/fhir/report-result-codes";
             case PENDING: return "http://hl7.org/fhir/report-result-codes";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -244,6 +250,7 @@ public class TestReport extends DomainResource {
             case PASS: return "All test operations successfully passed all asserts.";
             case FAIL: return "One or more test operations failed one or more asserts.";
             case PENDING: return "One or more test operations is pending execution completion.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -252,6 +259,7 @@ public class TestReport extends DomainResource {
             case PASS: return "Pass";
             case FAIL: return "Fail";
             case PENDING: return "Pending";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -336,6 +344,7 @@ public class TestReport extends DomainResource {
             case TESTENGINE: return "test-engine";
             case CLIENT: return "client";
             case SERVER: return "server";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -344,6 +353,7 @@ public class TestReport extends DomainResource {
             case TESTENGINE: return "http://hl7.org/fhir/report-participant-type";
             case CLIENT: return "http://hl7.org/fhir/report-participant-type";
             case SERVER: return "http://hl7.org/fhir/report-participant-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -352,6 +362,7 @@ public class TestReport extends DomainResource {
             case TESTENGINE: return "The test execution engine.";
             case CLIENT: return "A FHIR Client.";
             case SERVER: return "A FHIR Server.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -360,6 +371,7 @@ public class TestReport extends DomainResource {
             case TESTENGINE: return "Test Engine";
             case CLIENT: return "Client";
             case SERVER: return "Server";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -458,6 +470,7 @@ public class TestReport extends DomainResource {
             case FAIL: return "fail";
             case WARNING: return "warning";
             case ERROR: return "error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -468,6 +481,7 @@ public class TestReport extends DomainResource {
             case FAIL: return "http://hl7.org/fhir/report-action-result-codes";
             case WARNING: return "http://hl7.org/fhir/report-action-result-codes";
             case ERROR: return "http://hl7.org/fhir/report-action-result-codes";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -478,6 +492,7 @@ public class TestReport extends DomainResource {
             case FAIL: return "The action failed.";
             case WARNING: return "The action passed but with warnings.";
             case ERROR: return "The action encountered a fatal error and the engine was unable to process.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -488,6 +503,7 @@ public class TestReport extends DomainResource {
             case FAIL: return "Fail";
             case WARNING: return "Warning";
             case ERROR: return "Error";
+            case NULL: return null;
             default: return "?";
           }
         }

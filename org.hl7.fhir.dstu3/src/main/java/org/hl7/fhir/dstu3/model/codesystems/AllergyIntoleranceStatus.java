@@ -92,6 +92,7 @@ public enum AllergyIntoleranceStatus {
             case RESOLVED: return "resolved";
             case REFUTED: return "refuted";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum AllergyIntoleranceStatus {
             case RESOLVED: return "A reaction to the identified substance has been clinically reassessed by testing or re-exposure and considered to be resolved";
             case REFUTED: return "A propensity for a reaction to the identified substance has been disproven with a high level of clinical certainty, which may include testing or rechallenge, and is refuted.";
             case ENTEREDINERROR: return "The statement was entered in error and is not valid.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum AllergyIntoleranceStatus {
             case RESOLVED: return "Resolved";
             case REFUTED: return "Refuted";
             case ENTEREDINERROR: return "Entered In Error";
+            case NULL: return null;
             default: return "?";
           }
     }

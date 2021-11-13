@@ -186,6 +186,7 @@ public enum V3AddressUse {
             case EC: return "EC";
             case MC: return "MC";
             case PG: return "PG";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -213,6 +214,7 @@ public enum V3AddressUse {
             case EC: return "Description: A contact specifically designated to be used for emergencies. This is the first choice in emergencies, independent of any other use codes.";
             case MC: return "Description: A telecommunication device that moves and stays with its owner. May have characteristics of all other use codes, suitable for urgent matters, not the first choice for routine business.";
             case PG: return "Description: A paging device suitable to solicit a callback or to leave a very short message.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -237,6 +239,7 @@ public enum V3AddressUse {
             case EC: return "emergency contact";
             case MC: return "mobile contact)";
             case PG: return "pager";
+            case NULL: return null;
             default: return "?";
           }
     }

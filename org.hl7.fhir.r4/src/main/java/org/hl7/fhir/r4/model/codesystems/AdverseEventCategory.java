@@ -148,6 +148,7 @@ public enum AdverseEventCategory {
             case MEDICALDEVICEUSEERROR: return "medical-device-use-error";
             case PROBLEMDIFFERENTMANUFACTURER: return "problem-different-manufacturer";
             case UNSAFEPHYSICALENVIRONMENT: return "unsafe-physical-environment";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -170,6 +171,7 @@ public enum AdverseEventCategory {
             case MEDICALDEVICEUSEERROR: return "The adverse event pertains to a medical device use error.";
             case PROBLEMDIFFERENTMANUFACTURER: return "The adverse event pertains to a problem with a different manufacturer of the same medication.";
             case UNSAFEPHYSICALENVIRONMENT: return "The adverse event pertains to an unsafe physical environment.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -189,6 +191,7 @@ public enum AdverseEventCategory {
             case MEDICALDEVICEUSEERROR: return "Medical Device Use Error";
             case PROBLEMDIFFERENTMANUFACTURER: return "Problem with Different Manufacturer of Same Medicine";
             case UNSAFEPHYSICALENVIRONMENT: return "Unsafe Physical Environment";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -64,6 +64,7 @@ public enum ExPaymenttype {
           switch (this) {
             case COMPLETE: return "complete";
             case PARTIAL: return "partial";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ExPaymenttype {
           switch (this) {
             case COMPLETE: return "Complete (final) payment of the benefit under the Claim less any adjustments.";
             case PARTIAL: return "Partial payment of the benefit under the Claim less any adjustments.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ExPaymenttype {
           switch (this) {
             case COMPLETE: return "Complete";
             case PARTIAL: return "Partial";
+            case NULL: return null;
             default: return "?";
           }
     }

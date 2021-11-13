@@ -113,6 +113,7 @@ public enum EncounterClass {
             case DAYTIME: return "daytime";
             case VIRTUAL: return "virtual";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum EncounterClass {
             case DAYTIME: return "An encounter where the patient needs more prolonged treatment or investigations than outpatients, but who do not need to stay in the hospital overnight.";
             case VIRTUAL: return "An encounter that takes place where the patient and practitioner do not physically meet but use electronic means for contact.";
             case OTHER: return "Any other encounter type that is not described by one of the other values. Where this is used it is expected that an implementer will include an extension value to define what the actual other type is.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum EncounterClass {
             case DAYTIME: return "Daytime";
             case VIRTUAL: return "Virtual";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
     }

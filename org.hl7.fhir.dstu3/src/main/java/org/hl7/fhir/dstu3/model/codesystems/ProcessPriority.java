@@ -71,6 +71,7 @@ public enum ProcessPriority {
             case STAT: return "stat";
             case NORMAL: return "normal";
             case DEFERRED: return "deferred";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ProcessPriority {
             case STAT: return "Immediately in real time.";
             case NORMAL: return "With best effort.";
             case DEFERRED: return "Later, when possible.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ProcessPriority {
             case STAT: return "Immediate";
             case NORMAL: return "Normal";
             case DEFERRED: return "Deferred";
+            case NULL: return null;
             default: return "?";
           }
     }

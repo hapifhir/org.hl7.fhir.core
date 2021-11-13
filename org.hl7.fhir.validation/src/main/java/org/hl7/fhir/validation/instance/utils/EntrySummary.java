@@ -10,6 +10,7 @@ public class EntrySummary {
     Element entry;
     Element resource;
     List<EntrySummary> targets = new ArrayList<>();
+    private int index;
 
     public Element getEntry() {
         return entry;
@@ -38,8 +39,17 @@ public class EntrySummary {
         return this;
     }
 
-    public EntrySummary(Element entry, Element resource) {
-        this.entry = entry;
-        this.resource = resource;
+    public EntrySummary(int i, Element entry, Element resource) {
+      this.index = i;
+      this.entry = entry;
+      this.resource = resource;
+    }
+
+    public String dbg() {
+      return ""+index+"="+ entry.getChildValue("fullUrl")+" | "+resource.getIdBase() + "("+resource.fhirType()+")";
+    }
+
+    public String getIndex() {
+      return Integer.toString(index);
     }
 }

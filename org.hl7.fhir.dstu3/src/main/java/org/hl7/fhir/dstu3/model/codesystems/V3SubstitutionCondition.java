@@ -85,6 +85,7 @@ public enum V3SubstitutionCondition {
             case NOTIFY: return "NOTIFY";
             case NOSUB: return "NOSUB";
             case UNCOND: return "UNCOND";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum V3SubstitutionCondition {
             case NOTIFY: return "Notification to the Contact Person, prior to substitution and through normal institutional procedures, has or will be made.";
             case NOSUB: return "Substitution is not permitted.";
             case UNCOND: return "No conditions are required.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum V3SubstitutionCondition {
             case NOTIFY: return "Notify first";
             case NOSUB: return "No substitution";
             case UNCOND: return "Unconditional";
+            case NULL: return null;
             default: return "?";
           }
     }

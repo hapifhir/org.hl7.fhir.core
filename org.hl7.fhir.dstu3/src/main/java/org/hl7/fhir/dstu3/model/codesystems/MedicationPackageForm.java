@@ -106,6 +106,7 @@ public enum MedicationPackageForm {
             case TUBE: return "tube";
             case UNITDOSE: return "unitdose";
             case VIAL: return "vial";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum MedicationPackageForm {
             case TUBE: return "A long, hollow cylinder of metal, plastic, glass, etc., for holding medications, typically creams or ointments";
             case UNITDOSE: return "A dose of medicine prepared in an individual package for convenience, safety or monitoring.";
             case VIAL: return "A small container, typically cylindrical and made of glass, used especially for holding liquid medications.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum MedicationPackageForm {
             case TUBE: return "Tube";
             case UNITDOSE: return "Unit Dose Blister";
             case VIAL: return "Vial";
+            case NULL: return null;
             default: return "?";
           }
     }

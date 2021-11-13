@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -879,9 +879,10 @@ public class Appointment extends DomainResource {
     /**
      * The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority).
      */
-    @Child(name = "priority", type = {UnsignedIntType.class}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "priority", type = {CodeableConcept.class}, order=8, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Used to make informed decisions if needing to re-prioritize", formalDefinition="The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority)." )
-    protected UnsignedIntType priority;
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v3-ActPriority")
+    protected CodeableConcept priority;
 
     /**
      * The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the comment field.
@@ -969,7 +970,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
     @Description(shortDefinition="Potential date/time interval(s) requested to allocate the appointment within", formalDefinition="A set of date ranges (potentially including times) that the appointment is preferred to be scheduled within.\n\nThe duration (usually in minutes) could also be provided to indicate the length of the appointment to fill and populate the start/end times for the actual allocated time. However, in other situations the duration may be calculated by the scheduling system." )
     protected List<Period> requestedPeriod;
 
-    private static final long serialVersionUID = 1849497415L;
+    private static final long serialVersionUID = -1194073126L;
 
   /**
    * Constructor
@@ -1346,19 +1347,15 @@ The duration (usually in minutes) could also be provided to indicate the length 
     }
 
     /**
-     * @return {@link #priority} (The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority).). This is the underlying object with id, value and extensions. The accessor "getPriority" gives direct access to the value
+     * @return {@link #priority} (The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority).)
      */
-    public UnsignedIntType getPriorityElement() { 
+    public CodeableConcept getPriority() { 
       if (this.priority == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Appointment.priority");
         else if (Configuration.doAutoCreate())
-          this.priority = new UnsignedIntType(); // bb
+          this.priority = new CodeableConcept(); // cc
       return this.priority;
-    }
-
-    public boolean hasPriorityElement() { 
-      return this.priority != null && !this.priority.isEmpty();
     }
 
     public boolean hasPriority() { 
@@ -1366,27 +1363,10 @@ The duration (usually in minutes) could also be provided to indicate the length 
     }
 
     /**
-     * @param value {@link #priority} (The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority).). This is the underlying object with id, value and extensions. The accessor "getPriority" gives direct access to the value
+     * @param value {@link #priority} (The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority).)
      */
-    public Appointment setPriorityElement(UnsignedIntType value) { 
+    public Appointment setPriority(CodeableConcept value) { 
       this.priority = value;
-      return this;
-    }
-
-    /**
-     * @return The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority).
-     */
-    public int getPriority() { 
-      return this.priority == null || this.priority.isEmpty() ? 0 : this.priority.getValue();
-    }
-
-    /**
-     * @param value The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority).
-     */
-    public Appointment setPriority(int value) { 
-        if (this.priority == null)
-          this.priority = new UnsignedIntType();
-        this.priority.setValue(value);
       return this;
     }
 
@@ -2006,7 +1986,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
         children.add(new Property("specialty", "CodeableConcept", "The specialty of a practitioner that would be required to perform the service requested in this appointment.", 0, java.lang.Integer.MAX_VALUE, specialty));
         children.add(new Property("appointmentType", "CodeableConcept", "The style of appointment or patient that has been booked in the slot (not service type).", 0, 1, appointmentType));
         children.add(new Property("reason", "CodeableReference(Condition|Procedure|Observation|ImmunizationRecommendation)", "The reason that this appointment is being scheduled. This is more clinical than administrative. This can be coded, or as specified using information from another resource. When the patient arrives and the encounter begins it may be used as the admission diagnosis. The indication will typically be a Condition (with other resources referenced in the evidence.detail), or a Procedure.", 0, java.lang.Integer.MAX_VALUE, reason));
-        children.add(new Property("priority", "unsignedInt", "The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority).", 0, 1, priority));
+        children.add(new Property("priority", "CodeableConcept", "The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority).", 0, 1, priority));
         children.add(new Property("description", "string", "The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the comment field.", 0, 1, description));
         children.add(new Property("supportingInformation", "Reference(Any)", "Additional information to support the appointment provided when making the appointment.", 0, java.lang.Integer.MAX_VALUE, supportingInformation));
         children.add(new Property("start", "instant", "Date/Time that the appointment is to take place.", 0, 1, start));
@@ -2032,7 +2012,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case -1694759682: /*specialty*/  return new Property("specialty", "CodeableConcept", "The specialty of a practitioner that would be required to perform the service requested in this appointment.", 0, java.lang.Integer.MAX_VALUE, specialty);
         case -1596426375: /*appointmentType*/  return new Property("appointmentType", "CodeableConcept", "The style of appointment or patient that has been booked in the slot (not service type).", 0, 1, appointmentType);
         case -934964668: /*reason*/  return new Property("reason", "CodeableReference(Condition|Procedure|Observation|ImmunizationRecommendation)", "The reason that this appointment is being scheduled. This is more clinical than administrative. This can be coded, or as specified using information from another resource. When the patient arrives and the encounter begins it may be used as the admission diagnosis. The indication will typically be a Condition (with other resources referenced in the evidence.detail), or a Procedure.", 0, java.lang.Integer.MAX_VALUE, reason);
-        case -1165461084: /*priority*/  return new Property("priority", "unsignedInt", "The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority).", 0, 1, priority);
+        case -1165461084: /*priority*/  return new Property("priority", "CodeableConcept", "The priority of the appointment. Can be used to make informed decisions if needing to re-prioritize appointments. (The iCal Standard specifies 0 as undefined, 1 as highest, 9 as lowest priority).", 0, 1, priority);
         case -1724546052: /*description*/  return new Property("description", "string", "The brief description of the appointment as would be shown on a subject line in a meeting request, or appointment list. Detailed or expanded information should be put in the comment field.", 0, 1, description);
         case -1248768647: /*supportingInformation*/  return new Property("supportingInformation", "Reference(Any)", "Additional information to support the appointment provided when making the appointment.", 0, java.lang.Integer.MAX_VALUE, supportingInformation);
         case 109757538: /*start*/  return new Property("start", "instant", "Date/Time that the appointment is to take place.", 0, 1, start);
@@ -2061,7 +2041,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case -1694759682: /*specialty*/ return this.specialty == null ? new Base[0] : this.specialty.toArray(new Base[this.specialty.size()]); // CodeableConcept
         case -1596426375: /*appointmentType*/ return this.appointmentType == null ? new Base[0] : new Base[] {this.appointmentType}; // CodeableConcept
         case -934964668: /*reason*/ return this.reason == null ? new Base[0] : this.reason.toArray(new Base[this.reason.size()]); // CodeableReference
-        case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // UnsignedIntType
+        case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // CodeableConcept
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case -1248768647: /*supportingInformation*/ return this.supportingInformation == null ? new Base[0] : this.supportingInformation.toArray(new Base[this.supportingInformation.size()]); // Reference
         case 109757538: /*start*/ return this.start == null ? new Base[0] : new Base[] {this.start}; // InstantType
@@ -2108,7 +2088,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
           this.getReason().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case -1165461084: // priority
-          this.priority = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
+          this.priority = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1724546052: // description
           this.description = TypeConvertor.castToString(value); // StringType
@@ -2171,7 +2151,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
         } else if (name.equals("reason")) {
           this.getReason().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("priority")) {
-          this.priority = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
+          this.priority = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("description")) {
           this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("supportingInformation")) {
@@ -2212,7 +2192,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case -1694759682:  return addSpecialty(); 
         case -1596426375:  return getAppointmentType();
         case -934964668:  return addReason(); 
-        case -1165461084:  return getPriorityElement();
+        case -1165461084:  return getPriority();
         case -1724546052:  return getDescriptionElement();
         case -1248768647:  return addSupportingInformation(); 
         case 109757538:  return getStartElement();
@@ -2241,7 +2221,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
         case -1694759682: /*specialty*/ return new String[] {"CodeableConcept"};
         case -1596426375: /*appointmentType*/ return new String[] {"CodeableConcept"};
         case -934964668: /*reason*/ return new String[] {"CodeableReference"};
-        case -1165461084: /*priority*/ return new String[] {"unsignedInt"};
+        case -1165461084: /*priority*/ return new String[] {"CodeableConcept"};
         case -1724546052: /*description*/ return new String[] {"string"};
         case -1248768647: /*supportingInformation*/ return new String[] {"Reference"};
         case 109757538: /*start*/ return new String[] {"instant"};
@@ -2288,7 +2268,8 @@ The duration (usually in minutes) could also be provided to indicate the length 
           return addReason();
         }
         else if (name.equals("priority")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Appointment.priority");
+          this.priority = new CodeableConcept();
+          return this.priority;
         }
         else if (name.equals("description")) {
           throw new FHIRException("Cannot call addChild on a primitive type Appointment.description");
@@ -2435,9 +2416,9 @@ The duration (usually in minutes) could also be provided to indicate the length 
         if (!(other_ instanceof Appointment))
           return false;
         Appointment o = (Appointment) other_;
-        return compareValues(status, o.status, true) && compareValues(priority, o.priority, true) && compareValues(description, o.description, true)
-           && compareValues(start, o.start, true) && compareValues(end, o.end, true) && compareValues(minutesDuration, o.minutesDuration, true)
-           && compareValues(created, o.created, true) && compareValues(comment, o.comment, true) && compareValues(patientInstruction, o.patientInstruction, true)
+        return compareValues(status, o.status, true) && compareValues(description, o.description, true) && compareValues(start, o.start, true)
+           && compareValues(end, o.end, true) && compareValues(minutesDuration, o.minutesDuration, true) && compareValues(created, o.created, true)
+           && compareValues(comment, o.comment, true) && compareValues(patientInstruction, o.patientInstruction, true)
           ;
       }
 
@@ -2573,7 +2554,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
    * Path: <b>Appointment.participant.actor.where(resolve() is Location)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="location", path="Appointment.participant.actor.where(resolve() is Location)", description="This location is listed in the participants of the appointment", type="reference", target={Location.class } )
+  @SearchParamDefinition(name="location", path="Appointment.participant.actor.where(resolve() is Location)", description="This location is listed in the participants of the appointment", type="reference", target={Device.class, HealthcareService.class, Location.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_LOCATION = "location";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>location</b>
@@ -2619,7 +2600,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
    * Path: <b>Appointment.participant.actor.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="Appointment.participant.actor.where(resolve() is Patient)", description="One of the individuals of the appointment is this patient", type="reference", target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="Appointment.participant.actor.where(resolve() is Patient)", description="One of the individuals of the appointment is this patient", type="reference", target={Device.class, HealthcareService.class, Location.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -2645,7 +2626,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
    * Path: <b>Appointment.participant.actor.where(resolve() is Practitioner)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="practitioner", path="Appointment.participant.actor.where(resolve() is Practitioner)", description="One of the individuals of the appointment is this practitioner", type="reference", target={Practitioner.class } )
+  @SearchParamDefinition(name="practitioner", path="Appointment.participant.actor.where(resolve() is Practitioner)", description="One of the individuals of the appointment is this practitioner", type="reference", target={Device.class, HealthcareService.class, Location.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_PRACTITIONER = "practitioner";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>practitioner</b>
@@ -2823,7 +2804,7 @@ The duration (usually in minutes) could also be provided to indicate the length 
    * Path: <b>Appointment.supportingInformation</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="supporting-info", path="Appointment.supportingInformation", description="Additional information to support the appointment", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="supporting-info", path="Appointment.supportingInformation", description="Additional information to support the appointment", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_SUPPORTING_INFO = "supporting-info";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>supporting-info</b>

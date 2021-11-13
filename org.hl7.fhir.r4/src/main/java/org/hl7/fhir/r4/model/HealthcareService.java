@@ -116,6 +116,7 @@ public class HealthcareService extends DomainResource {
             case FRI: return "fri";
             case SAT: return "sat";
             case SUN: return "sun";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -128,6 +129,7 @@ public class HealthcareService extends DomainResource {
             case FRI: return "http://hl7.org/fhir/days-of-week";
             case SAT: return "http://hl7.org/fhir/days-of-week";
             case SUN: return "http://hl7.org/fhir/days-of-week";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -140,6 +142,7 @@ public class HealthcareService extends DomainResource {
             case FRI: return "Friday.";
             case SAT: return "Saturday.";
             case SUN: return "Sunday.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -152,6 +155,7 @@ public class HealthcareService extends DomainResource {
             case FRI: return "Friday";
             case SAT: return "Saturday";
             case SUN: return "Sunday";
+            case NULL: return null;
             default: return "?";
           }
         }

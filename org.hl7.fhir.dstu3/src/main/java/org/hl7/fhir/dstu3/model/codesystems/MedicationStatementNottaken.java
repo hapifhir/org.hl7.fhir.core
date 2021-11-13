@@ -71,6 +71,7 @@ public enum MedicationStatementNottaken {
             case Y: return "y";
             case N: return "n";
             case UNK: return "unk";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum MedicationStatementNottaken {
             case Y: return "Positive assertion that patient has taken medication";
             case N: return "Negative assertion that patient has not taken medication";
             case UNK: return "Unknown assertion if patient has taken medication";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum MedicationStatementNottaken {
             case Y: return "Yes";
             case N: return "No";
             case UNK: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
     }

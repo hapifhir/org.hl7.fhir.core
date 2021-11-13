@@ -85,6 +85,7 @@ public enum SearchXpathUsage {
             case NEARBY: return "nearby";
             case DISTANCE: return "distance";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum SearchXpathUsage {
             case NEARBY: return "The search parameter is based on a spatial transform of the selected nodes.";
             case DISTANCE: return "The search parameter is based on a spatial transform of the selected nodes, using physical distance from the middle.";
             case OTHER: return "The interpretation of the xpath statement is unknown (and can't be automated).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum SearchXpathUsage {
             case NEARBY: return "Nearby";
             case DISTANCE: return "Distance";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
     }

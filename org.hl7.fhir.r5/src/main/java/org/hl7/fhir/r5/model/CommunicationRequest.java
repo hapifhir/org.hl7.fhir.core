@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -316,9 +316,17 @@ public class CommunicationRequest extends DomainResource {
     protected CodeableConcept statusReason;
 
     /**
+     * Indicates the level of authority/intentionality associated with the CommunicationRequest and where the request fits into the workflow chain.
+     */
+    @Child(name = "intent", type = {CodeType.class}, order=6, min=1, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="proposal | plan | directive | order | original-order | reflex-order | filler-order | instance-order | option", formalDefinition="Indicates the level of authority/intentionality associated with the CommunicationRequest and where the request fits into the workflow chain." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-intent")
+    protected Enumeration<RequestIntent> intent;
+
+    /**
      * The type of message to be sent such as alert, notification, reminder, instruction, etc.
      */
-    @Child(name = "category", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "category", type = {CodeableConcept.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Message category", formalDefinition="The type of message to be sent such as alert, notification, reminder, instruction, etc." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/communication-category")
     protected List<CodeableConcept> category;
@@ -326,7 +334,7 @@ public class CommunicationRequest extends DomainResource {
     /**
      * Characterizes how quickly the proposed act must be initiated. Includes concepts such as stat, urgent, routine.
      */
-    @Child(name = "priority", type = {CodeType.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "priority", type = {CodeType.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="routine | urgent | asap | stat", formalDefinition="Characterizes how quickly the proposed act must be initiated. Includes concepts such as stat, urgent, routine." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-priority")
     protected Enumeration<RequestPriority> priority;
@@ -334,14 +342,14 @@ public class CommunicationRequest extends DomainResource {
     /**
      * If true indicates that the CommunicationRequest is asking for the specified action to *not* occur.
      */
-    @Child(name = "doNotPerform", type = {BooleanType.class}, order=8, min=0, max=1, modifier=true, summary=true)
+    @Child(name = "doNotPerform", type = {BooleanType.class}, order=9, min=0, max=1, modifier=true, summary=true)
     @Description(shortDefinition="True if request is prohibiting action", formalDefinition="If true indicates that the CommunicationRequest is asking for the specified action to *not* occur." )
     protected BooleanType doNotPerform;
 
     /**
      * A channel that was used for this communication (e.g. email, fax).
      */
-    @Child(name = "medium", type = {CodeableConcept.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "medium", type = {CodeableConcept.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A channel of communication", formalDefinition="A channel that was used for this communication (e.g. email, fax)." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v3-ParticipationMode")
     protected List<CodeableConcept> medium;
@@ -349,70 +357,70 @@ public class CommunicationRequest extends DomainResource {
     /**
      * The patient or group that is the focus of this communication request.
      */
-    @Child(name = "subject", type = {Patient.class, Group.class}, order=10, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "subject", type = {Patient.class, Group.class}, order=11, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Focus of message", formalDefinition="The patient or group that is the focus of this communication request." )
     protected Reference subject;
 
     /**
      * Other resources that pertain to this communication request and to which this communication request should be associated.
      */
-    @Child(name = "about", type = {Reference.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "about", type = {Reference.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Resources that pertain to this communication request", formalDefinition="Other resources that pertain to this communication request and to which this communication request should be associated." )
     protected List<Reference> about;
 
     /**
      * The Encounter during which this CommunicationRequest was created or to which the creation of this record is tightly associated.
      */
-    @Child(name = "encounter", type = {Encounter.class}, order=12, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "encounter", type = {Encounter.class}, order=13, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The Encounter during which this CommunicationRequest was created", formalDefinition="The Encounter during which this CommunicationRequest was created or to which the creation of this record is tightly associated." )
     protected Reference encounter;
 
     /**
      * Text, attachment(s), or resource(s) to be communicated to the recipient.
      */
-    @Child(name = "payload", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "payload", type = {}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Message payload", formalDefinition="Text, attachment(s), or resource(s) to be communicated to the recipient." )
     protected List<CommunicationRequestPayloadComponent> payload;
 
     /**
      * The time when this communication is to occur.
      */
-    @Child(name = "occurrence", type = {DateTimeType.class, Period.class}, order=14, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "occurrence", type = {DateTimeType.class, Period.class}, order=15, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When scheduled", formalDefinition="The time when this communication is to occur." )
     protected DataType occurrence;
 
     /**
      * For draft requests, indicates the date of initial creation.  For requests with other statuses, indicates the date of activation.
      */
-    @Child(name = "authoredOn", type = {DateTimeType.class}, order=15, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "authoredOn", type = {DateTimeType.class}, order=16, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When request transitioned to being actionable", formalDefinition="For draft requests, indicates the date of initial creation.  For requests with other statuses, indicates the date of activation." )
     protected DateTimeType authoredOn;
 
     /**
      * The device, individual, or organization who asks for the information to be shared.
      */
-    @Child(name = "requester", type = {Practitioner.class, PractitionerRole.class, Organization.class, Patient.class, RelatedPerson.class, Device.class}, order=16, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "requester", type = {Practitioner.class, PractitionerRole.class, Organization.class, Patient.class, RelatedPerson.class, Device.class}, order=17, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who asks for the information to be shared", formalDefinition="The device, individual, or organization who asks for the information to be shared." )
     protected Reference requester;
 
     /**
      * The entity (e.g. person, organization, clinical information system, device, group, or care team) which is the intended target of the communication.
      */
-    @Child(name = "recipient", type = {Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, Group.class, CareTeam.class, HealthcareService.class, Endpoint.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "recipient", type = {Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, Group.class, CareTeam.class, HealthcareService.class, Endpoint.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who to share the information with", formalDefinition="The entity (e.g. person, organization, clinical information system, device, group, or care team) which is the intended target of the communication." )
     protected List<Reference> recipient;
 
     /**
      * The entity (e.g. person, organization, clinical information system, or device) which is to be the source of the communication.
      */
-    @Child(name = "informationProvider", type = {Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, HealthcareService.class, Endpoint.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "informationProvider", type = {Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, HealthcareService.class, Endpoint.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Who should share the information", formalDefinition="The entity (e.g. person, organization, clinical information system, or device) which is to be the source of the communication." )
     protected List<Reference> informationProvider;
 
     /**
      * Describes why the request is being made in coded or textual form.
      */
-    @Child(name = "reason", type = {CodeableReference.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "reason", type = {CodeableReference.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Why is communication needed?", formalDefinition="Describes why the request is being made in coded or textual form." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v3-ActReason")
     protected List<CodeableReference> reason;
@@ -420,11 +428,11 @@ public class CommunicationRequest extends DomainResource {
     /**
      * Comments made about the request by the requester, sender, recipient, subject or other participants.
      */
-    @Child(name = "note", type = {Annotation.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Comments made about communication request", formalDefinition="Comments made about the request by the requester, sender, recipient, subject or other participants." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = 239948247L;
+    private static final long serialVersionUID = -442811807L;
 
   /**
    * Constructor
@@ -436,9 +444,10 @@ public class CommunicationRequest extends DomainResource {
   /**
    * Constructor
    */
-    public CommunicationRequest(RequestStatus status) {
+    public CommunicationRequest(RequestStatus status, RequestIntent intent) {
       super();
       this.setStatus(status);
+      this.setIntent(intent);
     }
 
     /**
@@ -690,6 +699,51 @@ public class CommunicationRequest extends DomainResource {
      */
     public CommunicationRequest setStatusReason(CodeableConcept value) { 
       this.statusReason = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #intent} (Indicates the level of authority/intentionality associated with the CommunicationRequest and where the request fits into the workflow chain.). This is the underlying object with id, value and extensions. The accessor "getIntent" gives direct access to the value
+     */
+    public Enumeration<RequestIntent> getIntentElement() { 
+      if (this.intent == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create CommunicationRequest.intent");
+        else if (Configuration.doAutoCreate())
+          this.intent = new Enumeration<RequestIntent>(new RequestIntentEnumFactory()); // bb
+      return this.intent;
+    }
+
+    public boolean hasIntentElement() { 
+      return this.intent != null && !this.intent.isEmpty();
+    }
+
+    public boolean hasIntent() { 
+      return this.intent != null && !this.intent.isEmpty();
+    }
+
+    /**
+     * @param value {@link #intent} (Indicates the level of authority/intentionality associated with the CommunicationRequest and where the request fits into the workflow chain.). This is the underlying object with id, value and extensions. The accessor "getIntent" gives direct access to the value
+     */
+    public CommunicationRequest setIntentElement(Enumeration<RequestIntent> value) { 
+      this.intent = value;
+      return this;
+    }
+
+    /**
+     * @return Indicates the level of authority/intentionality associated with the CommunicationRequest and where the request fits into the workflow chain.
+     */
+    public RequestIntent getIntent() { 
+      return this.intent == null ? null : this.intent.getValue();
+    }
+
+    /**
+     * @param value Indicates the level of authority/intentionality associated with the CommunicationRequest and where the request fits into the workflow chain.
+     */
+    public CommunicationRequest setIntent(RequestIntent value) { 
+        if (this.intent == null)
+          this.intent = new Enumeration<RequestIntent>(new RequestIntentEnumFactory());
+        this.intent.setValue(value);
       return this;
     }
 
@@ -1391,6 +1445,7 @@ public class CommunicationRequest extends DomainResource {
         children.add(new Property("groupIdentifier", "Identifier", "A shared identifier common to all requests that were authorized more or less simultaneously by a single author, representing the identifier of the requisition, prescription or similar form.", 0, 1, groupIdentifier));
         children.add(new Property("status", "code", "The status of the proposal or order.", 0, 1, status));
         children.add(new Property("statusReason", "CodeableConcept", "Captures the reason for the current state of the CommunicationRequest.", 0, 1, statusReason));
+        children.add(new Property("intent", "code", "Indicates the level of authority/intentionality associated with the CommunicationRequest and where the request fits into the workflow chain.", 0, 1, intent));
         children.add(new Property("category", "CodeableConcept", "The type of message to be sent such as alert, notification, reminder, instruction, etc.", 0, java.lang.Integer.MAX_VALUE, category));
         children.add(new Property("priority", "code", "Characterizes how quickly the proposed act must be initiated. Includes concepts such as stat, urgent, routine.", 0, 1, priority));
         children.add(new Property("doNotPerform", "boolean", "If true indicates that the CommunicationRequest is asking for the specified action to *not* occur.", 0, 1, doNotPerform));
@@ -1417,6 +1472,7 @@ public class CommunicationRequest extends DomainResource {
         case -445338488: /*groupIdentifier*/  return new Property("groupIdentifier", "Identifier", "A shared identifier common to all requests that were authorized more or less simultaneously by a single author, representing the identifier of the requisition, prescription or similar form.", 0, 1, groupIdentifier);
         case -892481550: /*status*/  return new Property("status", "code", "The status of the proposal or order.", 0, 1, status);
         case 2051346646: /*statusReason*/  return new Property("statusReason", "CodeableConcept", "Captures the reason for the current state of the CommunicationRequest.", 0, 1, statusReason);
+        case -1183762788: /*intent*/  return new Property("intent", "code", "Indicates the level of authority/intentionality associated with the CommunicationRequest and where the request fits into the workflow chain.", 0, 1, intent);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "The type of message to be sent such as alert, notification, reminder, instruction, etc.", 0, java.lang.Integer.MAX_VALUE, category);
         case -1165461084: /*priority*/  return new Property("priority", "code", "Characterizes how quickly the proposed act must be initiated. Includes concepts such as stat, urgent, routine.", 0, 1, priority);
         case -1788508167: /*doNotPerform*/  return new Property("doNotPerform", "boolean", "If true indicates that the CommunicationRequest is asking for the specified action to *not* occur.", 0, 1, doNotPerform);
@@ -1449,6 +1505,7 @@ public class CommunicationRequest extends DomainResource {
         case -445338488: /*groupIdentifier*/ return this.groupIdentifier == null ? new Base[0] : new Base[] {this.groupIdentifier}; // Identifier
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<RequestStatus>
         case 2051346646: /*statusReason*/ return this.statusReason == null ? new Base[0] : new Base[] {this.statusReason}; // CodeableConcept
+        case -1183762788: /*intent*/ return this.intent == null ? new Base[0] : new Base[] {this.intent}; // Enumeration<RequestIntent>
         case 50511102: /*category*/ return this.category == null ? new Base[0] : this.category.toArray(new Base[this.category.size()]); // CodeableConcept
         case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // Enumeration<RequestPriority>
         case -1788508167: /*doNotPerform*/ return this.doNotPerform == null ? new Base[0] : new Base[] {this.doNotPerform}; // BooleanType
@@ -1490,6 +1547,10 @@ public class CommunicationRequest extends DomainResource {
           return value;
         case 2051346646: // statusReason
           this.statusReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -1183762788: // intent
+          value = new RequestIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.intent = (Enumeration) value; // Enumeration<RequestIntent>
           return value;
         case 50511102: // category
           this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -1557,6 +1618,9 @@ public class CommunicationRequest extends DomainResource {
           this.status = (Enumeration) value; // Enumeration<RequestStatus>
         } else if (name.equals("statusReason")) {
           this.statusReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("intent")) {
+          value = new RequestIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.intent = (Enumeration) value; // Enumeration<RequestIntent>
         } else if (name.equals("category")) {
           this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("priority")) {
@@ -1602,6 +1666,7 @@ public class CommunicationRequest extends DomainResource {
         case -445338488:  return getGroupIdentifier();
         case -892481550:  return getStatusElement();
         case 2051346646:  return getStatusReason();
+        case -1183762788:  return getIntentElement();
         case 50511102:  return addCategory(); 
         case -1165461084:  return getPriorityElement();
         case -1788508167:  return getDoNotPerformElement();
@@ -1632,6 +1697,7 @@ public class CommunicationRequest extends DomainResource {
         case -445338488: /*groupIdentifier*/ return new String[] {"Identifier"};
         case -892481550: /*status*/ return new String[] {"code"};
         case 2051346646: /*statusReason*/ return new String[] {"CodeableConcept"};
+        case -1183762788: /*intent*/ return new String[] {"code"};
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case -1165461084: /*priority*/ return new String[] {"code"};
         case -1788508167: /*doNotPerform*/ return new String[] {"boolean"};
@@ -1673,6 +1739,9 @@ public class CommunicationRequest extends DomainResource {
         else if (name.equals("statusReason")) {
           this.statusReason = new CodeableConcept();
           return this.statusReason;
+        }
+        else if (name.equals("intent")) {
+          throw new FHIRException("Cannot call addChild on a primitive type CommunicationRequest.intent");
         }
         else if (name.equals("category")) {
           return addCategory();
@@ -1762,6 +1831,7 @@ public class CommunicationRequest extends DomainResource {
         dst.groupIdentifier = groupIdentifier == null ? null : groupIdentifier.copy();
         dst.status = status == null ? null : status.copy();
         dst.statusReason = statusReason == null ? null : statusReason.copy();
+        dst.intent = intent == null ? null : intent.copy();
         if (category != null) {
           dst.category = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : category)
@@ -1824,11 +1894,11 @@ public class CommunicationRequest extends DomainResource {
         CommunicationRequest o = (CommunicationRequest) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(basedOn, o.basedOn, true) && compareDeep(replaces, o.replaces, true)
            && compareDeep(groupIdentifier, o.groupIdentifier, true) && compareDeep(status, o.status, true)
-           && compareDeep(statusReason, o.statusReason, true) && compareDeep(category, o.category, true) && compareDeep(priority, o.priority, true)
-           && compareDeep(doNotPerform, o.doNotPerform, true) && compareDeep(medium, o.medium, true) && compareDeep(subject, o.subject, true)
-           && compareDeep(about, o.about, true) && compareDeep(encounter, o.encounter, true) && compareDeep(payload, o.payload, true)
-           && compareDeep(occurrence, o.occurrence, true) && compareDeep(authoredOn, o.authoredOn, true) && compareDeep(requester, o.requester, true)
-           && compareDeep(recipient, o.recipient, true) && compareDeep(informationProvider, o.informationProvider, true)
+           && compareDeep(statusReason, o.statusReason, true) && compareDeep(intent, o.intent, true) && compareDeep(category, o.category, true)
+           && compareDeep(priority, o.priority, true) && compareDeep(doNotPerform, o.doNotPerform, true) && compareDeep(medium, o.medium, true)
+           && compareDeep(subject, o.subject, true) && compareDeep(about, o.about, true) && compareDeep(encounter, o.encounter, true)
+           && compareDeep(payload, o.payload, true) && compareDeep(occurrence, o.occurrence, true) && compareDeep(authoredOn, o.authoredOn, true)
+           && compareDeep(requester, o.requester, true) && compareDeep(recipient, o.recipient, true) && compareDeep(informationProvider, o.informationProvider, true)
            && compareDeep(reason, o.reason, true) && compareDeep(note, o.note, true);
       }
 
@@ -1839,15 +1909,16 @@ public class CommunicationRequest extends DomainResource {
         if (!(other_ instanceof CommunicationRequest))
           return false;
         CommunicationRequest o = (CommunicationRequest) other_;
-        return compareValues(status, o.status, true) && compareValues(priority, o.priority, true) && compareValues(doNotPerform, o.doNotPerform, true)
-           && compareValues(authoredOn, o.authoredOn, true);
+        return compareValues(status, o.status, true) && compareValues(intent, o.intent, true) && compareValues(priority, o.priority, true)
+           && compareValues(doNotPerform, o.doNotPerform, true) && compareValues(authoredOn, o.authoredOn, true)
+          ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, basedOn, replaces
-          , groupIdentifier, status, statusReason, category, priority, doNotPerform, medium
-          , subject, about, encounter, payload, occurrence, authoredOn, requester, recipient
-          , informationProvider, reason, note);
+          , groupIdentifier, status, statusReason, intent, category, priority, doNotPerform
+          , medium, subject, about, encounter, payload, occurrence, authoredOn, requester
+          , recipient, informationProvider, reason, note);
       }
 
   @Override
@@ -1883,7 +1954,7 @@ public class CommunicationRequest extends DomainResource {
    * Path: <b>CommunicationRequest.basedOn</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="based-on", path="CommunicationRequest.basedOn", description="Fulfills plan or proposal", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="based-on", path="CommunicationRequest.basedOn", description="Fulfills plan or proposal", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_BASED_ON = "based-on";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>based-on</b>
@@ -2061,7 +2132,7 @@ public class CommunicationRequest extends DomainResource {
    * Path: <b>CommunicationRequest.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="CommunicationRequest.subject.where(resolve() is Patient)", description="Focus of message", type="reference", target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="CommunicationRequest.subject.where(resolve() is Patient)", description="Focus of message", type="reference", target={Group.class, Patient.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>

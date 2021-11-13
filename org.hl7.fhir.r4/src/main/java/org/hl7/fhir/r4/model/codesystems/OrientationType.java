@@ -64,6 +64,7 @@ public enum OrientationType {
           switch (this) {
             case SENSE: return "sense";
             case ANTISENSE: return "antisense";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum OrientationType {
           switch (this) {
             case SENSE: return "Sense orientation of reference sequence.";
             case ANTISENSE: return "Antisense orientation of reference sequence.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum OrientationType {
           switch (this) {
             case SENSE: return "Sense orientation of referenceSeq";
             case ANTISENSE: return "Antisense orientation of referenceSeq";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -71,6 +71,7 @@ public enum NoteType {
             case DISPLAY: return "display";
             case PRINT: return "print";
             case PRINTOPER: return "printoper";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum NoteType {
             case DISPLAY: return "Display the note.";
             case PRINT: return "Print the note on the form.";
             case PRINTOPER: return "Print the note for the operator.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum NoteType {
             case DISPLAY: return "Display";
             case PRINT: return "Print (Form)";
             case PRINTOPER: return "Print (Operator)";
+            case NULL: return null;
             default: return "?";
           }
     }

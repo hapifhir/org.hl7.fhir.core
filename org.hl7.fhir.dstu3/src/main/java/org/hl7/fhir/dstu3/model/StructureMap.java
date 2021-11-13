@@ -103,6 +103,7 @@ public class StructureMap extends MetadataResource {
             case QUERIED: return "queried";
             case TARGET: return "target";
             case PRODUCED: return "produced";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -112,6 +113,7 @@ public class StructureMap extends MetadataResource {
             case QUERIED: return "http://hl7.org/fhir/map-model-mode";
             case TARGET: return "http://hl7.org/fhir/map-model-mode";
             case PRODUCED: return "http://hl7.org/fhir/map-model-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -121,6 +123,7 @@ public class StructureMap extends MetadataResource {
             case QUERIED: return "This structure describes an instance that the mapping engine may ask for that is used a source of data";
             case TARGET: return "This structure describes an instance passed to the mapping engine that is used a target of data";
             case PRODUCED: return "This structure describes an instance that the mapping engine may ask to create that is used a target of data";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +133,7 @@ public class StructureMap extends MetadataResource {
             case QUERIED: return "Queried Structure Definition";
             case TARGET: return "Target Structure Definition";
             case PRODUCED: return "Produced Structure Definition";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -220,6 +224,7 @@ public class StructureMap extends MetadataResource {
             case NONE: return "none";
             case TYPES: return "types";
             case TYPEANDTYPES: return "type-and-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -228,6 +233,7 @@ public class StructureMap extends MetadataResource {
             case NONE: return "http://hl7.org/fhir/map-group-type-mode";
             case TYPES: return "http://hl7.org/fhir/map-group-type-mode";
             case TYPEANDTYPES: return "http://hl7.org/fhir/map-group-type-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -236,6 +242,7 @@ public class StructureMap extends MetadataResource {
             case NONE: return "This group is not a default group for the types";
             case TYPES: return "This group is a default mapping group for the specified types and for the primary source type";
             case TYPEANDTYPES: return "This group is a default mapping group for the specified types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -244,6 +251,7 @@ public class StructureMap extends MetadataResource {
             case NONE: return "Not a Default";
             case TYPES: return "Default for Type Combination";
             case TYPEANDTYPES: return "Default for type + combination";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -321,6 +329,7 @@ public class StructureMap extends MetadataResource {
           switch (this) {
             case SOURCE: return "source";
             case TARGET: return "target";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -328,6 +337,7 @@ public class StructureMap extends MetadataResource {
           switch (this) {
             case SOURCE: return "http://hl7.org/fhir/map-input-mode";
             case TARGET: return "http://hl7.org/fhir/map-input-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -335,6 +345,7 @@ public class StructureMap extends MetadataResource {
           switch (this) {
             case SOURCE: return "Names an input instance used a source for mapping";
             case TARGET: return "Names an instance that is being populated";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -342,6 +353,7 @@ public class StructureMap extends MetadataResource {
           switch (this) {
             case SOURCE: return "Source Instance";
             case TARGET: return "Target Instance";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -434,6 +446,7 @@ public class StructureMap extends MetadataResource {
             case LAST: return "last";
             case NOTLAST: return "not_last";
             case ONLYONE: return "only_one";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -444,6 +457,7 @@ public class StructureMap extends MetadataResource {
             case LAST: return "http://hl7.org/fhir/map-source-list-mode";
             case NOTLAST: return "http://hl7.org/fhir/map-source-list-mode";
             case ONLYONE: return "http://hl7.org/fhir/map-source-list-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -454,6 +468,7 @@ public class StructureMap extends MetadataResource {
             case LAST: return "Only process this rule for the last in the list";
             case NOTLAST: return "Process this rule for all but the last";
             case ONLYONE: return "Only process this rule is there is only item";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -464,6 +479,7 @@ public class StructureMap extends MetadataResource {
             case LAST: return "Last";
             case NOTLAST: return "All but the last";
             case ONLYONE: return "Enforce only one";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -553,6 +569,7 @@ public class StructureMap extends MetadataResource {
           switch (this) {
             case TYPE: return "type";
             case VARIABLE: return "variable";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -560,6 +577,7 @@ public class StructureMap extends MetadataResource {
           switch (this) {
             case TYPE: return "http://hl7.org/fhir/map-context-type";
             case VARIABLE: return "http://hl7.org/fhir/map-context-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -567,6 +585,7 @@ public class StructureMap extends MetadataResource {
           switch (this) {
             case TYPE: return "The context specifies a type";
             case VARIABLE: return "The context specifies a variable";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -574,6 +593,7 @@ public class StructureMap extends MetadataResource {
           switch (this) {
             case TYPE: return "Type";
             case VARIABLE: return "Variable";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -659,6 +679,7 @@ public class StructureMap extends MetadataResource {
             case SHARE: return "share";
             case LAST: return "last";
             case COLLATE: return "collate";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -668,6 +689,7 @@ public class StructureMap extends MetadataResource {
             case SHARE: return "http://hl7.org/fhir/map-target-list-mode";
             case LAST: return "http://hl7.org/fhir/map-target-list-mode";
             case COLLATE: return "http://hl7.org/fhir/map-target-list-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -677,6 +699,7 @@ public class StructureMap extends MetadataResource {
             case SHARE: return "the target instance is shared with the target instances generated by another rule (up to the first common n items, then create new ones)";
             case LAST: return "when the target list is being assembled, the items for this rule go last. If more that one rule defines a last item (for a given instance of mapping) then this is an error";
             case COLLATE: return "re-use the first item in the list, and keep adding content to it";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -686,6 +709,7 @@ public class StructureMap extends MetadataResource {
             case SHARE: return "Share";
             case LAST: return "Last";
             case COLLATE: return "Collate";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -874,6 +898,7 @@ public class StructureMap extends MetadataResource {
             case QTY: return "qty";
             case ID: return "id";
             case CP: return "cp";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -896,6 +921,7 @@ public class StructureMap extends MetadataResource {
             case QTY: return "http://hl7.org/fhir/map-transform";
             case ID: return "http://hl7.org/fhir/map-transform";
             case CP: return "http://hl7.org/fhir/map-transform";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -918,6 +944,7 @@ public class StructureMap extends MetadataResource {
             case QTY: return "Create a quantity. Parameters = (text) or (value, unit, [system, code]) where text is the natural representation e.g. [comparator]value[space]unit";
             case ID: return "Create an identifier. Parameters = (system, value[, type]) where type is a code from the identifier type value set";
             case CP: return "Create a contact details. Parameters = (value) or (system, value). If no system is provided, the system should be inferred from the content of the value";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -940,6 +967,7 @@ public class StructureMap extends MetadataResource {
             case QTY: return "qty";
             case ID: return "id";
             case CP: return "cp";
+            case NULL: return null;
             default: return "?";
           }
         }

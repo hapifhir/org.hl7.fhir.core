@@ -461,6 +461,7 @@ public enum V3Hl7PublishingDomain {
             case SC: return "SC";
             case SP: return "SP";
             case TD: return "TD";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -511,6 +512,7 @@ public enum V3Hl7PublishingDomain {
             case SC: return "Description: Represents the HL7 content \"domain\" that supports Scheduling - and \"offers a generic set of messages and behavior to implement any number of Scheduling scenarios.\"\r\n\n                        \n                           UsageNote: V3 Specifications are published in a set of \"domains\", which contain interactions and related specifications for a single area of health care within which can be supported by a single, coherent set of interoperability specifications.";
             case SP: return "Description: Represents the HL7 content \"domain\" that supports Specimen - and \"comprises the models and artifacts that are needed to support the creation of messaging related to specimen.\"\r\n\n                        \n                           UsageNote: V3 Specifications are published in a set of \"domains\", which contain interactions and related specifications for a single area of health care within which can be supported by a single, coherent set of interoperability specifications.";
             case TD: return "Description: Represents the HL7 content \"domain\" that supports Therapeutic Devices - and is \"comprises the models, messages, and other artifacts that are needed to support messaging related to therapy delivery and observations made by a medical device. \"\r\n\n                        \n                           UsageNote: V3 Specifications are published in a set of \"domains\", which contain interactions and related specifications for a single area of health care within which can be supported by a single, coherent set of interoperability specifications.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -558,6 +560,7 @@ public enum V3Hl7PublishingDomain {
             case SC: return "scheduling";
             case SP: return "specimen";
             case TD: return "therapeutic devices";
+            case NULL: return null;
             default: return "?";
           }
     }

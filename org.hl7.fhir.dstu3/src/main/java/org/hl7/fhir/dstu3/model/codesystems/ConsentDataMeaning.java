@@ -78,6 +78,7 @@ public enum ConsentDataMeaning {
             case RELATED: return "related";
             case DEPENDENTS: return "dependents";
             case AUTHOREDBY: return "authoredby";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ConsentDataMeaning {
             case RELATED: return "The consent applies directly to the instance of the resource and instances it refers to";
             case DEPENDENTS: return "The consent applies directly to the instance of the resource and instances that refer to it";
             case AUTHOREDBY: return "The consent applies to instances of resources that are authored by";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ConsentDataMeaning {
             case RELATED: return "Related";
             case DEPENDENTS: return "Dependents";
             case AUTHOREDBY: return "AuthoredBy";
+            case NULL: return null;
             default: return "?";
           }
     }

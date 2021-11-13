@@ -81,6 +81,7 @@ public class SupplyDelivery extends DomainResource {
             case INPROGRESS: return "in-progress";
             case COMPLETED: return "completed";
             case ABANDONED: return "abandoned";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -89,6 +90,7 @@ public class SupplyDelivery extends DomainResource {
             case INPROGRESS: return "http://hl7.org/fhir/supplydelivery-status";
             case COMPLETED: return "http://hl7.org/fhir/supplydelivery-status";
             case ABANDONED: return "http://hl7.org/fhir/supplydelivery-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +99,7 @@ public class SupplyDelivery extends DomainResource {
             case INPROGRESS: return "Supply has been requested, but not delivered.";
             case COMPLETED: return "Supply has been delivered (\"completed\").";
             case ABANDONED: return "Dispensing was not completed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +108,7 @@ public class SupplyDelivery extends DomainResource {
             case INPROGRESS: return "In Progress";
             case COMPLETED: return "Delivered";
             case ABANDONED: return "Abandoned";
+            case NULL: return null;
             default: return "?";
           }
         }

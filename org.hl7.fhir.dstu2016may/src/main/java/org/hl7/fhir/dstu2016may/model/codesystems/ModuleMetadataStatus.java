@@ -71,6 +71,7 @@ public enum ModuleMetadataStatus {
             case DRAFT: return "draft";
             case ACTIVE: return "active";
             case INACTIVE: return "inactive";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ModuleMetadataStatus {
             case DRAFT: return "The module is in draft state";
             case ACTIVE: return "The module is active";
             case INACTIVE: return "The module is inactive, either rejected before publication, or retired after publication";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ModuleMetadataStatus {
             case DRAFT: return "Draft";
             case ACTIVE: return "Active";
             case INACTIVE: return "Inactive";
+            case NULL: return null;
             default: return "?";
           }
     }

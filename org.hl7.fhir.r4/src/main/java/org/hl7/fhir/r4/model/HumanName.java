@@ -114,6 +114,7 @@ public class HumanName extends Type implements ICompositeType {
             case ANONYMOUS: return "anonymous";
             case OLD: return "old";
             case MAIDEN: return "maiden";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +127,7 @@ public class HumanName extends Type implements ICompositeType {
             case ANONYMOUS: return "http://hl7.org/fhir/name-use";
             case OLD: return "http://hl7.org/fhir/name-use";
             case MAIDEN: return "http://hl7.org/fhir/name-use";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,6 +140,7 @@ public class HumanName extends Type implements ICompositeType {
             case ANONYMOUS: return "Anonymous assigned name, alias, or pseudonym (used to protect a person's identity for privacy reasons).";
             case OLD: return "This name is no longer in use (or was never correct, but retained for records).";
             case MAIDEN: return "A name used prior to changing name because of marriage. This name use is for use by applications that collect and store names that were used prior to a marriage. Marriage naming customs vary greatly around the world, and are constantly changing. This term is not gender specific. The use of this term does not imply any particular history for a person's name.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -150,6 +153,7 @@ public class HumanName extends Type implements ICompositeType {
             case ANONYMOUS: return "Anonymous";
             case OLD: return "Old";
             case MAIDEN: return "Name changed for Marriage";
+            case NULL: return null;
             default: return "?";
           }
         }

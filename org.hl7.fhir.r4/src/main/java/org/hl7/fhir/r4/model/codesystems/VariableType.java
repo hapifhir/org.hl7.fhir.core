@@ -71,6 +71,7 @@ public enum VariableType {
             case DICHOTOMOUS: return "dichotomous";
             case CONTINUOUS: return "continuous";
             case DESCRIPTIVE: return "descriptive";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum VariableType {
             case DICHOTOMOUS: return "The variable is dichotomous, such as present or absent.";
             case CONTINUOUS: return "The variable is a continuous result such as a quantity.";
             case DESCRIPTIVE: return "The variable is described narratively rather than quantitatively.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum VariableType {
             case DICHOTOMOUS: return "Dichotomous";
             case CONTINUOUS: return "Continuous";
             case DESCRIPTIVE: return "Descriptive";
+            case NULL: return null;
             default: return "?";
           }
     }

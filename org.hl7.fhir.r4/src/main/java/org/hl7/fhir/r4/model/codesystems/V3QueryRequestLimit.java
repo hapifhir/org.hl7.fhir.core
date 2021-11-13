@@ -64,6 +64,7 @@ public enum V3QueryRequestLimit {
           switch (this) {
             case _QUERYREQUESTLIMIT: return "_QueryRequestLimit";
             case RD: return "RD";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum V3QueryRequestLimit {
           switch (this) {
             case _QUERYREQUESTLIMIT: return "Definition: The number of matching instances (number of focal classes). The document header class is the focal class of a document, a record would therefore be equal to a document.";
             case RD: return "Definition: The number of matching instances (number of focal classes). The document header class is the focal class of a document, a record would therefore be equal to a document.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum V3QueryRequestLimit {
           switch (this) {
             case _QUERYREQUESTLIMIT: return "QueryRequestLimit";
             case RD: return "record";
+            case NULL: return null;
             default: return "?";
           }
     }

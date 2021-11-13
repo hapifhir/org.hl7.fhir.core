@@ -106,6 +106,7 @@ public enum CertaintySubcomponentType {
             case DOSERESPONSEGRADIENT: return "DoseResponseGradient";
             case PLAUSIBLECONFOUNDING: return "PlausibleConfounding";
             case LARGEEFFECT: return "LargeEffect";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum CertaintySubcomponentType {
             case DOSERESPONSEGRADIENT: return "higher certainty due to dose response relationship.";
             case PLAUSIBLECONFOUNDING: return "higher certainty due to risk of bias in opposite direction.";
             case LARGEEFFECT: return "higher certainty due to large effect size.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum CertaintySubcomponentType {
             case DOSERESPONSEGRADIENT: return "Dose response gradient";
             case PLAUSIBLECONFOUNDING: return "Plausible confounding";
             case LARGEEFFECT: return "Large effect";
+            case NULL: return null;
             default: return "?";
           }
     }

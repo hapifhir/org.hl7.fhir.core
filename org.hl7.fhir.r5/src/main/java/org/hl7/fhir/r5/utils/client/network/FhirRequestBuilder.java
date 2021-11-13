@@ -45,10 +45,11 @@ public class FhirRequestBuilder {
    * Time unit for {@link FhirRequestBuilder#timeout}.
    */
   private TimeUnit timeoutUnit = TimeUnit.MILLISECONDS;
+
   /**
-   * {@link ToolingClientLogger} for log output.
+   * {@link FhirLoggingInterceptor} for log output.
    */
-  private ToolingClientLogger logger = null;
+  private FhirLoggingInterceptor logger = null;
 
   public FhirRequestBuilder(Request.Builder httpRequest) {
     this.httpRequest = httpRequest;
@@ -63,7 +64,7 @@ public class FhirRequestBuilder {
    * @param headers Any additional {@link Headers} to add to the request.
    */
   protected static void formatHeaders(Request.Builder request, String format, Headers headers) {
-    addDefaultHeaders(request);
+    addDefaultHeaders(request, headers);
     if (format != null) addResourceFormatHeaders(request, format);
     if (headers != null) addHeaders(request, headers);
   }
@@ -75,8 +76,10 @@ public class FhirRequestBuilder {
    *
    * @param request {@link Request.Builder} to add default headers to.
    */
-  protected static void addDefaultHeaders(Request.Builder request) {
-    request.addHeader("User-Agent", "hapi-fhir-tooling-client");
+  protected static void addDefaultHeaders(Request.Builder request, Headers headers) {
+    if (headers == null || !headers.names().contains("User-Agent")) {
+      request.addHeader("User-Agent", "hapi-fhir-tooling-client");
+    }
     request.addHeader("Accept-Charset", DEFAULT_CHARSET);
   }
 
@@ -158,9 +161,11 @@ public class FhirRequestBuilder {
         .build();
     };
 
-    return okHttpClient.newBuilder()
-      .addInterceptor(new RetryInterceptor(retryCount))
-      .connectTimeout(timeout, timeoutUnit)
+    OkHttpClient.Builder builder = okHttpClient.newBuilder();
+    if (logger != null) builder.addInterceptor(logger);
+    builder.addInterceptor(new RetryInterceptor(retryCount));
+
+    return builder.connectTimeout(timeout, timeoutUnit)
       .writeTimeout(timeout, timeoutUnit)
       .readTimeout(timeout, timeoutUnit)
       .proxyAuthenticator(proxyAuthenticator)
@@ -187,7 +192,7 @@ public class FhirRequestBuilder {
     return this;
   }
 
-  public FhirRequestBuilder withLogger(ToolingClientLogger logger) {
+  public FhirRequestBuilder withLogger(FhirLoggingInterceptor logger) {
     this.logger = logger;
     return this;
   }
@@ -203,7 +208,7 @@ public class FhirRequestBuilder {
   }
 
   public <T extends Resource> ResourceRequest<T> execute() throws IOException {
-    formatHeaders(httpRequest, resourceFormat, null);
+    formatHeaders(httpRequest, resourceFormat, headers);
     Response response = getHttpClient().newCall(httpRequest.build()).execute();
     T resource = unmarshalReference(response, resourceFormat);
     return new ResourceRequest<T>(resource, response.code(), getLocationHeader(response.headers()));
@@ -226,7 +231,6 @@ public class FhirRequestBuilder {
     if (response.body() != null) {
       try {
         byte[] body = response.body().bytes();
-        log(response.code(), response.headers(), body);
         resource = (T) getParser(format).parse(body);
         if (resource instanceof OperationOutcome && hasError((OperationOutcome) resource)) {
           error = (OperationOutcome) resource;
@@ -253,7 +257,6 @@ public class FhirRequestBuilder {
     OperationOutcome error = null;
     try {
       byte[] body = response.body().bytes();
-      log(response.code(), response.headers(), body);
       String contentType = response.header("Content-Type");
       if (body != null) {
         if (contentType.contains(ResourceFormat.RESOURCE_XML.getHeader()) || contentType.contains("text/xml+fhir")) {
@@ -298,31 +301,5 @@ public class FhirRequestBuilder {
     } else {
       throw new EFhirClientException("Invalid format: " + format);
     }
-  }
-
-  /**
-   * Logs the given {@link Response}, using the current {@link ToolingClientLogger}. If the current
-   * {@link FhirRequestBuilder#logger} is null, no action is taken.
-   *
-   * @param responseCode    HTTP response code
-   * @param responseHeaders {@link Headers} from response
-   * @param responseBody    Byte array response
-   */
-  protected void log(int responseCode, Headers responseHeaders, byte[] responseBody) {
-    if (logger != null) {
-      List<String> headerList = new ArrayList<>(Collections.emptyList());
-      Map<String, List<String>> headerMap = responseHeaders.toMultimap();
-      headerMap.keySet().forEach(key -> headerMap.get(key).forEach(value -> headerList.add(key + ":" + value)));
-
-      try {
-        logger.logResponse(Integer.toString(responseCode), headerList, responseBody);
-      } catch (Exception e) {
-        System.out.println("Error parsing response body passed in to logger ->\n" + e.getLocalizedMessage());
-      }
-    }
-//    else { // TODO fix logs
-//      System.out.println("Call to log HTTP response with null ToolingClientLogger set... are you forgetting to " +
-//        "initialize your logger?");
-//    }
   }
 }

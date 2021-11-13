@@ -71,6 +71,7 @@ public enum CatalogType {
             case MEDICATION: return "medication";
             case DEVICE: return "device";
             case PROTOCOL: return "protocol";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum CatalogType {
             case MEDICATION: return "Medication Catalog.";
             case DEVICE: return "Device Catalog.";
             case PROTOCOL: return "Protocol List.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum CatalogType {
             case MEDICATION: return "Medication Catalog";
             case DEVICE: return "Device Catalog";
             case PROTOCOL: return "Protocol List";
+            case NULL: return null;
             default: return "?";
           }
     }

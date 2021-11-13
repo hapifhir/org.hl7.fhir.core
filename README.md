@@ -4,6 +4,19 @@
 | :---: |
 | [![Build Status][Badge-BuildPipeline]][Link-BuildPipeline] |
 
+This is the core object handling code, with utilities (including validator), for the FHIR specification. 
+included in this repo: 
+
+* org.fhir.fhir.utilities: Shared code used by all the other projects - including the internationalization code
+* org.fhir.fhir.r5: Object models and utilities for R5 candidate (will change regularly as new R5 candidates are released)
+* org.fhir.fhir.r4: Object models and utilities for R4
+* org.fhir.fhir.dstu3: Object models and utilities for STU3
+* org.fhir.fhir.dstu2: Object models and utilities for STU2
+* org.fhir.fhir.dstu2016may: Object models and utilities for an early STU3 candidate still used by some implementers
+* org.fhir.fhir.convertors: Code to convert between versions, and other version independence code - uses all the above projects
+* org.fhir.fhir.validation: The FHIR Java validator (note: based on R5 internally, but validates all the above versions)
+* org.fhir.fhir.validation.cli: Holder project for releasing the FHIR validator as as single fat jar (will be removed in the future)
+
 ### CI/CD
 
 All integration and delivery done on Azure pipelines. Azure project can be viewed [here][Link-AzureProject].
@@ -37,6 +50,37 @@ An brief overview of our publishing process is [here][Link-Publishing].
 For more detailed instructions on cutting a release, please read [the wiki][Link-PublishingRelease]
 
 ### Download
+
+All binaries are published on [OSS Sonatype][Link-Sonatype]. You will need to add the proper dependency to your `pom.xml` file, or your `build.gradle.kts` file.
+
+###### pom.xml
+```
+<repositories>
+    <repository>
+        <id>oss-snapshot</id>
+        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </repository>
+    <repository>
+        <id>oss-releases</id>
+        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+</repositories> 
+```
+###### build.gradle.kts
+
+```
+repositories {
+    maven {
+        url = uri("https://oss.sonatype.org/content/repositories/snapshots")
+    }
+    maven {
+        url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+    }
+}
+```
+
+After adding the necessary repositories, you can include the libraries as follows:
+
 ##### org.hl7.fhir.validation.cli
 ###### Maven
 ```xml
@@ -113,7 +157,7 @@ compile group: 'ca.uhn.hapi.fhir', name: 'hapi-fhir-structures-r5', version: '(l
 ```
 
 ### Maintenance
-This project is maintained by [Grahame Grieve][Link-grahameGithub] and [James Agnew][Link-jamesGithub] on behalf of the FHIR community.
+This project is maintained by [Grahame Grieve][Link-grahameGithub], [James Agnew][Link-jamesGithub] and [Mark Iantorno][Link-markGithub] on behalf of the FHIR community.
 
 [Link-AzureProject]: https://dev.azure.com/fhir-pipelines/fhir-core-library
 [Link-BuildPipeline]: https://dev.azure.com/fhir-pipelines/fhir-core-library/_build/latest?definitionId=29&branchName=master
@@ -132,8 +176,10 @@ This project is maintained by [Grahame Grieve][Link-grahameGithub] and [James Ag
 [Link-cliSonatypeRelease]: https://github.com/hapifhir/org.hl7.fhir.core/releases/latest/download/validator_cli.jar
 [Link-validationSonatypeSnapshot]: https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=ca.uhn.hapi.fhir&a=org.hl7.fhir.validation&v=LATEST "Sonatype Snapshot"
 [Link-validationSonatypeRelease]: https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=ca.uhn.hapi.fhir&a=org.hl7.fhir.validation&v=LATEST "Sonatype Release"
+[Link-sonatype]: https://oss.sonatype.org/
 [Link-grahameGithub]: https://github.com/grahamegrieve
 [Link-jamesGithub]: https://github.com/jamesagnew
+[Link-markGithub]: https://github.com/markiantorno
 [Link-Publishing]: https://github.com/FHIR/fhir-test-cases/wiki/Publishing-Binaries
 [Link-PublishingRelease]: https://github.com/FHIR/fhir-test-cases/wiki/Detailed-Release-Instructions
 

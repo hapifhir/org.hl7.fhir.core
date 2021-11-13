@@ -123,7 +123,10 @@ public interface ValueSetExpander {
     public List<String> getAllErrors() {
       return allErrors;
     }
-
+    
+    public boolean isOk() {
+      return (allErrors.isEmpty() || (allErrors.size() == 1 && allErrors.get(0) == null)) && error == null;
+    }
   }
 /**
  * 

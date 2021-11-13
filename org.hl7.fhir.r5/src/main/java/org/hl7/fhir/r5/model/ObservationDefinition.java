@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -401,26 +401,26 @@ public class ObservationDefinition extends DomainResource {
     @Block()
     public static class ObservationDefinitionQuantitativeDetailsComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Customary unit used to report quantitative results of observations conforming to this ObservationDefinition.
+         * Primary unit used to report quantitative results of observations conforming to this ObservationDefinition.
          */
-        @Child(name = "customaryUnit", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Customary unit for quantitative results", formalDefinition="Customary unit used to report quantitative results of observations conforming to this ObservationDefinition." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ucum-units")
-        protected CodeableConcept customaryUnit;
-
-        /**
-         * SI unit used to report quantitative results of observations conforming to this ObservationDefinition.
-         */
-        @Child(name = "unit", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="SI unit for quantitative results", formalDefinition="SI unit used to report quantitative results of observations conforming to this ObservationDefinition." )
+        @Child(name = "unit", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Primary unit for quantitative results", formalDefinition="Primary unit used to report quantitative results of observations conforming to this ObservationDefinition." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ucum-units")
         protected CodeableConcept unit;
 
         /**
-         * Factor for converting value expressed with SI unit to value expressed with customary unit.
+         * Secondary unit used to report quantitative results of observations conforming to this ObservationDefinition.
+         */
+        @Child(name = "customaryUnit", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Customary (secondary) unit for quantitative results", formalDefinition="Secondary unit used to report quantitative results of observations conforming to this ObservationDefinition." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ucum-units")
+        protected CodeableConcept customaryUnit;
+
+        /**
+         * Factor for converting value expressed with primary unit to value expressed with secondary unit.
          */
         @Child(name = "conversionFactor", type = {DecimalType.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="SI to Customary unit conversion factor", formalDefinition="Factor for converting value expressed with SI unit to value expressed with customary unit." )
+        @Description(shortDefinition="Primary to secondary unit conversion factor", formalDefinition="Factor for converting value expressed with primary unit to value expressed with secondary unit." )
         protected DecimalType conversionFactor;
 
         /**
@@ -430,7 +430,7 @@ public class ObservationDefinition extends DomainResource {
         @Description(shortDefinition="Decimal precision of observation quantitative results", formalDefinition="Number of digits after decimal separator when the results of such observations are of type Quantity." )
         protected IntegerType decimalPrecision;
 
-        private static final long serialVersionUID = 1790019610L;
+        private static final long serialVersionUID = -1745187850L;
 
     /**
      * Constructor
@@ -440,31 +440,7 @@ public class ObservationDefinition extends DomainResource {
       }
 
         /**
-         * @return {@link #customaryUnit} (Customary unit used to report quantitative results of observations conforming to this ObservationDefinition.)
-         */
-        public CodeableConcept getCustomaryUnit() { 
-          if (this.customaryUnit == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ObservationDefinitionQuantitativeDetailsComponent.customaryUnit");
-            else if (Configuration.doAutoCreate())
-              this.customaryUnit = new CodeableConcept(); // cc
-          return this.customaryUnit;
-        }
-
-        public boolean hasCustomaryUnit() { 
-          return this.customaryUnit != null && !this.customaryUnit.isEmpty();
-        }
-
-        /**
-         * @param value {@link #customaryUnit} (Customary unit used to report quantitative results of observations conforming to this ObservationDefinition.)
-         */
-        public ObservationDefinitionQuantitativeDetailsComponent setCustomaryUnit(CodeableConcept value) { 
-          this.customaryUnit = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #unit} (SI unit used to report quantitative results of observations conforming to this ObservationDefinition.)
+         * @return {@link #unit} (Primary unit used to report quantitative results of observations conforming to this ObservationDefinition.)
          */
         public CodeableConcept getUnit() { 
           if (this.unit == null)
@@ -480,7 +456,7 @@ public class ObservationDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #unit} (SI unit used to report quantitative results of observations conforming to this ObservationDefinition.)
+         * @param value {@link #unit} (Primary unit used to report quantitative results of observations conforming to this ObservationDefinition.)
          */
         public ObservationDefinitionQuantitativeDetailsComponent setUnit(CodeableConcept value) { 
           this.unit = value;
@@ -488,7 +464,31 @@ public class ObservationDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #conversionFactor} (Factor for converting value expressed with SI unit to value expressed with customary unit.). This is the underlying object with id, value and extensions. The accessor "getConversionFactor" gives direct access to the value
+         * @return {@link #customaryUnit} (Secondary unit used to report quantitative results of observations conforming to this ObservationDefinition.)
+         */
+        public CodeableConcept getCustomaryUnit() { 
+          if (this.customaryUnit == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ObservationDefinitionQuantitativeDetailsComponent.customaryUnit");
+            else if (Configuration.doAutoCreate())
+              this.customaryUnit = new CodeableConcept(); // cc
+          return this.customaryUnit;
+        }
+
+        public boolean hasCustomaryUnit() { 
+          return this.customaryUnit != null && !this.customaryUnit.isEmpty();
+        }
+
+        /**
+         * @param value {@link #customaryUnit} (Secondary unit used to report quantitative results of observations conforming to this ObservationDefinition.)
+         */
+        public ObservationDefinitionQuantitativeDetailsComponent setCustomaryUnit(CodeableConcept value) { 
+          this.customaryUnit = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #conversionFactor} (Factor for converting value expressed with primary unit to value expressed with secondary unit.). This is the underlying object with id, value and extensions. The accessor "getConversionFactor" gives direct access to the value
          */
         public DecimalType getConversionFactorElement() { 
           if (this.conversionFactor == null)
@@ -508,7 +508,7 @@ public class ObservationDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #conversionFactor} (Factor for converting value expressed with SI unit to value expressed with customary unit.). This is the underlying object with id, value and extensions. The accessor "getConversionFactor" gives direct access to the value
+         * @param value {@link #conversionFactor} (Factor for converting value expressed with primary unit to value expressed with secondary unit.). This is the underlying object with id, value and extensions. The accessor "getConversionFactor" gives direct access to the value
          */
         public ObservationDefinitionQuantitativeDetailsComponent setConversionFactorElement(DecimalType value) { 
           this.conversionFactor = value;
@@ -516,14 +516,14 @@ public class ObservationDefinition extends DomainResource {
         }
 
         /**
-         * @return Factor for converting value expressed with SI unit to value expressed with customary unit.
+         * @return Factor for converting value expressed with primary unit to value expressed with secondary unit.
          */
         public BigDecimal getConversionFactor() { 
           return this.conversionFactor == null ? null : this.conversionFactor.getValue();
         }
 
         /**
-         * @param value Factor for converting value expressed with SI unit to value expressed with customary unit.
+         * @param value Factor for converting value expressed with primary unit to value expressed with secondary unit.
          */
         public ObservationDefinitionQuantitativeDetailsComponent setConversionFactor(BigDecimal value) { 
           if (value == null)
@@ -537,7 +537,7 @@ public class ObservationDefinition extends DomainResource {
         }
 
         /**
-         * @param value Factor for converting value expressed with SI unit to value expressed with customary unit.
+         * @param value Factor for converting value expressed with primary unit to value expressed with secondary unit.
          */
         public ObservationDefinitionQuantitativeDetailsComponent setConversionFactor(long value) { 
               this.conversionFactor = new DecimalType();
@@ -546,7 +546,7 @@ public class ObservationDefinition extends DomainResource {
         }
 
         /**
-         * @param value Factor for converting value expressed with SI unit to value expressed with customary unit.
+         * @param value Factor for converting value expressed with primary unit to value expressed with secondary unit.
          */
         public ObservationDefinitionQuantitativeDetailsComponent setConversionFactor(double value) { 
               this.conversionFactor = new DecimalType();
@@ -601,18 +601,18 @@ public class ObservationDefinition extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("customaryUnit", "CodeableConcept", "Customary unit used to report quantitative results of observations conforming to this ObservationDefinition.", 0, 1, customaryUnit));
-          children.add(new Property("unit", "CodeableConcept", "SI unit used to report quantitative results of observations conforming to this ObservationDefinition.", 0, 1, unit));
-          children.add(new Property("conversionFactor", "decimal", "Factor for converting value expressed with SI unit to value expressed with customary unit.", 0, 1, conversionFactor));
+          children.add(new Property("unit", "CodeableConcept", "Primary unit used to report quantitative results of observations conforming to this ObservationDefinition.", 0, 1, unit));
+          children.add(new Property("customaryUnit", "CodeableConcept", "Secondary unit used to report quantitative results of observations conforming to this ObservationDefinition.", 0, 1, customaryUnit));
+          children.add(new Property("conversionFactor", "decimal", "Factor for converting value expressed with primary unit to value expressed with secondary unit.", 0, 1, conversionFactor));
           children.add(new Property("decimalPrecision", "integer", "Number of digits after decimal separator when the results of such observations are of type Quantity.", 0, 1, decimalPrecision));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1375586437: /*customaryUnit*/  return new Property("customaryUnit", "CodeableConcept", "Customary unit used to report quantitative results of observations conforming to this ObservationDefinition.", 0, 1, customaryUnit);
-          case 3594628: /*unit*/  return new Property("unit", "CodeableConcept", "SI unit used to report quantitative results of observations conforming to this ObservationDefinition.", 0, 1, unit);
-          case 1438876165: /*conversionFactor*/  return new Property("conversionFactor", "decimal", "Factor for converting value expressed with SI unit to value expressed with customary unit.", 0, 1, conversionFactor);
+          case 3594628: /*unit*/  return new Property("unit", "CodeableConcept", "Primary unit used to report quantitative results of observations conforming to this ObservationDefinition.", 0, 1, unit);
+          case -1375586437: /*customaryUnit*/  return new Property("customaryUnit", "CodeableConcept", "Secondary unit used to report quantitative results of observations conforming to this ObservationDefinition.", 0, 1, customaryUnit);
+          case 1438876165: /*conversionFactor*/  return new Property("conversionFactor", "decimal", "Factor for converting value expressed with primary unit to value expressed with secondary unit.", 0, 1, conversionFactor);
           case -1564447699: /*decimalPrecision*/  return new Property("decimalPrecision", "integer", "Number of digits after decimal separator when the results of such observations are of type Quantity.", 0, 1, decimalPrecision);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -622,8 +622,8 @@ public class ObservationDefinition extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1375586437: /*customaryUnit*/ return this.customaryUnit == null ? new Base[0] : new Base[] {this.customaryUnit}; // CodeableConcept
         case 3594628: /*unit*/ return this.unit == null ? new Base[0] : new Base[] {this.unit}; // CodeableConcept
+        case -1375586437: /*customaryUnit*/ return this.customaryUnit == null ? new Base[0] : new Base[] {this.customaryUnit}; // CodeableConcept
         case 1438876165: /*conversionFactor*/ return this.conversionFactor == null ? new Base[0] : new Base[] {this.conversionFactor}; // DecimalType
         case -1564447699: /*decimalPrecision*/ return this.decimalPrecision == null ? new Base[0] : new Base[] {this.decimalPrecision}; // IntegerType
         default: return super.getProperty(hash, name, checkValid);
@@ -634,11 +634,11 @@ public class ObservationDefinition extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case -1375586437: // customaryUnit
-          this.customaryUnit = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
         case 3594628: // unit
           this.unit = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -1375586437: // customaryUnit
+          this.customaryUnit = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1438876165: // conversionFactor
           this.conversionFactor = TypeConvertor.castToDecimal(value); // DecimalType
@@ -653,10 +653,10 @@ public class ObservationDefinition extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("customaryUnit")) {
-          this.customaryUnit = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("unit")) {
+        if (name.equals("unit")) {
           this.unit = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("customaryUnit")) {
+          this.customaryUnit = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("conversionFactor")) {
           this.conversionFactor = TypeConvertor.castToDecimal(value); // DecimalType
         } else if (name.equals("decimalPrecision")) {
@@ -669,8 +669,8 @@ public class ObservationDefinition extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1375586437:  return getCustomaryUnit();
         case 3594628:  return getUnit();
+        case -1375586437:  return getCustomaryUnit();
         case 1438876165:  return getConversionFactorElement();
         case -1564447699:  return getDecimalPrecisionElement();
         default: return super.makeProperty(hash, name);
@@ -681,8 +681,8 @@ public class ObservationDefinition extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1375586437: /*customaryUnit*/ return new String[] {"CodeableConcept"};
         case 3594628: /*unit*/ return new String[] {"CodeableConcept"};
+        case -1375586437: /*customaryUnit*/ return new String[] {"CodeableConcept"};
         case 1438876165: /*conversionFactor*/ return new String[] {"decimal"};
         case -1564447699: /*decimalPrecision*/ return new String[] {"integer"};
         default: return super.getTypesForProperty(hash, name);
@@ -692,13 +692,13 @@ public class ObservationDefinition extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("customaryUnit")) {
-          this.customaryUnit = new CodeableConcept();
-          return this.customaryUnit;
-        }
-        else if (name.equals("unit")) {
+        if (name.equals("unit")) {
           this.unit = new CodeableConcept();
           return this.unit;
+        }
+        else if (name.equals("customaryUnit")) {
+          this.customaryUnit = new CodeableConcept();
+          return this.customaryUnit;
         }
         else if (name.equals("conversionFactor")) {
           throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.quantitativeDetails.conversionFactor");
@@ -718,8 +718,8 @@ public class ObservationDefinition extends DomainResource {
 
       public void copyValues(ObservationDefinitionQuantitativeDetailsComponent dst) {
         super.copyValues(dst);
-        dst.customaryUnit = customaryUnit == null ? null : customaryUnit.copy();
         dst.unit = unit == null ? null : unit.copy();
+        dst.customaryUnit = customaryUnit == null ? null : customaryUnit.copy();
         dst.conversionFactor = conversionFactor == null ? null : conversionFactor.copy();
         dst.decimalPrecision = decimalPrecision == null ? null : decimalPrecision.copy();
       }
@@ -731,7 +731,7 @@ public class ObservationDefinition extends DomainResource {
         if (!(other_ instanceof ObservationDefinitionQuantitativeDetailsComponent))
           return false;
         ObservationDefinitionQuantitativeDetailsComponent o = (ObservationDefinitionQuantitativeDetailsComponent) other_;
-        return compareDeep(customaryUnit, o.customaryUnit, true) && compareDeep(unit, o.unit, true) && compareDeep(conversionFactor, o.conversionFactor, true)
+        return compareDeep(unit, o.unit, true) && compareDeep(customaryUnit, o.customaryUnit, true) && compareDeep(conversionFactor, o.conversionFactor, true)
            && compareDeep(decimalPrecision, o.decimalPrecision, true);
       }
 
@@ -747,7 +747,7 @@ public class ObservationDefinition extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(customaryUnit, unit, conversionFactor
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(unit, customaryUnit, conversionFactor
           , decimalPrecision);
       }
 
@@ -759,156 +759,111 @@ public class ObservationDefinition extends DomainResource {
   }
 
     @Block()
-    public static class ObservationDefinitionQualifiedIntervalComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class ObservationDefinitionQualifiedValueComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The category of interval of values for continuous or ordinal observations conforming to this ObservationDefinition.
+         * A concept defining the context for this set of qualified values.
          */
-        @Child(name = "category", type = {CodeType.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="reference | critical | absolute", formalDefinition="The category of interval of values for continuous or ordinal observations conforming to this ObservationDefinition." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/observation-range-category")
-        protected Enumeration<ObservationRangeCategory> category;
-
-        /**
-         * The low and high values determining the interval. There may be only one of the two.
-         */
-        @Child(name = "range", type = {Range.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The interval itself, for continuous or ordinal observations", formalDefinition="The low and high values determining the interval. There may be only one of the two." )
-        protected Range range;
-
-        /**
-         * Codes to indicate the health context the range applies to. For example, the normal or therapeutic range.
-         */
-        @Child(name = "context", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Range context qualifier", formalDefinition="Codes to indicate the health context the range applies to. For example, the normal or therapeutic range." )
+        @Child(name = "context", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Context qualifier for the set of qualified values", formalDefinition="A concept defining the context for this set of qualified values." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/referencerange-meaning")
         protected CodeableConcept context;
 
         /**
-         * Codes to indicate the target population this reference range applies to.
+         * The target population this  set of qualified values applies to.
          */
-        @Child(name = "appliesTo", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Targetted population of the range", formalDefinition="Codes to indicate the target population this reference range applies to." )
+        @Child(name = "appliesTo", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Targetted population for the set of qualified values", formalDefinition="The target population this  set of qualified values applies to." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/referencerange-appliesto")
         protected List<CodeableConcept> appliesTo;
 
         /**
-         * Sex of the population the range applies to.
+         * The gender this  set of qualified values applies to.
          */
-        @Child(name = "gender", type = {CodeType.class}, order=5, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="male | female | other | unknown", formalDefinition="Sex of the population the range applies to." )
+        @Child(name = "gender", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="male | female | other | unknown", formalDefinition="The gender this  set of qualified values applies to." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/administrative-gender")
         protected Enumeration<AdministrativeGender> gender;
 
         /**
-         * The age at which this reference range is applicable. This is a neonatal age (e.g. number of weeks at term) if the meaning says so.
+         * The age range this  set of qualified values applies to.
          */
-        @Child(name = "age", type = {Range.class}, order=6, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Applicable age range, if relevant", formalDefinition="The age at which this reference range is applicable. This is a neonatal age (e.g. number of weeks at term) if the meaning says so." )
+        @Child(name = "age", type = {Range.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Applicable age range for the set of qualified values", formalDefinition="The age range this  set of qualified values applies to." )
         protected Range age;
 
         /**
-         * The gestational age to which this reference range is applicable, in the context of pregnancy.
+         * The gestational age this  set of qualified values applies to.
          */
-        @Child(name = "gestationalAge", type = {Range.class}, order=7, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Applicable gestational age range, if relevant", formalDefinition="The gestational age to which this reference range is applicable, in the context of pregnancy." )
+        @Child(name = "gestationalAge", type = {Range.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Applicable gestational age range for the set of qualified values", formalDefinition="The gestational age this  set of qualified values applies to." )
         protected Range gestationalAge;
 
         /**
-         * Text based condition for which the reference range is valid.
+         * Text based condition for which the the set of qualified values is valid.
          */
-        @Child(name = "condition", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Condition associated with the reference range", formalDefinition="Text based condition for which the reference range is valid." )
+        @Child(name = "condition", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Condition associated with the set of qualified values", formalDefinition="Text based condition for which the the set of qualified values is valid." )
         protected StringType condition;
 
-        private static final long serialVersionUID = -416423468L;
+        /**
+         * The category of range of values for continuous or ordinal observations that match the criteria of this set of qualified values.
+         */
+        @Child(name = "rangeCategory", type = {CodeType.class}, order=7, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="reference | critical | absolute", formalDefinition="The category of range of values for continuous or ordinal observations that match the criteria of this set of qualified values." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/observation-range-category")
+        protected Enumeration<ObservationRangeCategory> rangeCategory;
+
+        /**
+         * The range of values defined for continuous or ordinal observations that match the criteria of this set of qualified values.
+         */
+        @Child(name = "range", type = {Range.class}, order=8, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The range for continuous or ordinal observations", formalDefinition="The range of values defined for continuous or ordinal observations that match the criteria of this set of qualified values." )
+        protected Range range;
+
+        /**
+         * The set of valid coded results for qualitative observations  that match the criteria of this set of qualified values.
+         */
+        @Child(name = "validCodedValueSet", type = {CanonicalType.class}, order=9, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Value set of valid coded values as part of this set of qualified values", formalDefinition="The set of valid coded results for qualitative observations  that match the criteria of this set of qualified values." )
+        protected CanonicalType validCodedValueSet;
+
+        /**
+         * The set of normal coded results for qualitative observations  that match the criteria of this set of qualified values.
+         */
+        @Child(name = "normalCodedValueSet", type = {CanonicalType.class}, order=10, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Value set of normal coded values as part of this set of qualified values", formalDefinition="The set of normal coded results for qualitative observations  that match the criteria of this set of qualified values." )
+        protected CanonicalType normalCodedValueSet;
+
+        /**
+         * The set of abnormal coded results for qualitative observations  that match the criteria of this set of qualified values.
+         */
+        @Child(name = "abnormalCodedValueSet", type = {CanonicalType.class}, order=11, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Value set of abnormal coded values as part of this set of qualified values", formalDefinition="The set of abnormal coded results for qualitative observations  that match the criteria of this set of qualified values." )
+        protected CanonicalType abnormalCodedValueSet;
+
+        /**
+         * The set of critical coded results for qualitative observations  that match the criteria of this set of qualified values.
+         */
+        @Child(name = "criticalCodedValueSet", type = {CanonicalType.class}, order=12, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Value set of critical coded values as part of this set of qualified values", formalDefinition="The set of critical coded results for qualitative observations  that match the criteria of this set of qualified values." )
+        protected CanonicalType criticalCodedValueSet;
+
+        private static final long serialVersionUID = -538666361L;
 
     /**
      * Constructor
      */
-      public ObservationDefinitionQualifiedIntervalComponent() {
+      public ObservationDefinitionQualifiedValueComponent() {
         super();
       }
 
         /**
-         * @return {@link #category} (The category of interval of values for continuous or ordinal observations conforming to this ObservationDefinition.). This is the underlying object with id, value and extensions. The accessor "getCategory" gives direct access to the value
-         */
-        public Enumeration<ObservationRangeCategory> getCategoryElement() { 
-          if (this.category == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ObservationDefinitionQualifiedIntervalComponent.category");
-            else if (Configuration.doAutoCreate())
-              this.category = new Enumeration<ObservationRangeCategory>(new ObservationRangeCategoryEnumFactory()); // bb
-          return this.category;
-        }
-
-        public boolean hasCategoryElement() { 
-          return this.category != null && !this.category.isEmpty();
-        }
-
-        public boolean hasCategory() { 
-          return this.category != null && !this.category.isEmpty();
-        }
-
-        /**
-         * @param value {@link #category} (The category of interval of values for continuous or ordinal observations conforming to this ObservationDefinition.). This is the underlying object with id, value and extensions. The accessor "getCategory" gives direct access to the value
-         */
-        public ObservationDefinitionQualifiedIntervalComponent setCategoryElement(Enumeration<ObservationRangeCategory> value) { 
-          this.category = value;
-          return this;
-        }
-
-        /**
-         * @return The category of interval of values for continuous or ordinal observations conforming to this ObservationDefinition.
-         */
-        public ObservationRangeCategory getCategory() { 
-          return this.category == null ? null : this.category.getValue();
-        }
-
-        /**
-         * @param value The category of interval of values for continuous or ordinal observations conforming to this ObservationDefinition.
-         */
-        public ObservationDefinitionQualifiedIntervalComponent setCategory(ObservationRangeCategory value) { 
-          if (value == null)
-            this.category = null;
-          else {
-            if (this.category == null)
-              this.category = new Enumeration<ObservationRangeCategory>(new ObservationRangeCategoryEnumFactory());
-            this.category.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #range} (The low and high values determining the interval. There may be only one of the two.)
-         */
-        public Range getRange() { 
-          if (this.range == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ObservationDefinitionQualifiedIntervalComponent.range");
-            else if (Configuration.doAutoCreate())
-              this.range = new Range(); // cc
-          return this.range;
-        }
-
-        public boolean hasRange() { 
-          return this.range != null && !this.range.isEmpty();
-        }
-
-        /**
-         * @param value {@link #range} (The low and high values determining the interval. There may be only one of the two.)
-         */
-        public ObservationDefinitionQualifiedIntervalComponent setRange(Range value) { 
-          this.range = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #context} (Codes to indicate the health context the range applies to. For example, the normal or therapeutic range.)
+         * @return {@link #context} (A concept defining the context for this set of qualified values.)
          */
         public CodeableConcept getContext() { 
           if (this.context == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ObservationDefinitionQualifiedIntervalComponent.context");
+              throw new Error("Attempt to auto-create ObservationDefinitionQualifiedValueComponent.context");
             else if (Configuration.doAutoCreate())
               this.context = new CodeableConcept(); // cc
           return this.context;
@@ -919,15 +874,15 @@ public class ObservationDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #context} (Codes to indicate the health context the range applies to. For example, the normal or therapeutic range.)
+         * @param value {@link #context} (A concept defining the context for this set of qualified values.)
          */
-        public ObservationDefinitionQualifiedIntervalComponent setContext(CodeableConcept value) { 
+        public ObservationDefinitionQualifiedValueComponent setContext(CodeableConcept value) { 
           this.context = value;
           return this;
         }
 
         /**
-         * @return {@link #appliesTo} (Codes to indicate the target population this reference range applies to.)
+         * @return {@link #appliesTo} (The target population this  set of qualified values applies to.)
          */
         public List<CodeableConcept> getAppliesTo() { 
           if (this.appliesTo == null)
@@ -938,7 +893,7 @@ public class ObservationDefinition extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public ObservationDefinitionQualifiedIntervalComponent setAppliesTo(List<CodeableConcept> theAppliesTo) { 
+        public ObservationDefinitionQualifiedValueComponent setAppliesTo(List<CodeableConcept> theAppliesTo) { 
           this.appliesTo = theAppliesTo;
           return this;
         }
@@ -960,7 +915,7 @@ public class ObservationDefinition extends DomainResource {
           return t;
         }
 
-        public ObservationDefinitionQualifiedIntervalComponent addAppliesTo(CodeableConcept t) { //3
+        public ObservationDefinitionQualifiedValueComponent addAppliesTo(CodeableConcept t) { //3
           if (t == null)
             return this;
           if (this.appliesTo == null)
@@ -980,12 +935,12 @@ public class ObservationDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #gender} (Sex of the population the range applies to.). This is the underlying object with id, value and extensions. The accessor "getGender" gives direct access to the value
+         * @return {@link #gender} (The gender this  set of qualified values applies to.). This is the underlying object with id, value and extensions. The accessor "getGender" gives direct access to the value
          */
         public Enumeration<AdministrativeGender> getGenderElement() { 
           if (this.gender == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ObservationDefinitionQualifiedIntervalComponent.gender");
+              throw new Error("Attempt to auto-create ObservationDefinitionQualifiedValueComponent.gender");
             else if (Configuration.doAutoCreate())
               this.gender = new Enumeration<AdministrativeGender>(new AdministrativeGenderEnumFactory()); // bb
           return this.gender;
@@ -1000,24 +955,24 @@ public class ObservationDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #gender} (Sex of the population the range applies to.). This is the underlying object with id, value and extensions. The accessor "getGender" gives direct access to the value
+         * @param value {@link #gender} (The gender this  set of qualified values applies to.). This is the underlying object with id, value and extensions. The accessor "getGender" gives direct access to the value
          */
-        public ObservationDefinitionQualifiedIntervalComponent setGenderElement(Enumeration<AdministrativeGender> value) { 
+        public ObservationDefinitionQualifiedValueComponent setGenderElement(Enumeration<AdministrativeGender> value) { 
           this.gender = value;
           return this;
         }
 
         /**
-         * @return Sex of the population the range applies to.
+         * @return The gender this  set of qualified values applies to.
          */
         public AdministrativeGender getGender() { 
           return this.gender == null ? null : this.gender.getValue();
         }
 
         /**
-         * @param value Sex of the population the range applies to.
+         * @param value The gender this  set of qualified values applies to.
          */
-        public ObservationDefinitionQualifiedIntervalComponent setGender(AdministrativeGender value) { 
+        public ObservationDefinitionQualifiedValueComponent setGender(AdministrativeGender value) { 
           if (value == null)
             this.gender = null;
           else {
@@ -1029,12 +984,12 @@ public class ObservationDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #age} (The age at which this reference range is applicable. This is a neonatal age (e.g. number of weeks at term) if the meaning says so.)
+         * @return {@link #age} (The age range this  set of qualified values applies to.)
          */
         public Range getAge() { 
           if (this.age == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ObservationDefinitionQualifiedIntervalComponent.age");
+              throw new Error("Attempt to auto-create ObservationDefinitionQualifiedValueComponent.age");
             else if (Configuration.doAutoCreate())
               this.age = new Range(); // cc
           return this.age;
@@ -1045,20 +1000,20 @@ public class ObservationDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #age} (The age at which this reference range is applicable. This is a neonatal age (e.g. number of weeks at term) if the meaning says so.)
+         * @param value {@link #age} (The age range this  set of qualified values applies to.)
          */
-        public ObservationDefinitionQualifiedIntervalComponent setAge(Range value) { 
+        public ObservationDefinitionQualifiedValueComponent setAge(Range value) { 
           this.age = value;
           return this;
         }
 
         /**
-         * @return {@link #gestationalAge} (The gestational age to which this reference range is applicable, in the context of pregnancy.)
+         * @return {@link #gestationalAge} (The gestational age this  set of qualified values applies to.)
          */
         public Range getGestationalAge() { 
           if (this.gestationalAge == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ObservationDefinitionQualifiedIntervalComponent.gestationalAge");
+              throw new Error("Attempt to auto-create ObservationDefinitionQualifiedValueComponent.gestationalAge");
             else if (Configuration.doAutoCreate())
               this.gestationalAge = new Range(); // cc
           return this.gestationalAge;
@@ -1069,20 +1024,20 @@ public class ObservationDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #gestationalAge} (The gestational age to which this reference range is applicable, in the context of pregnancy.)
+         * @param value {@link #gestationalAge} (The gestational age this  set of qualified values applies to.)
          */
-        public ObservationDefinitionQualifiedIntervalComponent setGestationalAge(Range value) { 
+        public ObservationDefinitionQualifiedValueComponent setGestationalAge(Range value) { 
           this.gestationalAge = value;
           return this;
         }
 
         /**
-         * @return {@link #condition} (Text based condition for which the reference range is valid.). This is the underlying object with id, value and extensions. The accessor "getCondition" gives direct access to the value
+         * @return {@link #condition} (Text based condition for which the the set of qualified values is valid.). This is the underlying object with id, value and extensions. The accessor "getCondition" gives direct access to the value
          */
         public StringType getConditionElement() { 
           if (this.condition == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ObservationDefinitionQualifiedIntervalComponent.condition");
+              throw new Error("Attempt to auto-create ObservationDefinitionQualifiedValueComponent.condition");
             else if (Configuration.doAutoCreate())
               this.condition = new StringType(); // bb
           return this.condition;
@@ -1097,24 +1052,24 @@ public class ObservationDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #condition} (Text based condition for which the reference range is valid.). This is the underlying object with id, value and extensions. The accessor "getCondition" gives direct access to the value
+         * @param value {@link #condition} (Text based condition for which the the set of qualified values is valid.). This is the underlying object with id, value and extensions. The accessor "getCondition" gives direct access to the value
          */
-        public ObservationDefinitionQualifiedIntervalComponent setConditionElement(StringType value) { 
+        public ObservationDefinitionQualifiedValueComponent setConditionElement(StringType value) { 
           this.condition = value;
           return this;
         }
 
         /**
-         * @return Text based condition for which the reference range is valid.
+         * @return Text based condition for which the the set of qualified values is valid.
          */
         public String getCondition() { 
           return this.condition == null ? null : this.condition.getValue();
         }
 
         /**
-         * @param value Text based condition for which the reference range is valid.
+         * @param value Text based condition for which the the set of qualified values is valid.
          */
-        public ObservationDefinitionQualifiedIntervalComponent setCondition(String value) { 
+        public ObservationDefinitionQualifiedValueComponent setCondition(String value) { 
           if (Utilities.noString(value))
             this.condition = null;
           else {
@@ -1125,29 +1080,306 @@ public class ObservationDefinition extends DomainResource {
           return this;
         }
 
+        /**
+         * @return {@link #rangeCategory} (The category of range of values for continuous or ordinal observations that match the criteria of this set of qualified values.). This is the underlying object with id, value and extensions. The accessor "getRangeCategory" gives direct access to the value
+         */
+        public Enumeration<ObservationRangeCategory> getRangeCategoryElement() { 
+          if (this.rangeCategory == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ObservationDefinitionQualifiedValueComponent.rangeCategory");
+            else if (Configuration.doAutoCreate())
+              this.rangeCategory = new Enumeration<ObservationRangeCategory>(new ObservationRangeCategoryEnumFactory()); // bb
+          return this.rangeCategory;
+        }
+
+        public boolean hasRangeCategoryElement() { 
+          return this.rangeCategory != null && !this.rangeCategory.isEmpty();
+        }
+
+        public boolean hasRangeCategory() { 
+          return this.rangeCategory != null && !this.rangeCategory.isEmpty();
+        }
+
+        /**
+         * @param value {@link #rangeCategory} (The category of range of values for continuous or ordinal observations that match the criteria of this set of qualified values.). This is the underlying object with id, value and extensions. The accessor "getRangeCategory" gives direct access to the value
+         */
+        public ObservationDefinitionQualifiedValueComponent setRangeCategoryElement(Enumeration<ObservationRangeCategory> value) { 
+          this.rangeCategory = value;
+          return this;
+        }
+
+        /**
+         * @return The category of range of values for continuous or ordinal observations that match the criteria of this set of qualified values.
+         */
+        public ObservationRangeCategory getRangeCategory() { 
+          return this.rangeCategory == null ? null : this.rangeCategory.getValue();
+        }
+
+        /**
+         * @param value The category of range of values for continuous or ordinal observations that match the criteria of this set of qualified values.
+         */
+        public ObservationDefinitionQualifiedValueComponent setRangeCategory(ObservationRangeCategory value) { 
+          if (value == null)
+            this.rangeCategory = null;
+          else {
+            if (this.rangeCategory == null)
+              this.rangeCategory = new Enumeration<ObservationRangeCategory>(new ObservationRangeCategoryEnumFactory());
+            this.rangeCategory.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #range} (The range of values defined for continuous or ordinal observations that match the criteria of this set of qualified values.)
+         */
+        public Range getRange() { 
+          if (this.range == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ObservationDefinitionQualifiedValueComponent.range");
+            else if (Configuration.doAutoCreate())
+              this.range = new Range(); // cc
+          return this.range;
+        }
+
+        public boolean hasRange() { 
+          return this.range != null && !this.range.isEmpty();
+        }
+
+        /**
+         * @param value {@link #range} (The range of values defined for continuous or ordinal observations that match the criteria of this set of qualified values.)
+         */
+        public ObservationDefinitionQualifiedValueComponent setRange(Range value) { 
+          this.range = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #validCodedValueSet} (The set of valid coded results for qualitative observations  that match the criteria of this set of qualified values.). This is the underlying object with id, value and extensions. The accessor "getValidCodedValueSet" gives direct access to the value
+         */
+        public CanonicalType getValidCodedValueSetElement() { 
+          if (this.validCodedValueSet == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ObservationDefinitionQualifiedValueComponent.validCodedValueSet");
+            else if (Configuration.doAutoCreate())
+              this.validCodedValueSet = new CanonicalType(); // bb
+          return this.validCodedValueSet;
+        }
+
+        public boolean hasValidCodedValueSetElement() { 
+          return this.validCodedValueSet != null && !this.validCodedValueSet.isEmpty();
+        }
+
+        public boolean hasValidCodedValueSet() { 
+          return this.validCodedValueSet != null && !this.validCodedValueSet.isEmpty();
+        }
+
+        /**
+         * @param value {@link #validCodedValueSet} (The set of valid coded results for qualitative observations  that match the criteria of this set of qualified values.). This is the underlying object with id, value and extensions. The accessor "getValidCodedValueSet" gives direct access to the value
+         */
+        public ObservationDefinitionQualifiedValueComponent setValidCodedValueSetElement(CanonicalType value) { 
+          this.validCodedValueSet = value;
+          return this;
+        }
+
+        /**
+         * @return The set of valid coded results for qualitative observations  that match the criteria of this set of qualified values.
+         */
+        public String getValidCodedValueSet() { 
+          return this.validCodedValueSet == null ? null : this.validCodedValueSet.getValue();
+        }
+
+        /**
+         * @param value The set of valid coded results for qualitative observations  that match the criteria of this set of qualified values.
+         */
+        public ObservationDefinitionQualifiedValueComponent setValidCodedValueSet(String value) { 
+          if (Utilities.noString(value))
+            this.validCodedValueSet = null;
+          else {
+            if (this.validCodedValueSet == null)
+              this.validCodedValueSet = new CanonicalType();
+            this.validCodedValueSet.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #normalCodedValueSet} (The set of normal coded results for qualitative observations  that match the criteria of this set of qualified values.). This is the underlying object with id, value and extensions. The accessor "getNormalCodedValueSet" gives direct access to the value
+         */
+        public CanonicalType getNormalCodedValueSetElement() { 
+          if (this.normalCodedValueSet == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ObservationDefinitionQualifiedValueComponent.normalCodedValueSet");
+            else if (Configuration.doAutoCreate())
+              this.normalCodedValueSet = new CanonicalType(); // bb
+          return this.normalCodedValueSet;
+        }
+
+        public boolean hasNormalCodedValueSetElement() { 
+          return this.normalCodedValueSet != null && !this.normalCodedValueSet.isEmpty();
+        }
+
+        public boolean hasNormalCodedValueSet() { 
+          return this.normalCodedValueSet != null && !this.normalCodedValueSet.isEmpty();
+        }
+
+        /**
+         * @param value {@link #normalCodedValueSet} (The set of normal coded results for qualitative observations  that match the criteria of this set of qualified values.). This is the underlying object with id, value and extensions. The accessor "getNormalCodedValueSet" gives direct access to the value
+         */
+        public ObservationDefinitionQualifiedValueComponent setNormalCodedValueSetElement(CanonicalType value) { 
+          this.normalCodedValueSet = value;
+          return this;
+        }
+
+        /**
+         * @return The set of normal coded results for qualitative observations  that match the criteria of this set of qualified values.
+         */
+        public String getNormalCodedValueSet() { 
+          return this.normalCodedValueSet == null ? null : this.normalCodedValueSet.getValue();
+        }
+
+        /**
+         * @param value The set of normal coded results for qualitative observations  that match the criteria of this set of qualified values.
+         */
+        public ObservationDefinitionQualifiedValueComponent setNormalCodedValueSet(String value) { 
+          if (Utilities.noString(value))
+            this.normalCodedValueSet = null;
+          else {
+            if (this.normalCodedValueSet == null)
+              this.normalCodedValueSet = new CanonicalType();
+            this.normalCodedValueSet.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #abnormalCodedValueSet} (The set of abnormal coded results for qualitative observations  that match the criteria of this set of qualified values.). This is the underlying object with id, value and extensions. The accessor "getAbnormalCodedValueSet" gives direct access to the value
+         */
+        public CanonicalType getAbnormalCodedValueSetElement() { 
+          if (this.abnormalCodedValueSet == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ObservationDefinitionQualifiedValueComponent.abnormalCodedValueSet");
+            else if (Configuration.doAutoCreate())
+              this.abnormalCodedValueSet = new CanonicalType(); // bb
+          return this.abnormalCodedValueSet;
+        }
+
+        public boolean hasAbnormalCodedValueSetElement() { 
+          return this.abnormalCodedValueSet != null && !this.abnormalCodedValueSet.isEmpty();
+        }
+
+        public boolean hasAbnormalCodedValueSet() { 
+          return this.abnormalCodedValueSet != null && !this.abnormalCodedValueSet.isEmpty();
+        }
+
+        /**
+         * @param value {@link #abnormalCodedValueSet} (The set of abnormal coded results for qualitative observations  that match the criteria of this set of qualified values.). This is the underlying object with id, value and extensions. The accessor "getAbnormalCodedValueSet" gives direct access to the value
+         */
+        public ObservationDefinitionQualifiedValueComponent setAbnormalCodedValueSetElement(CanonicalType value) { 
+          this.abnormalCodedValueSet = value;
+          return this;
+        }
+
+        /**
+         * @return The set of abnormal coded results for qualitative observations  that match the criteria of this set of qualified values.
+         */
+        public String getAbnormalCodedValueSet() { 
+          return this.abnormalCodedValueSet == null ? null : this.abnormalCodedValueSet.getValue();
+        }
+
+        /**
+         * @param value The set of abnormal coded results for qualitative observations  that match the criteria of this set of qualified values.
+         */
+        public ObservationDefinitionQualifiedValueComponent setAbnormalCodedValueSet(String value) { 
+          if (Utilities.noString(value))
+            this.abnormalCodedValueSet = null;
+          else {
+            if (this.abnormalCodedValueSet == null)
+              this.abnormalCodedValueSet = new CanonicalType();
+            this.abnormalCodedValueSet.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #criticalCodedValueSet} (The set of critical coded results for qualitative observations  that match the criteria of this set of qualified values.). This is the underlying object with id, value and extensions. The accessor "getCriticalCodedValueSet" gives direct access to the value
+         */
+        public CanonicalType getCriticalCodedValueSetElement() { 
+          if (this.criticalCodedValueSet == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ObservationDefinitionQualifiedValueComponent.criticalCodedValueSet");
+            else if (Configuration.doAutoCreate())
+              this.criticalCodedValueSet = new CanonicalType(); // bb
+          return this.criticalCodedValueSet;
+        }
+
+        public boolean hasCriticalCodedValueSetElement() { 
+          return this.criticalCodedValueSet != null && !this.criticalCodedValueSet.isEmpty();
+        }
+
+        public boolean hasCriticalCodedValueSet() { 
+          return this.criticalCodedValueSet != null && !this.criticalCodedValueSet.isEmpty();
+        }
+
+        /**
+         * @param value {@link #criticalCodedValueSet} (The set of critical coded results for qualitative observations  that match the criteria of this set of qualified values.). This is the underlying object with id, value and extensions. The accessor "getCriticalCodedValueSet" gives direct access to the value
+         */
+        public ObservationDefinitionQualifiedValueComponent setCriticalCodedValueSetElement(CanonicalType value) { 
+          this.criticalCodedValueSet = value;
+          return this;
+        }
+
+        /**
+         * @return The set of critical coded results for qualitative observations  that match the criteria of this set of qualified values.
+         */
+        public String getCriticalCodedValueSet() { 
+          return this.criticalCodedValueSet == null ? null : this.criticalCodedValueSet.getValue();
+        }
+
+        /**
+         * @param value The set of critical coded results for qualitative observations  that match the criteria of this set of qualified values.
+         */
+        public ObservationDefinitionQualifiedValueComponent setCriticalCodedValueSet(String value) { 
+          if (Utilities.noString(value))
+            this.criticalCodedValueSet = null;
+          else {
+            if (this.criticalCodedValueSet == null)
+              this.criticalCodedValueSet = new CanonicalType();
+            this.criticalCodedValueSet.setValue(value);
+          }
+          return this;
+        }
+
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("category", "code", "The category of interval of values for continuous or ordinal observations conforming to this ObservationDefinition.", 0, 1, category));
-          children.add(new Property("range", "Range", "The low and high values determining the interval. There may be only one of the two.", 0, 1, range));
-          children.add(new Property("context", "CodeableConcept", "Codes to indicate the health context the range applies to. For example, the normal or therapeutic range.", 0, 1, context));
-          children.add(new Property("appliesTo", "CodeableConcept", "Codes to indicate the target population this reference range applies to.", 0, java.lang.Integer.MAX_VALUE, appliesTo));
-          children.add(new Property("gender", "code", "Sex of the population the range applies to.", 0, 1, gender));
-          children.add(new Property("age", "Range", "The age at which this reference range is applicable. This is a neonatal age (e.g. number of weeks at term) if the meaning says so.", 0, 1, age));
-          children.add(new Property("gestationalAge", "Range", "The gestational age to which this reference range is applicable, in the context of pregnancy.", 0, 1, gestationalAge));
-          children.add(new Property("condition", "string", "Text based condition for which the reference range is valid.", 0, 1, condition));
+          children.add(new Property("context", "CodeableConcept", "A concept defining the context for this set of qualified values.", 0, 1, context));
+          children.add(new Property("appliesTo", "CodeableConcept", "The target population this  set of qualified values applies to.", 0, java.lang.Integer.MAX_VALUE, appliesTo));
+          children.add(new Property("gender", "code", "The gender this  set of qualified values applies to.", 0, 1, gender));
+          children.add(new Property("age", "Range", "The age range this  set of qualified values applies to.", 0, 1, age));
+          children.add(new Property("gestationalAge", "Range", "The gestational age this  set of qualified values applies to.", 0, 1, gestationalAge));
+          children.add(new Property("condition", "string", "Text based condition for which the the set of qualified values is valid.", 0, 1, condition));
+          children.add(new Property("rangeCategory", "code", "The category of range of values for continuous or ordinal observations that match the criteria of this set of qualified values.", 0, 1, rangeCategory));
+          children.add(new Property("range", "Range", "The range of values defined for continuous or ordinal observations that match the criteria of this set of qualified values.", 0, 1, range));
+          children.add(new Property("validCodedValueSet", "canonical(ValueSet)", "The set of valid coded results for qualitative observations  that match the criteria of this set of qualified values.", 0, 1, validCodedValueSet));
+          children.add(new Property("normalCodedValueSet", "canonical(ValueSet)", "The set of normal coded results for qualitative observations  that match the criteria of this set of qualified values.", 0, 1, normalCodedValueSet));
+          children.add(new Property("abnormalCodedValueSet", "canonical(ValueSet)", "The set of abnormal coded results for qualitative observations  that match the criteria of this set of qualified values.", 0, 1, abnormalCodedValueSet));
+          children.add(new Property("criticalCodedValueSet", "canonical(ValueSet)", "The set of critical coded results for qualitative observations  that match the criteria of this set of qualified values.", 0, 1, criticalCodedValueSet));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 50511102: /*category*/  return new Property("category", "code", "The category of interval of values for continuous or ordinal observations conforming to this ObservationDefinition.", 0, 1, category);
-          case 108280125: /*range*/  return new Property("range", "Range", "The low and high values determining the interval. There may be only one of the two.", 0, 1, range);
-          case 951530927: /*context*/  return new Property("context", "CodeableConcept", "Codes to indicate the health context the range applies to. For example, the normal or therapeutic range.", 0, 1, context);
-          case -2089924569: /*appliesTo*/  return new Property("appliesTo", "CodeableConcept", "Codes to indicate the target population this reference range applies to.", 0, java.lang.Integer.MAX_VALUE, appliesTo);
-          case -1249512767: /*gender*/  return new Property("gender", "code", "Sex of the population the range applies to.", 0, 1, gender);
-          case 96511: /*age*/  return new Property("age", "Range", "The age at which this reference range is applicable. This is a neonatal age (e.g. number of weeks at term) if the meaning says so.", 0, 1, age);
-          case -241217538: /*gestationalAge*/  return new Property("gestationalAge", "Range", "The gestational age to which this reference range is applicable, in the context of pregnancy.", 0, 1, gestationalAge);
-          case -861311717: /*condition*/  return new Property("condition", "string", "Text based condition for which the reference range is valid.", 0, 1, condition);
+          case 951530927: /*context*/  return new Property("context", "CodeableConcept", "A concept defining the context for this set of qualified values.", 0, 1, context);
+          case -2089924569: /*appliesTo*/  return new Property("appliesTo", "CodeableConcept", "The target population this  set of qualified values applies to.", 0, java.lang.Integer.MAX_VALUE, appliesTo);
+          case -1249512767: /*gender*/  return new Property("gender", "code", "The gender this  set of qualified values applies to.", 0, 1, gender);
+          case 96511: /*age*/  return new Property("age", "Range", "The age range this  set of qualified values applies to.", 0, 1, age);
+          case -241217538: /*gestationalAge*/  return new Property("gestationalAge", "Range", "The gestational age this  set of qualified values applies to.", 0, 1, gestationalAge);
+          case -861311717: /*condition*/  return new Property("condition", "string", "Text based condition for which the the set of qualified values is valid.", 0, 1, condition);
+          case -363410085: /*rangeCategory*/  return new Property("rangeCategory", "code", "The category of range of values for continuous or ordinal observations that match the criteria of this set of qualified values.", 0, 1, rangeCategory);
+          case 108280125: /*range*/  return new Property("range", "Range", "The range of values defined for continuous or ordinal observations that match the criteria of this set of qualified values.", 0, 1, range);
+          case 1374640076: /*validCodedValueSet*/  return new Property("validCodedValueSet", "canonical(ValueSet)", "The set of valid coded results for qualitative observations  that match the criteria of this set of qualified values.", 0, 1, validCodedValueSet);
+          case -837500735: /*normalCodedValueSet*/  return new Property("normalCodedValueSet", "canonical(ValueSet)", "The set of normal coded results for qualitative observations  that match the criteria of this set of qualified values.", 0, 1, normalCodedValueSet);
+          case 1073600256: /*abnormalCodedValueSet*/  return new Property("abnormalCodedValueSet", "canonical(ValueSet)", "The set of abnormal coded results for qualitative observations  that match the criteria of this set of qualified values.", 0, 1, abnormalCodedValueSet);
+          case 2568457: /*criticalCodedValueSet*/  return new Property("criticalCodedValueSet", "canonical(ValueSet)", "The set of critical coded results for qualitative observations  that match the criteria of this set of qualified values.", 0, 1, criticalCodedValueSet);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1156,14 +1388,18 @@ public class ObservationDefinition extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // Enumeration<ObservationRangeCategory>
-        case 108280125: /*range*/ return this.range == null ? new Base[0] : new Base[] {this.range}; // Range
         case 951530927: /*context*/ return this.context == null ? new Base[0] : new Base[] {this.context}; // CodeableConcept
         case -2089924569: /*appliesTo*/ return this.appliesTo == null ? new Base[0] : this.appliesTo.toArray(new Base[this.appliesTo.size()]); // CodeableConcept
         case -1249512767: /*gender*/ return this.gender == null ? new Base[0] : new Base[] {this.gender}; // Enumeration<AdministrativeGender>
         case 96511: /*age*/ return this.age == null ? new Base[0] : new Base[] {this.age}; // Range
         case -241217538: /*gestationalAge*/ return this.gestationalAge == null ? new Base[0] : new Base[] {this.gestationalAge}; // Range
         case -861311717: /*condition*/ return this.condition == null ? new Base[0] : new Base[] {this.condition}; // StringType
+        case -363410085: /*rangeCategory*/ return this.rangeCategory == null ? new Base[0] : new Base[] {this.rangeCategory}; // Enumeration<ObservationRangeCategory>
+        case 108280125: /*range*/ return this.range == null ? new Base[0] : new Base[] {this.range}; // Range
+        case 1374640076: /*validCodedValueSet*/ return this.validCodedValueSet == null ? new Base[0] : new Base[] {this.validCodedValueSet}; // CanonicalType
+        case -837500735: /*normalCodedValueSet*/ return this.normalCodedValueSet == null ? new Base[0] : new Base[] {this.normalCodedValueSet}; // CanonicalType
+        case 1073600256: /*abnormalCodedValueSet*/ return this.abnormalCodedValueSet == null ? new Base[0] : new Base[] {this.abnormalCodedValueSet}; // CanonicalType
+        case 2568457: /*criticalCodedValueSet*/ return this.criticalCodedValueSet == null ? new Base[0] : new Base[] {this.criticalCodedValueSet}; // CanonicalType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1172,13 +1408,6 @@ public class ObservationDefinition extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case 50511102: // category
-          value = new ObservationRangeCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.category = (Enumeration) value; // Enumeration<ObservationRangeCategory>
-          return value;
-        case 108280125: // range
-          this.range = TypeConvertor.castToRange(value); // Range
-          return value;
         case 951530927: // context
           this.context = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
@@ -1198,6 +1427,25 @@ public class ObservationDefinition extends DomainResource {
         case -861311717: // condition
           this.condition = TypeConvertor.castToString(value); // StringType
           return value;
+        case -363410085: // rangeCategory
+          value = new ObservationRangeCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.rangeCategory = (Enumeration) value; // Enumeration<ObservationRangeCategory>
+          return value;
+        case 108280125: // range
+          this.range = TypeConvertor.castToRange(value); // Range
+          return value;
+        case 1374640076: // validCodedValueSet
+          this.validCodedValueSet = TypeConvertor.castToCanonical(value); // CanonicalType
+          return value;
+        case -837500735: // normalCodedValueSet
+          this.normalCodedValueSet = TypeConvertor.castToCanonical(value); // CanonicalType
+          return value;
+        case 1073600256: // abnormalCodedValueSet
+          this.abnormalCodedValueSet = TypeConvertor.castToCanonical(value); // CanonicalType
+          return value;
+        case 2568457: // criticalCodedValueSet
+          this.criticalCodedValueSet = TypeConvertor.castToCanonical(value); // CanonicalType
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -1205,12 +1453,7 @@ public class ObservationDefinition extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("category")) {
-          value = new ObservationRangeCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.category = (Enumeration) value; // Enumeration<ObservationRangeCategory>
-        } else if (name.equals("range")) {
-          this.range = TypeConvertor.castToRange(value); // Range
-        } else if (name.equals("context")) {
+        if (name.equals("context")) {
           this.context = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("appliesTo")) {
           this.getAppliesTo().add(TypeConvertor.castToCodeableConcept(value));
@@ -1223,6 +1466,19 @@ public class ObservationDefinition extends DomainResource {
           this.gestationalAge = TypeConvertor.castToRange(value); // Range
         } else if (name.equals("condition")) {
           this.condition = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("rangeCategory")) {
+          value = new ObservationRangeCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.rangeCategory = (Enumeration) value; // Enumeration<ObservationRangeCategory>
+        } else if (name.equals("range")) {
+          this.range = TypeConvertor.castToRange(value); // Range
+        } else if (name.equals("validCodedValueSet")) {
+          this.validCodedValueSet = TypeConvertor.castToCanonical(value); // CanonicalType
+        } else if (name.equals("normalCodedValueSet")) {
+          this.normalCodedValueSet = TypeConvertor.castToCanonical(value); // CanonicalType
+        } else if (name.equals("abnormalCodedValueSet")) {
+          this.abnormalCodedValueSet = TypeConvertor.castToCanonical(value); // CanonicalType
+        } else if (name.equals("criticalCodedValueSet")) {
+          this.criticalCodedValueSet = TypeConvertor.castToCanonical(value); // CanonicalType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1231,14 +1487,18 @@ public class ObservationDefinition extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 50511102:  return getCategoryElement();
-        case 108280125:  return getRange();
         case 951530927:  return getContext();
         case -2089924569:  return addAppliesTo(); 
         case -1249512767:  return getGenderElement();
         case 96511:  return getAge();
         case -241217538:  return getGestationalAge();
         case -861311717:  return getConditionElement();
+        case -363410085:  return getRangeCategoryElement();
+        case 108280125:  return getRange();
+        case 1374640076:  return getValidCodedValueSetElement();
+        case -837500735:  return getNormalCodedValueSetElement();
+        case 1073600256:  return getAbnormalCodedValueSetElement();
+        case 2568457:  return getCriticalCodedValueSetElement();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1247,14 +1507,18 @@ public class ObservationDefinition extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 50511102: /*category*/ return new String[] {"code"};
-        case 108280125: /*range*/ return new String[] {"Range"};
         case 951530927: /*context*/ return new String[] {"CodeableConcept"};
         case -2089924569: /*appliesTo*/ return new String[] {"CodeableConcept"};
         case -1249512767: /*gender*/ return new String[] {"code"};
         case 96511: /*age*/ return new String[] {"Range"};
         case -241217538: /*gestationalAge*/ return new String[] {"Range"};
         case -861311717: /*condition*/ return new String[] {"string"};
+        case -363410085: /*rangeCategory*/ return new String[] {"code"};
+        case 108280125: /*range*/ return new String[] {"Range"};
+        case 1374640076: /*validCodedValueSet*/ return new String[] {"canonical"};
+        case -837500735: /*normalCodedValueSet*/ return new String[] {"canonical"};
+        case 1073600256: /*abnormalCodedValueSet*/ return new String[] {"canonical"};
+        case 2568457: /*criticalCodedValueSet*/ return new String[] {"canonical"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1262,14 +1526,7 @@ public class ObservationDefinition extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("category")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.qualifiedInterval.category");
-        }
-        else if (name.equals("range")) {
-          this.range = new Range();
-          return this.range;
-        }
-        else if (name.equals("context")) {
+        if (name.equals("context")) {
           this.context = new CodeableConcept();
           return this.context;
         }
@@ -1277,7 +1534,7 @@ public class ObservationDefinition extends DomainResource {
           return addAppliesTo();
         }
         else if (name.equals("gender")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.qualifiedInterval.gender");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.qualifiedValue.gender");
         }
         else if (name.equals("age")) {
           this.age = new Range();
@@ -1288,22 +1545,39 @@ public class ObservationDefinition extends DomainResource {
           return this.gestationalAge;
         }
         else if (name.equals("condition")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.qualifiedInterval.condition");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.qualifiedValue.condition");
+        }
+        else if (name.equals("rangeCategory")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.qualifiedValue.rangeCategory");
+        }
+        else if (name.equals("range")) {
+          this.range = new Range();
+          return this.range;
+        }
+        else if (name.equals("validCodedValueSet")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.qualifiedValue.validCodedValueSet");
+        }
+        else if (name.equals("normalCodedValueSet")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.qualifiedValue.normalCodedValueSet");
+        }
+        else if (name.equals("abnormalCodedValueSet")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.qualifiedValue.abnormalCodedValueSet");
+        }
+        else if (name.equals("criticalCodedValueSet")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.qualifiedValue.criticalCodedValueSet");
         }
         else
           return super.addChild(name);
       }
 
-      public ObservationDefinitionQualifiedIntervalComponent copy() {
-        ObservationDefinitionQualifiedIntervalComponent dst = new ObservationDefinitionQualifiedIntervalComponent();
+      public ObservationDefinitionQualifiedValueComponent copy() {
+        ObservationDefinitionQualifiedValueComponent dst = new ObservationDefinitionQualifiedValueComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(ObservationDefinitionQualifiedIntervalComponent dst) {
+      public void copyValues(ObservationDefinitionQualifiedValueComponent dst) {
         super.copyValues(dst);
-        dst.category = category == null ? null : category.copy();
-        dst.range = range == null ? null : range.copy();
         dst.context = context == null ? null : context.copy();
         if (appliesTo != null) {
           dst.appliesTo = new ArrayList<CodeableConcept>();
@@ -1314,39 +1588,49 @@ public class ObservationDefinition extends DomainResource {
         dst.age = age == null ? null : age.copy();
         dst.gestationalAge = gestationalAge == null ? null : gestationalAge.copy();
         dst.condition = condition == null ? null : condition.copy();
+        dst.rangeCategory = rangeCategory == null ? null : rangeCategory.copy();
+        dst.range = range == null ? null : range.copy();
+        dst.validCodedValueSet = validCodedValueSet == null ? null : validCodedValueSet.copy();
+        dst.normalCodedValueSet = normalCodedValueSet == null ? null : normalCodedValueSet.copy();
+        dst.abnormalCodedValueSet = abnormalCodedValueSet == null ? null : abnormalCodedValueSet.copy();
+        dst.criticalCodedValueSet = criticalCodedValueSet == null ? null : criticalCodedValueSet.copy();
       }
 
       @Override
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof ObservationDefinitionQualifiedIntervalComponent))
+        if (!(other_ instanceof ObservationDefinitionQualifiedValueComponent))
           return false;
-        ObservationDefinitionQualifiedIntervalComponent o = (ObservationDefinitionQualifiedIntervalComponent) other_;
-        return compareDeep(category, o.category, true) && compareDeep(range, o.range, true) && compareDeep(context, o.context, true)
-           && compareDeep(appliesTo, o.appliesTo, true) && compareDeep(gender, o.gender, true) && compareDeep(age, o.age, true)
-           && compareDeep(gestationalAge, o.gestationalAge, true) && compareDeep(condition, o.condition, true)
-          ;
+        ObservationDefinitionQualifiedValueComponent o = (ObservationDefinitionQualifiedValueComponent) other_;
+        return compareDeep(context, o.context, true) && compareDeep(appliesTo, o.appliesTo, true) && compareDeep(gender, o.gender, true)
+           && compareDeep(age, o.age, true) && compareDeep(gestationalAge, o.gestationalAge, true) && compareDeep(condition, o.condition, true)
+           && compareDeep(rangeCategory, o.rangeCategory, true) && compareDeep(range, o.range, true) && compareDeep(validCodedValueSet, o.validCodedValueSet, true)
+           && compareDeep(normalCodedValueSet, o.normalCodedValueSet, true) && compareDeep(abnormalCodedValueSet, o.abnormalCodedValueSet, true)
+           && compareDeep(criticalCodedValueSet, o.criticalCodedValueSet, true);
       }
 
       @Override
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof ObservationDefinitionQualifiedIntervalComponent))
+        if (!(other_ instanceof ObservationDefinitionQualifiedValueComponent))
           return false;
-        ObservationDefinitionQualifiedIntervalComponent o = (ObservationDefinitionQualifiedIntervalComponent) other_;
-        return compareValues(category, o.category, true) && compareValues(gender, o.gender, true) && compareValues(condition, o.condition, true)
+        ObservationDefinitionQualifiedValueComponent o = (ObservationDefinitionQualifiedValueComponent) other_;
+        return compareValues(gender, o.gender, true) && compareValues(condition, o.condition, true) && compareValues(rangeCategory, o.rangeCategory, true)
+           && compareValues(validCodedValueSet, o.validCodedValueSet, true) && compareValues(normalCodedValueSet, o.normalCodedValueSet, true)
+           && compareValues(abnormalCodedValueSet, o.abnormalCodedValueSet, true) && compareValues(criticalCodedValueSet, o.criticalCodedValueSet, true)
           ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(category, range, context
-          , appliesTo, gender, age, gestationalAge, condition);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(context, appliesTo, gender
+          , age, gestationalAge, condition, rangeCategory, range, validCodedValueSet, normalCodedValueSet
+          , abnormalCodedValueSet, criticalCodedValueSet);
       }
 
   public String fhirType() {
-    return "ObservationDefinition.qualifiedInterval";
+    return "ObservationDefinition.qualifiedValue";
 
   }
 
@@ -1378,13 +1662,13 @@ public class ObservationDefinition extends DomainResource {
         protected ObservationDefinitionQuantitativeDetailsComponent quantitativeDetails;
 
         /**
-         * Multiple  ranges of results qualified by different contexts for ordinal or continuous observations conforming to this ObservationDefinition.
+         * A set of qualified values associated with a context and a set of conditions -  provides a range for quantitative and ordinal observations and a collection of value sets for qualitative observations.
          */
-        @Child(name = "qualifiedInterval", type = {ObservationDefinitionQualifiedIntervalComponent.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Qualified range for continuous and ordinal observation results", formalDefinition="Multiple  ranges of results qualified by different contexts for ordinal or continuous observations conforming to this ObservationDefinition." )
-        protected List<ObservationDefinitionQualifiedIntervalComponent> qualifiedInterval;
+        @Child(name = "qualifiedValue", type = {ObservationDefinitionQualifiedValueComponent.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Set of qualified values for observation results", formalDefinition="A set of qualified values associated with a context and a set of conditions -  provides a range for quantitative and ordinal observations and a collection of value sets for qualitative observations." )
+        protected List<ObservationDefinitionQualifiedValueComponent> qualifiedValue;
 
-        private static final long serialVersionUID = 527664521L;
+        private static final long serialVersionUID = -369470835L;
 
     /**
      * Constructor
@@ -1511,56 +1795,56 @@ public class ObservationDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #qualifiedInterval} (Multiple  ranges of results qualified by different contexts for ordinal or continuous observations conforming to this ObservationDefinition.)
+         * @return {@link #qualifiedValue} (A set of qualified values associated with a context and a set of conditions -  provides a range for quantitative and ordinal observations and a collection of value sets for qualitative observations.)
          */
-        public List<ObservationDefinitionQualifiedIntervalComponent> getQualifiedInterval() { 
-          if (this.qualifiedInterval == null)
-            this.qualifiedInterval = new ArrayList<ObservationDefinitionQualifiedIntervalComponent>();
-          return this.qualifiedInterval;
+        public List<ObservationDefinitionQualifiedValueComponent> getQualifiedValue() { 
+          if (this.qualifiedValue == null)
+            this.qualifiedValue = new ArrayList<ObservationDefinitionQualifiedValueComponent>();
+          return this.qualifiedValue;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public ObservationDefinitionComponentComponent setQualifiedInterval(List<ObservationDefinitionQualifiedIntervalComponent> theQualifiedInterval) { 
-          this.qualifiedInterval = theQualifiedInterval;
+        public ObservationDefinitionComponentComponent setQualifiedValue(List<ObservationDefinitionQualifiedValueComponent> theQualifiedValue) { 
+          this.qualifiedValue = theQualifiedValue;
           return this;
         }
 
-        public boolean hasQualifiedInterval() { 
-          if (this.qualifiedInterval == null)
+        public boolean hasQualifiedValue() { 
+          if (this.qualifiedValue == null)
             return false;
-          for (ObservationDefinitionQualifiedIntervalComponent item : this.qualifiedInterval)
+          for (ObservationDefinitionQualifiedValueComponent item : this.qualifiedValue)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public ObservationDefinitionQualifiedIntervalComponent addQualifiedInterval() { //3
-          ObservationDefinitionQualifiedIntervalComponent t = new ObservationDefinitionQualifiedIntervalComponent();
-          if (this.qualifiedInterval == null)
-            this.qualifiedInterval = new ArrayList<ObservationDefinitionQualifiedIntervalComponent>();
-          this.qualifiedInterval.add(t);
+        public ObservationDefinitionQualifiedValueComponent addQualifiedValue() { //3
+          ObservationDefinitionQualifiedValueComponent t = new ObservationDefinitionQualifiedValueComponent();
+          if (this.qualifiedValue == null)
+            this.qualifiedValue = new ArrayList<ObservationDefinitionQualifiedValueComponent>();
+          this.qualifiedValue.add(t);
           return t;
         }
 
-        public ObservationDefinitionComponentComponent addQualifiedInterval(ObservationDefinitionQualifiedIntervalComponent t) { //3
+        public ObservationDefinitionComponentComponent addQualifiedValue(ObservationDefinitionQualifiedValueComponent t) { //3
           if (t == null)
             return this;
-          if (this.qualifiedInterval == null)
-            this.qualifiedInterval = new ArrayList<ObservationDefinitionQualifiedIntervalComponent>();
-          this.qualifiedInterval.add(t);
+          if (this.qualifiedValue == null)
+            this.qualifiedValue = new ArrayList<ObservationDefinitionQualifiedValueComponent>();
+          this.qualifiedValue.add(t);
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #qualifiedInterval}, creating it if it does not already exist {3}
+         * @return The first repetition of repeating field {@link #qualifiedValue}, creating it if it does not already exist {3}
          */
-        public ObservationDefinitionQualifiedIntervalComponent getQualifiedIntervalFirstRep() { 
-          if (getQualifiedInterval().isEmpty()) {
-            addQualifiedInterval();
+        public ObservationDefinitionQualifiedValueComponent getQualifiedValueFirstRep() { 
+          if (getQualifiedValue().isEmpty()) {
+            addQualifiedValue();
           }
-          return getQualifiedInterval().get(0);
+          return getQualifiedValue().get(0);
         }
 
         protected void listChildren(List<Property> children) {
@@ -1568,7 +1852,7 @@ public class ObservationDefinition extends DomainResource {
           children.add(new Property("code", "CodeableConcept", "Describes what will be observed.", 0, 1, code));
           children.add(new Property("permittedDataType", "code", "The data types allowed for the value element of the instance of this component observations.", 0, java.lang.Integer.MAX_VALUE, permittedDataType));
           children.add(new Property("quantitativeDetails", "@ObservationDefinition.quantitativeDetails", "Characteristics for quantitative results of this observation.", 0, 1, quantitativeDetails));
-          children.add(new Property("qualifiedInterval", "@ObservationDefinition.qualifiedInterval", "Multiple  ranges of results qualified by different contexts for ordinal or continuous observations conforming to this ObservationDefinition.", 0, java.lang.Integer.MAX_VALUE, qualifiedInterval));
+          children.add(new Property("qualifiedValue", "@ObservationDefinition.qualifiedValue", "A set of qualified values associated with a context and a set of conditions -  provides a range for quantitative and ordinal observations and a collection of value sets for qualitative observations.", 0, java.lang.Integer.MAX_VALUE, qualifiedValue));
         }
 
         @Override
@@ -1577,7 +1861,7 @@ public class ObservationDefinition extends DomainResource {
           case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Describes what will be observed.", 0, 1, code);
           case -99492804: /*permittedDataType*/  return new Property("permittedDataType", "code", "The data types allowed for the value element of the instance of this component observations.", 0, java.lang.Integer.MAX_VALUE, permittedDataType);
           case 842150763: /*quantitativeDetails*/  return new Property("quantitativeDetails", "@ObservationDefinition.quantitativeDetails", "Characteristics for quantitative results of this observation.", 0, 1, quantitativeDetails);
-          case 1882971521: /*qualifiedInterval*/  return new Property("qualifiedInterval", "@ObservationDefinition.qualifiedInterval", "Multiple  ranges of results qualified by different contexts for ordinal or continuous observations conforming to this ObservationDefinition.", 0, java.lang.Integer.MAX_VALUE, qualifiedInterval);
+          case -558517707: /*qualifiedValue*/  return new Property("qualifiedValue", "@ObservationDefinition.qualifiedValue", "A set of qualified values associated with a context and a set of conditions -  provides a range for quantitative and ordinal observations and a collection of value sets for qualitative observations.", 0, java.lang.Integer.MAX_VALUE, qualifiedValue);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1589,7 +1873,7 @@ public class ObservationDefinition extends DomainResource {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case -99492804: /*permittedDataType*/ return this.permittedDataType == null ? new Base[0] : this.permittedDataType.toArray(new Base[this.permittedDataType.size()]); // Enumeration<ObservationDataType>
         case 842150763: /*quantitativeDetails*/ return this.quantitativeDetails == null ? new Base[0] : new Base[] {this.quantitativeDetails}; // ObservationDefinitionQuantitativeDetailsComponent
-        case 1882971521: /*qualifiedInterval*/ return this.qualifiedInterval == null ? new Base[0] : this.qualifiedInterval.toArray(new Base[this.qualifiedInterval.size()]); // ObservationDefinitionQualifiedIntervalComponent
+        case -558517707: /*qualifiedValue*/ return this.qualifiedValue == null ? new Base[0] : this.qualifiedValue.toArray(new Base[this.qualifiedValue.size()]); // ObservationDefinitionQualifiedValueComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1608,8 +1892,8 @@ public class ObservationDefinition extends DomainResource {
         case 842150763: // quantitativeDetails
           this.quantitativeDetails = (ObservationDefinitionQuantitativeDetailsComponent) value; // ObservationDefinitionQuantitativeDetailsComponent
           return value;
-        case 1882971521: // qualifiedInterval
-          this.getQualifiedInterval().add((ObservationDefinitionQualifiedIntervalComponent) value); // ObservationDefinitionQualifiedIntervalComponent
+        case -558517707: // qualifiedValue
+          this.getQualifiedValue().add((ObservationDefinitionQualifiedValueComponent) value); // ObservationDefinitionQualifiedValueComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1625,8 +1909,8 @@ public class ObservationDefinition extends DomainResource {
           this.getPermittedDataType().add((Enumeration) value);
         } else if (name.equals("quantitativeDetails")) {
           this.quantitativeDetails = (ObservationDefinitionQuantitativeDetailsComponent) value; // ObservationDefinitionQuantitativeDetailsComponent
-        } else if (name.equals("qualifiedInterval")) {
-          this.getQualifiedInterval().add((ObservationDefinitionQualifiedIntervalComponent) value);
+        } else if (name.equals("qualifiedValue")) {
+          this.getQualifiedValue().add((ObservationDefinitionQualifiedValueComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -1638,7 +1922,7 @@ public class ObservationDefinition extends DomainResource {
         case 3059181:  return getCode();
         case -99492804:  return addPermittedDataTypeElement();
         case 842150763:  return getQuantitativeDetails();
-        case 1882971521:  return addQualifiedInterval(); 
+        case -558517707:  return addQualifiedValue(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -1650,7 +1934,7 @@ public class ObservationDefinition extends DomainResource {
         case 3059181: /*code*/ return new String[] {"CodeableConcept"};
         case -99492804: /*permittedDataType*/ return new String[] {"code"};
         case 842150763: /*quantitativeDetails*/ return new String[] {"@ObservationDefinition.quantitativeDetails"};
-        case 1882971521: /*qualifiedInterval*/ return new String[] {"@ObservationDefinition.qualifiedInterval"};
+        case -558517707: /*qualifiedValue*/ return new String[] {"@ObservationDefinition.qualifiedValue"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1669,8 +1953,8 @@ public class ObservationDefinition extends DomainResource {
           this.quantitativeDetails = new ObservationDefinitionQuantitativeDetailsComponent();
           return this.quantitativeDetails;
         }
-        else if (name.equals("qualifiedInterval")) {
-          return addQualifiedInterval();
+        else if (name.equals("qualifiedValue")) {
+          return addQualifiedValue();
         }
         else
           return super.addChild(name);
@@ -1691,10 +1975,10 @@ public class ObservationDefinition extends DomainResource {
             dst.permittedDataType.add(i.copy());
         };
         dst.quantitativeDetails = quantitativeDetails == null ? null : quantitativeDetails.copy();
-        if (qualifiedInterval != null) {
-          dst.qualifiedInterval = new ArrayList<ObservationDefinitionQualifiedIntervalComponent>();
-          for (ObservationDefinitionQualifiedIntervalComponent i : qualifiedInterval)
-            dst.qualifiedInterval.add(i.copy());
+        if (qualifiedValue != null) {
+          dst.qualifiedValue = new ArrayList<ObservationDefinitionQualifiedValueComponent>();
+          for (ObservationDefinitionQualifiedValueComponent i : qualifiedValue)
+            dst.qualifiedValue.add(i.copy());
         };
       }
 
@@ -1706,7 +1990,7 @@ public class ObservationDefinition extends DomainResource {
           return false;
         ObservationDefinitionComponentComponent o = (ObservationDefinitionComponentComponent) other_;
         return compareDeep(code, o.code, true) && compareDeep(permittedDataType, o.permittedDataType, true)
-           && compareDeep(quantitativeDetails, o.quantitativeDetails, true) && compareDeep(qualifiedInterval, o.qualifiedInterval, true)
+           && compareDeep(quantitativeDetails, o.quantitativeDetails, true) && compareDeep(qualifiedValue, o.qualifiedValue, true)
           ;
       }
 
@@ -1722,7 +2006,7 @@ public class ObservationDefinition extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, permittedDataType, quantitativeDetails
-          , qualifiedInterval);
+          , qualifiedValue);
       }
 
   public String fhirType() {
@@ -1754,30 +2038,23 @@ public class ObservationDefinition extends DomainResource {
     protected StringType version;
 
     /**
+     * A natural language name identifying the ObservationDefinition. This name should be usable as an identifier for the module by machine processing applications such as code generation.
+     */
+    @Child(name = "name", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name for this ObservationDefinition (computer friendly)", formalDefinition="A natural language name identifying the ObservationDefinition. This name should be usable as an identifier for the module by machine processing applications such as code generation." )
+    protected StringType name;
+
+    /**
      * A short, descriptive, user-friendly title for the ObservationDefinition.
      */
-    @Child(name = "title", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name for this ObservationDefinition (Human friendly)", formalDefinition="A short, descriptive, user-friendly title for the ObservationDefinition." )
+    @Child(name = "title", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name for this ObservationDefinition (human friendly)", formalDefinition="A short, descriptive, user-friendly title for the ObservationDefinition." )
     protected StringType title;
-
-    /**
-     * The canonical URL pointing to another FHIR-defined ObservationDefinition that is adhered to in whole or in part by this definition.
-     */
-    @Child(name = "derivedFromCanonical", type = {CanonicalType.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Based on FHIR definition of another observation", formalDefinition="The canonical URL pointing to another FHIR-defined ObservationDefinition that is adhered to in whole or in part by this definition." )
-    protected List<CanonicalType> derivedFromCanonical;
-
-    /**
-     * The URL pointing to an externally-defined observation definition, guideline or other definition that is adhered to in whole or in part by this definition.
-     */
-    @Child(name = "derivedFromUri", type = {UriType.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Based on external definition", formalDefinition="The URL pointing to an externally-defined observation definition, guideline or other definition that is adhered to in whole or in part by this definition." )
-    protected List<UriType> derivedFromUri;
 
     /**
      * The current state of the ObservationDefinition.
      */
-    @Child(name = "status", type = {CodeType.class}, order=6, min=1, max=1, modifier=true, summary=true)
+    @Child(name = "status", type = {CodeType.class}, order=5, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The current state of the ObservationDefinition." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
     protected Enumeration<PublicationStatus> status;
@@ -1785,56 +2062,49 @@ public class ObservationDefinition extends DomainResource {
     /**
      * A flag to indicate that this ObservationDefinition is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.
      */
-    @Child(name = "experimental", type = {BooleanType.class}, order=7, min=0, max=1, modifier=true, summary=true)
+    @Child(name = "experimental", type = {BooleanType.class}, order=6, min=0, max=1, modifier=true, summary=true)
     @Description(shortDefinition="If for testing purposes, not real usage", formalDefinition="A flag to indicate that this ObservationDefinition is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage." )
     protected BooleanType experimental;
 
     /**
-     * A code or group definition that describes the intended subject of Observation instances conforming to this ObservationDefinition.
+     * The date (and optionally time) when the ObservationDefinition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ObservationDefinition changes.
      */
-    @Child(name = "subject", type = {CodeableConcept.class, Group.class}, order=8, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Type of subject for the defined observation", formalDefinition="A code or group definition that describes the intended subject of Observation instances conforming to this ObservationDefinition." )
-    protected DataType subject;
-
-    /**
-     * For draft definitions, indicates the date of initial creation. For active definitions, represents the date of activation. For withdrawn definitions, indicates the date of withdrawal.
-     */
-    @Child(name = "date", type = {DateTimeType.class}, order=9, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Date status first applied", formalDefinition="For draft definitions, indicates the date of initial creation. For active definitions, represents the date of activation. For withdrawn definitions, indicates the date of withdrawal." )
+    @Child(name = "date", type = {DateTimeType.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Date last changed", formalDefinition="The date (and optionally time) when the ObservationDefinition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ObservationDefinition changes." )
     protected DateTimeType date;
 
     /**
      * Helps establish the "authority/credibility" of the ObservationDefinition. May also allow for contact.
      */
-    @Child(name = "publisher", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=10, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "publisher", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The name of the individual or organization that published the ObservationDefinition", formalDefinition="Helps establish the \"authority/credibility\" of the ObservationDefinition. May also allow for contact." )
     protected Reference publisher;
 
     /**
      * Contact details to assist a user in finding and communicating with the publisher.
      */
-    @Child(name = "contact", type = {ContactDetail.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "contact", type = {ContactDetail.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
     protected List<ContactDetail> contact;
 
     /**
      * A free text natural language description of the ObservationDefinition from the consumer's perspective.
      */
-    @Child(name = "description", type = {MarkdownType.class}, order=12, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "description", type = {MarkdownType.class}, order=10, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Natural language description of the ObservationDefinition", formalDefinition="A free text natural language description of the ObservationDefinition from the consumer's perspective." )
     protected MarkdownType description;
 
     /**
-     * The content was developed with a focus and intent of supporting the contexts that are listed. These terms may be used to assist with indexing and searching of observation definitions.
+     * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate ObservationDefinition instances.
      */
-    @Child(name = "useContext", type = {UsageContext.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Content intends to support these contexts", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These terms may be used to assist with indexing and searching of observation definitions." )
+    @Child(name = "useContext", type = {UsageContext.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Content intends to support these contexts", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate ObservationDefinition instances." )
     protected List<UsageContext> useContext;
 
     /**
      * A jurisdiction in which the ObservationDefinition is intended to be used.
      */
-    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Intended jurisdiction for this ObservationDefinition (if applicable)", formalDefinition="A jurisdiction in which the ObservationDefinition is intended to be used." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/jurisdiction")
     protected List<CodeableConcept> jurisdiction;
@@ -1842,49 +2112,70 @@ public class ObservationDefinition extends DomainResource {
     /**
      * Explains why this ObservationDefinition is needed and why it has been designed as it has.
      */
-    @Child(name = "purpose", type = {MarkdownType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "purpose", type = {MarkdownType.class}, order=13, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Why this ObservationDefinition is defined", formalDefinition="Explains why this ObservationDefinition is needed and why it has been designed as it has." )
     protected MarkdownType purpose;
 
     /**
      * Copyright statement relating to the ObservationDefinition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the ObservationDefinition.
      */
-    @Child(name = "copyright", type = {MarkdownType.class}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "copyright", type = {MarkdownType.class}, order=14, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Use and/or publishing restrictions", formalDefinition="Copyright statement relating to the ObservationDefinition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the ObservationDefinition." )
     protected MarkdownType copyright;
 
     /**
      * The date on which the asset content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    @Child(name = "approvalDate", type = {DateType.class}, order=17, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "approvalDate", type = {DateType.class}, order=15, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When ObservationDefinition was approved by publisher", formalDefinition="The date on which the asset content was approved by the publisher. Approval happens once when the content is officially approved for usage." )
     protected DateType approvalDate;
 
     /**
      * The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date.
      */
-    @Child(name = "lastReviewDate", type = {DateType.class}, order=18, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "lastReviewDate", type = {DateType.class}, order=16, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Date on which the asset content was last reviewed", formalDefinition="The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date." )
     protected DateType lastReviewDate;
 
     /**
      * The period during which the ObservationDefinition content was or is planned to be effective.
      */
-    @Child(name = "effectivePeriod", type = {Period.class}, order=19, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "effectivePeriod", type = {Period.class}, order=17, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The effective date range for the ObservationDefinition", formalDefinition="The period during which the ObservationDefinition content was or is planned to be effective." )
     protected Period effectivePeriod;
 
     /**
+     * The canonical URL pointing to another FHIR-defined ObservationDefinition that is adhered to in whole or in part by this definition.
+     */
+    @Child(name = "derivedFromCanonical", type = {CanonicalType.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Based on FHIR definition of another observation", formalDefinition="The canonical URL pointing to another FHIR-defined ObservationDefinition that is adhered to in whole or in part by this definition." )
+    protected List<CanonicalType> derivedFromCanonical;
+
+    /**
+     * The URL pointing to an externally-defined observation definition, guideline or other definition that is adhered to in whole or in part by this definition.
+     */
+    @Child(name = "derivedFromUri", type = {UriType.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Based on external definition", formalDefinition="The URL pointing to an externally-defined observation definition, guideline or other definition that is adhered to in whole or in part by this definition." )
+    protected List<UriType> derivedFromUri;
+
+    /**
+     * A code that describes the intended kind of subject of Observation instances conforming to this ObservationDefinition.
+     */
+    @Child(name = "subject", type = {CodeableConcept.class}, order=20, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Type of subject for the defined observation", formalDefinition="A code that describes the intended kind of subject of Observation instances conforming to this ObservationDefinition." )
+    protected CodeableConcept subject;
+
+    /**
      * The type of individual/organization/device that is expected to act upon instances of this definition.
      */
-    @Child(name = "performerType", type = {CodeableConcept.class}, order=20, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "performerType", type = {CodeableConcept.class}, order=21, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Desired kind of performer for such kind of observation", formalDefinition="The type of individual/organization/device that is expected to act upon instances of this definition." )
     protected CodeableConcept performerType;
 
     /**
      * A code that classifies the general type of observation.
      */
-    @Child(name = "category", type = {CodeableConcept.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "category", type = {CodeableConcept.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="General type of observation", formalDefinition="A code that classifies the general type of observation." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/observation-category")
     protected List<CodeableConcept> category;
@@ -1892,7 +2183,7 @@ public class ObservationDefinition extends DomainResource {
     /**
      * Describes what will be observed. Sometimes this is called the observation "name".
      */
-    @Child(name = "code", type = {CodeableConcept.class}, order=22, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "code", type = {CodeableConcept.class}, order=23, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Type of observation", formalDefinition="Describes what will be observed. Sometimes this is called the observation \"name\"." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/observation-codes")
     protected CodeableConcept code;
@@ -1900,7 +2191,7 @@ public class ObservationDefinition extends DomainResource {
     /**
      * The data types allowed for the value element of the instance observations conforming to this ObservationDefinition.
      */
-    @Child(name = "permittedDataType", type = {CodeType.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "permittedDataType", type = {CodeType.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Quantity | CodeableConcept | string | boolean | integer | Range | Ratio | SampledData | time | dateTime | Period", formalDefinition="The data types allowed for the value element of the instance observations conforming to this ObservationDefinition." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/permitted-data-type")
     protected List<Enumeration<ObservationDataType>> permittedDataType;
@@ -1908,14 +2199,14 @@ public class ObservationDefinition extends DomainResource {
     /**
      * Multiple results allowed for observations conforming to this ObservationDefinition.
      */
-    @Child(name = "multipleResultsAllowed", type = {BooleanType.class}, order=24, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "multipleResultsAllowed", type = {BooleanType.class}, order=25, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Multiple results allowed for conforming observations", formalDefinition="Multiple results allowed for observations conforming to this ObservationDefinition." )
     protected BooleanType multipleResultsAllowed;
 
     /**
      * The site on the subject's body where the  observation is to be made.
      */
-    @Child(name = "bodySite", type = {CodeableConcept.class}, order=25, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "bodySite", type = {CodeableConcept.class}, order=26, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Body part to be observed", formalDefinition="The site on the subject's body where the  observation is to be made." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/body-site")
     protected CodeableConcept bodySite;
@@ -1923,7 +2214,7 @@ public class ObservationDefinition extends DomainResource {
     /**
      * The method or technique used to perform the observation.
      */
-    @Child(name = "method", type = {CodeableConcept.class}, order=26, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "method", type = {CodeableConcept.class}, order=27, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Method used to produce the observation", formalDefinition="The method or technique used to perform the observation." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/observation-methods")
     protected CodeableConcept method;
@@ -1931,81 +2222,53 @@ public class ObservationDefinition extends DomainResource {
     /**
      * The kind of specimen that this type of observation is produced on.
      */
-    @Child(name = "specimen", type = {SpecimenDefinition.class}, order=27, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "specimen", type = {SpecimenDefinition.class}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Kind of specimen used by this type of observation", formalDefinition="The kind of specimen that this type of observation is produced on." )
-    protected Reference specimen;
+    protected List<Reference> specimen;
 
     /**
-     * The measurement device used to produce observations of this type.
+     * The measurement model of device or actual device used to produce observations of this type.
      */
-    @Child(name = "device", type = {Device.class}, order=28, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Measurement device", formalDefinition="The measurement device used to produce observations of this type." )
-    protected Reference device;
+    @Child(name = "device", type = {DeviceDefinition.class, Device.class}, order=29, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Measurement device or model of device", formalDefinition="The measurement model of device or actual device used to produce observations of this type." )
+    protected List<Reference> device;
 
     /**
      * The preferred name to be used when reporting the results of observations conforming to this ObservationDefinition.
      */
-    @Child(name = "preferredReportName", type = {StringType.class}, order=29, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "preferredReportName", type = {StringType.class}, order=30, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The preferred name to be used when reporting the observation results", formalDefinition="The preferred name to be used when reporting the results of observations conforming to this ObservationDefinition." )
     protected StringType preferredReportName;
 
     /**
-     * Characteristics for quantitative results of this observation.
+     * Characteristics for quantitative results of observations conforming to this ObservationDefinition.
      */
-    @Child(name = "quantitativeDetails", type = {}, order=30, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Characteristics of quantitative results", formalDefinition="Characteristics for quantitative results of this observation." )
+    @Child(name = "quantitativeDetails", type = {}, order=31, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Characteristics of quantitative results", formalDefinition="Characteristics for quantitative results of observations conforming to this ObservationDefinition." )
     protected ObservationDefinitionQuantitativeDetailsComponent quantitativeDetails;
 
     /**
-     * Multiple  ranges of results qualified by different contexts for ordinal or continuous observations conforming to this ObservationDefinition.
+     * A set of qualified values associated with a context and a set of conditions -  provides a range for quantitative and ordinal observations and a collection of value sets for qualitative observations.
      */
-    @Child(name = "qualifiedInterval", type = {}, order=31, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Qualified range for continuous and ordinal observation results", formalDefinition="Multiple  ranges of results qualified by different contexts for ordinal or continuous observations conforming to this ObservationDefinition." )
-    protected List<ObservationDefinitionQualifiedIntervalComponent> qualifiedInterval;
-
-    /**
-     * The set of valid coded results for the observations  conforming to this ObservationDefinition.
-     */
-    @Child(name = "validCodedValueSet", type = {ValueSet.class}, order=32, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Value set of valid coded values for the observations conforming to this ObservationDefinition", formalDefinition="The set of valid coded results for the observations  conforming to this ObservationDefinition." )
-    protected Reference validCodedValueSet;
-
-    /**
-     * The set of normal coded results for the observations conforming to this ObservationDefinition.
-     */
-    @Child(name = "normalCodedValueSet", type = {ValueSet.class}, order=33, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Value set of normal coded values for the observations conforming to this ObservationDefinition", formalDefinition="The set of normal coded results for the observations conforming to this ObservationDefinition." )
-    protected Reference normalCodedValueSet;
-
-    /**
-     * The set of abnormal coded results for the observation conforming to this ObservationDefinition.
-     */
-    @Child(name = "abnormalCodedValueSet", type = {ValueSet.class}, order=34, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Value set of abnormal coded values for the observations conforming to this ObservationDefinition", formalDefinition="The set of abnormal coded results for the observation conforming to this ObservationDefinition." )
-    protected Reference abnormalCodedValueSet;
-
-    /**
-     * The set of critical coded results for the observation conforming to this ObservationDefinition.
-     */
-    @Child(name = "criticalCodedValueSet", type = {ValueSet.class}, order=35, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Value set of critical coded values for the observations conforming to this ObservationDefinition", formalDefinition="The set of critical coded results for the observation conforming to this ObservationDefinition." )
-    protected Reference criticalCodedValueSet;
+    @Child(name = "qualifiedValue", type = {}, order=32, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Set of qualified values for observation results", formalDefinition="A set of qualified values associated with a context and a set of conditions -  provides a range for quantitative and ordinal observations and a collection of value sets for qualitative observations." )
+    protected List<ObservationDefinitionQualifiedValueComponent> qualifiedValue;
 
     /**
      * This ObservationDefinition defines a group  observation (e.g. a battery, a panel of tests, a set of vital sign measurements) that includes the target as a member of the group.
      */
-    @Child(name = "hasMember", type = {ObservationDefinition.class, Questionnaire.class}, order=36, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "hasMember", type = {ObservationDefinition.class, Questionnaire.class}, order=33, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Definitions of related resources belonging to this kind of observation group", formalDefinition="This ObservationDefinition defines a group  observation (e.g. a battery, a panel of tests, a set of vital sign measurements) that includes the target as a member of the group." )
     protected List<Reference> hasMember;
 
     /**
      * Some observations have multiple component observations, expressed as separate code value pairs.
      */
-    @Child(name = "component", type = {}, order=37, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "component", type = {}, order=34, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Component results", formalDefinition="Some observations have multiple component observations, expressed as separate code value pairs." )
     protected List<ObservationDefinitionComponentComponent> component;
 
-    private static final long serialVersionUID = 469528550L;
+    private static final long serialVersionUID = 1353043135L;
 
   /**
    * Constructor
@@ -2146,6 +2409,55 @@ public class ObservationDefinition extends DomainResource {
     }
 
     /**
+     * @return {@link #name} (A natural language name identifying the ObservationDefinition. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     */
+    public StringType getNameElement() { 
+      if (this.name == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create ObservationDefinition.name");
+        else if (Configuration.doAutoCreate())
+          this.name = new StringType(); // bb
+      return this.name;
+    }
+
+    public boolean hasNameElement() { 
+      return this.name != null && !this.name.isEmpty();
+    }
+
+    public boolean hasName() { 
+      return this.name != null && !this.name.isEmpty();
+    }
+
+    /**
+     * @param value {@link #name} (A natural language name identifying the ObservationDefinition. This name should be usable as an identifier for the module by machine processing applications such as code generation.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     */
+    public ObservationDefinition setNameElement(StringType value) { 
+      this.name = value;
+      return this;
+    }
+
+    /**
+     * @return A natural language name identifying the ObservationDefinition. This name should be usable as an identifier for the module by machine processing applications such as code generation.
+     */
+    public String getName() { 
+      return this.name == null ? null : this.name.getValue();
+    }
+
+    /**
+     * @param value A natural language name identifying the ObservationDefinition. This name should be usable as an identifier for the module by machine processing applications such as code generation.
+     */
+    public ObservationDefinition setName(String value) { 
+      if (Utilities.noString(value))
+        this.name = null;
+      else {
+        if (this.name == null)
+          this.name = new StringType();
+        this.name.setValue(value);
+      }
+      return this;
+    }
+
+    /**
      * @return {@link #title} (A short, descriptive, user-friendly title for the ObservationDefinition.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
      */
     public StringType getTitleElement() { 
@@ -2192,128 +2504,6 @@ public class ObservationDefinition extends DomainResource {
         this.title.setValue(value);
       }
       return this;
-    }
-
-    /**
-     * @return {@link #derivedFromCanonical} (The canonical URL pointing to another FHIR-defined ObservationDefinition that is adhered to in whole or in part by this definition.)
-     */
-    public List<CanonicalType> getDerivedFromCanonical() { 
-      if (this.derivedFromCanonical == null)
-        this.derivedFromCanonical = new ArrayList<CanonicalType>();
-      return this.derivedFromCanonical;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public ObservationDefinition setDerivedFromCanonical(List<CanonicalType> theDerivedFromCanonical) { 
-      this.derivedFromCanonical = theDerivedFromCanonical;
-      return this;
-    }
-
-    public boolean hasDerivedFromCanonical() { 
-      if (this.derivedFromCanonical == null)
-        return false;
-      for (CanonicalType item : this.derivedFromCanonical)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    /**
-     * @return {@link #derivedFromCanonical} (The canonical URL pointing to another FHIR-defined ObservationDefinition that is adhered to in whole or in part by this definition.)
-     */
-    public CanonicalType addDerivedFromCanonicalElement() {//2 
-      CanonicalType t = new CanonicalType();
-      if (this.derivedFromCanonical == null)
-        this.derivedFromCanonical = new ArrayList<CanonicalType>();
-      this.derivedFromCanonical.add(t);
-      return t;
-    }
-
-    /**
-     * @param value {@link #derivedFromCanonical} (The canonical URL pointing to another FHIR-defined ObservationDefinition that is adhered to in whole or in part by this definition.)
-     */
-    public ObservationDefinition addDerivedFromCanonical(String value) { //1
-      CanonicalType t = new CanonicalType();
-      t.setValue(value);
-      if (this.derivedFromCanonical == null)
-        this.derivedFromCanonical = new ArrayList<CanonicalType>();
-      this.derivedFromCanonical.add(t);
-      return this;
-    }
-
-    /**
-     * @param value {@link #derivedFromCanonical} (The canonical URL pointing to another FHIR-defined ObservationDefinition that is adhered to in whole or in part by this definition.)
-     */
-    public boolean hasDerivedFromCanonical(String value) { 
-      if (this.derivedFromCanonical == null)
-        return false;
-      for (CanonicalType v : this.derivedFromCanonical)
-        if (v.getValue().equals(value)) // canonical
-          return true;
-      return false;
-    }
-
-    /**
-     * @return {@link #derivedFromUri} (The URL pointing to an externally-defined observation definition, guideline or other definition that is adhered to in whole or in part by this definition.)
-     */
-    public List<UriType> getDerivedFromUri() { 
-      if (this.derivedFromUri == null)
-        this.derivedFromUri = new ArrayList<UriType>();
-      return this.derivedFromUri;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public ObservationDefinition setDerivedFromUri(List<UriType> theDerivedFromUri) { 
-      this.derivedFromUri = theDerivedFromUri;
-      return this;
-    }
-
-    public boolean hasDerivedFromUri() { 
-      if (this.derivedFromUri == null)
-        return false;
-      for (UriType item : this.derivedFromUri)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    /**
-     * @return {@link #derivedFromUri} (The URL pointing to an externally-defined observation definition, guideline or other definition that is adhered to in whole or in part by this definition.)
-     */
-    public UriType addDerivedFromUriElement() {//2 
-      UriType t = new UriType();
-      if (this.derivedFromUri == null)
-        this.derivedFromUri = new ArrayList<UriType>();
-      this.derivedFromUri.add(t);
-      return t;
-    }
-
-    /**
-     * @param value {@link #derivedFromUri} (The URL pointing to an externally-defined observation definition, guideline or other definition that is adhered to in whole or in part by this definition.)
-     */
-    public ObservationDefinition addDerivedFromUri(String value) { //1
-      UriType t = new UriType();
-      t.setValue(value);
-      if (this.derivedFromUri == null)
-        this.derivedFromUri = new ArrayList<UriType>();
-      this.derivedFromUri.add(t);
-      return this;
-    }
-
-    /**
-     * @param value {@link #derivedFromUri} (The URL pointing to an externally-defined observation definition, guideline or other definition that is adhered to in whole or in part by this definition.)
-     */
-    public boolean hasDerivedFromUri(String value) { 
-      if (this.derivedFromUri == null)
-        return false;
-      for (UriType v : this.derivedFromUri)
-        if (v.getValue().equals(value)) // uri
-          return true;
-      return false;
     }
 
     /**
@@ -2407,58 +2597,7 @@ public class ObservationDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} (A code or group definition that describes the intended subject of Observation instances conforming to this ObservationDefinition.)
-     */
-    public DataType getSubject() { 
-      return this.subject;
-    }
-
-    /**
-     * @return {@link #subject} (A code or group definition that describes the intended subject of Observation instances conforming to this ObservationDefinition.)
-     */
-    public CodeableConcept getSubjectCodeableConcept() throws FHIRException { 
-      if (this.subject == null)
-        this.subject = new CodeableConcept();
-      if (!(this.subject instanceof CodeableConcept))
-        throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.subject.getClass().getName()+" was encountered");
-      return (CodeableConcept) this.subject;
-    }
-
-    public boolean hasSubjectCodeableConcept() { 
-      return this != null && this.subject instanceof CodeableConcept;
-    }
-
-    /**
-     * @return {@link #subject} (A code or group definition that describes the intended subject of Observation instances conforming to this ObservationDefinition.)
-     */
-    public Reference getSubjectReference() throws FHIRException { 
-      if (this.subject == null)
-        this.subject = new Reference();
-      if (!(this.subject instanceof Reference))
-        throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.subject.getClass().getName()+" was encountered");
-      return (Reference) this.subject;
-    }
-
-    public boolean hasSubjectReference() { 
-      return this != null && this.subject instanceof Reference;
-    }
-
-    public boolean hasSubject() { 
-      return this.subject != null && !this.subject.isEmpty();
-    }
-
-    /**
-     * @param value {@link #subject} (A code or group definition that describes the intended subject of Observation instances conforming to this ObservationDefinition.)
-     */
-    public ObservationDefinition setSubject(DataType value) { 
-      if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
-        throw new Error("Not the right type for ObservationDefinition.subject[x]: "+value.fhirType());
-      this.subject = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #date} (For draft definitions, indicates the date of initial creation. For active definitions, represents the date of activation. For withdrawn definitions, indicates the date of withdrawal.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
+     * @return {@link #date} (The date (and optionally time) when the ObservationDefinition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ObservationDefinition changes.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
      */
     public DateTimeType getDateElement() { 
       if (this.date == null)
@@ -2478,7 +2617,7 @@ public class ObservationDefinition extends DomainResource {
     }
 
     /**
-     * @param value {@link #date} (For draft definitions, indicates the date of initial creation. For active definitions, represents the date of activation. For withdrawn definitions, indicates the date of withdrawal.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
+     * @param value {@link #date} (The date (and optionally time) when the ObservationDefinition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ObservationDefinition changes.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
      */
     public ObservationDefinition setDateElement(DateTimeType value) { 
       this.date = value;
@@ -2486,14 +2625,14 @@ public class ObservationDefinition extends DomainResource {
     }
 
     /**
-     * @return For draft definitions, indicates the date of initial creation. For active definitions, represents the date of activation. For withdrawn definitions, indicates the date of withdrawal.
+     * @return The date (and optionally time) when the ObservationDefinition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ObservationDefinition changes.
      */
     public Date getDate() { 
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
-     * @param value For draft definitions, indicates the date of initial creation. For active definitions, represents the date of activation. For withdrawn definitions, indicates the date of withdrawal.
+     * @param value The date (and optionally time) when the ObservationDefinition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ObservationDefinition changes.
      */
     public ObservationDefinition setDate(Date value) { 
       if (value == null)
@@ -2633,7 +2772,7 @@ public class ObservationDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #useContext} (The content was developed with a focus and intent of supporting the contexts that are listed. These terms may be used to assist with indexing and searching of observation definitions.)
+     * @return {@link #useContext} (The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate ObservationDefinition instances.)
      */
     public List<UsageContext> getUseContext() { 
       if (this.useContext == null)
@@ -2959,6 +3098,152 @@ public class ObservationDefinition extends DomainResource {
     }
 
     /**
+     * @return {@link #derivedFromCanonical} (The canonical URL pointing to another FHIR-defined ObservationDefinition that is adhered to in whole or in part by this definition.)
+     */
+    public List<CanonicalType> getDerivedFromCanonical() { 
+      if (this.derivedFromCanonical == null)
+        this.derivedFromCanonical = new ArrayList<CanonicalType>();
+      return this.derivedFromCanonical;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ObservationDefinition setDerivedFromCanonical(List<CanonicalType> theDerivedFromCanonical) { 
+      this.derivedFromCanonical = theDerivedFromCanonical;
+      return this;
+    }
+
+    public boolean hasDerivedFromCanonical() { 
+      if (this.derivedFromCanonical == null)
+        return false;
+      for (CanonicalType item : this.derivedFromCanonical)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    /**
+     * @return {@link #derivedFromCanonical} (The canonical URL pointing to another FHIR-defined ObservationDefinition that is adhered to in whole or in part by this definition.)
+     */
+    public CanonicalType addDerivedFromCanonicalElement() {//2 
+      CanonicalType t = new CanonicalType();
+      if (this.derivedFromCanonical == null)
+        this.derivedFromCanonical = new ArrayList<CanonicalType>();
+      this.derivedFromCanonical.add(t);
+      return t;
+    }
+
+    /**
+     * @param value {@link #derivedFromCanonical} (The canonical URL pointing to another FHIR-defined ObservationDefinition that is adhered to in whole or in part by this definition.)
+     */
+    public ObservationDefinition addDerivedFromCanonical(String value) { //1
+      CanonicalType t = new CanonicalType();
+      t.setValue(value);
+      if (this.derivedFromCanonical == null)
+        this.derivedFromCanonical = new ArrayList<CanonicalType>();
+      this.derivedFromCanonical.add(t);
+      return this;
+    }
+
+    /**
+     * @param value {@link #derivedFromCanonical} (The canonical URL pointing to another FHIR-defined ObservationDefinition that is adhered to in whole or in part by this definition.)
+     */
+    public boolean hasDerivedFromCanonical(String value) { 
+      if (this.derivedFromCanonical == null)
+        return false;
+      for (CanonicalType v : this.derivedFromCanonical)
+        if (v.getValue().equals(value)) // canonical
+          return true;
+      return false;
+    }
+
+    /**
+     * @return {@link #derivedFromUri} (The URL pointing to an externally-defined observation definition, guideline or other definition that is adhered to in whole or in part by this definition.)
+     */
+    public List<UriType> getDerivedFromUri() { 
+      if (this.derivedFromUri == null)
+        this.derivedFromUri = new ArrayList<UriType>();
+      return this.derivedFromUri;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ObservationDefinition setDerivedFromUri(List<UriType> theDerivedFromUri) { 
+      this.derivedFromUri = theDerivedFromUri;
+      return this;
+    }
+
+    public boolean hasDerivedFromUri() { 
+      if (this.derivedFromUri == null)
+        return false;
+      for (UriType item : this.derivedFromUri)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    /**
+     * @return {@link #derivedFromUri} (The URL pointing to an externally-defined observation definition, guideline or other definition that is adhered to in whole or in part by this definition.)
+     */
+    public UriType addDerivedFromUriElement() {//2 
+      UriType t = new UriType();
+      if (this.derivedFromUri == null)
+        this.derivedFromUri = new ArrayList<UriType>();
+      this.derivedFromUri.add(t);
+      return t;
+    }
+
+    /**
+     * @param value {@link #derivedFromUri} (The URL pointing to an externally-defined observation definition, guideline or other definition that is adhered to in whole or in part by this definition.)
+     */
+    public ObservationDefinition addDerivedFromUri(String value) { //1
+      UriType t = new UriType();
+      t.setValue(value);
+      if (this.derivedFromUri == null)
+        this.derivedFromUri = new ArrayList<UriType>();
+      this.derivedFromUri.add(t);
+      return this;
+    }
+
+    /**
+     * @param value {@link #derivedFromUri} (The URL pointing to an externally-defined observation definition, guideline or other definition that is adhered to in whole or in part by this definition.)
+     */
+    public boolean hasDerivedFromUri(String value) { 
+      if (this.derivedFromUri == null)
+        return false;
+      for (UriType v : this.derivedFromUri)
+        if (v.getValue().equals(value)) // uri
+          return true;
+      return false;
+    }
+
+    /**
+     * @return {@link #subject} (A code that describes the intended kind of subject of Observation instances conforming to this ObservationDefinition.)
+     */
+    public CodeableConcept getSubject() { 
+      if (this.subject == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create ObservationDefinition.subject");
+        else if (Configuration.doAutoCreate())
+          this.subject = new CodeableConcept(); // cc
+      return this.subject;
+    }
+
+    public boolean hasSubject() { 
+      return this.subject != null && !this.subject.isEmpty();
+    }
+
+    /**
+     * @param value {@link #subject} (A code that describes the intended kind of subject of Observation instances conforming to this ObservationDefinition.)
+     */
+    public ObservationDefinition setSubject(CodeableConcept value) { 
+      this.subject = value;
+      return this;
+    }
+
+    /**
      * @return {@link #performerType} (The type of individual/organization/device that is expected to act upon instances of this definition.)
      */
     public CodeableConcept getPerformerType() { 
@@ -3216,49 +3501,107 @@ public class ObservationDefinition extends DomainResource {
     /**
      * @return {@link #specimen} (The kind of specimen that this type of observation is produced on.)
      */
-    public Reference getSpecimen() { 
+    public List<Reference> getSpecimen() { 
       if (this.specimen == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ObservationDefinition.specimen");
-        else if (Configuration.doAutoCreate())
-          this.specimen = new Reference(); // cc
+        this.specimen = new ArrayList<Reference>();
       return this.specimen;
     }
 
-    public boolean hasSpecimen() { 
-      return this.specimen != null && !this.specimen.isEmpty();
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ObservationDefinition setSpecimen(List<Reference> theSpecimen) { 
+      this.specimen = theSpecimen;
+      return this;
     }
 
-    /**
-     * @param value {@link #specimen} (The kind of specimen that this type of observation is produced on.)
-     */
-    public ObservationDefinition setSpecimen(Reference value) { 
-      this.specimen = value;
+    public boolean hasSpecimen() { 
+      if (this.specimen == null)
+        return false;
+      for (Reference item : this.specimen)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Reference addSpecimen() { //3
+      Reference t = new Reference();
+      if (this.specimen == null)
+        this.specimen = new ArrayList<Reference>();
+      this.specimen.add(t);
+      return t;
+    }
+
+    public ObservationDefinition addSpecimen(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.specimen == null)
+        this.specimen = new ArrayList<Reference>();
+      this.specimen.add(t);
       return this;
     }
 
     /**
-     * @return {@link #device} (The measurement device used to produce observations of this type.)
+     * @return The first repetition of repeating field {@link #specimen}, creating it if it does not already exist {3}
      */
-    public Reference getDevice() { 
+    public Reference getSpecimenFirstRep() { 
+      if (getSpecimen().isEmpty()) {
+        addSpecimen();
+      }
+      return getSpecimen().get(0);
+    }
+
+    /**
+     * @return {@link #device} (The measurement model of device or actual device used to produce observations of this type.)
+     */
+    public List<Reference> getDevice() { 
       if (this.device == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ObservationDefinition.device");
-        else if (Configuration.doAutoCreate())
-          this.device = new Reference(); // cc
+        this.device = new ArrayList<Reference>();
       return this.device;
     }
 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ObservationDefinition setDevice(List<Reference> theDevice) { 
+      this.device = theDevice;
+      return this;
+    }
+
     public boolean hasDevice() { 
-      return this.device != null && !this.device.isEmpty();
+      if (this.device == null)
+        return false;
+      for (Reference item : this.device)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Reference addDevice() { //3
+      Reference t = new Reference();
+      if (this.device == null)
+        this.device = new ArrayList<Reference>();
+      this.device.add(t);
+      return t;
+    }
+
+    public ObservationDefinition addDevice(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.device == null)
+        this.device = new ArrayList<Reference>();
+      this.device.add(t);
+      return this;
     }
 
     /**
-     * @param value {@link #device} (The measurement device used to produce observations of this type.)
+     * @return The first repetition of repeating field {@link #device}, creating it if it does not already exist {3}
      */
-    public ObservationDefinition setDevice(Reference value) { 
-      this.device = value;
-      return this;
+    public Reference getDeviceFirstRep() { 
+      if (getDevice().isEmpty()) {
+        addDevice();
+      }
+      return getDevice().get(0);
     }
 
     /**
@@ -3311,7 +3654,7 @@ public class ObservationDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #quantitativeDetails} (Characteristics for quantitative results of this observation.)
+     * @return {@link #quantitativeDetails} (Characteristics for quantitative results of observations conforming to this ObservationDefinition.)
      */
     public ObservationDefinitionQuantitativeDetailsComponent getQuantitativeDetails() { 
       if (this.quantitativeDetails == null)
@@ -3327,7 +3670,7 @@ public class ObservationDefinition extends DomainResource {
     }
 
     /**
-     * @param value {@link #quantitativeDetails} (Characteristics for quantitative results of this observation.)
+     * @param value {@link #quantitativeDetails} (Characteristics for quantitative results of observations conforming to this ObservationDefinition.)
      */
     public ObservationDefinition setQuantitativeDetails(ObservationDefinitionQuantitativeDetailsComponent value) { 
       this.quantitativeDetails = value;
@@ -3335,152 +3678,56 @@ public class ObservationDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #qualifiedInterval} (Multiple  ranges of results qualified by different contexts for ordinal or continuous observations conforming to this ObservationDefinition.)
+     * @return {@link #qualifiedValue} (A set of qualified values associated with a context and a set of conditions -  provides a range for quantitative and ordinal observations and a collection of value sets for qualitative observations.)
      */
-    public List<ObservationDefinitionQualifiedIntervalComponent> getQualifiedInterval() { 
-      if (this.qualifiedInterval == null)
-        this.qualifiedInterval = new ArrayList<ObservationDefinitionQualifiedIntervalComponent>();
-      return this.qualifiedInterval;
+    public List<ObservationDefinitionQualifiedValueComponent> getQualifiedValue() { 
+      if (this.qualifiedValue == null)
+        this.qualifiedValue = new ArrayList<ObservationDefinitionQualifiedValueComponent>();
+      return this.qualifiedValue;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public ObservationDefinition setQualifiedInterval(List<ObservationDefinitionQualifiedIntervalComponent> theQualifiedInterval) { 
-      this.qualifiedInterval = theQualifiedInterval;
+    public ObservationDefinition setQualifiedValue(List<ObservationDefinitionQualifiedValueComponent> theQualifiedValue) { 
+      this.qualifiedValue = theQualifiedValue;
       return this;
     }
 
-    public boolean hasQualifiedInterval() { 
-      if (this.qualifiedInterval == null)
+    public boolean hasQualifiedValue() { 
+      if (this.qualifiedValue == null)
         return false;
-      for (ObservationDefinitionQualifiedIntervalComponent item : this.qualifiedInterval)
+      for (ObservationDefinitionQualifiedValueComponent item : this.qualifiedValue)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public ObservationDefinitionQualifiedIntervalComponent addQualifiedInterval() { //3
-      ObservationDefinitionQualifiedIntervalComponent t = new ObservationDefinitionQualifiedIntervalComponent();
-      if (this.qualifiedInterval == null)
-        this.qualifiedInterval = new ArrayList<ObservationDefinitionQualifiedIntervalComponent>();
-      this.qualifiedInterval.add(t);
+    public ObservationDefinitionQualifiedValueComponent addQualifiedValue() { //3
+      ObservationDefinitionQualifiedValueComponent t = new ObservationDefinitionQualifiedValueComponent();
+      if (this.qualifiedValue == null)
+        this.qualifiedValue = new ArrayList<ObservationDefinitionQualifiedValueComponent>();
+      this.qualifiedValue.add(t);
       return t;
     }
 
-    public ObservationDefinition addQualifiedInterval(ObservationDefinitionQualifiedIntervalComponent t) { //3
+    public ObservationDefinition addQualifiedValue(ObservationDefinitionQualifiedValueComponent t) { //3
       if (t == null)
         return this;
-      if (this.qualifiedInterval == null)
-        this.qualifiedInterval = new ArrayList<ObservationDefinitionQualifiedIntervalComponent>();
-      this.qualifiedInterval.add(t);
+      if (this.qualifiedValue == null)
+        this.qualifiedValue = new ArrayList<ObservationDefinitionQualifiedValueComponent>();
+      this.qualifiedValue.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #qualifiedInterval}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #qualifiedValue}, creating it if it does not already exist {3}
      */
-    public ObservationDefinitionQualifiedIntervalComponent getQualifiedIntervalFirstRep() { 
-      if (getQualifiedInterval().isEmpty()) {
-        addQualifiedInterval();
+    public ObservationDefinitionQualifiedValueComponent getQualifiedValueFirstRep() { 
+      if (getQualifiedValue().isEmpty()) {
+        addQualifiedValue();
       }
-      return getQualifiedInterval().get(0);
-    }
-
-    /**
-     * @return {@link #validCodedValueSet} (The set of valid coded results for the observations  conforming to this ObservationDefinition.)
-     */
-    public Reference getValidCodedValueSet() { 
-      if (this.validCodedValueSet == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ObservationDefinition.validCodedValueSet");
-        else if (Configuration.doAutoCreate())
-          this.validCodedValueSet = new Reference(); // cc
-      return this.validCodedValueSet;
-    }
-
-    public boolean hasValidCodedValueSet() { 
-      return this.validCodedValueSet != null && !this.validCodedValueSet.isEmpty();
-    }
-
-    /**
-     * @param value {@link #validCodedValueSet} (The set of valid coded results for the observations  conforming to this ObservationDefinition.)
-     */
-    public ObservationDefinition setValidCodedValueSet(Reference value) { 
-      this.validCodedValueSet = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #normalCodedValueSet} (The set of normal coded results for the observations conforming to this ObservationDefinition.)
-     */
-    public Reference getNormalCodedValueSet() { 
-      if (this.normalCodedValueSet == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ObservationDefinition.normalCodedValueSet");
-        else if (Configuration.doAutoCreate())
-          this.normalCodedValueSet = new Reference(); // cc
-      return this.normalCodedValueSet;
-    }
-
-    public boolean hasNormalCodedValueSet() { 
-      return this.normalCodedValueSet != null && !this.normalCodedValueSet.isEmpty();
-    }
-
-    /**
-     * @param value {@link #normalCodedValueSet} (The set of normal coded results for the observations conforming to this ObservationDefinition.)
-     */
-    public ObservationDefinition setNormalCodedValueSet(Reference value) { 
-      this.normalCodedValueSet = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #abnormalCodedValueSet} (The set of abnormal coded results for the observation conforming to this ObservationDefinition.)
-     */
-    public Reference getAbnormalCodedValueSet() { 
-      if (this.abnormalCodedValueSet == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ObservationDefinition.abnormalCodedValueSet");
-        else if (Configuration.doAutoCreate())
-          this.abnormalCodedValueSet = new Reference(); // cc
-      return this.abnormalCodedValueSet;
-    }
-
-    public boolean hasAbnormalCodedValueSet() { 
-      return this.abnormalCodedValueSet != null && !this.abnormalCodedValueSet.isEmpty();
-    }
-
-    /**
-     * @param value {@link #abnormalCodedValueSet} (The set of abnormal coded results for the observation conforming to this ObservationDefinition.)
-     */
-    public ObservationDefinition setAbnormalCodedValueSet(Reference value) { 
-      this.abnormalCodedValueSet = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #criticalCodedValueSet} (The set of critical coded results for the observation conforming to this ObservationDefinition.)
-     */
-    public Reference getCriticalCodedValueSet() { 
-      if (this.criticalCodedValueSet == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ObservationDefinition.criticalCodedValueSet");
-        else if (Configuration.doAutoCreate())
-          this.criticalCodedValueSet = new Reference(); // cc
-      return this.criticalCodedValueSet;
-    }
-
-    public boolean hasCriticalCodedValueSet() { 
-      return this.criticalCodedValueSet != null && !this.criticalCodedValueSet.isEmpty();
-    }
-
-    /**
-     * @param value {@link #criticalCodedValueSet} (The set of critical coded results for the observation conforming to this ObservationDefinition.)
-     */
-    public ObservationDefinition setCriticalCodedValueSet(Reference value) { 
-      this.criticalCodedValueSet = value;
-      return this;
+      return getQualifiedValue().get(0);
     }
 
     /**
@@ -3594,23 +3841,24 @@ public class ObservationDefinition extends DomainResource {
         children.add(new Property("url", "uri", "An absolute URL that is used to identify this ObservationDefinition when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this ObservationDefinition is (or will be) published. The URL SHOULD include the major version of the ObservationDefinition. For more information see Technical and Business Versions.", 0, 1, url));
         children.add(new Property("identifier", "Identifier", "Business identifiers assigned to this ObservationDefinition. by the performer and/or other systems. These identifiers remain constant as the resource is updated and propagates from server to server.", 0, 1, identifier));
         children.add(new Property("version", "string", "The identifier that is used to identify this version of the ObservationDefinition when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the ObservationDefinition author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions are orderable.", 0, 1, version));
+        children.add(new Property("name", "string", "A natural language name identifying the ObservationDefinition. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name));
         children.add(new Property("title", "string", "A short, descriptive, user-friendly title for the ObservationDefinition.", 0, 1, title));
-        children.add(new Property("derivedFromCanonical", "canonical(ObservationDefinition)", "The canonical URL pointing to another FHIR-defined ObservationDefinition that is adhered to in whole or in part by this definition.", 0, java.lang.Integer.MAX_VALUE, derivedFromCanonical));
-        children.add(new Property("derivedFromUri", "uri", "The URL pointing to an externally-defined observation definition, guideline or other definition that is adhered to in whole or in part by this definition.", 0, java.lang.Integer.MAX_VALUE, derivedFromUri));
         children.add(new Property("status", "code", "The current state of the ObservationDefinition.", 0, 1, status));
         children.add(new Property("experimental", "boolean", "A flag to indicate that this ObservationDefinition is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.", 0, 1, experimental));
-        children.add(new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of Observation instances conforming to this ObservationDefinition.", 0, 1, subject));
-        children.add(new Property("date", "dateTime", "For draft definitions, indicates the date of initial creation. For active definitions, represents the date of activation. For withdrawn definitions, indicates the date of withdrawal.", 0, 1, date));
+        children.add(new Property("date", "dateTime", "The date (and optionally time) when the ObservationDefinition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ObservationDefinition changes.", 0, 1, date));
         children.add(new Property("publisher", "Reference(Practitioner|PractitionerRole|Organization)", "Helps establish the \"authority/credibility\" of the ObservationDefinition. May also allow for contact.", 0, 1, publisher));
         children.add(new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("description", "markdown", "A free text natural language description of the ObservationDefinition from the consumer's perspective.", 0, 1, description));
-        children.add(new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These terms may be used to assist with indexing and searching of observation definitions.", 0, java.lang.Integer.MAX_VALUE, useContext));
+        children.add(new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate ObservationDefinition instances.", 0, java.lang.Integer.MAX_VALUE, useContext));
         children.add(new Property("jurisdiction", "CodeableConcept", "A jurisdiction in which the ObservationDefinition is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction));
         children.add(new Property("purpose", "markdown", "Explains why this ObservationDefinition is needed and why it has been designed as it has.", 0, 1, purpose));
         children.add(new Property("copyright", "markdown", "Copyright statement relating to the ObservationDefinition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the ObservationDefinition.", 0, 1, copyright));
         children.add(new Property("approvalDate", "date", "The date on which the asset content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate));
         children.add(new Property("lastReviewDate", "date", "The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date.", 0, 1, lastReviewDate));
         children.add(new Property("effectivePeriod", "Period", "The period during which the ObservationDefinition content was or is planned to be effective.", 0, 1, effectivePeriod));
+        children.add(new Property("derivedFromCanonical", "canonical(ObservationDefinition)", "The canonical URL pointing to another FHIR-defined ObservationDefinition that is adhered to in whole or in part by this definition.", 0, java.lang.Integer.MAX_VALUE, derivedFromCanonical));
+        children.add(new Property("derivedFromUri", "uri", "The URL pointing to an externally-defined observation definition, guideline or other definition that is adhered to in whole or in part by this definition.", 0, java.lang.Integer.MAX_VALUE, derivedFromUri));
+        children.add(new Property("subject", "CodeableConcept", "A code that describes the intended kind of subject of Observation instances conforming to this ObservationDefinition.", 0, 1, subject));
         children.add(new Property("performerType", "CodeableConcept", "The type of individual/organization/device that is expected to act upon instances of this definition.", 0, 1, performerType));
         children.add(new Property("category", "CodeableConcept", "A code that classifies the general type of observation.", 0, java.lang.Integer.MAX_VALUE, category));
         children.add(new Property("code", "CodeableConcept", "Describes what will be observed. Sometimes this is called the observation \"name\".", 0, 1, code));
@@ -3618,15 +3866,11 @@ public class ObservationDefinition extends DomainResource {
         children.add(new Property("multipleResultsAllowed", "boolean", "Multiple results allowed for observations conforming to this ObservationDefinition.", 0, 1, multipleResultsAllowed));
         children.add(new Property("bodySite", "CodeableConcept", "The site on the subject's body where the  observation is to be made.", 0, 1, bodySite));
         children.add(new Property("method", "CodeableConcept", "The method or technique used to perform the observation.", 0, 1, method));
-        children.add(new Property("specimen", "Reference(SpecimenDefinition)", "The kind of specimen that this type of observation is produced on.", 0, 1, specimen));
-        children.add(new Property("device", "Reference(Device)", "The measurement device used to produce observations of this type.", 0, 1, device));
+        children.add(new Property("specimen", "Reference(SpecimenDefinition)", "The kind of specimen that this type of observation is produced on.", 0, java.lang.Integer.MAX_VALUE, specimen));
+        children.add(new Property("device", "Reference(DeviceDefinition|Device)", "The measurement model of device or actual device used to produce observations of this type.", 0, java.lang.Integer.MAX_VALUE, device));
         children.add(new Property("preferredReportName", "string", "The preferred name to be used when reporting the results of observations conforming to this ObservationDefinition.", 0, 1, preferredReportName));
-        children.add(new Property("quantitativeDetails", "", "Characteristics for quantitative results of this observation.", 0, 1, quantitativeDetails));
-        children.add(new Property("qualifiedInterval", "", "Multiple  ranges of results qualified by different contexts for ordinal or continuous observations conforming to this ObservationDefinition.", 0, java.lang.Integer.MAX_VALUE, qualifiedInterval));
-        children.add(new Property("validCodedValueSet", "Reference(ValueSet)", "The set of valid coded results for the observations  conforming to this ObservationDefinition.", 0, 1, validCodedValueSet));
-        children.add(new Property("normalCodedValueSet", "Reference(ValueSet)", "The set of normal coded results for the observations conforming to this ObservationDefinition.", 0, 1, normalCodedValueSet));
-        children.add(new Property("abnormalCodedValueSet", "Reference(ValueSet)", "The set of abnormal coded results for the observation conforming to this ObservationDefinition.", 0, 1, abnormalCodedValueSet));
-        children.add(new Property("criticalCodedValueSet", "Reference(ValueSet)", "The set of critical coded results for the observation conforming to this ObservationDefinition.", 0, 1, criticalCodedValueSet));
+        children.add(new Property("quantitativeDetails", "", "Characteristics for quantitative results of observations conforming to this ObservationDefinition.", 0, 1, quantitativeDetails));
+        children.add(new Property("qualifiedValue", "", "A set of qualified values associated with a context and a set of conditions -  provides a range for quantitative and ordinal observations and a collection of value sets for qualitative observations.", 0, java.lang.Integer.MAX_VALUE, qualifiedValue));
         children.add(new Property("hasMember", "Reference(ObservationDefinition|Questionnaire)", "This ObservationDefinition defines a group  observation (e.g. a battery, a panel of tests, a set of vital sign measurements) that includes the target as a member of the group.", 0, java.lang.Integer.MAX_VALUE, hasMember));
         children.add(new Property("component", "", "Some observations have multiple component observations, expressed as separate code value pairs.", 0, java.lang.Integer.MAX_VALUE, component));
       }
@@ -3637,26 +3881,24 @@ public class ObservationDefinition extends DomainResource {
         case 116079: /*url*/  return new Property("url", "uri", "An absolute URL that is used to identify this ObservationDefinition when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this ObservationDefinition is (or will be) published. The URL SHOULD include the major version of the ObservationDefinition. For more information see Technical and Business Versions.", 0, 1, url);
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifiers assigned to this ObservationDefinition. by the performer and/or other systems. These identifiers remain constant as the resource is updated and propagates from server to server.", 0, 1, identifier);
         case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the ObservationDefinition when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the ObservationDefinition author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions are orderable.", 0, 1, version);
+        case 3373707: /*name*/  return new Property("name", "string", "A natural language name identifying the ObservationDefinition. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name);
         case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive, user-friendly title for the ObservationDefinition.", 0, 1, title);
-        case -978133683: /*derivedFromCanonical*/  return new Property("derivedFromCanonical", "canonical(ObservationDefinition)", "The canonical URL pointing to another FHIR-defined ObservationDefinition that is adhered to in whole or in part by this definition.", 0, java.lang.Integer.MAX_VALUE, derivedFromCanonical);
-        case -1076333435: /*derivedFromUri*/  return new Property("derivedFromUri", "uri", "The URL pointing to an externally-defined observation definition, guideline or other definition that is adhered to in whole or in part by this definition.", 0, java.lang.Integer.MAX_VALUE, derivedFromUri);
         case -892481550: /*status*/  return new Property("status", "code", "The current state of the ObservationDefinition.", 0, 1, status);
         case -404562712: /*experimental*/  return new Property("experimental", "boolean", "A flag to indicate that this ObservationDefinition is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.", 0, 1, experimental);
-        case -573640748: /*subject[x]*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of Observation instances conforming to this ObservationDefinition.", 0, 1, subject);
-        case -1867885268: /*subject*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of Observation instances conforming to this ObservationDefinition.", 0, 1, subject);
-        case -1257122603: /*subjectCodeableConcept*/  return new Property("subject[x]", "CodeableConcept", "A code or group definition that describes the intended subject of Observation instances conforming to this ObservationDefinition.", 0, 1, subject);
-        case 772938623: /*subjectReference*/  return new Property("subject[x]", "Reference(Group)", "A code or group definition that describes the intended subject of Observation instances conforming to this ObservationDefinition.", 0, 1, subject);
-        case 3076014: /*date*/  return new Property("date", "dateTime", "For draft definitions, indicates the date of initial creation. For active definitions, represents the date of activation. For withdrawn definitions, indicates the date of withdrawal.", 0, 1, date);
+        case 3076014: /*date*/  return new Property("date", "dateTime", "The date (and optionally time) when the ObservationDefinition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ObservationDefinition changes.", 0, 1, date);
         case 1447404028: /*publisher*/  return new Property("publisher", "Reference(Practitioner|PractitionerRole|Organization)", "Helps establish the \"authority/credibility\" of the ObservationDefinition. May also allow for contact.", 0, 1, publisher);
         case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact);
         case -1724546052: /*description*/  return new Property("description", "markdown", "A free text natural language description of the ObservationDefinition from the consumer's perspective.", 0, 1, description);
-        case -669707736: /*useContext*/  return new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These terms may be used to assist with indexing and searching of observation definitions.", 0, java.lang.Integer.MAX_VALUE, useContext);
+        case -669707736: /*useContext*/  return new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate ObservationDefinition instances.", 0, java.lang.Integer.MAX_VALUE, useContext);
         case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "CodeableConcept", "A jurisdiction in which the ObservationDefinition is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction);
         case -220463842: /*purpose*/  return new Property("purpose", "markdown", "Explains why this ObservationDefinition is needed and why it has been designed as it has.", 0, 1, purpose);
         case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "Copyright statement relating to the ObservationDefinition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the ObservationDefinition.", 0, 1, copyright);
         case 223539345: /*approvalDate*/  return new Property("approvalDate", "date", "The date on which the asset content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate);
         case -1687512484: /*lastReviewDate*/  return new Property("lastReviewDate", "date", "The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date.", 0, 1, lastReviewDate);
         case -403934648: /*effectivePeriod*/  return new Property("effectivePeriod", "Period", "The period during which the ObservationDefinition content was or is planned to be effective.", 0, 1, effectivePeriod);
+        case -978133683: /*derivedFromCanonical*/  return new Property("derivedFromCanonical", "canonical(ObservationDefinition)", "The canonical URL pointing to another FHIR-defined ObservationDefinition that is adhered to in whole or in part by this definition.", 0, java.lang.Integer.MAX_VALUE, derivedFromCanonical);
+        case -1076333435: /*derivedFromUri*/  return new Property("derivedFromUri", "uri", "The URL pointing to an externally-defined observation definition, guideline or other definition that is adhered to in whole or in part by this definition.", 0, java.lang.Integer.MAX_VALUE, derivedFromUri);
+        case -1867885268: /*subject*/  return new Property("subject", "CodeableConcept", "A code that describes the intended kind of subject of Observation instances conforming to this ObservationDefinition.", 0, 1, subject);
         case -901444568: /*performerType*/  return new Property("performerType", "CodeableConcept", "The type of individual/organization/device that is expected to act upon instances of this definition.", 0, 1, performerType);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "A code that classifies the general type of observation.", 0, java.lang.Integer.MAX_VALUE, category);
         case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Describes what will be observed. Sometimes this is called the observation \"name\".", 0, 1, code);
@@ -3664,15 +3906,11 @@ public class ObservationDefinition extends DomainResource {
         case -2102414590: /*multipleResultsAllowed*/  return new Property("multipleResultsAllowed", "boolean", "Multiple results allowed for observations conforming to this ObservationDefinition.", 0, 1, multipleResultsAllowed);
         case 1702620169: /*bodySite*/  return new Property("bodySite", "CodeableConcept", "The site on the subject's body where the  observation is to be made.", 0, 1, bodySite);
         case -1077554975: /*method*/  return new Property("method", "CodeableConcept", "The method or technique used to perform the observation.", 0, 1, method);
-        case -2132868344: /*specimen*/  return new Property("specimen", "Reference(SpecimenDefinition)", "The kind of specimen that this type of observation is produced on.", 0, 1, specimen);
-        case -1335157162: /*device*/  return new Property("device", "Reference(Device)", "The measurement device used to produce observations of this type.", 0, 1, device);
+        case -2132868344: /*specimen*/  return new Property("specimen", "Reference(SpecimenDefinition)", "The kind of specimen that this type of observation is produced on.", 0, java.lang.Integer.MAX_VALUE, specimen);
+        case -1335157162: /*device*/  return new Property("device", "Reference(DeviceDefinition|Device)", "The measurement model of device or actual device used to produce observations of this type.", 0, java.lang.Integer.MAX_VALUE, device);
         case -1851030208: /*preferredReportName*/  return new Property("preferredReportName", "string", "The preferred name to be used when reporting the results of observations conforming to this ObservationDefinition.", 0, 1, preferredReportName);
-        case 842150763: /*quantitativeDetails*/  return new Property("quantitativeDetails", "", "Characteristics for quantitative results of this observation.", 0, 1, quantitativeDetails);
-        case 1882971521: /*qualifiedInterval*/  return new Property("qualifiedInterval", "", "Multiple  ranges of results qualified by different contexts for ordinal or continuous observations conforming to this ObservationDefinition.", 0, java.lang.Integer.MAX_VALUE, qualifiedInterval);
-        case 1374640076: /*validCodedValueSet*/  return new Property("validCodedValueSet", "Reference(ValueSet)", "The set of valid coded results for the observations  conforming to this ObservationDefinition.", 0, 1, validCodedValueSet);
-        case -837500735: /*normalCodedValueSet*/  return new Property("normalCodedValueSet", "Reference(ValueSet)", "The set of normal coded results for the observations conforming to this ObservationDefinition.", 0, 1, normalCodedValueSet);
-        case 1073600256: /*abnormalCodedValueSet*/  return new Property("abnormalCodedValueSet", "Reference(ValueSet)", "The set of abnormal coded results for the observation conforming to this ObservationDefinition.", 0, 1, abnormalCodedValueSet);
-        case 2568457: /*criticalCodedValueSet*/  return new Property("criticalCodedValueSet", "Reference(ValueSet)", "The set of critical coded results for the observation conforming to this ObservationDefinition.", 0, 1, criticalCodedValueSet);
+        case 842150763: /*quantitativeDetails*/  return new Property("quantitativeDetails", "", "Characteristics for quantitative results of observations conforming to this ObservationDefinition.", 0, 1, quantitativeDetails);
+        case -558517707: /*qualifiedValue*/  return new Property("qualifiedValue", "", "A set of qualified values associated with a context and a set of conditions -  provides a range for quantitative and ordinal observations and a collection of value sets for qualitative observations.", 0, java.lang.Integer.MAX_VALUE, qualifiedValue);
         case -458019372: /*hasMember*/  return new Property("hasMember", "Reference(ObservationDefinition|Questionnaire)", "This ObservationDefinition defines a group  observation (e.g. a battery, a panel of tests, a set of vital sign measurements) that includes the target as a member of the group.", 0, java.lang.Integer.MAX_VALUE, hasMember);
         case -1399907075: /*component*/  return new Property("component", "", "Some observations have multiple component observations, expressed as separate code value pairs.", 0, java.lang.Integer.MAX_VALUE, component);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -3686,12 +3924,10 @@ public class ObservationDefinition extends DomainResource {
         case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : new Base[] {this.identifier}; // Identifier
         case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
+        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
-        case -978133683: /*derivedFromCanonical*/ return this.derivedFromCanonical == null ? new Base[0] : this.derivedFromCanonical.toArray(new Base[this.derivedFromCanonical.size()]); // CanonicalType
-        case -1076333435: /*derivedFromUri*/ return this.derivedFromUri == null ? new Base[0] : this.derivedFromUri.toArray(new Base[this.derivedFromUri.size()]); // UriType
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
         case -404562712: /*experimental*/ return this.experimental == null ? new Base[0] : new Base[] {this.experimental}; // BooleanType
-        case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // DataType
         case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
         case 1447404028: /*publisher*/ return this.publisher == null ? new Base[0] : new Base[] {this.publisher}; // Reference
         case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ContactDetail
@@ -3703,6 +3939,9 @@ public class ObservationDefinition extends DomainResource {
         case 223539345: /*approvalDate*/ return this.approvalDate == null ? new Base[0] : new Base[] {this.approvalDate}; // DateType
         case -1687512484: /*lastReviewDate*/ return this.lastReviewDate == null ? new Base[0] : new Base[] {this.lastReviewDate}; // DateType
         case -403934648: /*effectivePeriod*/ return this.effectivePeriod == null ? new Base[0] : new Base[] {this.effectivePeriod}; // Period
+        case -978133683: /*derivedFromCanonical*/ return this.derivedFromCanonical == null ? new Base[0] : this.derivedFromCanonical.toArray(new Base[this.derivedFromCanonical.size()]); // CanonicalType
+        case -1076333435: /*derivedFromUri*/ return this.derivedFromUri == null ? new Base[0] : this.derivedFromUri.toArray(new Base[this.derivedFromUri.size()]); // UriType
+        case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // CodeableConcept
         case -901444568: /*performerType*/ return this.performerType == null ? new Base[0] : new Base[] {this.performerType}; // CodeableConcept
         case 50511102: /*category*/ return this.category == null ? new Base[0] : this.category.toArray(new Base[this.category.size()]); // CodeableConcept
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
@@ -3710,15 +3949,11 @@ public class ObservationDefinition extends DomainResource {
         case -2102414590: /*multipleResultsAllowed*/ return this.multipleResultsAllowed == null ? new Base[0] : new Base[] {this.multipleResultsAllowed}; // BooleanType
         case 1702620169: /*bodySite*/ return this.bodySite == null ? new Base[0] : new Base[] {this.bodySite}; // CodeableConcept
         case -1077554975: /*method*/ return this.method == null ? new Base[0] : new Base[] {this.method}; // CodeableConcept
-        case -2132868344: /*specimen*/ return this.specimen == null ? new Base[0] : new Base[] {this.specimen}; // Reference
-        case -1335157162: /*device*/ return this.device == null ? new Base[0] : new Base[] {this.device}; // Reference
+        case -2132868344: /*specimen*/ return this.specimen == null ? new Base[0] : this.specimen.toArray(new Base[this.specimen.size()]); // Reference
+        case -1335157162: /*device*/ return this.device == null ? new Base[0] : this.device.toArray(new Base[this.device.size()]); // Reference
         case -1851030208: /*preferredReportName*/ return this.preferredReportName == null ? new Base[0] : new Base[] {this.preferredReportName}; // StringType
         case 842150763: /*quantitativeDetails*/ return this.quantitativeDetails == null ? new Base[0] : new Base[] {this.quantitativeDetails}; // ObservationDefinitionQuantitativeDetailsComponent
-        case 1882971521: /*qualifiedInterval*/ return this.qualifiedInterval == null ? new Base[0] : this.qualifiedInterval.toArray(new Base[this.qualifiedInterval.size()]); // ObservationDefinitionQualifiedIntervalComponent
-        case 1374640076: /*validCodedValueSet*/ return this.validCodedValueSet == null ? new Base[0] : new Base[] {this.validCodedValueSet}; // Reference
-        case -837500735: /*normalCodedValueSet*/ return this.normalCodedValueSet == null ? new Base[0] : new Base[] {this.normalCodedValueSet}; // Reference
-        case 1073600256: /*abnormalCodedValueSet*/ return this.abnormalCodedValueSet == null ? new Base[0] : new Base[] {this.abnormalCodedValueSet}; // Reference
-        case 2568457: /*criticalCodedValueSet*/ return this.criticalCodedValueSet == null ? new Base[0] : new Base[] {this.criticalCodedValueSet}; // Reference
+        case -558517707: /*qualifiedValue*/ return this.qualifiedValue == null ? new Base[0] : this.qualifiedValue.toArray(new Base[this.qualifiedValue.size()]); // ObservationDefinitionQualifiedValueComponent
         case -458019372: /*hasMember*/ return this.hasMember == null ? new Base[0] : this.hasMember.toArray(new Base[this.hasMember.size()]); // Reference
         case -1399907075: /*component*/ return this.component == null ? new Base[0] : this.component.toArray(new Base[this.component.size()]); // ObservationDefinitionComponentComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -3738,14 +3973,11 @@ public class ObservationDefinition extends DomainResource {
         case 351608024: // version
           this.version = TypeConvertor.castToString(value); // StringType
           return value;
+        case 3373707: // name
+          this.name = TypeConvertor.castToString(value); // StringType
+          return value;
         case 110371416: // title
           this.title = TypeConvertor.castToString(value); // StringType
-          return value;
-        case -978133683: // derivedFromCanonical
-          this.getDerivedFromCanonical().add(TypeConvertor.castToCanonical(value)); // CanonicalType
-          return value;
-        case -1076333435: // derivedFromUri
-          this.getDerivedFromUri().add(TypeConvertor.castToUri(value)); // UriType
           return value;
         case -892481550: // status
           value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
@@ -3753,9 +3985,6 @@ public class ObservationDefinition extends DomainResource {
           return value;
         case -404562712: // experimental
           this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
-          return value;
-        case -1867885268: // subject
-          this.subject = TypeConvertor.castToType(value); // DataType
           return value;
         case 3076014: // date
           this.date = TypeConvertor.castToDateTime(value); // DateTimeType
@@ -3790,6 +4019,15 @@ public class ObservationDefinition extends DomainResource {
         case -403934648: // effectivePeriod
           this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
           return value;
+        case -978133683: // derivedFromCanonical
+          this.getDerivedFromCanonical().add(TypeConvertor.castToCanonical(value)); // CanonicalType
+          return value;
+        case -1076333435: // derivedFromUri
+          this.getDerivedFromUri().add(TypeConvertor.castToUri(value)); // UriType
+          return value;
+        case -1867885268: // subject
+          this.subject = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         case -901444568: // performerType
           this.performerType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
@@ -3813,10 +4051,10 @@ public class ObservationDefinition extends DomainResource {
           this.method = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -2132868344: // specimen
-          this.specimen = TypeConvertor.castToReference(value); // Reference
+          this.getSpecimen().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1335157162: // device
-          this.device = TypeConvertor.castToReference(value); // Reference
+          this.getDevice().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -1851030208: // preferredReportName
           this.preferredReportName = TypeConvertor.castToString(value); // StringType
@@ -3824,20 +4062,8 @@ public class ObservationDefinition extends DomainResource {
         case 842150763: // quantitativeDetails
           this.quantitativeDetails = (ObservationDefinitionQuantitativeDetailsComponent) value; // ObservationDefinitionQuantitativeDetailsComponent
           return value;
-        case 1882971521: // qualifiedInterval
-          this.getQualifiedInterval().add((ObservationDefinitionQualifiedIntervalComponent) value); // ObservationDefinitionQualifiedIntervalComponent
-          return value;
-        case 1374640076: // validCodedValueSet
-          this.validCodedValueSet = TypeConvertor.castToReference(value); // Reference
-          return value;
-        case -837500735: // normalCodedValueSet
-          this.normalCodedValueSet = TypeConvertor.castToReference(value); // Reference
-          return value;
-        case 1073600256: // abnormalCodedValueSet
-          this.abnormalCodedValueSet = TypeConvertor.castToReference(value); // Reference
-          return value;
-        case 2568457: // criticalCodedValueSet
-          this.criticalCodedValueSet = TypeConvertor.castToReference(value); // Reference
+        case -558517707: // qualifiedValue
+          this.getQualifiedValue().add((ObservationDefinitionQualifiedValueComponent) value); // ObservationDefinitionQualifiedValueComponent
           return value;
         case -458019372: // hasMember
           this.getHasMember().add(TypeConvertor.castToReference(value)); // Reference
@@ -3858,19 +4084,15 @@ public class ObservationDefinition extends DomainResource {
           this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("version")) {
           this.version = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("name")) {
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
           this.title = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("derivedFromCanonical")) {
-          this.getDerivedFromCanonical().add(TypeConvertor.castToCanonical(value));
-        } else if (name.equals("derivedFromUri")) {
-          this.getDerivedFromUri().add(TypeConvertor.castToUri(value));
         } else if (name.equals("status")) {
           value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("experimental")) {
           this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
-        } else if (name.equals("subject[x]")) {
-          this.subject = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("date")) {
           this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
@@ -3893,6 +4115,12 @@ public class ObservationDefinition extends DomainResource {
           this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("effectivePeriod")) {
           this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
+        } else if (name.equals("derivedFromCanonical")) {
+          this.getDerivedFromCanonical().add(TypeConvertor.castToCanonical(value));
+        } else if (name.equals("derivedFromUri")) {
+          this.getDerivedFromUri().add(TypeConvertor.castToUri(value));
+        } else if (name.equals("subject")) {
+          this.subject = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("performerType")) {
           this.performerType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("category")) {
@@ -3909,23 +4137,15 @@ public class ObservationDefinition extends DomainResource {
         } else if (name.equals("method")) {
           this.method = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("specimen")) {
-          this.specimen = TypeConvertor.castToReference(value); // Reference
+          this.getSpecimen().add(TypeConvertor.castToReference(value));
         } else if (name.equals("device")) {
-          this.device = TypeConvertor.castToReference(value); // Reference
+          this.getDevice().add(TypeConvertor.castToReference(value));
         } else if (name.equals("preferredReportName")) {
           this.preferredReportName = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("quantitativeDetails")) {
           this.quantitativeDetails = (ObservationDefinitionQuantitativeDetailsComponent) value; // ObservationDefinitionQuantitativeDetailsComponent
-        } else if (name.equals("qualifiedInterval")) {
-          this.getQualifiedInterval().add((ObservationDefinitionQualifiedIntervalComponent) value);
-        } else if (name.equals("validCodedValueSet")) {
-          this.validCodedValueSet = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("normalCodedValueSet")) {
-          this.normalCodedValueSet = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("abnormalCodedValueSet")) {
-          this.abnormalCodedValueSet = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("criticalCodedValueSet")) {
-          this.criticalCodedValueSet = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("qualifiedValue")) {
+          this.getQualifiedValue().add((ObservationDefinitionQualifiedValueComponent) value);
         } else if (name.equals("hasMember")) {
           this.getHasMember().add(TypeConvertor.castToReference(value));
         } else if (name.equals("component")) {
@@ -3941,13 +4161,10 @@ public class ObservationDefinition extends DomainResource {
         case 116079:  return getUrlElement();
         case -1618432855:  return getIdentifier();
         case 351608024:  return getVersionElement();
+        case 3373707:  return getNameElement();
         case 110371416:  return getTitleElement();
-        case -978133683:  return addDerivedFromCanonicalElement();
-        case -1076333435:  return addDerivedFromUriElement();
         case -892481550:  return getStatusElement();
         case -404562712:  return getExperimentalElement();
-        case -573640748:  return getSubject();
-        case -1867885268:  return getSubject();
         case 3076014:  return getDateElement();
         case 1447404028:  return getPublisher();
         case 951526432:  return addContact(); 
@@ -3959,6 +4176,9 @@ public class ObservationDefinition extends DomainResource {
         case 223539345:  return getApprovalDateElement();
         case -1687512484:  return getLastReviewDateElement();
         case -403934648:  return getEffectivePeriod();
+        case -978133683:  return addDerivedFromCanonicalElement();
+        case -1076333435:  return addDerivedFromUriElement();
+        case -1867885268:  return getSubject();
         case -901444568:  return getPerformerType();
         case 50511102:  return addCategory(); 
         case 3059181:  return getCode();
@@ -3966,15 +4186,11 @@ public class ObservationDefinition extends DomainResource {
         case -2102414590:  return getMultipleResultsAllowedElement();
         case 1702620169:  return getBodySite();
         case -1077554975:  return getMethod();
-        case -2132868344:  return getSpecimen();
-        case -1335157162:  return getDevice();
+        case -2132868344:  return addSpecimen(); 
+        case -1335157162:  return addDevice(); 
         case -1851030208:  return getPreferredReportNameElement();
         case 842150763:  return getQuantitativeDetails();
-        case 1882971521:  return addQualifiedInterval(); 
-        case 1374640076:  return getValidCodedValueSet();
-        case -837500735:  return getNormalCodedValueSet();
-        case 1073600256:  return getAbnormalCodedValueSet();
-        case 2568457:  return getCriticalCodedValueSet();
+        case -558517707:  return addQualifiedValue(); 
         case -458019372:  return addHasMember(); 
         case -1399907075:  return addComponent(); 
         default: return super.makeProperty(hash, name);
@@ -3988,12 +4204,10 @@ public class ObservationDefinition extends DomainResource {
         case 116079: /*url*/ return new String[] {"uri"};
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case 351608024: /*version*/ return new String[] {"string"};
+        case 3373707: /*name*/ return new String[] {"string"};
         case 110371416: /*title*/ return new String[] {"string"};
-        case -978133683: /*derivedFromCanonical*/ return new String[] {"canonical"};
-        case -1076333435: /*derivedFromUri*/ return new String[] {"uri"};
         case -892481550: /*status*/ return new String[] {"code"};
         case -404562712: /*experimental*/ return new String[] {"boolean"};
-        case -1867885268: /*subject*/ return new String[] {"CodeableConcept", "Reference"};
         case 3076014: /*date*/ return new String[] {"dateTime"};
         case 1447404028: /*publisher*/ return new String[] {"Reference"};
         case 951526432: /*contact*/ return new String[] {"ContactDetail"};
@@ -4005,6 +4219,9 @@ public class ObservationDefinition extends DomainResource {
         case 223539345: /*approvalDate*/ return new String[] {"date"};
         case -1687512484: /*lastReviewDate*/ return new String[] {"date"};
         case -403934648: /*effectivePeriod*/ return new String[] {"Period"};
+        case -978133683: /*derivedFromCanonical*/ return new String[] {"canonical"};
+        case -1076333435: /*derivedFromUri*/ return new String[] {"uri"};
+        case -1867885268: /*subject*/ return new String[] {"CodeableConcept"};
         case -901444568: /*performerType*/ return new String[] {"CodeableConcept"};
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case 3059181: /*code*/ return new String[] {"CodeableConcept"};
@@ -4016,11 +4233,7 @@ public class ObservationDefinition extends DomainResource {
         case -1335157162: /*device*/ return new String[] {"Reference"};
         case -1851030208: /*preferredReportName*/ return new String[] {"string"};
         case 842150763: /*quantitativeDetails*/ return new String[] {};
-        case 1882971521: /*qualifiedInterval*/ return new String[] {};
-        case 1374640076: /*validCodedValueSet*/ return new String[] {"Reference"};
-        case -837500735: /*normalCodedValueSet*/ return new String[] {"Reference"};
-        case 1073600256: /*abnormalCodedValueSet*/ return new String[] {"Reference"};
-        case 2568457: /*criticalCodedValueSet*/ return new String[] {"Reference"};
+        case -558517707: /*qualifiedValue*/ return new String[] {};
         case -458019372: /*hasMember*/ return new String[] {"Reference"};
         case -1399907075: /*component*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
@@ -4040,28 +4253,17 @@ public class ObservationDefinition extends DomainResource {
         else if (name.equals("version")) {
           throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.version");
         }
+        else if (name.equals("name")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.name");
+        }
         else if (name.equals("title")) {
           throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.title");
-        }
-        else if (name.equals("derivedFromCanonical")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.derivedFromCanonical");
-        }
-        else if (name.equals("derivedFromUri")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.derivedFromUri");
         }
         else if (name.equals("status")) {
           throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.status");
         }
         else if (name.equals("experimental")) {
           throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.experimental");
-        }
-        else if (name.equals("subjectCodeableConcept")) {
-          this.subject = new CodeableConcept();
-          return this.subject;
-        }
-        else if (name.equals("subjectReference")) {
-          this.subject = new Reference();
-          return this.subject;
         }
         else if (name.equals("date")) {
           throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.date");
@@ -4098,6 +4300,16 @@ public class ObservationDefinition extends DomainResource {
           this.effectivePeriod = new Period();
           return this.effectivePeriod;
         }
+        else if (name.equals("derivedFromCanonical")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.derivedFromCanonical");
+        }
+        else if (name.equals("derivedFromUri")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.derivedFromUri");
+        }
+        else if (name.equals("subject")) {
+          this.subject = new CodeableConcept();
+          return this.subject;
+        }
         else if (name.equals("performerType")) {
           this.performerType = new CodeableConcept();
           return this.performerType;
@@ -4124,12 +4336,10 @@ public class ObservationDefinition extends DomainResource {
           return this.method;
         }
         else if (name.equals("specimen")) {
-          this.specimen = new Reference();
-          return this.specimen;
+          return addSpecimen();
         }
         else if (name.equals("device")) {
-          this.device = new Reference();
-          return this.device;
+          return addDevice();
         }
         else if (name.equals("preferredReportName")) {
           throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.preferredReportName");
@@ -4138,24 +4348,8 @@ public class ObservationDefinition extends DomainResource {
           this.quantitativeDetails = new ObservationDefinitionQuantitativeDetailsComponent();
           return this.quantitativeDetails;
         }
-        else if (name.equals("qualifiedInterval")) {
-          return addQualifiedInterval();
-        }
-        else if (name.equals("validCodedValueSet")) {
-          this.validCodedValueSet = new Reference();
-          return this.validCodedValueSet;
-        }
-        else if (name.equals("normalCodedValueSet")) {
-          this.normalCodedValueSet = new Reference();
-          return this.normalCodedValueSet;
-        }
-        else if (name.equals("abnormalCodedValueSet")) {
-          this.abnormalCodedValueSet = new Reference();
-          return this.abnormalCodedValueSet;
-        }
-        else if (name.equals("criticalCodedValueSet")) {
-          this.criticalCodedValueSet = new Reference();
-          return this.criticalCodedValueSet;
+        else if (name.equals("qualifiedValue")) {
+          return addQualifiedValue();
         }
         else if (name.equals("hasMember")) {
           return addHasMember();
@@ -4183,20 +4377,10 @@ public class ObservationDefinition extends DomainResource {
         dst.url = url == null ? null : url.copy();
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.version = version == null ? null : version.copy();
+        dst.name = name == null ? null : name.copy();
         dst.title = title == null ? null : title.copy();
-        if (derivedFromCanonical != null) {
-          dst.derivedFromCanonical = new ArrayList<CanonicalType>();
-          for (CanonicalType i : derivedFromCanonical)
-            dst.derivedFromCanonical.add(i.copy());
-        };
-        if (derivedFromUri != null) {
-          dst.derivedFromUri = new ArrayList<UriType>();
-          for (UriType i : derivedFromUri)
-            dst.derivedFromUri.add(i.copy());
-        };
         dst.status = status == null ? null : status.copy();
         dst.experimental = experimental == null ? null : experimental.copy();
-        dst.subject = subject == null ? null : subject.copy();
         dst.date = date == null ? null : date.copy();
         dst.publisher = publisher == null ? null : publisher.copy();
         if (contact != null) {
@@ -4220,6 +4404,17 @@ public class ObservationDefinition extends DomainResource {
         dst.approvalDate = approvalDate == null ? null : approvalDate.copy();
         dst.lastReviewDate = lastReviewDate == null ? null : lastReviewDate.copy();
         dst.effectivePeriod = effectivePeriod == null ? null : effectivePeriod.copy();
+        if (derivedFromCanonical != null) {
+          dst.derivedFromCanonical = new ArrayList<CanonicalType>();
+          for (CanonicalType i : derivedFromCanonical)
+            dst.derivedFromCanonical.add(i.copy());
+        };
+        if (derivedFromUri != null) {
+          dst.derivedFromUri = new ArrayList<UriType>();
+          for (UriType i : derivedFromUri)
+            dst.derivedFromUri.add(i.copy());
+        };
+        dst.subject = subject == null ? null : subject.copy();
         dst.performerType = performerType == null ? null : performerType.copy();
         if (category != null) {
           dst.category = new ArrayList<CodeableConcept>();
@@ -4235,19 +4430,23 @@ public class ObservationDefinition extends DomainResource {
         dst.multipleResultsAllowed = multipleResultsAllowed == null ? null : multipleResultsAllowed.copy();
         dst.bodySite = bodySite == null ? null : bodySite.copy();
         dst.method = method == null ? null : method.copy();
-        dst.specimen = specimen == null ? null : specimen.copy();
-        dst.device = device == null ? null : device.copy();
+        if (specimen != null) {
+          dst.specimen = new ArrayList<Reference>();
+          for (Reference i : specimen)
+            dst.specimen.add(i.copy());
+        };
+        if (device != null) {
+          dst.device = new ArrayList<Reference>();
+          for (Reference i : device)
+            dst.device.add(i.copy());
+        };
         dst.preferredReportName = preferredReportName == null ? null : preferredReportName.copy();
         dst.quantitativeDetails = quantitativeDetails == null ? null : quantitativeDetails.copy();
-        if (qualifiedInterval != null) {
-          dst.qualifiedInterval = new ArrayList<ObservationDefinitionQualifiedIntervalComponent>();
-          for (ObservationDefinitionQualifiedIntervalComponent i : qualifiedInterval)
-            dst.qualifiedInterval.add(i.copy());
+        if (qualifiedValue != null) {
+          dst.qualifiedValue = new ArrayList<ObservationDefinitionQualifiedValueComponent>();
+          for (ObservationDefinitionQualifiedValueComponent i : qualifiedValue)
+            dst.qualifiedValue.add(i.copy());
         };
-        dst.validCodedValueSet = validCodedValueSet == null ? null : validCodedValueSet.copy();
-        dst.normalCodedValueSet = normalCodedValueSet == null ? null : normalCodedValueSet.copy();
-        dst.abnormalCodedValueSet = abnormalCodedValueSet == null ? null : abnormalCodedValueSet.copy();
-        dst.criticalCodedValueSet = criticalCodedValueSet == null ? null : criticalCodedValueSet.copy();
         if (hasMember != null) {
           dst.hasMember = new ArrayList<Reference>();
           for (Reference i : hasMember)
@@ -4272,20 +4471,19 @@ public class ObservationDefinition extends DomainResource {
           return false;
         ObservationDefinition o = (ObservationDefinition) other_;
         return compareDeep(url, o.url, true) && compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true)
-           && compareDeep(title, o.title, true) && compareDeep(derivedFromCanonical, o.derivedFromCanonical, true)
-           && compareDeep(derivedFromUri, o.derivedFromUri, true) && compareDeep(status, o.status, true) && compareDeep(experimental, o.experimental, true)
-           && compareDeep(subject, o.subject, true) && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true)
+           && compareDeep(name, o.name, true) && compareDeep(title, o.title, true) && compareDeep(status, o.status, true)
+           && compareDeep(experimental, o.experimental, true) && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true)
            && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
            && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(purpose, o.purpose, true) && compareDeep(copyright, o.copyright, true)
            && compareDeep(approvalDate, o.approvalDate, true) && compareDeep(lastReviewDate, o.lastReviewDate, true)
-           && compareDeep(effectivePeriod, o.effectivePeriod, true) && compareDeep(performerType, o.performerType, true)
-           && compareDeep(category, o.category, true) && compareDeep(code, o.code, true) && compareDeep(permittedDataType, o.permittedDataType, true)
+           && compareDeep(effectivePeriod, o.effectivePeriod, true) && compareDeep(derivedFromCanonical, o.derivedFromCanonical, true)
+           && compareDeep(derivedFromUri, o.derivedFromUri, true) && compareDeep(subject, o.subject, true)
+           && compareDeep(performerType, o.performerType, true) && compareDeep(category, o.category, true)
+           && compareDeep(code, o.code, true) && compareDeep(permittedDataType, o.permittedDataType, true)
            && compareDeep(multipleResultsAllowed, o.multipleResultsAllowed, true) && compareDeep(bodySite, o.bodySite, true)
            && compareDeep(method, o.method, true) && compareDeep(specimen, o.specimen, true) && compareDeep(device, o.device, true)
            && compareDeep(preferredReportName, o.preferredReportName, true) && compareDeep(quantitativeDetails, o.quantitativeDetails, true)
-           && compareDeep(qualifiedInterval, o.qualifiedInterval, true) && compareDeep(validCodedValueSet, o.validCodedValueSet, true)
-           && compareDeep(normalCodedValueSet, o.normalCodedValueSet, true) && compareDeep(abnormalCodedValueSet, o.abnormalCodedValueSet, true)
-           && compareDeep(criticalCodedValueSet, o.criticalCodedValueSet, true) && compareDeep(hasMember, o.hasMember, true)
+           && compareDeep(qualifiedValue, o.qualifiedValue, true) && compareDeep(hasMember, o.hasMember, true)
            && compareDeep(component, o.component, true);
       }
 
@@ -4296,23 +4494,23 @@ public class ObservationDefinition extends DomainResource {
         if (!(other_ instanceof ObservationDefinition))
           return false;
         ObservationDefinition o = (ObservationDefinition) other_;
-        return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(title, o.title, true)
-           && compareValues(derivedFromCanonical, o.derivedFromCanonical, true) && compareValues(derivedFromUri, o.derivedFromUri, true)
-           && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true) && compareValues(date, o.date, true)
-           && compareValues(description, o.description, true) && compareValues(purpose, o.purpose, true) && compareValues(copyright, o.copyright, true)
-           && compareValues(approvalDate, o.approvalDate, true) && compareValues(lastReviewDate, o.lastReviewDate, true)
-           && compareValues(permittedDataType, o.permittedDataType, true) && compareValues(multipleResultsAllowed, o.multipleResultsAllowed, true)
-           && compareValues(preferredReportName, o.preferredReportName, true);
+        return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(name, o.name, true)
+           && compareValues(title, o.title, true) && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true)
+           && compareValues(date, o.date, true) && compareValues(description, o.description, true) && compareValues(purpose, o.purpose, true)
+           && compareValues(copyright, o.copyright, true) && compareValues(approvalDate, o.approvalDate, true)
+           && compareValues(lastReviewDate, o.lastReviewDate, true) && compareValues(derivedFromCanonical, o.derivedFromCanonical, true)
+           && compareValues(derivedFromUri, o.derivedFromUri, true) && compareValues(permittedDataType, o.permittedDataType, true)
+           && compareValues(multipleResultsAllowed, o.multipleResultsAllowed, true) && compareValues(preferredReportName, o.preferredReportName, true)
+          ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
-          , title, derivedFromCanonical, derivedFromUri, status, experimental, subject, date
-          , publisher, contact, description, useContext, jurisdiction, purpose, copyright
-          , approvalDate, lastReviewDate, effectivePeriod, performerType, category, code, permittedDataType
+          , name, title, status, experimental, date, publisher, contact, description, useContext
+          , jurisdiction, purpose, copyright, approvalDate, lastReviewDate, effectivePeriod
+          , derivedFromCanonical, derivedFromUri, subject, performerType, category, code, permittedDataType
           , multipleResultsAllowed, bodySite, method, specimen, device, preferredReportName
-          , quantitativeDetails, qualifiedInterval, validCodedValueSet, normalCodedValueSet, abnormalCodedValueSet
-          , criticalCodedValueSet, hasMember, component);
+          , quantitativeDetails, qualifiedValue, hasMember, component);
       }
 
   @Override

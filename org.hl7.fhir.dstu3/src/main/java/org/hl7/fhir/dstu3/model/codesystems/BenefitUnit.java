@@ -64,6 +64,7 @@ public enum BenefitUnit {
           switch (this) {
             case INDIVIDUAL: return "individual";
             case FAMILY: return "family";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum BenefitUnit {
           switch (this) {
             case INDIVIDUAL: return "A single individual";
             case FAMILY: return "A family, typically includes self, spous(s) and children to a defined age";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum BenefitUnit {
           switch (this) {
             case INDIVIDUAL: return "Individual";
             case FAMILY: return "Family";
+            case NULL: return null;
             default: return "?";
           }
     }

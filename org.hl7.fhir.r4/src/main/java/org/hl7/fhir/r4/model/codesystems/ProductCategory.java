@@ -85,6 +85,7 @@ public enum ProductCategory {
             case FLUID: return "fluid";
             case CELLS: return "cells";
             case BIOLOGICALAGENT: return "biologicalAgent";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum ProductCategory {
             case FLUID: return "Body fluid.";
             case CELLS: return "Collection of cells.";
             case BIOLOGICALAGENT: return "Biological agent of unspecified type.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum ProductCategory {
             case FLUID: return "Fluid";
             case CELLS: return "Cells";
             case BIOLOGICALAGENT: return "BiologicalAgent";
+            case NULL: return null;
             default: return "?";
           }
     }

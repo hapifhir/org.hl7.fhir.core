@@ -2,13 +2,14 @@ package org.hl7.fhir.validation.cli.utils;
 
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.SimpleHTTPClient;
+import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLConnection;
 
 public class ProfileLoader {
   public static byte[] loadProfileSource(String src) throws FHIRException, IOException {
@@ -25,9 +26,10 @@ public class ProfileLoader {
 
   private static byte[] loadProfileFromUrl(String src) throws FHIRException {
     try {
-      URL url = new URL(src + "?nocache=" + System.currentTimeMillis());
-      URLConnection c = url.openConnection();
-      return IOUtils.toByteArray(c.getInputStream());
+      SimpleHTTPClient http = new SimpleHTTPClient();
+      HTTPResult res = http.get(src + "?nocache=" + System.currentTimeMillis());
+      res.checkThrowException();
+      return res.getContent();
     } catch (Exception e) {
       throw new FHIRException("Unable to find definitions at URL '" + src + "': " + e.getMessage(), e);
     }

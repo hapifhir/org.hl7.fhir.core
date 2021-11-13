@@ -362,6 +362,7 @@ public enum V3EntityNamePartQualifierR2 {
             case HON: return "HON";
             case NB: return "NB";
             case PR: return "PR";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -397,6 +398,7 @@ public enum V3EntityNamePartQualifierR2 {
             case HON: return "Description:A honorific such as \"The Right Honourable\" or \"Weledelgeleerde Heer\".";
             case NB: return "Description:A nobility title such as Sir, Count, Grafin.";
             case PR: return "Description:Primarily in the British Imperial culture people tend to have an abbreviation of their professional organization as part of their credential titles.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -429,6 +431,7 @@ public enum V3EntityNamePartQualifierR2 {
             case HON: return "honorific";
             case NB: return "nobility";
             case PR: return "professional";
+            case NULL: return null;
             default: return "?";
           }
     }

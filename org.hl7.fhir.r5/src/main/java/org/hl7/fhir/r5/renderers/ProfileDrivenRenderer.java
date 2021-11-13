@@ -104,6 +104,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     if (context.isAddGeneratedNarrativeHeader()) {
       x.para().b().tx("Generated Narrative");
     }
+    if (context.isTechnicalMode()) {
+      renderResourceHeader(r, x);
+    }
     try {
       StructureDefinition sd = r.getDefinition();
       if (sd == null) {
@@ -112,7 +115,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         ElementDefinition ed = sd.getSnapshot().getElement().get(0);
         containedIds.clear();
         hasExtensions = false;
-        generateByProfile(r, sd, r.root(), sd.getSnapshot().getElement(), ed, context.getProfileUtilities().getChildList(sd, ed), x, r.fhirType(), false, 0);
+        generateByProfile(r, sd, r.root(), sd.getSnapshot().getElement(), ed, context.getProfileUtilities().getChildList(sd, ed), x, r.fhirType(), context.isTechnicalMode(), 0);
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -120,6 +123,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     }
     return hasExtensions;
   }
+
 
   @Override
   public String display(Resource r) throws UnsupportedEncodingException, IOException {
@@ -212,7 +216,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
 //
 
   
-  public void generateResourceSummary(XhtmlNode x, ResourceWrapper res, boolean textAlready, boolean showCodeDetails) throws FHIRException, UnsupportedEncodingException, IOException {
+  public void generateResourceSummary(XhtmlNode x, ResourceWrapper res, boolean textAlready, boolean showCodeDetails, boolean canLink) throws FHIRException, UnsupportedEncodingException, IOException {
     if (!textAlready) {
       XhtmlNode div = res.getNarrative();
       if (div != null) {
@@ -231,9 +235,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       boolean firstElement = true;
       boolean last = false;
       for (PropertyWrapper p : res.children()) {
-        if (!ignoreProperty(p)) {
+        if (!ignoreProperty(p) && !p.getElementDefinition().getBase().getPath().startsWith("Resource.")) {
           ElementDefinition child = getElementDefinition(profile.getSnapshot().getElement(), path+"."+p.getName(), p);
-          if (p.getValues().size() > 0 && p.getValues().get(0) != null && child != null && isPrimitive(child) && includeInSummary(child)) {
+          if (p.getValues().size() > 0 && p.getValues().get(0) != null && child != null && isPrimitive(child) && includeInSummary(child, p.getValues())) {
             if (firstElement)
               firstElement = false;
             else if (last)
@@ -245,7 +249,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
                 first = false;
               else if (last)
                 x.tx(", ");
-              last = displayLeaf(res, v, child, x, p.getName(), showCodeDetails, false) || last;
+              last = displayLeaf(res, v, child, x, p.getName(), showCodeDetails, canLink) || last;
             }
           }
         }
@@ -258,7 +262,10 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     return Utilities.existsInList(p.getName(), "contained");
   }
 
-  private boolean includeInSummary(ElementDefinition child) {
+  private boolean includeInSummary(ElementDefinition child, List<BaseWrapper> list) throws UnsupportedEncodingException, FHIRException, IOException {
+    if (child.getName().endsWith("active") && list != null && list.size() > 0 && "true".equals(list.get(0).getBase().primitiveValue())) {
+      return false;
+    }
     if (child.getIsModifier())
       return true;
     if (child.getMustSupport())
@@ -306,12 +313,14 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     else if (e instanceof Enumeration) {
       Object ev = ((Enumeration<?>) e).getValue();
       x.addText(ev == null ? "" : ev.toString()); // todo: look up a display name if there is one
-    } else if (e instanceof BooleanType)
+    } else if (e instanceof BooleanType) {
       x.addText(((BooleanType) e).getValue().toString());
-    else if (e instanceof CodeableConcept) {
+    } else if (e instanceof CodeableConcept) {
       renderCodeableConcept(x, (CodeableConcept) e, showCodeDetails);
     } else if (e instanceof Coding) {
       renderCoding(x, (Coding) e, showCodeDetails);
+    } else if (e instanceof CodeableReference) {
+      renderCodeableReference(x, (CodeableReference) e, showCodeDetails);
     } else if (e instanceof Annotation) {
       renderAnnotation(x, (Annotation) e);
     } else if (e instanceof Identifier) {
@@ -430,7 +439,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       x.addText(name+": "+((IdType) e).getValue());
       return true;
     } else if (e instanceof UriType) {
-      x.addText(name+": "+((UriType) e).getValue());
+      if (Utilities.isAbsoluteUrlLinkable(((UriType) e).getValue()) && allowLinks) {
+        x.tx(name+": ");
+        x.ah(((UriType) e).getValue()).addText(((UriType) e).getValue());
+      } else {
+        x.addText(name+": "+((UriType) e).getValue());
+      }
       return true;
     } else if (e instanceof DateTimeType) {
       x.addText(name+": "+((DateTimeType) e).toHumanDisplay());
@@ -448,8 +462,10 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       x.addText(((Enumeration<?>) e).getValue().toString()); // todo: look up a display name if there is one
       return true;
     } else if (e instanceof BooleanType) {
-      if (((BooleanType) e).getValue()) {
+      if (((BooleanType) e).hasValue()) {
         x.addText(name);
+        x.addText(": ");
+        x.addText(((BooleanType) e).getValueAsString());
         return true;
       }
     } else if (e instanceof CodeableReference) {
@@ -701,17 +717,23 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
              }
            }
         } else if (canDoTable(path, p, grandChildren, x)) {
-          x.addTag(getHeader()).addText(Utilities.capitalize(Utilities.camelCase(Utilities.pluralizeMe(p.getName()))));
-          XhtmlNode tbl = x.table("grid");
+          XhtmlNode xn = new XhtmlNode(NodeType.Element, getHeader());
+          xn.addText(Utilities.capitalize(Utilities.camelCase(Utilities.pluralizeMe(p.getName()))));
+          XhtmlNode tbl = new XhtmlNode(NodeType.Element, "table"); 
+          tbl.setAttribute("class", "grid");
           XhtmlNode tr = tbl.tr();
           tr.td().tx("-"); // work around problem with empty table rows
-          addColumnHeadings(tr, grandChildren);
+          boolean add = addColumnHeadings(tr, grandChildren);          
           for (BaseWrapper v : p.getValues()) {
             if (v != null) {
               tr = tbl.tr();
               tr.td().tx("*"); // work around problem with empty table rows
-              addColumnValues(res, tr, grandChildren, v, showCodeDetails, displayHints, path, indent);
+              add = addColumnValues(res, tr, grandChildren, v, showCodeDetails, displayHints, path, indent) || add;
             }
+          }
+          if (add) {
+            x.add(xn);
+            x.add(tbl);
           }
         } else if (isExtension(p)) {
           for (BaseWrapper v : p.getValues()) {
@@ -776,6 +798,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     if (x.getName().equals("p")) {
       return false;
     }
+
     for (ElementDefinition e : grandChildren) {
       List<PropertyWrapper> values = getValues(path, p, e);
       if (values.size() > 1 || !isPrimitive(e) || !canCollapse(e))
@@ -812,24 +835,32 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     return false;
   }
 
-  private void addColumnHeadings(XhtmlNode tr, List<ElementDefinition> grandChildren) {
-    for (ElementDefinition e : grandChildren)
+  private boolean addColumnHeadings(XhtmlNode tr, List<ElementDefinition> grandChildren) {
+    boolean b = false;
+    for (ElementDefinition e : grandChildren) {
+      b = true;
       tr.td().b().addText(Utilities.capitalize(tail(e.getPath())));
+    }
+    return b;
   }
 
-  private void addColumnValues(ResourceWrapper res, XhtmlNode tr, List<ElementDefinition> grandChildren, BaseWrapper v, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent) throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
+  private boolean addColumnValues(ResourceWrapper res, XhtmlNode tr, List<ElementDefinition> grandChildren, BaseWrapper v, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent) throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
+    boolean b = false;
     for (ElementDefinition e : grandChildren) {
       PropertyWrapper p = v.getChildByName(e.getPath().substring(e.getPath().lastIndexOf(".")+1));
       XhtmlNode td = tr.td();
-      if (p == null || p.getValues().size() == 0 || p.getValues().get(0) == null)
+      if (p == null || p.getValues().size() == 0 || p.getValues().get(0) == null) {
+        b = true;
         td.tx(" ");
-      else {
+      } else {
         for (BaseWrapper vv : p.getValues()) {
+          b = true;
           td.sep(", ");
           renderLeaf(res, vv, e, td, td, false, showCodeDetails, displayHints, path, indent);
         }
       }
     }
+    return b;
   }
 
   private void filterGrandChildren(List<ElementDefinition> grandChildren,  String string, PropertyWrapper prop) {

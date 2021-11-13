@@ -34,6 +34,7 @@ package org.hl7.fhir.r5.elementmodel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -42,6 +43,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
+import org.hl7.fhir.r5.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -74,7 +76,8 @@ public class TurtleParser extends ParserBase {
     super(context);
   }
   @Override
-  public Element parse(InputStream input) throws IOException, FHIRException {
+  public List<NamedElement> parse(InputStream input) throws IOException, FHIRException {
+    List<NamedElement> res = new ArrayList<>();
     Turtle src = new Turtle();
     if (policy == ValidationPolicy.EVERYTHING) {
       try {
@@ -83,11 +86,18 @@ public class TurtleParser extends ParserBase {
         logError(-1, -1, "(document)", IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_TURTLE_, e.getMessage()), IssueSeverity.FATAL);
         return null;
       }
-      return parse(src);  
+      Element e = parse(src);
+      if (e != null) {
+        res.add(new NamedElement(null, e));
+      }
     } else {
-    src.parse(TextFile.streamToString(input));
-      return parse(src);  
-    } 
+      src.parse(TextFile.streamToString(input));
+      Element e = parse(src);
+      if (e != null) {
+        res.add(new NamedElement(null, e));
+      }
+    }
+    return res;
   }
   
   private Element parse(Turtle src) throws FHIRException {
@@ -209,13 +219,13 @@ public class TurtleParser extends ParserBase {
             // todo: check type
             n.setValue(value);
           } else
-            logError(object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_A_LITERAL_NOT_A_, e.getClass().getName()), IssueSeverity.ERROR);
+            logError(object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_A_LITERAL_NOT_, "a "+e.getClass().getName()), IssueSeverity.ERROR);
         }
       } else 
         parseChildren(src, npath, child, n, false);
 
     } else 
-      logError(object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_A_URI_OR_BNODE_NOT_A_, e.getClass().getName()), IssueSeverity.ERROR);
+      logError(object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_A_URI_OR_BNODE_NOT_, "a "+e.getClass().getName()), IssueSeverity.ERROR);
   }
 
 

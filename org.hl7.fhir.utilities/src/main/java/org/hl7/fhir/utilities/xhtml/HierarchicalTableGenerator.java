@@ -240,16 +240,18 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       pieces.add(piece);
       return this;
     }
-    
+
     public Cell addMarkdown(String md) {
-      try {
-        Parser parser = Parser.builder().build();
-        Node document = parser.parse(md);
-        HtmlRenderer renderer = HtmlRenderer.builder().escapeHtml(true).build();
-        String html = renderer.render(document);  
-        pieces.addAll(htmlToParagraphPieces(html, null));
-      } catch (Exception e) {
-        e.printStackTrace();
+      if (!Utilities.noString(md)) {
+        try {
+          Parser parser = Parser.builder().build();
+          Node document = parser.parse(md);
+          HtmlRenderer renderer = HtmlRenderer.builder().escapeHtml(true).build();
+          String html = renderer.render(document);  
+          pieces.addAll(htmlToParagraphPieces(html, null));
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       }
       return this;
     }
@@ -596,7 +598,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     TableModel model = new TableModel(id, isActive);
     
     model.setAlternating(alternating);
-    model.setDocoImg(prefix+"help16.png");
+    model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
     model.setDocoRef(Utilities.pathURL(prefix, "formats.html#table"));
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Name"), translate("sd.hint", "The logical name of the element"), null, 0));
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Flags"), translate("sd.hint", "Information about the use of the element"), null, 0));
@@ -613,7 +615,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     TableModel model = new TableModel(id, true);
     
     model.setAlternating(true);
-    model.setDocoImg(prefix+"help16.png");
+    model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
     model.setDocoRef(Utilities.pathURL(prefix, "formats.html#table"));    
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Name"), translate("sd.hint", "The logical name of the element"), null, 0));
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "L Flags"), translate("sd.hint", "Information about the use of the element - Left Structure"), null, 0).setStyle("border-left: 1px grey solid"));
@@ -855,7 +857,6 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
 
 
   private void checkModel(TableModel model) throws FHIRException  {
-    check(!model.getRows().isEmpty(), "Must have rows");
     check(!model.getTitles().isEmpty(), "Must have titles");
     int tc = 0;
     for (Cell c : model.getTitles()) {

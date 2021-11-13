@@ -100,6 +100,7 @@ public class Claim extends DomainResource {
             case PHARMACY: return "pharmacy";
             case PROFESSIONAL: return "professional";
             case VISION: return "vision";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -110,6 +111,7 @@ public class Claim extends DomainResource {
             case PHARMACY: return "http://hl7.org/fhir/claim-type-link";
             case PROFESSIONAL: return "http://hl7.org/fhir/claim-type-link";
             case VISION: return "http://hl7.org/fhir/claim-type-link";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -120,6 +122,7 @@ public class Claim extends DomainResource {
             case PHARMACY: return "A claim for Pharmacy based goods and services.";
             case PROFESSIONAL: return "A claim for Professional, typically out-patient, goods and services.";
             case VISION: return "A claim for Vision (Ophthamologist, Optometrist and Optician) goods and services.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +133,7 @@ public class Claim extends DomainResource {
             case PHARMACY: return "Pharmacy";
             case PROFESSIONAL: return "Professional";
             case VISION: return "Vision";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -225,6 +229,7 @@ public class Claim extends DomainResource {
             case PROPOSED: return "proposed";
             case EXPLORATORY: return "exploratory";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -234,6 +239,7 @@ public class Claim extends DomainResource {
             case PROPOSED: return "http://hl7.org/fhir/claim-use-link";
             case EXPLORATORY: return "http://hl7.org/fhir/claim-use-link";
             case OTHER: return "http://hl7.org/fhir/claim-use-link";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -243,6 +249,7 @@ public class Claim extends DomainResource {
             case PROPOSED: return "The treatment is proposed and this represents a Pre-authorization for the services.";
             case EXPLORATORY: return "The treatment is proposed and this represents a Pre-determination for the services.";
             case OTHER: return "A locally defined or otherwise resolved status.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -252,6 +259,7 @@ public class Claim extends DomainResource {
             case PROPOSED: return "Proposed";
             case EXPLORATORY: return "Exploratory";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
         }

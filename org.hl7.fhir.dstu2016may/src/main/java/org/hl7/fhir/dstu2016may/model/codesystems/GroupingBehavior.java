@@ -71,6 +71,7 @@ public enum GroupingBehavior {
             case VISUALGROUP: return "visual-group";
             case LOGICALGROUP: return "logical-group";
             case SENTENCEGROUP: return "sentence-group";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum GroupingBehavior {
             case VISUALGROUP: return "Any group marked with this behavior should be displayed as a visual group to the end user";
             case LOGICALGROUP: return "A group with this behavior logically groups its sub-elements, and may be shown as a visual group to the end user, but it is not required to do so";
             case SENTENCEGROUP: return "A group of related alternative items is a sentence group if the target referenced by the item is the same in all the items, and each item simply constitutes a different variation on how to specify the details for the target. For example, two items that could be in a SentenceGroup are \"aspirin, 500 mg, 2 times per day\" and \"aspirin, 300 mg, 3 times per day\". In both cases, aspirin is the target referenced by the item, and the two items represent two different options for how aspirin might be ordered for the patient. Note that a SentenceGroup would almost always have an associated selection behavior of \"AtMostOne\", unless it's a required item, in which case, it would be \"ExactlyOne\"";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum GroupingBehavior {
             case VISUALGROUP: return "Visual Group";
             case LOGICALGROUP: return "Logical Group";
             case SENTENCEGROUP: return "Sentence Group";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -394,7 +394,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
 
   private void compareExpansions(ValueSet left, ValueSet right, ValueSetComparison res) {
     ValueSet expL = left.hasExpansion() ? left : expand(left, res, "left", session.getContextLeft());
-    ValueSet expR = left.hasExpansion() ? left : expand(right, res, "right", session.getContextRight());
+    ValueSet expR = right.hasExpansion() ? right : expand(right, res, "right", session.getContextRight());
     if (expL != null && expR != null) {
       // ignore the parameters for now
       compareConcepts(expL.getExpansion().getContains(), expR.getExpansion().getContains(), res.forceExpansion(), res.getUnion().getExpansion().getContains(), res.getIntersection().getExpansion().getContains(), "ValueSet.expansion.contains", res);

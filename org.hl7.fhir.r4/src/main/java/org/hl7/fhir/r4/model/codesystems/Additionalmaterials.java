@@ -92,6 +92,7 @@ public enum Additionalmaterials {
             case MODEL: return "model";
             case DOCUMENT: return "document";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum Additionalmaterials {
             case MODEL: return "Model";
             case DOCUMENT: return "Document";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum Additionalmaterials {
             case MODEL: return "Model";
             case DOCUMENT: return "Document";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
     }

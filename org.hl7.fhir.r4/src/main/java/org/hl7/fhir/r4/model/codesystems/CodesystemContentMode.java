@@ -85,6 +85,7 @@ public enum CodesystemContentMode {
             case FRAGMENT: return "fragment";
             case COMPLETE: return "complete";
             case SUPPLEMENT: return "supplement";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum CodesystemContentMode {
             case FRAGMENT: return "A subset of the code system concepts are included in the code system resource. This is a curated subset released for a specific purpose under the governance of the code system steward, and that the intent, bounds and consequences of the fragmentation are clearly defined in the fragment or the code system documentation. Fragments are also known as partitions.";
             case COMPLETE: return "All the concepts defined by the code system are included in the code system resource.";
             case SUPPLEMENT: return "The resource doesn't define any new concepts; it just provides additional designations and properties to another code system.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum CodesystemContentMode {
             case FRAGMENT: return "Fragment";
             case COMPLETE: return "Complete";
             case SUPPLEMENT: return "Supplement";
+            case NULL: return null;
             default: return "?";
           }
     }

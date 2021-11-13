@@ -78,6 +78,7 @@ public enum TestscriptProfileDestinationTypes {
             case FHIRSDCFORMMANAGER: return "FHIR-SDC-FormManager";
             case FHIRSDCFORMPROCESSOR: return "FHIR-SDC-FormProcessor";
             case FHIRSDCFORMRECEIVER: return "FHIR-SDC-FormReceiver";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum TestscriptProfileDestinationTypes {
             case FHIRSDCFORMMANAGER: return "A FHIR server acting as a Structured Data Capture Form Manager.";
             case FHIRSDCFORMPROCESSOR: return "A FHIR server acting as a Structured Data Capture Form Processor.";
             case FHIRSDCFORMRECEIVER: return "A FHIR server acting as a Structured Data Capture Form Receiver.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum TestscriptProfileDestinationTypes {
             case FHIRSDCFORMMANAGER: return "FHIR SDC FormManager";
             case FHIRSDCFORMPROCESSOR: return "FHIR SDC FormProcessor";
             case FHIRSDCFORMRECEIVER: return "FHIR SDC FormReceiver";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -85,6 +85,7 @@ public enum XdsRelationshipType {
             case XFRM: return "XFRM";
             case XFRMRPLC: return "XFRM_RPLC";
             case SIGNS: return "signs";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum XdsRelationshipType {
             case XFRM: return "A transformed document is derived by a machine translation from some other format.";
             case XFRMRPLC: return "Both a XFRM and a RPLC relationship.";
             case SIGNS: return "This document signs the target document.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum XdsRelationshipType {
             case XFRM: return "XFRM";
             case XFRMRPLC: return "XFRM_RPLC";
             case SIGNS: return "Signs";
+            case NULL: return null;
             default: return "?";
           }
     }

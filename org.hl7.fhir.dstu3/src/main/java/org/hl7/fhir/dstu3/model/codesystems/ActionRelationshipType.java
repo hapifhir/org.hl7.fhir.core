@@ -113,6 +113,7 @@ public enum ActionRelationshipType {
             case AFTERSTART: return "after-start";
             case AFTER: return "after";
             case AFTEREND: return "after-end";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum ActionRelationshipType {
             case AFTERSTART: return "The action must be performed after the start of the related action";
             case AFTER: return "The action must be performed after the related action";
             case AFTEREND: return "The action must be performed after the end of the related action";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum ActionRelationshipType {
             case AFTERSTART: return "After Start";
             case AFTER: return "After";
             case AFTEREND: return "After End";
+            case NULL: return null;
             default: return "?";
           }
     }

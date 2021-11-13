@@ -78,6 +78,7 @@ public enum MedicationdispenseCategory {
             case OUTPATIENT: return "outpatient";
             case COMMUNITY: return "community";
             case DISCHARGE: return "discharge";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum MedicationdispenseCategory {
             case OUTPATIENT: return "Includes dispenses for medications to be administered or consumed in an outpatient setting (for example, Emergency Department, Outpatient Clinic, Outpatient Surgery, Doctor's office).";
             case COMMUNITY: return "Includes dispenses for medications to be administered or consumed by the patient in their home (this would include long term care or nursing homes, hospices, etc.).";
             case DISCHARGE: return "Includes dispenses for medications created when the patient is being released from a facility.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum MedicationdispenseCategory {
             case OUTPATIENT: return "Outpatient";
             case COMMUNITY: return "Community";
             case DISCHARGE: return "Discharge";
+            case NULL: return null;
             default: return "?";
           }
     }

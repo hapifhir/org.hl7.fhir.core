@@ -71,6 +71,7 @@ public enum VerificationresultValidationType {
             case NOTHING: return "nothing";
             case PRIMARY: return "primary";
             case MULTIPLE: return "multiple";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum VerificationresultValidationType {
             case NOTHING: return "";
             case PRIMARY: return "";
             case MULTIPLE: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum VerificationresultValidationType {
             case NOTHING: return "Nothing";
             case PRIMARY: return "Primary Source";
             case MULTIPLE: return "Multiple Sources";
+            case NULL: return null;
             default: return "?";
           }
     }

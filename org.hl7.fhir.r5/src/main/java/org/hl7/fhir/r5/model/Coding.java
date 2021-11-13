@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -522,7 +522,7 @@ public class Coding extends DataType implements IBaseCoding, ICompositeType, ICo
           , userSelected);
       }
 
-// Manual code (from Configuration.txt)t:
+// Manual code (from Configuration.txt):
 @Override
       public boolean supportsVersion() {
         return true;
@@ -605,6 +605,12 @@ public class Coding extends DataType implements IBaseCoding, ICompositeType, ICo
         return res;
       } 
             
+      public Coding(String theSystem, String theVersion, String theCode, String theDisplay) {
+        setSystem(theSystem);
+        setVersion(theVersion);
+        setCode(theCode);
+        setDisplay(theDisplay);
+      }
 // end addition
 
 }

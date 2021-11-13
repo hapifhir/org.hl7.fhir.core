@@ -85,6 +85,7 @@ public enum AddressUse {
             case TEMP: return "temp";
             case OLD: return "old";
             case BILLING: return "billing";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum AddressUse {
             case TEMP: return "A temporary address. The period can provide more detailed information.";
             case OLD: return "This address is no longer in use (or was never correct but retained for records).";
             case BILLING: return "An address to be used to send bills, invoices, receipts etc.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum AddressUse {
             case TEMP: return "Temporary";
             case OLD: return "Old / Incorrect";
             case BILLING: return "Billing";
+            case NULL: return null;
             default: return "?";
           }
     }

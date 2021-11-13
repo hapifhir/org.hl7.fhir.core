@@ -78,6 +78,7 @@ public enum HspcBpmeasmethoddevice {
             case _2162: return "2162";
             case _31163: return "31163";
             case _50577434: return "50577434";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum HspcBpmeasmethoddevice {
             case _2162: return "A blood pressure cuff designed to be used on an individual's thigh";
             case _31163: return "A blood pressure cuff that is sized to use on an adult upper arm";
             case _50577434: return "A blood pressure cuff designed to be used on an individual's ankle";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum HspcBpmeasmethoddevice {
             case _2162: return "Thigh cuff (24 cm)";
             case _31163: return "Adult Arm Cuff";
             case _50577434: return "Ankle Cuff";
+            case NULL: return null;
             default: return "?";
           }
     }

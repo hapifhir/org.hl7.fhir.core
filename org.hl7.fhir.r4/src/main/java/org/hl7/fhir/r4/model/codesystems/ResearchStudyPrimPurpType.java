@@ -106,6 +106,7 @@ public enum ResearchStudyPrimPurpType {
             case HEALTHSERVICESRESEARCH: return "health-services-research";
             case BASICSCIENCE: return "basic-science";
             case DEVICEFEASIBILITY: return "device-feasibility";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum ResearchStudyPrimPurpType {
             case HEALTHSERVICESRESEARCH: return "One or more interventions for evaluating the delivery, processes, management, organization, or financing of healthcare.";
             case BASICSCIENCE: return "One or more interventions for examining the basic mechanism of action (for example, physiology or biomechanics of an intervention).";
             case DEVICEFEASIBILITY: return "An intervention of a device product is being evaluated to determine the feasibility of the product or to test a prototype device and not health outcomes. Such studies are conducted to confirm the design and operating specifications of a device before beginning a full clinical trial.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum ResearchStudyPrimPurpType {
             case HEALTHSERVICESRESEARCH: return "Health Services Research";
             case BASICSCIENCE: return "Basic Science";
             case DEVICEFEASIBILITY: return "Device Feasibility";
+            case NULL: return null;
             default: return "?";
           }
     }

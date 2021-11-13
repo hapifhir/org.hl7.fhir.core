@@ -918,6 +918,7 @@ public enum V3SpecimenType {
             case WNDA: return "WNDA";
             case WNDD: return "WNDD";
             case WNDE: return "WNDE";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1050,6 +1051,7 @@ public enum V3SpecimenType {
             case WNDA: return "Wound abscess";
             case WNDD: return "Wound drainage";
             case WNDE: return "Wound exudate";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1179,6 +1181,7 @@ public enum V3SpecimenType {
             case WNDA: return "Wound abscess";
             case WNDD: return "Wound drainage";
             case WNDE: return "Wound exudate";
+            case NULL: return null;
             default: return "?";
           }
     }

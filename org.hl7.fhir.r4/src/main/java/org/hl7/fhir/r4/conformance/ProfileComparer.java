@@ -34,7 +34,6 @@ package org.hl7.fhir.r4.conformance;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -70,6 +69,8 @@ import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.utils.DefinitionNavigator;
 import org.hl7.fhir.r4.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.SimpleHTTPClient;
+import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -1283,9 +1284,10 @@ public class ProfileComparer {
     File f = new File(local);
     if (f.exists())
       return TextFile.fileToString(f);
-    URL url = new URL(source);
-    URLConnection c = url.openConnection();
-    String result = TextFile.streamToString(c.getInputStream());
+    SimpleHTTPClient http = new SimpleHTTPClient();
+    HTTPResult res = http.get(source);
+    res.checkThrowException();    
+    String result = TextFile.bytesToString(res.getContent());
     TextFile.stringToFile(result, f);
     return result;
   }

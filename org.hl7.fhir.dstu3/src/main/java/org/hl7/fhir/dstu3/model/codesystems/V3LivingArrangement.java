@@ -134,6 +134,7 @@ public enum V3LivingArrangement {
             case H: return "H";
             case R: return "R";
             case SL: return "SL";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -154,6 +155,7 @@ public enum V3LivingArrangement {
             case H: return "Independent Household";
             case R: return "Retirement Community";
             case SL: return "Definition: Assisted living in a single family residence for persons with physical, behavioral, or functional health, or socio-economic challenges.  There may or may not be on-site supervision but the housing is designed to assist the client with developing independent living skills. Community based services may be provided.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -171,6 +173,7 @@ public enum V3LivingArrangement {
             case H: return "Independent Household";
             case R: return "Retirement Community";
             case SL: return "supported living";
+            case NULL: return null;
             default: return "?";
           }
     }

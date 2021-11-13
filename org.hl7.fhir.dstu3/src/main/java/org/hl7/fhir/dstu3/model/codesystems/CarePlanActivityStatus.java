@@ -99,6 +99,7 @@ public enum CarePlanActivityStatus {
             case COMPLETED: return "completed";
             case CANCELLED: return "cancelled";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum CarePlanActivityStatus {
             case COMPLETED: return "The activities have been completed (more or less) as planned.";
             case CANCELLED: return "The activities have been ended prior to completion (perhaps even before they were started).";
             case UNKNOWN: return "The authoring system doesn't know the current state of the activity.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum CarePlanActivityStatus {
             case COMPLETED: return "Completed";
             case CANCELLED: return "Cancelled";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
     }

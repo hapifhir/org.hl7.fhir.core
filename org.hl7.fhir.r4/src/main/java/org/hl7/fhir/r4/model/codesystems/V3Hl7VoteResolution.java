@@ -141,6 +141,7 @@ public enum V3Hl7VoteResolution {
             case RETRACT: return "retract";
             case UNRESOLVED: return "unresolved";
             case WITHDRAW: return "withdraw";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -162,6 +163,7 @@ public enum V3Hl7VoteResolution {
             case RETRACT: return "Description: Voter has formally withdrawn their vote or comment as having been in error.  (Perhaps after further reading or explanation).";
             case UNRESOLVED: return "Description: Vote has not yet gone through resolution.";
             case WITHDRAW: return "Description: Voter has formally withdrawn their vote or comment on the basis of agreed changes or proposed future changes.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -180,6 +182,7 @@ public enum V3Hl7VoteResolution {
             case RETRACT: return "retracted";
             case UNRESOLVED: return "unresolved";
             case WITHDRAW: return "withdrawn";
+            case NULL: return null;
             default: return "?";
           }
     }

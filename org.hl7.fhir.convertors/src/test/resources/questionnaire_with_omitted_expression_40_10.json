@@ -1,0 +1,141 @@
+{
+  "resourceType": "Questionnaire",
+  "id": "3141",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n      <pre>\n            1.Comorbidity?\n              1.1 Cardial Comorbidity\n                1.1.1 Angina?\n                1.1.2 MI?\n              1.2 Vascular Comorbidity?\n              ...\n            Histopathology\n              Abdominal\n                pT category?\n              ...\n          </pre>\n    </div>"
+  },
+  "status": "draft",
+  "date": "2012-01",
+  "subjectType": [
+    "Patient"
+  ],
+  "group": {
+    "title": "Cancer Quality Forum Questionnaire 2012",
+    "group": [
+      {
+        "linkId": "1",
+        "concept": [
+          {
+            "system": "http://example.org/system/code/sections",
+            "code": "COMORBIDITY"
+          }
+        ],
+        "question": [
+          {
+            "linkId": "1.1",
+            "concept": [
+              {
+                "system": "http://example.org/system/code/questions",
+                "code": "COMORB"
+              }
+            ],
+            "type": "choice",
+            "options": {
+              "reference": "http://hl7.org/fhir/ValueSet/yesnodontknow"
+            },
+            "group": [
+              {
+                "linkId": "1.1.1",
+                "concept": [
+                  {
+                    "system": "http://example.org/system/code/sections",
+                    "code": "CARDIAL"
+                  }
+                ],
+                "question": [
+                  {
+                    "linkId": "1.1.1.1",
+                    "concept": [
+                      {
+                        "system": "http://example.org/system/code/questions",
+                        "code": "COMORBCAR"
+                      }
+                    ],
+                    "type": "choice",
+                    "options": {
+                      "reference": "http://hl7.org/fhir/ValueSet/yesnodontknow"
+                    },
+                    "group": [
+                      {
+                        "linkId": "1.1.1.1.1",
+                        "concept": [
+                          {
+                            "system": "http://example.org/system/code/questions",
+                            "code": "COMCAR00",
+                            "display": "Angina Pectoris"
+                          },
+                          {
+                            "system": "http://snomed.info/sct",
+                            "code": "194828000",
+                            "display": "Angina (disorder)"
+                          }
+                        ]
+                      },
+                      {
+                        "linkId": "1.1.1.1.2",
+                        "concept": [
+                          {
+                            "system": "http://snomed.info/sct",
+                            "code": "22298006",
+                            "display": "Myocardial infarction (disorder)"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "linkId": "1.1.1.2",
+                    "concept": [
+                      {
+                        "system": "http://example.org/system/code/questions",
+                        "code": "COMORBVAS"
+                      }
+                    ],
+                    "type": "choice",
+                    "options": {
+                      "reference": "http://hl7.org/fhir/ValueSet/yesnodontknow"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "linkId": "2",
+        "concept": [
+          {
+            "system": "http://example.org/system/code/sections",
+            "code": "HISTOPATHOLOGY"
+          }
+        ],
+        "group": [
+          {
+            "linkId": "2.1",
+            "concept": [
+              {
+                "system": "http://example.org/system/code/sections",
+                "code": "ABDOMINAL"
+              }
+            ],
+            "question": [
+              {
+                "linkId": "2.1.2",
+                "concept": [
+                  {
+                    "system": "http://example.org/system/code/questions",
+                    "code": "STADPT",
+                    "display": "pT category"
+                  }
+                ],
+                "type": "choice"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

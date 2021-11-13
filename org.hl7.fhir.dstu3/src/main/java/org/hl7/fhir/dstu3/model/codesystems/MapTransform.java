@@ -169,6 +169,7 @@ public enum MapTransform {
             case QTY: return "qty";
             case ID: return "id";
             case CP: return "cp";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -194,6 +195,7 @@ public enum MapTransform {
             case QTY: return "Create a quantity. Parameters = (text) or (value, unit, [system, code]) where text is the natural representation e.g. [comparator]value[space]unit";
             case ID: return "Create an identifier. Parameters = (system, value[, type]) where type is a code from the identifier type value set";
             case CP: return "Create a contact details. Parameters = (value) or (system, value). If no system is provided, the system should be inferred from the content of the value";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -216,6 +218,7 @@ public enum MapTransform {
             case QTY: return "qty";
             case ID: return "id";
             case CP: return "cp";
+            case NULL: return null;
             default: return "?";
           }
     }

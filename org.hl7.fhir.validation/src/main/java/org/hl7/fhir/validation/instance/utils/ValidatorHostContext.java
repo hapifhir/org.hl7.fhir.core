@@ -26,11 +26,20 @@ public class ValidatorHostContext {
     }
 
     public ValidatorHostContext(Object appContext, Element element) {
-        this.appContext = appContext;
-        this.resource = element;
-        this.rootResource = element;
-        // no container
-    }
+      this.appContext = appContext;
+      this.resource = element;
+      this.rootResource = element;
+      // no container
+      dump("creating");
+  }
+
+    public ValidatorHostContext(Object appContext, Element element, Element root) {
+      this.appContext = appContext;
+      this.resource = element;
+      this.rootResource = root;
+      // no container
+      dump("creating");
+  }
 
     public Object getAppContext() {
         return appContext;
@@ -52,6 +61,7 @@ public class ValidatorHostContext {
 
     public ValidatorHostContext setRootResource(Element rootResource) {
         this.rootResource = rootResource;
+        dump("setting root resource");
         return this;
     }
 
@@ -86,7 +96,9 @@ public class ValidatorHostContext {
     }
 
     public void sliceNotes(String url, List<ValidationMessage> record) {
+      if (sliceRecords != null) {  
         sliceRecords.put(url, record);
+      }
     }
 
     public ValidatorHostContext forContained(Element element) {
@@ -94,6 +106,7 @@ public class ValidatorHostContext {
         res.rootResource = resource;
         res.resource = element;
         res.profile = profile;
+        res.dump("forContained");
         return res;
     }
 
@@ -102,6 +115,7 @@ public class ValidatorHostContext {
         res.rootResource = element;
         res.resource = element;
         res.profile = profile;
+        res.dump("forEntry");
         return res;
     }
 
@@ -111,6 +125,7 @@ public class ValidatorHostContext {
         res.rootResource = rootResource;
         res.profile = profile;
         res.sliceRecords = sliceRecords != null ? sliceRecords : new HashMap<String, List<ValidationMessage>>();
+        res.dump("forProfile "+profile.getUrl());
         return res;
     }
 
@@ -120,7 +135,15 @@ public class ValidatorHostContext {
         res.rootResource = resource;
         res.profile = profile;
         res.checkSpecials = false;
+        res.dump("forLocalReference "+profile.getUrl());
         return res;
+    }
+
+    private void dump(String ctxt) {
+//      System.out.println("** app = "+(appContext == null ? "(null)" : appContext.toString())+", res = "+resource.toString()+", root = "+rootResource.toString()+" ("+ctxt+")");
+//      if (rootResource.getName().equals("contained")) {
+//        System.out.println("** something is wrong!");        
+//      }
     }
 
     public ValidatorHostContext forRemoteReference(StructureDefinition profile, Element resource) {
@@ -129,6 +152,7 @@ public class ValidatorHostContext {
         res.rootResource = resource;
         res.profile = profile;
         res.checkSpecials = false;
+        res.dump("forRemoteReference "+profile.getUrl());
         return res;
     }
 
@@ -139,6 +163,7 @@ public class ValidatorHostContext {
         res.profile = profile;
         res.checkSpecials = false;
         res.sliceRecords = new HashMap<String, List<ValidationMessage>>();
+        res.dump("forSlicing");
         return res;
     }
 

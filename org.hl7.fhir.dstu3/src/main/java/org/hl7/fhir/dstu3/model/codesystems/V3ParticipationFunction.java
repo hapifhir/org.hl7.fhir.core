@@ -403,6 +403,7 @@ public enum V3ParticipationFunction {
             case SASST: return "SASST";
             case SNRS: return "SNRS";
             case TASST: return "TASST";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -460,6 +461,7 @@ public enum V3ParticipationFunction {
             case SASST: return "In a typical surgery setting the assistant who primarily holds the hooks.";
             case SNRS: return "In a typical surgery setting the nurse in charge of the instrumentation.";
             case TASST: return "In a typical surgery setting there is rarely a third assistant (e.g., in some Hip operations the third assistant postures the affected leg).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -514,6 +516,7 @@ public enum V3ParticipationFunction {
             case SASST: return "second assistant surgeon";
             case SNRS: return "scrub nurse";
             case TASST: return "third assistant";
+            case NULL: return null;
             default: return "?";
           }
     }

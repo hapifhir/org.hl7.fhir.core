@@ -64,6 +64,7 @@ public enum ActionRelationshipType {
           switch (this) {
             case BEFORE: return "before";
             case AFTER: return "after";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ActionRelationshipType {
           switch (this) {
             case BEFORE: return "The action must be performed before the related action";
             case AFTER: return "The action must be performed after the related action";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ActionRelationshipType {
           switch (this) {
             case BEFORE: return "Before";
             case AFTER: return "After";
+            case NULL: return null;
             default: return "?";
           }
     }

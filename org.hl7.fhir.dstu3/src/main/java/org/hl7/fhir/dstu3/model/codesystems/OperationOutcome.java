@@ -400,6 +400,7 @@ public enum OperationOutcome {
             case UPDATEMULTIPLEMATCHES: return "UPDATE_MULTIPLE_MATCHES";
             case DELETEMULTIPLEMATCHES: return "DELETE_MULTIPLE_MATCHES";
             case SEARCHNONE: return "SEARCH_NONE";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -458,6 +459,7 @@ public enum OperationOutcome {
             case UPDATEMULTIPLEMATCHES: return "";
             case DELETEMULTIPLEMATCHES: return "";
             case SEARCHNONE: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -513,6 +515,7 @@ public enum OperationOutcome {
             case UPDATEMULTIPLEMATCHES: return "Error: Multiple matches exist for the conditional update";
             case DELETEMULTIPLEMATCHES: return "Error: Multiple matches exist for the conditional delete";
             case SEARCHNONE: return "Error: no processable search found for %s search parameters \"%s\"";
+            case NULL: return null;
             default: return "?";
           }
     }

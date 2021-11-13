@@ -2927,6 +2927,7 @@ public enum V3RoleCode {
             case NAMED: return "NAMED";
             case PSYCHCF: return "PSYCHCF";
             case SUBSCR: return "SUBSCR";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -3332,6 +3333,7 @@ public enum V3RoleCode {
             case NAMED: return "A party to an insurance policy to whom the insurer agrees to indemnify for losses, provides benefits for, or renders services.";
             case PSYCHCF: return "";
             case SUBSCR: return "A party covered under a policy based on association with a sponsor who is the policy holder, and whose association may provide for the eligibility of dependents for coverage";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -3734,6 +3736,7 @@ public enum V3RoleCode {
             case NAMED: return "named insured";
             case PSYCHCF: return "PSYCHCF";
             case SUBSCR: return "subscriber";
+            case NULL: return null;
             default: return "?";
           }
     }

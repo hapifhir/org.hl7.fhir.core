@@ -64,6 +64,7 @@ public enum BenefitTerm {
           switch (this) {
             case ANNUAL: return "annual";
             case LIFETIME: return "lifetime";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum BenefitTerm {
           switch (this) {
             case ANNUAL: return "Annual, renewing on the anniversary";
             case LIFETIME: return "For the total term, lifetime, of the policy or coverage";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum BenefitTerm {
           switch (this) {
             case ANNUAL: return "Annual";
             case LIFETIME: return "Lifetime";
+            case NULL: return null;
             default: return "?";
           }
     }

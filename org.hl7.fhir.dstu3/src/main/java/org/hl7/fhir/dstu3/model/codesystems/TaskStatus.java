@@ -134,6 +134,7 @@ public enum TaskStatus {
             case FAILED: return "failed";
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -154,6 +155,7 @@ public enum TaskStatus {
             case FAILED: return "The task was attempted but could not be completed due to some error.";
             case COMPLETED: return "The task has been completed.";
             case ENTEREDINERROR: return "The task should never have existed and is retained only because of the possibility it may have used.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -171,6 +173,7 @@ public enum TaskStatus {
             case FAILED: return "Failed";
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -71,6 +71,7 @@ public enum V3ProcessingID {
             case D: return "D";
             case P: return "P";
             case T: return "T";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum V3ProcessingID {
             case D: return "Identifies debugging type of processing.";
             case P: return "Identifies production type of processing.";
             case T: return "Identifies training type of processing.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum V3ProcessingID {
             case D: return "Debugging";
             case P: return "Production";
             case T: return "Training";
+            case NULL: return null;
             default: return "?";
           }
     }

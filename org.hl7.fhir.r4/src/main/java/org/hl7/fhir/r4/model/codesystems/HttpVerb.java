@@ -92,6 +92,7 @@ public enum HttpVerb {
             case PUT: return "PUT";
             case DELETE: return "DELETE";
             case PATCH: return "PATCH";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum HttpVerb {
             case PUT: return "HTTP PUT Command.";
             case DELETE: return "HTTP DELETE Command.";
             case PATCH: return "HTTP PATCH Command.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum HttpVerb {
             case PUT: return "PUT";
             case DELETE: return "DELETE";
             case PATCH: return "PATCH";
+            case NULL: return null;
             default: return "?";
           }
     }

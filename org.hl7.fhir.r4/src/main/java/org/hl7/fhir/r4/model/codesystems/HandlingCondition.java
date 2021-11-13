@@ -71,6 +71,7 @@ public enum HandlingCondition {
             case ROOM: return "room";
             case REFRIGERATED: return "refrigerated";
             case FROZEN: return "frozen";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum HandlingCondition {
             case ROOM: return "room temperature.";
             case REFRIGERATED: return "refrigerated temperature.";
             case FROZEN: return "frozen temperature.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum HandlingCondition {
             case ROOM: return "room temperature";
             case REFRIGERATED: return "refrigerated";
             case FROZEN: return "frozen";
+            case NULL: return null;
             default: return "?";
           }
     }

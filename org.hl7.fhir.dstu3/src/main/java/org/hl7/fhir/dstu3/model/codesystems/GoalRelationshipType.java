@@ -85,6 +85,7 @@ public enum GoalRelationshipType {
             case REPLACEMENT: return "replacement";
             case MILESTONE: return "milestone";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum GoalRelationshipType {
             case REPLACEMENT: return "Indicates that this goal has been replaced by the target goal";
             case MILESTONE: return "Indicates that the target goal is considered to be a \"piece\" of attaining this goal.";
             case OTHER: return "Indicates that the relationship is not covered by one of the pre-defined codes.  (An extension may convey more information about the meaning of the relationship.)";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum GoalRelationshipType {
             case REPLACEMENT: return "Replacement";
             case MILESTONE: return "Milestone";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
     }

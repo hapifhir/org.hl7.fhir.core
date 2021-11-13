@@ -55,6 +55,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.ElementDecoration;
 import org.hl7.fhir.utilities.ElementDecoration.DecorationType;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -102,6 +103,10 @@ public class Element extends Base {
 	private String explicitType; // for xsi:type attribute
 	private Element parentForValidator;
 	private boolean hasParentForValidator;
+	private String path;
+	private List<ValidationMessage> messages;
+	private boolean prohibited;
+	private boolean required;
 
 	public Element(String name) {
 		super();
@@ -540,17 +545,19 @@ public class Element extends Base {
   }
 
   public Element getNamedChild(String name) {
-	  if (children == null)
-  		return null;
-	  Element result = null;
-	  for (Element child : children) {
-	  	if (child.getName().equals(name) || (child.getName().length() >  child.fhirType().length() && child.getName().substring(0, child.getName().length() - child.fhirType().length()).equals(name) && child.getProperty().getDefinition().isChoice())) {
-	  		if (result == null)
-	  			result = child;
-	  		else 
-	  			throw new Error("Attempt to read a single element when there is more than one present ("+name+")");
-	  	}
-	  }
+    if (children == null)
+      return null;
+    Element result = null;
+    for (Element child : children) {
+      if (child.getName() != null && name != null && child.getProperty() != null && child.getProperty().getDefinition() != null && child.fhirType() != null) {
+        if (child.getName().equals(name) || (child.getName().length() >  child.fhirType().length() && child.getName().substring(0, child.getName().length() - child.fhirType().length()).equals(name) && child.getProperty().getDefinition().isChoice())) {
+          if (result == null)
+            result = child;
+          else 
+            throw new Error("Attempt to read a single element when there is more than one present ("+name+")");
+        }
+      }
+    }
 	  return result;
 	}
 
@@ -627,7 +634,14 @@ public class Element extends Base {
 
   @Override
   public String toString() {
-    return name+"="+fhirType() + "["+(children == null || hasValue() ? value : Integer.toString(children.size())+" children")+"]";
+    if (name.equals(fhirType()) && isResource()) {
+      return fhirType()+"/"+getIdBase() + "["+(children == null || hasValue() ? value : Integer.toString(children.size())+" children")+"]";
+      
+    } else if (isResource()) {
+      return name+"="+fhirType()+"/"+getIdBase()+ "["+(children == null || hasValue() ? value : Integer.toString(children.size())+" children")+"]";
+    } else {
+      return name+"="+fhirType() + "["+(children == null || hasValue() ? value : Integer.toString(children.size())+" children")+"]";
+    }
   }
 
   @Override
@@ -704,6 +718,13 @@ public class Element extends Base {
       return elementProperty.isList();
     else
       return property.isList();
+  }
+  
+  public boolean isBaseList() {
+    if (elementProperty != null)
+      return elementProperty.isBaseList();
+    else
+      return property.isBaseList();
   }
   
   @Override
@@ -938,6 +959,51 @@ public class Element extends Base {
     property = null;
     elementProperty = null;
     xhtml = null;
+    path = null;
+  }
+
+  public String getPath() {
+    return path;
+  }
+
+  public void setPath(String path) {
+    this.path = path;
   }  
+  
+  public void addMessage(ValidationMessage vm) {
+    if (messages == null) {
+      messages = new ArrayList<>();
+    }
+    messages.add(vm);
+  }
+
+  public boolean hasMessages() {
+    return messages != null && !messages.isEmpty();
+  }
+
+  public List<ValidationMessage> getMessages() {
+    return messages;
+  }
+
+  public void removeChild(String name) {
+    children.removeIf(n -> name.equals(n.getName()));    
+  }
+
+  public boolean isProhibited() {
+    return prohibited;
+  }
+
+  public void setProhibited(boolean prohibited) {
+    this.prohibited = prohibited;
+  }
+
+  public boolean isRequired() {
+    return required;
+  }
+
+  public void setRequired(boolean required) {
+    this.required = required;
+  }
+  
   
 }

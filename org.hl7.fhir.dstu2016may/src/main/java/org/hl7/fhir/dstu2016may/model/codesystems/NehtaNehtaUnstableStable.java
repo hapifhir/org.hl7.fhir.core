@@ -71,6 +71,7 @@ public enum NehtaNehtaUnstableStable {
             case UNSTABLE: return "unstable";
             case STABLE: return "stable";
             case NOTTESTED: return "not_tested";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum NehtaNehtaUnstableStable {
             case UNSTABLE: return "Unstable";
             case STABLE: return "Stable";
             case NOTTESTED: return "Not tested";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum NehtaNehtaUnstableStable {
             case UNSTABLE: return "Unstable";
             case STABLE: return "Stable";
             case NOTTESTED: return "Not tested";
+            case NULL: return null;
             default: return "?";
           }
     }

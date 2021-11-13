@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1718,26 +1718,6 @@ public class Group extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam ACTUAL = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ACTUAL);
 
  /**
-   * Search parameter: <b>characteristic-value</b>
-   * <p>
-   * Description: <b>A composite of both characteristic and value</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>Group.characteristic</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="characteristic-value", path="Group.characteristic", description="A composite of both characteristic and value", type="composite", compositeOf={"characteristic", "value"} )
-  public static final String SP_CHARACTERISTIC_VALUE = "characteristic-value";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>characteristic-value</b>
-   * <p>
-   * Description: <b>A composite of both characteristic and value</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>Group.characteristic</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CHARACTERISTIC_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CHARACTERISTIC_VALUE);
-
- /**
    * Search parameter: <b>characteristic</b>
    * <p>
    * Description: <b>Kind of characteristic</b><br>
@@ -1908,6 +1888,26 @@ public class Group extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VALUE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VALUE);
+
+ /**
+   * Search parameter: <b>characteristic-value</b>
+   * <p>
+   * Description: <b>A composite of both characteristic and value</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>Group.characteristic</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="characteristic-value", path="Group.characteristic", description="A composite of both characteristic and value", type="composite", compositeOf={"characteristic", "value"} )
+  public static final String SP_CHARACTERISTIC_VALUE = "characteristic-value";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>characteristic-value</b>
+   * <p>
+   * Description: <b>A composite of both characteristic and value</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>Group.characteristic</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CHARACTERISTIC_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CHARACTERISTIC_VALUE);
 
 
 }

@@ -89,6 +89,7 @@ public class MessageDefinition extends MetadataResource {
             case CONSEQUENCE: return "consequence";
             case CURRENCY: return "currency";
             case NOTIFICATION: return "notification";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +98,7 @@ public class MessageDefinition extends MetadataResource {
             case CONSEQUENCE: return "http://hl7.org/fhir/message-significance-category";
             case CURRENCY: return "http://hl7.org/fhir/message-significance-category";
             case NOTIFICATION: return "http://hl7.org/fhir/message-significance-category";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +107,7 @@ public class MessageDefinition extends MetadataResource {
             case CONSEQUENCE: return "The message represents/requests a change that should not be processed more than once; e.g., making a booking for an appointment.";
             case CURRENCY: return "The message represents a response to query for current information. Retrospective processing is wrong and/or wasteful.";
             case NOTIFICATION: return "The content is not necessarily intended to be current, and it can be reprocessed, though there may be version issues created by processing old notifications.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +116,7 @@ public class MessageDefinition extends MetadataResource {
             case CONSEQUENCE: return "Consequence";
             case CURRENCY: return "Currency";
             case NOTIFICATION: return "Notification";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -204,6 +208,7 @@ public class MessageDefinition extends MetadataResource {
             case ONERROR: return "on-error";
             case NEVER: return "never";
             case ONSUCCESS: return "on-success";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -213,6 +218,7 @@ public class MessageDefinition extends MetadataResource {
             case ONERROR: return "http://hl7.org/fhir/messageheader-response-request";
             case NEVER: return "http://hl7.org/fhir/messageheader-response-request";
             case ONSUCCESS: return "http://hl7.org/fhir/messageheader-response-request";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -222,6 +228,7 @@ public class MessageDefinition extends MetadataResource {
             case ONERROR: return "initiator expects a response only if in error.";
             case NEVER: return "initiator does not expect a response.";
             case ONSUCCESS: return "initiator expects a response only if successful.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -231,6 +238,7 @@ public class MessageDefinition extends MetadataResource {
             case ONERROR: return "Error/reject conditions only";
             case NEVER: return "Never";
             case ONSUCCESS: return "Successful completion only";
+            case NULL: return null;
             default: return "?";
           }
         }

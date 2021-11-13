@@ -64,6 +64,7 @@ public enum OperationKind {
           switch (this) {
             case OPERATION: return "operation";
             case QUERY: return "query";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum OperationKind {
           switch (this) {
             case OPERATION: return "This operation is invoked as an operation.";
             case QUERY: return "This operation is a named query, invoked using the search mechanism.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum OperationKind {
           switch (this) {
             case OPERATION: return "Operation";
             case QUERY: return "Query";
+            case NULL: return null;
             default: return "?";
           }
     }

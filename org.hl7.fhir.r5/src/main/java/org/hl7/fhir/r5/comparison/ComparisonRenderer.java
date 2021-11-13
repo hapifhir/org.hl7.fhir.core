@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.comparison;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -56,7 +57,7 @@ public class ComparisonRenderer implements IEvaluationContext {
     return templates;
   }
   
-  public void render(String leftName, String rightName) throws IOException {
+  public File render(String leftName, String rightName) throws IOException {
     dumpBinaries();
     StringBuilder b = new StringBuilder();
     b.append("<table class=\"grid\">\r\n");
@@ -71,6 +72,7 @@ public class ComparisonRenderer implements IEvaluationContext {
     processList(list, b, "CodeSystem");
     processList(list, b, "ValueSet");
     processList(list, b, "StructureDefinition");
+    processList(list, b, "CapabilityStatement");
     b.append("</table>\r\n");
 
     Map<String, Base> vars = new HashMap<>();
@@ -79,6 +81,7 @@ public class ComparisonRenderer implements IEvaluationContext {
     String template = templates.get("Index");
     String cnt = processTemplate(template, "CodeSystem", vars);
     TextFile.stringToFile(cnt, file("index.html"));
+    return new File(file("index.html"));
   }
 
   private void processList(List<String> list, StringBuilder b, String name) throws IOException {
@@ -111,11 +114,15 @@ public class ComparisonRenderer implements IEvaluationContext {
   }
 
   private void dumpBinaries() throws IOException {
-    for (String k : contextLeft.getBinaries().keySet()) {
-      TextFile.bytesToFile(contextLeft.getBinaries().get(k), Utilities.path(folder, k));
+    if (contextLeft != null && contextLeft.getBinaries() != null) {
+      for (String k : contextLeft.getBinaries().keySet()) {
+        TextFile.bytesToFile(contextLeft.getBinaries().get(k), Utilities.path(folder, k));
+      }
     }
-    for (String k : contextRight.getBinaries().keySet()) {
-      TextFile.bytesToFile(contextRight.getBinaries().get(k), Utilities.path(folder, k));
+    if (contextRight != null && contextRight.getBinaries() != null) {
+      for (String k : contextRight.getBinaries().keySet()) {
+        TextFile.bytesToFile(contextRight.getBinaries().get(k), Utilities.path(folder, k));
+      }
     }
   }
 
@@ -212,10 +219,14 @@ public class ComparisonRenderer implements IEvaluationContext {
   }
 
   @Override
-  public Base resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+  public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
     @SuppressWarnings("unchecked")
     Map<String, Base> vars = (Map<String, Base>) appContext;
-    return vars.get(name);
+    List<Base> res = new ArrayList<>();
+    if (vars.containsKey(name)) {
+      res.add(vars.get(name));
+    }
+    return res;
   }
 
   @Override

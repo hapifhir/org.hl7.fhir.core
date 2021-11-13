@@ -71,6 +71,7 @@ public enum VerificationresultValidationStatus {
             case SUCCESSFUL: return "successful";
             case FAILED: return "failed";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum VerificationresultValidationStatus {
             case SUCCESSFUL: return "";
             case FAILED: return "";
             case UNKNOWN: return "The validations status has not been determined yet";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum VerificationresultValidationStatus {
             case SUCCESSFUL: return "Successful";
             case FAILED: return "Failed";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
     }

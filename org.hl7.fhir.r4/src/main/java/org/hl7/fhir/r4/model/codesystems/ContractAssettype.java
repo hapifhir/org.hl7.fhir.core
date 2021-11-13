@@ -57,6 +57,7 @@ public enum ContractAssettype {
         public String toCode() {
           switch (this) {
             case PARTICIPATION: return "participation";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum ContractAssettype {
         public String getDefinition() {
           switch (this) {
             case PARTICIPATION: return "To be completed";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case PARTICIPATION: return "Participation";
+            case NULL: return null;
             default: return "?";
           }
     }

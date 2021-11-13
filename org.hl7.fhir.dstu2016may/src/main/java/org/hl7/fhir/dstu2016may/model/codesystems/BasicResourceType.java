@@ -162,6 +162,7 @@ public enum BasicResourceType {
             case PREDETERMINE: return "predetermine";
             case STUDY: return "study";
             case PROTOCOL: return "protocol";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -186,6 +187,7 @@ public enum BasicResourceType {
             case PREDETERMINE: return "An adjudication of what would be paid under an insurance plan for a hypothetical claim for goods or services";
             case STUDY: return "An investigation to determine information about a particular therapy or product";
             case PROTOCOL: return "A set of (possibly conditional) steps to be taken to achieve some aim.  Includes study protocols, treatment protocols, emergency protocols, etc.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -207,6 +209,7 @@ public enum BasicResourceType {
             case PREDETERMINE: return "Predetermination";
             case STUDY: return "Study";
             case PROTOCOL: return "Protocol";
+            case NULL: return null;
             default: return "?";
           }
     }

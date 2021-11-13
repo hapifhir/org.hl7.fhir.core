@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -3117,7 +3117,7 @@ public class Bundle extends Resource implements IBaseBundle {
    * Path: <b>Bundle.entry[0].resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="composition", path="Bundle.entry[0].resource", description="The first resource in the bundle, if the bundle type is \"document\" - this is a composition, and this parameter provides access to search its contents", type="reference", target={Composition.class } )
+  @SearchParamDefinition(name="composition", path="Bundle.entry[0].resource", description="The first resource in the bundle, if the bundle type is \"document\" - this is a composition, and this parameter provides access to search its contents", type="reference" )
   public static final String SP_COMPOSITION = "composition";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>composition</b>
@@ -3163,7 +3163,7 @@ public class Bundle extends Resource implements IBaseBundle {
    * Path: <b>Bundle.entry[0].resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="message", path="Bundle.entry[0].resource", description="The first resource in the bundle, if the bundle type is \"message\" - this is a message header, and this parameter provides access to search its contents", type="reference", target={MessageHeader.class } )
+  @SearchParamDefinition(name="message", path="Bundle.entry[0].resource", description="The first resource in the bundle, if the bundle type is \"message\" - this is a message header, and this parameter provides access to search its contents", type="reference" )
   public static final String SP_MESSAGE = "message";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>message</b>
@@ -3221,7 +3221,7 @@ public class Bundle extends Resource implements IBaseBundle {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
-// Manual code (from Configuration.txt)t:
+// Manual code (from Configuration.txt):
 /** 
    * Returns the {@link #getLink() link} which matches a given {@link BundleLinkComponent#getRelation() relation}.  
    * If no link is found which matches the given relation, returns <code>null</code>. If more than one 

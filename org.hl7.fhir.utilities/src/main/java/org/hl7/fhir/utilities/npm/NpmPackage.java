@@ -64,6 +64,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JSONUtil;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
+import org.hl7.fhir.utilities.npm.NpmPackage.ITransformingLoader;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformationSorter;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 
@@ -83,6 +84,12 @@ import com.google.gson.JsonObject;
  *
  */
 public class NpmPackage {
+
+  public interface ITransformingLoader {
+
+    byte[] load(File f);
+
+  }
 
   public class PackageResourceInformationSorter implements Comparator<PackageResourceInformation> {
     @Override
@@ -719,16 +726,20 @@ public class NpmPackage {
   public String fhirVersion() {
     if ("hl7.fhir.core".equals(JSONUtil.str(npm, "name")))
       return JSONUtil.str(npm, "version");
-    else if (JSONUtil.str(npm, "name").startsWith("hl7.fhir.r2.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r2b.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r3.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r4.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r5."))
+    else if (JSONUtil.str(npm, "name").startsWith("hl7.fhir.r2.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r2b.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r3.") || 
+        JSONUtil.str(npm, "name").startsWith("hl7.fhir.r4.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r4b.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r5."))
       return JSONUtil.str(npm, "version");
-    else {        
-      JsonObject dep = npm.getAsJsonObject("dependencies");
-      if (dep != null) {
-        for (Entry<String, JsonElement> e : dep.entrySet()) {
-          if (Utilities.existsInList(e.getKey(), "hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core", "hl7.fhir.r4.core"))
-            return e.getValue().getAsString();
-          if (Utilities.existsInList(e.getKey(), "hl7.fhir.core")) // while all packages are updated
-            return e.getValue().getAsString();
+    else {
+      JsonObject dep = null;
+      if (npm.has("dependencies") && npm.get("dependencies").isJsonObject()) {
+        dep = npm.getAsJsonObject("dependencies");
+        if (dep != null) {
+          for (Entry<String, JsonElement> e : dep.entrySet()) {
+            if (Utilities.existsInList(e.getKey(), "hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core", "hl7.fhir.r4.core"))
+              return e.getValue().getAsString();
+            if (Utilities.existsInList(e.getKey(), "hl7.fhir.core")) // while all packages are updated
+              return e.getValue().getAsString();
+          }
         }
       }
       if (npm.has("fhirVersions")) {
@@ -814,7 +825,7 @@ public class NpmPackage {
   //  }
 
   public String getWebLocation() {
-    if (npm.has("url")) {
+    if (npm.has("url") && npm.get("url").isJsonPrimitive()) {
       return PackageHacker.fixPackageUrl(npm.get("url").getAsString());
     } else {
       return JSONUtil.str(npm, "canonical");
@@ -947,8 +958,13 @@ public class NpmPackage {
   public String fhirVersionList() {
     if (npm.has("fhirVersions")) {
       CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-      for (JsonElement n : npm.getAsJsonArray("fhirVersions")) {
-        b.append(n.getAsString());
+      if (npm.get("fhirVersions").isJsonArray()) {
+        for (JsonElement n : npm.getAsJsonArray("fhirVersions")) {
+          b.append(n.getAsString());
+        }
+      }
+      if (npm.get("fhirVersions").isJsonPrimitive()) {
+        b.append(npm.get("fhirVersions").getAsString());
       }
       return b.toString();
     } else
@@ -1048,6 +1064,18 @@ public class NpmPackage {
       for (File f : new File(p).listFiles()) {
         if (!f.isDirectory() && !isInternalExemptFile(f)) {
           pf.getContent().put(f.getName(), TextFile.fileToBytes(f));
+        }
+      }
+    }
+  }
+
+  public void loadAllFiles(ITransformingLoader loader) throws IOException {
+    for (String folder : folders.keySet()) {
+      NpmPackageFolder pf = folders.get(folder);
+      String p = folder.contains("$") ? path : Utilities.path(path, folder);
+      for (File f : new File(p).listFiles()) {
+        if (!f.isDirectory() && !isInternalExemptFile(f)) {
+          pf.getContent().put(f.getName(), loader.load(f));
         }
       }
     }

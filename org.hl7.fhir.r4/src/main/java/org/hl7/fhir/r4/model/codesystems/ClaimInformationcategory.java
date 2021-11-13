@@ -148,6 +148,7 @@ public enum ClaimInformationcategory {
             case EMPLOYMENTIMPACTED: return "employmentimpacted";
             case EXTERNALCAUSE: return "externalcause";
             case PATIENTREASONFORVISIT: return "patientreasonforvisit";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -170,6 +171,7 @@ public enum ClaimInformationcategory {
             case EMPLOYMENTIMPACTED: return "An indication that the patient was unable to work, the period if known otherwise a Yes/No (boolean).";
             case EXTERNALCAUSE: return "The external cause of an illness or injury.";
             case PATIENTREASONFORVISIT: return "The reason for the patient visit.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -189,6 +191,7 @@ public enum ClaimInformationcategory {
             case EMPLOYMENTIMPACTED: return "EmploymentImpacted";
             case EXTERNALCAUSE: return "External Caause";
             case PATIENTREASONFORVISIT: return "Patient Reason for Visit";
+            case NULL: return null;
             default: return "?";
           }
     }

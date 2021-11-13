@@ -386,6 +386,7 @@ public enum ContractSignerType {
             case VALID: return "VALID";
             case VERF: return "VERF";
             case WIT: return "WIT";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -442,6 +443,7 @@ public enum ContractSignerType {
             case VALID: return "A person who validates a health information document for inclusion in the patient record. For example, a medical student or resident is credentialed to perform history or physical examinations and to write progress notes. The attending physician signs the history and physical examination to validate the entry for inclusion in the patient's medical record.";
             case VERF: return "A person who asserts the correctness and appropriateness of an act or the recording of the act, and is accountable for the assertion that the act or the recording of the act complies with jurisdictional or organizational policy. For example, a physician is required to countersign a verbal order that has previously been recorded in the medical record by a registered nurse who has carried out the verbal order.";
             case WIT: return "A person witnessing the signature of another party. A witness is not knowledgeable about the content being signed, much less approves of anything stated in the content. For example, an advanced directive witness or a witness that a party to a contract signed that certain demographic or financial information is truthful.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -495,6 +497,7 @@ public enum ContractSignerType {
             case VALID: return "validator";
             case VERF: return "verifier";
             case WIT: return "witness";
+            case NULL: return null;
             default: return "?";
           }
     }

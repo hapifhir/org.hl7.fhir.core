@@ -99,6 +99,7 @@ public enum NehtaServiceBookingStatusValues {
             case PRMS: return "PRMS";
             case PRP: return "PRP";
             case RQO: return "RQO";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum NehtaServiceBookingStatusValues {
             case PRMS: return "An intent to perform a service";
             case PRP: return "Non-mandated intent to perform an act";
             case RQO: return "Request or Order for a service";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum NehtaServiceBookingStatusValues {
             case PRMS: return "Promise";
             case PRP: return "Proposal";
             case RQO: return "Request";
+            case NULL: return null;
             default: return "?";
           }
     }

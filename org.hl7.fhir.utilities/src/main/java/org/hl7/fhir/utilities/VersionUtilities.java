@@ -55,8 +55,8 @@ public class VersionUtilities {
     }
   }
 
-  public static final String CURRENT_VERSION = "4.5";
-  public static final String CURRENT_FULL_VERSION = "4.5.0";
+  public static final String CURRENT_VERSION = "4.6";
+  public static final String CURRENT_FULL_VERSION = "4.6.0";
 
   public static String packageForVersion(String v) {
     if (isR2Ver(v)) {
@@ -71,13 +71,18 @@ public class VersionUtilities {
     if (isR4Ver(v)) {
       return "hl7.fhir.r4.core";
     }
+    
+    if (isR4BVer(v)) {
+      return "hl7.fhir.r4b.core";
+    }
+    
     if ("current".equals(v)) {
       return "hl7.fhir.r5.core";
     }
     if (v != null && v.startsWith(CURRENT_VERSION)) {
       return "hl7.fhir.r5.core";
     }
-    if ("4.4.0".equals(v)) {
+    if (Utilities.existsInList(v, "4.4.0", "4.5.0")) {
       return "hl7.fhir.r5.core";
     }
     return null;
@@ -122,15 +127,19 @@ public class VersionUtilities {
   }
 
   public static boolean isSupportedVersion(String version) {
-    return Utilities.existsInList(version, "1.0.2", "1.4.0", "3.0.2", "4.0.1", CURRENT_FULL_VERSION);
+    return Utilities.existsInList(version, "1.0.2", "1.4.0", "3.0.2", "4.0.1", "4.1.0", CURRENT_FULL_VERSION);
   }
 
   public static String listSupportedVersions() {
-    return "1.0.2, 1.4.0, 3.0.2, 4.0.1, "+CURRENT_FULL_VERSION;
+    return "1.0.2, 1.4.0, 3.0.2, 4.0.1, 4.1.0, "+CURRENT_FULL_VERSION;
   }
 
   public static boolean isR5Ver(String ver) {
-    return ver != null && ver.startsWith(CURRENT_VERSION);
+    return ver != null && (ver.startsWith(CURRENT_VERSION) || ver.equals("current"));
+  }
+
+  public static boolean isR4BVer(String ver) {
+    return ver != null && ver.startsWith("4.1");
   }
 
   public static boolean isR4Ver(String ver) {
@@ -452,7 +461,6 @@ public class VersionUtilities {
       res.add("TerminologyCapabilities");
       res.add("TestScript");
       res.add("ValueSet");
-
     }
     return res;
   }
@@ -464,5 +472,12 @@ public class VersionUtilities {
     }
     return null;
   }
+
+  public static boolean versionsMatch(String v1, String v2) {
+    String mm1 = getMajMin(v1);
+    String mm2 = getMajMin(v2);
+    return mm1 != null && mm2 != null && mm1.equals(mm2);
+  }
+
 
 }

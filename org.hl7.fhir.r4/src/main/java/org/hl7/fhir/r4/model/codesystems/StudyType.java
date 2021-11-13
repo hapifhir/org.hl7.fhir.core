@@ -99,6 +99,7 @@ public enum StudyType {
             case SERIES: return "series";
             case CASEREPORT: return "case-report";
             case MIXED: return "mixed";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum StudyType {
             case SERIES: return "uncontrolled cohort or case series.";
             case CASEREPORT: return "a single case report.";
             case MIXED: return "a combination of 1 or more types of studies.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum StudyType {
             case SERIES: return "uncontrolled cohort or case series";
             case CASEREPORT: return "case report";
             case MIXED: return "mixed methods";
+            case NULL: return null;
             default: return "?";
           }
     }

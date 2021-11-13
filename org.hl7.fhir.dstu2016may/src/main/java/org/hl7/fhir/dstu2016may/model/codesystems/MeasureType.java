@@ -64,6 +64,7 @@ public enum MeasureType {
           switch (this) {
             case PROCESS: return "process";
             case OUTCOME: return "outcome";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum MeasureType {
           switch (this) {
             case PROCESS: return "The measure is a process measure";
             case OUTCOME: return "The measure is an outcome measure";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum MeasureType {
           switch (this) {
             case PROCESS: return "Process";
             case OUTCOME: return "Outcome";
+            case NULL: return null;
             default: return "?";
           }
     }

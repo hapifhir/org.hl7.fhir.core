@@ -85,6 +85,7 @@ public enum DiscriminatorType {
             case PATTERN: return "pattern";
             case TYPE: return "type";
             case PROFILE: return "profile";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum DiscriminatorType {
             case PATTERN: return "The slices have different values in the nominated element, as determined by testing them against the applicable ElementDefinition.pattern[x].";
             case TYPE: return "The slices are differentiated by type of the nominated element.";
             case PROFILE: return "The slices are differentiated by conformance of the nominated element to a specified profile. Note that if the path specifies .resolve() then the profile is the target profile on the reference. In this case, validation by the possible profiles is required to differentiate the slices.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum DiscriminatorType {
             case PATTERN: return "Pattern";
             case TYPE: return "Type";
             case PROFILE: return "Profile";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -57,6 +57,7 @@ public enum HspcSubstanceCategory {
         public String toCode() {
           switch (this) {
             case _527731710: return "527731710";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum HspcSubstanceCategory {
         public String getDefinition() {
           switch (this) {
             case _527731710: return "The origin of the substance is environmental.";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case _527731710: return "Environmental";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -141,6 +141,7 @@ public enum GoalStatus {
             case CANCELLED: return "cancelled";
             case ENTEREDINERROR: return "entered-in-error";
             case REJECTED: return "rejected";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -162,6 +163,7 @@ public enum GoalStatus {
             case CANCELLED: return "The previously accepted goal is no longer being sought";
             case ENTEREDINERROR: return "The goal was entered in error and voided.";
             case REJECTED: return "A proposed goal was rejected";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -180,6 +182,7 @@ public enum GoalStatus {
             case CANCELLED: return "Cancelled";
             case ENTEREDINERROR: return "Entered In Error";
             case REJECTED: return "Rejected";
+            case NULL: return null;
             default: return "?";
           }
     }

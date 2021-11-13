@@ -89,6 +89,7 @@ public class Procedure extends DomainResource {
             case ABORTED: return "aborted";
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public class Procedure extends DomainResource {
             case ABORTED: return "http://hl7.org/fhir/procedure-status";
             case COMPLETED: return "http://hl7.org/fhir/procedure-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/procedure-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -107,6 +109,7 @@ public class Procedure extends DomainResource {
             case ABORTED: return "The procedure was terminated without completing successfully.";
             case COMPLETED: return "All actions involved in the procedure have taken place.";
             case ENTEREDINERROR: return "The statement was entered in error and Is not valid.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -116,6 +119,7 @@ public class Procedure extends DomainResource {
             case ABORTED: return "Aboted";
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }

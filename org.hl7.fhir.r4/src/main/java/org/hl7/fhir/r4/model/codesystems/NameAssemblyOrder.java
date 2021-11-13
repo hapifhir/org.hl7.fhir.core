@@ -78,6 +78,7 @@ public enum NameAssemblyOrder {
             case NL2: return "NL2";
             case NL3: return "NL3";
             case NL4: return "NL4";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum NameAssemblyOrder {
             case NL2: return "";
             case NL3: return "";
             case NL4: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum NameAssemblyOrder {
             case NL2: return "Partner Name";
             case NL3: return "Partner Name followed by Maiden Name";
             case NL4: return "Own Name followed by Partner Name";
+            case NULL: return null;
             default: return "?";
           }
     }

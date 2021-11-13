@@ -60,3 +60,9 @@ public String toCode(int len) {
         public String toString() {
           return toCode();
         }
+        
+        
+        public boolean isR4B() {
+          return toCode().startsWith("4.1");
+        }
+        

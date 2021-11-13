@@ -85,6 +85,7 @@ public enum EntformulaAdditive {
             case CARBOHYDRATE: return "carbohydrate";
             case FIBER: return "fiber";
             case WATER: return "water";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum EntformulaAdditive {
             case CARBOHYDRATE: return "";
             case FIBER: return "";
             case WATER: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum EntformulaAdditive {
             case CARBOHYDRATE: return "Modular carbohydrate enteral formula component";
             case FIBER: return "Modular fiber enteral formula component";
             case WATER: return "Added water";
+            case NULL: return null;
             default: return "?";
           }
     }

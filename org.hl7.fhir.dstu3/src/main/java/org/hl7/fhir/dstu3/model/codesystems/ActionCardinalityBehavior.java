@@ -64,6 +64,7 @@ public enum ActionCardinalityBehavior {
           switch (this) {
             case SINGLE: return "single";
             case MULTIPLE: return "multiple";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ActionCardinalityBehavior {
           switch (this) {
             case SINGLE: return "The action may only be selected one time";
             case MULTIPLE: return "The action may be selected multiple times";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ActionCardinalityBehavior {
           switch (this) {
             case SINGLE: return "Single";
             case MULTIPLE: return "Multiple";
+            case NULL: return null;
             default: return "?";
           }
     }

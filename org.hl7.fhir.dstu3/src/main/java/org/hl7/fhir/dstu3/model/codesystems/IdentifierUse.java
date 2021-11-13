@@ -78,6 +78,7 @@ public enum IdentifierUse {
             case OFFICIAL: return "official";
             case TEMP: return "temp";
             case SECONDARY: return "secondary";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum IdentifierUse {
             case OFFICIAL: return "The identifier considered to be most trusted for the identification of this item.";
             case TEMP: return "A temporary identifier.";
             case SECONDARY: return "An identifier that was assigned in secondary use - it serves to identify the object in a relative context, but cannot be consistently assigned to the same object again in a different context.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum IdentifierUse {
             case OFFICIAL: return "Official";
             case TEMP: return "Temp";
             case SECONDARY: return "Secondary";
+            case NULL: return null;
             default: return "?";
           }
     }

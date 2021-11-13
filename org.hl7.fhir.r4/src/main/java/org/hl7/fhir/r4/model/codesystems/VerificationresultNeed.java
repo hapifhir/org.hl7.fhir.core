@@ -71,6 +71,7 @@ public enum VerificationresultNeed {
             case NONE: return "none";
             case INITIAL: return "initial";
             case PERIODIC: return "periodic";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum VerificationresultNeed {
             case NONE: return "***TODO***";
             case INITIAL: return "***TODO***";
             case PERIODIC: return "***TODO***";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum VerificationresultNeed {
             case NONE: return "None";
             case INITIAL: return "Initial";
             case PERIODIC: return "Periodic";
+            case NULL: return null;
             default: return "?";
           }
     }

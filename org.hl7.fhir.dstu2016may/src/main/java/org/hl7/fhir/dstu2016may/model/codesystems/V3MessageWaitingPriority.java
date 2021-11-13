@@ -71,6 +71,7 @@ public enum V3MessageWaitingPriority {
             case H: return "H";
             case L: return "L";
             case M: return "M";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum V3MessageWaitingPriority {
             case H: return "High priority messages are available";
             case L: return "Low priority messages are available";
             case M: return "Medium priority messages are available";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum V3MessageWaitingPriority {
             case H: return "High";
             case L: return "Low";
             case M: return "Medium";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -91,6 +91,7 @@ public class ImagingStudy extends DomainResource {
             case OFFLINE: return "OFFLINE";
             case NEARLINE: return "NEARLINE";
             case UNAVAILABLE: return "UNAVAILABLE";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -100,6 +101,7 @@ public class ImagingStudy extends DomainResource {
             case OFFLINE: return "http://nema.org/dicom/dicm";
             case NEARLINE: return "http://nema.org/dicom/dicm";
             case UNAVAILABLE: return "http://nema.org/dicom/dicm";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -109,6 +111,7 @@ public class ImagingStudy extends DomainResource {
             case OFFLINE: return "";
             case NEARLINE: return "";
             case UNAVAILABLE: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -118,6 +121,7 @@ public class ImagingStudy extends DomainResource {
             case OFFLINE: return "OFFLINE";
             case NEARLINE: return "NEARLINE";
             case UNAVAILABLE: return "UNAVAILABLE";
+            case NULL: return null;
             default: return "?";
           }
         }

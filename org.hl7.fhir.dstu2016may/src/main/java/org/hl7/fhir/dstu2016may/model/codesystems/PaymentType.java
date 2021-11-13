@@ -71,6 +71,7 @@ public enum PaymentType {
             case PAYMENT: return "payment";
             case ADJUSTMENT: return "adjustment";
             case ADVANCE: return "advance";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum PaymentType {
             case PAYMENT: return "";
             case ADJUSTMENT: return "";
             case ADVANCE: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum PaymentType {
             case PAYMENT: return "payment";
             case ADJUSTMENT: return "adjustment";
             case ADVANCE: return "advance";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -127,6 +127,7 @@ public enum CoverageClass {
             case RXPCN: return "rxpcn";
             case RXID: return "rxid";
             case RXGROUP: return "rxgroup";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -146,6 +147,7 @@ public enum CoverageClass {
             case RXPCN: return "A Pharmacy Benefit Manager specified Processor Control Number.";
             case RXID: return "A Pharmacy Benefit Manager specified Member ID.";
             case RXGROUP: return "A Pharmacy Benefit Manager specified Group number.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -162,6 +164,7 @@ public enum CoverageClass {
             case RXPCN: return "RX PCN";
             case RXID: return "RX Id";
             case RXGROUP: return "RX Group";
+            case NULL: return null;
             default: return "?";
           }
     }

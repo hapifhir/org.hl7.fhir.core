@@ -71,6 +71,7 @@ public enum QuestionnaireDisplayCategory {
             case INSTRUCTIONS: return "instructions";
             case SECURITY: return "security";
             case HELP: return "help";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum QuestionnaireDisplayCategory {
             case INSTRUCTIONS: return "The text provides guidance on how to populate or use a portion of the questionnaire (or the questionnaire as a whole).";
             case SECURITY: return "The text provides guidance on how the information should be or will be handled from a security/confidentiality/access control perspective when completed";
             case HELP: return "The text provides additional guidance on populating the containing item.  Help text isn't necessarily expected to be rendered as part of the form, but may instead be made available through fly-over, pop-up button, link to a \"help\" page, etc.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum QuestionnaireDisplayCategory {
             case INSTRUCTIONS: return "Instructions";
             case SECURITY: return "Security";
             case HELP: return "Help";
+            case NULL: return null;
             default: return "?";
           }
     }

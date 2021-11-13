@@ -64,6 +64,7 @@ public enum MapInputMode {
           switch (this) {
             case SOURCE: return "source";
             case TARGET: return "target";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum MapInputMode {
           switch (this) {
             case SOURCE: return "Names an input instance used a source for mapping";
             case TARGET: return "Names an instance that is being populated";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum MapInputMode {
           switch (this) {
             case SOURCE: return "Source Instance";
             case TARGET: return "Target Instance";
+            case NULL: return null;
             default: return "?";
           }
     }

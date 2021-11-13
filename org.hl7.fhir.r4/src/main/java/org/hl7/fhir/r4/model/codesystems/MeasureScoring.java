@@ -78,6 +78,7 @@ public enum MeasureScoring {
             case RATIO: return "ratio";
             case CONTINUOUSVARIABLE: return "continuous-variable";
             case COHORT: return "cohort";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum MeasureScoring {
             case RATIO: return "The measure score is defined using a ratio.";
             case CONTINUOUSVARIABLE: return "The score is defined by a calculation of some quantity.";
             case COHORT: return "The measure is a cohort definition.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum MeasureScoring {
             case RATIO: return "Ratio";
             case CONTINUOUSVARIABLE: return "Continuous Variable";
             case COHORT: return "Cohort";
+            case NULL: return null;
             default: return "?";
           }
     }

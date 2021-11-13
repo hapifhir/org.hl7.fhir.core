@@ -71,6 +71,7 @@ public enum QualityType {
             case INDEL: return "indel";
             case SNP: return "snp";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum QualityType {
             case INDEL: return "INDEL Comparison";
             case SNP: return "SNP Comparison";
             case UNKNOWN: return "UNKNOWN Comparison";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum QualityType {
             case INDEL: return "INDEL Comparison";
             case SNP: return "SNP Comparison";
             case UNKNOWN: return "UNKNOWN Comparison";
+            case NULL: return null;
             default: return "?";
           }
     }

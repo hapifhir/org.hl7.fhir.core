@@ -506,8 +506,6 @@ public class StructureMapUtilities {
 
   private static void renderTarget(StringBuilder b, StructureMapGroupRuleTargetComponent rt, boolean abbreviate) {
     if (rt.hasContext()) {
-      if (rt.getContextType() == StructureMapContextType.TYPE)
-        b.append("@");
       b.append(rt.getContext());
       if (rt.hasElement()) {
         b.append('.');
@@ -1004,7 +1002,6 @@ public class StructureMapUtilities {
     String start = lexer.take();
     if (lexer.hasToken(".")) {
       target.setContext(start);
-      target.setContextType(StructureMapContextType.VARIABLE);
       start = null;
       lexer.token(".");
       target.setElement(lexer.take());
@@ -1755,6 +1752,7 @@ public class StructureMapUtilities {
     // if we can get this as a valueSet, we will
     String system = null;
     String display = null;
+    String version = null;
     ValueSet vs = Utilities.noString(uri) ? null : worker.fetchResourceWithException(ValueSet.class, uri);
     if (vs != null) {
       ValueSetExpansionOutcome vse = worker.expandVS(vs, true, false);
@@ -1766,20 +1764,23 @@ public class StructureMapUtilities {
           b.append(t.getCode());
         if (code.equals(t.getCode()) && t.hasSystem()) {
           system = t.getSystem();
+          version = t.getVersion();
           display = t.getDisplay();
           break;
         }
         if (code.equalsIgnoreCase(t.getDisplay()) && t.hasSystem()) {
           system = t.getSystem();
+          version = t.getVersion();
           display = t.getDisplay();
           break;
         }
       }
       if (system == null)
         throw new FHIRException("The code '" + code + "' is not in the value set '" + uri + "' (valid codes: " + b.toString() + "; also checked displays)");
-    } else
+    } else {
       system = uri;
-    ValidationResult vr = worker.validateCode(terminologyServiceOptions, system, code, null);
+    }
+    ValidationResult vr = worker.validateCode(terminologyServiceOptions.setVersionFlexible(true), system, version, code, null);
     if (vr != null && vr.getDisplay() != null)
       display = vr.getDisplay();
     return new Coding().setSystem(system).setCode(code).setDisplay(display);

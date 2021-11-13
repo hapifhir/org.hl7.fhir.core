@@ -78,6 +78,7 @@ public enum ResourceTypeLink {
             case PATIENT: return "patient";
             case PRACTITIONER: return "practitioner";
             case RELATEDPERSON: return "relatedperson";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ResourceTypeLink {
             case PATIENT: return "Patient resource.";
             case PRACTITIONER: return "Practitioner resource.";
             case RELATEDPERSON: return "RelatedPerson resource.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ResourceTypeLink {
             case PATIENT: return "Patient";
             case PRACTITIONER: return "Practitioner";
             case RELATEDPERSON: return "RelatedPerson";
+            case NULL: return null;
             default: return "?";
           }
     }

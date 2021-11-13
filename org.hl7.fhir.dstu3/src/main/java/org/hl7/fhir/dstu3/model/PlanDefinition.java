@@ -92,6 +92,7 @@ public class PlanDefinition extends MetadataResource {
             case APPLICABILITY: return "applicability";
             case START: return "start";
             case STOP: return "stop";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -100,6 +101,7 @@ public class PlanDefinition extends MetadataResource {
             case APPLICABILITY: return "http://hl7.org/fhir/action-condition-kind";
             case START: return "http://hl7.org/fhir/action-condition-kind";
             case STOP: return "http://hl7.org/fhir/action-condition-kind";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public class PlanDefinition extends MetadataResource {
             case APPLICABILITY: return "The condition describes whether or not a given action is applicable";
             case START: return "The condition is a starting condition for the action";
             case STOP: return "The condition is a stop, or exit condition for the action";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -116,6 +119,7 @@ public class PlanDefinition extends MetadataResource {
             case APPLICABILITY: return "Applicability";
             case START: return "Start";
             case STOP: return "Stop";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -242,6 +246,7 @@ public class PlanDefinition extends MetadataResource {
             case AFTERSTART: return "after-start";
             case AFTER: return "after";
             case AFTEREND: return "after-end";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -256,6 +261,7 @@ public class PlanDefinition extends MetadataResource {
             case AFTERSTART: return "http://hl7.org/fhir/action-relationship-type";
             case AFTER: return "http://hl7.org/fhir/action-relationship-type";
             case AFTEREND: return "http://hl7.org/fhir/action-relationship-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -270,6 +276,7 @@ public class PlanDefinition extends MetadataResource {
             case AFTERSTART: return "The action must be performed after the start of the related action";
             case AFTER: return "The action must be performed after the related action";
             case AFTEREND: return "The action must be performed after the end of the related action";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -284,6 +291,7 @@ public class PlanDefinition extends MetadataResource {
             case AFTERSTART: return "After Start";
             case AFTER: return "After";
             case AFTEREND: return "After End";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -404,6 +412,7 @@ public class PlanDefinition extends MetadataResource {
             case PATIENT: return "patient";
             case PRACTITIONER: return "practitioner";
             case RELATEDPERSON: return "related-person";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -412,6 +421,7 @@ public class PlanDefinition extends MetadataResource {
             case PATIENT: return "http://hl7.org/fhir/action-participant-type";
             case PRACTITIONER: return "http://hl7.org/fhir/action-participant-type";
             case RELATEDPERSON: return "http://hl7.org/fhir/action-participant-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -420,6 +430,7 @@ public class PlanDefinition extends MetadataResource {
             case PATIENT: return "The participant is the patient under evaluation";
             case PRACTITIONER: return "The participant is a practitioner involved in the patient's care";
             case RELATEDPERSON: return "The participant is a person related to the patient";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -428,6 +439,7 @@ public class PlanDefinition extends MetadataResource {
             case PATIENT: return "Patient";
             case PRACTITIONER: return "Practitioner";
             case RELATEDPERSON: return "Related Person";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -512,6 +524,7 @@ public class PlanDefinition extends MetadataResource {
             case VISUALGROUP: return "visual-group";
             case LOGICALGROUP: return "logical-group";
             case SENTENCEGROUP: return "sentence-group";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -520,6 +533,7 @@ public class PlanDefinition extends MetadataResource {
             case VISUALGROUP: return "http://hl7.org/fhir/action-grouping-behavior";
             case LOGICALGROUP: return "http://hl7.org/fhir/action-grouping-behavior";
             case SENTENCEGROUP: return "http://hl7.org/fhir/action-grouping-behavior";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -528,6 +542,7 @@ public class PlanDefinition extends MetadataResource {
             case VISUALGROUP: return "Any group marked with this behavior should be displayed as a visual group to the end user";
             case LOGICALGROUP: return "A group with this behavior logically groups its sub-elements, and may be shown as a visual group to the end user, but it is not required to do so";
             case SENTENCEGROUP: return "A group of related alternative actions is a sentence group if the target referenced by the action is the same in all the actions and each action simply constitutes a different variation on how to specify the details for the target. For example, two actions that could be in a SentenceGroup are \"aspirin, 500 mg, 2 times per day\" and \"aspirin, 300 mg, 3 times per day\". In both cases, aspirin is the target referenced by the action, and the two actions represent different options for how aspirin might be ordered for the patient. Note that a SentenceGroup would almost always have an associated selection behavior of \"AtMostOne\", unless it's a required action, in which case, it would be \"ExactlyOne\"";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -536,6 +551,7 @@ public class PlanDefinition extends MetadataResource {
             case VISUALGROUP: return "Visual Group";
             case LOGICALGROUP: return "Logical Group";
             case SENTENCEGROUP: return "Sentence Group";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -641,6 +657,7 @@ public class PlanDefinition extends MetadataResource {
             case EXACTLYONE: return "exactly-one";
             case ATMOSTONE: return "at-most-one";
             case ONEORMORE: return "one-or-more";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -652,6 +669,7 @@ public class PlanDefinition extends MetadataResource {
             case EXACTLYONE: return "http://hl7.org/fhir/action-selection-behavior";
             case ATMOSTONE: return "http://hl7.org/fhir/action-selection-behavior";
             case ONEORMORE: return "http://hl7.org/fhir/action-selection-behavior";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -663,6 +681,7 @@ public class PlanDefinition extends MetadataResource {
             case EXACTLYONE: return "The end user must choose one and only one of the selectable actions in the group. The user may not choose none of the actions in the group";
             case ATMOSTONE: return "The end user may choose zero or at most one of the actions in the group";
             case ONEORMORE: return "The end user must choose a minimum of one, and as many additional as desired";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -674,6 +693,7 @@ public class PlanDefinition extends MetadataResource {
             case EXACTLYONE: return "Exactly One";
             case ATMOSTONE: return "At Most One";
             case ONEORMORE: return "One Or More";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -776,6 +796,7 @@ public class PlanDefinition extends MetadataResource {
             case MUST: return "must";
             case COULD: return "could";
             case MUSTUNLESSDOCUMENTED: return "must-unless-documented";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -784,6 +805,7 @@ public class PlanDefinition extends MetadataResource {
             case MUST: return "http://hl7.org/fhir/action-required-behavior";
             case COULD: return "http://hl7.org/fhir/action-required-behavior";
             case MUSTUNLESSDOCUMENTED: return "http://hl7.org/fhir/action-required-behavior";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -792,6 +814,7 @@ public class PlanDefinition extends MetadataResource {
             case MUST: return "An action with this behavior must be included in the actions processed by the end user; the end user may not choose not to include this action";
             case COULD: return "An action with this behavior may be included in the set of actions processed by the end user";
             case MUSTUNLESSDOCUMENTED: return "An action with this behavior must be included in the set of actions processed by the end user, unless the end user provides documentation as to why the action was not included";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -800,6 +823,7 @@ public class PlanDefinition extends MetadataResource {
             case MUST: return "Must";
             case COULD: return "Could";
             case MUSTUNLESSDOCUMENTED: return "Must Unless Documented";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -877,6 +901,7 @@ public class PlanDefinition extends MetadataResource {
           switch (this) {
             case YES: return "yes";
             case NO: return "no";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -884,6 +909,7 @@ public class PlanDefinition extends MetadataResource {
           switch (this) {
             case YES: return "http://hl7.org/fhir/action-precheck-behavior";
             case NO: return "http://hl7.org/fhir/action-precheck-behavior";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -891,6 +917,7 @@ public class PlanDefinition extends MetadataResource {
           switch (this) {
             case YES: return "An action with this behavior is one of the most frequent action that is, or should be, included by an end user, for the particular context in which the action occurs. The system displaying the action to the end user should consider \"pre-checking\" such an action as a convenience for the user";
             case NO: return "An action with this behavior is one of the less frequent actions included by the end user, for the particular context in which the action occurs. The system displaying the actions to the end user would typically not \"pre-check\" such an action";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -898,6 +925,7 @@ public class PlanDefinition extends MetadataResource {
           switch (this) {
             case YES: return "Yes";
             case NO: return "No";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -969,6 +997,7 @@ public class PlanDefinition extends MetadataResource {
           switch (this) {
             case SINGLE: return "single";
             case MULTIPLE: return "multiple";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -976,6 +1005,7 @@ public class PlanDefinition extends MetadataResource {
           switch (this) {
             case SINGLE: return "http://hl7.org/fhir/action-cardinality-behavior";
             case MULTIPLE: return "http://hl7.org/fhir/action-cardinality-behavior";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -983,6 +1013,7 @@ public class PlanDefinition extends MetadataResource {
           switch (this) {
             case SINGLE: return "The action may only be selected one time";
             case MULTIPLE: return "The action may be selected multiple times";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -990,6 +1021,7 @@ public class PlanDefinition extends MetadataResource {
           switch (this) {
             case SINGLE: return "Single";
             case MULTIPLE: return "Multiple";
+            case NULL: return null;
             default: return "?";
           }
         }

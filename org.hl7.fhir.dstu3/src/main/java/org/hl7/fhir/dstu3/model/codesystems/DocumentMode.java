@@ -64,6 +64,7 @@ public enum DocumentMode {
           switch (this) {
             case PRODUCER: return "producer";
             case CONSUMER: return "consumer";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum DocumentMode {
           switch (this) {
             case PRODUCER: return "The application produces documents of the specified type.";
             case CONSUMER: return "The application consumes documents of the specified type.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum DocumentMode {
           switch (this) {
             case PRODUCER: return "Producer";
             case CONSUMER: return "Consumer";
+            case NULL: return null;
             default: return "?";
           }
     }

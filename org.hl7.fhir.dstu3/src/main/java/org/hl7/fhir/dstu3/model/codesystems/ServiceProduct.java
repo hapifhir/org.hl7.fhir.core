@@ -64,6 +64,7 @@ public enum ServiceProduct {
           switch (this) {
             case EXAM: return "exam";
             case FLUSHOT: return "flushot";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ServiceProduct {
           switch (this) {
             case EXAM: return "Exam";
             case FLUSHOT: return "Flu shot";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ServiceProduct {
           switch (this) {
             case EXAM: return "Exam";
             case FLUSHOT: return "Flu shot";
+            case NULL: return null;
             default: return "?";
           }
     }

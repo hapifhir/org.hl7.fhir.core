@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.renderers.utils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,9 @@ import org.hl7.fhir.r5.elementmodel.XmlParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
+import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.ResourceRenderer;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
@@ -65,14 +68,18 @@ public class ElementWrappers {
       if (context.getParser() == null) {
         throw new Error("No type parser provided to renderer context");
       } else {
-        return context.getParser().parseType(xml.toString(), type);
+        try {
+          return context.getParser().parseType(xml.toString(StandardCharsets.UTF_8), type);
+        } catch (Exception e) {
+          return new StringType("Illegal syntax: "+e.getMessage()); 
+        }
       }
     }
 
     @Override
     public List<PropertyWrapper> children() {
       if (list == null) {
-        children = context.getProfileUtilities().getChildList(structure, definition);
+        children = context.getProfileUtilities().getChildList(structure, definition, false, true);
         if (children.isEmpty() && !Utilities.noString(type)) {
           StructureDefinition sd = context.getWorker().fetchTypeDefinition(type);
           children = context.getProfileUtilities().getChildList(sd, sd.getSnapshot().getElementFirstRep());
@@ -151,6 +158,27 @@ public class ElementWrappers {
       return wrapped.getName();
     }
 
+    @Override
+    public String getNameFromResource() {
+      Property name = wrapped.getChildByName("name");
+      if (name != null && name.hasValues()) {
+        Base b = name.getValues().get(0);
+        if (b.isPrimitive()) {
+          return b.primitiveValue();          
+        } else if (b.fhirType().equals("HumanName")) {
+          Property family = b.getChildByName("family");
+          Property given = wrapped.getChildByName("given");
+          String s = given != null && given.hasValues() ? given.getValues().get(0).primitiveValue() : "";
+          if (family != null && family.hasValues())
+            s = s + " " + family.getValues().get(0).primitiveValue().toUpperCase();
+          return s;
+        } else {
+          throw new Error("Now what? ("+b.fhirType()+")");
+        }
+      }
+      return null;
+    }
+    
     @Override
     public List<PropertyWrapper> children() {
       if (list2 == null) {

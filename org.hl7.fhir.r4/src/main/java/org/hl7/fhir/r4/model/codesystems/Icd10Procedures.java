@@ -71,6 +71,7 @@ public enum Icd10Procedures {
             case _123001: return "123001";
             case _123002: return "123002";
             case _123003: return "123003";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum Icd10Procedures {
             case _123001: return "Procedure 1";
             case _123002: return "Procedure 2";
             case _123003: return "Procedure 3";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum Icd10Procedures {
             case _123001: return "PROC-1";
             case _123002: return "PROC-2";
             case _123003: return "PROC-3";
+            case NULL: return null;
             default: return "?";
           }
     }

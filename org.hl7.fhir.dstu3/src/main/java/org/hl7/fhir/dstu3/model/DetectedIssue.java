@@ -122,6 +122,7 @@ public class DetectedIssue extends DomainResource {
             case CANCELLED: return "cancelled";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +136,7 @@ public class DetectedIssue extends DomainResource {
             case CANCELLED: return "http://hl7.org/fhir/observation-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/observation-status";
             case UNKNOWN: return "http://hl7.org/fhir/observation-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -148,6 +150,7 @@ public class DetectedIssue extends DomainResource {
             case CANCELLED: return "The observation is unavailable because the measurement was not started or not completed (also sometimes called \"aborted\").";
             case ENTEREDINERROR: return "The observation has been withdrawn following previous final release.  This electronic record should never have existed, though it is possible that real-world decisions were based on it. (If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".)";
             case UNKNOWN: return "The authoring system does not know which of the status values currently applies for this request. Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply, but the authoring system does not know which.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -161,6 +164,7 @@ public class DetectedIssue extends DomainResource {
             case CANCELLED: return "Cancelled";
             case ENTEREDINERROR: return "Entered in Error";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -275,6 +279,7 @@ public class DetectedIssue extends DomainResource {
             case HIGH: return "high";
             case MODERATE: return "moderate";
             case LOW: return "low";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -283,6 +288,7 @@ public class DetectedIssue extends DomainResource {
             case HIGH: return "http://hl7.org/fhir/detectedissue-severity";
             case MODERATE: return "http://hl7.org/fhir/detectedissue-severity";
             case LOW: return "http://hl7.org/fhir/detectedissue-severity";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -291,6 +297,7 @@ public class DetectedIssue extends DomainResource {
             case HIGH: return "Indicates the issue may be life-threatening or has the potential to cause permanent injury.";
             case MODERATE: return "Indicates the issue may result in noticeable adverse consequences but is unlikely to be life-threatening or cause permanent injury.";
             case LOW: return "Indicates the issue may result in some adverse consequences but is unlikely to substantially affect the situation of the subject.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -299,6 +306,7 @@ public class DetectedIssue extends DomainResource {
             case HIGH: return "High";
             case MODERATE: return "Moderate";
             case LOW: return "Low";
+            case NULL: return null;
             default: return "?";
           }
         }

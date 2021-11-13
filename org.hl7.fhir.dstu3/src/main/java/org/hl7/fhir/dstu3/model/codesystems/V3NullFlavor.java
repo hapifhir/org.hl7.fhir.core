@@ -191,6 +191,7 @@ public enum V3NullFlavor {
             case QS: return "QS";
             case TRC: return "TRC";
             case NP: return "NP";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -216,6 +217,7 @@ public enum V3NullFlavor {
             case QS: return "Description:The specific quantity is not known, but is known to be non-zero and is not specified because it makes up the bulk of the material. e.g. 'Add 10mg of ingredient X, 50mg of ingredient Y, and sufficient quantity of water to 100mL.' The null flavor would be used to express the quantity of water.";
             case TRC: return "The content is greater than zero, but too small to be quantified.";
             case NP: return "Value is not present in a message.  This is only defined in messages, never in application data!  All values not present in the message must be replaced by the applicable default, or no-information (NI) as the default of all defaults.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -238,6 +240,7 @@ public enum V3NullFlavor {
             case QS: return "Sufficient Quantity";
             case TRC: return "trace";
             case NP: return "not present";
+            case NULL: return null;
             default: return "?";
           }
     }

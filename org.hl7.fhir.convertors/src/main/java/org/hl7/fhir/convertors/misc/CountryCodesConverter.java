@@ -30,15 +30,6 @@ package org.hl7.fhir.convertors.misc;
  */
 
 
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.hl7.fhir.r4.model.CodeSystem;
 import org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode;
 import org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent;
@@ -52,8 +43,17 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.FileInputStream;
+import java.io.IOException;
+
 public class CountryCodesConverter {
 
+
+  private String source;
+  private String dest;
 
   public static void main(String[] args) throws Exception {
     CountryCodesConverter self = new CountryCodesConverter();
@@ -62,11 +62,7 @@ public class CountryCodesConverter {
     self.execute();
   }
 
-  private String source;
-  private String dest;
-  
-  
-  private void execute() throws FileNotFoundException, ParserConfigurationException, SAXException, IOException {
+  private void execute() throws ParserConfigurationException, SAXException, IOException {
     Document src = load();
     CodeSystem cs1 = new CodeSystem();
     CodeSystem cs2 = new CodeSystem();
@@ -120,7 +116,7 @@ public class CountryCodesConverter {
         cc.setCode(XMLUtil.getNamedChildText(sd, "subdivision-code"));
         Element l = XMLUtil.getNamedChild(sd, "subdivision-locale");
         cc.setDisplay(XMLUtil.getNamedChildText(l, "subdivision-locale-name"));
-        cc.addProperty().setCode("country").setValue(new CodeType(c2));            
+        cc.addProperty().setCode("country").setValue(new CodeType(c2));
       }
     }
     cs1.setCount(cs1.getConcept().size());
@@ -135,8 +131,8 @@ public class CountryCodesConverter {
   public void setMetadata(Document src, CodeSystem cs, String id, String url, String partName, String partTitle) {
     cs.setId(id);
     cs.setUrl(url);
-    cs.setName("ISOCountryCodes"+partName);
-    cs.setTitle("ISO Country Codes (ISO-3166)"+partTitle);
+    cs.setName("ISOCountryCodes" + partName);
+    cs.setTitle("ISO Country Codes (ISO-3166)" + partTitle);
     cs.setVersion(XMLUtil.getFirstChild(src.getDocumentElement()).getAttribute("version"));
     cs.setStatus(PublicationStatus.ACTIVE);
     cs.setExperimental(false);
@@ -355,16 +351,16 @@ public class CountryCodesConverter {
     if ("tet".equals(lang)) return "tet";
     if ("tvl".equals(lang)) return "tvl";
     if ("nso".equals(lang)) return "nso";
-    throw new Error("unknown 3 letter lang code "+lang);
+    throw new Error("unknown 3 letter lang code " + lang);
   }
 
-  private Document load() throws ParserConfigurationException, FileNotFoundException, SAXException, IOException {
+  private Document load() throws ParserConfigurationException, SAXException, IOException {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setNamespaceAware(true);
     DocumentBuilder builder = factory.newDocumentBuilder();
 
     return builder.parse(new FileInputStream(source));
   }
-  
-  
+
+
 }

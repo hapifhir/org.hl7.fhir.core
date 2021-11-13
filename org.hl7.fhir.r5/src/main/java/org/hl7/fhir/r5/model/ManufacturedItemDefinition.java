@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -387,9 +387,9 @@ public class ManufacturedItemDefinition extends DomainResource {
     /**
      * The ingredients that make up this manufactured item.
      */
-    @Child(name = "ingredient", type = {Ingredient.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "ingredient", type = {CodeableReference.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The ingredients that make up this manufactured item", formalDefinition="The ingredients that make up this manufactured item." )
-    protected List<Reference> ingredient;
+    protected List<CodeableReference> ingredient;
 
     /**
      * General characteristics of this item.
@@ -398,7 +398,7 @@ public class ManufacturedItemDefinition extends DomainResource {
     @Description(shortDefinition="General characteristics of this item", formalDefinition="General characteristics of this item." )
     protected List<ManufacturedItemDefinitionPropertyComponent> property;
 
-    private static final long serialVersionUID = 604232519L;
+    private static final long serialVersionUID = -863803904L;
 
   /**
    * Constructor
@@ -572,16 +572,16 @@ public class ManufacturedItemDefinition extends DomainResource {
     /**
      * @return {@link #ingredient} (The ingredients that make up this manufactured item.)
      */
-    public List<Reference> getIngredient() { 
+    public List<CodeableReference> getIngredient() { 
       if (this.ingredient == null)
-        this.ingredient = new ArrayList<Reference>();
+        this.ingredient = new ArrayList<CodeableReference>();
       return this.ingredient;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public ManufacturedItemDefinition setIngredient(List<Reference> theIngredient) { 
+    public ManufacturedItemDefinition setIngredient(List<CodeableReference> theIngredient) { 
       this.ingredient = theIngredient;
       return this;
     }
@@ -589,25 +589,25 @@ public class ManufacturedItemDefinition extends DomainResource {
     public boolean hasIngredient() { 
       if (this.ingredient == null)
         return false;
-      for (Reference item : this.ingredient)
+      for (CodeableReference item : this.ingredient)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public Reference addIngredient() { //3
-      Reference t = new Reference();
+    public CodeableReference addIngredient() { //3
+      CodeableReference t = new CodeableReference();
       if (this.ingredient == null)
-        this.ingredient = new ArrayList<Reference>();
+        this.ingredient = new ArrayList<CodeableReference>();
       this.ingredient.add(t);
       return t;
     }
 
-    public ManufacturedItemDefinition addIngredient(Reference t) { //3
+    public ManufacturedItemDefinition addIngredient(CodeableReference t) { //3
       if (t == null)
         return this;
       if (this.ingredient == null)
-        this.ingredient = new ArrayList<Reference>();
+        this.ingredient = new ArrayList<CodeableReference>();
       this.ingredient.add(t);
       return this;
     }
@@ -615,7 +615,7 @@ public class ManufacturedItemDefinition extends DomainResource {
     /**
      * @return The first repetition of repeating field {@link #ingredient}, creating it if it does not already exist {3}
      */
-    public Reference getIngredientFirstRep() { 
+    public CodeableReference getIngredientFirstRep() { 
       if (getIngredient().isEmpty()) {
         addIngredient();
       }
@@ -681,7 +681,7 @@ public class ManufacturedItemDefinition extends DomainResource {
         children.add(new Property("manufacturedDoseForm", "CodeableConcept", "Dose form as manufactured and before any transformation into the pharmaceutical product.", 0, 1, manufacturedDoseForm));
         children.add(new Property("unitOfPresentation", "CodeableConcept", "The “real world” units in which the quantity of the manufactured item is described.", 0, 1, unitOfPresentation));
         children.add(new Property("manufacturer", "Reference(Organization)", "Manufacturer of the item (Note that this should be named \"manufacturer\" but it currently causes technical issues).", 0, java.lang.Integer.MAX_VALUE, manufacturer));
-        children.add(new Property("ingredient", "Reference(Ingredient)", "The ingredients that make up this manufactured item.", 0, java.lang.Integer.MAX_VALUE, ingredient));
+        children.add(new Property("ingredient", "CodeableReference(Ingredient)", "The ingredients that make up this manufactured item.", 0, java.lang.Integer.MAX_VALUE, ingredient));
         children.add(new Property("property", "", "General characteristics of this item.", 0, java.lang.Integer.MAX_VALUE, property));
       }
 
@@ -692,7 +692,7 @@ public class ManufacturedItemDefinition extends DomainResource {
         case -1451400348: /*manufacturedDoseForm*/  return new Property("manufacturedDoseForm", "CodeableConcept", "Dose form as manufactured and before any transformation into the pharmaceutical product.", 0, 1, manufacturedDoseForm);
         case -1427765963: /*unitOfPresentation*/  return new Property("unitOfPresentation", "CodeableConcept", "The “real world” units in which the quantity of the manufactured item is described.", 0, 1, unitOfPresentation);
         case -1969347631: /*manufacturer*/  return new Property("manufacturer", "Reference(Organization)", "Manufacturer of the item (Note that this should be named \"manufacturer\" but it currently causes technical issues).", 0, java.lang.Integer.MAX_VALUE, manufacturer);
-        case -206409263: /*ingredient*/  return new Property("ingredient", "Reference(Ingredient)", "The ingredients that make up this manufactured item.", 0, java.lang.Integer.MAX_VALUE, ingredient);
+        case -206409263: /*ingredient*/  return new Property("ingredient", "CodeableReference(Ingredient)", "The ingredients that make up this manufactured item.", 0, java.lang.Integer.MAX_VALUE, ingredient);
         case -993141291: /*property*/  return new Property("property", "", "General characteristics of this item.", 0, java.lang.Integer.MAX_VALUE, property);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -706,7 +706,7 @@ public class ManufacturedItemDefinition extends DomainResource {
         case -1451400348: /*manufacturedDoseForm*/ return this.manufacturedDoseForm == null ? new Base[0] : new Base[] {this.manufacturedDoseForm}; // CodeableConcept
         case -1427765963: /*unitOfPresentation*/ return this.unitOfPresentation == null ? new Base[0] : new Base[] {this.unitOfPresentation}; // CodeableConcept
         case -1969347631: /*manufacturer*/ return this.manufacturer == null ? new Base[0] : this.manufacturer.toArray(new Base[this.manufacturer.size()]); // Reference
-        case -206409263: /*ingredient*/ return this.ingredient == null ? new Base[0] : this.ingredient.toArray(new Base[this.ingredient.size()]); // Reference
+        case -206409263: /*ingredient*/ return this.ingredient == null ? new Base[0] : this.ingredient.toArray(new Base[this.ingredient.size()]); // CodeableReference
         case -993141291: /*property*/ return this.property == null ? new Base[0] : this.property.toArray(new Base[this.property.size()]); // ManufacturedItemDefinitionPropertyComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -729,7 +729,7 @@ public class ManufacturedItemDefinition extends DomainResource {
           this.getManufacturer().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -206409263: // ingredient
-          this.getIngredient().add(TypeConvertor.castToReference(value)); // Reference
+          this.getIngredient().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case -993141291: // property
           this.getProperty().add((ManufacturedItemDefinitionPropertyComponent) value); // ManufacturedItemDefinitionPropertyComponent
@@ -750,7 +750,7 @@ public class ManufacturedItemDefinition extends DomainResource {
         } else if (name.equals("manufacturer")) {
           this.getManufacturer().add(TypeConvertor.castToReference(value));
         } else if (name.equals("ingredient")) {
-          this.getIngredient().add(TypeConvertor.castToReference(value));
+          this.getIngredient().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("property")) {
           this.getProperty().add((ManufacturedItemDefinitionPropertyComponent) value);
         } else
@@ -779,7 +779,7 @@ public class ManufacturedItemDefinition extends DomainResource {
         case -1451400348: /*manufacturedDoseForm*/ return new String[] {"CodeableConcept"};
         case -1427765963: /*unitOfPresentation*/ return new String[] {"CodeableConcept"};
         case -1969347631: /*manufacturer*/ return new String[] {"Reference"};
-        case -206409263: /*ingredient*/ return new String[] {"Reference"};
+        case -206409263: /*ingredient*/ return new String[] {"CodeableReference"};
         case -993141291: /*property*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -838,8 +838,8 @@ public class ManufacturedItemDefinition extends DomainResource {
             dst.manufacturer.add(i.copy());
         };
         if (ingredient != null) {
-          dst.ingredient = new ArrayList<Reference>();
-          for (Reference i : ingredient)
+          dst.ingredient = new ArrayList<CodeableReference>();
+          for (CodeableReference i : ingredient)
             dst.ingredient.add(i.copy());
         };
         if (property != null) {
@@ -928,19 +928,19 @@ public class ManufacturedItemDefinition extends DomainResource {
  /**
    * Search parameter: <b>ingredient</b>
    * <p>
-   * Description: <b>The ingredients that make up this manufactured item</b><br>
+   * Description: <b>Reference to a resource (by instance)</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ManufacturedItemDefinition.ingredient</b><br>
+   * Path: <b>ManufacturedItemDefinition.ingredient.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="ingredient", path="ManufacturedItemDefinition.ingredient", description="The ingredients that make up this manufactured item", type="reference", target={Ingredient.class } )
+  @SearchParamDefinition(name="ingredient", path="ManufacturedItemDefinition.ingredient.reference", description="Reference to a resource (by instance)", type="reference" )
   public static final String SP_INGREDIENT = "ingredient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>ingredient</b>
    * <p>
-   * Description: <b>The ingredients that make up this manufactured item</b><br>
+   * Description: <b>Reference to a resource (by instance)</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ManufacturedItemDefinition.ingredient</b><br>
+   * Path: <b>ManufacturedItemDefinition.ingredient.reference</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INGREDIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INGREDIENT);
@@ -950,6 +950,26 @@ public class ManufacturedItemDefinition extends DomainResource {
    * the path value of "<b>ManufacturedItemDefinition:ingredient</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_INGREDIENT = new ca.uhn.fhir.model.api.Include("ManufacturedItemDefinition:ingredient").toLocked();
+
+ /**
+   * Search parameter: <b>ingredient-code</b>
+   * <p>
+   * Description: <b>Reference to a concept (by class)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ManufacturedItemDefinition.ingredient.concept</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="ingredient-code", path="ManufacturedItemDefinition.ingredient.concept", description="Reference to a concept (by class)", type="token" )
+  public static final String SP_INGREDIENT_CODE = "ingredient-code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>ingredient-code</b>
+   * <p>
+   * Description: <b>Reference to a concept (by class)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ManufacturedItemDefinition.ingredient.concept</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INGREDIENT_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INGREDIENT_CODE);
 
 
 }

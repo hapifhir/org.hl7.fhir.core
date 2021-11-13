@@ -106,6 +106,7 @@ public enum UsageContextType {
             case TASK: return "task";
             case VENUE: return "venue";
             case SPECIES: return "species";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum UsageContextType {
             case TASK: return "The context for the clinical task(s) represented by this artifact. Can be any task context represented by the HL7 ActTaskCode value set http://hl7.org/fhir/ValueSet/v3-ActTaskCode. General categories include: order entry, patient documentation and patient information review.";
             case VENUE: return "The venue in which an artifact could be used. For example, Outpatient, Inpatient, Home, Nursing home. The code value may originate from either the HL7 ActEncounterCode http://hl7.org/fhir/ValueSet/v3-ActEncounterCode or NUCC non-individual provider codes http://hl7.org/fhir/ValueSet/provider-taxonomy";
             case SPECIES: return "The species to which an artifact applies. For example, SNOMED - 387961004 | Kingdom Animalia (organism).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum UsageContextType {
             case TASK: return "Workflow Task";
             case VENUE: return "Clinical Venue";
             case SPECIES: return "Species";
+            case NULL: return null;
             default: return "?";
           }
     }

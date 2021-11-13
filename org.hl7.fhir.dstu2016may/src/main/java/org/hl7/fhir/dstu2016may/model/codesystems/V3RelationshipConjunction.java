@@ -71,6 +71,7 @@ public enum V3RelationshipConjunction {
             case AND: return "AND";
             case OR: return "OR";
             case XOR: return "XOR";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum V3RelationshipConjunction {
             case AND: return "This condition must be true.";
             case OR: return "At least one of the condition among all OR conditions must be true.";
             case XOR: return "One and only one of the XOR conditions must be true.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum V3RelationshipConjunction {
             case AND: return "and";
             case OR: return "or";
             case XOR: return "exclusive or";
+            case NULL: return null;
             default: return "?";
           }
     }

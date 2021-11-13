@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -65,6 +66,12 @@ public class GraphQLSchemaGenerator {
   public enum FHIROperationType {READ, SEARCH, CREATE, UPDATE, DELETE};
   
   private static final String INNER_TYPE_NAME = "gql.type.name";
+  private static final Set<String> JSON_NUMBER_TYPES = new HashSet<String>() {{
+    add("decimal");
+    add("positiveInt");
+    add("unsignedInt");
+  }};
+
   IWorkerContext context;
 
   public GraphQLSchemaGenerator(IWorkerContext context) {
@@ -106,7 +113,7 @@ public class GraphQLSchemaGenerator {
   public void generateResource(OutputStream stream, StructureDefinition sd, List<SearchParameter> parameters, EnumSet<FHIROperationType> operations) throws IOException, FHIRException {
     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream));
     writer.write("# FHIR GraphQL Schema. Version "+Constants.VERSION+"\r\n\r\n");
-    writer.write("# import the types from 'types.graphql'\r\n\r\n");
+    writer.write("# import * from 'types.graphql'\r\n\r\n");
     generateType(writer, sd);
     if (operations.contains(FHIROperationType.READ))
       generateIdAccess(writer, sd.getName());
@@ -240,6 +247,11 @@ public class GraphQLSchemaGenerator {
     writer.write("}\r\n");
     writer.write("\r\n");
     
+    writer.write("input ElementBaseInput {\r\n");
+    writer.write("  id : ID\r\n");
+    writer.write("  extension: [ExtensionInput]\r\n");
+    writer.write("}\r\n");
+    writer.write("\r\n");
   }
 
   private void generateType(BufferedWriter writer, StructureDefinition sd) throws IOException {
@@ -319,10 +331,15 @@ public class GraphQLSchemaGenerator {
         b.append(tail(child.getPath(), suffix));
         if (suffix)
           b.append(Utilities.capitalize(typeDetails.getWorkingCode()));
-        if (!child.getMax().equals("1"))
-          b.append(": [ElementBase]\r\n");
-        else
-          b.append(": ElementBase\r\n");
+        if (!child.getMax().equals("1")) {
+          b.append(": [ElementBase");
+          b.append(suffixS);
+          b.append("]\r\n");
+        } else {
+          b.append(": ElementBase");
+          b.append(suffixS);
+          b.append("\r\n");
+        }
       } else
         b.append("\r\n");
     } else {
@@ -408,11 +425,15 @@ public class GraphQLSchemaGenerator {
 
   private void generateSearchParamType(BufferedWriter writer, String name) throws IOException, FHIRException {
     String gqlName = getGqlname(name);
-    if (gqlName.equals(name)) { 
-      writer.write("Scalar ");
+    if (gqlName.equals("date")) {
+      writer.write("# Search Param ");
       writer.write(name);
-      writer.write(" # JSON Format: String");
-    } else  {
+      writer.write(": already defined as Primitive with JSON Format: string ");
+    } else if (gqlName.equals(name)) { 
+      writer.write("scalar ");
+      writer.write(name);
+      writer.write(" # JSON Format: string");
+    } else {
       writer.write("# Search Param ");
       writer.write(name);
       writer.write(": use GraphQL Scalar type ");
@@ -426,7 +447,12 @@ public class GraphQLSchemaGenerator {
       if (!ed.getType().isEmpty() &&  ed.getType().get(0).getCodeElement().hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type"))
         return ed.getType().get(0).getCodeElement().getExtensionString("http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type");
     }
-    return "??";
+    // all primitives but JSON_NUMBER_TYPES are represented as JSON strings
+    if (JSON_NUMBER_TYPES.contains(sd.getName())) {
+      return "number";
+    } else {
+      return "string";
+    }
   }
 
   private String getGqlname(String name) {

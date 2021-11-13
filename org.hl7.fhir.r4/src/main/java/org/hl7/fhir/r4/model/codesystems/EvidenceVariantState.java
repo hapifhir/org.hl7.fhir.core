@@ -71,6 +71,7 @@ public enum EvidenceVariantState {
             case LOWRISK: return "low-risk";
             case MEDIUMRISK: return "medium-risk";
             case HIGHRISK: return "high-risk";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum EvidenceVariantState {
             case LOWRISK: return "low risk estimate.";
             case MEDIUMRISK: return "medium risk estimate.";
             case HIGHRISK: return "high risk estimate.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum EvidenceVariantState {
             case LOWRISK: return "low risk";
             case MEDIUMRISK: return "medium risk";
             case HIGHRISK: return "high risk";
+            case NULL: return null;
             default: return "?";
           }
     }

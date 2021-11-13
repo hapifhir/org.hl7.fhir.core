@@ -85,6 +85,7 @@ public enum ContractType {
             case HEALTHINSURANCE: return "healthinsurance";
             case SUPPLY: return "supply";
             case CONSENT: return "consent";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum ContractType {
             case HEALTHINSURANCE: return "Health Insurance policy.";
             case SUPPLY: return "Contract to supply goods or services.";
             case CONSENT: return "Consent Directive.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum ContractType {
             case HEALTHINSURANCE: return "Health Insurance";
             case SUPPLY: return "Supply Contract";
             case CONSENT: return "Consent";
+            case NULL: return null;
             default: return "?";
           }
     }
