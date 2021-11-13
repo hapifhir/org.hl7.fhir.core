@@ -246,6 +246,7 @@ public enum V3AcknowledgementDetailCode {
             case SYN109: return "SYN109";
             case SYN111: return "SYN111";
             case SYN113: return "SYN113";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -282,6 +283,7 @@ public enum V3AcknowledgementDetailCode {
             case SYN109: return "Description: An attribute or association identified as mandatory in a specification or declared conformance profile or template has been specified with a null flavor.";
             case SYN111: return "Description: The value of an attribute or property differs from the fixed value asserted in the standard or one of the conformance profiles or templates declared in the message.";
             case SYN113: return "Description: A formal constraint asserted in the standard or one of the conformance profiles or templates declared in the message has been violated.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -315,6 +317,7 @@ public enum V3AcknowledgementDetailCode {
             case SYN109: return "Mandatory element with null value";
             case SYN111: return "Value does not match fixed value";
             case SYN113: return "Formal constraint violation";
+            case NULL: return null;
             default: return "?";
           }
     }

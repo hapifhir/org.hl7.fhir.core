@@ -8,8 +8,8 @@ import java.util.List;
 
 public class VersionSourceInformation {
 
-  private List<String> report = new ArrayList<>();
-  private List<String> versions = new ArrayList<>();
+  private final List<String> report = new ArrayList<>();
+  private final List<String> versions = new ArrayList<>();
 
   public void see(String version, String src) {
     version = VersionUtilities.getMajMin(version);

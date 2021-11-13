@@ -113,6 +113,7 @@ public enum V3EducationLevel {
             case POSTG: return "POSTG";
             case SCOL: return "SCOL";
             case SEC: return "SEC";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum V3EducationLevel {
             case POSTG: return "Doctoral or post graduate education";
             case SCOL: return "Some College education";
             case SEC: return "Some secondary or high school education";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum V3EducationLevel {
             case POSTG: return "Doctoral or post graduate education";
             case SCOL: return "Some College education";
             case SEC: return "Some secondary or high school education";
+            case NULL: return null;
             default: return "?";
           }
     }

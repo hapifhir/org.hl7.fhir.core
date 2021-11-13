@@ -95,6 +95,7 @@ public class CoverageEligibilityResponse extends DomainResource {
             case CANCELLED: return "cancelled";
             case DRAFT: return "draft";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -104,6 +105,7 @@ public class CoverageEligibilityResponse extends DomainResource {
             case CANCELLED: return "http://hl7.org/fhir/fm-status";
             case DRAFT: return "http://hl7.org/fhir/fm-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/fm-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +115,7 @@ public class CoverageEligibilityResponse extends DomainResource {
             case CANCELLED: return "The instance is withdrawn, rescinded or reversed.";
             case DRAFT: return "A new instance the contents of which is not complete.";
             case ENTEREDINERROR: return "The instance was entered in error.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +125,7 @@ public class CoverageEligibilityResponse extends DomainResource {
             case CANCELLED: return "Cancelled";
             case DRAFT: return "Draft";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -219,6 +223,7 @@ public class CoverageEligibilityResponse extends DomainResource {
             case BENEFITS: return "benefits";
             case DISCOVERY: return "discovery";
             case VALIDATION: return "validation";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -228,6 +233,7 @@ public class CoverageEligibilityResponse extends DomainResource {
             case BENEFITS: return "http://hl7.org/fhir/eligibilityresponse-purpose";
             case DISCOVERY: return "http://hl7.org/fhir/eligibilityresponse-purpose";
             case VALIDATION: return "http://hl7.org/fhir/eligibilityresponse-purpose";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -237,6 +243,7 @@ public class CoverageEligibilityResponse extends DomainResource {
             case BENEFITS: return "The plan benefits and optionally benefits consumed  for the listed, or discovered if specified, converages are requested.";
             case DISCOVERY: return "The insurer is requested to report on any coverages which they are aware of in addition to any specifed.";
             case VALIDATION: return "A check that the specified coverages are in-force is requested.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -246,6 +253,7 @@ public class CoverageEligibilityResponse extends DomainResource {
             case BENEFITS: return "Coverage benefits";
             case DISCOVERY: return "Coverage Discovery";
             case VALIDATION: return "Coverage Validation";
+            case NULL: return null;
             default: return "?";
           }
         }

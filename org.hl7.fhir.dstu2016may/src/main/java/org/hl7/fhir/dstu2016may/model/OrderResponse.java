@@ -125,6 +125,7 @@ public class OrderResponse extends DomainResource {
             case REPLACED: return "replaced";
             case ABORTED: return "aborted";
             case COMPLETED: return "completed";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -139,6 +140,7 @@ public class OrderResponse extends DomainResource {
             case REPLACED: return "http://hl7.org/fhir/order-status";
             case ABORTED: return "http://hl7.org/fhir/order-status";
             case COMPLETED: return "http://hl7.org/fhir/order-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +155,7 @@ public class OrderResponse extends DomainResource {
             case REPLACED: return "The order has been cancelled and replaced by another.";
             case ABORTED: return "Processing the order was stopped because of some workflow/business logic reason.";
             case COMPLETED: return "The order has been completed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -167,6 +170,7 @@ public class OrderResponse extends DomainResource {
             case REPLACED: return "Replaced";
             case ABORTED: return "Aborted";
             case COMPLETED: return "Completed";
+            case NULL: return null;
             default: return "?";
           }
         }

@@ -113,6 +113,7 @@ public enum KnowledgeResourceTypes {
             case STRUCTUREDEFINITION: return "StructureDefinition";
             case STRUCTUREMAP: return "StructureMap";
             case VALUESET: return "ValueSet";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum KnowledgeResourceTypes {
             case STRUCTUREDEFINITION: return "Structural Definition.";
             case STRUCTUREMAP: return "A Map of relationships between 2 structures that can be used to transform data.";
             case VALUESET: return "A set of codes drawn from one or more code systems.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum KnowledgeResourceTypes {
             case STRUCTUREDEFINITION: return "StructureDefinition";
             case STRUCTUREMAP: return "StructureMap";
             case VALUESET: return "ValueSet";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -71,6 +71,7 @@ public enum ListMode {
             case WORKING: return "working";
             case SNAPSHOT: return "snapshot";
             case CHANGES: return "changes";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ListMode {
             case WORKING: return "This list is the master list, maintained in an ongoing fashion with regular updates as the real world list it is tracking changes.";
             case SNAPSHOT: return "This list was prepared as a snapshot. It should not be assumed to be current.";
             case CHANGES: return "A point-in-time list that shows what changes have been made or recommended.  E.g. a discharge medication list showing what was added and removed during an encounter.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ListMode {
             case WORKING: return "Working List";
             case SNAPSHOT: return "Snapshot List";
             case CHANGES: return "Change List";
+            case NULL: return null;
             default: return "?";
           }
     }

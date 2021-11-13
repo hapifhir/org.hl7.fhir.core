@@ -80,6 +80,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
             case PLAN: return "plan";
             case ORDER: return "order";
             case OPTION: return "option";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -92,6 +93,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
             case PLAN: return "The care plan represents an intention to ensure something occurs without providing an authorization for others to act";
             case ORDER: return "The care plan represents a request/demand and authorization for action";
             case OPTION: return "The care plan represents a component or option for a RequestGroup that establishes timing, conditionality and/or other constraints among a set of requests.\n\nRefer to [[[RequestGroup]]] for additional information on how this status is used";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -101,6 +103,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
             case PLAN: return "Plan";
             case ORDER: return "Order";
             case OPTION: return "Option";
+            case NULL: return null;
             default: return "?";
           }
     }

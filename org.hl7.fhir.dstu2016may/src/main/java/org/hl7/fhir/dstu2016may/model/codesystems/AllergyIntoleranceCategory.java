@@ -78,6 +78,7 @@ public enum AllergyIntoleranceCategory {
             case MEDICATION: return "medication";
             case ENVIRONMENT: return "environment";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum AllergyIntoleranceCategory {
             case MEDICATION: return "Substances administered to achieve a physiological effect.";
             case ENVIRONMENT: return "Substances that are encountered in the environment.";
             case OTHER: return "Other substances that are not covered by any other category.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum AllergyIntoleranceCategory {
             case MEDICATION: return "Medication";
             case ENVIRONMENT: return "Environment";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
     }

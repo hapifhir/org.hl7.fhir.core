@@ -78,6 +78,7 @@ public enum MessageheaderResponseRequest {
             case ONERROR: return "on-error";
             case NEVER: return "never";
             case ONSUCCESS: return "on-success";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum MessageheaderResponseRequest {
             case ONERROR: return "initiator expects a response only if in error";
             case NEVER: return "initiator does not expect a response";
             case ONSUCCESS: return "initiator expects a response only if successful";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum MessageheaderResponseRequest {
             case ONERROR: return "Error/reject conditions only";
             case NEVER: return "Never";
             case ONSUCCESS: return "Successful completion only";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -10,6 +10,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
@@ -265,6 +266,29 @@ public class DOMWrappers {
     @Override
     public String getName() {
       return wrapped.getNodeName();
+    }
+
+    @Override
+    public String getNameFromResource() {
+      Element e = XMLUtil.getNamedChild(wrapped, "name");
+      if (e != null) {
+        if (e.hasAttribute("value")) {
+          return e.getAttribute("value");
+        }
+        if (XMLUtil.hasNamedChild(e, "text")) {
+          return XMLUtil.getNamedChildValue(e, "text");
+        }
+        if (XMLUtil.hasNamedChild(e, "family") || XMLUtil.hasNamedChild(e, "given")) {
+          Element family = XMLUtil.getNamedChild(e, "family");
+          Element given = XMLUtil.getNamedChild(e, "given");
+          String s = given != null && given.hasAttribute("value") ? given.getAttribute("value") : "";
+          if (family != null && family.hasAttribute("value"))
+            s = s + " " + family.getAttribute("value").toUpperCase();
+          return s;
+        }
+        return null;
+      }
+      return null;
     }
 
     @Override

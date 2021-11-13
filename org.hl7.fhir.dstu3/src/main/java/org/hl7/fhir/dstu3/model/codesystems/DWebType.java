@@ -71,6 +71,7 @@ public enum DWebType {
             case WADORS: return "WADO-RS";
             case WADOURI: return "WADO-URI";
             case IID: return "IID";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum DWebType {
             case WADORS: return "Web Access to DICOM Persistent Objects - RESTful Services";
             case WADOURI: return "Web Access to DICOM Persistent Objects - URI";
             case IID: return "IHE - Invoke Image Display Profile";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum DWebType {
             case WADORS: return "WADO-RS";
             case WADOURI: return "WADO-URI";
             case IID: return "IID";
+            case NULL: return null;
             default: return "?";
           }
     }

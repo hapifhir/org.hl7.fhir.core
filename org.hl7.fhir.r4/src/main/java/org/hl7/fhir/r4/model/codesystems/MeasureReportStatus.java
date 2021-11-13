@@ -71,6 +71,7 @@ public enum MeasureReportStatus {
             case COMPLETE: return "complete";
             case PENDING: return "pending";
             case ERROR: return "error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum MeasureReportStatus {
             case COMPLETE: return "The report is complete and ready for use.";
             case PENDING: return "The report is currently being generated.";
             case ERROR: return "An error occurred attempting to generate the report.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum MeasureReportStatus {
             case COMPLETE: return "Complete";
             case PENDING: return "Pending";
             case ERROR: return "Error";
+            case NULL: return null;
             default: return "?";
           }
     }

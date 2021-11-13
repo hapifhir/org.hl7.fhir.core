@@ -20,6 +20,7 @@ import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
+import org.hl7.fhir.utilities.npm.PackageHacker;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -42,7 +43,7 @@ public class XVerExtensionManager {
   public XVerExtensionStatus status(String url) throws FHIRException {
     String v = url.substring(20, 23);
     if ("5.0".equals(v)) {
-      v = Constants.VERSION_MM;
+      v = "4.6"; // for now
     }
     String e = url.substring(54);
     if (!lists.containsKey(v)) {
@@ -75,7 +76,7 @@ public class XVerExtensionManager {
   public StructureDefinition makeDefinition(String url) {
     String verSource = url.substring(20, 23);
     if ("5.0".equals(verSource)) {
-      verSource = Constants.VERSION_MM;
+      verSource = "4.6"; // for now
     }
     String verTarget = VersionUtilities.getMajMin(context.getVersion());
     String e = url.substring(54);
@@ -84,7 +85,7 @@ public class XVerExtensionManager {
     
     StructureDefinition sd = new StructureDefinition();
     sd.setUserData(XVER_EXT_MARKER, "true");
-    sd.setUserData("path", "http://hl7.org/fhir/versions.html#extensions");
+    sd.setUserData("path", PackageHacker.fixPackageUrl("https://hl7.org/fhir/versions.html#extensions"));
     sd.setUrl(url);
     sd.setVersion(context.getVersion());
     sd.setFhirVersion(FHIRVersion.fromCode(context.getVersion()));
@@ -138,7 +139,11 @@ public class XVerExtensionManager {
           for (String p : s.substring(0, s.length()-1).split("\\|")) {
             if ("Any".equals(p)) {
               tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/Resource");
-            } else {
+            } else if (p.contains(",")) {
+              for (String pp : p.split("\\,")) {
+                tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/"+pp);                              
+              }
+            } else  {
               tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/"+p);              
             }
           }

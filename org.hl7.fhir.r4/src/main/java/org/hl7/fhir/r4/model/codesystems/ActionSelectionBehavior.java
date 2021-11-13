@@ -92,6 +92,7 @@ public enum ActionSelectionBehavior {
             case EXACTLYONE: return "exactly-one";
             case ATMOSTONE: return "at-most-one";
             case ONEORMORE: return "one-or-more";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum ActionSelectionBehavior {
             case EXACTLYONE: return "The end user must choose one and only one of the selectable actions in the group. The user SHALL NOT choose none of the actions in the group.";
             case ATMOSTONE: return "The end user may choose zero or at most one of the actions in the group.";
             case ONEORMORE: return "The end user must choose a minimum of one, and as many additional as desired.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum ActionSelectionBehavior {
             case EXACTLYONE: return "Exactly One";
             case ATMOSTONE: return "At Most One";
             case ONEORMORE: return "One Or More";
+            case NULL: return null;
             default: return "?";
           }
     }

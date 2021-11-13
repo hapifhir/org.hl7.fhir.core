@@ -85,6 +85,7 @@ public enum RequestStage {
             case ORIGINALORDER: return "original-order";
             case ENCODED: return "encoded";
             case REFLEXORDER: return "reflex-order";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum RequestStage {
             case ORIGINALORDER: return "The request is an order.";
             case ENCODED: return "Represents an order created by a fulfiller as a representation of the specific action(s) they intend to take to fulfill the original order.  Typically these orders are more fully encoded than the original placer order.";
             case REFLEXORDER: return "Represents a separate order created by a fulfiller as result of fulfilment of an order.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum RequestStage {
             case ORIGINALORDER: return "Original Order";
             case ENCODED: return "Encoded";
             case REFLEXORDER: return "Reflex Order";
+            case NULL: return null;
             default: return "?";
           }
     }

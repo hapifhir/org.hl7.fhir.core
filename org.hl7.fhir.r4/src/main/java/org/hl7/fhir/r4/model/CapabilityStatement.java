@@ -89,6 +89,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case INSTANCE: return "instance";
             case CAPABILITY: return "capability";
             case REQUIREMENTS: return "requirements";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +98,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case INSTANCE: return "http://hl7.org/fhir/capability-statement-kind";
             case CAPABILITY: return "http://hl7.org/fhir/capability-statement-kind";
             case REQUIREMENTS: return "http://hl7.org/fhir/capability-statement-kind";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +107,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case INSTANCE: return "The CapabilityStatement instance represents the present capabilities of a specific system instance.  This is the kind returned by /metadata for a FHIR server end-point.";
             case CAPABILITY: return "The CapabilityStatement instance represents the capabilities of a system or piece of software, independent of a particular installation.";
             case REQUIREMENTS: return "The CapabilityStatement instance represents a set of requirements for other systems to meet; e.g. as part of an implementation guide or 'request for proposal'.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +116,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case INSTANCE: return "Instance";
             case CAPABILITY: return "Capability";
             case REQUIREMENTS: return "Requirements";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -190,6 +194,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           switch (this) {
             case CLIENT: return "client";
             case SERVER: return "server";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -197,6 +202,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           switch (this) {
             case CLIENT: return "http://hl7.org/fhir/restful-capability-mode";
             case SERVER: return "http://hl7.org/fhir/restful-capability-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -204,6 +210,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           switch (this) {
             case CLIENT: return "The application acts as a client for this resource.";
             case SERVER: return "The application acts as a server for this resource.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -211,6 +218,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           switch (this) {
             case CLIENT: return "Client";
             case SERVER: return "Server";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -331,6 +339,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case HISTORYTYPE: return "history-type";
             case CREATE: return "create";
             case SEARCHTYPE: return "search-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -345,6 +354,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case HISTORYTYPE: return "http://hl7.org/fhir/restful-interaction";
             case CREATE: return "http://hl7.org/fhir/restful-interaction";
             case SEARCHTYPE: return "http://hl7.org/fhir/restful-interaction";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -359,6 +369,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case HISTORYTYPE: return "";
             case CREATE: return "";
             case SEARCHTYPE: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -373,6 +384,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case HISTORYTYPE: return "history-type";
             case CREATE: return "create";
             case SEARCHTYPE: return "search-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -493,6 +505,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case NOVERSION: return "no-version";
             case VERSIONED: return "versioned";
             case VERSIONEDUPDATE: return "versioned-update";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -501,6 +514,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case NOVERSION: return "http://hl7.org/fhir/versioning-policy";
             case VERSIONED: return "http://hl7.org/fhir/versioning-policy";
             case VERSIONEDUPDATE: return "http://hl7.org/fhir/versioning-policy";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -509,6 +523,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case NOVERSION: return "VersionId meta-property is not supported (server) or used (client).";
             case VERSIONED: return "VersionId meta-property is supported (server) or used (client).";
             case VERSIONEDUPDATE: return "VersionId must be correct for updates (server) or will be specified (If-match header) for updates (client).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -517,6 +532,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case NOVERSION: return "No VersionId Support";
             case VERSIONED: return "Versioned";
             case VERSIONEDUPDATE: return "VersionId tracked fully";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -608,6 +624,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case MODIFIEDSINCE: return "modified-since";
             case NOTMATCH: return "not-match";
             case FULLSUPPORT: return "full-support";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -617,6 +634,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case MODIFIEDSINCE: return "http://hl7.org/fhir/conditional-read-status";
             case NOTMATCH: return "http://hl7.org/fhir/conditional-read-status";
             case FULLSUPPORT: return "http://hl7.org/fhir/conditional-read-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -626,6 +644,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case MODIFIEDSINCE: return "Conditional reads are supported, but only with the If-Modified-Since HTTP Header.";
             case NOTMATCH: return "Conditional reads are supported, but only with the If-None-Match HTTP Header.";
             case FULLSUPPORT: return "Conditional reads are supported, with both If-Modified-Since and If-None-Match HTTP Headers.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -635,6 +654,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case MODIFIEDSINCE: return "If-Modified-Since";
             case NOTMATCH: return "If-None-Match";
             case FULLSUPPORT: return "Full Support";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -725,6 +745,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case NOTSUPPORTED: return "not-supported";
             case SINGLE: return "single";
             case MULTIPLE: return "multiple";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -733,6 +754,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case NOTSUPPORTED: return "http://hl7.org/fhir/conditional-delete-status";
             case SINGLE: return "http://hl7.org/fhir/conditional-delete-status";
             case MULTIPLE: return "http://hl7.org/fhir/conditional-delete-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -741,6 +763,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case NOTSUPPORTED: return "No support for conditional deletes.";
             case SINGLE: return "Conditional deletes are supported, but only single resources at a time.";
             case MULTIPLE: return "Conditional deletes are supported, and multiple resources can be deleted in a single interaction.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -749,6 +772,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case NOTSUPPORTED: return "Not Supported";
             case SINGLE: return "Single Deletes Supported";
             case MULTIPLE: return "Multiple Deletes Supported";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -847,6 +871,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case RESOLVES: return "resolves";
             case ENFORCED: return "enforced";
             case LOCAL: return "local";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -857,6 +882,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case RESOLVES: return "http://hl7.org/fhir/reference-handling-policy";
             case ENFORCED: return "http://hl7.org/fhir/reference-handling-policy";
             case LOCAL: return "http://hl7.org/fhir/reference-handling-policy";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -867,6 +893,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case RESOLVES: return "The server will attempt to resolve logical references to literal references - i.e. converting Reference.identifier to Reference.reference (if resolution fails, the server may still accept resources; see logical).";
             case ENFORCED: return "The server enforces that references have integrity - e.g. it ensures that references can always be resolved. This is typically the case for clinical record systems, but often not the case for middleware/proxy systems.";
             case LOCAL: return "The server does not support references that point to other servers.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -877,6 +904,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case RESOLVES: return "Resolves References";
             case ENFORCED: return "Reference Integrity Enforced";
             case LOCAL: return "Local References Only";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -980,6 +1008,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case BATCH: return "batch";
             case SEARCHSYSTEM: return "search-system";
             case HISTORYSYSTEM: return "history-system";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -989,6 +1018,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case BATCH: return "http://hl7.org/fhir/restful-interaction";
             case SEARCHSYSTEM: return "http://hl7.org/fhir/restful-interaction";
             case HISTORYSYSTEM: return "http://hl7.org/fhir/restful-interaction";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -998,6 +1028,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case BATCH: return "";
             case SEARCHSYSTEM: return "";
             case HISTORYSYSTEM: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1007,6 +1038,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             case BATCH: return "batch";
             case SEARCHSYSTEM: return "search-system";
             case HISTORYSYSTEM: return "history-system";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1090,6 +1122,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           switch (this) {
             case SENDER: return "sender";
             case RECEIVER: return "receiver";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1097,6 +1130,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           switch (this) {
             case SENDER: return "http://hl7.org/fhir/event-capability-mode";
             case RECEIVER: return "http://hl7.org/fhir/event-capability-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1104,6 +1138,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           switch (this) {
             case SENDER: return "The application sends requests and receives responses.";
             case RECEIVER: return "The application receives requests and sends responses.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1111,6 +1146,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           switch (this) {
             case SENDER: return "Sender";
             case RECEIVER: return "Receiver";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1182,6 +1218,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           switch (this) {
             case PRODUCER: return "producer";
             case CONSUMER: return "consumer";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1189,6 +1226,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           switch (this) {
             case PRODUCER: return "http://hl7.org/fhir/document-mode";
             case CONSUMER: return "http://hl7.org/fhir/document-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1196,6 +1234,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           switch (this) {
             case PRODUCER: return "The application produces documents of the specified type.";
             case CONSUMER: return "The application consumes documents of the specified type.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1203,6 +1242,7 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           switch (this) {
             case PRODUCER: return "Producer";
             case CONSUMER: return "Consumer";
+            case NULL: return null;
             default: return "?";
           }
         }

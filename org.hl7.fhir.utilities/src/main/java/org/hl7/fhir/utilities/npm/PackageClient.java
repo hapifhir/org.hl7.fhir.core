@@ -4,19 +4,19 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.SimpleHTTPClient;
+import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JSONUtil;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -24,51 +24,6 @@ import java.util.List;
 import java.util.Set;
 
 public class PackageClient {
-
-  public class PackageInfo {
-    private String id;
-    private String version;
-    private String fhirVersion;
-    private String description;
-    private String url;
-    private String canonical;
-
-    public PackageInfo(String id, String version, String fhirVersion, String description, String url, String canonical) {
-      super();
-      this.id = id;
-      this.version = version;
-      this.fhirVersion = fhirVersion;
-      this.description = description;
-      this.url = url;
-      if (url == null && id != null && version != null) {
-        url = Utilities.pathURL(address, id, version);
-      }
-      this.canonical = canonical;
-    }
-    public String getId() {
-      return id;
-    }
-    public String getVersion() {
-      return version;
-    }
-    public String getFhirVersion() {
-      return fhirVersion;
-    }
-    public String getDescription() {
-      return description;
-    }
-    public String getUrl() {
-      return url;
-    }
-
-    public String getCanonical() {
-      return canonical;
-    }
-    @Override
-    public String toString() {
-      return id+"#"+(version == null ? "?pc-pi?" : version)+(fhirVersion == null ? "": " ("+canonical+") for FHIR "+fhirVersion)+(url == null ? "" : " @"+url)+(description == null ? "" : " '"+description+"'");
-    }
-  }
 
   private String address;
   private String cacheFolder;
@@ -124,7 +79,13 @@ public class PackageClient {
       if (versions != null) {
         for (String v : sorted(versions.keySet())) {
           JsonObject obj = versions.getAsJsonObject(v);
-          res.add(new PackageInfo(JSONUtil.str(obj, "name"), JSONUtil.str(obj, "version"), JSONUtil.str(obj, "FhirVersion"), JSONUtil.str(obj, "description"), JSONUtil.str(obj, "url"), JSONUtil.str(obj, "canonical")));
+          res.add(new PackageInfo(JSONUtil.str(obj, "name"),
+            JSONUtil.str(obj, "version"),
+            JSONUtil.str(obj, "FhirVersion"),
+            JSONUtil.str(obj, "description"),
+            JSONUtil.str(obj, "url"),
+            JSONUtil.str(obj, "canonical"),
+            address));
         }
       }
     } catch (FileNotFoundException e) {
@@ -158,7 +119,13 @@ public class PackageClient {
       JsonArray json = fetchJsonArray(Utilities.pathURL(address, "catalog?")+params.toString());
       for (JsonElement e : json) {
         JsonObject obj = (JsonObject) e;
-        res.add(new PackageInfo(JSONUtil.str(obj, "Name", "name"), JSONUtil.str(obj, "Version", "version"), JSONUtil.str(obj, "FhirVersion", "fhirVersion"), JSONUtil.str(obj, "Description", "description"), JSONUtil.str(obj, "url"), JSONUtil.str(obj, "canonical")));
+        res.add(new PackageInfo(JSONUtil.str(obj, "Name", "name"),
+          JSONUtil.str(obj, "Version", "version"),
+          JSONUtil.str(obj, "FhirVersion", "fhirVersion"),
+          JSONUtil.str(obj, "Description", "description"),
+          JSONUtil.str(obj, "url"),
+          JSONUtil.str(obj, "canonical"),
+          address));
       }
     } catch (IOException e1) {
     }
@@ -170,12 +137,10 @@ public class PackageClient {
   }
  
   private InputStream fetchUrl(String source, String accept) throws IOException {
-    URL url = new URL(source);
-    URLConnection c = url.openConnection();
-    if (accept != null) {
-      c.setRequestProperty("accept", accept);
-    }
-    return c.getInputStream();
+    SimpleHTTPClient http = new SimpleHTTPClient();
+    HTTPResult res = http.get(source, accept);
+    res.checkThrowException();
+    return new ByteArrayInputStream(res.getContent());
   }
   
   private JsonObject fetchJson(String source) throws IOException {
@@ -199,10 +164,10 @@ public class PackageClient {
     if (list.isEmpty()) {
       throw new IOException("Package not found: "+id);
     } else {
-      String v = list.get(0).version;
+      String v = list.get(0).getVersion();
       for (PackageInfo p : list) {
-        if (VersionUtilities.isThisOrLater(v, p.version)) {
-          v = p.version;
+        if (VersionUtilities.isThisOrLater(v, p.getVersion())) {
+          v = p.getVersion();
         }
       }
       return v;
@@ -216,8 +181,8 @@ public class PackageClient {
     } else {
       String v = majMinVersion;
       for (PackageInfo p : list) {
-        if (VersionUtilities.isMajMinOrLaterPatch(v, p.version)) {
-          v = p.version;
+        if (VersionUtilities.isMajMinOrLaterPatch(v, p.getVersion())) {
+          v = p.getVersion();
         }
       }
       return v;
@@ -259,7 +224,7 @@ public class PackageClient {
           }
         }
         if (version != null) {  
-          result.add(new PackageInfo(id, version, fVersion, description, url, pcanonical));
+          result.add(new PackageInfo(id, version, fVersion, description, url, pcanonical, address));
         }
       }
     }

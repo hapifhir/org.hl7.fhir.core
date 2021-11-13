@@ -112,6 +112,7 @@ public class DiagnosticReport extends DomainResource {
             case APPENDED: return "appended";
             case CANCELLED: return "cancelled";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -124,6 +125,7 @@ public class DiagnosticReport extends DomainResource {
             case APPENDED: return "http://hl7.org/fhir/diagnostic-report-status";
             case CANCELLED: return "http://hl7.org/fhir/diagnostic-report-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/diagnostic-report-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -136,6 +138,7 @@ public class DiagnosticReport extends DomainResource {
             case APPENDED: return "The report has been modified subsequent to being Final, and is complete and verified by an authorized person. New content has been added, but existing content hasn't changed.";
             case CANCELLED: return "The report is unavailable because the measurement was not started or not completed (also sometimes called \"aborted\").";
             case ENTEREDINERROR: return "The report has been withdrawn following a previous final release.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -148,6 +151,7 @@ public class DiagnosticReport extends DomainResource {
             case APPENDED: return "Appended";
             case CANCELLED: return "Cancelled";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }

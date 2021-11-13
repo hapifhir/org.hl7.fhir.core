@@ -64,6 +64,7 @@ public enum V3ModifyIndicator {
           switch (this) {
             case M: return "M";
             case N: return "N";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum V3ModifyIndicator {
           switch (this) {
             case M: return "Modified subscription to a query server.";
             case N: return "New subscription to a query server.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum V3ModifyIndicator {
           switch (this) {
             case M: return "Modified subscription";
             case N: return "New subscription";
+            case NULL: return null;
             default: return "?";
           }
     }

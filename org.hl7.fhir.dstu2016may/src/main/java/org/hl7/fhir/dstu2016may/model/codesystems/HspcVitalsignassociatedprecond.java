@@ -78,6 +78,7 @@ public enum HspcVitalsignassociatedprecond {
             case _1966: return "1966";
             case _2029: return "2029";
             case _219101: return "219101";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum HspcVitalsignassociatedprecond {
             case _1966: return "Occurred before the cardioversion procedure";
             case _2029: return "Occurred during the cardioversion procedure";
             case _219101: return "Occurred at birth";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum HspcVitalsignassociatedprecond {
             case _1966: return "Before cardioversion";
             case _2029: return "During cardioversion";
             case _219101: return "At birth";
+            case NULL: return null;
             default: return "?";
           }
     }

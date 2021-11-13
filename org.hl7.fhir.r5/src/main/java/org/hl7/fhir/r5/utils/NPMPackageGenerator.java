@@ -276,6 +276,8 @@ public class NPMPackageGenerator {
       return "hl7.fhir.r3.core";
     if (v.startsWith("4.0"))
       return "hl7.fhir.r4.core";
+    if (v.startsWith("4.1"))
+      return "hl7.fhir.r4b.core";
     return null;
   }
 
@@ -320,16 +322,9 @@ public class NPMPackageGenerator {
 
   public void addFile(Category cat, String name, byte[] content) throws IOException {
     String path = cat.getDirectory()+name;
-    if (!path.startsWith("package/")) {
-      path = "package/" +path;
-    }
     if (path.length() > 100) {
       name = name.substring(0, name.indexOf("-"))+"-"+UUID.randomUUID().toString();
-      path = cat.getDirectory()+name;
-      if (!path.startsWith("package/")) {
-        path = "package/" +path;
-      }
-      
+      path = cat.getDirectory()+name;      
     }
       
     if (created.contains(path)) {

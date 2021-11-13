@@ -71,6 +71,7 @@ public enum ProductStorageScale {
             case FARENHEIT: return "farenheit";
             case CELSIUS: return "celsius";
             case KELVIN: return "kelvin";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ProductStorageScale {
             case FARENHEIT: return "Fahrenheit temperature scale.";
             case CELSIUS: return "Celsius or centigrade temperature scale.";
             case KELVIN: return "Kelvin absolute thermodynamic temperature scale.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ProductStorageScale {
             case FARENHEIT: return "Fahrenheit";
             case CELSIUS: return "Celsius";
             case KELVIN: return "Kelvin";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -10,10 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_50;
-import org.hl7.fhir.convertors.VersionConvertor_14_50;
-import org.hl7.fhir.convertors.VersionConvertor_30_50;
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
+import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
@@ -189,9 +192,13 @@ public class QuestionnaireValidator extends BaseValidator {
           hint(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), questionnaire != null, I18nConstants.QUESTIONNAIRE_QR_Q_NONE);
     if (ok) {
       Questionnaire qsrc = questionnaire.startsWith("#") ? loadQuestionnaire(element, questionnaire.substring(1)) : context.fetchResource(Questionnaire.class, questionnaire);
-      ok = questionnaireMode == QuestionnaireMode.REQUIRED ?
-          rule(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire) :
-          warning(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire);
+      if (questionnaireMode == QuestionnaireMode.REQUIRED) {
+        ok = rule(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire);
+      } else if (questionnaire.startsWith("http://example.org")) {
+        ok = hint(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire);
+      } else {
+        ok = warning(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire);
+      }
       if (ok) {
         boolean inProgress = "in-progress".equals(element.getNamedChildValue("status"));
         validateQuestionannaireResponseItems(hostContext, qsrc, qsrc.getItem(), errors, element, stack, inProgress, element, new QStack(qsrc, element));
@@ -212,28 +219,28 @@ public class QuestionnaireValidator extends BaseValidator {
               throw new FHIRException(context.formatMessage(I18nConstants.UNSUPPORTED_VERSION_R1));
             case DSTU2:
               org.hl7.fhir.dstu2.model.Resource r2 = new org.hl7.fhir.dstu2.formats.JsonParser().parse(json);
-              Resource r5 = VersionConvertor_10_50.convertResource(r2);
+              Resource r5 = VersionConvertorFactory_10_50.convertResource(r2);
               if (r5 instanceof Questionnaire)
                 return (Questionnaire) r5;
               else
                 return null;
             case DSTU2016May:
               org.hl7.fhir.dstu2016may.model.Resource r2a = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(json);
-              r5 = VersionConvertor_14_50.convertResource(r2a);
+              r5 = VersionConvertorFactory_14_50.convertResource(r2a);
               if (r5 instanceof Questionnaire)
                 return (Questionnaire) r5;
               else
                 return null;
             case STU3:
               org.hl7.fhir.dstu3.model.Resource r3 = new org.hl7.fhir.dstu3.formats.JsonParser().parse(json);
-              r5 = VersionConvertor_30_50.convertResource(r3, false);
+              r5 = VersionConvertorFactory_30_50.convertResource(r3);
               if (r5 instanceof Questionnaire)
                 return (Questionnaire) r5;
               else
                 return null;
             case R4:
               org.hl7.fhir.r4.model.Resource r4 = new org.hl7.fhir.r4.formats.JsonParser().parse(json);
-              r5 = VersionConvertor_40_50.convertResource(r4);
+              r5 = VersionConvertorFactory_40_50.convertResource(r4);
               if (r5 instanceof Questionnaire)
                 return (Questionnaire) r5;
               else
@@ -319,7 +326,7 @@ public class QuestionnaireValidator extends BaseValidator {
               if (qItem.hasExtension("???"))
                 validateQuestionnaireResponseItemQuantity(errors, answer, ns);
             break;
-          case CHOICE:
+          case CODING:
             String itemType = validateQuestionnaireResponseItemType(errors, answer, ns, "Coding", "date", "time", "integer", "string");
             if (itemType != null) {
               if (itemType.equals("Coding")) validateAnswerCode(errors, answer, ns, qsrc, qItem, false);
@@ -330,18 +337,18 @@ public class QuestionnaireValidator extends BaseValidator {
               else if (itemType.equals("string")) checkOption(errors, answer, ns, qsrc, qItem, "string");
             }
             break;
-          case OPENCHOICE:
-            itemType = validateQuestionnaireResponseItemType(errors, answer, ns, "Coding", "date", "time", "integer", "string");
-            if (itemType != null) {
-              if (itemType.equals("Coding")) validateAnswerCode(errors, answer, ns, qsrc, qItem, true);
-              else if (itemType.equals("date")) checkOption(errors, answer, ns, qsrc, qItem, "date");
-              else if (itemType.equals("time")) checkOption(errors, answer, ns, qsrc, qItem, "time");
-              else if (itemType.equals("integer"))
-                checkOption(errors, answer, ns, qsrc, qItem, "integer");
-              else if (itemType.equals("string"))
-                checkOption(errors, answer, ns, qsrc, qItem, "string", true);
-            }
-            break;
+//          case OPENCHOICE:
+//            itemType = validateQuestionnaireResponseItemType(errors, answer, ns, "Coding", "date", "time", "integer", "string");
+//            if (itemType != null) {
+//              if (itemType.equals("Coding")) validateAnswerCode(errors, answer, ns, qsrc, qItem, true);
+//              else if (itemType.equals("date")) checkOption(errors, answer, ns, qsrc, qItem, "date");
+//              else if (itemType.equals("time")) checkOption(errors, answer, ns, qsrc, qItem, "time");
+//              else if (itemType.equals("integer"))
+//                checkOption(errors, answer, ns, qsrc, qItem, "integer");
+//              else if (itemType.equals("string"))
+//                checkOption(errors, answer, ns, qsrc, qItem, "string", true);
+//            }
+//            break;
 //          case QUESTION:
           case NULL:
             // no validation
@@ -521,7 +528,7 @@ public class QuestionnaireValidator extends BaseValidator {
 
         long t = System.nanoTime();
         ValidationResult res = context.validateCode(new ValidationOptions(stack.getWorkingLang()), c, vs);
-        timeTracker.tx(t);
+        timeTracker.tx(t, "vc "+c.getSystem()+"#"+c.getCode()+" '"+c.getDisplay()+"'");
         if (!res.isOk()) {
           txRule(errors, res.getTxLink(), IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_BADOPTION, c.getSystem(), c.getCode());
         } else if (res.getSeverity() != null) {

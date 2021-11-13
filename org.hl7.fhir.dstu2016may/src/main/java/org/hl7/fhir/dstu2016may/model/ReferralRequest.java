@@ -97,6 +97,7 @@ public class ReferralRequest extends DomainResource {
             case CANCELLED: return "cancelled";
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -107,6 +108,7 @@ public class ReferralRequest extends DomainResource {
             case CANCELLED: return "http://hl7.org/fhir/referralstatus";
             case COMPLETED: return "http://hl7.org/fhir/referralstatus";
             case ENTEREDINERROR: return "http://hl7.org/fhir/referralstatus";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public class ReferralRequest extends DomainResource {
             case CANCELLED: return "The referral has been cancelled without being completed. For example it is no longer needed.";
             case COMPLETED: return "The referral has been completely actioned.";
             case ENTEREDINERROR: return "This referral record should never have existed, though it's possible some degree of real-world activity or decisions may have been taken due to its existence";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -127,6 +130,7 @@ public class ReferralRequest extends DomainResource {
             case CANCELLED: return "Cancelled";
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -218,6 +222,7 @@ public class ReferralRequest extends DomainResource {
             case PROPOSAL: return "proposal";
             case PLAN: return "plan";
             case REQUEST: return "request";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -226,6 +231,7 @@ public class ReferralRequest extends DomainResource {
             case PROPOSAL: return "http://hl7.org/fhir/referralcategory";
             case PLAN: return "http://hl7.org/fhir/referralcategory";
             case REQUEST: return "http://hl7.org/fhir/referralcategory";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -234,6 +240,7 @@ public class ReferralRequest extends DomainResource {
             case PROPOSAL: return "The referral request represents a suggestion or recommendation that a referral be made.";
             case PLAN: return "The referral request represents an intention by the author to make a referral, but no actual referral has yet been made/authorized.";
             case REQUEST: return "This is an actual referral request which, when active, will have the authorizations needed to allow it to be actioned.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -242,6 +249,7 @@ public class ReferralRequest extends DomainResource {
             case PROPOSAL: return "Proposal";
             case PLAN: return "Plan";
             case REQUEST: return "Request";
+            case NULL: return null;
             default: return "?";
           }
         }

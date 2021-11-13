@@ -64,6 +64,7 @@ public enum AllergIntolSubstanceExpRisk {
           switch (this) {
             case KNOWNREACTIONRISK: return "known-reaction-risk";
             case NOKNOWNREACTIONRISK: return "no-known-reaction-risk";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum AllergIntolSubstanceExpRisk {
           switch (this) {
             case KNOWNREACTIONRISK: return "Known risk of allergy or intolerance reaction upon exposure to the specified substance.";
             case NOKNOWNREACTIONRISK: return "No known risk of allergy or intolerance reaction upon exposure to the specified substance.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum AllergIntolSubstanceExpRisk {
           switch (this) {
             case KNOWNREACTIONRISK: return "Known Reaction Risk";
             case NOKNOWNREACTIONRISK: return "No Known Reaction Risk";
+            case NULL: return null;
             default: return "?";
           }
     }

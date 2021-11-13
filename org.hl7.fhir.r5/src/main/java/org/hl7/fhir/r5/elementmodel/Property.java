@@ -57,11 +57,16 @@ public class Property {
 	private Boolean canBePrimitive;
   private ProfileUtilities profileUtilities; 
 
-	public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure) {
+  public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure, ProfileUtilities profileUtilities) {
 		this.context = context;
 		this.definition = definition;
 		this.structure = structure;
-    profileUtilities = new ProfileUtilities(context, null, null); 
+    this.profileUtilities = profileUtilities;
+	}
+
+
+	public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure) {
+    this(context, definition, structure, new ProfileUtilities(context, null, null));
 	}
 
 	public String getName() {
@@ -223,9 +228,13 @@ public class Property {
 	    return !definition.getPath().contains(".") && (structure.getKind() == StructureDefinitionKind.RESOURCE);
 	}
 
-	public boolean isList() {
-	  return !"1".equals(definition.getMax());
-	}
+  public boolean isList() {
+    return !"1".equals(definition.getMax());
+  }
+
+  public boolean isBaseList() {
+    return !"1".equals(definition.getBase().getMax());
+  }
 
   public String getScopedPropertyName() {
     return definition.getBase().getPath();
@@ -354,7 +363,7 @@ public class Property {
     }
     List<Property> properties = new ArrayList<Property>();
     for (ElementDefinition child : children) {
-      properties.add(new Property(context, child, sd));
+      properties.add(new Property(context, child, sd, this.profileUtilities));
     }
     return properties;
   }
@@ -393,7 +402,7 @@ public class Property {
     }
     List<Property> properties = new ArrayList<Property>();
     for (ElementDefinition child : children) {
-      properties.add(new Property(context, child, sd));
+      properties.add(new Property(context, child, sd, this.profileUtilities));
     }
     return properties;
   }

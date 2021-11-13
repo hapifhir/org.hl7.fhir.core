@@ -127,6 +127,7 @@ public enum HspcAddressUse {
             case H: return "H";
             case DIR: return "DIR";
             case CONF: return "CONF";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -146,6 +147,7 @@ public enum HspcAddressUse {
             case H: return "";
             case DIR: return "";
             case CONF: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -162,6 +164,7 @@ public enum HspcAddressUse {
             case H: return "Home address";
             case DIR: return "Direct address";
             case CONF: return "Conficential address";
+            case NULL: return null;
             default: return "?";
           }
     }

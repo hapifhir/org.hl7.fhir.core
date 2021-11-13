@@ -93,6 +93,7 @@ public class Contributor extends Type implements ICompositeType {
             case EDITOR: return "editor";
             case REVIEWER: return "reviewer";
             case ENDORSER: return "endorser";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -102,6 +103,7 @@ public class Contributor extends Type implements ICompositeType {
             case EDITOR: return "http://hl7.org/fhir/contributor-type";
             case REVIEWER: return "http://hl7.org/fhir/contributor-type";
             case ENDORSER: return "http://hl7.org/fhir/contributor-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -111,6 +113,7 @@ public class Contributor extends Type implements ICompositeType {
             case EDITOR: return "An editor of the content of the module.";
             case REVIEWER: return "A reviewer of the content of the module.";
             case ENDORSER: return "An endorser of the content of the module.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -120,6 +123,7 @@ public class Contributor extends Type implements ICompositeType {
             case EDITOR: return "Editor";
             case REVIEWER: return "Reviewer";
             case ENDORSER: return "Endorser";
+            case NULL: return null;
             default: return "?";
           }
         }

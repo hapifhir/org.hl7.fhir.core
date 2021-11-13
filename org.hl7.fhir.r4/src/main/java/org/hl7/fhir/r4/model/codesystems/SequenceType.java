@@ -71,6 +71,7 @@ public enum SequenceType {
             case AA: return "aa";
             case DNA: return "dna";
             case RNA: return "rna";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum SequenceType {
             case AA: return "Amino acid sequence.";
             case DNA: return "DNA Sequence.";
             case RNA: return "RNA Sequence.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum SequenceType {
             case AA: return "AA Sequence";
             case DNA: return "DNA Sequence";
             case RNA: return "RNA Sequence";
+            case NULL: return null;
             default: return "?";
           }
     }

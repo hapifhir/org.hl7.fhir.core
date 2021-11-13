@@ -84,6 +84,7 @@ public class QuestionnaireResponse extends DomainResource {
             case INPROGRESS: return "in-progress";
             case COMPLETED: return "completed";
             case AMENDED: return "amended";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -92,6 +93,7 @@ public class QuestionnaireResponse extends DomainResource {
             case INPROGRESS: return "http://hl7.org/fhir/questionnaire-answers-status";
             case COMPLETED: return "http://hl7.org/fhir/questionnaire-answers-status";
             case AMENDED: return "http://hl7.org/fhir/questionnaire-answers-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -100,6 +102,7 @@ public class QuestionnaireResponse extends DomainResource {
             case INPROGRESS: return "This QuestionnaireResponse has been partially filled out with answers, but changes or additions are still expected to be made to it.";
             case COMPLETED: return "This QuestionnaireResponse has been filled out with answers, and the current content is regarded as definitive.";
             case AMENDED: return "This QuestionnaireResponse has been filled out with answers, then marked as complete, yet changes or additions have been made to it afterwards.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +111,7 @@ public class QuestionnaireResponse extends DomainResource {
             case INPROGRESS: return "In Progress";
             case COMPLETED: return "Completed";
             case AMENDED: return "Amended";
+            case NULL: return null;
             default: return "?";
           }
         }

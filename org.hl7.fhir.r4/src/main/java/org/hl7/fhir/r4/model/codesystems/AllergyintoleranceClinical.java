@@ -71,6 +71,7 @@ public enum AllergyintoleranceClinical {
             case ACTIVE: return "active";
             case INACTIVE: return "inactive";
             case RESOLVED: return "resolved";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum AllergyintoleranceClinical {
             case ACTIVE: return "The subject is currently experiencing, or is at risk of, a reaction to the identified substance.";
             case INACTIVE: return "The subject is no longer at risk of a reaction to the identified substance.";
             case RESOLVED: return "A reaction to the identified substance has been clinically reassessed by testing or re-exposure and is considered no longer to be present. Re-exposure could be accidental, unplanned, or outside of any clinical setting.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum AllergyintoleranceClinical {
             case ACTIVE: return "Active";
             case INACTIVE: return "Inactive";
             case RESOLVED: return "Resolved";
+            case NULL: return null;
             default: return "?";
           }
     }

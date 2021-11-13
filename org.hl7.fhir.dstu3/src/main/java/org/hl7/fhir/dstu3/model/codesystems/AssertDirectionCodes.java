@@ -64,6 +64,7 @@ public enum AssertDirectionCodes {
           switch (this) {
             case RESPONSE: return "response";
             case REQUEST: return "request";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum AssertDirectionCodes {
           switch (this) {
             case RESPONSE: return "The assertion is evaluated on the response. This is the default value.";
             case REQUEST: return "The assertion is evaluated on the request.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum AssertDirectionCodes {
           switch (this) {
             case RESPONSE: return "response";
             case REQUEST: return "request";
+            case NULL: return null;
             default: return "?";
           }
     }

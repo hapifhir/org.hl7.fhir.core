@@ -85,6 +85,7 @@ public class Task extends DomainResource {
             case LOW: return "low";
             case NORMAL: return "normal";
             case HIGH: return "high";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -93,6 +94,7 @@ public class Task extends DomainResource {
             case LOW: return "http://hl7.org/fhir/task-priority";
             case NORMAL: return "http://hl7.org/fhir/task-priority";
             case HIGH: return "http://hl7.org/fhir/task-priority";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -101,6 +103,7 @@ public class Task extends DomainResource {
             case LOW: return "This task has low priority.";
             case NORMAL: return "This task has normal priority.";
             case HIGH: return "This task has high priority.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -109,6 +112,7 @@ public class Task extends DomainResource {
             case LOW: return "Low";
             case NORMAL: return "Normal";
             case HIGH: return "High";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -237,6 +241,7 @@ public class Task extends DomainResource {
             case ONHOLD: return "on-hold";
             case FAILED: return "failed";
             case COMPLETED: return "completed";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -252,6 +257,7 @@ public class Task extends DomainResource {
             case ONHOLD: return "http://hl7.org/fhir/task-status";
             case FAILED: return "http://hl7.org/fhir/task-status";
             case COMPLETED: return "http://hl7.org/fhir/task-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -267,6 +273,7 @@ public class Task extends DomainResource {
             case ONHOLD: return "Task has been started but work has been paused";
             case FAILED: return "The task was attempted but could not be completed due to some error.";
             case COMPLETED: return "The task has been completed (more or less) as requested.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -282,6 +289,7 @@ public class Task extends DomainResource {
             case ONHOLD: return "On Hold";
             case FAILED: return "Failed";
             case COMPLETED: return "Completed";
+            case NULL: return null;
             default: return "?";
           }
         }

@@ -105,6 +105,7 @@ public class Protocol extends DomainResource {
             case ACTIVE: return "active";
             case WITHDRAWN: return "withdrawn";
             case SUPERSEDED: return "superseded";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -116,6 +117,7 @@ public class Protocol extends DomainResource {
             case ACTIVE: return "http://hl7.org/fhir/protocol-status";
             case WITHDRAWN: return "http://hl7.org/fhir/protocol-status";
             case SUPERSEDED: return "http://hl7.org/fhir/protocol-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -127,6 +129,7 @@ public class Protocol extends DomainResource {
             case ACTIVE: return "This protocol is ready for use in production systems";
             case WITHDRAWN: return "This protocol has been withdrawn and should no longer be used";
             case SUPERSEDED: return "This protocol has been replaced and a different protocol should be used in its place";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,6 +141,7 @@ public class Protocol extends DomainResource {
             case ACTIVE: return "Active";
             case WITHDRAWN: return "Withdrawn";
             case SUPERSEDED: return "Superseded";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -242,6 +246,7 @@ public class Protocol extends DomainResource {
             case DEVICE: return "device";
             case DRUG: return "drug";
             case STUDY: return "study";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -251,6 +256,7 @@ public class Protocol extends DomainResource {
             case DEVICE: return "http://hl7.org/fhir/protocol-type";
             case DRUG: return "http://hl7.org/fhir/protocol-type";
             case STUDY: return "http://hl7.org/fhir/protocol-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -260,6 +266,7 @@ public class Protocol extends DomainResource {
             case DEVICE: return "The protocol describes the appropriate use of a particular device (medical device, software, etc.)";
             case DRUG: return "The protocol describes the appropriate use of a particular medication including indications for use, dosages, treatment cycles, etc.";
             case STUDY: return "The protocol describes the set of steps to occur for study subjects enrolled in an interventional study";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -269,6 +276,7 @@ public class Protocol extends DomainResource {
             case DEVICE: return "Device";
             case DRUG: return "Drug";
             case STUDY: return "Study";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -382,6 +390,7 @@ public class Protocol extends DomainResource {
             case PROCEDURE: return "procedure";
             case SUPPLY: return "supply";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -394,6 +403,7 @@ public class Protocol extends DomainResource {
             case PROCEDURE: return "http://hl7.org/fhir/activity-definition-category";
             case SUPPLY: return "http://hl7.org/fhir/activity-definition-category";
             case OTHER: return "http://hl7.org/fhir/activity-definition-category";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -406,6 +416,7 @@ public class Protocol extends DomainResource {
             case PROCEDURE: return "To modify the patient in some way (surgery, physiotherapy, education, counseling, etc.)";
             case SUPPLY: return "To provide something to the patient (medication, medical supply, etc.)";
             case OTHER: return "Some other form of action";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -418,6 +429,7 @@ public class Protocol extends DomainResource {
             case PROCEDURE: return "Procedure";
             case SUPPLY: return "Supply";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
         }

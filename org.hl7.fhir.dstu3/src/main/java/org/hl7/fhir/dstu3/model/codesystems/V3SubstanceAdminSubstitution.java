@@ -174,6 +174,7 @@ public enum V3SubstanceAdminSubstitution {
             case TG: return "TG";
             case F: return "F";
             case N: return "N";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -192,6 +193,7 @@ public enum V3SubstanceAdminSubstitution {
             case TG: return "Description: Substitution occurred or is permitted between therapeutically equivalent Generics but not Brands\r\n>\n                           Examples: \n                        \r\n\n                        \n                           Ranitidine  for cimetidine";
             case F: return "Description: This substitution was performed or is permitted based on formulary guidelines.";
             case N: return "No substitution occurred or is permitted.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -207,6 +209,7 @@ public enum V3SubstanceAdminSubstitution {
             case TG: return "therapeutic generic";
             case F: return "formulary";
             case N: return "none";
+            case NULL: return null;
             default: return "?";
           }
     }

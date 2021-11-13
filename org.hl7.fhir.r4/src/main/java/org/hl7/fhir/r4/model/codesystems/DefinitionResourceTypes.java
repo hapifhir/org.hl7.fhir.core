@@ -92,6 +92,7 @@ public enum DefinitionResourceTypes {
             case OPERATIONDEFINITION: return "OperationDefinition";
             case PLANDEFINITION: return "PlanDefinition";
             case QUESTIONNAIRE: return "Questionnaire";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum DefinitionResourceTypes {
             case OPERATIONDEFINITION: return "A formal computable definition of an operation (on the RESTful interface) or a named query (using the search interaction).";
             case PLANDEFINITION: return "This resource allows for the definition of various types of plans as a sharable, consumable, and executable artifact. The resource is general enough to support the description of a broad range of clinical artifacts such as clinical decision support rules, order sets and protocols.";
             case QUESTIONNAIRE: return "A structured set of questions intended to guide the collection of answers from end-users. Questionnaires provide detailed control over order, presentation, phraseology and grouping to allow coherent, consistent data collection.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum DefinitionResourceTypes {
             case OPERATIONDEFINITION: return "OperationDefinition";
             case PLANDEFINITION: return "PlanDefinition";
             case QUESTIONNAIRE: return "Questionnaire";
+            case NULL: return null;
             default: return "?";
           }
     }

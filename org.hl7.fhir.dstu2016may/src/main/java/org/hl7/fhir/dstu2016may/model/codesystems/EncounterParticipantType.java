@@ -64,6 +64,7 @@ public enum EncounterParticipantType {
           switch (this) {
             case TRANSLATOR: return "translator";
             case EMERGENCY: return "emergency";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum EncounterParticipantType {
           switch (this) {
             case TRANSLATOR: return "A translator who is facilitating communication with the patient during the encounter.";
             case EMERGENCY: return "A person to be contacted in case of an emergency during the encounter.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum EncounterParticipantType {
           switch (this) {
             case TRANSLATOR: return "Translator";
             case EMERGENCY: return "Emergency";
+            case NULL: return null;
             default: return "?";
           }
     }

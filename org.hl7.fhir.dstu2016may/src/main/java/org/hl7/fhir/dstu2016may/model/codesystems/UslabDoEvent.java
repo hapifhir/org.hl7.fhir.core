@@ -78,6 +78,7 @@ public enum UslabDoEvent {
             case ADDONREQUEST: return "add-on-request";
             case ORDERERCANCEL: return "orderer-cancel";
             case LABCANCEL: return "lab-cancel";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum UslabDoEvent {
             case ADDONREQUEST: return "a Provider (.orderer) adds one or more additional tests to a previously transmitted test requisition.";
             case ORDERERCANCEL: return "The Provider (orderer) requests cancelation of previously ordered test.";
             case LABCANCEL: return "The laboratory cancels a previously ordered test.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum UslabDoEvent {
             case ADDONREQUEST: return "add-on request";
             case ORDERERCANCEL: return "orderer cancel";
             case LABCANCEL: return "laboratory cancel";
+            case NULL: return null;
             default: return "?";
           }
     }

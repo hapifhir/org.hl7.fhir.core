@@ -64,6 +64,7 @@ public enum OperationParameterUse {
           switch (this) {
             case IN: return "in";
             case OUT: return "out";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum OperationParameterUse {
           switch (this) {
             case IN: return "This is an input parameter.";
             case OUT: return "This is an output parameter.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum OperationParameterUse {
           switch (this) {
             case IN: return "In";
             case OUT: return "Out";
+            case NULL: return null;
             default: return "?";
           }
     }

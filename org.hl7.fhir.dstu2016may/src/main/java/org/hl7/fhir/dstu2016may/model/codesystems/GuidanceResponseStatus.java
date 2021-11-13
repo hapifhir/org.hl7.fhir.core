@@ -85,6 +85,7 @@ public enum GuidanceResponseStatus {
             case DATAREQUIRED: return "data-required";
             case INPROGRESS: return "in-progress";
             case FAILURE: return "failure";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum GuidanceResponseStatus {
             case DATAREQUIRED: return "The request was processed, but more data is required to complete the evaluation";
             case INPROGRESS: return "The request is currently being processed";
             case FAILURE: return "The request was not processed successfully";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum GuidanceResponseStatus {
             case DATAREQUIRED: return "Data Required";
             case INPROGRESS: return "In Progress";
             case FAILURE: return "Failure";
+            case NULL: return null;
             default: return "?";
           }
     }

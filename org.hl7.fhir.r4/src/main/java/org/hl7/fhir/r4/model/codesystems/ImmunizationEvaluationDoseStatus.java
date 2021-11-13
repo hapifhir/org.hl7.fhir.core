@@ -64,6 +64,7 @@ public enum ImmunizationEvaluationDoseStatus {
           switch (this) {
             case VALID: return "valid";
             case NOTVALID: return "notvalid";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ImmunizationEvaluationDoseStatus {
           switch (this) {
             case VALID: return "The dose counts toward fulfilling a path to immunity for a patient, providing protection against the target disease.";
             case NOTVALID: return "The dose does not count toward fulfilling a path to immunity for a patient.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ImmunizationEvaluationDoseStatus {
           switch (this) {
             case VALID: return "Valid";
             case NOTVALID: return "Not valid";
+            case NULL: return null;
             default: return "?";
           }
     }

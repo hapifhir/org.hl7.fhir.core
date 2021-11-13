@@ -24,6 +24,7 @@ public class Params {
   public static final String DEBUG = "-debug";
   public static final String SCT = "-sct";
   public static final String RECURSE = "-recurse";
+  public static final String SHOW_MESSAGES_FROM_REFERENCES = "-showReferenceMessages";
   public static final String LOCALE = "-locale";
   public static final String STRICT_EXTENSIONS = "-strictExtensions";
   public static final String HINT_ABOUT_NON_MUST_SUPPORT = "-hintAboutNonMustSupport";
@@ -47,14 +48,21 @@ public class Params {
   public static final String TEST = "-tests";
   public static final String HELP = "help";
   public static final String COMPARE = "-compare";
+  public static final String SPREADSHEET = "-spreadsheet";
   public static final String DESTINATION = "-dest";
   public static final String LEFT = "-left";
   public static final String RIGHT = "-right";
   public static final String NO_INTERNAL_CACHING = "-no-internal-caching";
   public static final String NO_EXTENSIBLE_BINDING_WARNINGS = "-no-extensible-binding-warnings";
+  public static final String NO_UNICODE_BIDI_CONTROL_CHARS = "-no_unicode_bidi_control_chars";
+  public static final String NO_INVARIANTS = "-no-invariants";
+  public static final String WANT_INVARIANTS_IN_MESSAGES = "-want-invariants-in-messages";
   public static final String SECURITY_CHECKS = "-security-checks";
   public static final String CRUMB_TRAIL = "-crumb-trails";
+  public static final String VERBOSE = "-verbose";
   public static final String SHOW_TIMES = "-show-times";
+  public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
+  public static final String OUTPUT_STYLE = "-output-style";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
@@ -129,10 +137,10 @@ public class Params {
         cliContext.getBundleValidationRules().add(new BundleValidationRule(r, p));
       } else if (args[i].equals(QUESTIONNAIRE)) {
         if (i + 1 == args.length)
-          throw new Error("Specified -questionnaire without indicating questionnaire file");
+          throw new Error("Specified -questionnaire without indicating questionnaire mode");
         else {
           String q = args[++i];
-          cliContext.setQuestionnaireMode(QuestionnaireMode.valueOf(q));
+          cliContext.setQuestionnaireMode(QuestionnaireMode.fromCode(q));
         }
       } else if (args[i].equals(NATIVE)) {
         cliContext.setDoNative(true);
@@ -144,6 +152,8 @@ public class Params {
         cliContext.setSnomedCT(args[++i]);
       } else if (args[i].equals(RECURSE)) {
         cliContext.setRecursive(true);
+      } else if (args[i].equals(SHOW_MESSAGES_FROM_REFERENCES)) {
+        cliContext.setShowMessagesFromReferences(true);
       } else if (args[i].equals(LOCALE)) {
         if (i + 1 == args.length) {
           throw new Error("Specified -locale without indicating locale");
@@ -156,6 +166,12 @@ public class Params {
         cliContext.setNoInternalCaching(true);
       } else if (args[i].equals(NO_EXTENSIBLE_BINDING_WARNINGS)) {
         cliContext.setNoExtensibleBindingMessages(true);
+      } else if (args[i].equals(NO_UNICODE_BIDI_CONTROL_CHARS)) {
+        cliContext.setNoUnicodeBiDiControlChars(true);
+      } else if (args[i].equals(NO_INVARIANTS)) {
+        cliContext.setNoInvariants(true);
+      } else if (args[i].equals(WANT_INVARIANTS_IN_MESSAGES)) {
+        cliContext.setWantInvariantsInMessages(true);
       } else if (args[i].equals(HINT_ABOUT_NON_MUST_SUPPORT)) {
         cliContext.setHintAboutNonMustSupport(true);
       } else if (args[i].equals(TO_VERSION)) {
@@ -170,14 +186,29 @@ public class Params {
         cliContext.setMode(EngineMode.TRANSFORM);
       } else if (args[i].equals(NARRATIVE)) {
         cliContext.setMode(EngineMode.NARRATIVE);
+      } else if (args[i].equals(SPREADSHEET)) {
+        cliContext.setMode(EngineMode.SPREADSHEET);
       } else if (args[i].equals(SNAPSHOT)) {
         cliContext.setMode(EngineMode.SNAPSHOT);
       } else if (args[i].equals(SECURITY_CHECKS)) {
         cliContext.setSecurityChecks(true);
       } else if (args[i].equals(CRUMB_TRAIL)) {
         cliContext.setCrumbTrails(true);
+      } else if (args[i].equals(VERBOSE)) {
+        cliContext.setCrumbTrails(true);
+      } else if (args[i].equals(ALLOW_EXAMPLE_URLS)) {
+        String bl = args[++i]; 
+        if ("true".equals(bl)) {
+          cliContext.setAllowExampleUrls(true);
+        } else if ("false".equals(bl)) {
+          cliContext.setAllowExampleUrls(false);
+        } else {
+          throw new Error("Value for "+ALLOW_EXAMPLE_URLS+" not understood: "+bl);          
+        }          
       } else if (args[i].equals(SHOW_TIMES)) {
         cliContext.setShowTimes(true);
+      } else if (args[i].equals(OUTPUT_STYLE)) {
+        cliContext.setOutputStyle(args[++i]);
       } else if (args[i].equals(SCAN)) {
         cliContext.setMode(EngineMode.SCAN);
       } else if (args[i].equals(TERMINOLOGY)) {

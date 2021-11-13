@@ -57,6 +57,7 @@ public enum NehtaNehtaCrcOperationType {
         public String toCode() {
           switch (this) {
             case OTHERPROCEDURES: return "other_procedures";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum NehtaNehtaCrcOperationType {
         public String getDefinition() {
           switch (this) {
             case OTHERPROCEDURES: return "Indicates whether other procedure(s) were undertaken";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case OTHERPROCEDURES: return "Other procedure(s)";
+            case NULL: return null;
             default: return "?";
           }
     }

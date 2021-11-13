@@ -134,6 +134,7 @@ public enum MessageEvents {
             case PATIENTLINK: return "patient-link";
             case PATIENTUNLINK: return "patient-unlink";
             case VALUESETEXPAND: return "valueset-expand";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -154,6 +155,7 @@ public enum MessageEvents {
             case PATIENTLINK: return "Notification that two patient records actually identify the same patient.";
             case PATIENTUNLINK: return "Notification that previous advice that two patient records concern the same patient is now considered incorrect.";
             case VALUESETEXPAND: return "The definition of a value set is used to create a simple collection of codes suitable for use for data entry or validation. An expanded value set will be returned, or an error message.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -171,6 +173,7 @@ public enum MessageEvents {
             case PATIENTLINK: return "patient-link";
             case PATIENTUNLINK: return "patient-unlink";
             case VALUESETEXPAND: return "valueset-expand";
+            case NULL: return null;
             default: return "?";
           }
     }

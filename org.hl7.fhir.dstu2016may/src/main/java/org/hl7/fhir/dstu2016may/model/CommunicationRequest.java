@@ -133,6 +133,7 @@ public class CommunicationRequest extends DomainResource {
             case SUSPENDED: return "suspended";
             case REJECTED: return "rejected";
             case FAILED: return "failed";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -148,6 +149,7 @@ public class CommunicationRequest extends DomainResource {
             case SUSPENDED: return "http://hl7.org/fhir/communication-request-status";
             case REJECTED: return "http://hl7.org/fhir/communication-request-status";
             case FAILED: return "http://hl7.org/fhir/communication-request-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -163,6 +165,7 @@ public class CommunicationRequest extends DomainResource {
             case SUSPENDED: return "The request has been held by originating system/user request.";
             case REJECTED: return "The receiving system has declined to fulfill the request";
             case FAILED: return "The communication was attempted, but due to some procedural error, it could not be completed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -178,6 +181,7 @@ public class CommunicationRequest extends DomainResource {
             case SUSPENDED: return "Suspended";
             case REJECTED: return "Rejected";
             case FAILED: return "Failed";
+            case NULL: return null;
             default: return "?";
           }
         }

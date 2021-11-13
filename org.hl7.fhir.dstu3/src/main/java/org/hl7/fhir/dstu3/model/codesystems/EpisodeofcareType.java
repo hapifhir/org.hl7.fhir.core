@@ -85,6 +85,7 @@ public enum EpisodeofcareType {
             case DIAB: return "diab";
             case DA: return "da";
             case CACP: return "cacp";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum EpisodeofcareType {
             case DIAB: return "";
             case DA: return "";
             case CACP: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum EpisodeofcareType {
             case DIAB: return "Post co-ordinated diabetes program";
             case DA: return "Drug and alcohol rehabilitation";
             case CACP: return "Community-based aged care";
+            case NULL: return null;
             default: return "?";
           }
     }

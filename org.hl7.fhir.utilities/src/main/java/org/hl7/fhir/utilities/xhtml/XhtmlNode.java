@@ -606,6 +606,10 @@ public class XhtmlNode implements IBaseXhtml {
     return addTag("pre");
   }
 
+  public XhtmlNode pre(String clss) {
+    return addTag("pre").setAttribute("class", clss);
+  }
+
   public void br() {
     addTag("br");
   }
@@ -632,6 +636,12 @@ public class XhtmlNode implements IBaseXhtml {
   
   public XhtmlNode tx(String cnt) {
     return addText(cnt);
+  }
+
+  // differs from tx because it returns the owner node, not the created text
+  public XhtmlNode txN(String cnt) {
+    addText(cnt);
+    return this;
   }
 
   public XhtmlNode tx(int cnt) {

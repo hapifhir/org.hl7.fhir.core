@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -234,7 +234,7 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(modifierExtension);
       }
 
-// Manual code (from Configuration.txt)t:
+// Manual code (from Configuration.txt):
 public void checkNoModifiers(String noun, String verb) throws FHIRException {
         if (hasModifierExtension()) {
           throw new FHIRException("Found unknown Modifier Exceptions on "+noun+" doing "+verb);

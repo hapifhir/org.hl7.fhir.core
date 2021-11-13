@@ -4026,6 +4026,7 @@ public enum V3TribalEntityUS {
             case _97: return "97";
             case _98: return "98";
             case _99: return "99";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -4602,6 +4603,7 @@ public enum V3TribalEntityUS {
             case _97: return "Grindstone Indian Rancheria of Wintun-Wailaki Indi";
             case _98: return "Guidiville Rancheria of California";
             case _99: return "Hannahville Indian Community of Wisconsin Potawato";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -5175,6 +5177,7 @@ public enum V3TribalEntityUS {
             case _97: return "Grindstone Indian Rancheria of Wintun-Wailaki Indi";
             case _98: return "Guidiville Rancheria of California";
             case _99: return "Hannahville Indian Community of Wisconsin Potawato";
+            case NULL: return null;
             default: return "?";
           }
     }

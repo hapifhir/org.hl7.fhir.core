@@ -113,6 +113,7 @@ public enum BundleType {
             case HISTORY: return "history";
             case SEARCHSET: return "searchset";
             case COLLECTION: return "collection";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum BundleType {
             case HISTORY: return "The bundle is a list of resources from a history interaction on a server.";
             case SEARCHSET: return "The bundle is a list of resources returned as a result of a search/query interaction, operation, or message.";
             case COLLECTION: return "The bundle is a set of resources collected into a single document for ease of distribution.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum BundleType {
             case HISTORY: return "History List";
             case SEARCHSET: return "Search Results";
             case COLLECTION: return "Collection";
+            case NULL: return null;
             default: return "?";
           }
     }

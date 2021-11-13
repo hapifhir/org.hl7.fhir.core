@@ -64,6 +64,7 @@ public enum QuestionnaireEnableBehavior {
           switch (this) {
             case ALL: return "all";
             case ANY: return "any";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum QuestionnaireEnableBehavior {
           switch (this) {
             case ALL: return "Enable the question when all the enableWhen criteria are satisfied.";
             case ANY: return "Enable the question when any of the enableWhen criteria are satisfied.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum QuestionnaireEnableBehavior {
           switch (this) {
             case ALL: return "All";
             case ANY: return "Any";
+            case NULL: return null;
             default: return "?";
           }
     }

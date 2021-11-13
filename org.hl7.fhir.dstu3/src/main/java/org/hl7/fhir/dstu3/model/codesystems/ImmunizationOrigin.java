@@ -78,6 +78,7 @@ public enum ImmunizationOrigin {
             case RECORD: return "record";
             case RECALL: return "recall";
             case SCHOOL: return "school";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ImmunizationOrigin {
             case RECORD: return "The data for the immunization event originated with a written record for the patient.";
             case RECALL: return "The data for the immunization event originated from the recollection of the patient or parent/guardian of the patient.";
             case SCHOOL: return "The data for the immunization event originated with a school record for the patient.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ImmunizationOrigin {
             case RECORD: return "Written Record";
             case RECALL: return "Parent/Guardian/Patient Recall";
             case SCHOOL: return "School Record";
+            case NULL: return null;
             default: return "?";
           }
     }

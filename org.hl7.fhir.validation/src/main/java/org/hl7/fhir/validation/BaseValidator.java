@@ -2,7 +2,11 @@ package org.hl7.fhir.validation;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 /*
@@ -84,9 +88,27 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
+import org.hl7.fhir.validation.BaseValidator.TrackedLocationRelatedMessage;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
 
 public class BaseValidator {
+
+  public class TrackedLocationRelatedMessage {
+    private Object location;
+    private ValidationMessage vmsg;
+    public TrackedLocationRelatedMessage(Object location, ValidationMessage vmsg) {
+      super();
+      this.location = location;
+      this.vmsg = vmsg;
+    }
+    public Object getLocation() {
+      return location;
+    }
+    public ValidationMessage getVmsg() {
+      return vmsg;
+    }
+    
+  }
 
   public class ValidationControl {
     private boolean allowed;
@@ -107,9 +129,11 @@ public class BaseValidator {
 
   protected final String META = "meta";
   protected final String ENTRY = "entry";
+  protected final String LINK = "link";
   protected final String DOCUMENT = "document";
   protected final String RESOURCE = "resource";
   protected final String MESSAGE = "message";
+  protected final String SEARCHSET = "searchset";
   protected final String ID = "id";
   protected final String FULL_URL = "fullUrl";
   protected final String PATH_ARG = ":0";
@@ -122,8 +146,10 @@ public class BaseValidator {
   protected IWorkerContext context;
   protected TimeTracker timeTracker = new TimeTracker();
   protected XVerExtensionManager xverManager;
-
-    public BaseValidator(IWorkerContext context, XVerExtensionManager xverManager) {
+  protected List<TrackedLocationRelatedMessage> trackedMessages = new ArrayList<>();
+  protected List<ValidationMessage> messagesToRemove = new ArrayList<>();
+  
+  public BaseValidator(IWorkerContext context, XVerExtensionManager xverManager) {
     super();
     this.context = context;
     this.xverManager = xverManager;
@@ -240,9 +266,9 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   //FIXME: formatMessage should be done here
-  protected boolean slicingHint(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg, String html) {
+  protected boolean slicingHint(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, boolean isCritical, String msg, String html, String[] text) {
     if (!thePass) {
-      addValidationMessage(errors, type, line, col, path, msg, IssueSeverity.INFORMATION, null).setSlicingHint(true).setSliceHtml(html);
+      addValidationMessage(errors, type, line, col, path, msg, IssueSeverity.INFORMATION, null).setSlicingHint(true).setSliceHtml(html, text).setCriticalSignpost(isCritical);
     }
     return thePass;
   }
@@ -262,12 +288,9 @@ public class BaseValidator {
     return thePass;
   }
 
-  protected boolean signpost(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
-    if (!thePass) {
-      String message = context.formatMessage(theMessage, theMessageArguments);
-      addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION, theMessage).setSignpost(true);
-    }
-    return thePass;
+  protected ValidationMessage signpost(List<ValidationMessage> errors, IssueType type, int line, int col, String path, String theMessage, Object... theMessageArguments) {
+    String message = context.formatMessage(theMessage, theMessageArguments);
+    return addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION, theMessage).setSignpost(true);
   }
 
   protected boolean txHint(List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
@@ -493,7 +516,38 @@ public class BaseValidator {
     return thePass;
 
   }
+  
+  /**
+   * Test a rule and add a {@link IssueSeverity#WARNING} validation message if the validation fails. Also, keep track of it later in case we want to remove it if we find a required binding for this element later
+   * 
+   * @param thePass
+   *          Set this parameter to <code>false</code> if the validation does not pass
+   * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
+   */
+  protected boolean txWarningForLaterRemoval(Object location, List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
+    if (!thePass) {
+      String nmsg = context.formatMessage(msg, theMessageArguments);
+      ValidationMessage vmsg = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, nmsg, IssueSeverity.WARNING).setTxLink(txLink).setMessageId(msg);
+      if (checkMsgId(msg, vmsg)) {
+        errors.add(vmsg);
+      }
+      trackedMessages.add(new TrackedLocationRelatedMessage(location, vmsg));
+    }
+    return thePass;
 
+  }
+
+  protected void removeTrackedMessagesForLocation(List<ValidationMessage> errors, Object location, String path) {
+    List<TrackedLocationRelatedMessage> messages = new ArrayList<>();
+    for (TrackedLocationRelatedMessage m : trackedMessages) {
+      if (m.getLocation() == location) {
+        messages.add(m);
+        messagesToRemove.add(m.getVmsg());
+      }
+    }
+    trackedMessages.removeAll(messages);    
+  }
+  
   protected boolean warningOrError(boolean isError, List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
@@ -684,7 +738,7 @@ public class BaseValidator {
           fr = ValueSetUtilities.generateImplicitValueSet(reference);
         } 
        
-        timeTracker.tx(t);
+        timeTracker.tx(t, "vs "+uri);
         return fr;
       }
     } else
@@ -780,7 +834,7 @@ public class BaseValidator {
     String targetUrl = null;
     String version = "";
     String resourceType = null;
-    if (ref.startsWith("http") || ref.startsWith("urn")) {
+    if (ref.startsWith("http:") || ref.startsWith("urn:") || Utilities.isAbsoluteUrl(ref)) {
       // We've got an absolute reference, no need to calculate
       if (ref.contains("/_history/")) {
         targetUrl = ref.substring(0, ref.indexOf("/_history/") - 1);
@@ -952,5 +1006,25 @@ public class BaseValidator {
       }
     }
     return null;
+  }
+  
+  protected String versionFromCanonical(String system) {
+    if (system == null) {
+      return null;
+    } else if (system.contains("|")) {
+      return system.substring(0, system.indexOf("|"));
+    } else {
+      return system;
+    }
+  }
+
+  protected String systemFromCanonical(String system) {
+    if (system == null) {
+      return null;
+    } else if (system.contains("|")) {
+      return system.substring(system.indexOf("|")+1);
+    } else {
+      return system;
+    }
   }
 }

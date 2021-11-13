@@ -71,6 +71,7 @@ public enum V3CommunicationFunctionType {
             case RCV: return "RCV";
             case RSP: return "RSP";
             case SND: return "SND";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum V3CommunicationFunctionType {
             case RCV: return "The entity is the receiver of the transmission.";
             case RSP: return "The entity is the one to which the response or reply to the transmission should be sent.";
             case SND: return "The entity is the sender of the transmission.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum V3CommunicationFunctionType {
             case RCV: return "receiver";
             case RSP: return "respond to";
             case SND: return "sender";
+            case NULL: return null;
             default: return "?";
           }
     }

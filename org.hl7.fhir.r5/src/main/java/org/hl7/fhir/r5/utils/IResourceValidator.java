@@ -107,13 +107,13 @@ public interface IResourceValidator {
 
   public interface IValidatorResourceFetcher {
 
-    Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, FHIRException, IOException;
-    ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url);
-    boolean resolveURL(Object appContext, String path, String url, String type) throws IOException, FHIRException;
+    Element fetch(IResourceValidator validator, Object appContext, String url) throws FHIRFormatError, DefinitionException, FHIRException, IOException;
+    ReferenceValidationPolicy validationPolicy(IResourceValidator validator, Object appContext, String path, String url);
+    boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type) throws IOException, FHIRException;
 
-    byte[] fetchRaw(String url) throws MalformedURLException, IOException; // for attachment checking
-    
-    void setLocale(Locale locale);
+    byte[] fetchRaw(IResourceValidator validator, String url) throws MalformedURLException, IOException; // for attachment checking
+
+    IValidatorResourceFetcher setLocale(Locale locale);
     
     
     /**
@@ -126,7 +126,7 @@ public interface IResourceValidator {
      * @return an R5 version of the resource
      * @throws URISyntaxException 
      */
-    CanonicalResource fetchCanonicalResource(String url) throws URISyntaxException;
+    CanonicalResource fetchCanonicalResource(IResourceValidator validator, String url) throws URISyntaxException;
     
     /**
      * Whether to try calling fetchCanonicalResource for this reference (not whether it will succeed - just throw an exception from fetchCanonicalResource if it doesn't resolve. This is a policy thing.
@@ -136,7 +136,7 @@ public interface IResourceValidator {
      * @param url
      * @return
      */
-    boolean fetchesCanonicalResource(String url);
+    boolean fetchesCanonicalResource(IResourceValidator validator, String url);
   }
   
   public enum BestPracticeWarningLevel {
@@ -193,12 +193,18 @@ public interface IResourceValidator {
   
   public boolean isNoInvariantChecks();
   public IResourceValidator setNoInvariantChecks(boolean value) ;
-  
+
+  public boolean isWantInvariantInMessage();
+  public IResourceValidator setWantInvariantInMessage(boolean wantInvariantInMessage); 
+
   public boolean isNoTerminologyChecks();
   public IResourceValidator setNoTerminologyChecks(boolean noTerminologyChecks);
 
   public boolean isNoExtensibleWarnings();
   public IResourceValidator setNoExtensibleWarnings(boolean noExtensibleWarnings);
+  
+  public boolean isNoUnicodeBiDiControlChars();
+  public void setNoUnicodeBiDiControlChars(boolean noUnicodeBiDiControlChars);
   
   /**
    * Whether being unable to resolve a profile in found in Resource.meta.profile or ElementDefinition.type.profile or targetProfile is an error or just a warning
@@ -278,9 +284,9 @@ public interface IResourceValidator {
    * in addition, you can pass one or more profiles ti validate beyond the base standard - as structure definitions or canonical URLs 
    * @throws IOException 
    */
-  void validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r5.elementmodel.Element element) throws FHIRException;
-  void validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r5.elementmodel.Element element, String profile) throws FHIRException;
-  void validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r5.elementmodel.Element element, List<StructureDefinition> profiles) throws FHIRException;
+  void validate(Object Context, List<ValidationMessage> errors, String initialPath, org.hl7.fhir.r5.elementmodel.Element element) throws FHIRException;
+  void validate(Object Context, List<ValidationMessage> errors, String initialPath, org.hl7.fhir.r5.elementmodel.Element element, String profile) throws FHIRException;
+  void validate(Object Context, List<ValidationMessage> errors, String initialPath, org.hl7.fhir.r5.elementmodel.Element element, List<StructureDefinition> profiles) throws FHIRException;
   
   org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, InputStream stream, FhirFormat format) throws FHIRException;
   org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, InputStream stream, FhirFormat format, String profile) throws FHIRException;
@@ -300,7 +306,7 @@ public interface IResourceValidator {
 
   org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, JsonObject object) throws FHIRException;
   org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, JsonObject object, String profile) throws FHIRException;
-  org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, JsonObject object, List<StructureDefinition> profile) throws FHIRException; 
+  org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, JsonObject object, List<StructureDefinition> profile) throws FHIRException;
 
 
 }

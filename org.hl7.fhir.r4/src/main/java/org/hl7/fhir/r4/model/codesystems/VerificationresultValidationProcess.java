@@ -92,6 +92,7 @@ public enum VerificationresultValidationProcess {
             case MULTI: return "multi";
             case STANDALONE: return "standalone";
             case INCONTEXT: return "in-context";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum VerificationresultValidationProcess {
             case MULTI: return "";
             case STANDALONE: return "";
             case INCONTEXT: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum VerificationresultValidationProcess {
             case MULTI: return "multiple sources";
             case STANDALONE: return "standalone";
             case INCONTEXT: return "in context";
+            case NULL: return null;
             default: return "?";
           }
     }

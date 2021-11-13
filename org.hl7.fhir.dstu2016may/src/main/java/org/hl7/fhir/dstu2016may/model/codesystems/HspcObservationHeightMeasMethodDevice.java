@@ -85,6 +85,7 @@ public enum HspcObservationHeightMeasMethodDevice {
             case _2061: return "2061";
             case _2063: return "2063";
             case _521363688: return "521363688";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum HspcObservationHeightMeasMethodDevice {
             case _2061: return "A method of determining body length or height by using a growth percentile chart";
             case _2063: return "The body length or height was given verbally rather than measured.";
             case _521363688: return "A device for measuring body length or height.  Usually constructed of a ruler and a sliding headpiece that, when placed on an individual's head will give a reading of the body length or height.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum HspcObservationHeightMeasMethodDevice {
             case _2061: return "Height, percentile";
             case _2063: return "Height, stated (reported)";
             case _521363688: return "Stadiometer";
+            case NULL: return null;
             default: return "?";
           }
     }

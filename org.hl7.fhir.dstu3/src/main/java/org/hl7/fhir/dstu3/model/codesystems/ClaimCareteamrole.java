@@ -78,6 +78,7 @@ public enum ClaimCareteamrole {
             case ASSIST: return "assist";
             case SUPERVISOR: return "supervisor";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ClaimCareteamrole {
             case ASSIST: return "Assisting care provider.";
             case SUPERVISOR: return "Supervising care provider.";
             case OTHER: return "Other role on the care team.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ClaimCareteamrole {
             case ASSIST: return "Assisting Provider";
             case SUPERVISOR: return "Supervising Provider";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
     }

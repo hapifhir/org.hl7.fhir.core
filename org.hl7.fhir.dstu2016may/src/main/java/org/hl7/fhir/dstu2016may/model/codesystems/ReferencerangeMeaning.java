@@ -141,6 +141,7 @@ public enum ReferencerangeMeaning {
             case MIDCYCLE: return "midcycle";
             case LUTEAL: return "luteal";
             case POSTMEOPAUSAL: return "postmeopausal";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -162,6 +163,7 @@ public enum ReferencerangeMeaning {
             case MIDCYCLE: return "An expected range in an individual during the follicular stage of the cycle.";
             case LUTEAL: return "An expected range in an individual during the luteal stage of the cycle.";
             case POSTMEOPAUSAL: return "An expected range in an individual post-menopause.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -180,6 +182,7 @@ public enum ReferencerangeMeaning {
             case MIDCYCLE: return "MidCycle";
             case LUTEAL: return "Luteal";
             case POSTMEOPAUSAL: return "Post-Menopause";
+            case NULL: return null;
             default: return "?";
           }
     }

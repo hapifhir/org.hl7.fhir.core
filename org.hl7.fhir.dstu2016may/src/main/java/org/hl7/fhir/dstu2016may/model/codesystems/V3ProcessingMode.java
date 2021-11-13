@@ -78,6 +78,7 @@ public enum V3ProcessingMode {
             case I: return "I";
             case R: return "R";
             case T: return "T";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum V3ProcessingMode {
             case I: return "Identifies initial load mode of processing.";
             case R: return "Identifies restore mode of processing.";
             case T: return "Identifies on-line mode of processing.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum V3ProcessingMode {
             case I: return "Initial load";
             case R: return "Restore from archive";
             case T: return "Current processing";
+            case NULL: return null;
             default: return "?";
           }
     }

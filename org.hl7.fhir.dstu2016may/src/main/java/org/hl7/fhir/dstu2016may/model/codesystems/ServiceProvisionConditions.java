@@ -71,6 +71,7 @@ public enum ServiceProvisionConditions {
             case FREE: return "free";
             case DISC: return "disc";
             case COST: return "cost";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ServiceProvisionConditions {
             case FREE: return "This service is available for no patient cost.";
             case DISC: return "There are discounts available on this service for qualifying patients.";
             case COST: return "Fees apply for this service.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ServiceProvisionConditions {
             case FREE: return "Free";
             case DISC: return "Discounts Available";
             case COST: return "Fees apply";
+            case NULL: return null;
             default: return "?";
           }
     }

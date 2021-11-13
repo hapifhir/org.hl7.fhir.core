@@ -99,10 +99,11 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 	public ParserType getType() {
 		return ParserType.XML;
 	}
-
+	
+	
 	// -- in descendent generated code --------------------------------------
 
-	abstract protected Resource parseResource(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError ;
+  abstract protected Resource parseResource(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError ;
   abstract protected DataType parseType(XmlPullParser xml, String type) throws XmlPullParserException, IOException, FHIRFormatError ;
   abstract protected DataType parseAnyType(XmlPullParser xml, String type) throws XmlPullParserException, IOException, FHIRFormatError ;
 	abstract protected void composeType(String prefix, DataType type) throws IOException ;
@@ -268,6 +269,14 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 
 	protected IXMLWriter xml;
 	protected boolean htmlPretty;
+  private String schemaPath;
+  
+  public String getSchemaPath() {
+    return schemaPath;
+  }
+  public void setSchemaPath(String schemaPath) {
+    this.schemaPath = schemaPath;
+  }
 
 
 
@@ -382,6 +391,9 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 		this.htmlPretty = htmlPretty;
 		xml = writer;
 		xml.setDefaultNamespace(FHIR_NS);
+		if (schemaPath != null) {
+		  xml.setSchemaLocation(FHIR_NS, Utilities.pathURL(schemaPath, resource.fhirType()+".xsd"));
+		}
 		composeResource(resource);
 	}
 

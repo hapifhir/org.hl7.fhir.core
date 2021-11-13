@@ -113,6 +113,7 @@ public enum VerificationresultPrimarySourceType {
             case LEGAL: return "legal";
             case ISSUER: return "issuer";
             case AUTHSOURCE: return "auth-source";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum VerificationresultPrimarySourceType {
             case LEGAL: return "";
             case ISSUER: return "";
             case AUTHSOURCE: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum VerificationresultPrimarySourceType {
             case LEGAL: return "Legal source";
             case ISSUER: return "Issuing source";
             case AUTHSOURCE: return "Authoritative source";
+            case NULL: return null;
             default: return "?";
           }
     }

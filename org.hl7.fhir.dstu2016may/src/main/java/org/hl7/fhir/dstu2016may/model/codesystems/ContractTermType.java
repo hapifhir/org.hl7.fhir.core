@@ -64,6 +64,7 @@ public enum ContractTermType {
           switch (this) {
             case ORALHEALTH: return "OralHealth";
             case VISION: return "Vision";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ContractTermType {
           switch (this) {
             case ORALHEALTH: return "";
             case VISION: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ContractTermType {
           switch (this) {
             case ORALHEALTH: return "OralHealth";
             case VISION: return "Vision";
+            case NULL: return null;
             default: return "?";
           }
     }

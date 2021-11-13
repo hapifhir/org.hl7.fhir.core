@@ -242,6 +242,7 @@ public enum V3EntityClass {
             case COUNTY: return "COUNTY";
             case PROVINCE: return "PROVINCE";
             case RGRP: return "RGRP";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -277,6 +278,7 @@ public enum V3EntityClass {
             case COUNTY: return "The territory of a county, parish or other division of a state or province.";
             case PROVINCE: return "The territory of a state, province, department or other division of a sovereign country.";
             case RGRP: return "A grouping of resources (personnel, material, or places) to be used for scheduling purposes.  May be a pool of like-type resources, a team, or combination of personnel, material and places.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -309,6 +311,7 @@ public enum V3EntityClass {
             case COUNTY: return "county or parish";
             case PROVINCE: return "state or province";
             case RGRP: return "group";
+            case NULL: return null;
             default: return "?";
           }
     }

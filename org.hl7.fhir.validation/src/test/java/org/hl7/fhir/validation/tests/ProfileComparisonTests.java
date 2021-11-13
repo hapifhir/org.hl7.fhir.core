@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.tests;
 
+import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.junit.jupiter.api.Test;
 
 public class ProfileComparisonTests {
@@ -13,7 +14,7 @@ public class ProfileComparisonTests {
 //    ValidationEngine ve = new ValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, null, FhirPublication.STU3, "3.0.2");
 //    ve.loadIg("hl7.fhir.us.core#1.0.1", false);
 //    ve.loadIg("hl7.fhir.au.base#current", false);
-//    ve.getContext().loadFromPackage(new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage("hl7.fhir.pubpack", "0.0.7"), new R5ToR5Loader(new String[] {"Binary"}), "Binary");
+//    ve.getContext().loadFromPackage(new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage(CommonPackages.ID_PUBPACK, CommonPackages.VER_PUBPACK), new R5ToR5Loader(new String[] {"Binary"}), "Binary");
 //
 //
 //    String left = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient";

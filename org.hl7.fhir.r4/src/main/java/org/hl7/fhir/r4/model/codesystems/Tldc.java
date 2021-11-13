@@ -106,6 +106,7 @@ public enum Tldc {
             case REJECTED: return "rejected";
             case RETIRED: return "retired";
             case TERMINATED: return "terminated";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum Tldc {
             case REJECTED: return "A previously drafted design is determined to be erroneous or not fit for intended purpose and is discontinued before ever being published for consideration in a pending state.";
             case RETIRED: return "A previously active design is discontinued from use. It should no longer be used for future designs, but for historical purposes may be used to process data previously recorded using this design. A newer design may or may not exist. The design is published in the retired state.";
             case TERMINATED: return "A design is determined to be erroneous or not fit for the intended purpose and should no longer be used, even for historical purposes. No new designs can be developed for this template. The associated template no longer needs to be published, but if published, is shown in the terminated state.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum Tldc {
             case REJECTED: return "Rejected";
             case RETIRED: return "retired";
             case TERMINATED: return "Terminated";
+            case NULL: return null;
             default: return "?";
           }
     }

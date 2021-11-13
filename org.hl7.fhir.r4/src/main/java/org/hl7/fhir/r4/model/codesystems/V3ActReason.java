@@ -2157,6 +2157,7 @@ The ISO description conflates both of the proposed specializations of HL7 ETREAT
             case SPC: return "SPC";
             case SPO: return "SPO";
             case TRAN: return "TRAN";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2445,6 +2446,7 @@ The ISO description conflates both of the proposed specializations of HL7 ETREAT
             case SPC: return "Description:The level of coverage under the policy or program is available to a subscriber's spouse and children";
             case SPO: return "Description:The level of coverage under the policy or program is available only to a subscribers spouse";
             case TRAN: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2730,6 +2732,7 @@ The ISO description conflates both of the proposed specializations of HL7 ETREAT
             case SPC: return "Spouse and children";
             case SPO: return "Spouse only";
             case TRAN: return "TRAN";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -57,6 +57,7 @@ public enum V3Hl7ITSVersionCode {
         public String toCode() {
           switch (this) {
             case XMLV1PR1: return "XMLV1PR1";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum V3Hl7ITSVersionCode {
         public String getDefinition() {
           switch (this) {
             case XMLV1PR1: return "XML ITS version 1 pre-release 1.";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case XMLV1PR1: return "XMLV1PR1";
+            case NULL: return null;
             default: return "?";
           }
     }

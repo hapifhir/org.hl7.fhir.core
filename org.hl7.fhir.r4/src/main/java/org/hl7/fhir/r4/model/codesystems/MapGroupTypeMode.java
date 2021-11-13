@@ -71,6 +71,7 @@ public enum MapGroupTypeMode {
             case NONE: return "none";
             case TYPES: return "types";
             case TYPEANDTYPES: return "type-and-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum MapGroupTypeMode {
             case NONE: return "This group is not a default group for the types.";
             case TYPES: return "This group is a default mapping group for the specified types and for the primary source type.";
             case TYPEANDTYPES: return "This group is a default mapping group for the specified types.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum MapGroupTypeMode {
             case NONE: return "Not a Default";
             case TYPES: return "Default for Type Combination";
             case TYPEANDTYPES: return "Default for type + combination";
+            case NULL: return null;
             default: return "?";
           }
     }

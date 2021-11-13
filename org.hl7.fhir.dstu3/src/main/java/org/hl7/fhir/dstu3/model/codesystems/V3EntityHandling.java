@@ -176,6 +176,7 @@ public enum V3EntityHandling {
             case SBU: return "SBU";
             case UFRZ: return "UFRZ";
             case UPR: return "UPR";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -202,6 +203,7 @@ public enum V3EntityHandling {
             case SBU: return "Shake thoroughly before using";
             case UFRZ: return "Ultra cold frozen -75 to -85C.  Ultra cold freezer is typically at temperature of dry ice.";
             case UPR: return "Keep upright, do not turn upside down";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -225,6 +227,7 @@ public enum V3EntityHandling {
             case SBU: return "Shake before use";
             case UFRZ: return "Ultra frozen";
             case UPR: return "upright";
+            case NULL: return null;
             default: return "?";
           }
     }

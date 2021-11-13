@@ -80,7 +80,7 @@ public class BatchLoader {
 
   private static void LoadDirectory(String server, String folder, int size) throws IOException, Exception {
     System.out.print("Connecting to "+server+".. ");
-    FHIRToolingClient client = new FHIRToolingClient(server);
+    FHIRToolingClient client = new FHIRToolingClient(server, "fhir/batch-loader");
     System.out.println("Done");
     
     IniFile ini = new IniFile(Utilities.path(folder, "batch-load-progress.ini"));

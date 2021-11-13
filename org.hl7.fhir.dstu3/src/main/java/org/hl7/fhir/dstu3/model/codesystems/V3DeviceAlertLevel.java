@@ -78,6 +78,7 @@ public enum V3DeviceAlertLevel {
             case N: return "N";
             case S: return "S";
             case W: return "W";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum V3DeviceAlertLevel {
             case N: return "No Corrective Action Needed";
             case S: return "Corrective Action Required";
             case W: return "Corrective Action Anticipated";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum V3DeviceAlertLevel {
             case N: return "Normal";
             case S: return "Serious";
             case W: return "Warning";
+            case NULL: return null;
             default: return "?";
           }
     }

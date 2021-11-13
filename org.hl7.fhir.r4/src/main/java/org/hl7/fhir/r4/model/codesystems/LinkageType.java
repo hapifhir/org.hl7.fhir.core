@@ -71,6 +71,7 @@ public enum LinkageType {
             case SOURCE: return "source";
             case ALTERNATE: return "alternate";
             case HISTORICAL: return "historical";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum LinkageType {
             case SOURCE: return "The resource represents the \"source of truth\" (from the perspective of this Linkage resource) for the underlying event/condition/etc.";
             case ALTERNATE: return "The resource represents an alternative view of the underlying event/condition/etc.  The resource may still be actively maintained, even though it is not considered to be the source of truth.";
             case HISTORICAL: return "The resource represents an obsolete record of the underlying event/condition/etc.  It is not expected to be actively maintained.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum LinkageType {
             case SOURCE: return "Source of Truth";
             case ALTERNATE: return "Alternate Record";
             case HISTORICAL: return "Historical/Obsolete Record";
+            case NULL: return null;
             default: return "?";
           }
     }

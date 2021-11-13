@@ -34,11 +34,14 @@ package org.hl7.fhir.validation;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.hl7.fhir.convertors.VersionConvertorAdvisor50;
-import org.hl7.fhir.convertors.VersionConvertor_10_50;
-import org.hl7.fhir.convertors.VersionConvertor_14_50;
-import org.hl7.fhir.convertors.VersionConvertor_30_50;
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
+import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /**
@@ -61,7 +64,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.OperationOutcome;
@@ -76,6 +78,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import javax.annotation.Nonnull;
 
 /**
  * This class allows you to host the java validator in another service, and use the services it has in a wider context. The way it works is 
@@ -101,46 +104,18 @@ The interface is optimised for JNI.
  */
 public class NativeHostServices {
   
-  private class NH_10_50_Advisor implements VersionConvertorAdvisor50 {
+  private class NH_10_50_Advisor extends BaseAdvisor_10_50 {
+    @Override
+    public void handleCodeSystem(@Nonnull CodeSystem tgtcs, @Nonnull ValueSet source) throws FHIRException {}
 
     @Override
-    public boolean ignoreEntry(BundleEntryComponent src) {
-      return false;
-    }
-
-    @Override
-    public org.hl7.fhir.dstu2016may.model.Resource convertR2016May(Resource resource) throws FHIRException {
-      return null;
-    }
-
-    @Override
-    public org.hl7.fhir.dstu2.model.Resource convertR2(Resource resource) throws FHIRException {
-      return null;
-    }
-
-    @Override
-    public org.hl7.fhir.dstu3.model.Resource convertR3(Resource resource) throws FHIRException {
-      return null;
-    }
-
-    @Override
-    public void handleCodeSystem(CodeSystem tgtcs, ValueSet source) throws FHIRException {
-    }
-
-    @Override
-    public CodeSystem getCodeSystem(ValueSet src) throws FHIRException {
+    public CodeSystem getCodeSystem(@Nonnull ValueSet src) throws FHIRException {
       throw new FHIRException("Code systems cannot be handled at this time"); // what to do? need thread local storage? 
     }
-
-    @Override
-    public org.hl7.fhir.r4.model.Resource convertR4(Resource resource) throws FHIRException {
-      // still to do
-      return null;
-    }
-
   }
 
   private ValidationEngine validator;
+  private IgLoader igLoader;
   private int validationCount = 0;
   private int resourceCount = 0;
   private int convertCount = 0;
@@ -149,7 +124,7 @@ public class NativeHostServices {
   private String lastException = null;  
   private Object lock = new Object();
 
-  private VersionConvertorAdvisor50 conv_10_50_advisor = new NH_10_50_Advisor();
+  private final BaseAdvisor_10_50 conv_10_50_advisor = new NH_10_50_Advisor();
 
   /**
    * Create an instance of the service
@@ -167,6 +142,7 @@ public class NativeHostServices {
   public void init(String pack) throws Exception {
     validator = new ValidationEngine(pack);
     validator.getContext().setAllowLoadingDuplicates(true);
+    igLoader = new IgLoader(validator.getPcm(), validator.getContext(), validator.getVersion(), validator.isDebug());
   }
 
   /** 
@@ -177,7 +153,7 @@ public class NativeHostServices {
    * @throws Exception
    */
   public void load(String pack) throws Exception {
-    validator.loadIg(pack, false);
+    igLoader.loadIg(validator.getIgs(), validator.getBinaries(), pack, false);
   }
 
   /** 
@@ -366,28 +342,28 @@ public class NativeHostServices {
       if (VersionUtilities.isR3Ver(version)) {
         org.hl7.fhir.dstu3.formats.ParserBase p3 = org.hl7.fhir.dstu3.formats.FormatUtilities.makeParser(fmt);
         org.hl7.fhir.dstu3.model.Resource res3 = p3.parse(r);
-        Resource res4 = VersionConvertor_30_50.convertResource(res3, false);
+        Resource res4 = VersionConvertorFactory_30_50.convertResource(res3);
         org.hl7.fhir.r5.formats.ParserBase p4 = org.hl7.fhir.r5.formats.FormatUtilities.makeParser(fmt);
         convertCount++;
         return p4.composeBytes(res4);
       } else if (VersionUtilities.isR2Ver(version)) {
         org.hl7.fhir.dstu2.formats.ParserBase p2 = org.hl7.fhir.dstu2.formats.FormatUtilities.makeParser(fmt);
         org.hl7.fhir.dstu2.model.Resource res2 = p2.parse(r);
-        Resource res4 = VersionConvertor_10_50.convertResource(res2, conv_10_50_advisor);
+        Resource res4 = VersionConvertorFactory_10_50.convertResource(res2, conv_10_50_advisor);
         org.hl7.fhir.r5.formats.ParserBase p4 = org.hl7.fhir.r5.formats.FormatUtilities.makeParser(fmt);
         convertCount++;
         return p4.composeBytes(res4);
       } else if (VersionUtilities.isR2BVer(version)) {
         org.hl7.fhir.dstu2016may.formats.ParserBase p2 = org.hl7.fhir.dstu2016may.formats.FormatUtilities.makeParser(fmt);
         org.hl7.fhir.dstu2016may.model.Resource res2 = p2.parse(r);
-        Resource res4 = VersionConvertor_14_50.convertResource(res2);
+        Resource res4 = VersionConvertorFactory_14_50.convertResource(res2);
         org.hl7.fhir.r5.formats.ParserBase p4 = org.hl7.fhir.r5.formats.FormatUtilities.makeParser(fmt);
         convertCount++;
         return p4.composeBytes(res4);
       } else if (VersionUtilities.isR4Ver(version)) {
         org.hl7.fhir.r4.formats.ParserBase p2 = org.hl7.fhir.r4.formats.FormatUtilities.makeParser(fmt);
         org.hl7.fhir.r4.model.Resource res2 = p2.parse(r);
-        Resource res4 = VersionConvertor_40_50.convertResource(res2);
+        Resource res4 = VersionConvertorFactory_40_50.convertResource(res2);
         org.hl7.fhir.r5.formats.ParserBase p4 = org.hl7.fhir.r5.formats.FormatUtilities.makeParser(fmt);
         convertCount++;
         return p4.composeBytes(res4);
@@ -417,21 +393,21 @@ public class NativeHostServices {
       if ("3.0".equals(version) || "3.0.1".equals(version) || "r3".equals(version)) {
         org.hl7.fhir.r5.formats.ParserBase p4 = org.hl7.fhir.r5.formats.FormatUtilities.makeParser(fmt);
         org.hl7.fhir.r5.model.Resource res4 = p4.parse(r);
-        org.hl7.fhir.dstu3.model.Resource res3 = VersionConvertor_30_50.convertResource(res4, false);
+        org.hl7.fhir.dstu3.model.Resource res3 = VersionConvertorFactory_30_50.convertResource(res4);
         org.hl7.fhir.dstu3.formats.ParserBase p3 = org.hl7.fhir.dstu3.formats.FormatUtilities.makeParser(fmt);
         unConvertCount++;
         return p3.composeBytes(res3);
       } else if ("1.0".equals(version) || "1.0.2".equals(version) || "r2".equals(version)) {
         org.hl7.fhir.r5.formats.ParserBase p4 = org.hl7.fhir.r5.formats.FormatUtilities.makeParser(fmt);
         org.hl7.fhir.r5.model.Resource res4 = p4.parse(r);
-        org.hl7.fhir.dstu2.model.Resource res2 = VersionConvertor_10_50.convertResource(res4, conv_10_50_advisor);
+        org.hl7.fhir.dstu2.model.Resource res2 = VersionConvertorFactory_10_50.convertResource(res4, conv_10_50_advisor);
         org.hl7.fhir.dstu2.formats.ParserBase p2 = org.hl7.fhir.dstu2.formats.FormatUtilities.makeParser(fmt);
         unConvertCount++;
         return p2.composeBytes(res2);
       } else if ("1.4".equals(version) || "1.4.0".equals(version)) {
         org.hl7.fhir.r5.formats.ParserBase p4 = org.hl7.fhir.r5.formats.FormatUtilities.makeParser(fmt);
         org.hl7.fhir.r5.model.Resource res4 = p4.parse(r);
-        org.hl7.fhir.dstu2016may.model.Resource res2 = VersionConvertor_14_50.convertResource(res4);
+        org.hl7.fhir.dstu2016may.model.Resource res2 = VersionConvertorFactory_14_50.convertResource(res4);
         org.hl7.fhir.dstu2016may.formats.ParserBase p2 = org.hl7.fhir.dstu2016may.formats.FormatUtilities.makeParser(fmt);
         unConvertCount++;
         return p2.composeBytes(res2);

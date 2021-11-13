@@ -85,6 +85,7 @@ public enum ImmunizationOrigin {
             case RECALL: return "recall";
             case SCHOOL: return "school";
             case JURISDICTION: return "jurisdiction";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum ImmunizationOrigin {
             case RECALL: return "The data for the immunization event originated from the recollection of the patient or parent/guardian of the patient.";
             case SCHOOL: return "The data for the immunization event originated with a school record for the patient.";
             case JURISDICTION: return "The data for the immunization event originated with an immunization information system (IIS) or registry operating within the jurisdiction.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum ImmunizationOrigin {
             case RECALL: return "Parent/Guardian/Patient Recall";
             case SCHOOL: return "School Record";
             case JURISDICTION: return "Jurisdictional IIS";
+            case NULL: return null;
             default: return "?";
           }
     }

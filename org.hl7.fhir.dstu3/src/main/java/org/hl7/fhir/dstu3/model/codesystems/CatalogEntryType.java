@@ -64,6 +64,7 @@ public enum CatalogEntryType {
           switch (this) {
             case MEDICATION: return "medication";
             case DEVICE: return "device";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum CatalogEntryType {
           switch (this) {
             case MEDICATION: return "This is a medication";
             case DEVICE: return "This is a device";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum CatalogEntryType {
           switch (this) {
             case MEDICATION: return "Medication";
             case DEVICE: return "Device";
+            case NULL: return null;
             default: return "?";
           }
     }

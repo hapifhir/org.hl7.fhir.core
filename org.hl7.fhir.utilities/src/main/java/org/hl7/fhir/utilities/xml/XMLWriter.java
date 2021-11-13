@@ -257,7 +257,7 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
 	 protected String xmlEscape(String s) {
      StringBuilder b = new StringBuilder();
      for (char c : s.toCharArray()) {
-       if (c < ' ' || c > '~') {
+       if (c < ' ') {
          b.append("&#x");
          b.append(Integer.toHexString(c).toUpperCase());
          b.append(";");
@@ -266,7 +266,8 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
      }
      return b.toString();
    }
-	/* (non-Javadoc)
+
+	 /* (non-Javadoc)
 	 * @see org.eclipse.ohf.utilities.xml.IXMLWriter#attribute(java.lang.String, java.lang.String, java.lang.String, boolean)
 	 */
 	@Override
@@ -450,7 +451,7 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
 		if ("http://www.w3.org/XML/1998/namespace".equals(namespace))
 			return "xml:";
 		
-		if (namespace == null || "".equals(namespace) || "default".equals(namespace))
+		if (namespace == null || "".equals(namespace) || "noNamespace".equals(namespace))
 			return "";
 		
 		XMLNamespace ns = findByNamespace(namespace);
@@ -899,6 +900,12 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
   @Override
   public void decorate(ElementDecoration element) throws IOException {
     // nothing...
+  }
+  @Override
+  public void setSchemaLocation(String ns, String loc) throws IOException {
+    namespace("http://www.w3.org/2001/XMLSchema-instance", "xsi");
+    attribute("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation", ns+" "+loc);
+    
   }
 	
 	

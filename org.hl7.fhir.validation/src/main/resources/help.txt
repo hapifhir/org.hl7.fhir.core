@@ -28,6 +28,10 @@ The following parameters are supported:
      the URL of an implementation guide or a package ([id]-[ver]) for
      a built implementation guide or a local folder that contains a
      set of conformance resources.
+     If you would like to load the latest unreleased version of the implementation guide or package,
+     please define the version as '#current'. If no version is provided, the latest version
+     in the package cache will be used, or if no such cached package is available, the
+     PackageCacheManager will load the latest from the the online package repo.
      No default value. This parameter can appear any number of times
 -tx [url]: the [base] url of a FHIR terminology service
      Default value is http://tx.fhir.org. This parameter can appear once
@@ -41,7 +45,18 @@ The following parameters are supported:
      Note: the profile (and it's dependencies) have to be made available 
      through one of the -ig parameters. Note that package dependencies will 
      automatically be resolved
--questionnaire [file|url}: the location of a questionnaire. If provided, then the validator will validate
+-showReferenceMessages
+     Includes validation messages resulting from validating target resources 
+     against profiles defined on a reference.  This increases the volume of 
+     validationmessages, but may allow easier debugging.  If not specified, 
+     then only a high-level message indicating that the referenced item wasn't
+     valid against the listed profile(s) will be provided.
+-questionnaire mode: what to do with when validating QuestionnaireResponse resources
+     none (default): just ignore the questionnaire reference
+     required: check that the QuestionnaireResponse has a questionnaire and validate against it 
+     check: if the QuestionnaireResponse has a questionnaire, validate against it
+     The questionnaire must be loaded using the -ig parameter
+the location of a questionnaire. If provided, then the validator will validate
      any QuestionnaireResponse that claims to match the Questionnaire against it
      no default value. This parameter can appear any number of times
 -output [file]: a filename for the results (OperationOutcome)

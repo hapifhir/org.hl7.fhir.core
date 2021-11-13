@@ -64,6 +64,7 @@ public enum MessageConformanceEventMode {
           switch (this) {
             case SENDER: return "sender";
             case RECEIVER: return "receiver";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum MessageConformanceEventMode {
           switch (this) {
             case SENDER: return "The application sends requests and receives responses.";
             case RECEIVER: return "The application receives requests and sends responses.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum MessageConformanceEventMode {
           switch (this) {
             case SENDER: return "Sender";
             case RECEIVER: return "Receiver";
+            case NULL: return null;
             default: return "?";
           }
     }

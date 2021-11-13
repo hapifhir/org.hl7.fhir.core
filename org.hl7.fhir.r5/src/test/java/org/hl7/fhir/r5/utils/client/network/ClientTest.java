@@ -4,9 +4,11 @@ import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.hl7.fhir.r5.context.HTMLClientLogger;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.*;
 import org.junit.jupiter.api.*;
+import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.net.URI;
@@ -23,14 +25,14 @@ class ClientTest {
   private HttpUrl serverUrl;
   private Client client;
 
-  private Address address = new Address()
+  private final Address address = new Address()
     .setCity("Toronto")
     .setState("Ontario")
     .setCountry("Canada");
-  private HumanName humanName = new HumanName()
+  private final HumanName humanName = new HumanName()
     .addGiven("Mark")
     .setFamily("Iantorno");
-  private Patient patient = new Patient()
+  private final Patient patient = new Patient()
     .addName(humanName)
     .addAddress(address)
     .setGender(Enumerations.AdministrativeGender.MALE);
@@ -58,7 +60,7 @@ class ClientTest {
         .setBody(new String(generateResourceBytes(patient)))
     );
     ResourceRequest<Resource> resourceRequest = client.issueGetResourceRequest(new URI(serverUrl.toString()),
-      "json", null, TIMEOUT);
+      "json", null, null, TIMEOUT);
     Assertions.assertTrue(resourceRequest.isSuccessfulRequest());
     Assertions.assertTrue(patient.equalsDeep(resourceRequest.getPayload()),
       "GET request returned resource does not match expected.");
@@ -80,7 +82,7 @@ class ClientTest {
     client.setRetryCount(failedAttempts + 1);
 
     ResourceRequest<Resource> resourceRequest = client.issueGetResourceRequest(new URI(serverUrl.toString()),
-      "json", null, TIMEOUT);
+      "json", null, null, TIMEOUT);
     Assertions.assertTrue(resourceRequest.isSuccessfulRequest());
     Assertions.assertTrue(patient.equalsDeep(resourceRequest.getPayload()),
       "GET request returned resource does not match expected.");
@@ -102,7 +104,7 @@ class ClientTest {
     client.setRetryCount(failedAttempts + 1);
 
     ResourceRequest<Resource> resourceRequest = client.issueGetResourceRequest(new URI(serverUrl.toString()),
-      "json", null, TIMEOUT);
+      "json", null, null, TIMEOUT);
     Assertions.assertTrue(resourceRequest.isSuccessfulRequest());
     Assertions.assertTrue(patient.equalsDeep(resourceRequest.getPayload()),
       "GET request returned resource does not match expected.");
@@ -142,5 +144,25 @@ class ClientTest {
     RecordedRequest recordedRequest = server.takeRequest();
     Assertions.assertArrayEquals(payload, recordedRequest.getBody().readByteArray(),
       "POST request payload does not match send data.");
+  }
+
+  @Test
+  @DisplayName("Testing the logger works.")
+  void test_logger() throws IOException, URISyntaxException, InterruptedException {
+    byte[] payload = ByteUtils.resourceToByteArray(patient, true, false);
+    server.enqueue(
+      new MockResponse()
+        .setResponseCode(200)
+        .setBody(new String(payload))
+    );
+    HTMLClientLogger mockLogger = Mockito.mock(HTMLClientLogger.class);
+    client.setLogger(mockLogger);
+    client.issuePostRequest(new URI(serverUrl.toString()), payload,
+      "xml", null, TIMEOUT);
+    server.takeRequest();
+    Mockito.verify(mockLogger, Mockito.times(1))
+      .logRequest(Mockito.anyString(), Mockito.anyString(), Mockito.anyList(), Mockito.any());
+    Mockito.verify(mockLogger, Mockito.times(1))
+      .logResponse(Mockito.anyString(), Mockito.anyList(), Mockito.any());
   }
 }

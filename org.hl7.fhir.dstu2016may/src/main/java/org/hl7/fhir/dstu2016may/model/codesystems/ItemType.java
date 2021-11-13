@@ -176,6 +176,7 @@ public enum ItemType {
             case ATTACHMENT: return "attachment";
             case REFERENCE: return "reference";
             case QUANTITY: return "quantity";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -202,6 +203,7 @@ public enum ItemType {
             case ATTACHMENT: return "Question with binary content such as a image, PDF, etc. as an answer";
             case REFERENCE: return "Question with a reference to another resource (practitioner, organization, etc.) as an answer";
             case QUANTITY: return "Question with a combination of a numeric value and unit, potentially with a comparator (<, >, etc.) as an answer.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -225,6 +227,7 @@ public enum ItemType {
             case ATTACHMENT: return "Attachment";
             case REFERENCE: return "Reference";
             case QUANTITY: return "Quantity";
+            case NULL: return null;
             default: return "?";
           }
     }

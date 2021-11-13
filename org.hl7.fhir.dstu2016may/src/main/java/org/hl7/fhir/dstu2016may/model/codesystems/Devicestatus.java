@@ -71,6 +71,7 @@ public enum Devicestatus {
             case AVAILABLE: return "available";
             case NOTAVAILABLE: return "not-available";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum Devicestatus {
             case AVAILABLE: return "The Device is available for use.";
             case NOTAVAILABLE: return "The Device is no longer available for use (e.g. lost, expired, damaged).";
             case ENTEREDINERROR: return "The Device was entered in error and voided.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum Devicestatus {
             case AVAILABLE: return "Available";
             case NOTAVAILABLE: return "Not Available";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -80,6 +80,7 @@ public class AdverseEvent extends DomainResource {
           switch (this) {
             case ACTUAL: return "actual";
             case POTENTIAL: return "potential";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -87,6 +88,7 @@ public class AdverseEvent extends DomainResource {
           switch (this) {
             case ACTUAL: return "http://hl7.org/fhir/adverse-event-actuality";
             case POTENTIAL: return "http://hl7.org/fhir/adverse-event-actuality";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -94,6 +96,7 @@ public class AdverseEvent extends DomainResource {
           switch (this) {
             case ACTUAL: return "The adverse event actually happened regardless of whether anyone was affected or harmed.";
             case POTENTIAL: return "A potential adverse event.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -101,6 +104,7 @@ public class AdverseEvent extends DomainResource {
           switch (this) {
             case ACTUAL: return "Adverse Event";
             case POTENTIAL: return "Potential Adverse Event";
+            case NULL: return null;
             default: return "?";
           }
         }

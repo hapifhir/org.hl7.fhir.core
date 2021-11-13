@@ -44,6 +44,7 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
 
   private static final boolean DEBUG = false;
   
+  private boolean req = false;
   private PrintStream file;
   
   public HTMLClientLogger(String log) {
@@ -57,18 +58,21 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
 
   @Override
   public void logRequest(String method, String url, List<String> headers, byte[] body) {
+    if (DEBUG) {
+      System.out.println(" txlog req: " +method+" "+url+" "+present(body));
+    }
     if (file == null)
       return;
-    if (DEBUG) {
-      System.out.println("tx: " +method+" "+url+" "+present(body));
-    }
     String id = nextId();
     file.println("<hr/><a name=\"l"+id+"\"> </a>");
     file.println("<p>#"+id+"</p>");
     file.println("<pre>");
     file.println(method+" "+url+" HTTP/1.0");
-    for (String s : headers)  
-      file.println(Utilities.escapeXml(s));
+    if (headers != null) {
+      for (String s : headers) {  
+        file.println(Utilities.escapeXml(s));
+      }
+    }
     if (body != null) {
       file.println("");
       try {
@@ -77,14 +81,19 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
       }
     }
     file.println("</pre>");
+    req = true;
   }
 
   @Override
   public void logResponse(String outcome, List<String> headers, byte[] body) {
+    if (DEBUG) {
+      System.out.println(" txlog resp: " +outcome+" "+present(body));
+    }
+    req = false;
     if (file == null)
       return;
-    if (DEBUG) {
-      System.out.println("tx: " +outcome+" "+present(body));
+    if (!req) {
+      System.out.println("Record Response without request");
     }
     file.println("<pre>");
     file.println(outcome);
@@ -106,8 +115,8 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
     }
     String cnt = new String(body);
     cnt = cnt.replace("\n", " ").replace("\r", "");
-    if (cnt.length() > 400) {
-      return cnt.substring(0, 398)+"...";
+    if (cnt.length() > 800) {
+      return cnt.substring(0, 798)+"...";
     } else {
       return cnt;
     }

@@ -120,6 +120,7 @@ public enum TaskStatus {
             case ONHOLD: return "on-hold";
             case FAILED: return "failed";
             case COMPLETED: return "completed";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,6 +139,7 @@ public enum TaskStatus {
             case ONHOLD: return "Task has been started but work has been paused";
             case FAILED: return "The task was attempted but could not be completed due to some error.";
             case COMPLETED: return "The task has been completed (more or less) as requested.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +155,7 @@ public enum TaskStatus {
             case ONHOLD: return "On Hold";
             case FAILED: return "Failed";
             case COMPLETED: return "Completed";
+            case NULL: return null;
             default: return "?";
           }
     }

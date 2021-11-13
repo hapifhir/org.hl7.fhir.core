@@ -64,6 +64,7 @@ public enum ImmunizationFundingSource {
           switch (this) {
             case PRIVATE: return "private";
             case PUBLIC: return "public";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ImmunizationFundingSource {
           switch (this) {
             case PRIVATE: return "The vaccine was purchased with private funds.";
             case PUBLIC: return "The vaccine was purchased with public funds.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ImmunizationFundingSource {
           switch (this) {
             case PRIVATE: return "Private";
             case PUBLIC: return "Public";
+            case NULL: return null;
             default: return "?";
           }
     }

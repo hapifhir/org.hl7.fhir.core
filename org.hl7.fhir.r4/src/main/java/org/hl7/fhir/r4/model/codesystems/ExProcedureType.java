@@ -64,6 +64,7 @@ public enum ExProcedureType {
           switch (this) {
             case PRIMARY: return "primary";
             case SECONDARY: return "secondary";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ExProcedureType {
           switch (this) {
             case PRIMARY: return "The first procedure in a series required to produce and overall patient outcome.";
             case SECONDARY: return "The second procedure in a series required to produce and overall patient outcome.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ExProcedureType {
           switch (this) {
             case PRIMARY: return "Primary procedure";
             case SECONDARY: return "Secondary procedure";
+            case NULL: return null;
             default: return "?";
           }
     }

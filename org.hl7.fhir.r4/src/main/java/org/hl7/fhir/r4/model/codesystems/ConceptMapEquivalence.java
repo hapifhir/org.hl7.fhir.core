@@ -120,6 +120,7 @@ public enum ConceptMapEquivalence {
             case INEXACT: return "inexact";
             case UNMATCHED: return "unmatched";
             case DISJOINT: return "disjoint";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,6 +139,7 @@ public enum ConceptMapEquivalence {
             case INEXACT: return "The target mapping overlaps with the source concept, but both source and target cover additional meaning, or the definitions are imprecise and it is uncertain whether they have the same boundaries to their meaning. The sense in which the mapping is inexact SHALL be described in the comments in this case, and applications should be careful when attempting to use these mappings operationally.";
             case UNMATCHED: return "There is no match for this concept in the target code system.";
             case DISJOINT: return "This is an explicit assertion that there is no mapping between the source and target concept.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +155,7 @@ public enum ConceptMapEquivalence {
             case INEXACT: return "Inexact";
             case UNMATCHED: return "Unmatched";
             case DISJOINT: return "Disjoint";
+            case NULL: return null;
             default: return "?";
           }
     }

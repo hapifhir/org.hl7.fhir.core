@@ -70,9 +70,12 @@ public class ChildIterator {
         String nb = cursor == 0 ? "--" : parent.getChildren().get(cursor - 1).getName();
         String na = cursor >= parent.getChildren().size() - 1 ? "--" : parent.getChildren().get(cursor + 1).getName();
         if (name().equals(nb) || name().equals(na)) {
-            return lastCount;
-        } else
-            return -1;
+          return lastCount;
+        } else if (element().isBaseList()) {
+          return 0;          
+        } else {
+          return -1;
+        }
     }
 
     public boolean next() {

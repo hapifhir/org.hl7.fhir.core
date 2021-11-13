@@ -85,6 +85,7 @@ public enum ClaimType {
             case PHARMACY: return "pharmacy";
             case PROFESSIONAL: return "professional";
             case VISION: return "vision";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum ClaimType {
             case PHARMACY: return "Pharmacy claims for goods and services.";
             case PROFESSIONAL: return "Typically outpatient claims from Physician, Psychological, Chiropractor, Physiotherapy, Speach Pathology, rehabilitative, consulting.";
             case VISION: return "Vision claims for professional services and products such as glasses and contact lenses.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum ClaimType {
             case PHARMACY: return "Pharmacy";
             case PROFESSIONAL: return "Professional";
             case VISION: return "Vision";
+            case NULL: return null;
             default: return "?";
           }
     }

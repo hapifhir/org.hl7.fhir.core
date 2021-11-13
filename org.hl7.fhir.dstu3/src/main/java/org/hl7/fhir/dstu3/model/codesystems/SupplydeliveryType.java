@@ -64,6 +64,7 @@ public enum SupplydeliveryType {
           switch (this) {
             case MEDICATION: return "medication";
             case DEVICE: return "device";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum SupplydeliveryType {
           switch (this) {
             case MEDICATION: return "Supply is a kind of medication.";
             case DEVICE: return "What is supplied (or requested) is a device.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum SupplydeliveryType {
           switch (this) {
             case MEDICATION: return "Medication";
             case DEVICE: return "Device";
+            case NULL: return null;
             default: return "?";
           }
     }

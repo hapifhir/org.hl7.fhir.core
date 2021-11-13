@@ -36,6 +36,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.SimpleHTTPClient;
+import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -47,30 +49,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.*;
+
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
-import java.security.cert.X509Certificate;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 /**
@@ -90,11 +84,11 @@ import java.util.Map.Entry;
 public class FilesystemPackageCacheManager extends BasePackageCacheManager implements IPackageCacheManager {
 
   public static final String PRIMARY_SERVER = "http://packages.fhir.org";
-  public static final String SECONDARY_SERVER = "http://packages2.fhir.org/packages";
+  public static final String SECONDARY_SERVER = "https://packages2.fhir.org/packages";
   //  private static final String SECONDARY_SERVER = "http://local.fhir.org:960/packages";
-  public static final String PACKAGE_REGEX = "^[a-z][a-z0-9\\_\\-]*(\\.[a-z0-9\\_\\-]+)+$";
-  public static final String PACKAGE_VERSION_REGEX = "^[a-z][a-z0-9\\_\\-]*(\\.[a-z0-9\\_\\-]+)+\\#[a-z0-9\\-\\_]+(\\.[a-z0-9\\-\\_]+)*$";
-  public static final String PACKAGE_VERSION_REGEX_OPT = "^[a-z][a-z0-9\\_\\-]*(\\.[a-z0-9\\_\\-]+)+(\\#[a-z0-9\\-\\_]+(\\.[a-z0-9\\-\\_]+)*)?$";
+  public static final String PACKAGE_REGEX = "^[a-zA-Z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+$";
+  public static final String PACKAGE_VERSION_REGEX = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+\\#[A-Za-z0-9\\-\\_\\$]+(\\.[A-Za-z0-9\\-\\_\\$]+)*$";
+  public static final String PACKAGE_VERSION_REGEX_OPT = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+(\\#[A-Za-z0-9\\-\\_]+(\\.[A-Za-z0-9\\-\\_]+)*)?$";
   private static final Logger ourLog = LoggerFactory.getLogger(FilesystemPackageCacheManager.class);
   private static final String CACHE_VERSION = "3"; // second version - see wiki page
   private String cacheFolder;
@@ -145,15 +139,14 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     return names;
   }
 
+  private List<String> reverseSorted(String[] keys) {
+    Arrays.sort(keys, Collections.reverseOrder());
+    return Arrays.asList(keys);
+  }
+
   private NpmPackage loadPackageInfo(String path) throws IOException {
     NpmPackage pi = NpmPackage.fromFolder(path);
     return pi;
-  }
-
-  private JsonObject fetchJson(String source) throws IOException {
-    URL url = new URL(source);
-    URLConnection c = url.openConnection();
-    return (JsonObject) new com.google.gson.JsonParser().parse(TextFile.streamToString(c.getInputStream()));
   }
 
   private void clearCache() throws IOException {
@@ -199,7 +192,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       throw new FHIRException("Cannot add package " + id + " to the package cache - the version '" + version + "' is illegal in this context");
     }
     for (char ch : version.toCharArray()) {
-      if (!Character.isAlphabetic(ch) && !Character.isDigit(ch) && !Utilities.existsInList(ch, '.', '-')) {
+      if (!Character.isAlphabetic(ch) && !Character.isDigit(ch) && !Utilities.existsInList(ch, '.', '-', '$')) {
         throw new FHIRException("Cannot add package " + id + " to the package cache - the version '" + version + "' is illegal (ch '" + ch + "'");
       }
     }
@@ -207,8 +200,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   private void listSpecs(Map<String, String> specList, String server) throws IOException {
     CachingPackageClient pc = new CachingPackageClient(server);
-    List<PackageClient.PackageInfo> matches = pc.search(null, null, null, false);
-    for (PackageClient.PackageInfo m : matches) {
+    List<PackageInfo> matches = pc.search(null, null, null, false);
+    for (PackageInfo m : matches) {
       if (!specList.containsKey(m.getId())) {
         specList.put(m.getId(), m.getUrl());
       }
@@ -232,11 +225,14 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   public String getLatestVersion(String id) throws IOException {
     for (String nextPackageServer : getPackageServers()) {
-      CachingPackageClient pc = new CachingPackageClient(nextPackageServer);
-      try {
-        return pc.getLatestVersion(id);
-      } catch (IOException e) {
-        ourLog.info("Failed to determine latest version of package {} from server: {}", id, nextPackageServer);
+      // special case:
+      if (!(CommonPackages.ID_PUBPACK.equals(id) && PRIMARY_SERVER.equals(nextPackageServer))) {
+        CachingPackageClient pc = new CachingPackageClient(nextPackageServer);
+        try {
+          return pc.getLatestVersion(id);
+        } catch (IOException e) {
+          ourLog.info("Failed to determine latest version of package {} from server: {}", id, nextPackageServer);
+        }
       }
     }
 
@@ -318,7 +314,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
     String foundPackage = null;
     String foundVersion = null;
-    for (String f : sorted(new File(cacheFolder).list())) {
+    for (String f : reverseSorted(new File(cacheFolder).list())) {
       File cf = new File(Utilities.path(cacheFolder, f));
       if (cf.isDirectory()) {
         if (f.equals(id + "#" + version) || (Utilities.noString(version) && f.startsWith(id + "#"))) {
@@ -361,7 +357,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
     
     if (npm.name() == null || id == null || !id.equalsIgnoreCase(npm.name())) {
-      if (!id.equals("hl7.fhir.r5.core")) {// temporary work around
+      if (!id.equals("hl7.fhir.r5.core") && !id.equals("hl7.fhir.us.immds")) {// temporary work around
         throw new IOException("Attempt to import a mis-identified package. Expected " + id + ", got " + npm.name());
       }
     }
@@ -390,7 +386,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
             if (!(new File(dir).exists()))
               Utilities.createDirectory(dir);
             for (Entry<String, byte[]> fe : e.getValue().getContent().entrySet()) {
-              String fn = Utilities.path(dir, fe.getKey());
+              String fn = Utilities.path(dir, Utilities.cleanFileName(fe.getKey()));
               byte[] cnt = fe.getValue();
               TextFile.bytesToFile(cnt, fn);
               size = size + cnt.length;
@@ -477,6 +473,14 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       version = id.substring(id.indexOf("#")+1);
       id = id.substring(0, id.indexOf("#"));
     }
+
+    if (version == null) {
+      try {
+        version = getLatestVersion(id);
+      } catch (Exception e) {
+        version = null;
+      }
+    }
     NpmPackage p = loadPackageFromCacheOnly(id, version);
     if (p != null) {
       if ("current".equals(version)) {
@@ -496,9 +500,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
     // nup, don't have it locally (or it's expired)
     FilesystemPackageCacheManager.InputStreamWithSrc source;
-    if ("current".equals(version)) {
+    if ("current".equals(version) || version.startsWith("current$")) {
       // special case - fetch from ci-build server
-      source = loadFromCIBuild(id);
+      source = loadFromCIBuild(id, version.startsWith("current$") ? version.substring(8) : null);
     } else {
       source = loadFromPackageServer(id, version);
     }
@@ -510,22 +514,28 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   private InputStream fetchFromUrlSpecific(String source, boolean optional) throws FHIRException {
     try {
-      URL url = new URL(source);
-      URLConnection c = url.openConnection();
-      return c.getInputStream();
+      SimpleHTTPClient http = new SimpleHTTPClient();
+      HTTPResult res = http.get(source);
+      res.checkThrowException();
+      return new ByteArrayInputStream(res.getContent());
     } catch (Exception e) {
       if (optional)
         return null;
       else
-        throw new FHIRException(e.getMessage(), e);
+        throw new FHIRException("Unable to fetch: "+e.getMessage(), e);
     }
   }
 
-  private InputStreamWithSrc loadFromCIBuild(String id) throws IOException {
+  private InputStreamWithSrc loadFromCIBuild(String id, String branch) throws IOException {
     checkBuildLoaded();
     if (ciList.containsKey(id)) {
-      InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "package.tgz"), false);
-      return new InputStreamWithSrc(stream, Utilities.pathURL(ciList.get(id), "package.tgz"), "current");
+      if (branch == null) {
+        InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "package.tgz"), false);
+        return new InputStreamWithSrc(stream, Utilities.pathURL(ciList.get(id), "package.tgz"), "current");
+      } else {
+        InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "branches", branch, "package.tgz"), false);
+        return new InputStreamWithSrc(stream, Utilities.pathURL(ciList.get(id), "branches", branch, "package.tgz"), "current$"+branch);
+      }
     } else if (id.startsWith("hl7.fhir.r5")) {
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("http://build.fhir.org", id + ".tgz"), false);
       return new InputStreamWithSrc(stream, Utilities.pathURL("http://build.fhir.org", id + ".tgz"), "current");
@@ -559,8 +569,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public String getPackageId(String canonicalUrl) throws IOException {
     String retVal = findCanonicalInLocalCache(canonicalUrl);
     
-    retVal = super.getPackageId(canonicalUrl);
-
+    if(retVal == null) {
+      retVal = super.getPackageId(canonicalUrl);
+    }
+    
     if (retVal == null) {
       retVal = getPackageIdFromBuildList(canonicalUrl);
     }
@@ -613,7 +625,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     // special case: current versions roll over, and we have to check their currency
     try {
       String url = ciList.get(id);
-      JsonObject json = fetchJson(Utilities.pathURL(url, "package.manifest.json"));
+      JsonObject json = JsonTrackingParser.fetchJson(Utilities.pathURL(url, "package.manifest.json"));
       String currDate = JSONUtil.str(json, "date");
       String packDate = p.date();
       if (!currDate.equals(packDate))
@@ -637,13 +649,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   private void loadFromBuildServer() throws IOException {
-    URL url = new URL("https://build.fhir.org/ig/qas.json?nocache=" + System.currentTimeMillis());
-    SSLCertTruster.trustAllHosts();
-    HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-    connection.setHostnameVerifier(SSLCertTruster.DO_NOT_VERIFY);
-    connection.setRequestMethod("GET");
-    InputStream json = connection.getInputStream();
-    buildInfo = (JsonArray) new com.google.gson.JsonParser().parse(TextFile.streamToString(json));
+    SimpleHTTPClient http = new SimpleHTTPClient();
+    http.trustAllhosts();
+    HTTPResult res = http.get("https://build.fhir.org/ig/qas.json?nocache=" + System.currentTimeMillis());
+    res.checkThrowException();
+    buildInfo = (JsonArray) new com.google.gson.JsonParser().parse(TextFile.bytesToString(res.getContent()));
 
     List<BuildRecord> builds = new ArrayList<>();
 
@@ -700,12 +710,12 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     String aurl = pu;
     JsonObject json;
     try {
-      json = fetchJson(pu);
+      json = JsonTrackingParser.fetchJson(pu);
     } catch (Exception e) {
       String pv = Utilities.pathURL(url, v, "package.tgz");
       try {
         aurl = pv;
-        InputStreamWithSrc src = new InputStreamWithSrc(fetchFromUrlSpecific(pv, true), pv, v);
+        InputStreamWithSrc src = new InputStreamWithSrc(fetchFromUrlSpecific(pv, false), pv, v);
         return src;
       } catch (Exception e1) {
         throw new FHIRException("Error fetching package directly (" + pv + "), or fetching package list for " + id + " from " + pu + ": " + e1.getMessage(), e1);
@@ -741,7 +751,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       throw new FHIRException("Unable to resolve package id " + id);
     }
     String pu = Utilities.pathURL(url, "package-list.json");
-    JsonObject json = fetchJson(pu);
+    JsonObject json = JsonTrackingParser.fetchJson(pu);
     if (!id.equals(JSONUtil.str(json, "package-id")))
       throw new FHIRException("Package ids do not match in " + pu + ": " + id + " vs " + JSONUtil.str(json, "package-id"));
     for (JsonElement e : json.getAsJsonArray("list")) {
@@ -755,7 +765,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   private String getUrlForPackage(String id) {
-    if ("hl7.fhir.xver-extensions".equals(id)) {
+    if (CommonPackages.ID_XVER.equals(id)) {
       return "http://fhir.org/packages/hl7.fhir.xver-extensions";
     }
     return null;

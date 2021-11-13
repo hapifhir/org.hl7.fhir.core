@@ -105,6 +105,7 @@ public class CompartmentDefinition extends MetadataResource {
             case RELATEDPERSON: return "RelatedPerson";
             case PRACTITIONER: return "Practitioner";
             case DEVICE: return "Device";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -115,6 +116,7 @@ public class CompartmentDefinition extends MetadataResource {
             case RELATEDPERSON: return "http://hl7.org/fhir/compartment-type";
             case PRACTITIONER: return "http://hl7.org/fhir/compartment-type";
             case DEVICE: return "http://hl7.org/fhir/compartment-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -125,6 +127,7 @@ public class CompartmentDefinition extends MetadataResource {
             case RELATEDPERSON: return "The compartment definition is for the related-person compartment";
             case PRACTITIONER: return "The compartment definition is for the practitioner compartment";
             case DEVICE: return "The compartment definition is for the device compartment";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +138,7 @@ public class CompartmentDefinition extends MetadataResource {
             case RELATEDPERSON: return "RelatedPerson";
             case PRACTITIONER: return "Practitioner";
             case DEVICE: return "Device";
+            case NULL: return null;
             default: return "?";
           }
         }

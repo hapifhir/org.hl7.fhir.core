@@ -78,6 +78,7 @@ public enum EndpointStatus {
             case SUSPENDED: return "suspended";
             case ERROR: return "error";
             case OFF: return "off";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum EndpointStatus {
             case SUSPENDED: return "This endpoint is temporarily unavailable";
             case ERROR: return "This endpoint has exceeded connectivity thresholds and is considered in an error state and should no longer be attempted to connect to until corrective action is taken";
             case OFF: return "This endpoint is no longer to be used";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum EndpointStatus {
             case SUSPENDED: return "Suspended";
             case ERROR: return "Error";
             case OFF: return "Off";
+            case NULL: return null;
             default: return "?";
           }
     }

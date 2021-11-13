@@ -71,6 +71,7 @@ public enum ConditionalDeleteStatus {
             case NOTSUPPORTED: return "not-supported";
             case SINGLE: return "single";
             case MULTIPLE: return "multiple";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ConditionalDeleteStatus {
             case NOTSUPPORTED: return "No support for conditional deletes.";
             case SINGLE: return "Conditional deletes are supported, but only single resources at a time.";
             case MULTIPLE: return "Conditional deletes are supported, and multiple resources can be deleted in a single interaction.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ConditionalDeleteStatus {
             case NOTSUPPORTED: return "Not Supported";
             case SINGLE: return "Single Deletes Supported";
             case MULTIPLE: return "Multiple Deletes Supported";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -99,6 +99,7 @@ public enum ConceptPropertyType {
             case BOOLEAN: return "boolean";
             case DATETIME: return "dateTime";
             case DECIMAL: return "decimal";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum ConceptPropertyType {
             case BOOLEAN: return "The property value is a boolean true | false.";
             case DATETIME: return "The property is a date or a date + time.";
             case DECIMAL: return "The property value is a decimal number.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum ConceptPropertyType {
             case BOOLEAN: return "boolean";
             case DATETIME: return "dateTime";
             case DECIMAL: return "decimal";
+            case NULL: return null;
             default: return "?";
           }
     }

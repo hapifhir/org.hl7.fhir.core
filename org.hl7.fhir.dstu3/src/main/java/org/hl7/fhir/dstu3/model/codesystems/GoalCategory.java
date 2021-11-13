@@ -85,6 +85,7 @@ public enum GoalCategory {
             case BEHAVIORAL: return "behavioral";
             case NURSING: return "nursing";
             case PHYSIOTHERAPY: return "physiotherapy";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum GoalCategory {
             case BEHAVIORAL: return "Goals related to the manner in which the subject acts.";
             case NURSING: return "Goals related to the practice of nursing or established by nurses.";
             case PHYSIOTHERAPY: return "Goals related to the mobility and motor capability of the subject.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum GoalCategory {
             case BEHAVIORAL: return "Behavioral";
             case NURSING: return "Nursing";
             case PHYSIOTHERAPY: return "Physiotherapy";
+            case NULL: return null;
             default: return "?";
           }
     }

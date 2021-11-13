@@ -120,6 +120,7 @@ public enum SearchModifierCode {
             case BELOW: return "below";
             case ABOVE: return "above";
             case TYPE: return "type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,6 +139,7 @@ public enum SearchModifierCode {
             case BELOW: return "The search parameter tests whether the value in a resource is subsumed by the specified value (is-a, or hierarchical relationships).";
             case ABOVE: return "The search parameter tests whether the value in a resource subsumes the specified value (is-a, or hierarchical relationships).";
             case TYPE: return "The search parameter only applies to the Resource Type specified as a modifier (e.g. the modifier is not actually :type, but :Patient etc.).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +155,7 @@ public enum SearchModifierCode {
             case BELOW: return "Below";
             case ABOVE: return "Above";
             case TYPE: return "Type";
+            case NULL: return null;
             default: return "?";
           }
     }

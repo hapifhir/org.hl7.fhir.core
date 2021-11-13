@@ -92,6 +92,7 @@ public enum CommunicationNotDoneReason {
             case RECIPIENTUNAVAILABLE: return "recipient-unavailable";
             case FAMILYOBJECTION: return "family-objection";
             case PATIENTOBJECTION: return "patient-objection";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum CommunicationNotDoneReason {
             case RECIPIENTUNAVAILABLE: return "The communication was not done due to the recipient being unavailable.";
             case FAMILYOBJECTION: return "The communication was not done due to a family objection.";
             case PATIENTOBJECTION: return "The communication was not done due to a patient objection.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum CommunicationNotDoneReason {
             case RECIPIENTUNAVAILABLE: return "Recipient Unavailable";
             case FAMILYOBJECTION: return "Family Objection";
             case PATIENTOBJECTION: return "Patient Objection";
+            case NULL: return null;
             default: return "?";
           }
     }

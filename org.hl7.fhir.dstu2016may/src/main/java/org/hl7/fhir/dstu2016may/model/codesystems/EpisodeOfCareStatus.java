@@ -92,6 +92,7 @@ public enum EpisodeOfCareStatus {
             case ONHOLD: return "onhold";
             case FINISHED: return "finished";
             case CANCELLED: return "cancelled";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum EpisodeOfCareStatus {
             case ONHOLD: return "This episode of care is on hold, the organization has limited responsibility for the patient (such as while on respite).";
             case FINISHED: return "This episode of care is finished at the organization is not expecting to be providing care to the patient. Can also be known as \"closed\", \"completed\" or other similar terms.";
             case CANCELLED: return "The episode of care was cancelled, or withdrawn from service, often selected during the planned stage as the patient may have gone elsewhere, or the circumstances have changed and the organization is unable to provide the care. It indicates that services terminated outside the planned/expected workflow.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum EpisodeOfCareStatus {
             case ONHOLD: return "On Hold";
             case FINISHED: return "Finished";
             case CANCELLED: return "Cancelled";
+            case NULL: return null;
             default: return "?";
           }
     }

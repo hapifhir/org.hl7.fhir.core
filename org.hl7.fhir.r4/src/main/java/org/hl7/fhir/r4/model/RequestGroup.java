@@ -115,6 +115,7 @@ public class RequestGroup extends DomainResource {
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -127,6 +128,7 @@ public class RequestGroup extends DomainResource {
             case COMPLETED: return "http://hl7.org/fhir/request-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/request-status";
             case UNKNOWN: return "http://hl7.org/fhir/request-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -139,6 +141,7 @@ public class RequestGroup extends DomainResource {
             case COMPLETED: return "The activity described by the request has been fully performed.  No further activity will occur.";
             case ENTEREDINERROR: return "This request should never have existed and should be considered 'void'.  (It is possible that real-world decisions were based on it.  If real-world activity has occurred, the status should be \"revoked\" rather than \"entered-in-error\".).";
             case UNKNOWN: return "The authoring/source system does not know which of the status values currently applies for this request.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply,  but the authoring/source system does not know which.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -151,6 +154,7 @@ public class RequestGroup extends DomainResource {
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in Error";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -301,6 +305,7 @@ public class RequestGroup extends DomainResource {
             case FILLERORDER: return "filler-order";
             case INSTANCEORDER: return "instance-order";
             case OPTION: return "option";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -315,6 +320,7 @@ public class RequestGroup extends DomainResource {
             case FILLERORDER: return "http://hl7.org/fhir/request-intent";
             case INSTANCEORDER: return "http://hl7.org/fhir/request-intent";
             case OPTION: return "http://hl7.org/fhir/request-intent";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -329,6 +335,7 @@ public class RequestGroup extends DomainResource {
             case FILLERORDER: return "The request represents the view of an authorization instantiated by a fulfilling system representing the details of the fulfiller's intention to act upon a submitted order.";
             case INSTANCEORDER: return "An order created in fulfillment of a broader order that represents the authorization for a single activity occurrence.  E.g. The administration of a single dose of a drug.";
             case OPTION: return "The request represents a component or option for a RequestGroup that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestGroup]]] for additional information on how this status is used.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -343,6 +350,7 @@ public class RequestGroup extends DomainResource {
             case FILLERORDER: return "Filler Order";
             case INSTANCEORDER: return "Instance Order";
             case OPTION: return "Option";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -470,6 +478,7 @@ public class RequestGroup extends DomainResource {
             case URGENT: return "urgent";
             case ASAP: return "asap";
             case STAT: return "stat";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -479,6 +488,7 @@ public class RequestGroup extends DomainResource {
             case URGENT: return "http://hl7.org/fhir/request-priority";
             case ASAP: return "http://hl7.org/fhir/request-priority";
             case STAT: return "http://hl7.org/fhir/request-priority";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -488,6 +498,7 @@ public class RequestGroup extends DomainResource {
             case URGENT: return "The request should be actioned promptly - higher priority than routine.";
             case ASAP: return "The request should be actioned as soon as possible - higher priority than urgent.";
             case STAT: return "The request should be actioned immediately - highest possible priority.  E.g. an emergency.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -497,6 +508,7 @@ public class RequestGroup extends DomainResource {
             case URGENT: return "Urgent";
             case ASAP: return "ASAP";
             case STAT: return "STAT";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -587,6 +599,7 @@ public class RequestGroup extends DomainResource {
             case APPLICABILITY: return "applicability";
             case START: return "start";
             case STOP: return "stop";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -595,6 +608,7 @@ public class RequestGroup extends DomainResource {
             case APPLICABILITY: return "http://hl7.org/fhir/action-condition-kind";
             case START: return "http://hl7.org/fhir/action-condition-kind";
             case STOP: return "http://hl7.org/fhir/action-condition-kind";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -603,6 +617,7 @@ public class RequestGroup extends DomainResource {
             case APPLICABILITY: return "The condition describes whether or not a given action is applicable.";
             case START: return "The condition is a starting condition for the action.";
             case STOP: return "The condition is a stop, or exit condition for the action.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -611,6 +626,7 @@ public class RequestGroup extends DomainResource {
             case APPLICABILITY: return "Applicability";
             case START: return "Start";
             case STOP: return "Stop";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -737,6 +753,7 @@ public class RequestGroup extends DomainResource {
             case AFTERSTART: return "after-start";
             case AFTER: return "after";
             case AFTEREND: return "after-end";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -751,6 +768,7 @@ public class RequestGroup extends DomainResource {
             case AFTERSTART: return "http://hl7.org/fhir/action-relationship-type";
             case AFTER: return "http://hl7.org/fhir/action-relationship-type";
             case AFTEREND: return "http://hl7.org/fhir/action-relationship-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -765,6 +783,7 @@ public class RequestGroup extends DomainResource {
             case AFTERSTART: return "The action must be performed after the start of the related action.";
             case AFTER: return "The action must be performed after the related action.";
             case AFTEREND: return "The action must be performed after the end of the related action.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -779,6 +798,7 @@ public class RequestGroup extends DomainResource {
             case AFTERSTART: return "After Start";
             case AFTER: return "After";
             case AFTEREND: return "After End";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -899,6 +919,7 @@ public class RequestGroup extends DomainResource {
             case VISUALGROUP: return "visual-group";
             case LOGICALGROUP: return "logical-group";
             case SENTENCEGROUP: return "sentence-group";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -907,6 +928,7 @@ public class RequestGroup extends DomainResource {
             case VISUALGROUP: return "http://hl7.org/fhir/action-grouping-behavior";
             case LOGICALGROUP: return "http://hl7.org/fhir/action-grouping-behavior";
             case SENTENCEGROUP: return "http://hl7.org/fhir/action-grouping-behavior";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -915,6 +937,7 @@ public class RequestGroup extends DomainResource {
             case VISUALGROUP: return "Any group marked with this behavior should be displayed as a visual group to the end user.";
             case LOGICALGROUP: return "A group with this behavior logically groups its sub-elements, and may be shown as a visual group to the end user, but it is not required to do so.";
             case SENTENCEGROUP: return "A group of related alternative actions is a sentence group if the target referenced by the action is the same in all the actions and each action simply constitutes a different variation on how to specify the details for the target. For example, two actions that could be in a SentenceGroup are \"aspirin, 500 mg, 2 times per day\" and \"aspirin, 300 mg, 3 times per day\". In both cases, aspirin is the target referenced by the action, and the two actions represent different options for how aspirin might be ordered for the patient. Note that a SentenceGroup would almost always have an associated selection behavior of \"AtMostOne\", unless it's a required action, in which case, it would be \"ExactlyOne\".";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -923,6 +946,7 @@ public class RequestGroup extends DomainResource {
             case VISUALGROUP: return "Visual Group";
             case LOGICALGROUP: return "Logical Group";
             case SENTENCEGROUP: return "Sentence Group";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1028,6 +1052,7 @@ public class RequestGroup extends DomainResource {
             case EXACTLYONE: return "exactly-one";
             case ATMOSTONE: return "at-most-one";
             case ONEORMORE: return "one-or-more";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1039,6 +1064,7 @@ public class RequestGroup extends DomainResource {
             case EXACTLYONE: return "http://hl7.org/fhir/action-selection-behavior";
             case ATMOSTONE: return "http://hl7.org/fhir/action-selection-behavior";
             case ONEORMORE: return "http://hl7.org/fhir/action-selection-behavior";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1050,6 +1076,7 @@ public class RequestGroup extends DomainResource {
             case EXACTLYONE: return "The end user must choose one and only one of the selectable actions in the group. The user SHALL NOT choose none of the actions in the group.";
             case ATMOSTONE: return "The end user may choose zero or at most one of the actions in the group.";
             case ONEORMORE: return "The end user must choose a minimum of one, and as many additional as desired.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1061,6 +1088,7 @@ public class RequestGroup extends DomainResource {
             case EXACTLYONE: return "Exactly One";
             case ATMOSTONE: return "At Most One";
             case ONEORMORE: return "One Or More";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1163,6 +1191,7 @@ public class RequestGroup extends DomainResource {
             case MUST: return "must";
             case COULD: return "could";
             case MUSTUNLESSDOCUMENTED: return "must-unless-documented";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1171,6 +1200,7 @@ public class RequestGroup extends DomainResource {
             case MUST: return "http://hl7.org/fhir/action-required-behavior";
             case COULD: return "http://hl7.org/fhir/action-required-behavior";
             case MUSTUNLESSDOCUMENTED: return "http://hl7.org/fhir/action-required-behavior";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1179,6 +1209,7 @@ public class RequestGroup extends DomainResource {
             case MUST: return "An action with this behavior must be included in the actions processed by the end user; the end user SHALL NOT choose not to include this action.";
             case COULD: return "An action with this behavior may be included in the set of actions processed by the end user.";
             case MUSTUNLESSDOCUMENTED: return "An action with this behavior must be included in the set of actions processed by the end user, unless the end user provides documentation as to why the action was not included.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1187,6 +1218,7 @@ public class RequestGroup extends DomainResource {
             case MUST: return "Must";
             case COULD: return "Could";
             case MUSTUNLESSDOCUMENTED: return "Must Unless Documented";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1264,6 +1296,7 @@ public class RequestGroup extends DomainResource {
           switch (this) {
             case YES: return "yes";
             case NO: return "no";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1271,6 +1304,7 @@ public class RequestGroup extends DomainResource {
           switch (this) {
             case YES: return "http://hl7.org/fhir/action-precheck-behavior";
             case NO: return "http://hl7.org/fhir/action-precheck-behavior";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1278,6 +1312,7 @@ public class RequestGroup extends DomainResource {
           switch (this) {
             case YES: return "An action with this behavior is one of the most frequent action that is, or should be, included by an end user, for the particular context in which the action occurs. The system displaying the action to the end user should consider \"pre-checking\" such an action as a convenience for the user.";
             case NO: return "An action with this behavior is one of the less frequent actions included by the end user, for the particular context in which the action occurs. The system displaying the actions to the end user would typically not \"pre-check\" such an action.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1285,6 +1320,7 @@ public class RequestGroup extends DomainResource {
           switch (this) {
             case YES: return "Yes";
             case NO: return "No";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1356,6 +1392,7 @@ public class RequestGroup extends DomainResource {
           switch (this) {
             case SINGLE: return "single";
             case MULTIPLE: return "multiple";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1363,6 +1400,7 @@ public class RequestGroup extends DomainResource {
           switch (this) {
             case SINGLE: return "http://hl7.org/fhir/action-cardinality-behavior";
             case MULTIPLE: return "http://hl7.org/fhir/action-cardinality-behavior";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1370,6 +1408,7 @@ public class RequestGroup extends DomainResource {
           switch (this) {
             case SINGLE: return "The action may only be selected one time.";
             case MULTIPLE: return "The action may be selected multiple times.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1377,6 +1416,7 @@ public class RequestGroup extends DomainResource {
           switch (this) {
             case SINGLE: return "Single";
             case MULTIPLE: return "Multiple";
+            case NULL: return null;
             default: return "?";
           }
         }

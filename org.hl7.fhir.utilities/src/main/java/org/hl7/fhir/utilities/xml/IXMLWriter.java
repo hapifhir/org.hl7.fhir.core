@@ -60,6 +60,7 @@ public interface IXMLWriter {
 	
 	public abstract void comment(String comment, boolean doPretty) throws IOException;
 	public abstract void decorate(ElementDecoration decoration) throws IOException;
+	public abstract void setSchemaLocation(String ns, String loc) throws IOException;
 
   public abstract void enter(String name) throws IOException;
 	public abstract void enter(String namespace, String name) throws IOException;

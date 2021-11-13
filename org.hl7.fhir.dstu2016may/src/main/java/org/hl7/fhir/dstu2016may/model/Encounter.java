@@ -104,6 +104,7 @@ public class Encounter extends DomainResource {
             case ONLEAVE: return "onleave";
             case FINISHED: return "finished";
             case CANCELLED: return "cancelled";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -115,6 +116,7 @@ public class Encounter extends DomainResource {
             case ONLEAVE: return "http://hl7.org/fhir/encounter-state";
             case FINISHED: return "http://hl7.org/fhir/encounter-state";
             case CANCELLED: return "http://hl7.org/fhir/encounter-state";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public class Encounter extends DomainResource {
             case ONLEAVE: return "The Encounter has begun, but the patient is temporarily on leave.";
             case FINISHED: return "The Encounter has ended.";
             case CANCELLED: return "The Encounter has ended before it has begun.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -137,6 +140,7 @@ public class Encounter extends DomainResource {
             case ONLEAVE: return "On Leave";
             case FINISHED: return "Finished";
             case CANCELLED: return "Cancelled";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -276,6 +280,7 @@ public class Encounter extends DomainResource {
             case DAYTIME: return "daytime";
             case VIRTUAL: return "virtual";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -290,6 +295,7 @@ public class Encounter extends DomainResource {
             case DAYTIME: return "http://hl7.org/fhir/encounter-class";
             case VIRTUAL: return "http://hl7.org/fhir/encounter-class";
             case OTHER: return "http://hl7.org/fhir/encounter-class";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -304,6 +310,7 @@ public class Encounter extends DomainResource {
             case DAYTIME: return "An encounter where the patient needs more prolonged treatment or investigations than outpatients, but who do not need to stay in the hospital overnight.";
             case VIRTUAL: return "An encounter that takes place where the patient and practitioner do not physically meet but use electronic means for contact.";
             case OTHER: return "Any other encounter type that is not described by one of the other values. Where this is used it is expected that an implementer will include an extension value to define what the actual other type is.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -318,6 +325,7 @@ public class Encounter extends DomainResource {
             case DAYTIME: return "Daytime";
             case VIRTUAL: return "Virtual";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -444,6 +452,7 @@ Not to be used when the patient is currently at the location
             case ACTIVE: return "active";
             case RESERVED: return "reserved";
             case COMPLETED: return "completed";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -453,6 +462,7 @@ Not to be used when the patient is currently at the location
             case ACTIVE: return "http://hl7.org/fhir/encounter-location-status";
             case RESERVED: return "http://hl7.org/fhir/encounter-location-status";
             case COMPLETED: return "http://hl7.org/fhir/encounter-location-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -462,6 +472,7 @@ Not to be used when the patient is currently at the location
             case ACTIVE: return "The patient is currently at this location, or was between the period specified.\n\nA system may update these records when the patient leaves the location to either reserved, or completed";
             case RESERVED: return "This location is held empty for this patient.";
             case COMPLETED: return "The patient was at this location during the period specified.\n\nNot to be used when the patient is currently at the location";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -471,6 +482,7 @@ Not to be used when the patient is currently at the location
             case ACTIVE: return "Active";
             case RESERVED: return "Reserved";
             case COMPLETED: return "Completed";
+            case NULL: return null;
             default: return "?";
           }
         }
