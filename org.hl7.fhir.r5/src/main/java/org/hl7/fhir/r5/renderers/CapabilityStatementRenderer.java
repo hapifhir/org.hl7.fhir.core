@@ -14,6 +14,7 @@ import org.hl7.fhir.r5.model.CapabilityStatement.ResourceInteractionComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.SystemInteractionComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.SystemRestfulInteraction;
 import org.hl7.fhir.r5.model.CapabilityStatement.TypeRestfulInteraction;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
@@ -82,8 +83,27 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       for (CapabilityStatementRestResourceComponent r : rest.getResource()) {
         tr = t.tr();
         tr.td().addText(r.getType());
-        if (r.hasProfile()) {
-          tr.td().ah(r.getProfile()).addText(r.getProfile());
+        if (r.hasProfile() && r.hasSupportedProfile()) {
+          XhtmlNode profileNode = tr.td().ah(r.getProfile()).addText(r.getProfile());
+          for (CanonicalType sp: r.getSupportedProfile()) { 
+            profileNode.br();
+            profileNode.nbsp().nbsp();
+            profileNode.ah(sp.getValue()).addText(sp.getValue());   
+          }
+        
+          if (r.hasSupportedProfile()) {
+            
+          }
+        }
+        if (!r.hasProfile() && r.hasSupportedProfile()) {
+          boolean first = true;
+          XhtmlNode profileNode = tr.td();
+          for (CanonicalType sp: r.getSupportedProfile()) { 
+              if (!first) {
+                profileNode.br();
+              }
+              profileNode.ah(sp.getValue()).addText(sp.getValue());
+          }
         }
         tr.td().addText(showOp(r, TypeRestfulInteraction.READ));
         if (hasVRead)
