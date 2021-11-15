@@ -80,31 +80,41 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       if (hasHistory)
         tr.th().b().attribute("title", "GET changes for all resources of the type (history interaction on type)").tx("History");
 
+      XhtmlNode profCell = null;
+      boolean hasProf = false;
+      boolean hasSupProf = false;
       for (CapabilityStatementRestResourceComponent r : rest.getResource()) {
         tr = t.tr();
         tr.td().addText(r.getType());
-        if (r.hasProfile() && r.hasSupportedProfile()) {
-          XhtmlNode profileNode = tr.td().ah(r.getProfile()).addText(r.getProfile());
-          for (CanonicalType sp: r.getSupportedProfile()) { 
-            profileNode.br();
-            profileNode.nbsp().nbsp();
-            profileNode.ah(sp.getValue()).addText(sp.getValue());   
-          }
-        
-          if (r.hasSupportedProfile()) {
-            
+
+        //Show profiles
+        profCell = tr.td();
+        hasProf = r.hasProfile();
+        hasSupProf = r.hasSupportedProfile();
+        if ((!hasProf) && (!hasSupProf)) {
+          profCell.nbsp();
+        }
+        else if (hasProf) {
+          profCell.ah(r.getProfile()).addText(r.getProfile());
+          if (hasSupProf) {
+            profCell.br();
+            profCell.addText("Additional supported profiles:");
+            for (CanonicalType sp: r.getSupportedProfile()) { 
+              profCell.br();
+              profCell.nbsp().nbsp();
+              profCell.ah(sp.getValue()).addText(sp.getValue());   
+            }
           }
         }
-        if (!r.hasProfile() && r.hasSupportedProfile()) {
-          boolean first = true;
-          XhtmlNode profileNode = tr.td();
+        else {    //Case of only supported profiles
+          profCell.addText("Supported profiles:");
           for (CanonicalType sp: r.getSupportedProfile()) { 
-              if (!first) {
-                profileNode.br();
-              }
-              profileNode.ah(sp.getValue()).addText(sp.getValue());
+            profCell.br();
+            profCell.nbsp().nbsp();
+            profCell.ah(sp.getValue()).addText(sp.getValue());   
           }
         }
+        //Show capabilities
         tr.td().addText(showOp(r, TypeRestfulInteraction.READ));
         if (hasVRead)
           tr.td().addText(showOp(r, TypeRestfulInteraction.VREAD));
