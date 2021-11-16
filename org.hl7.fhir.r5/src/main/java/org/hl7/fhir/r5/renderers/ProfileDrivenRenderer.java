@@ -33,6 +33,7 @@ import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Dosage;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Expression;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.HumanName;
 import org.hl7.fhir.r5.model.IdType;
@@ -291,7 +292,6 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     if (ew == null)
       return;
 
-
     Base e = ew.getBase();
 
     if (e instanceof StringType)
@@ -308,9 +308,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       renderDateTime(x, e);
     } else if (e instanceof Base64BinaryType)
       x.addText(new Base64().encodeAsString(((Base64BinaryType) e).getValue()));
-    else if (e instanceof org.hl7.fhir.r5.model.DateType)
-      x.addText(((org.hl7.fhir.r5.model.DateType) e).toHumanDisplay());
-    else if (e instanceof Enumeration) {
+    else if (e instanceof org.hl7.fhir.r5.model.DateType) {
+      org.hl7.fhir.r5.model.DateType dt = ((org.hl7.fhir.r5.model.DateType) e);
+      if (((org.hl7.fhir.r5.model.DateType) e).hasValue()) {
+        x.addText(((org.hl7.fhir.r5.model.DateType) e).toHumanDisplay());
+      }
+    } else if (e instanceof Enumeration) {
       Object ev = ((Enumeration<?>) e).getValue();
       x.addText(ev == null ? "" : ev.toString()); // todo: look up a display name if there is one
     } else if (e instanceof BooleanType) {
@@ -347,6 +350,8 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       renderAddress(x, (Address) e);
     } else if (e instanceof ContactPoint) {
       renderContactPoint(x, (ContactPoint) e);
+    } else if (e instanceof Expression) {
+      renderExpression(x, (Expression) e);
     } else if (e instanceof ContactDetail) {
       ContactDetail cd = (ContactDetail) e;
       if (cd.hasName()) {
