@@ -166,6 +166,7 @@ public class ToolingExtensions {
   public static final String EXT_IGP_MAPPING_CSV = "http://hl7.org/fhir/StructureDefinition/igpublisher-mapping-csv";
   public static final String EXT_IGP_BUNDLE = "http://hl7.org/fhir/StructureDefinition/igpublisher-bundle";
   public static final String EXT_IGP_RESOURCE_INFO = "http://hl7.org/fhir/tools/StructureDefinition/resource-information";
+  public static final String EXT_IGP_CONTAINED_RESOURCE_INFO = "http://hl7.org/fhir/tools/StructureDefinition/contained-resource-information";
   public static final String EXT_IGP_LOADVERSION = "http://hl7.org/fhir/StructureDefinition/igpublisher-loadversion";
   public static final String EXT_MAX_VALUESET = "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet";
   public static final String EXT_MIN_VALUESET = "http://hl7.org/fhir/StructureDefinition/elementdefinition-minValueSet";
