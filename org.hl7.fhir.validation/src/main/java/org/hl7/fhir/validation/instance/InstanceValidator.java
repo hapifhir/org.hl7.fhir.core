@@ -1050,7 +1050,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING, path)) {
         if (binding.hasValueSet()) {
           ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl());
-          if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()))) {
+          if (valueset == null) {
+            CodeSystem cs = context.fetchCodeSystem(binding.getValueSet());
+            if (rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
+              warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()));
+            }
+          } else {
             try {
               CodeableConcept cc = ObjectConverter.readAsCodeableConcept(element);
               if (!cc.hasCoding()) {
@@ -1177,7 +1182,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING, path)) {
         if (binding.hasValueSet()) {
           ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl());
-          if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()))) {
+          if (valueset == null) {
+            CodeSystem cs = context.fetchCodeSystem(binding.getValueSet());
+            if (rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
+              warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()));
+            }
+          } else {
             try {
               CodeableConcept cc = convertToCodeableConcept(element, logical);
               if (!cc.hasCoding()) {
@@ -1302,7 +1312,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING2, path)) {
               if (binding.hasValueSet()) {
                 ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl());
-                if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()))) {
+                if (valueset == null) {
+                  CodeSystem cs = context.fetchCodeSystem(binding.getValueSet());
+                  if (rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
+                    warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()));
+                  }
+                } else {
                   try {
                     long t = System.nanoTime();
                     ValidationResult vr = null;
@@ -1435,7 +1450,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private void checkMaxValueSet(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, String maxVSUrl, CodeableConcept cc, NodeStack stack) {
     ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl());
-    if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(maxVSUrl))) {
+    if (valueset == null) {
+      CodeSystem cs = context.fetchCodeSystem(maxVSUrl);
+      if (rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(maxVSUrl))) {
+        warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(maxVSUrl));
+      }
+    } else {
       try {
         long t = System.nanoTime();
         ValidationResult vr = checkCodeOnServer(stack, valueset, cc, false);
@@ -1455,7 +1475,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private void checkMaxValueSet(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, String maxVSUrl, Coding c, NodeStack stack) {
     ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl());
-    if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(maxVSUrl))) {
+    if (valueset == null) {
+      CodeSystem cs = context.fetchCodeSystem(maxVSUrl);
+      if (rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(maxVSUrl))) {
+        warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(maxVSUrl));
+      }
+    } else {
       try {
         long t = System.nanoTime();
         ValidationResult vr = checkCodeOnServer(stack, valueset, c, true);
@@ -1475,7 +1500,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private void checkMaxValueSet(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, String maxVSUrl, String value, NodeStack stack) {
     ValueSet valueset = resolveBindingReference(profile, maxVSUrl, profile.getUrl());
-    if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(maxVSUrl))) {
+    if (valueset == null) {
+      CodeSystem cs = context.fetchCodeSystem(maxVSUrl);
+      if (rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(maxVSUrl))) {
+        warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(maxVSUrl));
+      }
+    } else {
       try {
         long t = System.nanoTime();
         ValidationResult vr = checkCodeOnServer(stack, valueset, value, baseOptions.setLanguage(stack.getWorkingLang()));
@@ -1530,7 +1560,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING2, path)) {
               if (binding.hasValueSet()) {
                 ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl());
-                if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()))) {
+                if (valueset == null) {
+                  CodeSystem cs = context.fetchCodeSystem(binding.getValueSet());
+                  if (rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
+                    warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()));
+                  }
+                } else {  
                   try {
                     Coding c = ObjectConverter.readAsCoding(element);
                     long t = System.nanoTime();
@@ -2500,7 +2535,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     ElementDefinitionBindingComponent binding = elementContext.getBinding();
     if (binding.hasValueSet()) {
       ValueSet vs = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl());
-      if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, vs != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND2, describeReference(binding.getValueSet()))) {
+      if (vs == null) { 
+        CodeSystem cs = context.fetchCodeSystem(binding.getValueSet());
+        if (rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
+          warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, vs != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()));
+        }
+      } else {
         long t = System.nanoTime();
         ValidationResult vr = null;
         if (binding.getStrength() != BindingStrength.EXAMPLE) {
