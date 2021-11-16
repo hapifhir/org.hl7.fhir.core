@@ -438,7 +438,7 @@ public class I18nConstants {
   public static final String TERMINOLOGY_TX_SYSTEM_VALUESET = "Terminology_TX_System_ValueSet";
   public static final String TERMINOLOGY_TX_SYSTEM_VALUESET2 = "Terminology_TX_System_ValueSet2";
   public static final String TERMINOLOGY_TX_VALUESET_NOTFOUND = "Terminology_TX_ValueSet_NotFound";
-  public static final String TERMINOLOGY_TX_VALUESET_NOTFOUND2 = "Terminology_TX_ValueSet_NotFound2";
+  public static final String TERMINOLOGY_TX_VALUESET_NOTFOUND_CS = "Terminology_TX_ValueSet_NotFound_CS";
   public static final String TERMINOLOGY_TX_NOSVC_BOUND_REQ = "TERMINOLOGY_TX_NOSVC_BOUND_REQ";
   public static final String TERMINOLOGY_TX_NOSVC_BOUND_EXT = "TERMINOLOGY_TX_NOSVC_BOUND_EXT";
   public static final String TEXT_SHOULD_NOT_BE_PRESENT = "Text_should_not_be_present";
