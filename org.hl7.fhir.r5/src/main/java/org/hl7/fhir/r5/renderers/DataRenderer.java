@@ -29,6 +29,7 @@ import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Expression;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.HumanName;
 import org.hl7.fhir.r5.model.HumanName.NameUse;
@@ -903,6 +904,36 @@ public class DataRenderer extends Renderer {
     return s.toString();
   }
 
+  protected void renderExpression(XhtmlNode x, Expression expr) {
+  // there's two parts: what the expression is, and how it's described. 
+    // we start with what it is, and then how it's desceibed 
+    if (expr.hasExpression()) {
+      XhtmlNode c = x;
+      if (expr.hasReference()) {
+        c = x.ah(expr.getReference());        
+      }
+      if (expr.hasLanguage()) {
+        c = c.span(null, expr.getLanguage());
+      }
+      c.code().tx(expr.getExpression());
+    } else if (expr.hasReference()) {
+      x.ah(expr.getReference()).tx("source");
+    }
+    if (expr.hasName() || expr.hasDescription()) {
+      x.tx("(");
+      if (expr.hasName()) {
+        x.b().tx(expr.getName());
+      }
+      if (expr.hasDescription()) {
+        x.tx("\"");
+        x.tx(expr.getDescription());
+        x.tx("\"");
+      }
+      x.tx(")");
+    }
+  }
+  
+  
   protected void renderContactPoint(XhtmlNode x, ContactPoint contact) {
     if (contact != null) {
       if (!contact.hasSystem()) {
