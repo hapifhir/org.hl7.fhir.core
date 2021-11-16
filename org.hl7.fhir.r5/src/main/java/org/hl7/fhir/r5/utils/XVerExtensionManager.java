@@ -40,7 +40,15 @@ public class XVerExtensionManager {
     this.context = context;
   }
 
+  public boolean isR5(String url) {
+    String v = url.substring(20, 23);
+    return "5.0".equals(v);    
+  }
+  
   public XVerExtensionStatus status(String url) throws FHIRException {
+    if (url.length() < 24) {
+      return XVerExtensionStatus.Invalid;
+    }
     String v = url.substring(20, 23);
     if ("5.0".equals(v)) {
       v = "4.6"; // for now
