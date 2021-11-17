@@ -126,7 +126,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     if (cs.getContent() == CodeSystemContentMode.COMPLETE)
       p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system %s defines the following codes", cs.getUrl())+":");
     else if (cs.getContent() == CodeSystemContentMode.EXAMPLE)
-      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system %s defines many codes, of which the following are some examples", cs.getUrl())+":");
+      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system %s defines some example codes", cs.getUrl())+":");
     else if (cs.getContent() == CodeSystemContentMode.FRAGMENT )
       p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system %s defines many codes, of which the following are a subset", cs.getUrl())+":");
     else if (cs.getContent() == CodeSystemContentMode.NOTPRESENT ) {

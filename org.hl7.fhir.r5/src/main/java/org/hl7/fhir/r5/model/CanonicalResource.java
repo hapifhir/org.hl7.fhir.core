@@ -553,7 +553,11 @@ public abstract class CanonicalResource extends DomainResource {
   public boolean supportsCopyright() {
     return true;
   }
-  
+
+  public String getVersionedUrl() {
+    return hasVersion() ? getUrl()+"|"+getVersion() : getUrl();
+  }
+
 // end addition
 
 }

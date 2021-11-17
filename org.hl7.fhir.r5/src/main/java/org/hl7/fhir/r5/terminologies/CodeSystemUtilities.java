@@ -490,5 +490,14 @@ public class CodeSystemUtilities {
     }
     
   }
+
+  public static boolean hasHierarchy(CodeSystem cs) {
+    for (ConceptDefinitionComponent c : cs.getConcept()) {
+      if (c.hasConcept()) {
+        return true;
+      }
+    }
+    return false;
+  }
   
 }

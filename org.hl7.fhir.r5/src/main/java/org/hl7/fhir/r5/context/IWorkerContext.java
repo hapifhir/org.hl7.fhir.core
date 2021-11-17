@@ -509,6 +509,14 @@ public interface IWorkerContext {
   public ValueSetExpansionOutcome expandVS(ValueSet source, boolean cacheOk, boolean heiarchical);
   
   /**
+   * ValueSet Expansion - see $expand
+   *  
+   * @param source
+   * @return
+   */
+  public ValueSetExpansionOutcome expandVS(ValueSet source, boolean cacheOk, boolean heiarchical, boolean incompleteOk);
+  
+  /**
    * ValueSet Expansion - see $expand, but resolves the binding first
    *  
    * @param source

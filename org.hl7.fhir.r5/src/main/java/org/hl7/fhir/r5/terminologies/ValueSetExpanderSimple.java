@@ -634,6 +634,9 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
       if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
         addFragmentWarning(exp, cs);
       }
+      if (cs.getContent() == CodeSystemContentMode.EXAMPLE) {
+        addExampleWarning(exp, cs);
+      }      
     }
 
     if (!inc.getConcept().isEmpty()) {
@@ -645,6 +648,8 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
         if (def == null) {
           if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
             addFragmentWarning(exp, cs);
+          } else if (cs.getContent() == CodeSystemContentMode.EXAMPLE) {
+              addExampleWarning(exp, cs);
           } else {
             if (checkCodesWhenExpanding) {
               throw failTSE("Unable to find code '" + c.getCode() + "' in code system " + cs.getUrl());
@@ -733,14 +738,25 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
   }
 
   private void addFragmentWarning(ValueSetExpansionComponent exp, CodeSystem cs) {
-    for (Extension ex : cs.getExtensionsByUrl(ToolingExtensions.EXT_EXP_FRAGMENT)) {
-      if (ex.getValue().primitiveValue().equals(cs.getUrl())) {
+    String url = cs.getVersionedUrl();
+    for (ValueSetExpansionParameterComponent p : exp.getParameter()) {
+      if ("fragment".equals(p.getName()) && p.hasValueUriType() && url.equals(p.getValue().primitiveValue())) { 
         return;
-      }
+      }     
     }
-    exp.addExtension(new Extension(ToolingExtensions.EXT_EXP_FRAGMENT).setValue(new UriType(cs.getUrl())));
+    exp.addParameter().setName("fragment").setValue(new UriType(url));
   }
 
+  private void addExampleWarning(ValueSetExpansionComponent exp, CodeSystem cs) {
+    String url = cs.getVersionedUrl();
+    for (ValueSetExpansionParameterComponent p : exp.getParameter()) {
+      if ("example".equals(p.getName()) && p.hasValueUriType() && url.equals(p.getValue().primitiveValue())) { 
+        return;
+      }     
+    }
+    exp.addParameter().setName("example").setValue(new UriType(url));
+  }
+  
   private List<ConceptDefinitionDesignationComponent> convertDesignations(List<ConceptReferenceDesignationComponent> list) {
     List<ConceptDefinitionDesignationComponent> res = new ArrayList<CodeSystem.ConceptDefinitionDesignationComponent>();
     for (ConceptReferenceDesignationComponent t : list) {

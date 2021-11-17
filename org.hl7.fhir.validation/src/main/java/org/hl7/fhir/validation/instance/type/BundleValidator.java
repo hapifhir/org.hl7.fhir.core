@@ -402,7 +402,7 @@ public class BundleValidator extends BaseValidator{
       if (r != null) {
         EntrySummary e = new EntrySummary(i, entry, r);
         entryList.add(e);
-        System.out.println("Found entry "+e.dbg());
+//        System.out.println("Found entry "+e.dbg());
       }
       i++;
     }
@@ -415,10 +415,10 @@ public class BundleValidator extends BaseValidator{
           EntrySummary t = entryForTarget(entryList, tgt);
           if (t != null ) {
             if (t != e) {
-              System.out.println("Entry "+e.getIndex()+" refers to "+t.getIndex()+" by ref '"+ref+"'");
+//              System.out.println("Entry "+e.getIndex()+" refers to "+t.getIndex()+" by ref '"+ref+"'");
               e.getTargets().add(t);
             } else {
-              System.out.println("Entry "+e.getIndex()+" refers to itself by '"+ref+"'");             
+//              System.out.println("Entry "+e.getIndex()+" refers to itself by '"+ref+"'");             
             }
           }
         }
@@ -432,7 +432,7 @@ public class BundleValidator extends BaseValidator{
       foundRevLinks = false;
       for (EntrySummary e : entryList) {
         if (!visited.contains(e)) {
-          System.out.println("Not visited "+e.getIndex()+" - check for reverse links");             
+//          System.out.println("Not visited "+e.getIndex()+" - check for reverse links");             
           boolean add = false;
           for (EntrySummary t : e.getTargets()) {
             if (visited.contains(t)) {
@@ -443,7 +443,7 @@ public class BundleValidator extends BaseValidator{
             warning(errors, IssueType.INFORMATIONAL, e.getEntry().line(), e.getEntry().col(), 
                 stack.addToLiteralPath(ENTRY + '[' + (i + 1) + ']'), isExpectedToBeReverse(e.getResource().fhirType()), 
                 I18nConstants.BUNDLE_BUNDLE_ENTRY_REVERSE, (e.getEntry().getChildValue(FULL_URL) != null ? "'" + e.getEntry().getChildValue(FULL_URL) + "'" : ""));
-            System.out.println("Found reverse links for "+e.getIndex());             
+//            System.out.println("Found reverse links for "+e.getIndex());             
             foundRevLinks = true;
             visitLinked(visited, e);
           }

@@ -643,10 +643,18 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (expParameters == null)
       throw new Error(formatMessage(I18nConstants.NO_EXPANSION_PARAMETERS_PROVIDED));
     Parameters p = expParameters.copy(); 
-    return expandVS(vs, cacheOk, heirarchical, p);
+    return expandVS(vs, cacheOk, heirarchical, false, p);
   }
 
-  public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean heirarchical, Parameters p)  {
+  @Override
+  public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean heirarchical, boolean incompleteOk) {
+    if (expParameters == null)
+      throw new Error(formatMessage(I18nConstants.NO_EXPANSION_PARAMETERS_PROVIDED));
+    Parameters p = expParameters.copy(); 
+    return expandVS(vs, cacheOk, heirarchical, incompleteOk, p);
+  }
+
+  public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean heirarchical, boolean incompleteOk, Parameters p)  {
     if (p == null) {
       throw new Error(formatMessage(I18nConstants.NO_PARAMETERS_PROVIDED_TO_EXPANDVS));
     }
@@ -673,6 +681,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     p.setParameter("includeDefinition", false);
     p.setParameter("excludeNested", !heirarchical);
+    if (incompleteOk) {
+      p.setParameter("incomplete-ok", true);      
+    }
 
     List<String> allErrors = new ArrayList<>();
     
