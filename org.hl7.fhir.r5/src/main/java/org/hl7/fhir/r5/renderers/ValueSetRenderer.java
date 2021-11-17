@@ -176,23 +176,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
       else
         x.para().tx("This value set contains "+count.toString()+" concepts");
     }
-    if (ToolingExtensions.hasExtension(vs.getExpansion(), ToolingExtensions.EXT_EXP_FRAGMENT)) {
-      XhtmlNode div = x.div().style("border: maroon 1px solid; background-color: #FFCCCC; padding: 8px");
-      List<Extension> exl = vs.getExpansion().getExtensionsByUrl(ToolingExtensions.EXT_EXP_FRAGMENT);
-      if (exl.size() > 1) {
-        div.para().addText("Warning: this expansion is generated from fragments of the following code systems, and may be missing codes, or include codes that are not valid:");
-        XhtmlNode ul = div.ul();
-        for (Extension ex : exl) {
-          addCSRef(ul.li(), ex.getValue().primitiveValue());
-        }
-      } else {
-        XhtmlNode p = div.para();
-        p.addText("Warning: this expansion is generated from a fragment of the code system ");
-        addCSRef(p, exl.get(0).getValue().primitiveValue());
-        p.addText(" and may be missing codes, or include codes that are not valid");
-      }
-    }
     
+    generateContentModeNotices(x, vs.getExpansion());
     generateVersionNotice(x, vs.getExpansion());
 
     CodeSystem allCS = null;
@@ -271,6 +256,46 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
 
     return hasExtensions;
+  }
+
+  private void generateContentModeNotices(XhtmlNode x, ValueSetExpansionComponent expansion) {
+    generateContentModeNotice(x, expansion, "example", "Expansion based on example code system"); 
+    generateContentModeNotice(x, expansion, "fragment", "Expansion based on code system fragment"); 
+  }
+  
+  private void generateContentModeNotice(XhtmlNode x, ValueSetExpansionComponent expansion, String mode, String text) {
+    Multimap<String, String> versions = HashMultimap.create();
+    for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
+      if (p.getName().equals(mode)) {
+        String[] parts = ((PrimitiveType) p.getValue()).asStringValue().split("\\|");
+        if (parts.length == 2)
+          versions.put(parts[0], parts[1]);
+      }
+    }
+    if (versions.size() > 0) {
+      XhtmlNode div = null;
+      XhtmlNode ul = null;
+      boolean first = true;
+      for (String s : versions.keySet()) {
+        if (versions.size() == 1 && versions.get(s).size() == 1) {
+          for (String v : versions.get(s)) { // though there'll only be one
+            XhtmlNode p = x.para().style("border: black 1px dotted; background-color: #ffcccc; padding: 8px; margin-bottom: 8px");
+            p.tx(text+" ");
+            expRef(p, s, v);
+          }
+        } else {
+          for (String v : versions.get(s)) {
+            if (first) {
+              div = x.div().style("border: black 1px dotted; background-color: #EEEEEE; padding: 8px; margin-bottom: 8px");
+              div.para().tx(text+"s: ");
+              ul = div.ul();
+              first = false;
+            }
+            expRef(ul.li(), s, v);
+          }
+        }
+      }
+    }
   }
 
   private boolean checkDoSystem(ValueSet vs, ValueSet src) {
