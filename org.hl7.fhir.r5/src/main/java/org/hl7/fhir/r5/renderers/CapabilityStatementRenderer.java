@@ -14,6 +14,7 @@ import org.hl7.fhir.r5.model.CapabilityStatement.ResourceInteractionComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.SystemInteractionComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.SystemRestfulInteraction;
 import org.hl7.fhir.r5.model.CapabilityStatement.TypeRestfulInteraction;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
@@ -79,12 +80,41 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       if (hasHistory)
         tr.th().b().attribute("title", "GET changes for all resources of the type (history interaction on type)").tx("History");
 
+      XhtmlNode profCell = null;
+      boolean hasProf = false;
+      boolean hasSupProf = false;
       for (CapabilityStatementRestResourceComponent r : rest.getResource()) {
         tr = t.tr();
         tr.td().addText(r.getType());
-        if (r.hasProfile()) {
-          tr.td().ah(r.getProfile()).addText(r.getProfile());
+
+        //Show profiles
+        profCell = tr.td();
+        hasProf = r.hasProfile();
+        hasSupProf = r.hasSupportedProfile();
+        if ((!hasProf) && (!hasSupProf)) {
+          profCell.nbsp();
         }
+        else if (hasProf) {
+          profCell.ah(r.getProfile()).addText(r.getProfile());
+          if (hasSupProf) {
+            profCell.br();
+            profCell.addText("Additional supported profiles:");
+            for (CanonicalType sp: r.getSupportedProfile()) { 
+              profCell.br();
+              profCell.nbsp().nbsp();
+              profCell.ah(sp.getValue()).addText(sp.getValue());   
+            }
+          }
+        }
+        else {    //Case of only supported profiles
+          profCell.addText("Supported profiles:");
+          for (CanonicalType sp: r.getSupportedProfile()) { 
+            profCell.br();
+            profCell.nbsp().nbsp();
+            profCell.ah(sp.getValue()).addText(sp.getValue());   
+          }
+        }
+        //Show capabilities
         tr.td().addText(showOp(r, TypeRestfulInteraction.READ));
         if (hasVRead)
           tr.td().addText(showOp(r, TypeRestfulInteraction.VREAD));
