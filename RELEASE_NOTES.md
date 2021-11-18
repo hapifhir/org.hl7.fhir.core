@@ -1,8 +1,9 @@
 Validator:
 * Check for using CodeSystem not ValueSet in a value set binding
+* remove verbose logging statements
 
 Other code Changes:
-* Render Expressions
+* Render Expressions + supported profiles in CapabilityStatements
 * Fix NPE rendering date with no value (only extension)
 * Fix NPEs rendering code system properties
 * Date tracking in new Terminology Cache
