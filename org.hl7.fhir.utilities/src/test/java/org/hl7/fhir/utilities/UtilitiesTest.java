@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,7 +30,7 @@ class UtilitiesTest {
   public static final String WIN_JAVA_HOME = System.getenv("JAVA_HOME") + "\\";
 
   public static final String OSX_USER_DIR = System.getProperty("user.home") + "/";
-  public static final String OSX_JAVA_HOME = System.getenv("JAVA_HOME");
+  public static final String OSX_JAVA_HOME = Paths.get(System.getenv("JAVA_HOME")).normalize().toString() + "/";
 
   @Test
   @DisplayName("Test Utilities.path maps temp directory correctly")
