@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -75,7 +76,8 @@ public class TerminologyCacheManager {
     }
 
     IniFile ini = new IniFile(Utilities.path(cacheFolder, "cache.ini"));
-    ini.setStringProperty("version", "version", version, null);
+    ini.setStringProperty("cache", "version", version, null);
+    ini.setDateProperty("cache", "last-use", new Date(), null);
     ini.save();
   }
 
@@ -116,7 +118,7 @@ public class TerminologyCacheManager {
 
   private String getCacheVersion() throws IOException {
     IniFile ini = new IniFile(Utilities.path(cacheFolder, "cache.ini"));
-    return ini.getStringProperty("version", "version");
+    return ini.getStringProperty("cache", "version");
   }
 
   public String getFolder() {
