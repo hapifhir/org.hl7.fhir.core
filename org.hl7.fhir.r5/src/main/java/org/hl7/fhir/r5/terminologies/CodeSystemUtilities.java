@@ -128,7 +128,7 @@ public class CodeSystemUtilities {
     private List<String> getSubsumedBy(ConceptDefinitionComponent cd) {
       List<String> codes = new ArrayList<>();
       for (ConceptPropertyComponent cp : cd.getProperty()) {
-        if (cp.getCode().equals("subsumedBy")) {
+        if ("subsumedBy".equals(cp.getCode())) {
           codes.add(cp.getValue().primitiveValue());
         }
       }
@@ -149,7 +149,7 @@ public class CodeSystemUtilities {
 
   public static boolean isNotSelectable(CodeSystem cs, ConceptDefinitionComponent def) {
     for (ConceptPropertyComponent p : def.getProperty()) {
-      if (p.getCode().equals("notSelectable") && p.hasValue() && p.getValue() instanceof BooleanType) 
+      if ("notSelectable".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType) 
         return ((BooleanType) p.getValue()).getValue();
     }
     return false;
@@ -212,14 +212,14 @@ public class CodeSystemUtilities {
     try {
       for (ConceptPropertyComponent p : def.getProperty()) {
         if (!ignoreStatus) {
-          if (p.getCode().equals("status") && p.hasValue() && p.hasValueCodeType() && p.getValueCodeType().getCode().equals("deprecated"))
+          if ("status".equals(p.getCode()) && p.hasValue() && p.hasValueCodeType() && "deprecated".equals(p.getValueCodeType().getCode()))
             return true;
         }
         // this, though status should also be set
-        if (p.getCode().equals("deprecationDate") && p.hasValue() && p.getValue() instanceof DateTimeType) 
+        if ("deprecationDate".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof DateTimeType) 
           return ((DateTimeType) p.getValue()).before(new DateTimeType(Calendar.getInstance()));
         // legacy  
-        if (p.getCode().equals("deprecated") && p.hasValue() && p.getValue() instanceof BooleanType) 
+        if ("deprecated".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType) 
           return ((BooleanType) p.getValue()).getValue();
       }
       return false;
@@ -236,7 +236,7 @@ public class CodeSystemUtilities {
   
   public static boolean isInactive(CodeSystem cs, ConceptDefinitionComponent def) throws FHIRException {
     for (ConceptPropertyComponent p : def.getProperty()) {
-      if (p.getCode().equals("status") && p.hasValueStringType()) 
+      if ("status".equals(p.getCode()) && p.hasValueStringType()) 
         return "inactive".equals(p.getValueStringType());
     }
     return false;
@@ -276,7 +276,7 @@ public class CodeSystemUtilities {
     if (!cs.hasMeta())
       cs.setMeta(new Meta());
     for (UriType t : cs.getMeta().getProfile()) 
-      if (t.getValue().equals("http://hl7.org/fhir/StructureDefinition/shareablecodesystem"))
+      if ("http://hl7.org/fhir/StructureDefinition/shareablecodesystem".equals(t.getValue()))
         return cs;
     cs.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareablecodesystem"));
     return cs;
@@ -286,7 +286,7 @@ public class CodeSystemUtilities {
     if (!cs.hasMeta())
       cs.setMeta(new Meta());
     for (UriType t : cs.getMeta().getProfile()) 
-      if (t.getValue().equals("http://hl7.org/fhir/StructureDefinition/shareablecodesystem"))
+      if ("http://hl7.org/fhir/StructureDefinition/shareablecodesystem".equals(t.getValue()))
         return false;
     cs.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareablecodesystem"));
     return true;
@@ -489,6 +489,15 @@ public class CodeSystemUtilities {
       }
     }
     
+  }
+
+  public static boolean hasHierarchy(CodeSystem cs) {
+    for (ConceptDefinitionComponent c : cs.getConcept()) {
+      if (c.hasConcept()) {
+        return true;
+      }
+    }
+    return false;
   }
   
 }
