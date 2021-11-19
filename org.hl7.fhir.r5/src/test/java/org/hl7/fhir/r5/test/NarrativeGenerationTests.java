@@ -56,7 +56,6 @@ public class NarrativeGenerationTests {
     public Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException {
       return new org.hl7.fhir.r5.formats.XmlParser().parseType(xml, type); 
     }
-
   }
 
   public static final String WINDOWS = "WINDOWS";
@@ -143,9 +142,12 @@ public class NarrativeGenerationTests {
     XhtmlNode x = RendererFactory.factory(source, rc).build(source);
     String target = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".html"));
     String output = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
-    TextFile.stringToFile(target, TestingUtilities.tempFile("narrative", test.getId() + ".target.html"));
-    TextFile.stringToFile(output, TestingUtilities.tempFile("narrative", test.getId() + ".output.html"));
-    Assertions.assertTrue(output.equals(target), "Output does not match expected");
+    String tfn = TestingUtilities.tempFile("narrative", test.getId() + ".target.html");
+    String ofn = TestingUtilities.tempFile("narrative", test.getId() + ".output.html");
+    TextFile.stringToFile(target, tfn);
+    TextFile.stringToFile(output, ofn);
+    String msg = TestingUtilities.checkXMLIsSame(ofn, tfn);
+    Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
     
     if (test.isMeta()) {
       org.hl7.fhir.r5.elementmodel.Element e = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"), FhirFormat.XML); 
@@ -153,8 +155,10 @@ public class NarrativeGenerationTests {
 
       target = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-meta.html"));
       output = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
-      TextFile.stringToFile(output, TestingUtilities.tempFile("narrative", test.getId() + "-meta.output.html"));
-      Assertions.assertTrue(output.equals(target), "Output does not match expected (meta)");     
+      ofn = TestingUtilities.tempFile("narrative", test.getId() + "-meta.output.html");
+      TextFile.stringToFile(output, ofn);
+      msg = TestingUtilities.checkXMLIsSame(ofn, tfn);
+      Assertions.assertTrue(msg == null, "Meta output does not match expected: "+msg);
     }
   }
   
