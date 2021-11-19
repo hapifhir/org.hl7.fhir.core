@@ -40,6 +40,7 @@ import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.InstantType;
 import org.hl7.fhir.r5.model.Meta;
+import org.hl7.fhir.r5.model.Money;
 import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
@@ -352,6 +353,8 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       renderContactPoint(x, (ContactPoint) e);
     } else if (e instanceof Expression) {
       renderExpression(x, (Expression) e);
+    } else if (e instanceof Money) {
+      renderMoney(x, (Money) e);
     } else if (e instanceof ContactDetail) {
       ContactDetail cd = (ContactDetail) e;
       if (cd.hasName()) {

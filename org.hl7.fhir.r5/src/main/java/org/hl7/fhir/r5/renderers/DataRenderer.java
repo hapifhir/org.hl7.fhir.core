@@ -2,6 +2,9 @@ package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.List;
 
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -33,8 +36,11 @@ import org.hl7.fhir.r5.model.Expression;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.HumanName;
 import org.hl7.fhir.r5.model.HumanName.NameUse;
+import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.InstantType;
+import org.hl7.fhir.r5.model.MarkdownType;
+import org.hl7.fhir.r5.model.Money;
 import org.hl7.fhir.r5.model.Period;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Quantity;
@@ -384,7 +390,7 @@ public class DataRenderer extends Renderer {
     return "to do";   
   }
 
-  public void render(XhtmlNode x, BaseWrapper type)  {
+  public void render(XhtmlNode x, BaseWrapper type) throws FHIRFormatError, DefinitionException, IOException  {
     Base base = null;
     try {
       base = type.getBase();
@@ -399,7 +405,7 @@ public class DataRenderer extends Renderer {
     }
   }
   
-  public void renderBase(XhtmlNode x, Base b) {
+  public void renderBase(XhtmlNode x, Base b) throws FHIRFormatError, DefinitionException, IOException {
     if (b instanceof DataType) {
       render(x, (DataType) b);
     } else {
@@ -407,7 +413,7 @@ public class DataRenderer extends Renderer {
     }
   }
   
-  public void render(XhtmlNode x, DataType type) {
+  public void render(XhtmlNode x, DataType type) throws FHIRFormatError, DefinitionException, IOException {
     if (type instanceof DateTimeType) {
       renderDateTime(x, (DateTimeType) type);
     } else if (type instanceof UriType) {
@@ -424,6 +430,10 @@ public class DataRenderer extends Renderer {
       renderHumanName(x, (HumanName) type);
     } else if (type instanceof Address) {
       renderAddress(x, (Address) type);
+    } else if (type instanceof Expression) {
+      renderExpression(x, (Expression) type);
+    } else if (type instanceof Money) {
+      renderMoney(x, (Money) type);
     } else if (type instanceof ContactPoint) {
       renderContactPoint(x, (ContactPoint) type);
     } else if (type instanceof Quantity) {
@@ -440,6 +450,8 @@ public class DataRenderer extends Renderer {
       renderReference(x, (Reference) type);
     } else if (type instanceof InstantType) {
       x.tx(((InstantType) type).toHumanDisplay());
+    } else if (type instanceof MarkdownType) {
+      addMarkdown(x, ((MarkdownType) type).asStringValue());
     } else if (type instanceof BaseDateTimeType) {
       x.tx(((BaseDateTimeType) type).toHumanDisplay());
     } else if (type.isPrimitive()) {
@@ -475,8 +487,10 @@ public class DataRenderer extends Renderer {
   protected void renderUri(XhtmlNode x, UriType uri) {
     if (uri.getValue().startsWith("mailto:")) {
       x.ah(uri.getValue()).addText(uri.getValue().substring(7));
-    } else {
+    } else if (Utilities.isAbsoluteUrlLinkable(uri.getValue()) && !(uri instanceof IdType)) {
       x.ah(uri.getValue()).addText(uri.getValue());
+    } else {
+      x.addText(uri.getValue());
     }
   }
   
@@ -904,6 +918,27 @@ public class DataRenderer extends Renderer {
     return s.toString();
   }
 
+  protected String getLocalizedBigDecimalValue(BigDecimal input, Currency c) {
+    NumberFormat numberFormat = NumberFormat.getNumberInstance(context.getLocale());
+    numberFormat.setGroupingUsed(true);
+    numberFormat.setMaximumFractionDigits(c.getDefaultFractionDigits());
+    numberFormat.setMinimumFractionDigits(c.getDefaultFractionDigits());
+    return numberFormat.format(input);
+}
+  
+  protected void renderMoney(XhtmlNode x, Money money) {
+    Currency c = Currency.getInstance(money.getCurrency());
+    if (c != null) {
+      XhtmlNode s = x.span(null, c.getDisplayName());
+      s.tx(c.getSymbol());
+      s.tx(getLocalizedBigDecimalValue(money.getValue(), c));
+      x.tx(" ("+c.getCurrencyCode()+")");
+    } else {
+      x.tx(money.getCurrency());
+      x.tx(money.getValue().toPlainString());
+    }
+  }
+  
   protected void renderExpression(XhtmlNode x, Expression expr) {
   // there's two parts: what the expression is, and how it's described. 
     // we start with what it is, and then how it's desceibed 
@@ -1089,7 +1124,7 @@ public class DataRenderer extends Renderer {
     x.addText(!p.hasEnd() ? "(ongoing)" : p.getEndElement().toHumanDisplay());
   }
   
-  public void renderDataRequirement(XhtmlNode x, DataRequirement dr) {
+  public void renderDataRequirement(XhtmlNode x, DataRequirement dr) throws FHIRFormatError, DefinitionException, IOException {
     XhtmlNode tbl = x.table("grid");
     XhtmlNode tr = tbl.tr();    
     XhtmlNode td = tr.td().colspan("2");
