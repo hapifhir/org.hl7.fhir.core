@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.renderers.utils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -117,6 +118,7 @@ public class RenderingContext {
   private boolean addGeneratedNarrativeHeader = true;
 
   private FhirPublication targetVersion;
+  private Locale locale;
   /**
    * 
    * @param context - access to all related resources that might be needed
@@ -136,6 +138,8 @@ public class RenderingContext {
     if (terminologyServiceOptions != null) {
       this.terminologyServiceOptions = terminologyServiceOptions;
     }
+ // default to US locale - discussion here: https://github.com/hapifhir/org.hl7.fhir.core/issues/666
+    this.locale = new Locale.Builder().setLanguageTag("en-US").build(); 
     profileUtilities = new ProfileUtilities(worker, null, null);
   }
 
@@ -425,6 +429,14 @@ public class RenderingContext {
 
   public boolean isTechnicalMode() {
     return mode == ResourceRendererMode.TECHNICAL;
+  }
+
+  public Locale getLocale() {
+    return locale;
+  }
+
+  public void setLocale(Locale locale) {
+    this.locale = locale;
   }
 
 }
