@@ -54,6 +54,9 @@ import com.google.gson.JsonObject;
    */
 public interface IResourceValidator {
 
+
+  //IANTORNO OR DOES IT GO HERE
+
   public enum ReferenceValidationPolicy {
     IGNORE, CHECK_TYPE_IF_EXISTS, CHECK_EXISTS, CHECK_EXISTS_AND_TYPE, CHECK_VALID;
     
@@ -73,6 +76,20 @@ public interface IResourceValidator {
   public interface IValidatorResourceFetcher {
     Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, FHIRException, IOException;
     ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url);
+    // Add the line here getValidationPolicyForContainedResource
+    // Move this above method out with the new one and call it the policyAdvisor interface
+    // For a given reference, how much do you want to validate it?
+    // IANTORNO
+    /*
+ public enum ContainingResourceType { CONTAINED, BUNDLE_ENTRY, BUNDLE_OUTCOME, PARAMETER }
+
+  public interface IValidationPolicyAdvisor {
+    ReferenceValidationPolicy policyForReference(IResourceValidator validator, Object appContext, String path, String url);
+    ReferenceValidationPolicy policyForContained(IResourceValidator validator, Object appContext, String containerType, String containerId, ContainingResourceType containerType, String path, String url);
+  }
+     */
+    // For a given reference how much do we validate it?
+
     boolean resolveURL(Object appContext, String path, String url) throws IOException, FHIRException; 
   }
   

@@ -4348,6 +4348,19 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
  
   private void validateContains(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, ElementDefinition child, ElementDefinition context, Element resource, Element element, NodeStack stack, IdStatus idstatus) throws FHIRException {
+    // IANTORNO
+    // IANTORNO call the new interface here to see if we want to validate this
+    // ReferenceValidationPolicy policyForContained(IResourceValidator validator, Object appContext, String containerType, String containerId, ContainingResourceType containerType, String path, String url);
+/*
+there are three different things I want to check
+does the reference exist, i don't want to check anything other than if there is something
+check it's type if ti exists, if it doenst' nexist I dont' care
+check if it exists and it's type
+validate it all
+
+change iresource fetcher so taht there is a base implementation, and not just check if the implementation is null or not
+ */
+
     String resourceName = element.getType();
     TypeRefComponent trr = null;
     CommaSeparatedStringBuilder bt = new CommaSeparatedStringBuilder();
@@ -4371,7 +4384,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         hc = hostContext.forContained(element);
       }
       stack.resetIds();
-      if (element.getSpecial() != null) {
+     if (element.getSpecial() != null) {
         switch (element.getSpecial()) {
         case BUNDLE_ENTRY:
           idstatus = IdStatus.OPTIONAL;
@@ -4428,6 +4441,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
   }
+  // IANTORNO
 
   private boolean isValidResourceType(String type, TypeRefComponent def) {
     if (!def.hasProfile() && def.getCode().equals("Resource")) {
@@ -5287,6 +5301,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
    * The actual base entry point for internal use (re-entrant)
    */
   private void validateResource(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, IdStatus idstatus, NodeStack stack) throws FHIRException {
+    // IANTORNO
+    // check here if we call validation policy here, and then change it to the new interface
     assert stack != null;
     assert resource != null;
     boolean ok = true;

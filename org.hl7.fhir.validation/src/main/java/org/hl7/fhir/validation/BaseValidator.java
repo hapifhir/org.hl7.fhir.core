@@ -93,6 +93,11 @@ import org.hl7.fhir.validation.instance.utils.IndexedElement;
 
 public class BaseValidator {
 
+  // define the interface in this class
+  // IANTORNO
+  // Add here and there will be a getter and setter that is
+  //when we create the type specific validators pass it to them
+
   public class TrackedLocationRelatedMessage {
     private Object location;
     private ValidationMessage vmsg;
