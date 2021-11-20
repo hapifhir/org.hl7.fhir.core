@@ -47,8 +47,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.codec.binary.Base64InputStream;
 import org.apache.commons.lang3.NotImplementedException;
@@ -135,9 +133,10 @@ import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorCla
 import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
-import org.hl7.fhir.r5.utils.IResourceValidator;
+import org.hl7.fhir.r5.utils.validation.*;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.validation.constants.*;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.SIDUtilities;
 import org.hl7.fhir.utilities.UnicodeUtilities;
@@ -173,8 +172,6 @@ import org.w3c.dom.Document;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
-import javax.annotation.Nonnull;
 
 
 /**
@@ -381,6 +378,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private Map<String, Element> fetchCache = new HashMap<>();
   private HashMap<Element, ResourceValidationTracker> resourceTracker = new HashMap<>();
   private IValidatorResourceFetcher fetcher;
+  private IValidationPolicyAdvisor policyAdvisor;
   long time = 0;
   private IEvaluationContext externalHostServices;
   private boolean noExtensibleWarnings;
@@ -461,6 +459,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public IResourceValidator setFetcher(IValidatorResourceFetcher value) {
     this.fetcher = value;
+    return this;
+  }
+
+  @Override
+  public IValidationPolicyAdvisor getPolicyAdvisor() {
+    return policyAdvisor;
+  }
+
+  @Override
+  public IResourceValidator setPolicyAdvisor(IValidationPolicyAdvisor advisor) {
+    this.policyAdvisor = advisor;
     return this;
   }
 
@@ -2112,7 +2121,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
           if (!found) {
             if (type.equals("canonical")) {
-              ReferenceValidationPolicy rp = fetcher.validationPolicy(this, appContext, path, url);
+              ReferenceValidationPolicy rp = policyAdvisor == null ? ReferenceValidationPolicy.CHECK_VALID : policyAdvisor.policyForReference(this, appContext, path, url);
               if (rp == ReferenceValidationPolicy.CHECK_EXISTS || rp == ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE) {
                 rule(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url);
               } else {
@@ -2129,7 +2138,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
           } else {
             if (type.equals("canonical")) {
-              ReferenceValidationPolicy rp = fetcher.validationPolicy(this, appContext, path, url);
+              ReferenceValidationPolicy rp = policyAdvisor == null ? ReferenceValidationPolicy.CHECK_VALID : policyAdvisor.policyForReference(this, appContext, path, url);
               if (rp == ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE || rp == ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS || rp == ReferenceValidationPolicy.CHECK_VALID) {
                 try {
                   Resource r = fetcher.fetchCanonicalResource(this, url);
@@ -2688,14 +2697,22 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     checkFixedValue(errors, path + ".denominator", focus.getNamedChild("denominator"), fixed.getDenominator(), fixedSource, "denominator", focus, pattern);
   }
 
-  private void checkReference(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition container, String parentType, NodeStack stack) throws FHIRException {
+  private void checkReference(ValidatorHostContext hostContext,
+                              List<ValidationMessage> errors,
+                              String path,
+                              Element element,
+                              StructureDefinition profile,
+                              ElementDefinition container,
+                              String parentType,
+                              NodeStack stack) throws FHIRException {
     Reference reference = ObjectConverter.readAsReference(element);
 
     String ref = reference.getReference();
     if (Utilities.noString(ref)) {
       if (!path.contains("element.pattern")) { // this business rule doesn't apply to patterns
         if (Utilities.noString(reference.getIdentifier().getSystem()) && Utilities.noString(reference.getIdentifier().getValue())) {
-          warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, !Utilities.noString(element.getNamedChildValue("display")), I18nConstants.REFERENCE_REF_NODISPLAY);
+          warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path,
+            !Utilities.noString(element.getNamedChildValue("display")), I18nConstants.REFERENCE_REF_NODISPLAY);
         }
       }
       return;
@@ -2716,7 +2733,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         refType = "bundled";
       }
     }
-    ReferenceValidationPolicy pol = refType.equals("contained") || refType.equals("bundled") ? ReferenceValidationPolicy.CHECK_VALID : fetcher == null ? ReferenceValidationPolicy.IGNORE : fetcher.validationPolicy(this, hostContext.getAppContext(), path, ref);
+    ReferenceValidationPolicy pol = refType.equals("contained") || refType.equals("bundled") ?
+      ReferenceValidationPolicy.CHECK_VALID : policyAdvisor == null ?
+      ReferenceValidationPolicy.IGNORE : policyAdvisor.policyForContained(this, hostContext.getAppContext(),
+      container.fhirType(), container.getId(),
+      refType.equals("contained") ? Element.SpecialElement.CONTAINED : Element.SpecialElement.BUNDLE_ENTRY, path, ref);
 
     if (pol.checkExists()) {
       if (we == null) {
@@ -4347,101 +4368,104 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
  
-  private void validateContains(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, ElementDefinition child, ElementDefinition context, Element resource, Element element, NodeStack stack, IdStatus idstatus) throws FHIRException {
-    // IANTORNO
-    // IANTORNO call the new interface here to see if we want to validate this
-    // ReferenceValidationPolicy policyForContained(IResourceValidator validator, Object appContext, String containerType, String containerId, ContainingResourceType containerType, String path, String url);
-/*
-there are three different things I want to check
-does the reference exist, i don't want to check anything other than if there is something
-check it's type if ti exists, if it doenst' nexist I dont' care
-check if it exists and it's type
-validate it all
+  private void validateContains(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path,
+                                ElementDefinition child, ElementDefinition context, Element resource,
+                                Element element, NodeStack stack, IdStatus idstatus) throws FHIRException {
+    SpecialElement special = element.getSpecial();
+    ReferenceValidationPolicy referenceValidationPolicy = getPolicyAdvisor() == null ? ReferenceValidationPolicy.CHECK_VALID :
+      getPolicyAdvisor().policyForContained(this, hostContext, context.fhirType(), context.getId(), special, path, child.getPath());
 
-change iresource fetcher so taht there is a base implementation, and not just check if the implementation is null or not
- */
-
-    String resourceName = element.getType();
-    TypeRefComponent trr = null;
-    CommaSeparatedStringBuilder bt = new CommaSeparatedStringBuilder();
-    for (TypeRefComponent tr : child.getType()) {
-      bt.append(tr.getCode());
-      if (tr.getCode().equals("Resource") || tr.getCode().equals(resourceName) ) {
-        trr = tr;
+    switch (referenceValidationPolicy) {
+      case CHECK_VALID:
+        String resourceName = element.getType();
+        TypeRefComponent trr = null;
+        CommaSeparatedStringBuilder bt = new CommaSeparatedStringBuilder();
+        for (TypeRefComponent tr : child.getType()) {
+          bt.append(tr.getCode());
+          if (tr.getCode().equals("Resource") || tr.getCode().equals(resourceName) ) {
+            trr = tr;
+            break;
+          }
+        }
+        stack.qualifyPath(".ofType("+resourceName+")");
+        if (trr == null) {
+          rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE, resourceName, bt.toString());
+        } else if (isValidResourceType(resourceName, trr)) {
+          // special case: resource wrapper is reset if we're crossing a bundle boundary, but not otherwise
+          ValidatorHostContext hc = null;
+          if (special == SpecialElement.BUNDLE_ENTRY || special == SpecialElement.BUNDLE_OUTCOME || special == SpecialElement.PARAMETER) {
+            resource = element;
+            hc = hostContext.forEntry(element);
+          } else {
+            hc = hostContext.forContained(element);
+          }
+          stack.resetIds();
+          if (special != null) {
+            switch (special) {
+              case BUNDLE_ENTRY:
+                idstatus = IdStatus.OPTIONAL;
+                break;
+              case BUNDLE_OUTCOME:
+                idstatus = IdStatus.OPTIONAL;
+                break;
+              case CONTAINED:
+                stack.setContained(true);
+                idstatus = IdStatus.REQUIRED;
+                break;
+              case PARAMETER:
+                idstatus = IdStatus.OPTIONAL;
+                break;
+              default:
+                break;
+            }
+          }
+          if (trr.getProfile().size() == 1) {
+            long t = System.nanoTime();
+            StructureDefinition profile = this.context.fetchResource(StructureDefinition.class, trr.getProfile().get(0).asStringValue());
+            timeTracker.sd(t);
+            trackUsage(profile, hostContext, element);
+            if (rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), profile != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOPROFILE, resourceName)) {
+              validateResource(hc, errors, resource, element, profile, idstatus, stack);
+            }
+          } else if (trr.getProfile().size() == 0) {
+            long t = System.nanoTime();
+            StructureDefinition profile = this.context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + resourceName);
+            timeTracker.sd(t);
+            trackUsage(profile, hostContext, element);
+            if (rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), profile != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOPROFILE, resourceName)) {
+              validateResource(hc, errors, resource, element, profile, idstatus, stack);
+            }
+          } else {
+            CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+            for (CanonicalType u : trr.getProfile()) {
+              b.append(u.asStringValue());
+            }
+            rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES, trr.getCode(), b.toString());
+          }
+        } else {
+          List<String> types = new ArrayList<>();
+          for (UriType u : trr.getProfile()) {
+            StructureDefinition sd = this.context.fetchResource(StructureDefinition.class, u.getValue());
+            if (sd != null && !types.contains(sd.getType())) {
+              types.add(sd.getType());
+            }
+          }
+          if (types.size() == 1) {
+            rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE2, resourceName, types.get(0));
+          } else {
+            rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE3, resourceName, types);
+          }
+        }
         break;
-      }
-    }
-    stack.qualifyPath(".ofType("+resourceName+")");
-    if (trr == null) {
-      rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE, resourceName, bt.toString());
-    } else if (isValidResourceType(resourceName, trr)) {
-      // special case: resource wrapper is reset if we're crossing a bundle boundary, but not otherwise
-      ValidatorHostContext hc = null;
-      if (element.getSpecial() == SpecialElement.BUNDLE_ENTRY || element.getSpecial() == SpecialElement.BUNDLE_OUTCOME || element.getSpecial() == SpecialElement.PARAMETER) {
-        resource = element;
-        hc = hostContext.forEntry(element);
-      } else {
-        hc = hostContext.forContained(element);
-      }
-      stack.resetIds();
-     if (element.getSpecial() != null) {
-        switch (element.getSpecial()) {
-        case BUNDLE_ENTRY:
-          idstatus = IdStatus.OPTIONAL;
-          break;
-        case BUNDLE_OUTCOME:
-          idstatus = IdStatus.OPTIONAL;
-          break;
-        case CONTAINED:
-          stack.setContained(true);
-          idstatus = IdStatus.REQUIRED;
-          break;
-        case PARAMETER:
-          idstatus = IdStatus.OPTIONAL;
-          break;
-        default:
-          break;        
-        }
-      }
-      if (trr.getProfile().size() == 1) {
-        long t = System.nanoTime();
-        StructureDefinition profile = this.context.fetchResource(StructureDefinition.class, trr.getProfile().get(0).asStringValue());
-        timeTracker.sd(t);
-        trackUsage(profile, hostContext, element);
-        if (rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), profile != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOPROFILE, resourceName)) {
-          validateResource(hc, errors, resource, element, profile, idstatus, stack);
-        }
-      } else if (trr.getProfile().size() == 0) {
-        long t = System.nanoTime();
-        StructureDefinition profile = this.context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + resourceName);
-        timeTracker.sd(t);
-        trackUsage(profile, hostContext, element);
-        if (rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), profile != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOPROFILE, resourceName)) {
-          validateResource(hc, errors, resource, element, profile, idstatus, stack);
-        }
-      } else {
-        CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-        for (CanonicalType u : trr.getProfile()) {
-          b.append(u.asStringValue());
-        }
-        rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES, trr.getCode(), b.toString()); 
-      }
-    } else {
-      List<String> types = new ArrayList<>();
-      for (UriType u : trr.getProfile()) {
-        StructureDefinition sd = this.context.fetchResource(StructureDefinition.class, u.getValue());
-        if (sd != null && !types.contains(sd.getType())) {
-          types.add(sd.getType());
-        }
-      }
-      if (types.size() == 1) {
-        rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE2, resourceName, types.get(0));
-      } else {
-        rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE3, resourceName, types);
-      }
+      case CHECK_TYPE_IF_EXISTS:
+      case CHECK_EXISTS_AND_TYPE:
+      case CHECK_EXISTS:
+      // TODO
+      case IGNORE:
+      default:
+        break;
     }
   }
-  // IANTORNO
 
   private boolean isValidResourceType(String type, TypeRefComponent def) {
     if (!def.hasProfile() && def.getCode().equals("Resource")) {
@@ -5301,48 +5325,60 @@ change iresource fetcher so taht there is a base implementation, and not just ch
    * The actual base entry point for internal use (re-entrant)
    */
   private void validateResource(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, IdStatus idstatus, NodeStack stack) throws FHIRException {
-    // IANTORNO
-    // check here if we call validation policy here, and then change it to the new interface
-    assert stack != null;
-    assert resource != null;
-    boolean ok = true;
-    String resourceName = element.getType(); // todo: consider namespace...?
-    if (defn == null) {
-      long t = System.nanoTime();
-      defn = element.getProperty().getStructure();
-      if (defn == null)
-        defn = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + resourceName);
-      timeTracker.sd(t);
-      ok = rule(errors, IssueType.INVALID, element.line(), element.col(), stack.addToLiteralPath(resourceName), defn != null, I18nConstants.VALIDATION_VAL_PROFILE_NODEFINITION, resourceName);
-    }
-
-    // special case: we have a bundle, and the profile is not for a bundle. We'll try the first entry instead
-    if (!typeMatchesDefn(resourceName, defn) && resourceName.equals(BUNDLE)) {
-      NodeStack first = getFirstEntry(stack);
-      if (first != null && typeMatchesDefn(first.getElement().getType(), defn)) {
-        element = first.getElement();
-        stack = first;
-        resourceName = element.getType();
-        idstatus = IdStatus.OPTIONAL; // why?
-      }
-      // todo: validate everything in this bundle.
-    }
-    ok = rule(errors, IssueType.INVALID, -1, -1, stack.getLiteralPath(), typeMatchesDefn(resourceName, defn), I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE, defn.getType(), resourceName, defn.getName());
-
-    if (ok) {
-      if (idstatus == IdStatus.REQUIRED && (element.getNamedChild(ID) == null)) {
-        rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_MISSING);
-      } else if (idstatus == IdStatus.PROHIBITED && (element.getNamedChild(ID) != null)) {
-        rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_PROHIBITED);
-      } 
-      if (element.getNamedChild(ID) != null) {
-        Element eid = element.getNamedChild(ID);
-        if (eid.getProperty() != null && eid.getProperty().getDefinition() != null && eid.getProperty().getDefinition().getBase().getPath().equals("Resource.id")) {
-          NodeStack ns = stack.push(eid, -1, eid.getProperty().getDefinition(), null);
-          rule(errors, IssueType.INVALID, eid.line(), eid.col(), ns.getLiteralPath(), FormatUtilities.isValidId(eid.primitiveValue()), I18nConstants.RESOURCE_RES_ID_MALFORMED);
+    ReferenceValidationPolicy referenceValidationPolicy = getPolicyAdvisor() == null ? ReferenceValidationPolicy.CHECK_VALID :
+      getPolicyAdvisor().policyForReference(this, hostContext, element.getPath(), "http://hl7.org/fhir/StructureDefinition/" + element.getType());
+    switch (referenceValidationPolicy) {
+      case CHECK_VALID:
+        // check here if we call validation policy here, and then change it to the new interface
+        assert stack != null;
+        assert resource != null;
+        boolean ok = true;
+        String resourceName = element.getType(); // todo: consider namespace...?
+        if (defn == null) {
+          long t = System.nanoTime();
+          defn = element.getProperty().getStructure();
+          if (defn == null)
+            defn = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + resourceName);
+          timeTracker.sd(t);
+          ok = rule(errors, IssueType.INVALID, element.line(), element.col(), stack.addToLiteralPath(resourceName), defn != null, I18nConstants.VALIDATION_VAL_PROFILE_NODEFINITION, resourceName);
         }
-      }
-      start(hostContext, errors, element, element, defn, stack); // root is both definition and type
+
+        // special case: we have a bundle, and the profile is not for a bundle. We'll try the first entry instead
+        if (!typeMatchesDefn(resourceName, defn) && resourceName.equals(BUNDLE)) {
+          NodeStack first = getFirstEntry(stack);
+          if (first != null && typeMatchesDefn(first.getElement().getType(), defn)) {
+            element = first.getElement();
+            stack = first;
+            resourceName = element.getType();
+            idstatus = IdStatus.OPTIONAL; // why?
+          }
+          // todo: validate everything in this bundle.
+        }
+        ok = rule(errors, IssueType.INVALID, -1, -1, stack.getLiteralPath(), typeMatchesDefn(resourceName, defn), I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE, defn.getType(), resourceName, defn.getName());
+
+        if (ok) {
+          if (idstatus == IdStatus.REQUIRED && (element.getNamedChild(ID) == null)) {
+            rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_MISSING);
+          } else if (idstatus == IdStatus.PROHIBITED && (element.getNamedChild(ID) != null)) {
+            rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_PROHIBITED);
+          }
+          if (element.getNamedChild(ID) != null) {
+            Element eid = element.getNamedChild(ID);
+            if (eid.getProperty() != null && eid.getProperty().getDefinition() != null && eid.getProperty().getDefinition().getBase().getPath().equals("Resource.id")) {
+              NodeStack ns = stack.push(eid, -1, eid.getProperty().getDefinition(), null);
+              rule(errors, IssueType.INVALID, eid.line(), eid.col(), ns.getLiteralPath(), FormatUtilities.isValidId(eid.primitiveValue()), I18nConstants.RESOURCE_RES_ID_MALFORMED);
+            }
+          }
+          start(hostContext, errors, element, element, defn, stack); // root is both definition and type
+        }
+        break;
+      case CHECK_TYPE_IF_EXISTS:
+      case CHECK_EXISTS_AND_TYPE:
+      case CHECK_EXISTS:
+        // TODO
+      case IGNORE:
+      default:
+        break;
     }
   }
 
