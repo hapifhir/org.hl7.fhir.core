@@ -985,7 +985,7 @@ public class DataRenderer extends Renderer {
     Currency c = Currency.getInstance(money.getCurrency());
     if (c != null) {
       XhtmlNode s = x.span(null, c.getDisplayName());
-      s.tx(c.getSymbol());
+      s.tx(c.getSymbol(context.getLocale()));
       s.tx(getLocalizedBigDecimalValue(money.getValue(), c));
       x.tx(" ("+c.getCurrencyCode()+")");
     } else {
