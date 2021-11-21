@@ -133,6 +133,11 @@ public class XVerExtensionManager {
     } else {
       throw new FHIRException("Internal error - attempt to define extension for "+url+" when it is invalid");
     }
+    if (path.has("modifier") && path.get("modifier").getAsBoolean()) {
+      ElementDefinition baseDef = new ElementDefinition("Extension");
+      sd.getDifferential().getElement().add(0, baseDef);
+      baseDef.setIsModifier(true);
+    }
     return sd;
   }
 

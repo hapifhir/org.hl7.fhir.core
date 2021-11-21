@@ -1476,7 +1476,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private String describeValueSet(String url) {
     ValueSet vs = context.fetchResource(ValueSet.class, url);
     if (vs != null) {
-      return "\""+vs.present()+"\" ("+url+")";
+      return "'"+vs.present()+"' ("+url+")";
     } else {
       return "("+url+")";
     }
@@ -1656,7 +1656,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private StructureDefinition checkExtension(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, Element resource, Element container, Element element, ElementDefinition def, StructureDefinition profile, NodeStack stack, NodeStack containerStack, String extensionUrl) throws FHIRException {
     String url = element.getNamedChildValue("url");
     boolean isModifier = element.getName().equals("modifierExtension");
-
+    assert def.getIsModifier() == isModifier;
+    
     long t = System.nanoTime();
     StructureDefinition ex = Utilities.isAbsoluteUrl(url) ? context.fetchResource(StructureDefinition.class, url) : null;
     timeTracker.sd(t);
@@ -1676,10 +1677,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (ex != null) {
       trackUsage(ex, hostContext, element);
-      if (def.getIsModifier()) {
-        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", ex.getSnapshot().getElement().get(0).getIsModifier(), I18nConstants.EXTENSION_EXT_MODIFIER_MISMATCHY);
+      // check internal definitions are coherent
+      if (isModifier) {
+        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", def.getIsModifier() == isModifier, I18nConstants.EXTENSION_EXT_MODIFIER_MISMATCHY);
       } else {
-        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", !ex.getSnapshot().getElement().get(0).getIsModifier(), I18nConstants.EXTENSION_EXT_MODIFIER_MISMATCHN);
+        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", def.getIsModifier() == isModifier, I18nConstants.EXTENSION_EXT_MODIFIER_MISMATCHN);
       }
       // two questions
       // 1. can this extension be used here?
