@@ -4,7 +4,7 @@
 | :---: |
 | [![Build Status][Badge-BuildPipeline]][Link-BuildPipeline] |
 
-This is the core object handling code, with utilities (including validator), for the FHIR specification. 
+This is the java core object handling code, with utilities (including validator), for the FHIR specification. 
 included in this repo: 
 
 * org.fhir.fhir.utilities: Shared code used by all the other projects - including the internationalization code
