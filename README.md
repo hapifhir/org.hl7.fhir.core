@@ -17,6 +17,11 @@ included in this repo:
 * org.fhir.fhir.validation: The FHIR Java validator (note: based on R5 internally, but validates all the above versions)
 * org.fhir.fhir.validation.cli: Holder project for releasing the FHIR validator as as single fat jar (will be removed in the future)
 
+This code is used in all HAPI servers and clients, and also is the HL7 maintained 
+FHIR Validator. In addition, this is the core code for the HL7 maintained IG publisher
+and FHIR main build publisher. As such, this code is considered an authoritatively 
+correct implementation of the core FHIR specification that it implements.
+
 ### CI/CD
 
 All integration and delivery done on Azure pipelines. Azure project can be viewed [here][Link-AzureProject].
