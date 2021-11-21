@@ -440,8 +440,16 @@ public class RenderingContext {
     return mode == ResourceRendererMode.TECHNICAL;
   }
 
+  public boolean hasLocale() {
+    return locale != null;
+  }
+  
   public Locale getLocale() {
-    return locale;
+    if (locale == null) {
+      return Locale.getDefault();
+    } else { 
+      return locale;
+    }
   }
 
   public void setLocale(Locale locale) {
