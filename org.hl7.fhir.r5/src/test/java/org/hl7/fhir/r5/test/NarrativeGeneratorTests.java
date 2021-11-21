@@ -90,19 +90,19 @@ public class NarrativeGeneratorTests {
 
   @Test
   public void testDateTimeRendering3() throws FHIRFormatError, DefinitionException, IOException {
-    checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("UTC"), FormatStyle.MEDIUM, ResourceRendererMode.TECHNICAL, "19 Nov. 2021, 2:13:12 pm");
+    checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("UTC"), FormatStyle.SHORT, ResourceRendererMode.TECHNICAL, "19/11/21, 2:13 pm");
   }
   
 
   @Test
   public void testDateTimeRendering4() throws FHIRFormatError, DefinitionException, IOException {
-    checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("UTC"), null, ResourceRendererMode.END_USER, "19 Nov. 2021, 2:13:12 pm");
+    checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("UTC"), null, ResourceRendererMode.END_USER, "19/11/21, 2:13 pm");
   }
   
 
   @Test
   public void testDateTimeRendering5() throws FHIRFormatError, DefinitionException, IOException {
-    checkDateTimeRendering("2021-11-19", "en", "AU", ZoneId.of("UTC"), null, ResourceRendererMode.END_USER, "19 Nov. 2021");
+    checkDateTimeRendering("2021-11-19", "en", "AU", ZoneId.of("UTC"), null, ResourceRendererMode.END_USER, "19/11/21");
   }
     
 
