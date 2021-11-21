@@ -1,9 +1,14 @@
 package org.hl7.fhir.r5.renderers.utils;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -119,6 +124,10 @@ public class RenderingContext {
 
   private FhirPublication targetVersion;
   private Locale locale;
+  private ZoneId timeZoneId;
+  private DateTimeFormatter dateTimeFormat;
+  private DateTimeFormatter dateFormat;
+  
   /**
    * 
    * @param context - access to all related resources that might be needed
@@ -439,4 +448,63 @@ public class RenderingContext {
     this.locale = locale;
   }
 
+
+  /**
+   * if the timezone is null, the rendering will default to the source timezone
+   * in the resource
+   * 
+   * Note that if you're working server side, the FHIR project recommends the use
+   * of the Date header so that clients know what timezone the server defaults to,
+   * 
+   * There is no standard way for the server to know what the client timezone is. 
+   * In the case where the client timezone is unknown, the timezone should be null
+   *
+   * @return the specified timezone to render in
+   */
+  public ZoneId getTimeZoneId() {
+    return timeZoneId;
+  }
+
+  public void setTimeZoneId(ZoneId timeZoneId) {
+    this.timeZoneId = timeZoneId;
+  }
+
+
+  /**
+   * In the absence of a specified format, the renderers will default to 
+   * the FormatStyle.MEDIUM for the current locale.
+   * 
+   * @return the format to use
+   */
+  public DateTimeFormatter getDateTimeFormat() {
+    return this.dateTimeFormat;
+  }
+
+  public void setDateTimeFormat(DateTimeFormatter dateTimeFormat) {
+    this.dateTimeFormat = dateTimeFormat;
+  }
+
+  /**
+   * In the absence of a specified format, the renderers will default to 
+   * the FormatStyle.MEDIUM for the current locale.
+   * 
+   * @return the format to use
+   */
+  public DateTimeFormatter getDateFormat() {
+    return this.dateFormat;
+  }
+
+  public void setDateFormat(DateTimeFormatter dateFormat) {
+    this.dateFormat = dateFormat;
+  }
+
+  public ResourceRendererMode getMode() {
+    return mode;
+  }
+
+  public void setMode(ResourceRendererMode mode) {
+    this.mode = mode;
+  }
+  
+  
 }
