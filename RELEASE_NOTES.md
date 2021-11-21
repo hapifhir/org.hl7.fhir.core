@@ -3,4 +3,4 @@ Validator:
 
 Other changes: 
 * improvements to data types rendering based on new test cases (URLs, Money, Markdown)
-* add locale to rendering context
+* add locale to rendering context, and fix up timezone related rendering based on locale

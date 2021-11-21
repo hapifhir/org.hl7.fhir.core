@@ -3,9 +3,17 @@ package org.hl7.fhir.r5.renderers;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Currency;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -38,7 +46,6 @@ import org.hl7.fhir.r5.model.HumanName;
 import org.hl7.fhir.r5.model.HumanName.NameUse;
 import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.Identifier;
-import org.hl7.fhir.r5.model.InstantType;
 import org.hl7.fhir.r5.model.MarkdownType;
 import org.hl7.fhir.r5.model.Money;
 import org.hl7.fhir.r5.model.Period;
@@ -70,6 +77,9 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
+
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 
@@ -379,11 +389,60 @@ public class DataRenderer extends Renderer {
       return displayTiming((Timing) type);
     } else if (type instanceof SampledData) {
       return displaySampledData((SampledData) type);
+    } else if (type.isDateTime()) {
+      return displayDateTime((BaseDateTimeType) type);
     } else if (type.isPrimitive()) {
       return type.primitiveValue();
     } else {
       return "No display for "+type.fhirType();
     }
+  }
+
+  private String displayDateTime(BaseDateTimeType type) {
+    if (!type.hasPrimitiveValue()) {
+      return "";
+    }
+    
+    // relevant inputs in rendering context:
+    // timeZone, dateTimeFormat, locale, mode
+    //   timezone - application specified timezone to use. 
+    //        null = default to the time of the date/time itself
+    //   dateTimeFormat - application specified format for date times
+    //        null = default to ... depends on mode
+    //   mode - if rendering mode is technical, format defaults to XML format
+    //   locale - otherwise, format defaults to default for the Locale    
+    if (isOnlyDate(type.getPrecision())) {
+      DateTimeFormatter fmt = context.getDateFormat();
+      if (fmt == null) {
+        if (context.isTechnicalMode()) {
+          fmt = DateTimeFormatter.ISO_DATE;
+        } else {
+          fmt = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
+        }
+      }
+
+      LocalDate date = LocalDate.of(type.getYear(), type.getMonth()+1, type.getDay());
+      return fmt.format(date);
+    }
+
+    DateTimeFormatter fmt = context.getDateTimeFormat();
+    if (fmt == null) {
+      if (context.isTechnicalMode()) {
+        fmt = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+      } else {
+        fmt = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM);
+      }
+    }
+    ZonedDateTime zdt = ZonedDateTime.parse(type.primitiveValue());
+    ZoneId zone = context.getTimeZoneId();
+    if (zone != null) {
+      zdt = zdt.withZoneSameInstant(zone);
+    }
+    return fmt.format(zdt);
+  }   
+  
+  private boolean isOnlyDate(TemporalPrecisionEnum temporalPrecisionEnum) {
+    return temporalPrecisionEnum == TemporalPrecisionEnum.YEAR || temporalPrecisionEnum == TemporalPrecisionEnum.MONTH || temporalPrecisionEnum == TemporalPrecisionEnum.DAY;
   }
 
   public String display(BaseWrapper type) {
@@ -414,8 +473,8 @@ public class DataRenderer extends Renderer {
   }
   
   public void render(XhtmlNode x, DataType type) throws FHIRFormatError, DefinitionException, IOException {
-    if (type instanceof DateTimeType) {
-      renderDateTime(x, (DateTimeType) type);
+    if (type instanceof BaseDateTimeType) {
+      x.tx(displayDateTime((BaseDateTimeType) type));
     } else if (type instanceof UriType) {
       renderUri(x, (UriType) type);
     } else if (type instanceof Annotation) {
@@ -448,12 +507,8 @@ public class DataRenderer extends Renderer {
       renderSampledData(x, (SampledData) type);
     } else if (type instanceof Reference) {
       renderReference(x, (Reference) type);
-    } else if (type instanceof InstantType) {
-      x.tx(((InstantType) type).toHumanDisplay());
     } else if (type instanceof MarkdownType) {
       addMarkdown(x, ((MarkdownType) type).asStringValue());
-    } else if (type instanceof BaseDateTimeType) {
-      x.tx(((BaseDateTimeType) type).toHumanDisplay());
     } else if (type.isPrimitive()) {
       x.tx(type.primitiveValue());
     } else {
@@ -473,14 +528,14 @@ public class DataRenderer extends Renderer {
 
   public void renderDateTime(XhtmlNode x, Base e) {
     if (e.hasPrimitiveValue()) {
-      x.addText(((DateTimeType) e).toHumanDisplay());
+      x.addText(displayDateTime((DateTimeType) e));
     }
   }
 
   public void renderDateTime(XhtmlNode x, String s) {
     if (s != null) {
       DateTimeType dt = new DateTimeType(s);
-      x.addText(dt.toHumanDisplay());
+      x.addText(displayDateTime(dt));
     }
   }
 
@@ -1112,16 +1167,16 @@ public class DataRenderer extends Renderer {
       x.tx(" "+q.getLow().getUnit());
   }
 
-  public static String displayPeriod(Period p) {
-    String s = !p.hasStart() ? "(?)" : p.getStartElement().toHumanDisplay();
+  public String displayPeriod(Period p) {
+    String s = !p.hasStart() ? "(?)" : displayDateTime(p.getStartElement());
     s = s + " --> ";
-    return s + (!p.hasEnd() ? "(ongoing)" : p.getEndElement().toHumanDisplay());
+    return s + (!p.hasEnd() ? "(ongoing)" : displayDateTime(p.getEndElement()));
   }
 
   public void renderPeriod(XhtmlNode x, Period p) {
-    x.addText(!p.hasStart() ? "??" : p.getStartElement().toHumanDisplay());
+    x.addText(!p.hasStart() ? "??" : displayDateTime(p.getStartElement()));
     x.tx(" --> ");
-    x.addText(!p.hasEnd() ? "(ongoing)" : p.getEndElement().toHumanDisplay());
+    x.addText(!p.hasEnd() ? "(ongoing)" : displayDateTime(p.getEndElement()));
   }
   
   public void renderDataRequirement(XhtmlNode x, DataRequirement dr) throws FHIRFormatError, DefinitionException, IOException {
@@ -1229,7 +1284,7 @@ public class DataRenderer extends Renderer {
       CommaSeparatedStringBuilder c = new CommaSeparatedStringBuilder();
       for (DateTimeType p : s.getEvent()) {
         if (p.hasValue()) {
-          c.append(p.toHumanDisplay());
+          c.append(displayDateTime(p));
         } else if (!renderExpression(c, p)) {
           c.append("??");
         }        
@@ -1240,7 +1295,7 @@ public class DataRenderer extends Renderer {
     if (s.hasRepeat()) {
       TimingRepeatComponent rep = s.getRepeat();
       if (rep.hasBoundsPeriod() && rep.getBoundsPeriod().hasStart())
-        b.append("Starting "+rep.getBoundsPeriod().getStartElement().toHumanDisplay());
+        b.append("Starting "+displayDateTime(rep.getBoundsPeriod().getStartElement()));
       if (rep.hasCount())
         b.append("Count "+Integer.toString(rep.getCount())+" times");
       if (rep.hasDuration())
@@ -1272,7 +1327,7 @@ public class DataRenderer extends Renderer {
         b.append("Do "+st);
       }
       if (rep.hasBoundsPeriod() && rep.getBoundsPeriod().hasEnd())
-        b.append("Until "+rep.getBoundsPeriod().getEndElement().toHumanDisplay());
+        b.append("Until "+displayDateTime(rep.getBoundsPeriod().getEndElement()));
     }
     return b.toString();
   }

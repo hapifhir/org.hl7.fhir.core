@@ -1,8 +1,13 @@
 package org.hl7.fhir.r5.test;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -76,12 +81,14 @@ public class NarrativeGenerationTests {
     private String id;
     private boolean header;
     private boolean meta;
+    private boolean technical;
 
     public TestDetails(Element test) {
       super();
       id = test.getAttribute("id");
       header = "true".equals(test.getAttribute("header"));
       meta = "true".equals(test.getAttribute("meta"));
+      technical = "technical".equals(test.getAttribute("mode"));
     }
 
     public String getId() {
@@ -132,6 +139,15 @@ public class NarrativeGenerationTests {
     rc.setDefinitionsTarget("test.html");
     rc.setTerminologyServiceOptions(TerminologyServiceOptions.defaults());
     rc.setParser(new TestTypeParser());
+    
+    // getting timezones correct (well, at least consistent, so tests pass on any computer)
+    rc.setLocale(new java.util.Locale("en", "AU"));
+    rc.setTimeZoneId(ZoneId.of("Australia/Sydney"));
+    rc.setDateTimeFormat(null); 
+    rc.setDateFormat(null); 
+    rc.setMode(test.technical ? ResourceRendererMode.TECHNICAL : ResourceRendererMode.END_USER);
+        
+    
     Resource source;
     if (TestingUtilities.findTestResource("r5", "narrative", test.getId() + ".json")) {
       source = (Resource) new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".json"));
