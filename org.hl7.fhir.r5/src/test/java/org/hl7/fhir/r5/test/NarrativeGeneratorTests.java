@@ -77,15 +77,33 @@ public class NarrativeGeneratorTests {
   
 
   @Test
-  public void testDateTimeRendering() throws FHIRFormatError, DefinitionException, IOException {
+  public void testDateTimeRendering1() throws FHIRFormatError, DefinitionException, IOException {
     checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("UTC"), null, ResourceRendererMode.TECHNICAL, "2021-11-19T14:13:12Z");   
-    checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("Australia/Sydney"), null, ResourceRendererMode.TECHNICAL, "2021-11-20T01:13:12+11:00");   
-    
-    //todo: how to change this to get localised time as well?
-    checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("UTC"), FormatStyle.MEDIUM, ResourceRendererMode.TECHNICAL, "19 Nov. 2021, 2:13:12 pm");
-    checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("UTC"), null, ResourceRendererMode.END_USER, "19 Nov. 2021, 2:13:12 pm");
-    checkDateTimeRendering("2021-11-19", "en", "AU", ZoneId.of("UTC"), null, ResourceRendererMode.END_USER, "19 Nov. 2021");
   }
   
+
+  @Test
+  public void testDateTimeRendering2() throws FHIRFormatError, DefinitionException, IOException {
+    checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("Australia/Sydney"), null, ResourceRendererMode.TECHNICAL, "2021-11-20T01:13:12+11:00");   
+  }
+  
+
+  @Test
+  public void testDateTimeRendering3() throws FHIRFormatError, DefinitionException, IOException {
+    checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("UTC"), FormatStyle.MEDIUM, ResourceRendererMode.TECHNICAL, "19 Nov. 2021, 2:13:12 pm");
+  }
+  
+
+  @Test
+  public void testDateTimeRendering4() throws FHIRFormatError, DefinitionException, IOException {
+    checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("UTC"), null, ResourceRendererMode.END_USER, "19 Nov. 2021, 2:13:12 pm");
+  }
+  
+
+  @Test
+  public void testDateTimeRendering5() throws FHIRFormatError, DefinitionException, IOException {
+    checkDateTimeRendering("2021-11-19", "en", "AU", ZoneId.of("UTC"), null, ResourceRendererMode.END_USER, "19 Nov. 2021");
+  }
+    
 
 }
