@@ -61,8 +61,8 @@ public class NarrativeGeneratorTests {
       rc.setDateTimeFormat(null);
       rc.setDateFormat(null);
     } else {
-      rc.setDateTimeFormat(DateTimeFormatter.ofLocalizedDateTime(fmt));
-      rc.setDateFormat(DateTimeFormatter.ofLocalizedDate(fmt));
+      rc.setDateTimeFormat(DateTimeFormatter.ofLocalizedDateTime(fmt).withLocale(rc.getLocale()));
+      rc.setDateFormat(DateTimeFormatter.ofLocalizedDate(fmt).withLocale(rc.getLocale()));
     }
     rc.setMode(mode);
     
