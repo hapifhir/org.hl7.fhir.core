@@ -1,5 +1,5 @@
 Validator:
-* no changes
+* fix processing of modifier extensions and cross-version modifier extensions
 
 Other changes: 
 * improvements to data types rendering based on new test cases (URLs, Money, Markdown)
