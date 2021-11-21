@@ -410,14 +410,14 @@ public class DataRenderer extends Renderer {
     //   dateTimeFormat - application specified format for date times
     //        null = default to ... depends on mode
     //   mode - if rendering mode is technical, format defaults to XML format
-    //   locale - otherwise, format defaults to default for the Locale (which defaults to default Locale)  
+    //   locale - otherwise, format defaults to SHORT for the Locale (which defaults to default Locale)  
     if (isOnlyDate(type.getPrecision())) {
       DateTimeFormatter fmt = context.getDateFormat();
       if (fmt == null) {
         if (context.isTechnicalMode()) {
           fmt = DateTimeFormatter.ISO_DATE;
         } else {
-          fmt = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(context.getLocale());
+          fmt = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(context.getLocale());
         }
       }
 
@@ -430,7 +430,7 @@ public class DataRenderer extends Renderer {
       if (context.isTechnicalMode()) {
         fmt = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
       } else {
-        fmt = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(context.getLocale());
+        fmt = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(context.getLocale());
       }
     }
     ZonedDateTime zdt = ZonedDateTime.parse(type.primitiveValue());
