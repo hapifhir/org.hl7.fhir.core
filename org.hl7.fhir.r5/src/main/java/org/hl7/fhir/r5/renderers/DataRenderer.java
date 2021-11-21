@@ -417,7 +417,7 @@ public class DataRenderer extends Renderer {
         if (context.isTechnicalMode()) {
           fmt = DateTimeFormatter.ISO_DATE;
         } else {
-          fmt = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
+          fmt = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(context.getLocale());
         }
       }
 
