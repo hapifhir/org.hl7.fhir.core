@@ -76,13 +76,13 @@ public class NarrativeGeneratorTests {
     Assert.assertEquals("<p>"+expected+"</p>", actual);
   }
   
-  @Test
-  public void testDateTimeLocaleConsistency() throws FHIRFormatError, DefinitionException, IOException {
-    Locale locale = new java.util.Locale("en", "AU");
-    DateTimeFormatter fmt = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(locale);
-    ZonedDateTime zdt = ZonedDateTime.parse("2021-11-19T14:13:12Z");
-    Assert.assertEquals("19 Nov. 2021, 2:13:12 pm", fmt.format(zdt));
-  }
+//  @Test
+//  public void testDateTimeLocaleConsistency() throws FHIRFormatError, DefinitionException, IOException {
+//    Locale locale = new java.util.Locale("en", "AU");
+//    DateTimeFormatter fmt = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(locale);
+//    ZonedDateTime zdt = ZonedDateTime.parse("2021-11-19T14:13:12Z");
+//    Assert.assertEquals("19 Nov. 2021, 2:13:12 pm", fmt.format(zdt));
+//  }
   
 
   @Test
