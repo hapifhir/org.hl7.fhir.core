@@ -7,6 +7,10 @@ public enum ReferenceValidationPolicy {
   CHECK_EXISTS_AND_TYPE,
   CHECK_VALID;
 
+  public boolean ignore() {
+    return this == IGNORE;
+  }
+
   public boolean checkExists() {
     return this == CHECK_EXISTS_AND_TYPE || this == CHECK_EXISTS || this == CHECK_VALID || this == CHECK_TYPE_IF_EXISTS;
   }

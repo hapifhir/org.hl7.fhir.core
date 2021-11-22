@@ -745,7 +745,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   @Override
-  public ReferenceValidationPolicy policyForContained(IResourceValidator validator,
+  public ContainedReferenceValidationPolicy policyForContained(IResourceValidator validator,
                                                       Object appContext,
                                                       String containerType,
                                                       String containerId,
@@ -754,14 +754,14 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
                                                       String url) {
     Resource resource = context.fetchResource(StructureDefinition.class, url);
     if (resource != null) {
-      return ReferenceValidationPolicy.CHECK_VALID;
+      return ContainedReferenceValidationPolicy.CHECK_VALID;
     }
     if (!(url.contains("hl7.org") || url.contains("fhir.org"))) {
-      return ReferenceValidationPolicy.IGNORE;
+      return ContainedReferenceValidationPolicy.IGNORE;
     } else if (policyAdvisor != null) {
       return policyAdvisor.policyForContained(validator, appContext, containerType, containerId, containingResourceType, path, url);
     } else {
-      return ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE;
+      return ContainedReferenceValidationPolicy.CHECK_TYPE;
     }
   }
 

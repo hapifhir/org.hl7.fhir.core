@@ -48,6 +48,7 @@ import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
+import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
@@ -97,6 +98,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
     List<Object[]> objects = new ArrayList<Object[]>(examples.size());
     for (String id : names) {
+      //if (id.equals("reference-bad"))
         objects.add(new Object[]{id, examples.get(id)});
     }
     return objects;
@@ -175,6 +177,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     } else {
       val.setFetcher(this);
     }
+
+    val.setPolicyAdvisor(this);
+
     if (content.has("allowed-extension-domain"))
       val.getExtensionDomains().add(content.get("allowed-extension-domain").getAsString());
     if (content.has("allowed-extension-domains"))
@@ -513,14 +518,14 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   }
 
   @Override
-  public ReferenceValidationPolicy policyForContained(IResourceValidator validator, Object appContext,
-                                                      String containerType, String containerId,
-                                                      Element.SpecialElement containingResourceType,
-                                                      String path, String url) {
+  public ContainedReferenceValidationPolicy policyForContained(IResourceValidator validator, Object appContext,
+                                                               String containerType, String containerId,
+                                                               Element.SpecialElement containingResourceType,
+                                                               String path, String url) {
     if (content.has("validate"))
-      return ReferenceValidationPolicy.valueOf(content.get("validate").getAsString());
+      return ContainedReferenceValidationPolicy.valueOf(content.get("validate").getAsString());
     else
-      return ReferenceValidationPolicy.IGNORE;
+      return ContainedReferenceValidationPolicy.IGNORE;
   }
 
   @Override

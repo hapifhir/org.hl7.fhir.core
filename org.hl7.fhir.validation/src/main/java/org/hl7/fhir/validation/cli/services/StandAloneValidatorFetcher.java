@@ -11,6 +11,7 @@ import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
+import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -60,14 +61,14 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   }
 
   @Override
-  public ReferenceValidationPolicy policyForContained(IResourceValidator validator,
-                                                      Object appContext,
-                                                      String containerType,
-                                                      String containerId,
-                                                      Element.SpecialElement containingResourceType,
-                                                      String path,
-                                                      String url) {
-    return ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS;
+  public ContainedReferenceValidationPolicy policyForContained(IResourceValidator validator,
+                                                               Object appContext,
+                                                               String containerType,
+                                                               String containerId,
+                                                               Element.SpecialElement containingResourceType,
+                                                               String path,
+                                                               String url) {
+    return ContainedReferenceValidationPolicy.CHECK_TYPE;
   }
 
   @Override
