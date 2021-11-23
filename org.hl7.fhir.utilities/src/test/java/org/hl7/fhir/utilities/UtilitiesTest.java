@@ -132,6 +132,8 @@ class UtilitiesTest {
     return MessageFormat.format("\"{0}\" should contain \"{1}\"", size, contains);
   }
 
+  //TODO we've witnessed at least one intermittent failure of this test. It could be refactored to run several times to
+  // trigger edge cases more often now that it provides better feedback.
   @Test
   @DisplayName("Test size bounds on file size utility.")
   void describeSizeTest() {
