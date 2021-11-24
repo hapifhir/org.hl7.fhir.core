@@ -98,7 +98,10 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
     List<Object[]> objects = new ArrayList<Object[]>(examples.size());
     for (String id : names) {
-      //if (id.equals("reference-bad"))
+      if (id.equals("canonical-url") ||
+        id.equals("qr-bad-ref2") ||
+        id.equals("supplement-2") ||
+        id.equals("vs-canonical-good"))
         objects.add(new Object[]{id, examples.get(id)});
     }
     return objects;
@@ -511,8 +514,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
   @Override
   public ReferenceValidationPolicy policyForReference(IResourceValidator validator, Object appContext, String path, String url) {
-    if (content.has("validate"))
-      return ReferenceValidationPolicy.valueOf(content.get("validate").getAsString());
+    if (content.has("validateReference"))
+      return ReferenceValidationPolicy.valueOf(content.get("validateReference").getAsString());
     else
       return ReferenceValidationPolicy.IGNORE;
   }
@@ -522,10 +525,10 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
                                                                String containerType, String containerId,
                                                                Element.SpecialElement containingResourceType,
                                                                String path, String url) {
-    if (content.has("validate"))
-      return ContainedReferenceValidationPolicy.valueOf(content.get("validate").getAsString());
+    if (content.has("validateContains"))
+      return ContainedReferenceValidationPolicy.valueOf(content.get("validateContains").getAsString());
     else
-      return ContainedReferenceValidationPolicy.IGNORE;
+      return ContainedReferenceValidationPolicy.CHECK_VALID;
   }
 
   @Override

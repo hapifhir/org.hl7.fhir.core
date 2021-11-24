@@ -369,7 +369,8 @@ public class BundleValidator extends BaseValidator{
 
     if (ref != null && !Utilities.noString(reference) && !reference.startsWith("#")) {
       Element target = resolveInBundle(entries, reference, fullUrl, type, id);
-      rule(errors, IssueType.INVALID, ref.line(), ref.col(), stack.addToLiteralPath("reference"), target != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND, reference, name);
+      rule(errors, IssueType.INVALID, ref.line(), ref.col(), stack.addToLiteralPath("reference"), target != null,
+        I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND, reference, name);
     }
   }
 
