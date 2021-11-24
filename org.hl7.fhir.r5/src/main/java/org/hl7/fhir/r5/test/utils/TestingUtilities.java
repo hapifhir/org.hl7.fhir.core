@@ -151,13 +151,14 @@ public class TestingUtilities extends BaseTestingUtilities {
     String result = compareXml(f1, f2);
     if (result != null && SHOW_DIFF) {
       String diff = Utilities.path(System.getenv("ProgramFiles"), "WinMerge", "WinMergeU.exe");
-      List<String> command = new ArrayList<String>();
-      command.add("\"" + diff + "\" \"" + f1 + "\" \"" + f2 + "\"");
+      if (new File(diff).exists()) {
+        List<String> command = new ArrayList<String>();
+        command.add("\"" + diff + "\" \"" + f1 + "\" \"" + f2 + "\"");
 
-      ProcessBuilder builder = new ProcessBuilder(command);
-      builder.directory(new CSFile("c:\\temp"));
-      builder.start();
-
+        ProcessBuilder builder = new ProcessBuilder(command);
+        builder.directory(new CSFile("c:\\temp"));
+        builder.start();
+      }
     }
     return result;
   }
@@ -171,7 +172,7 @@ public class TestingUtilities extends BaseTestingUtilities {
   }
 
   private static String compareElements(String path, Element e1, Element e2) {
-    if (!e1.getNamespaceURI().equals(e2.getNamespaceURI()))
+    if (!namespacesMatch(e1.getNamespaceURI(), e2.getNamespaceURI()))
       return "Namespaces differ at " + path + ": " + e1.getNamespaceURI() + "/" + e2.getNamespaceURI();
     if (!e1.getLocalName().equals(e2.getLocalName()))
       return "Names differ at " + path + ": " + e1.getLocalName() + "/" + e2.getLocalName();
@@ -207,6 +208,10 @@ public class TestingUtilities extends BaseTestingUtilities {
     if (c2 != null)
       return "node mismatch - more nodes in target in children of " + path;
     return null;
+  }
+
+  private static boolean namespacesMatch(String ns1, String ns2) {
+    return ns1 == null ? ns2 == null : ns1.equals(ns2);
   }
 
   private static Object normalise(String text) {
