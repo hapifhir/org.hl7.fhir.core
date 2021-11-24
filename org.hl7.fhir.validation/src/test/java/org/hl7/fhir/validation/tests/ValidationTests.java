@@ -98,7 +98,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
     List<Object[]> objects = new ArrayList<Object[]>(examples.size());
     for (String id : names) {
-      if (id.equals("canonical-url") ||
+      if (id.equals("patient-xver") ||
+        id.equals("patient-xver-bad") ||
         id.equals("qr-bad-ref2") ||
         id.equals("supplement-2") ||
         id.equals("vs-canonical-good"))
