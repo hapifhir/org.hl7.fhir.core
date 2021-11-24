@@ -308,7 +308,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (e.getName().equals("contained")) {
           self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e, ctxt.getRootResource()), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage));          
         } else {
-          self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage));
+          self.validateResource(new ValidatorHostContext(("Bundle".equals(ctxt.getRootResource().getName()) ? ctxt.getRootResource() : ctxt.getAppContext()), e), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage));
         }
       } else
         throw new NotImplementedException(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESCONFORMSTOPROFILE_WHEN_ITEM_IS_NOT_AN_ELEMENT));
