@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -126,27 +127,34 @@ class UtilitiesTest {
 
   public static final int BIG_NEG = Utilities.ONE_MB * -1;
 
+
+  private static final String buildMeasureLimitMessage(int size, String contains) {
+    return MessageFormat.format("\"{0}\" should contain \"{1}\"", size, contains);
+  }
+
+  //TODO we've witnessed at least one intermittent failure of this test. It could be refactored to run several times to
+  // trigger edge cases more often now that it provides better feedback.
   @Test
   @DisplayName("Test size bounds on file size utility.")
   void describeSizeTest() {
     Assertions.assertAll("GB Measure Limits",
-      () -> assertTrue(Utilities.describeSize(GB_MEASURE_JUST_OVER).contains(Utilities.GB)),
-      () -> assertTrue(Utilities.describeSize(GB_MEASURE_EXACT).contains(Utilities.MB)),
-      () -> assertTrue(Utilities.describeSize(GB_MEASURE_JUST_UNDER).contains(Utilities.MB))
+      () -> assertTrue(Utilities.describeSize(GB_MEASURE_JUST_OVER).contains(Utilities.GB), buildMeasureLimitMessage(GB_MEASURE_JUST_OVER, Utilities.GB)),
+      () -> assertTrue(Utilities.describeSize(GB_MEASURE_EXACT).contains(Utilities.MB), buildMeasureLimitMessage(GB_MEASURE_EXACT, Utilities.MB)),
+      () -> assertTrue(Utilities.describeSize(GB_MEASURE_JUST_UNDER).contains(Utilities.MB), buildMeasureLimitMessage(GB_MEASURE_JUST_UNDER, Utilities.MB))
     );
     Assertions.assertAll("MB Measure Limits",
-      () -> assertTrue(Utilities.describeSize(MB_MEASURE_JUST_OVER).contains(Utilities.MB)),
-      () -> assertTrue(Utilities.describeSize(MB_MEASURE_EXACT).contains(Utilities.KB)),
-      () -> assertTrue(Utilities.describeSize(MB_MEASURE_JUST_UNDER).contains(Utilities.KB))
+      () -> assertTrue(Utilities.describeSize(MB_MEASURE_JUST_OVER).contains(Utilities.MB), buildMeasureLimitMessage(MB_MEASURE_JUST_OVER, Utilities.MB)),
+      () -> assertTrue(Utilities.describeSize(MB_MEASURE_EXACT).contains(Utilities.KB), buildMeasureLimitMessage(MB_MEASURE_EXACT, Utilities.KB)),
+      () -> assertTrue(Utilities.describeSize(MB_MEASURE_JUST_UNDER).contains(Utilities.KB), buildMeasureLimitMessage(MB_MEASURE_JUST_UNDER, Utilities.KB))
     );
     Assertions.assertAll("KB Measure Limits",
-      () -> assertTrue(Utilities.describeSize(KB_MEASURE_JUST_OVER).contains(Utilities.KB)),
-      () -> assertTrue(Utilities.describeSize(KB_MEASURE_EXACT).contains(Utilities.BT)),
-      () -> assertTrue(Utilities.describeSize(KB_MEASURE_JUST_UNDER).contains(Utilities.BT))
+      () -> assertTrue(Utilities.describeSize(KB_MEASURE_JUST_OVER).contains(Utilities.KB), buildMeasureLimitMessage(KB_MEASURE_JUST_OVER, Utilities.KB)),
+      () -> assertTrue(Utilities.describeSize(KB_MEASURE_EXACT).contains(Utilities.BT), buildMeasureLimitMessage(KB_MEASURE_EXACT, Utilities.BT)),
+      () -> assertTrue(Utilities.describeSize(KB_MEASURE_JUST_UNDER).contains(Utilities.BT), buildMeasureLimitMessage(KB_MEASURE_JUST_UNDER, Utilities.BT))
     );
     Assertions.assertAll("BT Measure Limits",
-      () -> assertTrue(Utilities.describeSize(BT_MEASURE).contains(Utilities.BT)),
-      () -> assertTrue(Utilities.describeSize(EMPTY).contains(Utilities.BT))
+      () -> assertTrue(Utilities.describeSize(BT_MEASURE).contains(Utilities.BT), buildMeasureLimitMessage(BT_MEASURE, Utilities.BT)),
+      () -> assertTrue(Utilities.describeSize(EMPTY).contains(Utilities.BT), buildMeasureLimitMessage(EMPTY,  Utilities.BT))
     );
     Assertions.assertThrows(IllegalArgumentException.class, () -> Utilities.describeSize(BIG_NEG));
   }
