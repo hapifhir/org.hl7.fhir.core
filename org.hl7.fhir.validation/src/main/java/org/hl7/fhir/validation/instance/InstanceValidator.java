@@ -5355,18 +5355,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private void validateResource(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element resource,
                                 Element element, StructureDefinition defn, IdStatus idstatus, NodeStack stack) throws FHIRException {
 
-//    ReferenceValidationPolicy referenceValidationPolicy = ReferenceValidationPolicy.CHECK_VALID;
-
-//    if (stack.getParent() != null) {
-//      //we are not on the first call
-//      referenceValidationPolicy = getPolicyAdvisor() == null ? ReferenceValidationPolicy.IGNORE :
-//        getPolicyAdvisor().policyForReference(this, hostContext, element.getPath(), defn.getUrl());
-//    }
-    // We only check the policy for contained and referenced resources
-//    if (referenceValidationPolicy.ignore()) {
-//      return;
-//    }
-
     // check here if we call validation policy here, and then change it to the new interface
     assert stack != null;
     assert resource != null;
