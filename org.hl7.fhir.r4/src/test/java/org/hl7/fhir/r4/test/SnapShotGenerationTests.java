@@ -22,7 +22,7 @@ import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.r4.utils.FHIRPathEngine;
 import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
-import org.hl7.fhir.r4.utils.IResourceValidator;
+import org.hl7.fhir.r4.utils.validation.IResourceValidator;
 import org.hl7.fhir.r4.utils.NarrativeGenerator;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;

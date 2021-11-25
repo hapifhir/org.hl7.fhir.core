@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.utils;
+package org.hl7.fhir.r4.utils.validation;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -29,18 +29,17 @@ package org.hl7.fhir.r4.utils;
   
  */
 
-
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r4.elementmodel.Element;
 import org.hl7.fhir.r4.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r4.model.StructureDefinition;
+import org.hl7.fhir.r4.utils.ValidationProfileSet;
+import org.hl7.fhir.r4.utils.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.r4.utils.validation.constants.CheckDisplayOption;
+import org.hl7.fhir.r4.utils.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 import com.google.gson.JsonObject;
@@ -54,97 +53,51 @@ import com.google.gson.JsonObject;
    */
 public interface IResourceValidator {
 
-  public enum ReferenceValidationPolicy {
-    IGNORE, CHECK_TYPE_IF_EXISTS, CHECK_EXISTS, CHECK_EXISTS_AND_TYPE, CHECK_VALID;
-    
-    public boolean checkExists() {
-      return this == CHECK_EXISTS_AND_TYPE || this == CHECK_EXISTS || this == CHECK_VALID;
-    }
-    
-    public boolean checkType() {
-      return this == CHECK_TYPE_IF_EXISTS || this == CHECK_EXISTS_AND_TYPE || this == CHECK_VALID;
-    }
-    
-    public boolean checkValid() {
-      return this == CHECK_VALID;
-    }
-  }
-  
-  public interface IValidatorResourceFetcher {
-    Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, FHIRException, IOException;
-    ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url);
-    boolean resolveURL(Object appContext, String path, String url) throws IOException, FHIRException; 
-  }
-  
-  public enum BestPracticeWarningLevel {
-    Ignore,
-    Hint,
-    Warning,
-    Error
-  }
-
-  public enum CheckDisplayOption {
-    Ignore,
-    Check,
-    CheckCaseAndSpace,
-    CheckCase,
-    CheckSpace
-  }
-
-  enum IdStatus {
-    OPTIONAL, REQUIRED, PROHIBITED
-  }
-  
-  
-
   /**
    * how much to check displays for coded elements 
-   * @return
    */
   CheckDisplayOption getCheckDisplay();
   void setCheckDisplay(CheckDisplayOption checkDisplay);
 
   /**
    * whether the resource must have an id or not (depends on context)
-   * 
-   * @return
    */
-
 	IdStatus getResourceIdRule();
 	void setResourceIdRule(IdStatus resourceIdRule);
   
   /**
    * whether the validator should enforce best practice guidelines
    * as defined by various HL7 committees 
-   *  
    */
   BestPracticeWarningLevel getBestPracticeWarningLevel();
   IResourceValidator setBestPracticeWarningLevel(BestPracticeWarningLevel value);
 
   IValidatorResourceFetcher getFetcher();
   IResourceValidator setFetcher(IValidatorResourceFetcher value);
+
+  IValidationPolicyAdvisor getPolicyAdvisor();
+  IResourceValidator setPolicyAdvisor(IValidationPolicyAdvisor advisor);
   
   boolean isNoBindingMsgSuppressed();
   IResourceValidator setNoBindingMsgSuppressed(boolean noBindingMsgSuppressed);
   
-  public boolean isNoInvariantChecks();
-  public IResourceValidator setNoInvariantChecks(boolean value) ;
+  boolean isNoInvariantChecks();
+  IResourceValidator setNoInvariantChecks(boolean value) ;
   
-  public boolean isNoTerminologyChecks();
-  public IResourceValidator setNoTerminologyChecks(boolean noTerminologyChecks);
+  boolean isNoTerminologyChecks();
+  IResourceValidator setNoTerminologyChecks(boolean noTerminologyChecks);
 
-  public boolean isNoExtensibleWarnings();
-  public IResourceValidator setNoExtensibleWarnings(boolean noExtensibleWarnings);
+  boolean isNoExtensibleWarnings();
+  IResourceValidator setNoExtensibleWarnings(boolean noExtensibleWarnings);
   
   /**
    * Whether being unable to resolve a profile in found in Resource.meta.profile or ElementDefinition.type.profile or targetProfile is an error or just a warning
-   * @return
    */
-  public boolean isErrorForUnknownProfiles();
-  public void setErrorForUnknownProfiles(boolean errorForUnknownProfiles);
+  boolean isErrorForUnknownProfiles();
+  void setErrorForUnknownProfiles(boolean errorForUnknownProfiles);
 
-  public String getValidationLanguage();
-  public void setValidationLanguage(String value);
+  String getValidationLanguage();
+  void setValidationLanguage(String value);
   
   /**
    * Validate suite
@@ -193,6 +146,5 @@ public interface IResourceValidator {
   org.hl7.fhir.r4.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, JsonObject object, ValidationProfileSet profiles) throws FHIRException;
   org.hl7.fhir.r4.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, JsonObject object, String profile) throws FHIRException;
   org.hl7.fhir.r4.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, JsonObject object, StructureDefinition profile) throws FHIRException; 
-
 
 }
