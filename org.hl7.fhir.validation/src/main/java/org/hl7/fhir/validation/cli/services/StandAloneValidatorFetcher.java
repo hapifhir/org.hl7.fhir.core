@@ -8,9 +8,11 @@ import org.hl7.fhir.r5.context.IWorkerContext.ICanonicalResourceLocator;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
-import org.hl7.fhir.r5.utils.IResourceValidator;
-import org.hl7.fhir.r5.utils.IResourceValidator.IValidatorResourceFetcher;
-import org.hl7.fhir.r5.utils.IResourceValidator.ReferenceValidationPolicy;
+import org.hl7.fhir.r5.utils.validation.IResourceValidator;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
+import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
+import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
+import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.VersionUtilities.VersionURLInfo;
@@ -28,7 +30,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, ICanonicalResourceLocator {
+public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IValidationPolicyAdvisor, ICanonicalResourceLocator {
 
   List<String> mappingsUris = new ArrayList<>();
   private FilesystemPackageCacheManager pcm;
@@ -51,8 +53,22 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IC
   }
 
   @Override
-  public ReferenceValidationPolicy validationPolicy(IResourceValidator validator, Object appContext, String path, String url) {
+  public ReferenceValidationPolicy policyForReference(IResourceValidator validator,
+                                                      Object appContext,
+                                                      String path,
+                                                      String url) {
     return ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS;
+  }
+
+  @Override
+  public ContainedReferenceValidationPolicy policyForContained(IResourceValidator validator,
+                                                               Object appContext,
+                                                               String containerType,
+                                                               String containerId,
+                                                               Element.SpecialElement containingResourceType,
+                                                               String path,
+                                                               String url) {
+    return ContainedReferenceValidationPolicy.CHECK_TYPE;
   }
 
   @Override

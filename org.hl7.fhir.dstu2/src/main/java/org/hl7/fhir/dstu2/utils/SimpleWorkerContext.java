@@ -59,6 +59,7 @@ import org.hl7.fhir.dstu2.model.ValueSet;
 import org.hl7.fhir.dstu2.terminologies.ValueSetExpansionCache;
 import org.hl7.fhir.dstu2.utils.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.dstu2.utils.client.FHIRToolingClient;
+import org.hl7.fhir.dstu2.utils.validation.IResourceValidator;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CSFileInputStream;

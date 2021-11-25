@@ -1,4 +1,4 @@
-package org.hl7.fhir.dstu3.utils;
+package org.hl7.fhir.dstu3.utils.validation;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -30,20 +30,19 @@ package org.hl7.fhir.dstu3.utils;
  */
 
 
+import com.google.gson.JsonObject;
+import org.hl7.fhir.dstu3.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.dstu3.model.StructureDefinition;
+import org.hl7.fhir.dstu3.utils.ValidationProfileSet;
+import org.hl7.fhir.dstu3.utils.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.dstu3.utils.validation.constants.CheckDisplayOption;
+import org.hl7.fhir.dstu3.utils.validation.constants.IdStatus;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-
-import org.hl7.fhir.dstu3.elementmodel.Element;
-import org.hl7.fhir.dstu3.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.dstu3.model.StructureDefinition;
-import org.hl7.fhir.exceptions.DefinitionException;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.utilities.validation.ValidationMessage;
-
-import com.google.gson.JsonObject;
 
 /**
  * Interface to the instance validator. This takes a resource, in one of many forms, and 
@@ -53,49 +52,6 @@ import com.google.gson.JsonObject;
    *
    */
 public interface IResourceValidator {
-
-  public enum ReferenceValidationPolicy {
-    IGNORE, CHECK_TYPE_IF_EXISTS, CHECK_EXISTS, CHECK_EXISTS_AND_TYPE, CHECK_VALID;
-    
-    public boolean checkExists() {
-      return this == CHECK_EXISTS_AND_TYPE || this == CHECK_EXISTS || this == CHECK_VALID;
-    }
-    
-    public boolean checkType() {
-      return this == CHECK_TYPE_IF_EXISTS || this == CHECK_EXISTS_AND_TYPE || this == CHECK_VALID;
-    }
-    
-    public boolean checkValid() {
-      return this == CHECK_VALID;
-    }
-  }
-  
-  public interface IValidatorResourceFetcher {
-    Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, IOException, FHIRException;
-    ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url);
-    boolean resolveURL(Object appContext, String path, String url) throws IOException, FHIRException; 
-  }
-  
-  public enum BestPracticeWarningLevel {
-    Ignore,
-    Hint,
-    Warning,
-    Error
-  }
-
-  public enum CheckDisplayOption {
-    Ignore,
-    Check,
-    CheckCaseAndSpace,
-    CheckCase,
-    CheckSpace
-  }
-
-  enum IdStatus {
-    OPTIONAL, REQUIRED, PROHIBITED
-  }
-  
-  
 
   /**
    * how much to check displays for coded elements 
@@ -123,22 +79,25 @@ public interface IResourceValidator {
 
   IValidatorResourceFetcher getFetcher();
   IResourceValidator setFetcher(IValidatorResourceFetcher value);
-  
+
+  IValidationPolicyAdvisor getPolicyAdvisor();
+  IResourceValidator setPolicyAdvisor(IValidationPolicyAdvisor advisor);
+
   boolean isNoBindingMsgSuppressed();
   IResourceValidator setNoBindingMsgSuppressed(boolean noBindingMsgSuppressed);
   
-  public boolean isNoInvariantChecks();
-  public IResourceValidator setNoInvariantChecks(boolean value) ;
+  boolean isNoInvariantChecks();
+  IResourceValidator setNoInvariantChecks(boolean value) ;
   
-  public boolean isNoTerminologyChecks();
-  public IResourceValidator setNoTerminologyChecks(boolean noTerminologyChecks);
+  boolean isNoTerminologyChecks();
+  IResourceValidator setNoTerminologyChecks(boolean noTerminologyChecks);
 
   /**
    * Whether being unable to resolve a profile in found in Resource.meta.profile or ElementDefinition.type.profile or targetProfile is an error or just a warning
    * @return
    */
-  public boolean isErrorForUnknownProfiles();
-  public void setErrorForUnknownProfiles(boolean errorForUnknownProfiles);
+  boolean isErrorForUnknownProfiles();
+  void setErrorForUnknownProfiles(boolean errorForUnknownProfiles);
 
   /**
    * Validate suite

@@ -37,11 +37,12 @@ import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4.model.StructureMap;
 import org.hl7.fhir.r4.model.UriType;
 import org.hl7.fhir.r4.test.utils.TestingUtilities;
-import org.hl7.fhir.r4.utils.IResourceValidator;
-import org.hl7.fhir.r4.utils.IResourceValidator.IValidatorResourceFetcher;
-import org.hl7.fhir.r4.utils.IResourceValidator.ReferenceValidationPolicy;
+import org.hl7.fhir.r4.utils.validation.IResourceValidator;
+import org.hl7.fhir.r4.utils.validation.IValidatorResourceFetcher;
+import org.hl7.fhir.r4.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.r4.utils.StructureMapUtilities;
 import org.hl7.fhir.r4.utils.StructureMapUtilities.ITransformerServices;
+import org.hl7.fhir.r4.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -62,7 +63,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 @Disabled
-public class R3R4ConversionTests implements ITransformerServices, IValidatorResourceFetcher {
+public class R3R4ConversionTests implements ITransformerServices, IValidatorResourceFetcher, IValidationPolicyAdvisor {
 
   private static final boolean SAVING = true;
   private FilesystemPackageCacheManager pcm = null;
@@ -454,7 +455,15 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
   }
 
   @Override
-  public ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url) {
+  public ReferenceValidationPolicy policyForReference(IResourceValidator validator, Object appContext, String path, String url) {
+    return ReferenceValidationPolicy.IGNORE;
+  }
+
+  @Override
+  public ReferenceValidationPolicy policyForContained(IResourceValidator validator, Object appContext,
+                                                      String containerType, String containerId,
+                                                      Element.SpecialElement containingResourceType, String path,
+                                                      String url) {
     return ReferenceValidationPolicy.IGNORE;
   }
 

@@ -75,7 +75,7 @@ import org.hl7.fhir.r4.model.StructureMap.StructureMapModelMode;
 import org.hl7.fhir.r4.model.StructureMap.StructureMapStructureComponent;
 import org.hl7.fhir.r4.terminologies.TerminologyClient;
 import org.hl7.fhir.r4.utils.INarrativeGenerator;
-import org.hl7.fhir.r4.utils.IResourceValidator;
+import org.hl7.fhir.r4.utils.validation.IResourceValidator;
 import org.hl7.fhir.r4.utils.NarrativeGenerator;
 import org.hl7.fhir.utilities.CSFileInputStream;
 import org.hl7.fhir.utilities.Utilities;
