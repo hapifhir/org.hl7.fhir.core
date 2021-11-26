@@ -12,13 +12,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class GraphQLParserTests {
-  final static Logger ourLog = LoggerFactory.getLogger(GraphQLParserTests.class);
-  final static String multipleIdValues = "{Patient (id:[1,2,3]){id,name{family,given}}}";
+  private static final Logger ourLog = LoggerFactory.getLogger(GraphQLParserTests.class);
+  public static final String MULTIPLE_ID_VALUES_WITH_ID_AND_FAMILYGIVENNAMES =
+    "{Patient (id:[1,2,3]){id,name{family,given}}}";
 
   @Test
   public void testParseMultipleIdValuesAndSelectSetWithIdAndFamilyGivenNames() throws IOException, EGraphQLException, EGraphEngine {
     Parser parser = new Parser();
-    parser.reader = new StringReader(multipleIdValues);
+    parser.reader = new StringReader(MULTIPLE_ID_VALUES_WITH_ID_AND_FAMILYGIVENNAMES);
     parser.next();
     Document document = parser.parseDocument();
     assertNotNull(document);
