@@ -55,15 +55,17 @@ public class NarrativeGeneratorTests {
   }
   
 
-  private void checkDateTimeRendering(String src, String lang, String country, ZoneId tz, FormatStyle fmt, ResourceRendererMode mode, String expected) throws FHIRFormatError, DefinitionException, IOException {
+  private void checkDateTimeRendering(String src, String lang, String country, ZoneId tz, String fmt, ResourceRendererMode mode, String expected) throws FHIRFormatError, DefinitionException, IOException {
     rc.setLocale(new java.util.Locale(lang, country));
     rc.setTimeZoneId(tz);
     if (fmt == null) {
       rc.setDateTimeFormat(null);
       rc.setDateFormat(null);
     } else {
-      rc.setDateTimeFormat(DateTimeFormatter.ofLocalizedDateTime(fmt).withLocale(rc.getLocale()));
-      rc.setDateFormat(DateTimeFormatter.ofLocalizedDate(fmt).withLocale(rc.getLocale()));
+      // really, it would be better to test patterns based on FormatStyle here, since 
+      // that's what will be used in the real world, but 
+      rc.setDateTimeFormat(DateTimeFormatter.ofPattern(fmt));
+      rc.setDateFormat(DateTimeFormatter.ofPattern(fmt));
     }
     rc.setMode(mode);
     
@@ -76,42 +78,33 @@ public class NarrativeGeneratorTests {
     Assert.assertEquals("<p>"+expected+"</p>", actual);
   }
   
-//  @Test
-//  public void testDateTimeLocaleConsistency() throws FHIRFormatError, DefinitionException, IOException {
-//    Locale locale = new java.util.Locale("en", "AU");
-//    DateTimeFormatter fmt = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(locale);
-//    ZonedDateTime zdt = ZonedDateTime.parse("2021-11-19T14:13:12Z");
-//    Assert.assertEquals("19 Nov. 2021, 2:13:12 pm", fmt.format(zdt));
-//  }
-//  
-//
-//  @Test
-//  public void testDateTimeRendering1() throws FHIRFormatError, DefinitionException, IOException {
-//    checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("UTC"), null, ResourceRendererMode.TECHNICAL, "2021-11-19T14:13:12Z");   
-//  }
-//  
-//
-//  @Test
-//  public void testDateTimeRendering2() throws FHIRFormatError, DefinitionException, IOException {
-//    checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("Australia/Sydney"), null, ResourceRendererMode.TECHNICAL, "2021-11-20T01:13:12+11:00");   
-//  }
-//  
-//  @Test
-//  public void testDateTimeRendering3() throws FHIRFormatError, DefinitionException, IOException {
-//    checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("UTC"), FormatStyle.SHORT, ResourceRendererMode.TECHNICAL, "19/11/21, 2:13 pm");
-//  }
-//  
-//
-//  @Test
-//  public void testDateTimeRendering4() throws FHIRFormatError, DefinitionException, IOException {
-//    checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("UTC"), null, ResourceRendererMode.END_USER, "19/11/21, 2:13 pm");
-//  }
-//  
-//
-//  @Test
-//  public void testDateTimeRendering5() throws FHIRFormatError, DefinitionException, IOException {
-//    checkDateTimeRendering("2021-11-19", "en", "AU", ZoneId.of("UTC"), null, ResourceRendererMode.END_USER, "19/11/21");
-//  }
-//    
+  @Test
+  public void testDateTimeRendering1() throws FHIRFormatError, DefinitionException, IOException {
+    checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("UTC"), null, ResourceRendererMode.TECHNICAL, "2021-11-19T14:13:12Z");   
+  }
+  
+
+  @Test
+  public void testDateTimeRendering2() throws FHIRFormatError, DefinitionException, IOException {
+    checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("Australia/Sydney"), null, ResourceRendererMode.TECHNICAL, "2021-11-20T01:13:12+11:00");   
+  }
+  
+  @Test
+  public void testDateTimeRendering3() throws FHIRFormatError, DefinitionException, IOException {
+    checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("UTC"), "yyyy/MM/dd hh:mm:ss", ResourceRendererMode.TECHNICAL, "2021/11/19 02:13:12");
+  }
+  
+
+  @Test
+  public void testDateTimeRendering4() throws FHIRFormatError, DefinitionException, IOException {
+    checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("UTC"), null, ResourceRendererMode.END_USER, "19/11/21, 2:13 pm");
+  }
+  
+
+  @Test
+  public void testDateTimeRendering5() throws FHIRFormatError, DefinitionException, IOException {
+    checkDateTimeRendering("2021-11-19", "en", "AU", ZoneId.of("UTC"), null, ResourceRendererMode.END_USER, "19/11/21");
+  }
+    
 
 }

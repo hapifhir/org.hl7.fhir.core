@@ -711,6 +711,38 @@ public class DataRenderer extends Renderer {
     }
   }
   
+  protected String getLinkForCode(String system, String version, String code) {
+    if ("http://snomed.info/sct".equals(system)) {
+      if (!Utilities.noString(code)) {
+        return "http://snomed.info/id/"+code;        
+      } else {
+        return "https://browser.ihtsdotools.org/";
+      }
+    } else if ("http://loinc.org".equals(system)) {
+      if (!Utilities.noString(code)) {
+        return "https://loinc.org/"+code;
+      } else {
+        return "https://loinc.org/";
+      }
+    } else if ("http://www.nlm.nih.gov/research/umls/rxnorm".equals(system)) {
+      if (!Utilities.noString(code)) {
+        return "https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm="+code;        
+      } else {
+        return "https://www.nlm.nih.gov/research/umls/rxnorm/index.html";
+      }
+    } else {
+      CodeSystem cs = context.getWorker().fetchCodeSystem(system, version);
+      if (cs != null && cs.hasUserData("path")) {
+        if (!Utilities.noString(code)) {
+          return cs.getUserString("path")+"#"+Utilities.nmtokenize(code);
+        } else {
+          return cs.getUserString("path");
+        }
+      }
+    }  
+    return null;
+  }
+  
   protected void renderCodingWithDetails(XhtmlNode x, Coding c) {
     String s = "";
     if (c.hasDisplayElement())
@@ -720,22 +752,13 @@ public class DataRenderer extends Renderer {
 
 
     String sn = describeSystem(c.getSystem());
-    if ("http://snomed.info/sct".equals(c.getSystem())) {
-      if (c.hasCode()) {
-        x.ah("http://snomed.info/id/"+c.getCode()).tx(sn);        
-      } else {
-        x.ah("https://browser.ihtsdotools.org/").tx(sn);
-      }
-    } else if ("http://loinc.org".equals(c.getSystem())) {
-      x.ah("https://loinc.org/").tx(sn);            
+    String link = getLinkForCode(c.getSystem(), c.getVersion(), c.getCode());
+    if (link != null) {
+      x.ah(link).tx(sn);
     } else {
-      CodeSystem cs = context.getWorker().fetchCodeSystem(c.getSystem());
-      if (cs != null && cs.hasUserData("path")) {
-        x.ah(cs.getUserString("path")).tx(sn);
-      } else {
-        x.tx(sn);
-      }
+      x.tx(sn);
     }
+    
     x.tx(" ");
     x.tx(c.getCode());
     if (!Utilities.noString(s)) {
