@@ -498,9 +498,31 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public CodeSystem fetchCodeSystem(String system) {
+    if (system.contains("|")) {
+      String s = system.substring(0, system.indexOf("|"));
+      String v = system.substring(system.indexOf("|")+1);
+      return fetchCodeSystem(s, v);
+    }
     CodeSystem cs;
     synchronized (lock) {
       cs = codeSystems.get(system);
+    }
+    if (cs == null && locator != null) {
+      locator.findResource(this, system);
+      synchronized (lock) {
+        cs = codeSystems.get(system);
+      }
+    }
+    return cs;
+  } 
+
+  public CodeSystem fetchCodeSystem(String system, String version) {
+    if (version == null) {
+      return fetchCodeSystem(system);
+    }
+    CodeSystem cs;
+    synchronized (lock) {
+      cs = codeSystems.get(system, version);
     }
     if (cs == null && locator != null) {
       locator.findResource(this, system);
