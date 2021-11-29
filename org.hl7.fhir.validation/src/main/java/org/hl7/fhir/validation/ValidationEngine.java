@@ -752,17 +752,12 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
                                                       Element.SpecialElement containingResourceType,
                                                       String path,
                                                       String url) {
-    Resource resource = context.fetchResource(StructureDefinition.class, url);
-    if (resource != null) {
-      return ContainedReferenceValidationPolicy.CHECK_VALID;
-    }
-    if (!(url.contains("hl7.org") || url.contains("fhir.org"))) {
-      return ContainedReferenceValidationPolicy.IGNORE;
-    } else if (policyAdvisor != null) {
-      return policyAdvisor.policyForContained(validator, appContext, containerType, containerId, containingResourceType, path, url);
-    } else {
-      return ContainedReferenceValidationPolicy.CHECK_TYPE;
-    }
+    return ContainedReferenceValidationPolicy.CHECK_VALID;
+  }
+
+  @Override
+  public CodedContentValidationPolicy policyForCodedContent(IResourceValidator validator, Object appContext, String stackPath, ElementDefinition definition, StructureDefinition structure, BindingKind kind, ValueSet valueSet, List<String> systems) {
+    return CodedContentValidationPolicy.VALUESET;
   }
 
   @Override
@@ -825,4 +820,5 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public boolean fetchesCanonicalResource(IResourceValidator validator, String url) {
     return fetcher != null && fetcher.fetchesCanonicalResource(validator, url);
   }
+
 }
