@@ -7,7 +7,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import org.hl7.fhir.r5.utils.IResourceValidator.BundleValidationRule;
+import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
 

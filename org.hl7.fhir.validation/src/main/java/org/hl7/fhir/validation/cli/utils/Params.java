@@ -1,7 +1,6 @@
 package org.hl7.fhir.validation.cli.utils;
 
-import org.apache.http.auth.AUTH;
-import org.hl7.fhir.r5.utils.IResourceValidator.BundleValidationRule;
+import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.cli.model.CliContext;
 
