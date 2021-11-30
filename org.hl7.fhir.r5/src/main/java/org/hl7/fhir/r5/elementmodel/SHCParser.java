@@ -237,6 +237,7 @@ public class SHCParser extends ParserBase {
 
   private static final int BUFFER_SIZE = 1024;
   public static final String CURRENT_PACKAGE = "hl7.fhir.uv.shc-vaccination#0.6.2";
+  private static final int MAX_ALLOWED_SHC_LENGTH = 1195;
   
   // todo: deal with chunking
   public static String decodeQRCode(String src) {
@@ -253,10 +254,14 @@ public class SHCParser extends ParserBase {
     return b.toString();
   }
 
-  public static JWT decodeJWT(String jwt) throws IOException, DataFormatException {
+  public JWT decodeJWT(String jwt) throws IOException, DataFormatException {
     if (jwt.startsWith("shc:/")) {
       jwt = decodeQRCode(jwt);
     }
+    if (jwt.length() > MAX_ALLOWED_SHC_LENGTH) {
+      logError(-1, -1, "jwt", IssueType.TOOLONG, "JWT Payload limit length is "+MAX_ALLOWED_SHC_LENGTH+" bytes for a single image - this has "+jwt.length()+" bytes", IssueSeverity.ERROR);
+    }
+
     String[] parts = splitToken(jwt);
     byte[] headerJson;
     byte[] payloadJson;

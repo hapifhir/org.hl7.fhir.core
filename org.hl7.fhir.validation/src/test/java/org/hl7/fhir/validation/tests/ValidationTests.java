@@ -33,6 +33,7 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.Constants;
+import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.Patient;
@@ -46,6 +47,8 @@ import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
+import org.hl7.fhir.r5.utils.validation.constants.CodedContentValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
@@ -528,6 +531,14 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   }
 
   @Override
+  public CodedContentValidationPolicy policyForCodedContent(IResourceValidator validator, Object appContext, String stackPath, ElementDefinition definition,
+      StructureDefinition structure, BindingKind kind, ValueSet valueSet, List<String> systems) {
+    if (content.has("validateCodedContent"))
+      return CodedContentValidationPolicy.valueOf(content.get("validateCodedContent").getAsString());
+    else
+      return CodedContentValidationPolicy.VALUESET;
+  }
+  @Override
   public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type) throws IOException, FHIRException {
     return !url.contains("example.org") && !url.startsWith("http://hl7.org/fhir/invalid");
   }
@@ -581,4 +592,5 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   public boolean fetchesCanonicalResource(IResourceValidator validator, String url) {
     return false;
   }
+
 }

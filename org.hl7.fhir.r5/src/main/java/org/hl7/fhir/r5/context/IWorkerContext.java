@@ -475,6 +475,7 @@ public interface IWorkerContext {
    * @return
    */
   public CodeSystem fetchCodeSystem(String system);
+  public CodeSystem fetchCodeSystem(String system, String version);
 
   /**
    * True if the underlying terminology service provider will do 

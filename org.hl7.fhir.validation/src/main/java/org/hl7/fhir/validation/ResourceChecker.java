@@ -99,7 +99,7 @@ public class ResourceChecker {
       String s = new String(cnt, StandardCharsets.UTF_8);
       if (s.startsWith("shc:/")) 
         s = SHCParser.decodeQRCode(s);
-      JWT jwt = SHCParser.decodeJWT(s);
+      JWT jwt = new SHCParser(context).decodeJWT(s);
       return Manager.FhirFormat.SHC;
     } catch (Exception e) {
       if (debug) {
