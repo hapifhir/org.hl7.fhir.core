@@ -1510,5 +1510,9 @@ public class Utilities {
     return -1;
   }
 
+  public static String toString(String[] expected) {
+    return "['"+String.join("' | '", expected)+"']";
+  }
+
 
 }

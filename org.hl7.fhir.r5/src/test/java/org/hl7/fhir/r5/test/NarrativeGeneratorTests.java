@@ -101,7 +101,7 @@ public class NarrativeGeneratorTests {
   
   @Test // varies between versions, so multiple possible expected
   public void testDateTimeRendering4() throws FHIRFormatError, DefinitionException, IOException {
-    checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("UTC"), null, ResourceRendererMode.END_USER, "19/11/21, 2:13 pm", "19/11/21 2:13 pm");
+    checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("UTC"), null, ResourceRendererMode.END_USER, "19/11/21, 2:13 pm", "19/11/21 2:13 PM");
   }
   
 
