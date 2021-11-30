@@ -23,6 +23,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -55,7 +56,8 @@ public class NarrativeGeneratorTests {
   }
   
 
-  private void checkDateTimeRendering(String src, String lang, String country, ZoneId tz, String fmt, ResourceRendererMode mode, String expected) throws FHIRFormatError, DefinitionException, IOException {
+  private void checkDateTimeRendering(String src, String lang, String country, ZoneId tz, String fmt, ResourceRendererMode mode, 
+      String... expected) throws FHIRFormatError, DefinitionException, IOException {
     rc.setLocale(new java.util.Locale(lang, country));
     rc.setTimeZoneId(tz);
     if (fmt == null) {
@@ -71,12 +73,15 @@ public class NarrativeGeneratorTests {
     
     DateTimeType dt = new DateTimeType(src);
     String actual = new DataRenderer(rc).display(dt);
-    Assert.assertEquals(expected, actual);
+    
+    Assert.assertTrue(Utilities.existsInList(actual, expected));
     XhtmlNode node = new XhtmlNode(NodeType.Element, "p");
     new DataRenderer(rc).render(node, dt);
     actual = new XhtmlComposer(true, false).compose(node); 
-    Assert.assertEquals("<p>"+expected+"</p>", actual);
-  }
+    Assert.assertTrue(actual.startsWith("<p>"));
+    Assert.assertTrue(actual.endsWith("</p>"));
+    Assert.assertTrue(Utilities.existsInList(actual.substring(0, actual.length()-4).substring(3), expected));
+}
   
   @Test
   public void testDateTimeRendering1() throws FHIRFormatError, DefinitionException, IOException {
@@ -94,10 +99,9 @@ public class NarrativeGeneratorTests {
     checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("UTC"), "yyyy/MM/dd hh:mm:ss", ResourceRendererMode.TECHNICAL, "2021/11/19 02:13:12");
   }
   
-
-  @Test
+  @Test // varies between versions, so multiple possible expected
   public void testDateTimeRendering4() throws FHIRFormatError, DefinitionException, IOException {
-    checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("UTC"), null, ResourceRendererMode.END_USER, "19/11/21, 2:13 pm");
+    checkDateTimeRendering("2021-11-19T14:13:12Z", "en", "AU", ZoneId.of("UTC"), null, ResourceRendererMode.END_USER, "19/11/21, 2:13 pm", "19/11/21 2:13 pm");
   }
   
 
