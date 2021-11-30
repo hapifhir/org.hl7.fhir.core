@@ -118,11 +118,13 @@ public abstract class ParserBase {
 
 	//FIXME: i18n should be done here
 	public void logError(int line, int col, String path, IssueType type, String message, IssueSeverity level) throws FHIRFormatError {
-	  if (policy == ValidationPolicy.EVERYTHING) {
-	    ValidationMessage msg = new ValidationMessage(Source.InstanceValidator, type, line, col, path, message, level);
-	    errors.add(msg);
-	  } else if (level == IssueSeverity.FATAL || (level == IssueSeverity.ERROR && policy == ValidationPolicy.QUICK))
-	    throw new FHIRFormatError(message+String.format(" at line %d col %d", line, col));
+	  if (errors != null) {
+	    if (policy == ValidationPolicy.EVERYTHING) {
+	      ValidationMessage msg = new ValidationMessage(Source.InstanceValidator, type, line, col, path, message, level);
+	      errors.add(msg);
+	    } else if (level == IssueSeverity.FATAL || (level == IssueSeverity.ERROR && policy == ValidationPolicy.QUICK))
+	      throw new FHIRFormatError(message+String.format(" at line %d col %d", line, col));
+	  }
 	}
 	
 	

@@ -7,10 +7,15 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ICanonicalResourceLocator;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
+import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
+import org.hl7.fhir.r5.utils.validation.constants.CodedContentValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.Utilities;
@@ -68,7 +73,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
                                                                Element.SpecialElement containingResourceType,
                                                                String path,
                                                                String url) {
-    return ContainedReferenceValidationPolicy.CHECK_TYPE;
+    return ContainedReferenceValidationPolicy.CHECK_VALID;
   }
 
   @Override
@@ -274,6 +279,12 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
       resolveURL((IResourceValidator) validator, null, null, url, null);
     } catch (Exception e) {
     }
+  }
+
+  @Override
+  public CodedContentValidationPolicy policyForCodedContent(IResourceValidator validator, Object appContext, String stackPath, ElementDefinition definition,
+      StructureDefinition structure, BindingKind kind, ValueSet valueSet, List<String> systems) {
+    return CodedContentValidationPolicy.VALUESET;
   }
 
 }
