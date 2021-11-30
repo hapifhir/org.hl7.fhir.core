@@ -15,6 +15,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
+import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BooleanType;
@@ -187,7 +188,11 @@ public class FHIRPathTests {
         } else {
           res = resources.get(input);
           if (res == null) {
-            res = new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", input));
+            if (input.endsWith(".json")) {
+              res = new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", input));              
+            } else {
+              res = new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", input));
+            }
             resources.put(input, res);
           }
           fp.check(res, res.getResourceType().toString(), res.getResourceType().toString(), node);
