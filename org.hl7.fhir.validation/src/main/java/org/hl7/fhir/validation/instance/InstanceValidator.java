@@ -302,7 +302,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       } else if (item instanceof Element) {
         Element e = (Element) item;
-        if (e.getName().equals("contained")) {
+        if (e.getSpecial() != null) {
           self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e, ctxt.getRootResource()), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage));          
         } else {
           self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage));
@@ -2732,7 +2732,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, !isSuspiciousReference(ref), I18nConstants.REFERENCE_REF_SUSPICIOUS, ref);      
 
-    ResolvedReference we = localResolve(ref, stack, errors, path, (Element) hostContext.getAppContext(), element);
+    ResolvedReference we = localResolve(ref, stack, errors, path, hostContext.getRootResource(), element);
     String refType;
     if (ref.startsWith("#")) {
       refType = "contained";
@@ -3420,7 +3420,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return true;
   }
 
-  private ResolvedReference localResolve(String ref, NodeStack stack, List<ValidationMessage> errors, String path, Element hostContext, Element source) {
+  private ResolvedReference localResolve(String ref, NodeStack stack, List<ValidationMessage> errors, String path, Element rootResource, Element source) {
     if (ref.startsWith("#")) {
       // work back through the parent list.
       // really, there should only be one level for this (contained resources cannot contain
@@ -3520,11 +3520,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         stack = stack.getParent();
       }
       // we can get here if we got called via FHIRPath conformsTo which breaks the stack continuity.
-      if (hostContext != null && BUNDLE.equals(hostContext.fhirType())) {
-        String type = hostContext.getChildValue(TYPE);
-        Element entry = getEntryForSource(hostContext, source);
+      if (rootResource != null && BUNDLE.equals(rootResource.fhirType())) {
+        String type = rootResource.getChildValue(TYPE);
+        Element entry = getEntryForSource(rootResource, source);
         fullUrl = entry.getChildValue(FULL_URL);
-        IndexedElement res = getFromBundle(hostContext, ref, fullUrl, errors, path, type, "transaction".equals(type));
+        IndexedElement res = getFromBundle(rootResource, ref, fullUrl, errors, path, type, "transaction".equals(type));
         if (res == null) {
           return null;
         } else {
@@ -3532,7 +3532,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           rr.setResource(res.getMatch());
           rr.setFocus(res.getMatch());
           rr.setExternal(false);
-          rr.setStack(new NodeStack(context, null, hostContext, validationLanguage).push(res.getEntry(), res.getIndex(), res.getEntry().getProperty().getDefinition(),
+          rr.setStack(new NodeStack(context, null, rootResource, validationLanguage).push(res.getEntry(), res.getIndex(), res.getEntry().getProperty().getDefinition(),
             res.getEntry().getProperty().getDefinition()).push(res.getMatch(), -1,
             res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
           rr.getStack().qualifyPath(".ofType("+rr.getResource().fhirType()+")");

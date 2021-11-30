@@ -498,6 +498,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public CodeSystem fetchCodeSystem(String system) {
+    if (system == null) {
+      return null;
+    }
     if (system.contains("|")) {
       String s = system.substring(0, system.indexOf("|"));
       String v = system.substring(system.indexOf("|")+1);
