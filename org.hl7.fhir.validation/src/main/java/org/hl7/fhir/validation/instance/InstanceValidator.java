@@ -5386,6 +5386,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (first != null && typeMatchesDefn(first.getElement().getType(), defn)) {
         element = first.getElement();
         stack = first;
+        resourceName = element.getType(); // todo: consider namespace...?
         idstatus = IdStatus.OPTIONAL; // why?
       }
       // todo: validate everything in this bundle.
@@ -5404,7 +5405,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
       // validate
-      start(hostContext, errors, element, element, defn, stack); // root is both definition and type
+      if (rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), resourceName.equals(defn.getType()), I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE,
+          defn.getType(), resourceName, defn.getUrl())) {
+        start(hostContext, errors, element, element, defn, stack); // root is both definition and type
+      } else {
+        System.out.println("what?");
+      }
     }
   }
 

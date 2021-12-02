@@ -348,6 +348,7 @@ public class I18nConstants {
   public static final String REFERENCE_REF_RESOURCETYPE = "Reference_REF_ResourceType";
   public static final String REFERENCE_REF_SUSPICIOUS = "REFERENCE_REF_SUSPICIOUS";
   public static final String REFERENCE_REF_WRONGTARGET = "Reference_REF_WrongTarget";
+  public static final String REFERENCE_REF_WRONGTARGET_LOAD = "REFERENCE_REF_WRONGTARGET_LOAD";
   public static final String REFERENCE_TO__CANNOT_BE_RESOLVED = "reference_to__cannot_be_resolved";
   public static final String REFERENCE__REFERS_TO_A__NOT_A_VALUESET = "Reference__refers_to_a__not_a_ValueSet";
   public static final String RESOURCE_RESOLUTION_SERVICES_NOT_PROVIDED = "Resource_resolution_services_not_provided";
