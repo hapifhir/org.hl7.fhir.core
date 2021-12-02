@@ -792,7 +792,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
   private void listOptions(Questionnaire q, QuestionnaireItemComponent i, XhtmlNode select) {
     if (i.hasAnswerValueSet()) {
       ValueSet vs = null;
-      if (Utilities.noString(i.getAnswerValueSet()) && i.getAnswerValueSet().startsWith("#")) {
+      if (!Utilities.noString(i.getAnswerValueSet()) && i.getAnswerValueSet().startsWith("#")) {
         vs = (ValueSet) q.getContained(i.getAnswerValueSet().substring(1));
         if (vs != null && !vs.hasUrl()) {
           vs = vs.copy();
