@@ -48,6 +48,7 @@ import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemEnableWhenComponent;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemOperator;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
+import org.hl7.fhir.validation.instance.type.QuestionnaireValidator.QuestionnaireWithContext;
 import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
 
 import ca.uhn.fhir.rest.server.exceptions.UnprocessableEntityException;
@@ -85,17 +86,17 @@ public class EnableWhenEvaluator {
   public static class QStack extends ArrayList<QuestionnaireAnswerPair> {
 
     private static final long serialVersionUID = 1L;
-    private Questionnaire q;
+    private QuestionnaireWithContext q;
     private Element a;
 
-    public QStack(Questionnaire q, Element a) {
+    public QStack(QuestionnaireWithContext q, Element a) {
       super();
       this.q = q;
       this.a = a;
     }
 
 
-    public Questionnaire getQ() {
+    public QuestionnaireWithContext getQ() {
       return q;
     }
 
@@ -311,9 +312,9 @@ public class EnableWhenEvaluator {
    * - any targetA in groupA are input for the enableWhen decision
    */
   private List<Element> findQuestionAnswers(QStack qstack, QuestionnaireItemComponent sourceQ, QuestionnaireItemEnableWhenComponent ew) {
-    QuestionnaireItemComponent targetQ = qstack.getQ().getQuestion(ew.getQuestion());
+    QuestionnaireItemComponent targetQ = qstack.getQ().q().getQuestion(ew.getQuestion());
     if (targetQ != null) {
-      QuestionnaireItemComponent groupQ = qstack.getQ().getCommonGroup(sourceQ, targetQ);
+      QuestionnaireItemComponent groupQ = qstack.getQ().q().getCommonGroup(sourceQ, targetQ);
       if (groupQ == null) { // root is Q itself
         return findOnItem(qstack.getA(), ew.getQuestion());
       } else {
