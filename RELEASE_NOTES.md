@@ -1,0 +1,1 @@
+* Add usesExtension to ToolingExtensions
