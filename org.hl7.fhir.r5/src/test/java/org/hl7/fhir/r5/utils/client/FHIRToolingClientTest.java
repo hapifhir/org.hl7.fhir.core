@@ -6,7 +6,6 @@ import okhttp3.internal.http2.Header;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.utils.client.network.Client;
 import org.hl7.fhir.r5.utils.client.network.ResourceRequest;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -96,7 +95,6 @@ class FHIRToolingClientTest {
     return bundle;
   }
 
-  @NotNull
   private Patient generatePatient() {
     // Create a patient object
     Patient patient = new Patient();
@@ -115,7 +113,6 @@ class FHIRToolingClientTest {
     return patient;
   }
 
-  @NotNull
   private Observation generateObservation() {
     // Create an observation object
     Observation observation = new Observation();
