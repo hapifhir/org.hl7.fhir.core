@@ -2470,7 +2470,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     int i = 0;
     while (i < markdown.length()) {
       if (i < markdown.length()-3 && markdown.substring(i, i+2).equals("](")) {
-         int j = i + 2;
+        int j = i + 2;
         while (j < markdown.length() && markdown.charAt(j) != ')')
           j++;
         if (j < markdown.length()) {
@@ -2492,7 +2492,8 @@ public class ProfileUtilities extends TranslatingUtilities {
               i = i + 1;
             } else {
               b.append("](");
-              b.append(webUrl);
+              // disabled 7-Dec 2021 GDG - we don't want to fool with relative URLs at all? 
+              // b.append(webUrl);
               i = i + 1;
             }
           } else
@@ -4773,7 +4774,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private void genFixedValue(HierarchicalTableGenerator gen, Row erow, DataType value, boolean snapshot, boolean pattern, String corePath, boolean skipnoValue) {
     String ref = pkp.getLinkFor(corePath, value.fhirType());
-    if (ref != null) {
+    if (ref != null && ref.contains(".html")) {
       ref = ref.substring(0, ref.indexOf(".html"))+"-definitions.html#";
     } else {
       ref = "?gen-fv?";
