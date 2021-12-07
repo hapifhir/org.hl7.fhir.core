@@ -52,6 +52,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.context.BaseWorkerContext.ResourceProxy;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.context.IWorkerContext.ILoggingService.LogCategory;
@@ -129,6 +130,35 @@ import ca.uhn.fhir.model.valueset.BundleEntrySearchModeEnum;
 
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext{
 
+  public class ResourceProxy {
+    private Resource resource;
+    private CanonicalResourceProxy proxy;
+
+    public ResourceProxy(Resource resource) {
+      super();
+      this.resource = resource;
+    }
+    public ResourceProxy(CanonicalResourceProxy proxy) {
+      super();
+      this.proxy = proxy;
+    }
+    
+    public Resource getResource() {
+      return resource != null ? resource : proxy.getResource();
+    }
+    
+    public String getUrl() {
+      if (resource == null) {
+        return proxy.getUrl();
+      } else if (resource instanceof CanonicalResource) {
+        return ((CanonicalResource) resource).getUrl(); 
+      } else {
+        return null;
+      }
+    }
+    
+  }
+
   public class MetadataResourceVersionComparator<T extends CanonicalResource> implements Comparator<T> {
 
     private List<T> list;
@@ -165,7 +195,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private boolean isTxCaching;
   private Set<String> cached = new HashSet<>();
   
-  private Map<String, Map<String, Resource>> allResourcesById = new HashMap<String, Map<String, Resource>>();
+  private Map<String, Map<String, ResourceProxy>> allResourcesById = new HashMap<String, Map<String, ResourceProxy>>();
   // all maps are to the full URI
   private CanonicalResourceManager<CodeSystem> codeSystems = new CanonicalResourceManager<CodeSystem>(false);
   private Set<String> supportedCodeSystems = new HashSet<String>();
@@ -276,6 +306,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public void registerResourceFromPackage(CanonicalResourceProxy r, PackageVersion packageInfo) throws FHIRException {
     synchronized (lock) {
+      Map<String, ResourceProxy> map = allResourcesById.get(r.getType());
+      if (map == null) {
+        map = new HashMap<String, ResourceProxy>();
+        allResourcesById.put(r.getType(), map);
+      }
+      map.put(r.getId(), new ResourceProxy(r));
 
         String url = r.getUrl();
         if (!allowLoadingDuplicates && hasResource(r.getType(), url)) {
@@ -338,12 +374,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public void cacheResourceFromPackage(Resource r, PackageVersion packageInfo) throws FHIRException {
     synchronized (lock) {
-      Map<String, Resource> map = allResourcesById.get(r.fhirType());
+      Map<String, ResourceProxy> map = allResourcesById.get(r.fhirType());
       if (map == null) {
-        map = new HashMap<String, Resource>();
+        map = new HashMap<String, ResourceProxy>();
         allResourcesById.put(r.fhirType(), map);
       }
-      map.put(r.getId(), r);
+      if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
+        map.put(r.getId(), new ResourceProxy(r));
+      }
 
       if (r instanceof CodeSystem || r instanceof NamingSystem) {
         oidCache.clear();
@@ -1300,13 +1338,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (questionnaires.has(uri)) {
           return (T) questionnaires.get(uri, version);
         } 
-        for (Map<String, Resource> rt : allResourcesById.values()) {
-          for (Resource r : rt.values()) {
-            if (r instanceof CanonicalResource) {
-              CanonicalResource mr = (CanonicalResource) r;
-              if (uri.equals(mr.getUrl())) {
-                return (T) mr;
-              } 
+        for (Map<String, ResourceProxy> rt : allResourcesById.values()) {
+          for (ResourceProxy r : rt.values()) {
+            if (uri.equals(r.getUrl())) {
+              return (T) r.getResource();
             }
           }            
         }
@@ -1489,13 +1524,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (questionnaires.has(uri)) {
           return (T) questionnaires.get(uri, version);
         } 
-        for (Map<String, Resource> rt : allResourcesById.values()) {
-          for (Resource r : rt.values()) {
-            if (r instanceof CanonicalResource) {
-              CanonicalResource mr = (CanonicalResource) r;
-              if (uri.equals(mr.getUrl())) {
-                return (T) mr;
-              } 
+        for (Map<String, ResourceProxy> rt : allResourcesById.values()) {
+          for (ResourceProxy r : rt.values()) {
+            if (uri.equals(r.getUrl())) {
+              return (T) r.getResource();
             }
           }            
         }
@@ -1569,7 +1601,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       String[] parts = uri.split("\\/");
       if (!Utilities.noString(type) && parts.length == 1) {
         if (allResourcesById.containsKey(type)) {
-          return allResourcesById.get(type).get(parts[0]);
+          return allResourcesById.get(type).get(parts[0]).getResource();
         } else {
           return null;
         }
@@ -1580,7 +1612,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
             throw new Error(formatMessage(I18nConstants.RESOURCE_TYPE_MISMATCH_FOR___, type, uri));
           }
         }
-        return allResourcesById.get(parts[parts.length-2]).get(parts[parts.length-1]);
+        return allResourcesById.get(parts[parts.length-2]).get(parts[parts.length-1]).getResource();
       } else {
         throw new Error(formatMessage(I18nConstants.UNABLE_TO_PROCESS_REQUEST_FOR_RESOURCE_FOR___, type, uri));
       }
@@ -1692,13 +1724,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public void dropResource(String fhirType, String id) {
     synchronized (lock) {
 
-      Map<String, Resource> map = allResourcesById.get(fhirType);
+      Map<String, ResourceProxy> map = allResourcesById.get(fhirType);
       if (map == null) {
-        map = new HashMap<String, Resource>();
+        map = new HashMap<String, ResourceProxy>();
         allResourcesById.put(fhirType, map);
       }
       if (map.containsKey(id)) {
-        map.remove(id);
+        map.remove(id); // this is a challenge because we might have more than one resource with this id (different versions)
       }
 
       if (fhirType.equals("StructureDefinition")) {
