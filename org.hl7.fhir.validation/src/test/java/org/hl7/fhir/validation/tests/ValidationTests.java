@@ -157,6 +157,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     }
     vCurr = ve.get(version);
     vCurr.getContext().setUserAgent("fhir/test-cases");
+    //vCurr.getContext().initTS("");
     igLoader = new IgLoader(vCurr.getPcm(), vCurr.getContext(), vCurr.getVersion(), true);
     if (TestingUtilities.fcontexts == null) {
       TestingUtilities.fcontexts = new HashMap<>();
