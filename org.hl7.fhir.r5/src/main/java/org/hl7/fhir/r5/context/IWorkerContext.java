@@ -167,6 +167,9 @@ public interface IWorkerContext {
     public String getVersion() {
       return version;
     }
+    public boolean isExamplesPackage() {
+      return !(id.startsWith("hl7.fhir.") && id.endsWith(".example"));
+    }
   }
 
   public class PackageDetails extends PackageVersion {
