@@ -1,7 +1,5 @@
 package org.hl7.fhir.convertors.loaders.loaderR5;
 
-import org.apache.http.auth.AuthScheme;
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
