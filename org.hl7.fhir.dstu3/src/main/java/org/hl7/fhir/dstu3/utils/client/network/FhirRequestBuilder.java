@@ -12,6 +12,7 @@ import org.hl7.fhir.dstu3.utils.ResourceUtilities;
 import org.hl7.fhir.dstu3.utils.client.EFhirClientException;
 import org.hl7.fhir.dstu3.utils.client.ResourceFormat;
 import org.hl7.fhir.utilities.ToolingClientLogger;
+import org.hl7.fhir.utilities.TxInterceptor;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -162,6 +163,7 @@ public class FhirRequestBuilder {
 
     return okHttpClient.newBuilder()
       .addInterceptor(new RetryInterceptor(retryCount))
+      .addInterceptor(TxInterceptor.getInstance())
       .connectTimeout(timeout, timeoutUnit)
       .writeTimeout(timeout, timeoutUnit)
       .readTimeout(timeout, timeoutUnit)
