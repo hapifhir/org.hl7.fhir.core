@@ -69,7 +69,9 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.fhir.ucum.Utilities;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeType;
@@ -89,6 +91,7 @@ import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.MarkdownType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.PrimitiveType;
+import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType;
 import org.hl7.fhir.r5.model.StringType;
@@ -898,6 +901,26 @@ public class ToolingExtensions {
       ex.setValue(new UriType(value));
     else
       dr.getExtension().add(Factory.newExtension(url, new UriType(value), true));   
+  }
+
+  public static boolean usesExtension(String url, Base base) {
+    if ("Extension".equals(base.fhirType())) {
+      Property p = base.getNamedProperty("url");
+      for (Base b : p.getValues()) {
+        if (url.equals(b.primitiveValue())) {
+          return true;
+        }
+      }
+    }
+    
+    for (Property p : base.children() ) {
+      for (Base v : p.getValues()) {
+        if (usesExtension(url, v)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   
