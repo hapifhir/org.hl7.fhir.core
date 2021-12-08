@@ -2216,6 +2216,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (!ok) {
           String value = encoded.length() < 100 ? encoded : "(snip)";
           rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_VALID, value);
+        } else {
+          boolean wsok = base64HasWhitespace(encoded);
+          if (VersionUtilities.isR5VerOrLater(this.context.getVersion())) {
+            rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR);            
+          } else {
+            warning(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING);            
+          }
         }
         if (ok && context.hasExtension("http://hl7.org/fhir/StructureDefinition/maxSize")) {
           int size = countBase64DecodedBytes(encoded);
@@ -2418,6 +2425,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ok = false;
     }
     return ok;
+  }
+
+  private boolean base64HasWhitespace(String theEncoded) {
+    if (theEncoded == null) {
+      return false;
+    }
+    for (int i = 0; i < theEncoded.length(); i++) {
+      char nextChar = theEncoded.charAt(i);
+      if (Character.isWhitespace(nextChar)) {
+        return true;
+      }
+    }
+    return false;
+
   }
 
 

@@ -1,6 +1,6 @@
-
 Validator:
 * enforce minValue and maxValue for decimal and Quantity types
+* add checks for whitespace in base64 content (warning in <R5)
 
 Other code changes:
 * Fix trailing slashes for JAVA_HOME tests
