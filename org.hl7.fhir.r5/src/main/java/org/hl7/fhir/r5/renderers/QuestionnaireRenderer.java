@@ -703,7 +703,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     }
     if (i.hasAnswerValueSet()) {
       XhtmlNode ans = item(ul, "Answers");
-      if (Utilities.noString(i.getAnswerValueSet()) && i.getAnswerValueSet().startsWith("#")) {
+      if (!Utilities.noString(i.getAnswerValueSet()) && i.getAnswerValueSet().startsWith("#")) {
         ValueSet vs = (ValueSet) q.getContained(i.getAnswerValueSet().substring(1));
         if (vs == null) {
           ans.tx(i.getAnswerValueSet());                    

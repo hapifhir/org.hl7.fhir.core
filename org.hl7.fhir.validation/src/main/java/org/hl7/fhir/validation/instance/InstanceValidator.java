@@ -37,6 +37,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,6 +52,7 @@ import java.util.UUID;
 import org.apache.commons.codec.binary.Base64InputStream;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
+import org.fhir.ucum.Decimal;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
@@ -2125,17 +2127,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             if (type.equals("canonical")) {
               ReferenceValidationPolicy rp = policyAdvisor == null ? ReferenceValidationPolicy.CHECK_VALID : policyAdvisor.policyForReference(this, hostContext, path, url);
               if (rp == ReferenceValidationPolicy.CHECK_EXISTS || rp == ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE) {
-                rule(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url);
+                rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url);
               } else {
-                hint(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url);
+                hint(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url);
               }
             } else {
               if (url.contains("hl7.org") || url.contains("fhir.org")) {
-                rule(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
+                rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
               } else if (url.contains("example.org") || url.contains("acme.com")) {
-                rule(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE, url);
+                rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE, url);
               } else {
-                warning(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
+                warning(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
               }
             }
           } else {
@@ -2145,7 +2147,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 try {
                   Resource r = fetcher.fetchCanonicalResource(this, url);
                   if (r == null) {
-                    rule(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url);                    
+                    rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url);                    
                   } else if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, isCorrectCanonicalType(r, context), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_TYPE, url, r.fhirType(), listExpectedCanonicalTypes(context))) {
                     if (rp == ReferenceValidationPolicy.CHECK_VALID) {
                       // todo....
@@ -2248,8 +2250,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (type.equals("decimal")) {
       if (e.primitiveValue() != null) {
         DecimalStatus ds = Utilities.checkDecimal(e.primitiveValue(), true, false);
-        if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, ds == DecimalStatus.OK || ds == DecimalStatus.RANGE, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_VALID, e.primitiveValue()))
+        if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, ds == DecimalStatus.OK || ds == DecimalStatus.RANGE, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_VALID, e.primitiveValue())) {
           warning(errors, IssueType.VALUE, e.line(), e.col(), path, ds != DecimalStatus.RANGE, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_RANGE, e.primitiveValue());
+          try {
+            Decimal v = new Decimal(e.getValue());
+            rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxValueIntegerType() || 
+                !context.getMaxValueIntegerType().hasValue() || checkDecimalMaxValue(v, context.getMaxValueDecimalType().getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_GT, (context.hasMaxValueIntegerType() ? context.getMaxValueIntegerType() : ""));
+            rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueIntegerType() || 
+                !context.getMinValueIntegerType().hasValue() || checkDecimalMinValue(v, context.getMaxValueDecimalType().getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_LT, (context.hasMinValueIntegerType() ? context.getMinValueIntegerType() : ""));
+          } catch (Exception ex) {
+            // should never happen?
+          }
+        }
       }
       if (context.hasExtension("http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces")) {
         int dp = e.primitiveValue().contains(".") ? e.primitiveValue().substring(e.primitiveValue().indexOf(".")+1).length() : 0;
@@ -2615,7 +2627,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     checkFixedValue(errors, path + ".code", focus.getNamedChild("code"), fixed.getCodeElement(), fixedSource, "code", focus, pattern);
   }
 
-  private void checkQuantity(List<ValidationMessage> theErrors, String thePath, Element element, StructureDefinition theProfile, ElementDefinition definition, NodeStack theStack) {
+  private void checkQuantity(List<ValidationMessage> errors, String path, Element element, StructureDefinition theProfile, ElementDefinition definition, NodeStack theStack) {
+    String value = element.hasChild("value") ? element.getNamedChild("value").getValue() : null;
     String unit = element.hasChild("unit") ? element.getNamedChild("unit").getValue() : null;
     String system = element.hasChild("system") ? element.getNamedChild("system").getValue() : null;
     String code = element.hasChild("code") ? element.getNamedChild("code").getValue() : null;
@@ -2623,23 +2636,121 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     // todo: allowedUnits http://hl7.org/fhir/StructureDefinition/elementdefinition-allowedUnits - codeableConcept, or canonical(ValueSet)
     // todo: http://hl7.org/fhir/StructureDefinition/iso21090-PQ-translation
 
-    if (definition.hasExtension("http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces")) {
-      String dec = element.getChildValue("value");
-      int dp = dec.contains(".") ? dec.substring(dec.indexOf(".")+1).length() : 0;
+    if (!Utilities.noString(value) && definition.hasExtension("http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces")) {
+      int dp = value.contains(".") ? value.substring(value.indexOf(".")+1).length() : 0;
       int def = Integer.parseInt(ToolingExtensions.readStringExtension(definition, "http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces"));
-      rule(theErrors, IssueType.STRUCTURE, element.line(), element.col(), thePath, dp <= def, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_CHARS, dp, def);
+      rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, dp <= def, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_CHARS, dp, def);
     }
-    
+
     if (system != null || code != null ) {
-      checkCodedElement(theErrors, thePath, element, theProfile, definition, false, false, theStack, code, system, null, unit);
+      checkCodedElement(errors, path, element, theProfile, definition, false, false, theStack, code, system, null, unit);
     }
-    
+
     if (code != null && "http://unitsofmeasure.org".equals(system)) {
       int b = code.indexOf("{");
       int e = code.indexOf("}");
       if (b >= 0 && e > 0 && b < e) {
-        bpCheck(theErrors, IssueType.BUSINESSRULE, element.line(), element.col(), thePath, !code.contains("{"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_NO_ANNOTATIONS, code.substring(b, e+1));
+        bpCheck(errors, IssueType.BUSINESSRULE, element.line(), element.col(), path, !code.contains("{"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_NO_ANNOTATIONS, code.substring(b, e+1));
       }
+    }
+
+    if (definition.hasMinValue()) {
+      if (warning(errors, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(value), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_NO_VALUE) &&
+          rule(errors, IssueType.INVALID, element.line(), element.col(), path, definition.getMinValue() instanceof Quantity, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_NO_QTY, definition.getMinValue().fhirType())) {
+        Quantity min = definition.getMinValueQuantity();
+        if (warning(errors, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(min.getSystem()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_SYSTEM) &&
+            warning(errors, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(system), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_NO_SYSTEM) && 
+            warning(errors, IssueType.INVALID, element.line(), element.col(), path, system.equals(min.getSystem()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_SYSTEM_MISMATCH, system, min.getSystem()) &&
+            warning(errors, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(min.getCode()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_CODE) &&
+            warning(errors, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(code), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_NO_CODE) &&
+            rule(errors, IssueType.INVALID, element.line(), element.col(), path, definition.getMinValueQuantity().hasValue(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_VALUE)) {
+          if (code.equals(min.getCode())) {
+            // straight value comparison
+            rule(errors, IssueType.INVALID, element.line(), element.col(), path, checkDecimalMinValue(value, min.getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_WRONG, value, min.getValue().toString());
+          } else if ("http://unitsofmeasure.org".equals(system)) {
+            if (warning(errors, IssueType.INVALID, element.line(), element.col(), path, context.getUcumService() != null, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_NO_UCUM_SVC)) {
+              Decimal v = convertUcumValue(value, code, min.getCode());
+              if (rule(errors, IssueType.INVALID, element.line(), element.col(), path, v != null, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_CONVERT, value, code, min.getCode())) {
+                rule(errors, IssueType.INVALID, element.line(), element.col(), path, checkDecimalMinValue(v, min.getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_WRONG_UCUM, value, code, min.getValue().toString(), min.getCode());
+              }
+            }
+          } else {
+            warning(errors, IssueType.INVALID, element.line(), element.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_CODE_MISMATCH, code, min.getCode());
+          }
+        }
+      }
+    }
+    
+    if (definition.hasMaxValue()) {
+      if (warning(errors, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(value), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_NO_VALUE) &&
+          rule(errors, IssueType.INVALID, element.line(), element.col(), path, definition.getMaxValue() instanceof Quantity, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_NO_QTY, definition.getMaxValue().fhirType())) {
+        Quantity max = definition.getMaxValueQuantity();
+        if (warning(errors, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(max.getSystem()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_SYSTEM) &&
+            warning(errors, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(system), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_NO_SYSTEM) && 
+            warning(errors, IssueType.INVALID, element.line(), element.col(), path, system.equals(max.getSystem()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_SYSTEM_MISMATCH, system, max.getSystem()) &&
+            warning(errors, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(max.getCode()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_CODE) &&
+            warning(errors, IssueType.INVALID, element.line(), element.col(), path, !Utilities.noString(code), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_NO_CODE) &&
+            rule(errors, IssueType.INVALID, element.line(), element.col(), path, definition.getMaxValueQuantity().hasValue(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_VALUE)) {
+          if (code.equals(max.getCode())) {
+            // straight value comparison
+            rule(errors, IssueType.INVALID, element.line(), element.col(), path, checkDecimalMaxValue(value, max.getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_WRONG, value, max.getValue().toString());
+          } else if ("http://unitsofmeasure.org".equals(system)) {
+            if (warning(errors, IssueType.INVALID, element.line(), element.col(), path, context.getUcumService() != null, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_NO_UCUM_SVC)) {
+              Decimal v = convertUcumValue(value, code, max.getCode());
+              if (rule(errors, IssueType.INVALID, element.line(), element.col(), path, v != null, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_CONVERT, value, code, max.getCode())) {
+                rule(errors, IssueType.INVALID, element.line(), element.col(), path, checkDecimalMaxValue(v, max.getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_WRONG_UCUM, value, code, max.getValue().toString(), max.getCode());
+              }
+            }
+          } else {
+            warning(errors, IssueType.INVALID, element.line(), element.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_CODE_MISMATCH, code, max.getCode());
+          }
+        }
+      }
+    }
+  }
+  
+  private Decimal convertUcumValue(String value, String code, String minCode) {
+    try {
+      Decimal v = new Decimal(value);
+      return context.getUcumService().convert(v, code, minCode);
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+  private boolean checkDecimalMaxValue(Decimal value, BigDecimal min) {
+    try {
+      Decimal m = new Decimal(min.toString());
+      return value.comparesTo(m) <= 0;
+    } catch (Exception e) {
+      return false; // this will be another error somewhere else?
+    }
+  }
+
+  private boolean checkDecimalMaxValue(String value, BigDecimal min) {
+    try {
+      BigDecimal v = new BigDecimal(value);
+      return v.compareTo(min) <= 0;      
+    } catch (Exception e) {
+      return false; // this will be another error somewhere else
+    }
+  }
+
+  private boolean checkDecimalMinValue(Decimal value, BigDecimal min) {
+    try {
+      Decimal m = new Decimal(min.toString());
+      return value.comparesTo(m) >= 0;
+    } catch (Exception e) {
+      return false; // this will be another error somewhere else?
+    }
+  }
+
+  private boolean checkDecimalMinValue(String value, BigDecimal min) {
+    try {
+      BigDecimal v = new BigDecimal(value);
+      return v.compareTo(min) >= 0;      
+    } catch (Exception e) {
+      return false; // this will be another error somewhere else
     }
   }
 
@@ -5408,8 +5519,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), resourceName.equals(defn.getType()), I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE,
           defn.getType(), resourceName, defn.getUrl())) {
         start(hostContext, errors, element, element, defn, stack); // root is both definition and type
-      } else {
-        System.out.println("what?");
       }
     }
   }
