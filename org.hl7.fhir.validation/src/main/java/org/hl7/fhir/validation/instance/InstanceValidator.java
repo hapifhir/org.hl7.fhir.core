@@ -2217,11 +2217,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           String value = encoded.length() < 100 ? encoded : "(snip)";
           rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_VALID, value);
         } else {
-          boolean wsok = base64HasWhitespace(encoded);
+          boolean wsok = !base64HasWhitespace(encoded);
           if (VersionUtilities.isR5VerOrLater(this.context.getVersion())) {
-            rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR);            
+            rule(errors, IssueType.INVALID, e.line(), e.col(), path, wsok, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR);            
           } else {
-            warning(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING);            
+            warning(errors, IssueType.INVALID, e.line(), e.col(), path, wsok, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING);            
           }
         }
         if (ok && context.hasExtension("http://hl7.org/fhir/StructureDefinition/maxSize")) {
