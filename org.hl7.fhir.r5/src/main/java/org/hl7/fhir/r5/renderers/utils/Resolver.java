@@ -101,7 +101,7 @@ public class Resolver {
       return null;
     }
 
-    public org.hl7.fhir.r5.elementmodel.Element resolveElement(String value) {
+    public org.hl7.fhir.r5.elementmodel.Element resolveElement(String value, String version) {
       if (value.startsWith("#")) {
         if (resourceElement != null) {
           for (org.hl7.fhir.r5.elementmodel.Element r : resourceElement.getChildrenByName("contained")) {
@@ -115,10 +115,18 @@ public class Resolver {
         if (containerElement != null) {
           for (org.hl7.fhir.r5.elementmodel.Element be : containerElement.getChildren("entry")) {
             org.hl7.fhir.r5.elementmodel.Element res = be.getNamedChild("resource");
-            if (value.equals(be.getChildValue("fullUrl")))
-              return be;
-            if (value.equals(res.fhirType()+"/"+res.getChildValue("id")))
-              return be;
+            if (res != null) { 
+              if (value.equals(be.getChildValue("fullUrl"))) {
+                if (checkVersion(version, res)) {
+                  return be;
+                }
+              }
+              if (value.equals(res.fhirType()+"/"+res.getChildValue("id"))) {
+                if (checkVersion(version, res)) {
+                  return be;
+                }
+              }
+            }
           }
         }
       }
@@ -126,12 +134,26 @@ public class Resolver {
         if (containerElement != null) {
           for (org.hl7.fhir.r5.elementmodel.Element p : containerElement.getChildren("parameter")) {
             org.hl7.fhir.r5.elementmodel.Element res = p.getNamedChild("resource");
-            if (res != null && value.equals(res.fhirType()+"/"+res.getChildValue("id")))
-              return p;
+            if (res != null && value.equals(res.fhirType()+"/"+res.getChildValue("id"))) {
+              if (checkVersion(version, res)) {
+                return p;
+              }
+            }
           }
         }
       }
       return null;
+    }
+
+    private boolean checkVersion(String version, org.hl7.fhir.r5.elementmodel.Element res) {
+      if (version == null) {
+        return true;
+      } else if (!res.hasChild("meta")) {
+        return false;
+      } else {
+        org.hl7.fhir.r5.elementmodel.Element meta = res.getNamedChild("meta");
+        return version.equals(meta.getChildValue("version"));
+      }
     }
   }
 

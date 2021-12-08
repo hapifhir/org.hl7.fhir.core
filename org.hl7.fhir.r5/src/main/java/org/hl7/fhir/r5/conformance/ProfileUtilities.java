@@ -691,8 +691,8 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
         if (!e.hasUserData(GENERATED_IN_SNAPSHOT)) {
           b.append(e.hasId() ? "id: "+e.getId() : "path: "+e.getPath());
+          ce++;
           if (e.hasId()) {
-            ce++;
             String msg = "No match found in the generated snapshot: check that the path and definitions are legal in the differential (including order)";
             messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+e.getId(), msg, ValidationMessage.IssueSeverity.ERROR));
           }
