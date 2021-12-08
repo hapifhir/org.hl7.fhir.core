@@ -953,7 +953,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (res != null) {
       return res;
     }
-
+    //FIXME
+    System.out.print("");
     if (options.isUseClient()) {
       // ok, first we try to validate locally
       try {
