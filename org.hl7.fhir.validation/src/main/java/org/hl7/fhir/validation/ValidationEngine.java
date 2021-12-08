@@ -3,6 +3,9 @@ package org.hl7.fhir.validation;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+
+import org.fhir.ucum.UcumEssenceService;
+import org.fhir.ucum.UcumException;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
@@ -226,6 +229,15 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       }
       context = SimpleWorkerContext.fromDefinitions(source, ValidatorUtils.loaderForVersion(version), new PackageVersion(src));
       ValidatorUtils.grabNatives(getBinaries(), source, "http://hl7.org/fhir");
+    }
+    // ucum-essence.xml should be in the class path. if it's not, ask about how to sort this out 
+    // on https://chat.fhir.org/#narrow/stream/179167-hapi
+    try {
+      ClassLoader classLoader = ValidationEngine.class.getClassLoader();
+      InputStream ue = classLoader.getResourceAsStream("ucum-essence.xml");
+      context.setUcumService(new UcumEssenceService(ue));
+    } catch (Exception e) {
+      throw new FHIRException("Error loading UCUM from embedded ucum-essence.xml: "+e.getMessage(), e);
     }
     initContext(tt);
   }
