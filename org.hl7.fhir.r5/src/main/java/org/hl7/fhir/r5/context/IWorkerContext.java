@@ -337,6 +337,7 @@ public interface IWorkerContext {
    */
   public <T extends Resource> T fetchResource(Class<T> class_, String uri);
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException;
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version);
 
   /** has the same functionality as fetchResource, but passes in information about the source of the 
    * reference (this may affect resolution of version)
