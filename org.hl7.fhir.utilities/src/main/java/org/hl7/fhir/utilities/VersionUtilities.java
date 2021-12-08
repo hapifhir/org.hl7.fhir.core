@@ -479,5 +479,16 @@ public class VersionUtilities {
     return mm1 != null && mm2 != null && mm1.equals(mm2);
   }
 
+  public static boolean isR5VerOrLater(String version) {
+    if (version == null) {
+      return false;
+    }
+    if (version.startsWith(CURRENT_VERSION) || version.equals("current")) {
+      return true;
+    }
+    String v = getMajMin(version);
+    return v.compareTo("4.5") >= 0; 
+  }
+
 
 }
