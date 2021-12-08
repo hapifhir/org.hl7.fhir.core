@@ -195,6 +195,8 @@ public class ToolingExtensions {
   public static final String EXT_XML_NAME = "http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name";
   public static final String EXT_BINDING_STYLE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-binding-style";
   public static final String EXT_BINARY_FORMAT = "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format";
+  public static final String EXT_TARGET_ID = "http://hl7.org/fhir/StructureDefinition/targetElement";
+  public static final String EXT_TARGET_PATH = "http://hl7.org/fhir/StructureDefinition/targetPath";
   
   // specific extension helpers
 
