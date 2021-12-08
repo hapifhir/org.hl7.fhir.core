@@ -22,17 +22,20 @@ class UtilitiesTest {
 
   public static final String TEST_TXT = "test.txt";
 
+  private static final String getNormalizedJavaHomeDir() {
+    return System.getenv("JAVA_HOME") == null ? null : Paths.get(System.getenv("JAVA_HOME")).normalize().toString();
+  }
+
   public static final String LINUX_TEMP_DIR = "/tmp/";
   public static final String LINUX_USER_DIR = System.getProperty("user.home") + "/";
-  public static final String LINUX_JAVA_HOME = System.getenv("JAVA_HOME") + "/";
+  public static final String LINUX_JAVA_HOME = getNormalizedJavaHomeDir() + "/";
 
   public static final String WIN_TEMP_DIR = "c:\\temp\\";
   public static final String WIN_USER_DIR = System.getProperty("user.home") + "\\";
-  public static final String WIN_JAVA_HOME = System.getenv("JAVA_HOME") + "\\";
+  public static final String WIN_JAVA_HOME = getNormalizedJavaHomeDir() + "\\";
 
   public static final String OSX_USER_DIR = System.getProperty("user.home") + "/";
-  public static final String OSX_JAVA_HOME = System.getenv("JAVA_HOME") == null ? null : Paths.get(System.getenv("JAVA_HOME")).normalize().toString() + "/";
-
+  public static final String OSX_JAVA_HOME = getNormalizedJavaHomeDir() + "/";
   @Test
   @DisplayName("Test Utilities.path maps temp directory correctly")
   public void testTempDirPath() throws IOException {

@@ -1279,8 +1279,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return fetchResourceWithException(cls, uri, null);
   }
   
-  @SuppressWarnings("unchecked")
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, CanonicalResource source) throws FHIRException {
+    return fetchResourceWithException(class_, uri, null, source);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, String version, CanonicalResource source) throws FHIRException {
     if (uri == null) {
       return null;
     }
@@ -1290,7 +1294,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     synchronized (lock) {
 
-      String version = null;
       if (uri.contains("|")) {
         version = uri.substring(uri.lastIndexOf("|")+1);
         uri = uri.substring(0, uri.lastIndexOf("|"));
@@ -1338,10 +1341,23 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (questionnaires.has(uri)) {
           return (T) questionnaires.get(uri, version);
         } 
+        if (uri.matches(Constants.URI_REGEX) && !uri.contains("ValueSet")) {
+          return null;
+        }
+
+        // it might be a special URL.
+        if (Utilities.isAbsoluteUrl(uri) || uri.startsWith("ValueSet/")) {
+          Resource res = null; // findTxValueSet(uri);
+          if (res != null) {
+            return (T) res;
+          }
+        }
         for (Map<String, ResourceProxy> rt : allResourcesById.values()) {
           for (ResourceProxy r : rt.values()) {
             if (uri.equals(r.getUrl())) {
-              return (T) r.getResource();
+              if (version == null || version == r.getResource().getMeta().getVersionId()) {
+                return (T) r.getResource();
+              }
             }
           }            
         }
@@ -1385,20 +1401,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (class_ == Questionnaire.class) {
         return (T) questionnaires.get(uri, version);
       } 
-      if (class_ == null) {
-        if (uri.matches(Constants.URI_REGEX) && !uri.contains("ValueSet")) {
-          return null;
-        }
-
-        // it might be a special URL.
-        if (Utilities.isAbsoluteUrl(uri) || uri.startsWith("ValueSet/")) {
-          Resource res = null; // findTxValueSet(uri);
-          if (res != null) {
-            return (T) res;
-          }
-        }
-        return null;
-      }
       if (supportedCodeSystems.contains(uri)) {
         return null;
       } 
@@ -1630,6 +1632,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public <T extends Resource> T fetchResource(Class<T> class_, String uri) {
     try {
       return fetchResourceWithException(class_, uri, null);
+    } catch (FHIRException e) {
+      throw new Error(e);
+    }
+  }
+  
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version) {
+    try {
+      return fetchResourceWithException(class_, uri, version, null);
     } catch (FHIRException e) {
       throw new Error(e);
     }
