@@ -147,8 +147,13 @@ public class TerminologyCache {
 
   public String extracted(JsonParser json, ValueSet vsc) throws IOException {
     String s = null;
-    if (vsc.getExpansion().getContains().size() > 1000 || vsc.getCompose().getIncludeFirstRep().getConcept().size() > 1000) {      
-      s = Integer.toString(vsc.hashCode()); // turn caching off - hack efficiency optimisation
+    if (vsc.getExpansion().getContains().size() > 1000 || vsc.getCompose().getIncludeFirstRep().getConcept().size() > 1000) {
+      int hashCode = (vsc.getExpansion().getContains().toString() + vsc.getCompose().getIncludeFirstRep().getConcept().toString()).hashCode();
+      StringBuilder sb = new StringBuilder();
+      for (ValueSet.ConceptReferenceComponent c : vsc.getCompose().getIncludeFirstRep().getConcept()) {
+        sb.append(c.getCode());
+      }
+      s = Integer.toString((vsc.getExpansion().getContains().toString() + sb.toString()).hashCode()); // turn caching off - hack efficiency optimisation
     } else {
       s = json.composeString(vsc);
     }
@@ -380,56 +385,58 @@ public class TerminologyCache {
   }
 
   private void load() throws FHIRException {
-    for (String fn : new File(folder).list()) {
-      if (fn.endsWith(".cache") && !fn.equals("validation.cache")) {
-        int c = 0;
-        try {
-          String title = fn.substring(0, fn.lastIndexOf("."));
-          NamedCache nc = new NamedCache();
-          nc.name = title;
-          caches.put(title, nc);
-          String src = TextFile.fileToString(Utilities.path(folder, fn));
-          if (src.startsWith("?"))
-            src = src.substring(1);
-          int i = src.indexOf(ENTRY_MARKER); 
-          while (i > -1) {
-            c++;
-            String s = src.substring(0, i);
-            src = src.substring(i+ENTRY_MARKER.length()+1);
-            i = src.indexOf(ENTRY_MARKER);
-            if (!Utilities.noString(s)) {
-              int j = s.indexOf(BREAK);
-              String q = s.substring(0, j);
-              String p = s.substring(j+BREAK.length()+1).trim();
-              CacheEntry ce = new CacheEntry();
-              ce.persistent = true;
-              ce.request = q;
-              boolean e = p.charAt(0) == 'e';
-              p = p.substring(3);
-              JsonObject o = (JsonObject) new com.google.gson.JsonParser().parse(p);
-              String error = loadJS(o.get("error"));
-              if (e) {
-                if (o.has("valueSet"))
-                  ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser().parse(o.getAsJsonObject("valueSet")), error, TerminologyServiceErrorClass.UNKNOWN);
-                else
-                  ce.e = new ValueSetExpansionOutcome(error, TerminologyServiceErrorClass.UNKNOWN);
-              } else {
-                String t = loadJS(o.get("severity"));
-                IssueSeverity severity = t == null ? null :  IssueSeverity.fromCode(t);
-                String display = loadJS(o.get("display"));
-                String code = loadJS(o.get("code"));
-                String system = loadJS(o.get("system"));
-                String definition = loadJS(o.get("definition"));
-                t = loadJS(o.get("class"));
-                TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t) ;
-                ce.v = new ValidationResult(severity, error, system, new ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code)).setErrorClass(errorClass);
+    synchronized (lock) {
+      for (String fn : new File(folder).list()) {
+        if (fn.endsWith(".cache") && !fn.equals("validation.cache")) {
+          int c = 0;
+          try {
+            String title = fn.substring(0, fn.lastIndexOf("."));
+            NamedCache nc = new NamedCache();
+            nc.name = title;
+            caches.put(title, nc);
+            String src = TextFile.fileToString(Utilities.path(folder, fn));
+            if (src.startsWith("?"))
+              src = src.substring(1);
+            int i = src.indexOf(ENTRY_MARKER);
+            while (i > -1) {
+              c++;
+              String s = src.substring(0, i);
+              src = src.substring(i + ENTRY_MARKER.length() + 1);
+              i = src.indexOf(ENTRY_MARKER);
+              if (!Utilities.noString(s)) {
+                int j = s.indexOf(BREAK);
+                String q = s.substring(0, j);
+                String p = s.substring(j + BREAK.length() + 1).trim();
+                CacheEntry ce = new CacheEntry();
+                ce.persistent = true;
+                ce.request = q;
+                boolean e = p.charAt(0) == 'e';
+                p = p.substring(3);
+                JsonObject o = (JsonObject) new com.google.gson.JsonParser().parse(p);
+                String error = loadJS(o.get("error"));
+                if (e) {
+                  if (o.has("valueSet"))
+                    ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser().parse(o.getAsJsonObject("valueSet")), error, TerminologyServiceErrorClass.UNKNOWN);
+                  else
+                    ce.e = new ValueSetExpansionOutcome(error, TerminologyServiceErrorClass.UNKNOWN);
+                } else {
+                  String t = loadJS(o.get("severity"));
+                  IssueSeverity severity = t == null ? null : IssueSeverity.fromCode(t);
+                  String display = loadJS(o.get("display"));
+                  String code = loadJS(o.get("code"));
+                  String system = loadJS(o.get("system"));
+                  String definition = loadJS(o.get("definition"));
+                  t = loadJS(o.get("class"));
+                  TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t);
+                  ce.v = new ValidationResult(severity, error, system, new ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code)).setErrorClass(errorClass);
+                }
+                nc.map.put(String.valueOf(hashNWS(ce.request)), ce);
+                nc.list.add(ce);
               }
-              nc.map.put(String.valueOf(hashNWS(ce.request)), ce);
-              nc.list.add(ce);
             }
-          }        
-        } catch (Exception e) {
-          throw new FHIRException("Error loading "+fn+": "+e.getMessage()+" entry "+c, e);
+          } catch (Exception e) {
+            throw new FHIRException("Error loading " + fn + ": " + e.getMessage() + " entry " + c, e);
+          }
         }
       }
     }

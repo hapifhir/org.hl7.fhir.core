@@ -148,6 +148,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       if (cs == null) {
         cs = findSpecialCodeSystem(system);
       }
+      System.out.print("");
       if (cs == null) {
         warningMessage = "Unable to resolve system "+system;
         if (!inExpansion) {
