@@ -36,11 +36,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
@@ -84,10 +83,19 @@ public class TerminologyCache {
   private static final String ENTRY_MARKER = "-------------------------------------------------------------------------------------";
   private static final String BREAK = "####";
 
+  @Getter
+  private int requestCount;
+  @Getter
+  private int hitCount;
+  @Getter
+  private int networkCount;
+
   public class CacheToken {
     private String name;
     private String key;
     private String request;
+    private boolean hasVersion;
+
     public void setName(String n) {
       if (name == null)
         name = n;
@@ -114,12 +122,21 @@ public class TerminologyCache {
   private String folder;
   private Map<String, NamedCache> caches = new HashMap<String, NamedCache>();
   private static boolean noCaching;
+  private static boolean cacheErrors;
+
+  static {
+    String cacheErrorsProperty = System.getProperty("cacheErrors");
+    cacheErrors = true;//cacheErrorsProperty != null ? "TRUE".equals(cacheErrorsProperty.toUpperCase(Locale.ROOT)) : false;
+  }
   
   // use lock from the context
   public TerminologyCache(Object lock, String folder) throws FileNotFoundException, IOException, FHIRException {
     super();
     this.lock = lock;
     this.folder = folder;
+    requestCount = 0;
+    hitCount = 0;
+    networkCount = 0;
     if (folder != null)
       load();
   }
@@ -133,6 +150,7 @@ public class TerminologyCache {
       ct.name = getNameForSystem(code.getSystem());
     else
       ct.name = NAME_FOR_NO_SYSTEM;
+    ct.hasVersion = code.hasVersion();
     JsonParser json = new JsonParser();
     json.setOutputStyle(OutputStyle.PRETTY);
     ValueSet vsc = getVSEssense(vs);
@@ -145,15 +163,16 @@ public class TerminologyCache {
     return ct;
   }
 
+  private String getValueSetHash(ValueSet vsc) {
+    final String expansionKey = vsc.getExpansion().getContains().stream().map(x -> x.getCode()).collect(Collectors.joining(","));
+    final String composeKey = vsc.getCompose().getIncludeFirstRep().getConcept().stream().map(x -> x.getCode()).collect(Collectors.joining(","));
+    return Integer.toString((expansionKey + "\t" + composeKey).hashCode());
+  }
+
   public String extracted(JsonParser json, ValueSet vsc) throws IOException {
     String s = null;
     if (vsc.getExpansion().getContains().size() > 1000 || vsc.getCompose().getIncludeFirstRep().getConcept().size() > 1000) {
-      int hashCode = (vsc.getExpansion().getContains().toString() + vsc.getCompose().getIncludeFirstRep().getConcept().toString()).hashCode();
-      StringBuilder sb = new StringBuilder();
-      for (ValueSet.ConceptReferenceComponent c : vsc.getCompose().getIncludeFirstRep().getConcept()) {
-        sb.append(c.getCode());
-      }
-      s = Integer.toString((vsc.getExpansion().getContains().toString() + sb.toString()).hashCode()); // turn caching off - hack efficiency optimisation
+      s = getValueSetHash(vsc); // save a hash representation instead of a complete valueset
     } else {
       s = json.composeString(vsc);
     }
@@ -165,7 +184,9 @@ public class TerminologyCache {
     for (Coding c : code.getCoding()) {
       if (c.hasSystem())
         ct.setName(getNameForSystem(c.getSystem()));
+        ct.hasVersion = c.hasVersion();
     }
+
     JsonParser json = new JsonParser();
     json.setOutputStyle(OutputStyle.PRETTY);
     ValueSet vsc = getVSEssense(vs);
@@ -194,14 +215,20 @@ public class TerminologyCache {
     CacheToken ct = new CacheToken();
     ValueSet vsc = getVSEssense(vs);
     for (ConceptSetComponent inc : vs.getCompose().getInclude())
-      if (inc.hasSystem())
+      if (inc.hasSystem()) {
         ct.setName(getNameForSystem(inc.getSystem()));
+        ct.hasVersion = inc.hasVersion();
+      }
     for (ConceptSetComponent inc : vs.getCompose().getExclude())
-      if (inc.hasSystem())
+      if (inc.hasSystem()) {
         ct.setName(getNameForSystem(inc.getSystem()));
+        ct.hasVersion = inc.hasVersion();
+      }
     for (ValueSetExpansionContainsComponent inc : vs.getExpansion().getContains())
-      if (inc.hasSystem())
+      if (inc.hasSystem()) {
         ct.setName(getNameForSystem(inc.getSystem()));
+        ct.hasVersion = inc.hasVersion();
+      }
     JsonParser json = new JsonParser();
     json.setOutputStyle(OutputStyle.PRETTY);
     try {
@@ -277,6 +304,15 @@ public class TerminologyCache {
     if (noCaching) {
       return;
     }
+
+    if ( !cacheErrors &&
+      ( e.v!= null
+        && e.v.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED
+        && !cacheToken.hasVersion)) {
+      return;
+    }
+
+
     boolean n = nc.map.containsKey(cacheToken.key);
     nc.map.put(cacheToken.key, e);
     if (persistent) {
@@ -293,16 +329,22 @@ public class TerminologyCache {
   }
 
   public ValidationResult getValidation(CacheToken cacheToken) {
+
     if (cacheToken.key == null) {
       return null;
     }
+
     synchronized (lock) {
+      requestCount++;
       NamedCache nc = getNamedCache(cacheToken);
       CacheEntry e = nc.map.get(cacheToken.key);
-      if (e == null)
+      if (e == null) {
+        networkCount++;
         return null;
-      else
+      } else {
+        hitCount++;
         return e.v;
+      }
     }
   }
 
