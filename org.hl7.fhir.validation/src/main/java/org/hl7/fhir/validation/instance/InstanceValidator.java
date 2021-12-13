@@ -2114,52 +2114,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isAbsoluteUrl(url), 
             node.isContained() ? I18nConstants.TYPE_SPECIFIC_CHECKS_CANONICAL_CONTAINED : I18nConstants.TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE, url);                  
       } else {
-        // now, do we check the URI target?
-        if (fetcher != null && !type.equals("uuid")) {
-          boolean found;
-          try {
-            found = isDefinitionURL(url) || (allowExamples && (url.contains("example.org") || url.contains("acme.com")) || url.contains("acme.org")) || (url.startsWith("http://hl7.org/fhir/tools")) || 
-                SpecialExtensions.isKnownExtension(url) || isXverUrl(url) || fetcher.resolveURL(this, hostContext, path, url, type);
-          } catch (IOException e1) {
-            found = false;
-          }
-          if (!found) {
-            if (type.equals("canonical")) {
-              ReferenceValidationPolicy rp = policyAdvisor == null ? ReferenceValidationPolicy.CHECK_VALID : policyAdvisor.policyForReference(this, hostContext, path, url);
-              if (rp == ReferenceValidationPolicy.CHECK_EXISTS || rp == ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE) {
-                rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url);
-              } else {
-                hint(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url);
-              }
-            } else {
-              if (url.contains("hl7.org") || url.contains("fhir.org")) {
-                rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
-              } else if (url.contains("example.org") || url.contains("acme.com")) {
-                rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE, url);
-              } else {
-                warning(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
-              }
-            }
-          } else {
-            if (type.equals("canonical")) {
-              ReferenceValidationPolicy rp = policyAdvisor == null ? ReferenceValidationPolicy.CHECK_VALID : policyAdvisor.policyForReference(this, hostContext, path, url);
-              if (rp == ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE || rp == ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS || rp == ReferenceValidationPolicy.CHECK_VALID) {
-                try {
-                  Resource r = fetcher.fetchCanonicalResource(this, url);
-                  if (r == null) {
-                    rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url);                    
-                  } else if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, isCorrectCanonicalType(r, context), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_TYPE, url, r.fhirType(), listExpectedCanonicalTypes(context))) {
-                    if (rp == ReferenceValidationPolicy.CHECK_VALID) {
-                      // todo....
-                    }
-                  }
-                } catch (Exception ex) {
-                  // won't happen 
-                }
-              }
-            }            
-          }
-        }
+        validateReference(hostContext, errors, path, type, context, e, url);
       }
     }
     if (type.equals(ID) && !"Resource.id".equals(context.getBase().getPath())) {
@@ -2323,6 +2278,67 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     // for nothing to check
   }
 
+  public void validateReference(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, String type, ElementDefinition context, Element e, String url) {
+    // now, do we check the URI target?
+    if (fetcher != null && !type.equals("uuid")) {
+      boolean found;
+      try {
+        found = isDefinitionURL(url) || (allowExamples && (url.contains("example.org") || url.contains("acme.com")) || url.contains("acme.org")) || (url.startsWith("http://hl7.org/fhir/tools")) || 
+            SpecialExtensions.isKnownExtension(url) || isXverUrl(url);
+        if (!found) {
+          found = fetcher.resolveURL(this, hostContext, path, url, type);
+        }
+      } catch (IOException e1) {
+        found = false;
+      }
+      if (!found) {
+        if (type.equals("canonical")) {
+          ReferenceValidationPolicy rp = policyAdvisor == null ? ReferenceValidationPolicy.CHECK_VALID : policyAdvisor.policyForReference(this, hostContext, path, url);
+          if (rp == ReferenceValidationPolicy.CHECK_EXISTS || rp == ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE) {
+            rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url);
+          } else {
+            hint(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url);
+          }
+        } else {
+          if (url.contains("hl7.org") || url.contains("fhir.org")) {
+            rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
+          } else if (url.contains("example.org") || url.contains("acme.com")) {
+            rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE, url);
+          } else {
+            warning(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
+          }
+        }
+      } else {
+        if (type.equals("canonical")) {
+          ReferenceValidationPolicy rp = policyAdvisor == null ? ReferenceValidationPolicy.CHECK_VALID : policyAdvisor.policyForReference(this, hostContext, path, url);
+          if (rp == ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE || rp == ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS || rp == ReferenceValidationPolicy.CHECK_VALID) {
+            try {
+              Resource r = null;
+              if (url.startsWith("#")) {
+                r = loadContainedResource(errors, path, hostContext.getRootResource(), url.substring(1), Resource.class);
+              }
+              if (r == null) {
+                fetcher.fetchCanonicalResource(this, url);
+              }
+              if (r == null) {
+                r = this.context.fetchResource(Resource.class, url);
+              }
+              if (r == null) {
+                warning(errors, IssueType.INVALID, e.line(), e.col(), path, rp != ReferenceValidationPolicy.CHECK_VALID, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE_NC, url);                    
+              } else if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, isCorrectCanonicalType(r, context), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_TYPE, url, r.fhirType(), listExpectedCanonicalTypes(context))) {
+                if (rp == ReferenceValidationPolicy.CHECK_VALID) {
+                  // todo....
+                }
+              }
+            } catch (Exception ex) {
+              // won't happen 
+            }
+          }
+        }            
+      }
+    }
+  }
+
   private List<String> listExpectedCanonicalTypes(ElementDefinition context) {
     List<String> res = new ArrayList<>();
     TypeRefComponent tr = context.getType("canonical");
@@ -2354,11 +2370,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean isCorrectCanonicalType(Resource r, CanonicalType p) {
     String url = p.getValue();
-    if (url != null && url.startsWith("http://hl7.org/fhir/StructureDefinition/")) {
-      url = url.substring("http://hl7.org/fhir/StructureDefinition/".length());
-      return Utilities.existsInList(url, "Resource", "CanonicalResource") || url.equals(r.fhirType());
+    String t = null;
+    if (url.startsWith("http://hl7.org/fhir/StructureDefinition/")) {
+      t = url.substring("http://hl7.org/fhir/StructureDefinition/".length());
+    } else {
+      StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+      if (sd != null) {
+        t = sd.getType();
+      }
     }
-    return false;
+    if (t == null ) {
+      return false;
+    } else {
+      return Utilities.existsInList(t, "Resource", "CanonicalResource") || t.equals(r.fhirType());
+    }
   }
 
   private boolean isCanonicalURLElement(Element e) {
