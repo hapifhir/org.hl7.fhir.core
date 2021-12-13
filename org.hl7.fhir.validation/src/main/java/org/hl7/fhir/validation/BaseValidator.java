@@ -44,6 +44,7 @@ import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
+import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.IValidationContextResourceLoader;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -61,7 +62,8 @@ import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
-public class BaseValidator {
+public class BaseValidator implements IValidationContextResourceLoader {
+
   public class TrackedLocationRelatedMessage {
     private Object location;
     private ValidationMessage vmsg;
@@ -996,7 +998,8 @@ public class BaseValidator {
     }
   }
   
-  protected Resource loadContainedResource(List<ValidationMessage> errors, String path, Element resource, String id, Class class1) throws FHIRException {
+  @Override
+  public Resource loadContainedResource(List<ValidationMessage> errors, String path, Element resource, String id, Class<? extends Resource> class1) throws FHIRException {
     for (Element contained : resource.getChildren("contained")) {
       if (contained.getIdBase().equals(id)) {
         return loadFoundResource(errors, path, contained, class1);
@@ -1005,7 +1008,7 @@ public class BaseValidator {
     return null;
   }
   
-  protected Resource loadFoundResource(List<ValidationMessage> errors, String path, Element resource, Class class1) throws FHIRException {
+  protected Resource loadFoundResource(List<ValidationMessage> errors, String path, Element resource, Class<? extends Resource> class1) throws FHIRException {
     try {
       FhirPublication v = FhirPublication.fromCode(context.getVersion());
       ByteArrayOutputStream bs = new ByteArrayOutputStream();

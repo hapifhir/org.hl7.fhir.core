@@ -514,6 +514,7 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE = "TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE";
   public static final String TYPE_SPECIFIC_CHECKS_DT_CANONICAL_TYPE = "TYPE_SPECIFIC_CHECKS_DT_CANONICAL_TYPE";
   public static final String TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE = "TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE_NC = "TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE_NC";
   public static final String TYPE_SPECIFIC_CHECKS_DT_UUID_STRAT = "Type_Specific_Checks_DT_UUID_Strat";
   public static final String TYPE_SPECIFIC_CHECKS_DT_UUID_VALID = "Type_Specific_Checks_DT_UUID_Valid";
   public static final String UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER = "Unable_to_connect_to_terminology_server";
