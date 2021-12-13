@@ -197,6 +197,7 @@ public class ToolingExtensions {
   public static final String EXT_BINARY_FORMAT = "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format";
   public static final String EXT_TARGET_ID = "http://hl7.org/fhir/StructureDefinition/targetElement";
   public static final String EXT_TARGET_PATH = "http://hl7.org/fhir/StructureDefinition/targetPath";
+  public static final String EXT_VALUESET_SYSTEM = "http://hl7.org/fhir/StructureDefinition/valueset-system";
   
   // specific extension helpers
 
