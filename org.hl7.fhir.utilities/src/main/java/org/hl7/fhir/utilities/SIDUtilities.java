@@ -10,11 +10,9 @@ public class SIDUtilities {
   public static List<String> codeSystemList() {
     List<String> codeSystems = new ArrayList<>();
     codeSystems.add("http://hl7.org/fhir/sid/ndc");
-    codeSystems.add("http://hl7.org/fhir/sid/icd-10");
     codeSystems.add("http://hl7.org/fhir/sid/icpc2");
     codeSystems.add("http://hl7.org/fhir/sid/icd-9");
     codeSystems.add("http://hl7.org/fhir/sid/icd-10");  
-    codeSystems.add("http://hl7.org/fhir/sid/icpc2"); 
     codeSystems.add("http://hl7.org/fhir/sid/cvx");
     codeSystems.add("http://hl7.org/fhir/sid/srt");
     codeSystems.add("http://hl7.org/fhir/sid/icd-10-vn");
@@ -55,8 +53,38 @@ public class SIDUtilities {
     allSystems.addAll(idSystemList());
     return allSystems;
   }
-  
-  
 
-  
+  public static boolean isInvalidVersion(String u, String v) {
+    if (v == null) {
+      return false;
+    } else {
+      if (idSystemList().contains(u)) {
+        return true;
+      } else {
+        switch (u) {
+        case "http://hl7.org/fhir/sid/ndc":
+          return v.matches("[\\d]{8}");
+        case "http://hl7.org/fhir/sid/icpc2": 
+          return false;
+        case "http://hl7.org/fhir/sid/icd-10":
+          return false;
+        case "http://hl7.org/fhir/sid/icd-9":
+          return false;
+        case "http://hl7.org/fhir/sid/cvx":
+          return v.matches("[\\d]{8}");
+        case "http://hl7.org/fhir/sid/srt":
+          return false;
+        case "http://hl7.org/fhir/sid/icd-10-vn":
+          return false;
+        case "http://hl7.org/fhir/sid/icd-10-cm":
+          return false;
+        case "http://hl7.org/fhir/sid/icd-9-cm":
+          return false;
+        default:
+          return true;
+        }
+      }
+    }
+  }
+    
 }

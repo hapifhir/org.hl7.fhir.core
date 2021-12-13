@@ -53,6 +53,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.context.BaseWorkerContext.ResourceProxy;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.context.IWorkerContext.ILoggingService.LogCategory;
@@ -111,6 +112,7 @@ import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorCla
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.ValueSetExpanderSimple;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.OIDUtils;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.ToolingClientLogger;
@@ -129,6 +131,35 @@ import com.google.gson.JsonObject;
 import ca.uhn.fhir.model.valueset.BundleEntrySearchModeEnum;
 
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext{
+
+  public class ResourceProxy {
+    private Resource resource;
+    private CanonicalResourceProxy proxy;
+
+    public ResourceProxy(Resource resource) {
+      super();
+      this.resource = resource;
+    }
+    public ResourceProxy(CanonicalResourceProxy proxy) {
+      super();
+      this.proxy = proxy;
+    }
+    
+    public Resource getResource() {
+      return resource != null ? resource : proxy.getResource();
+    }
+    
+    public String getUrl() {
+      if (resource == null) {
+        return proxy.getUrl();
+      } else if (resource instanceof CanonicalResource) {
+        return ((CanonicalResource) resource).getUrl(); 
+      } else {
+        return null;
+      }
+    }
+    
+  }
 
   public class MetadataResourceVersionComparator<T extends CanonicalResource> implements Comparator<T> {
 
@@ -166,7 +197,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private boolean isTxCaching;
   private Set<String> cached = new HashSet<>();
   
-  private Map<String, Map<String, Resource>> allResourcesById = new HashMap<String, Map<String, Resource>>();
+  private Map<String, Map<String, ResourceProxy>> allResourcesById = new HashMap<String, Map<String, ResourceProxy>>();
   // all maps are to the full URI
   private CanonicalResourceManager<CodeSystem> codeSystems = new CanonicalResourceManager<CodeSystem>(false);
   private Set<String> supportedCodeSystems = new HashSet<String>();
@@ -279,6 +310,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public void registerResourceFromPackage(CanonicalResourceProxy r, PackageVersion packageInfo) throws FHIRException {
     synchronized (lock) {
+      Map<String, ResourceProxy> map = allResourcesById.get(r.getType());
+      if (map == null) {
+        map = new HashMap<String, ResourceProxy>();
+        allResourcesById.put(r.getType(), map);
+      }
+      map.put(r.getId(), new ResourceProxy(r));
 
         String url = r.getUrl();
         if (!allowLoadingDuplicates && hasResource(r.getType(), url)) {
@@ -341,12 +378,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public void cacheResourceFromPackage(Resource r, PackageVersion packageInfo) throws FHIRException {
     synchronized (lock) {
-      Map<String, Resource> map = allResourcesById.get(r.fhirType());
+      Map<String, ResourceProxy> map = allResourcesById.get(r.fhirType());
       if (map == null) {
-        map = new HashMap<String, Resource>();
+        map = new HashMap<String, ResourceProxy>();
         allResourcesById.put(r.fhirType(), map);
       }
-      map.put(r.getId(), r);
+      if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
+        map.put(r.getId(), new ResourceProxy(r));
+      }
 
       if (r instanceof CodeSystem || r instanceof NamingSystem) {
         oidCache.clear();
@@ -892,6 +931,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs) {
+    ValidationContextCarrier ctxt = new ValidationContextCarrier();
+    return validateCode(options, code, vs, ctxt);
+  }
+
+  @Override
+  public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs, ValidationContextCarrier ctxt) {
     if (options == null) {
       options = ValidationOptions.defaults();
     }
@@ -912,7 +957,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (options.isUseClient()) {
       // ok, first we try to validate locally
       try {
-        ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, this);
+        ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, this, ctxt);
         if (!vsc.isServerSide(code.getSystem())) {
           res = vsc.validateCode(code);
           if (txCache != null) {
@@ -1033,13 +1078,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
     if (vs != null) {
-      if (isTxCaching && cacheId != null && cached.contains(vs.getUrl()+"|"+vs.getVersion())) {
+      if (isTxCaching && cacheId != null && vs.getUrl() != null && cached.contains(vs.getUrl()+"|"+vs.getVersion())) {
         pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()+(vs.hasVersion() ? "|"+vs.getVersion() : "")));        
       } else if (options.getVsAsUrl()){
         pin.addParameter().setName("url").setValue(new StringType(vs.getUrl()));
       } else {
         pin.addParameter().setName("valueSet").setResource(vs);
-        cached.add(vs.getUrl()+"|"+vs.getVersion());
+        if (vs.getUrl() != null) {
+          cached.add(vs.getUrl()+"|"+vs.getVersion());
+        }
       }
       cache = true;
       addDependentResources(pin, vs);
@@ -1246,8 +1293,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return fetchResourceWithException(cls, uri, null);
   }
   
-  @SuppressWarnings("unchecked")
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, CanonicalResource source) throws FHIRException {
+    return fetchResourceWithException(class_, uri, null, source);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, String version, CanonicalResource source) throws FHIRException {
     if (uri == null) {
       return null;
     }
@@ -1257,7 +1308,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     synchronized (lock) {
 
-      String version = null;
       if (uri.contains("|")) {
         version = uri.substring(uri.lastIndexOf("|")+1);
         uri = uri.substring(0, uri.lastIndexOf("|"));
@@ -1305,13 +1355,23 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (questionnaires.has(uri)) {
           return (T) questionnaires.get(uri, version);
         } 
-        for (Map<String, Resource> rt : allResourcesById.values()) {
-          for (Resource r : rt.values()) {
-            if (r instanceof CanonicalResource) {
-              CanonicalResource mr = (CanonicalResource) r;
-              if (uri.equals(mr.getUrl())) {
-                return (T) mr;
-              } 
+        if (uri.matches(Constants.URI_REGEX) && !uri.contains("ValueSet")) {
+          return null;
+        }
+
+        // it might be a special URL.
+        if (Utilities.isAbsoluteUrl(uri) || uri.startsWith("ValueSet/")) {
+          Resource res = null; // findTxValueSet(uri);
+          if (res != null) {
+            return (T) res;
+          }
+        }
+        for (Map<String, ResourceProxy> rt : allResourcesById.values()) {
+          for (ResourceProxy r : rt.values()) {
+            if (uri.equals(r.getUrl())) {
+              if (version == null || version == r.getResource().getMeta().getVersionId()) {
+                return (T) r.getResource();
+              }
             }
           }            
         }
@@ -1355,20 +1415,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (class_ == Questionnaire.class) {
         return (T) questionnaires.get(uri, version);
       } 
-      if (class_ == null) {
-        if (uri.matches(Constants.URI_REGEX) && !uri.contains("ValueSet")) {
-          return null;
-        }
-
-        // it might be a special URL.
-        if (Utilities.isAbsoluteUrl(uri) || uri.startsWith("ValueSet/")) {
-          Resource res = null; // findTxValueSet(uri);
-          if (res != null) {
-            return (T) res;
-          }
-        }
-        return null;
-      }
       if (supportedCodeSystems.contains(uri)) {
         return null;
       } 
@@ -1494,13 +1540,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (questionnaires.has(uri)) {
           return (T) questionnaires.get(uri, version);
         } 
-        for (Map<String, Resource> rt : allResourcesById.values()) {
-          for (Resource r : rt.values()) {
-            if (r instanceof CanonicalResource) {
-              CanonicalResource mr = (CanonicalResource) r;
-              if (uri.equals(mr.getUrl())) {
-                return (T) mr;
-              } 
+        for (Map<String, ResourceProxy> rt : allResourcesById.values()) {
+          for (ResourceProxy r : rt.values()) {
+            if (uri.equals(r.getUrl())) {
+              return (T) r.getResource();
             }
           }            
         }
@@ -1574,7 +1617,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       String[] parts = uri.split("\\/");
       if (!Utilities.noString(type) && parts.length == 1) {
         if (allResourcesById.containsKey(type)) {
-          return allResourcesById.get(type).get(parts[0]);
+          return allResourcesById.get(type).get(parts[0]).getResource();
         } else {
           return null;
         }
@@ -1585,7 +1628,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
             throw new Error(formatMessage(I18nConstants.RESOURCE_TYPE_MISMATCH_FOR___, type, uri));
           }
         }
-        return allResourcesById.get(parts[parts.length-2]).get(parts[parts.length-1]);
+        return allResourcesById.get(parts[parts.length-2]).get(parts[parts.length-1]).getResource();
       } else {
         throw new Error(formatMessage(I18nConstants.UNABLE_TO_PROCESS_REQUEST_FOR_RESOURCE_FOR___, type, uri));
       }
@@ -1603,6 +1646,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public <T extends Resource> T fetchResource(Class<T> class_, String uri) {
     try {
       return fetchResourceWithException(class_, uri, null);
+    } catch (FHIRException e) {
+      throw new Error(e);
+    }
+  }
+  
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version) {
+    try {
+      return fetchResourceWithException(class_, uri, version, null);
     } catch (FHIRException e) {
       throw new Error(e);
     }
@@ -1697,13 +1748,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public void dropResource(String fhirType, String id) {
     synchronized (lock) {
 
-      Map<String, Resource> map = allResourcesById.get(fhirType);
+      Map<String, ResourceProxy> map = allResourcesById.get(fhirType);
       if (map == null) {
-        map = new HashMap<String, Resource>();
+        map = new HashMap<String, ResourceProxy>();
         allResourcesById.put(fhirType, map);
       }
       if (map.containsKey(id)) {
-        map.remove(id);
+        map.remove(id); // this is a challenge because we might have more than one resource with this id (different versions)
       }
 
       if (fhirType.equals("StructureDefinition")) {

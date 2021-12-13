@@ -397,7 +397,6 @@ public class VersionUtilities {
 
     }
     if (isR4Ver(version)) {
-
       res.add("CodeSystem");
       res.add("ActivityDefinition");
       res.add("CapabilityStatement");
@@ -425,6 +424,38 @@ public class VersionUtilities {
       res.add("SearchParameter");
       res.add("StructureDefinition");
       res.add("StructureMap");
+      res.add("TerminologyCapabilities");
+      res.add("TestScript");
+      res.add("ValueSet");
+    }
+    if (isR4BVer(version)) {
+      res.add("ActivityDefinition");
+      res.add("CapabilityStatement");
+      res.add("ChargeItemDefinition");
+      res.add("Citation");
+      res.add("CodeSystem");
+      res.add("CompartmentDefinition");
+      res.add("ConceptMap");
+      res.add("EventDefinition");
+      res.add("Evidence");
+      res.add("EvidenceReport");
+      res.add("EvidenceVariable");
+      res.add("ExampleScenario");
+      res.add("GraphDefinition");
+      res.add("ImplementationGuide");
+      res.add("Library");
+      res.add("Measure");
+      res.add("MessageDefinition");
+      res.add("NamingSystem");
+      res.add("OperationDefinition");
+      res.add("PlanDefinition");
+      res.add("Questionnaire");
+      res.add("ResearchDefinition");
+      res.add("ResearchElementDefinition");
+      res.add("SearchParameter");
+      res.add("StructureDefinition");
+      res.add("StructureMap");
+      res.add("SubscriptionTopic");
       res.add("TerminologyCapabilities");
       res.add("TestScript");
       res.add("ValueSet");
@@ -477,6 +508,17 @@ public class VersionUtilities {
     String mm1 = getMajMin(v1);
     String mm2 = getMajMin(v2);
     return mm1 != null && mm2 != null && mm1.equals(mm2);
+  }
+
+  public static boolean isR5VerOrLater(String version) {
+    if (version == null) {
+      return false;
+    }
+    if (version.startsWith(CURRENT_VERSION) || version.equals("current")) {
+      return true;
+    }
+    String v = getMajMin(version);
+    return v.compareTo("4.5") >= 0; 
   }
 
 

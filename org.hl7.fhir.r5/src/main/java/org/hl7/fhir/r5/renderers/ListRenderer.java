@@ -59,7 +59,8 @@ public class ListRenderer extends ResourceRenderer {
       shortForRef(td, list.get("subject"));
     }
     if (list.has("encounter")) {
-      shortForRef(td.tx("Encounter: "), list.get("encounter"));
+      td.tx("Encounter: ");
+      shortForRef(td, list.get("encounter"));
     }
     if (list.has("source")) {
       td.tx("Source: ");
