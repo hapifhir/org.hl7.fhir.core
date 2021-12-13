@@ -236,6 +236,9 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       }
     }
     CachedCanonicalResource<T> existing = cr.hasVersion() ? map.get(cr.getUrl()+"|"+cr.getVersion()) : map.get(cr.getUrl()+"|#0");
+    if (existing != null && (cr.getPackageInfo() != null && cr.getPackageInfo().isExamplesPackage())) {
+      return;
+    }
     if (existing != null) {
       list.remove(existing);
     }
