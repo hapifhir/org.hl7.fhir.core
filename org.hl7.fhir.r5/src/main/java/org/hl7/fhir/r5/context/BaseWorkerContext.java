@@ -899,7 +899,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (code.hasSystem()) {
       codeSystemsUsed.add(code.getSystem());
     }
-    CacheToken cacheToken = txCache != null ? txCache.generateValidationToken(options, code, vs) : null;
+    final CacheToken cacheToken = txCache != null ? txCache.generateValidationToken(options, code, vs) : null;
     ValidationResult res = null;
     if (txCache != null) {
       res = txCache.getValidation(cacheToken);
@@ -948,14 +948,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (options.isGuessSystem()) {
         pIn.addParameter().setName("implySystem").setValue(new BooleanType(true));
       }
-      setTerminologyOptions(options, pIn);res = validateOnServer(vs, pIn, options);
+      setTerminologyOptions(options, pIn);
+      res = validateOnServer(vs, pIn, options);
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog == null ? null : txLog.getLastId()).setErrorClass(TerminologyServiceErrorClass.SERVER_ERROR);
     }
     if (res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED && !code.hasVersion()) {
       unsupportedCodeSystems.add(codeKey);
     }
-    if (txCache != null) { // we never cache unsuppoted code systems - we always keep trying (but only once per run)
+    if (txCache != null) { // we never cache unsupported code systems - we always keep trying (but only once per run)
       txCache.cacheValidation(cacheToken, res, TerminologyCache.PERMANENT);
     }
     return res;
