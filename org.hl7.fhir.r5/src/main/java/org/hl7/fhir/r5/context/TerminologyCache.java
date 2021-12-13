@@ -126,7 +126,8 @@ public class TerminologyCache {
 
   static {
     String cacheErrorsProperty = System.getProperty("cacheErrors");
-    cacheErrors = true;//cacheErrorsProperty != null ? "TRUE".equals(cacheErrorsProperty.toUpperCase(Locale.ROOT)) : false;
+    cacheErrors = cacheErrorsProperty != null ? "TRUE".equals(cacheErrorsProperty.toUpperCase(Locale.ROOT)) : false;
+    System.out.println();
   }
   
   // use lock from the context
