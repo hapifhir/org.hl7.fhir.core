@@ -56,6 +56,9 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
+import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -69,11 +72,51 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
   private IWorkerContext context;
   private Map<String, ValueSetCheckerSimple> inner = new HashMap<>();
   private ValidationOptions options;
+  private ValidationContextCarrier localContext;
+  private List<CodeSystem> localSystems = new ArrayList<>();
 
   public ValueSetCheckerSimple(ValidationOptions options, ValueSet source, IWorkerContext context) {
     this.valueset = source;
     this.context = context;
     this.options = options;
+  }
+  
+  public ValueSetCheckerSimple(ValidationOptions options, ValueSet source, IWorkerContext context, ValidationContextCarrier ctxt) {
+    this.valueset = source;
+    this.context = context;
+    this.options = options;
+    this.localContext = ctxt;
+    analyseValueSet();
+  }
+
+  private void analyseValueSet() {
+    if (localContext != null) {
+      if (valueset != null) {
+        for (ConceptSetComponent i : valueset.getCompose().getInclude()) {
+          analyseComponent(i);
+        }
+        for (ConceptSetComponent i : valueset.getCompose().getExclude()) {
+          analyseComponent(i);
+        }
+      }
+    }
+  }
+
+  private void analyseComponent(ConceptSetComponent i) {
+    if (i.getSystemElement().hasExtension(ToolingExtensions.EXT_VALUESET_SYSTEM)) {
+      String ref = i.getSystemElement().getExtensionString(ToolingExtensions.EXT_VALUESET_SYSTEM);
+      if (ref.startsWith("#")) {
+        String id = ref.substring(1);
+        for (ValidationContextResourceProxy t : localContext.getResources()) {
+          CodeSystem cs = (CodeSystem) t.loadContainedResource(id, CodeSystem.class);
+          if (cs != null) {
+            localSystems.add(cs);
+          }
+        }
+      } else {        
+        throw new Error("Not done yet #2: "+ref);
+      }
+    }    
   }
 
   public ValidationResult validateCode(CodeableConcept code) throws FHIRException {
@@ -85,7 +128,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         if (!c.hasSystem()) {
           warnings.add(context.formatMessage(I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE));
         }
-        CodeSystem cs = context.fetchCodeSystem(c.getSystem());
+        CodeSystem cs = resolveCodeSystem(c.getSystem());
         ValidationResult res = null;
         if (cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) {
           res = context.validateCode(options.noClient(), c, null);
@@ -124,6 +167,19 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     }
   }
 
+  public CodeSystem resolveCodeSystem(String system) {
+    for (CodeSystem t : localSystems) {
+      if (t.getUrl().equals(system)) {
+        return t;
+      }
+    }
+    CodeSystem cs = context.fetchCodeSystem(system);
+    if (cs == null) {
+      cs = findSpecialCodeSystem(system);
+    }
+    return cs;
+  }
+
   public ValidationResult validateCode(Coding code) throws FHIRException {
     String warningMessage = null;
     // first, we validate the concept itself
@@ -144,10 +200,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       }
       inExpansion = checkExpansion(code);
       inInclude = checkInclude(code);
-      CodeSystem cs = context.fetchCodeSystem(system);
-      if (cs == null) {
-        cs = findSpecialCodeSystem(system);
-      }
+      CodeSystem cs = resolveCodeSystem(system);
       if (cs == null) {
         warningMessage = "Unable to resolve system "+system;
         if (!inExpansion) {
@@ -498,7 +551,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         if (vsi.hasFilter()) {
           return null;
         }
-        CodeSystem cs = context.fetchCodeSystem(vsi.getSystem());
+        CodeSystem cs = resolveCodeSystem(vsi.getSystem());
         if (cs == null) {
           return null;
         }
@@ -604,7 +657,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     if (!system.equals(vsi.getSystem()))
       return false;
     // ok, we need the code system
-    CodeSystem cs = context.fetchCodeSystem(system);
+    CodeSystem cs = resolveCodeSystem(system);
     if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)) {
       // make up a transient value set with
       ValueSet vs = new ValueSet();
@@ -709,7 +762,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       return inner.get(url);
     }
     ValueSet vs = context.fetchResource(ValueSet.class, url);
-    ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, context);
+    ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, context, localContext);
     inner.put(url, vsc);
     return vsc;
   }

@@ -111,6 +111,7 @@ import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorCla
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.ValueSetExpanderSimple;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.OIDUtils;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.ToolingClientLogger;
@@ -927,6 +928,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs) {
+    ValidationContextCarrier ctxt = new ValidationContextCarrier();
+    return validateCode(options, code, vs, ctxt);
+  }
+
+  @Override
+  public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs, ValidationContextCarrier ctxt) {
     if (options == null) {
       options = ValidationOptions.defaults();
     }
@@ -946,7 +953,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (options.isUseClient()) {
       // ok, first we try to validate locally
       try {
-        ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, this);
+        ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, this, ctxt);
         if (!vsc.isServerSide(code.getSystem())) {
           res = vsc.validateCode(code);
           if (txCache != null) {
@@ -1066,13 +1073,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
     if (vs != null) {
-      if (isTxCaching && cacheId != null && cached.contains(vs.getUrl()+"|"+vs.getVersion())) {
+      if (isTxCaching && cacheId != null && vs.getUrl() != null && cached.contains(vs.getUrl()+"|"+vs.getVersion())) {
         pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()+(vs.hasVersion() ? "|"+vs.getVersion() : "")));        
       } else if (options.getVsAsUrl()){
         pin.addParameter().setName("url").setValue(new StringType(vs.getUrl()));
       } else {
         pin.addParameter().setName("valueSet").setResource(vs);
-        cached.add(vs.getUrl()+"|"+vs.getVersion());
+        if (vs.getUrl() != null) {
+          cached.add(vs.getUrl()+"|"+vs.getVersion());
+        }
       }
       cache = true;
       addDependentResources(pin, vs);

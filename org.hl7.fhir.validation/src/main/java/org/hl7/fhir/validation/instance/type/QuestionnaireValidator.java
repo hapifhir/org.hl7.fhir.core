@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.attoparser.config.ParseConfiguration.ElementBalancing;
 import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
 import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
@@ -40,6 +41,8 @@ import org.hl7.fhir.r5.model.TimeType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
+import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -52,6 +55,7 @@ import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.TimeTracker;
 import org.hl7.fhir.validation.instance.EnableWhenEvaluator;
 import org.hl7.fhir.validation.instance.EnableWhenEvaluator.QStack;
+import org.hl7.fhir.validation.instance.type.QuestionnaireValidator.ElementWithIndex;
 import org.hl7.fhir.validation.instance.type.QuestionnaireValidator.QuestionnaireWithContext;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
@@ -59,6 +63,26 @@ import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
 import ca.uhn.fhir.util.ObjectUtil;
 
 public class QuestionnaireValidator extends BaseValidator {
+
+  public class ElementWithIndex {
+
+    private Element element;
+    private int index;
+
+    public ElementWithIndex(Element element, int index) {
+      this.element = element;
+      this.index = index;
+    }
+
+    public Element getElement() {
+      return element;
+    }
+
+    public int getIndex() {
+      return index;
+    }
+
+  }
 
   public static class QuestionnaireWithContext {
     private Questionnaire q;
@@ -88,7 +112,7 @@ public class QuestionnaireValidator extends BaseValidator {
     public Questionnaire q() {
       return q;
     }
-    
+
   }
 
   private EnableWhenEvaluator myEnableWhenEvaluator;
@@ -263,8 +287,9 @@ public class QuestionnaireValidator extends BaseValidator {
     if (answers.size() > 1)
       rule(errors, IssueType.INVALID, answers.get(1).line(), answers.get(1).col(), stack.getLiteralPath(), qItem.getRepeats(), I18nConstants.QUESTIONNAIRE_QR_ITEM_ONLYONEA);
 
+    int i = 0;
     for (Element answer : answers) {
-      NodeStack ns = stack.push(answer, -1, null, null);
+      NodeStack ns = stack.push(answer, i, null, null);
       if (qItem.getType() != null) {
         switch (qItem.getType()) {
           case GROUP:
@@ -337,12 +362,15 @@ public class QuestionnaireValidator extends BaseValidator {
           case NULL:
             // no validation
             break;
+        case QUESTION:
+          throw new Error("Shouldn't get here?");
         }
       }
       if (qItem.getType() != QuestionnaireItemType.GROUP) {
         // if it's a group, we already have an error before getting here, so no need to hammer away on that 
         validateQuestionannaireResponseItems(hostContext, qsrc, qItem.getItem(), errors, answer, stack, inProgress, questionnaireResponseRoot, qstack);
       }
+      i++;
     }
     if (qItem.getType() == null) {
       fail(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOTYPE, qItem.getLinkId());
@@ -363,14 +391,13 @@ public class QuestionnaireValidator extends BaseValidator {
     return !answers.isEmpty() || !qItem.getRequired() || qItem.getType() == QuestionnaireItemType.GROUP;
   }
 
-  private void validateQuestionnaireResponseItem(ValidatorHostContext hostcontext, QuestionnaireWithContext qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, List<Element> elements, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
-    if (elements.size() > 1)
-      rule(errors, IssueType.INVALID, elements.get(1).line(), elements.get(1).col(), stack.getLiteralPath(), qItem.getRepeats(), I18nConstants.QUESTIONNAIRE_QR_ITEM_ONLYONEI, qItem.getLinkId());
-    int i = 0;
-    for (Element element : elements) {
-      NodeStack ns = stack.push(element, i, null, null);
-      validateQuestionnaireResponseItem(hostcontext, qsrc, qItem, errors, element, ns, inProgress, questionnaireResponseRoot, qstack.push(qItem, element));
-      i++;
+  private void validateQuestionnaireResponseItem(ValidatorHostContext hostcontext, QuestionnaireWithContext qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, List<ElementWithIndex> elements, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
+    if (elements.size() > 1) {
+      rule(errors, IssueType.INVALID, elements.get(1).getElement().line(), elements.get(1).getElement().col(), stack.getLiteralPath(), qItem.getRepeats(), I18nConstants.QUESTIONNAIRE_QR_ITEM_ONLYONEI, qItem.getLinkId());
+    }
+    for (ElementWithIndex element : elements) {
+      NodeStack ns = stack.push(element.getElement(), element.getIndex(), null, null);
+      validateQuestionnaireResponseItem(hostcontext, qsrc, qItem, errors, element.getElement(), ns, inProgress, questionnaireResponseRoot, qstack.push(qItem, element.getElement()));
     }
   }
 
@@ -386,8 +413,9 @@ public class QuestionnaireValidator extends BaseValidator {
     List<Element> items = new ArrayList<Element>();
     element.getNamedChildren("item", items);
     // now, sort into stacks
-    Map<String, List<Element>> map = new HashMap<String, List<Element>>();
+    Map<String, List<ElementWithIndex>> map = new HashMap<String, List<ElementWithIndex>>();
     int lastIndex = -1;
+    int counter = 0;
     for (Element item : items) {
       String linkId = item.getNamedChildValue("linkId");
       if (rule(errors, IssueType.REQUIRED, item.line(), item.col(), stack.getLiteralPath(), !Utilities.noString(linkId), I18nConstants.QUESTIONNAIRE_QR_ITEM_NOLINKID)) {
@@ -396,7 +424,7 @@ public class QuestionnaireValidator extends BaseValidator {
           QuestionnaireItemComponent qItem = findQuestionnaireItem(qsrc, linkId);
           if (qItem != null) {
             rule(errors, IssueType.STRUCTURE, item.line(), item.col(), stack.getLiteralPath(), index > -1, misplacedItemError(qItem));
-            NodeStack ns = stack.push(item, -1, null, null);
+            NodeStack ns = stack.push(item, counter, null, null);
             validateQuestionnaireResponseItem(hostContext, qsrc, qItem, errors, item, ns, inProgress, questionnaireResponseRoot, qstack.push(qItem, item));
           } else
             rule(errors, IssueType.NOTFOUND, item.line(), item.col(), stack.getLiteralPath(), index > -1, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOTFOUND, linkId);
@@ -407,29 +435,28 @@ public class QuestionnaireValidator extends BaseValidator {
           // If an item has a child called "linkId" but no child called "answer",
           // we'll treat it as not existing for the purposes of enableWhen validation
           if (item.hasChildren("answer") || item.hasChildren("item")) {
-            List<Element> mapItem = map.computeIfAbsent(linkId, key -> new ArrayList<>());
-            mapItem.add(item);
+            List<ElementWithIndex> mapItem = map.computeIfAbsent(linkId, key -> new ArrayList<>());
+            mapItem.add(new ElementWithIndex(item, counter));
           }
         }
       }
+      counter++;
     }
 
     // ok, now we have a list of known items, grouped by linkId. We've made an error for anything out of order
     for (QuestionnaireItemComponent qItem : qItems) {
-      List<Element> mapItem = map.get(qItem.getLinkId());
+      List<ElementWithIndex> mapItem = map.get(qItem.getLinkId());
       validateQuestionnaireResponseItem(hostContext, qsrc, errors, element, stack, inProgress, questionnaireResponseRoot, qItem, mapItem, qstack);
     }
   }
 
-  public void validateQuestionnaireResponseItem(ValidatorHostContext hostContext, QuestionnaireWithContext qsrc, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QuestionnaireItemComponent qItem, List<Element> mapItem, QStack qstack) {
+  public void validateQuestionnaireResponseItem(ValidatorHostContext hostContext, QuestionnaireWithContext qsrc, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QuestionnaireItemComponent qItem, List<ElementWithIndex> mapItem, QStack qstack) {
     boolean enabled = myEnableWhenEvaluator.isQuestionEnabled(hostContext, qItem, qstack, fpe);
     if (mapItem != null) {
       if (!enabled) {
-        int i = 0;
-        for (Element e : mapItem) {
-          NodeStack ns = stack.push(e, i, e.getProperty().getDefinition(), e.getProperty().getDefinition());
-          rule(errors, IssueType.INVALID, e.line(), e.col(), ns.getLiteralPath(), enabled, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOTENABLED2, qItem.getLinkId());
-          i++;
+        for (ElementWithIndex e : mapItem) {
+          NodeStack ns = stack.push(e.getElement(), e.getElement().getIndex(), e.getElement().getProperty().getDefinition(), e.getElement().getProperty().getDefinition());
+          rule(errors, IssueType.INVALID, e.getElement().line(), e.getElement().col(), ns.getLiteralPath(), enabled, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOTENABLED2, qItem.getLinkId());
         }
       }
 
@@ -516,7 +543,8 @@ public class QuestionnaireValidator extends BaseValidator {
         }
 
         long t = System.nanoTime();
-        ValidationResult res = context.validateCode(new ValidationOptions(stack.getWorkingLang()), c, vs);
+        ValidationContextCarrier vc = makeValidationContext(errors, qSrc);
+        ValidationResult res = context.validateCode(new ValidationOptions(stack.getWorkingLang()), c, vs, vc);
         timeTracker.tx(t, "vc "+c.getSystem()+"#"+c.getCode()+" '"+c.getDisplay()+"'");
         if (!res.isOk()) {
           txRule(errors, res.getTxLink(), IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_BADOPTION, c.getSystem(), c.getCode());
@@ -527,6 +555,16 @@ public class QuestionnaireValidator extends BaseValidator {
         warning(errors, IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_CODING, e.getMessage());
       }
     }
+  }
+
+  private ValidationContextCarrier makeValidationContext(List<ValidationMessage> errors, QuestionnaireWithContext qSrc) {
+    ValidationContextCarrier vc = new ValidationContextCarrier();
+    if (qSrc.container == null) {
+      vc.getResources().add(new ValidationContextResourceProxy(qSrc.q));
+    } else {
+      vc.getResources().add(new ValidationContextResourceProxy(errors, qSrc.containerPath, qSrc.container, this));
+    }
+    return vc;
   }
 
   private void validateAnswerCode(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, boolean theOpenChoice) {
