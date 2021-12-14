@@ -468,11 +468,12 @@ public class ToolingExtensions {
 //    return findBooleanExtension(c, EXT_DEPRECATED);    
 //  }
 
-  public static void addFlyOver(QuestionnaireItemComponent item, String text){
+  public static void addFlyOver(QuestionnaireItemComponent item, String text, String linkId){
     if (!StringUtils.isBlank(text)) {
     	QuestionnaireItemComponent display = item.addItem();
     	display.setType(QuestionnaireItemType.DISPLAY);
     	display.setText(text);
+    	display.setLinkId(linkId);
     	display.getExtension().add(Factory.newExtension(EXT_CONTROL, Factory.newCodeableConcept("flyover", "http://hl7.org/fhir/questionnaire-item-control", "Fly-over"), true));
     }
   }

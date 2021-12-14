@@ -127,11 +127,14 @@ public class VersionUtilities {
   }
 
   public static boolean isSupportedVersion(String version) {
-    return Utilities.existsInList(version, "1.0.2", "1.4.0", "3.0.2", "4.0.1", "4.1.0", CURRENT_FULL_VERSION);
+    if (version.contains("-")) {
+      version = version.substring(0, version.indexOf("-"));
+    }
+    return Utilities.existsInList(version, "1.0.2", "1.4.0", "3.0.2", "4.0.1", "4.1.0", "4.3.0",CURRENT_FULL_VERSION);
   }
 
   public static String listSupportedVersions() {
-    return "1.0.2, 1.4.0, 3.0.2, 4.0.1, 4.1.0, "+CURRENT_FULL_VERSION;
+    return "1.0.2, 1.4.0, 3.0.2, 4.0.1, 4.1.0, 4.3.0, "+CURRENT_FULL_VERSION;
   }
 
   public static boolean isR5Ver(String ver) {
@@ -139,7 +142,7 @@ public class VersionUtilities {
   }
 
   public static boolean isR4BVer(String ver) {
-    return ver != null && ver.startsWith("4.1");
+    return ver != null && (ver.startsWith("4.1") || ver.startsWith("4.3"));
   }
 
   public static boolean isR4Ver(String ver) {

@@ -10035,7 +10035,8 @@ The primary difference between a medication statement and a medication administr
         /**
          * R4B - manually added
          */
-        _4_1_0, 
+        _4_1_0,
+        _4_3_0_CIBUILD,
         NULL;
         public static FHIRVersion fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
@@ -10088,6 +10089,8 @@ The primary difference between a medication statement and a medication administr
           return _4_0_1;
         if ("4.1.0".equals(codeString))
           return _4_1_0;
+        if ("4.3.0-CIBUILD".equals(codeString))
+          return _4_3_0_CIBUILD;
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
         @Override
@@ -10120,6 +10123,8 @@ The primary difference between a medication statement and a medication administr
             case _4_0_0: return "4.0.0";
             case _4_0_1: return "4.0.1";
             case _4_1_0: return "4.1.0";
+            case _4_3_0_CIBUILD: return "4.3.0-CIBUILD";
+            
             case NULL: return null;
             default: return "?";
           }
@@ -10150,6 +10155,7 @@ The primary difference between a medication statement and a medication administr
             case _4_0_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_0_1: return "http://hl7.org/fhir/FHIR-version";
             case _4_1_0: return "http://hl7.org/fhir/FHIR-version";
+            case _4_3_0_CIBUILD: return "http://hl7.org/fhir/FHIR-version";
             case NULL: return null;
             default: return "?";
           }
@@ -10179,7 +10185,8 @@ The primary difference between a medication statement and a medication administr
             case _3_5_0: return "R4 Ballot #2.";
             case _4_0_0: return "FHIR Release 4 (Normative + STU).";
             case _4_0_1: return "FHIR Release 4 Technical Correction #1.";
-            case _4_1_0: return "FHIR Release 4B";
+            case _4_1_0: return "FHIR Release 4B Ballot #1";
+            case _4_3_0_CIBUILD: return "FHIR Release 4B CI-Builld";
             case NULL: return null;
             default: return "?";
           }
@@ -10210,6 +10217,7 @@ The primary difference between a medication statement and a medication administr
             case _4_0_0: return "4.0.0";
             case _4_0_1: return "4.0.1";
             case _4_1_0: return "4.1.0";
+            case _4_3_0_CIBUILD: return "4.3.0-CIBUILD";
             case NULL: return null;
             default: return "?";
           }
@@ -10275,6 +10283,8 @@ The primary difference between a medication statement and a medication administr
           return FHIRVersion._4_0_1;
         if ("4.1.0".equals(codeString))
           return FHIRVersion._4_1_0;
+        if ("4.3.0-CIBUILD".equals(codeString))
+          return FHIRVersion._4_3_0_CIBUILD;
         throw new IllegalArgumentException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public Enumeration<FHIRVersion> fromType(Base code) throws FHIRException {
@@ -10333,6 +10343,8 @@ The primary difference between a medication statement and a medication administr
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0_1);
         if ("4.1.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_1_0);
+        if ("4.3.0-CIBUILD".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0_CIBUILD);
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
     public String toCode(FHIRVersion code) {
@@ -10384,6 +10396,8 @@ The primary difference between a medication statement and a medication administr
         return "4.0.1";
       if (code == FHIRVersion._4_1_0)
         return "4.1.0";
+      if (code == FHIRVersion._4_3_0_CIBUILD)
+        return "4.3.0_CIBUILD";      
       return "?";
       }
     public String toSystem(FHIRVersion code) {
