@@ -796,7 +796,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         vs = (ValueSet) q.getContained(i.getAnswerValueSet().substring(1));
         if (vs != null && !vs.hasUrl()) {
           vs = vs.copy();
-          vs.setUrl("urn:uuid:"+UUID.randomUUID().toString().toLowerCase());
+          vs.setUrl(q.getUrl()+"--"+q.getContained(i.getAnswerValueSet().substring(1)));
         }
       } else {
         vs = context.getContext().fetchResource(ValueSet.class, i.getAnswerValueSet());
