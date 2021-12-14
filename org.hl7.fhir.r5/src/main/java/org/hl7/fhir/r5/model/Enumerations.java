@@ -6717,6 +6717,10 @@ The MedicationUsage resource was previously called MedicationStatement.
          */
         _4_2_0, 
         /**
+         * R4B
+         */
+        _4_3_0_CIBUILD, 
+        /**
          * R5 Preview #2.
          */
         _4_4_0, 
@@ -6733,8 +6737,6 @@ The MedicationUsage resource was previously called MedicationStatement.
          */
         NULL;      
       
-      public static final FHIRVersion R4B = FHIRVersion._4_1_0; 
-
         public static FHIRVersion fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
@@ -6788,6 +6790,8 @@ The MedicationUsage resource was previously called MedicationStatement.
           return _4_1_0;
         if ("4.2.0".equals(codeString))
           return _4_2_0;
+        if ("4.3.0-CIBUILD".equals(codeString))
+          return _4_3_0_CIBUILD;
         if ("4.4.0".equals(codeString))
           return _4_4_0;
         if ("4.5.0".equals(codeString))
@@ -6823,6 +6827,7 @@ The MedicationUsage resource was previously called MedicationStatement.
             case _4_0_1: return "4.0.1";
             case _4_1_0: return "4.1.0";
             case _4_2_0: return "4.2.0";
+            case _4_3_0_CIBUILD: return "4.3.0-CIBUILD";
             case _4_4_0: return "4.4.0";
             case _4_5_0: return "4.5.0";
             case _4_6_0: return "4.6.0";
@@ -6857,6 +6862,7 @@ The MedicationUsage resource was previously called MedicationStatement.
             case _4_0_1: return "http://hl7.org/fhir/FHIR-version";
             case _4_1_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_2_0: return "http://hl7.org/fhir/FHIR-version";
+            case _4_3_0_CIBUILD: return "http://hl7.org/fhir/FHIR-version";
             case _4_4_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_5_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_6_0: return "http://hl7.org/fhir/FHIR-version";
@@ -6891,6 +6897,7 @@ The MedicationUsage resource was previously called MedicationStatement.
             case _4_0_1: return "FHIR Release 4 (Normative + STU) with 1 technical errata.";
             case _4_1_0: return "Interim Version.";
             case _4_2_0: return "R5 Preview #1.";
+            case _4_3_0_CIBUILD: return "R4B CIBuild";
             case _4_4_0: return "R5 Preview #2.";
             case _4_5_0: return "R5 Preview #3.";
             case _4_6_0: return "R5 Draft Ballot.";
@@ -6925,6 +6932,7 @@ The MedicationUsage resource was previously called MedicationStatement.
             case _4_0_1: return "4.0.1";
             case _4_1_0: return "4.1.0";
             case _4_2_0: return "4.2.0";
+            case _4_3_0_CIBUILD: return "4.3.0-CIBUILD";
             case _4_4_0: return "4.4.0";
             case _4_5_0: return "4.5.0";
             case _4_6_0: return "4.6.0";
@@ -6988,6 +6996,8 @@ public String toCode(int len) {
         return true;
       if ("4.2.0".equals(codeString))
         return true;
+      if ("4.3.0-CIBUILD".equals(codeString))
+        return true;
       return false;
       }
 
@@ -6998,7 +7008,7 @@ public String toCode(int len) {
         
         
         public boolean isR4B() {
-          return toCode().startsWith("4.1");
+          return toCode().startsWith("4.1") || toCode().startsWith("4.3");
         }
         
 // end addition
@@ -7059,6 +7069,8 @@ public String toCode(int len) {
           return FHIRVersion._4_1_0;
         if ("4.2.0".equals(codeString))
           return FHIRVersion._4_2_0;
+        if ("4.3.0-CIBUILD".equals(codeString))
+          return FHIRVersion._4_3_0_CIBUILD;
         if ("4.4.0".equals(codeString))
           return FHIRVersion._4_4_0;
         if ("4.5.0".equals(codeString))
@@ -7125,6 +7137,8 @@ public String toCode(int len) {
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_1_0);
         if ("4.2.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_2_0);
+        if ("4.3.0-CIBUILD".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0_CIBUILD);
         if ("4.4.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_4_0);
         if ("4.5.0".equals(codeString))
@@ -7184,6 +7198,8 @@ public String toCode(int len) {
         return "4.1.0";
       if (code == FHIRVersion._4_2_0)
         return "4.2.0";
+      if (code == FHIRVersion._4_3_0_CIBUILD)
+        return "4.3.0-CIBUILD";
       if (code == FHIRVersion._4_4_0)
         return "4.4.0";
       if (code == FHIRVersion._4_5_0)

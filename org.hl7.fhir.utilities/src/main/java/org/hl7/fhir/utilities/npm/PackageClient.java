@@ -25,6 +25,9 @@ import java.util.Set;
 
 public class PackageClient {
 
+  public static final String PRIMARY_SERVER = "http://packages.fhir.org";
+  public static final String SECONDARY_SERVER = "https://packages2.fhir.org/packages";
+
   private String address;
   private String cacheFolder;
 
