@@ -120,6 +120,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         generateByProfile(r, sd, r.root(), sd.getSnapshot().getElement(), ed, context.getProfileUtilities().getChildList(sd, ed), x, r.fhirType(), context.isTechnicalMode(), 0);
       }
     } catch (Exception e) {
+      System.out.println("Error Generating Narrative for "+r.fhirType()+"/"+r.getId()+": "+e.getMessage());
       e.printStackTrace();
       x.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
     }

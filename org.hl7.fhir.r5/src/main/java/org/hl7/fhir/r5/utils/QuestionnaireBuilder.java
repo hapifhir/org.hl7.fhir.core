@@ -230,6 +230,7 @@ public class QuestionnaireBuilder {
       questionnaire.setPublisher(profile.getPublisher());
       Questionnaire.QuestionnaireItemComponent item = new Questionnaire.QuestionnaireItemComponent();
       questionnaire.addItem(item);
+      item.setLinkId("meta");
       item.getCode().addAll(profile.getKeyword());
       questionnaire.setId(nextId("qs"));
     }
@@ -241,6 +242,7 @@ public class QuestionnaireBuilder {
       response.setStatus(QuestionnaireResponseStatus.INPROGRESS);
       QuestionnaireResponse.QuestionnaireResponseItemComponent item = new QuestionnaireResponse.QuestionnaireResponseItemComponent();
       response.addItem(item);
+      item.setLinkId("meta");
       item.setUserData("object", resource);
     }
 
@@ -260,9 +262,10 @@ public class QuestionnaireBuilder {
 	  	display.setType(QuestionnaireItemType.DISPLAY);
 	  	display.setText(element.getComment());
 	  	group.addItem(display);
+	  	display.setLinkId(element.getId()+"-display");
 	  }
 	  group.setType(QuestionnaireItemType.GROUP);
-	  ToolingExtensions.addFlyOver(group, element.getDefinition());
+	  ToolingExtensions.addFlyOver(group, element.getDefinition(), element.getId()+"-flyover");
     group.setRequired(element.getMin() > 0);
     if (element.getMin() > 0)
     	ToolingExtensions.addMin(group, element.getMin());
@@ -284,10 +287,11 @@ public class QuestionnaireBuilder {
         nparents.addAll(parents);
         nparents.add(child);
         QuestionnaireItemComponent childGroup = group.addItem();
+        childGroup.setLinkId(child.getId()+"-grp");
         childGroup.setType(QuestionnaireItemType.GROUP);
 
         List<QuestionnaireResponse.QuestionnaireResponseItemComponent> nResponse = new ArrayList<QuestionnaireResponse.QuestionnaireResponseItemComponent>();
-        processExisting(child.getPath(), answerGroups, nResponse);
+        processExisting(child.getPath(), answerGroups, childGroup, nResponse);
         // if the element has a type, we add a question. else we add a group on the basis that
         // it will have children of its own
         if (child.getType().isEmpty() || isAbstractType(child.getType())) 
@@ -334,13 +338,14 @@ public class QuestionnaireBuilder {
     return path.substring(path.lastIndexOf('.')+1);
   }
 
-  private void processExisting(String path, List<QuestionnaireResponse.QuestionnaireResponseItemComponent> answerGroups, List<QuestionnaireResponse.QuestionnaireResponseItemComponent> nResponse) throws FHIRException {
+  private void processExisting(String path, List<QuestionnaireResponse.QuestionnaireResponseItemComponent> answerGroups, QuestionnaireItemComponent item, List<QuestionnaireResponse.QuestionnaireResponseItemComponent> nResponse) throws FHIRException {
     // processing existing data
     for (QuestionnaireResponse.QuestionnaireResponseItemComponent ag : answerGroups) {
       List<Base> children = ((Element) ag.getUserData("object")).listChildrenByName(tail(path));
       for (Base child : children) {
         if (child != null) {
           QuestionnaireResponse.QuestionnaireResponseItemComponent ans = ag.addItem();
+          ag.setLinkId(item.getLinkId());
           ans.setUserData("object", child);
           nResponse.add(ans);
         }
@@ -366,9 +371,9 @@ public class QuestionnaireBuilder {
       }
 
       if (!Utilities.noString(element.getComment())) 
-        ToolingExtensions.addFlyOver(group, element.getDefinition()+" "+element.getComment());
+        ToolingExtensions.addFlyOver(group, element.getDefinition()+" "+element.getComment(), group.getLinkId()+"-flyover");
       else
-        ToolingExtensions.addFlyOver(group, element.getDefinition());
+        ToolingExtensions.addFlyOver(group, element.getDefinition(), group.getLinkId()+"-flyover");
 
       if (element.getType().size() > 1 || element.getType().get(0).getWorkingCode().equals("*")) {
         List<TypeRefComponent> types = expandTypeList(element.getType());

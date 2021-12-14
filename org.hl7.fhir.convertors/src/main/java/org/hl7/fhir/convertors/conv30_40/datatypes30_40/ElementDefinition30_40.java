@@ -613,10 +613,10 @@ public class ElementDefinition30_40 {
       Type t = ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getValueSet());
       if (t instanceof org.hl7.fhir.r4.model.Reference) {
         tgt.setValueSet(((org.hl7.fhir.r4.model.Reference) t).getReference());
-        tgt.getValueSetElement().addExtension(VersionConvertor_30_40.EXT_SRC_TYPE, new UriType("Reference"));
+        tgt.getValueSetElement().addExtension(VersionConvertor_30_40.EXT_SRC_TYPE, new org.hl7.fhir.r4.model.UrlType("Reference"));
       } else {
         tgt.setValueSet(t.primitiveValue());
-        tgt.getValueSetElement().addExtension(VersionConvertor_30_40.EXT_SRC_TYPE, new UriType("uri"));
+        tgt.getValueSetElement().addExtension(VersionConvertor_30_40.EXT_SRC_TYPE, new org.hl7.fhir.r4.model.UrlType("uri"));
       }
       tgt.setValueSet(VersionConvertorConstants.refToVS(tgt.getValueSet()));
     }
