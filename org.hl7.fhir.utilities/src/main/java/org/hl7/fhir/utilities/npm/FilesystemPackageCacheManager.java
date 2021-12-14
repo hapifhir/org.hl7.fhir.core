@@ -83,8 +83,6 @@ import java.util.Map.Entry;
  */
 public class FilesystemPackageCacheManager extends BasePackageCacheManager implements IPackageCacheManager {
 
-  public static final String PRIMARY_SERVER = "http://packages.fhir.org";
-  public static final String SECONDARY_SERVER = "https://packages2.fhir.org/packages";
   //  private static final String SECONDARY_SERVER = "http://local.fhir.org:960/packages";
   public static final String PACKAGE_REGEX = "^[a-zA-Z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+$";
   public static final String PACKAGE_VERSION_REGEX = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+\\#[A-Za-z0-9\\-\\_\\$]+(\\.[A-Za-z0-9\\-\\_\\$]+)*$";
@@ -102,8 +100,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    * Constructor
    */
   public FilesystemPackageCacheManager(boolean userMode, int toolsVersion) throws IOException {
-    addPackageServer(PRIMARY_SERVER);
-    addPackageServer(SECONDARY_SERVER);
+    addPackageServer(PackageClient.PRIMARY_SERVER);
+    addPackageServer(PackageClient.SECONDARY_SERVER);
 
     if (userMode)
       cacheFolder = Utilities.path(System.getProperty("user.home"), ".fhir", "packages");
@@ -226,7 +224,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public String getLatestVersion(String id) throws IOException {
     for (String nextPackageServer : getPackageServers()) {
       // special case:
-      if (!(CommonPackages.ID_PUBPACK.equals(id) && PRIMARY_SERVER.equals(nextPackageServer))) {
+      if (!(CommonPackages.ID_PUBPACK.equals(id) && PackageClient.PRIMARY_SERVER.equals(nextPackageServer))) {
         CachingPackageClient pc = new CachingPackageClient(nextPackageServer);
         try {
           return pc.getLatestVersion(id);
@@ -540,7 +538,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("http://build.fhir.org", id + ".tgz"), false);
       return new InputStreamWithSrc(stream, Utilities.pathURL("http://build.fhir.org", id + ".tgz"), "current");
     } else {
-      throw new FHIRException("The package '" + id + "' has no entry on the current build server");
+      throw new FHIRException("The package '" + id + "' has no entry on the current build server ("+ciList.toString()+")");
     }
   }
 
