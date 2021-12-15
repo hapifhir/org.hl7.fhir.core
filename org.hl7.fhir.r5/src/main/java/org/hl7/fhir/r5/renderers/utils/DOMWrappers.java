@@ -49,7 +49,7 @@ public class DOMWrappers {
 
     @Override
     public Base getBase() throws UnsupportedEncodingException, IOException, FHIRException {
-      if (type == null || type.equals("Resource") || type.equals("BackboneElement") || type.equals("Element"))
+      if (Utilities.noString(type) || type.equals("Resource") || type.equals("BackboneElement") || type.equals("Element"))
         return null;
 
       String xml;

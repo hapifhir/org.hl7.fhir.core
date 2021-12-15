@@ -33,6 +33,8 @@ package org.hl7.fhir.r5.terminologies;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -51,6 +53,7 @@ import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptDefinitionComponentSorter;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.Meta;
 import org.hl7.fhir.r5.model.UriType;
@@ -59,6 +62,15 @@ import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 
 public class CodeSystemUtilities {
+
+  public static class ConceptDefinitionComponentSorter implements Comparator<ConceptDefinitionComponent> {
+
+    @Override
+    public int compare(ConceptDefinitionComponent o1, ConceptDefinitionComponent o2) {
+      return o1.getCode().compareTo(o2.getCode());
+    }
+
+  }
 
   public static final String USER_DATA_CROSS_LINK = "cs.utils.cross.link";
 
@@ -273,6 +285,10 @@ public class CodeSystemUtilities {
   }
 
   public static CodeSystem makeShareable(CodeSystem cs) {
+    if (!cs.hasExperimental()) {
+      cs.setExperimental(false);
+    }
+
     if (!cs.hasMeta())
       cs.setMeta(new Meta());
     for (UriType t : cs.getMeta().getProfile()) 
@@ -350,8 +366,12 @@ public class CodeSystemUtilities {
     }
     if (fmm != null) {
       String sfmm = ToolingExtensions.readStringExtension(cs, ToolingExtensions.EXT_FMM_LEVEL);
-      if (Utilities.noString(sfmm) || Integer.parseInt(sfmm) < Integer.parseInt(fmm)) 
+      if (Utilities.noString(sfmm) || Integer.parseInt(sfmm) < Integer.parseInt(fmm)) { 
         ToolingExtensions.setIntegerExtension(cs, ToolingExtensions.EXT_FMM_LEVEL, Integer.parseInt(fmm));
+      }
+      if (Integer.parseInt(fmm) <= 1) {
+        cs.setExperimental(true);
+      }
     }
   }
 
@@ -498,6 +518,19 @@ public class CodeSystemUtilities {
       }
     }
     return false;
+  }
+
+  public static void sortAllCodes(CodeSystem cs) {
+    sortAllCodes(cs.getConcept());
+  }
+
+  private static void sortAllCodes(List<ConceptDefinitionComponent> list) {
+    Collections.sort(list, new ConceptDefinitionComponentSorter());
+    for (ConceptDefinitionComponent cd : list) {
+      if (cd.hasConcept()) {
+        sortAllCodes(cd.getConcept());
+      }
+    }    
   }
   
 }
