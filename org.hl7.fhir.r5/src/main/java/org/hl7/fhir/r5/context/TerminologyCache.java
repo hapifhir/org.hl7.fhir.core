@@ -173,7 +173,7 @@ public class TerminologyCache {
   public String extracted(JsonParser json, ValueSet vsc) throws IOException {
     String s = null;
     if (vsc.getExpansion().getContains().size() > 1000 || vsc.getCompose().getIncludeFirstRep().getConcept().size() > 1000) {
-      s = getValueSetHash(vsc); // save a hash representation instead of a complete valueset
+      s =  vsc.getUrl();//getValueSetHash(vsc); // save a hash representation instead of a complete valueset
     } else {
       s = json.composeString(vsc);
     }
@@ -270,10 +270,14 @@ public class TerminologyCache {
   }
 
   public NamedCache getNamedCache(CacheToken cacheToken) {
-    NamedCache nc = caches.get(cacheToken.name);
+
+    final String cacheName = cacheToken.name == null ? "null" : cacheToken.name;
+
+    NamedCache nc = caches.get(cacheName);
+
     if (nc == null) {
       nc = new NamedCache();
-      nc.name = cacheToken.name;
+      nc.name = cacheName;
       caches.put(nc.name, nc);
     }
     return nc;
