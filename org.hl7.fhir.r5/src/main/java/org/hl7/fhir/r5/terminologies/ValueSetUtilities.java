@@ -48,6 +48,9 @@ import org.hl7.fhir.utilities.Utilities;
 public class ValueSetUtilities {
 
   public static ValueSet makeShareable(ValueSet vs) {
+    if (!vs.hasExperimental()) {
+      vs.setExperimental(false);
+    }
     if (!vs.hasMeta())
       vs.setMeta(new Meta());
     for (UriType t : vs.getMeta().getProfile()) 
@@ -129,8 +132,12 @@ public class ValueSetUtilities {
     }
     if (fmm != null) {
       String sfmm = ToolingExtensions.readStringExtension(vs, ToolingExtensions.EXT_FMM_LEVEL);
-      if (Utilities.noString(sfmm) || Integer.parseInt(sfmm) < Integer.parseInt(fmm)) 
+      if (Utilities.noString(sfmm) || Integer.parseInt(sfmm) < Integer.parseInt(fmm))  {
         ToolingExtensions.setIntegerExtension(vs, ToolingExtensions.EXT_FMM_LEVEL, Integer.parseInt(fmm));
+      }
+      if (Integer.parseInt(fmm) <= 1) {
+        vs.setExperimental(true);
+      }
     }
     if (vs.hasUserData("cs"))
       CodeSystemUtilities.markStatus((CodeSystem) vs.getUserData("cs"), wg, status, pckage, fmm, normativeVersion);

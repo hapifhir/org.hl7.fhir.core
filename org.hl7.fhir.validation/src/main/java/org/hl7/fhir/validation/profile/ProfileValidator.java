@@ -113,7 +113,7 @@ public class ProfileValidator extends BaseValidator {
       if (snapshotElements != null) {
         for (ElementDefinition diffElement : profile.getDifferential().getElement()) {
           if (diffElement == null)
-            throw new Error("What?");
+            throw new Error("Diff Element is null - this is not an expected thing");
           ElementDefinition snapElement = snapshotElements.get(diffElement.getId());
           if (snapElement!=null) { // Happens with profiles in the main build - should be able to fix once snapshot generation is fixed - Lloyd
             warning(errors, IssueType.BUSINESSRULE, diffElement.getId(), !checkMustSupport || snapElement.hasMustSupport(), "Elements included in the differential should declare mustSupport");

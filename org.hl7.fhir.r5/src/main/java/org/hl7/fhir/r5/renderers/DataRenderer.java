@@ -2,7 +2,18 @@ package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Currency;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -29,11 +40,14 @@ import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Expression;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.HumanName;
 import org.hl7.fhir.r5.model.HumanName.NameUse;
+import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.Identifier;
-import org.hl7.fhir.r5.model.InstantType;
+import org.hl7.fhir.r5.model.MarkdownType;
+import org.hl7.fhir.r5.model.Money;
 import org.hl7.fhir.r5.model.Period;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Quantity;
@@ -63,6 +77,9 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
+
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 
@@ -372,6 +389,8 @@ public class DataRenderer extends Renderer {
       return displayTiming((Timing) type);
     } else if (type instanceof SampledData) {
       return displaySampledData((SampledData) type);
+    } else if (type.isDateTime()) {
+      return displayDateTime((BaseDateTimeType) type);
     } else if (type.isPrimitive()) {
       return type.primitiveValue();
     } else {
@@ -379,11 +398,58 @@ public class DataRenderer extends Renderer {
     }
   }
 
+  private String displayDateTime(BaseDateTimeType type) {
+    if (!type.hasPrimitiveValue()) {
+      return "";
+    }
+    
+    // relevant inputs in rendering context:
+    // timeZone, dateTimeFormat, locale, mode
+    //   timezone - application specified timezone to use. 
+    //        null = default to the time of the date/time itself
+    //   dateTimeFormat - application specified format for date times
+    //        null = default to ... depends on mode
+    //   mode - if rendering mode is technical, format defaults to XML format
+    //   locale - otherwise, format defaults to SHORT for the Locale (which defaults to default Locale)  
+    if (isOnlyDate(type.getPrecision())) {
+      DateTimeFormatter fmt = context.getDateFormat();
+      if (fmt == null) {
+        if (context.isTechnicalMode()) {
+          fmt = DateTimeFormatter.ISO_DATE;
+        } else {
+          fmt = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(context.getLocale());
+        }
+      }
+
+      LocalDate date = LocalDate.of(type.getYear(), type.getMonth()+1, type.getDay());
+      return fmt.format(date);
+    }
+
+    DateTimeFormatter fmt = context.getDateTimeFormat();
+    if (fmt == null) {
+      if (context.isTechnicalMode()) {
+        fmt = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+      } else {
+        fmt = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(context.getLocale());
+      }
+    }
+    ZonedDateTime zdt = ZonedDateTime.parse(type.primitiveValue());
+    ZoneId zone = context.getTimeZoneId();
+    if (zone != null) {
+      zdt = zdt.withZoneSameInstant(zone);
+    }
+    return fmt.format(zdt);
+  }   
+  
+  private boolean isOnlyDate(TemporalPrecisionEnum temporalPrecisionEnum) {
+    return temporalPrecisionEnum == TemporalPrecisionEnum.YEAR || temporalPrecisionEnum == TemporalPrecisionEnum.MONTH || temporalPrecisionEnum == TemporalPrecisionEnum.DAY;
+  }
+
   public String display(BaseWrapper type) {
     return "to do";   
   }
 
-  public void render(XhtmlNode x, BaseWrapper type)  {
+  public void render(XhtmlNode x, BaseWrapper type) throws FHIRFormatError, DefinitionException, IOException  {
     Base base = null;
     try {
       base = type.getBase();
@@ -398,7 +464,7 @@ public class DataRenderer extends Renderer {
     }
   }
   
-  public void renderBase(XhtmlNode x, Base b) {
+  public void renderBase(XhtmlNode x, Base b) throws FHIRFormatError, DefinitionException, IOException {
     if (b instanceof DataType) {
       render(x, (DataType) b);
     } else {
@@ -406,9 +472,9 @@ public class DataRenderer extends Renderer {
     }
   }
   
-  public void render(XhtmlNode x, DataType type) {
-    if (type instanceof DateTimeType) {
-      renderDateTime(x, (DateTimeType) type);
+  public void render(XhtmlNode x, DataType type) throws FHIRFormatError, DefinitionException, IOException {
+    if (type instanceof BaseDateTimeType) {
+      x.tx(displayDateTime((BaseDateTimeType) type));
     } else if (type instanceof UriType) {
       renderUri(x, (UriType) type);
     } else if (type instanceof Annotation) {
@@ -423,6 +489,10 @@ public class DataRenderer extends Renderer {
       renderHumanName(x, (HumanName) type);
     } else if (type instanceof Address) {
       renderAddress(x, (Address) type);
+    } else if (type instanceof Expression) {
+      renderExpression(x, (Expression) type);
+    } else if (type instanceof Money) {
+      renderMoney(x, (Money) type);
     } else if (type instanceof ContactPoint) {
       renderContactPoint(x, (ContactPoint) type);
     } else if (type instanceof Quantity) {
@@ -437,10 +507,8 @@ public class DataRenderer extends Renderer {
       renderSampledData(x, (SampledData) type);
     } else if (type instanceof Reference) {
       renderReference(x, (Reference) type);
-    } else if (type instanceof InstantType) {
-      x.tx(((InstantType) type).toHumanDisplay());
-    } else if (type instanceof BaseDateTimeType) {
-      x.tx(((BaseDateTimeType) type).toHumanDisplay());
+    } else if (type instanceof MarkdownType) {
+      addMarkdown(x, ((MarkdownType) type).asStringValue());
     } else if (type.isPrimitive()) {
       x.tx(type.primitiveValue());
     } else {
@@ -460,22 +528,24 @@ public class DataRenderer extends Renderer {
 
   public void renderDateTime(XhtmlNode x, Base e) {
     if (e.hasPrimitiveValue()) {
-      x.addText(((DateTimeType) e).toHumanDisplay());
+      x.addText(displayDateTime((DateTimeType) e));
     }
   }
 
   public void renderDateTime(XhtmlNode x, String s) {
     if (s != null) {
       DateTimeType dt = new DateTimeType(s);
-      x.addText(dt.toHumanDisplay());
+      x.addText(displayDateTime(dt));
     }
   }
 
   protected void renderUri(XhtmlNode x, UriType uri) {
     if (uri.getValue().startsWith("mailto:")) {
       x.ah(uri.getValue()).addText(uri.getValue().substring(7));
-    } else {
+    } else if (Utilities.isAbsoluteUrlLinkable(uri.getValue()) && !(uri instanceof IdType)) {
       x.ah(uri.getValue()).addText(uri.getValue());
+    } else {
+      x.addText(uri.getValue());
     }
   }
   
@@ -641,6 +711,38 @@ public class DataRenderer extends Renderer {
     }
   }
   
+  protected String getLinkForCode(String system, String version, String code) {
+    if ("http://snomed.info/sct".equals(system)) {
+      if (!Utilities.noString(code)) {
+        return "http://snomed.info/id/"+code;        
+      } else {
+        return "https://browser.ihtsdotools.org/";
+      }
+    } else if ("http://loinc.org".equals(system)) {
+      if (!Utilities.noString(code)) {
+        return "https://loinc.org/"+code;
+      } else {
+        return "https://loinc.org/";
+      }
+    } else if ("http://www.nlm.nih.gov/research/umls/rxnorm".equals(system)) {
+      if (!Utilities.noString(code)) {
+        return "https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm="+code;        
+      } else {
+        return "https://www.nlm.nih.gov/research/umls/rxnorm/index.html";
+      }
+    } else {
+      CodeSystem cs = context.getWorker().fetchCodeSystem(system, version);
+      if (cs != null && cs.hasUserData("path")) {
+        if (!Utilities.noString(code)) {
+          return cs.getUserString("path")+"#"+Utilities.nmtokenize(code);
+        } else {
+          return cs.getUserString("path");
+        }
+      }
+    }  
+    return null;
+  }
+  
   protected void renderCodingWithDetails(XhtmlNode x, Coding c) {
     String s = "";
     if (c.hasDisplayElement())
@@ -650,22 +752,13 @@ public class DataRenderer extends Renderer {
 
 
     String sn = describeSystem(c.getSystem());
-    if ("http://snomed.info/sct".equals(c.getSystem())) {
-      if (c.hasCode()) {
-        x.ah("http://snomed.info/id/"+c.getCode()).tx(sn);        
-      } else {
-        x.ah("https://browser.ihtsdotools.org/").tx(sn);
-      }
-    } else if ("http://loinc.org".equals(c.getSystem())) {
-      x.ah("https://loinc.org/").tx(sn);            
+    String link = getLinkForCode(c.getSystem(), c.getVersion(), c.getCode());
+    if (link != null) {
+      x.ah(link).tx(sn);
     } else {
-      CodeSystem cs = context.getWorker().fetchCodeSystem(c.getSystem());
-      if (cs != null && cs.hasUserData("path")) {
-        x.ah(cs.getUserString("path")).tx(sn);
-      } else {
-        x.tx(sn);
-      }
+      x.tx(sn);
     }
+    
     x.tx(" ");
     x.tx(c.getCode());
     if (!Utilities.noString(s)) {
@@ -903,6 +996,57 @@ public class DataRenderer extends Renderer {
     return s.toString();
   }
 
+  protected String getLocalizedBigDecimalValue(BigDecimal input, Currency c) {
+    NumberFormat numberFormat = NumberFormat.getNumberInstance(context.getLocale());
+    numberFormat.setGroupingUsed(true);
+    numberFormat.setMaximumFractionDigits(c.getDefaultFractionDigits());
+    numberFormat.setMinimumFractionDigits(c.getDefaultFractionDigits());
+    return numberFormat.format(input);
+}
+  
+  protected void renderMoney(XhtmlNode x, Money money) {
+    Currency c = Currency.getInstance(money.getCurrency());
+    if (c != null) {
+      XhtmlNode s = x.span(null, c.getDisplayName());
+      s.tx(c.getSymbol(context.getLocale()));
+      s.tx(getLocalizedBigDecimalValue(money.getValue(), c));
+      x.tx(" ("+c.getCurrencyCode()+")");
+    } else {
+      x.tx(money.getCurrency());
+      x.tx(money.getValue().toPlainString());
+    }
+  }
+  
+  protected void renderExpression(XhtmlNode x, Expression expr) {
+  // there's two parts: what the expression is, and how it's described. 
+    // we start with what it is, and then how it's desceibed 
+    if (expr.hasExpression()) {
+      XhtmlNode c = x;
+      if (expr.hasReference()) {
+        c = x.ah(expr.getReference());        
+      }
+      if (expr.hasLanguage()) {
+        c = c.span(null, expr.getLanguage());
+      }
+      c.code().tx(expr.getExpression());
+    } else if (expr.hasReference()) {
+      x.ah(expr.getReference()).tx("source");
+    }
+    if (expr.hasName() || expr.hasDescription()) {
+      x.tx("(");
+      if (expr.hasName()) {
+        x.b().tx(expr.getName());
+      }
+      if (expr.hasDescription()) {
+        x.tx("\"");
+        x.tx(expr.getDescription());
+        x.tx("\"");
+      }
+      x.tx(")");
+    }
+  }
+  
+  
   protected void renderContactPoint(XhtmlNode x, ContactPoint contact) {
     if (contact != null) {
       if (!contact.hasSystem()) {
@@ -1046,19 +1190,19 @@ public class DataRenderer extends Renderer {
       x.tx(" "+q.getLow().getUnit());
   }
 
-  public static String displayPeriod(Period p) {
-    String s = !p.hasStart() ? "(?)" : p.getStartElement().toHumanDisplay();
+  public String displayPeriod(Period p) {
+    String s = !p.hasStart() ? "(?)" : displayDateTime(p.getStartElement());
     s = s + " --> ";
-    return s + (!p.hasEnd() ? "(ongoing)" : p.getEndElement().toHumanDisplay());
+    return s + (!p.hasEnd() ? "(ongoing)" : displayDateTime(p.getEndElement()));
   }
 
   public void renderPeriod(XhtmlNode x, Period p) {
-    x.addText(!p.hasStart() ? "??" : p.getStartElement().toHumanDisplay());
+    x.addText(!p.hasStart() ? "??" : displayDateTime(p.getStartElement()));
     x.tx(" --> ");
-    x.addText(!p.hasEnd() ? "(ongoing)" : p.getEndElement().toHumanDisplay());
+    x.addText(!p.hasEnd() ? "(ongoing)" : displayDateTime(p.getEndElement()));
   }
   
-  public void renderDataRequirement(XhtmlNode x, DataRequirement dr) {
+  public void renderDataRequirement(XhtmlNode x, DataRequirement dr) throws FHIRFormatError, DefinitionException, IOException {
     XhtmlNode tbl = x.table("grid");
     XhtmlNode tr = tbl.tr();    
     XhtmlNode td = tr.td().colspan("2");
@@ -1163,7 +1307,7 @@ public class DataRenderer extends Renderer {
       CommaSeparatedStringBuilder c = new CommaSeparatedStringBuilder();
       for (DateTimeType p : s.getEvent()) {
         if (p.hasValue()) {
-          c.append(p.toHumanDisplay());
+          c.append(displayDateTime(p));
         } else if (!renderExpression(c, p)) {
           c.append("??");
         }        
@@ -1174,7 +1318,7 @@ public class DataRenderer extends Renderer {
     if (s.hasRepeat()) {
       TimingRepeatComponent rep = s.getRepeat();
       if (rep.hasBoundsPeriod() && rep.getBoundsPeriod().hasStart())
-        b.append("Starting "+rep.getBoundsPeriod().getStartElement().toHumanDisplay());
+        b.append("Starting "+displayDateTime(rep.getBoundsPeriod().getStartElement()));
       if (rep.hasCount())
         b.append("Count "+Integer.toString(rep.getCount())+" times");
       if (rep.hasDuration())
@@ -1206,7 +1350,7 @@ public class DataRenderer extends Renderer {
         b.append("Do "+st);
       }
       if (rep.hasBoundsPeriod() && rep.getBoundsPeriod().hasEnd())
-        b.append("Until "+rep.getBoundsPeriod().getEndElement().toHumanDisplay());
+        b.append("Until "+displayDateTime(rep.getBoundsPeriod().getEndElement()));
     }
     return b.toString();
   }

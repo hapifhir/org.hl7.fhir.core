@@ -1,97 +1,68 @@
 package org.hl7.fhir.validation;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
-  
-  Redistribution and use in source and binary forms, with or without modification, 
+
+  Redistribution and use in source and binary forms, with or without modification,
   are permitted provided that the following conditions are met:
-    
-   * Redistributions of source code must retain the above copyright notice, this 
+
+   * Redistributions of source code must retain the above copyright notice, this
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice,
+     this list of conditions and the following disclaimer in the documentation
      and/or other materials provided with the distribution.
-   * Neither the name of HL7 nor the names of its contributors may be used to 
-     endorse or promote products derived from this software without specific 
+   * Neither the name of HL7 nor the names of its contributors may be used to
+     endorse or promote products derived from this software without specific
      prior written permission.
-  
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE.
-  
- */
-
-
-
-/*
-Copyright (c) 2011+, HL7, Inc
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, 
-are permitted provided that the following conditions are met:
-
- * Redistributions of source code must retain the above copyright notice, this 
-   list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice, 
-   this list of conditions and the following disclaimer in the documentation 
-   and/or other materials provided with the distribution.
- * Neither the name of HL7 nor the names of its contributors may be used to 
-   endorse or promote products derived from this software without specific 
-   prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-POSSIBILITY OF SUCH DAMAGE.
 
  */
-import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.DomainResource;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.elementmodel.JsonParser;
+import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
+import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.IValidationContextResourceLoader;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
-import org.hl7.fhir.validation.BaseValidator.TrackedLocationRelatedMessage;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
 
-public class BaseValidator {
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
+public class BaseValidator implements IValidationContextResourceLoader {
 
   public class TrackedLocationRelatedMessage {
     private Object location;
@@ -107,8 +78,7 @@ public class BaseValidator {
     public ValidationMessage getVmsg() {
       return vmsg;
     }
-    
-  }
+      }
 
   public class ValidationControl {
     private boolean allowed;
@@ -1027,4 +997,61 @@ public class BaseValidator {
       return system;
     }
   }
+  
+  @Override
+  public Resource loadContainedResource(List<ValidationMessage> errors, String path, Element resource, String id, Class<? extends Resource> class1) throws FHIRException {
+    for (Element contained : resource.getChildren("contained")) {
+      if (contained.getIdBase().equals(id)) {
+        return loadFoundResource(errors, path, contained, class1);
+      }
+    }
+    return null;
+  }
+  
+  protected Resource loadFoundResource(List<ValidationMessage> errors, String path, Element resource, Class<? extends Resource> class1) throws FHIRException {
+    try {
+      FhirPublication v = FhirPublication.fromCode(context.getVersion());
+      ByteArrayOutputStream bs = new ByteArrayOutputStream();
+      new JsonParser(context).compose(resource, bs, OutputStyle.NORMAL, resource.getIdBase());
+      byte[] json = bs.toByteArray();
+      Resource r5 = null;
+      switch (v) {
+      case DSTU1:
+        rule(errors, IssueType.INVALID, resource.line(), resource.col(), path, false, I18nConstants.UNSUPPORTED_VERSION_R1, resource.getIdBase());
+        return null; // this can't happen
+      case DSTU2:
+        org.hl7.fhir.dstu2.model.Resource r2 = new org.hl7.fhir.dstu2.formats.JsonParser().parse(json);
+        r5 = VersionConvertorFactory_10_50.convertResource(r2);
+        break;
+      case DSTU2016May:
+        org.hl7.fhir.dstu2016may.model.Resource r2a = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(json);
+        r5 = VersionConvertorFactory_14_50.convertResource(r2a);
+        break;
+      case STU3:
+        org.hl7.fhir.dstu3.model.Resource r3 = new org.hl7.fhir.dstu3.formats.JsonParser().parse(json);
+        r5 = VersionConvertorFactory_30_50.convertResource(r3);
+        break;
+      case R4:
+        org.hl7.fhir.r4.model.Resource r4 = new org.hl7.fhir.r4.formats.JsonParser().parse(json);
+        r5 = VersionConvertorFactory_40_50.convertResource(r4);
+        break;
+      case R5:
+        r5 = new org.hl7.fhir.r5.formats.JsonParser().parse(json);
+        break;
+      default:
+        return null; // this can't happen
+      }
+      if (class1.isInstance(r5))
+        return (Resource) r5;
+      else {
+        rule(errors, IssueType.INVALID, resource.line(), resource.col(), path, false, I18nConstants.REFERENCE_REF_WRONGTARGET_LOAD, resource.getIdBase(), class1.toString(), r5.fhirType());
+        return null;
+      }
+
+    } catch (IOException e) {
+      throw new FHIRException(e);
+    }
+  }
+
+
 }

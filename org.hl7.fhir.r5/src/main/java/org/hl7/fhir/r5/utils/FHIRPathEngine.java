@@ -5539,7 +5539,7 @@ public class FHIRPathEngine {
         throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_BAD_NAME, expr.getName());
       }
     } else if (expr.getKind() == Kind.Group) {
-      throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_BAD_SYNTAX_GROUP);
+      throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_BAD_SYNTAX_GROUP, expr.toString());
     } else if (expr.getKind() == Kind.Constant) {
       throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_BAD_SYNTAX_CONST);
     }

@@ -21,7 +21,7 @@ import java.io.*;
 public class ResourceRoundTripTests {
 
   @BeforeAll
-  public void setUp() throws Exception {
+  public static void setUp() throws Exception {
   }
 
   @Test

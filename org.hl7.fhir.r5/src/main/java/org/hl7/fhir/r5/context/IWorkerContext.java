@@ -44,8 +44,8 @@ import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
-import org.hl7.fhir.r5.context.IWorkerContext.CodingValidationRequest;
 import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
+import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.ParserType;
 import org.hl7.fhir.r5.model.Bundle;
@@ -64,12 +64,14 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.utils.IResourceValidator;
+import org.hl7.fhir.r5.utils.validation.IResourceValidator;
+import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import com.google.gson.JsonSyntaxException;
@@ -168,6 +170,9 @@ public interface IWorkerContext {
     public String getVersion() {
       return version;
     }
+    public boolean isExamplesPackage() {
+      return !(id.startsWith("hl7.fhir.") && id.endsWith(".example"));
+    }
   }
 
   public class PackageDetails extends PackageVersion {
@@ -191,13 +196,14 @@ public interface IWorkerContext {
     }
     
   }
+
   public interface ICanonicalResourceLocator {
     void findResource(Object caller, String url); // if it can be found, put it in the context
   }
   
   public interface IContextResourceLoader {
     /** 
-     * @return List of the resource types that shoud be loaded
+     * @return List of the resource types that should be loaded
      */
     String[] getTypes();
     
@@ -241,7 +247,6 @@ public interface IWorkerContext {
      */
     IContextResourceLoader getNewLoader(NpmPackage npm) throws JsonSyntaxException, IOException;   
   }
-
 
   /**
    * Get the versions of the definitions loaded in context
@@ -335,6 +340,7 @@ public interface IWorkerContext {
    */
   public <T extends Resource> T fetchResource(Class<T> class_, String uri);
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException;
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version);
 
   /** has the same functionality as fetchResource, but passes in information about the source of the 
    * reference (this may affect resolution of version)
@@ -476,6 +482,7 @@ public interface IWorkerContext {
    * @return
    */
   public CodeSystem fetchCodeSystem(String system);
+  public CodeSystem fetchCodeSystem(String system, String version);
 
   /**
    * True if the underlying terminology service provider will do 
@@ -507,6 +514,14 @@ public interface IWorkerContext {
    * @return
    */
   public ValueSetExpansionOutcome expandVS(ValueSet source, boolean cacheOk, boolean heiarchical);
+  
+  /**
+   * ValueSet Expansion - see $expand
+   *  
+   * @param source
+   * @return
+   */
+  public ValueSetExpansionOutcome expandVS(ValueSet source, boolean cacheOk, boolean heiarchical, boolean incompleteOk);
   
   /**
    * ValueSet Expansion - see $expand, but resolves the binding first
@@ -733,6 +748,8 @@ public interface IWorkerContext {
    * @return
    */
   public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs);
+  
+  public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs, ValidationContextCarrier ctxt);
 
   public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs);
   
