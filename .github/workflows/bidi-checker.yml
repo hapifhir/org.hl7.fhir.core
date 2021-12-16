@@ -1,0 +1,28 @@
+name: BIDI CHECK
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  bidi_checker_job:
+    runs-on: ubuntu-latest
+    name: Check for bidi unicode characters in repo
+    steps:
+      # Checkout the repo code. IMPORTANT, this step is needed to populate the directory defined by GITHUB_WORKSPACE
+      - name: Checkout repo
+        uses: actions/checkout@v1
+        id: checkout
+      # Run the check for bidi characters.
+      - name: Check for bidi characters
+        id: bidi_check
+        uses: HL7/bidi-checker-action@v1.5
+      - name: Get the output time
+        run: echo "The time was ${{ steps.bidi_check.outputs.time }}"

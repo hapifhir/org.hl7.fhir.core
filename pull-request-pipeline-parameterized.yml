@@ -1,15 +1,15 @@
 jobs:
-  - ${{ each imageName in parameters.imageName }}:
-    - ${{ each jdkVersion in parameters.jdkVersion }}:
+  - ${{ each image in parameters.images }}:
+    - ${{ each jdkVersion in image.jdkVersions }}:
       - job:
 
-        displayName: ${{imageName}}_${{jdkVersion}}
+        displayName: ${{image.name}}_${{jdkVersion}}
         
         pool:
-          vmImage: ${{imageName}}
+          vmImage: ${{image.name}}
         
         variables:
-          currentImage: ${{imageName}}
+          currentImage: ${{image.name}}
           codecov: $(CODECOV_TOKEN)
           VERSION:
 

@@ -2,8 +2,8 @@ package org.hl7.fhir.r4.utils.client.network;
 
 import okhttp3.*;
 import org.hl7.fhir.utilities.ToolingClientLogger;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +22,8 @@ public class FhirLoggingInterceptor implements Interceptor {
     return this;
   }
 
-  @NotNull
   @Override
-  public Response intercept(@NotNull Interceptor.Chain chain) throws IOException {
+  public Response intercept(@Nonnull Interceptor.Chain chain) throws IOException {
     // Log Request
     Request request = chain.request();
     logger.logRequest(request.method(), request.url().toString(), new ArrayList<>(request.headers().names()),

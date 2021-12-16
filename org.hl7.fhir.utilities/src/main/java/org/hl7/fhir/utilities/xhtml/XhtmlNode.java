@@ -755,7 +755,8 @@ public class XhtmlNode implements IBaseXhtml {
 
 
   public XhtmlNode nbsp() {
-    return addText(NBSP);    
+    addText(NBSP);
+    return this;
   }
 
 

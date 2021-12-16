@@ -625,10 +625,10 @@ public class ElementDefinition30_50 {
       DataType t = ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValueSet());
       if (t instanceof org.hl7.fhir.r5.model.Reference) {
         tgt.setValueSet(((org.hl7.fhir.r5.model.Reference) t).getReference());
-        tgt.getValueSetElement().addExtension(VersionConvertor_30_50.EXT_SRC_TYPE, new UriType("Reference"));
+        tgt.getValueSetElement().addExtension(VersionConvertor_30_50.EXT_SRC_TYPE, new org.hl7.fhir.r5.model.UrlType("Reference"));
       } else {
         tgt.setValueSet(t.primitiveValue());
-        tgt.getValueSetElement().addExtension(VersionConvertor_30_50.EXT_SRC_TYPE, new UriType("uri"));
+        tgt.getValueSetElement().addExtension(VersionConvertor_30_50.EXT_SRC_TYPE, new org.hl7.fhir.r5.model.UrlType("uri"));
       }
       tgt.setValueSet(VersionConvertorConstants.refToVS(tgt.getValueSet()));
     }

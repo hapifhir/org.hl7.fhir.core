@@ -40,7 +40,15 @@ public class XVerExtensionManager {
     this.context = context;
   }
 
+  public boolean isR5(String url) {
+    String v = url.substring(20, 23);
+    return "5.0".equals(v);    
+  }
+  
   public XVerExtensionStatus status(String url) throws FHIRException {
+    if (url.length() < 24) {
+      return XVerExtensionStatus.Invalid;
+    }
     String v = url.substring(20, 23);
     if ("5.0".equals(v)) {
       v = "4.6"; // for now
@@ -124,6 +132,11 @@ public class XVerExtensionManager {
       sd.getDifferential().addElement().setPath("Extension.value[x]").setMax("0");
     } else {
       throw new FHIRException("Internal error - attempt to define extension for "+url+" when it is invalid");
+    }
+    if (path.has("modifier") && path.get("modifier").getAsBoolean()) {
+      ElementDefinition baseDef = new ElementDefinition("Extension");
+      sd.getDifferential().getElement().add(0, baseDef);
+      baseDef.setIsModifier(true);
     }
     return sd;
   }

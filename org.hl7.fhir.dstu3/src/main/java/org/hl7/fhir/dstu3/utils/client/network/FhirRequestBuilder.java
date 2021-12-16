@@ -206,14 +206,19 @@ public class FhirRequestBuilder {
 
   public <T extends Resource> ResourceRequest<T> execute() throws IOException {
     formatHeaders(httpRequest, resourceFormat, headers);
-    Response response = getHttpClient().newCall(httpRequest.build()).execute();
+    final Request request = httpRequest.build();
+    log(request.method(), request.url().toString(), request.headers(), request.body() != null ? request.body().toString().getBytes() : null);
+    Response response = getHttpClient().newCall(request).execute();
     T resource = unmarshalReference(response, resourceFormat);
     return new ResourceRequest<T>(resource, response.code(), getLocationHeader(response.headers()));
   }
 
   public Bundle executeAsBatch() throws IOException {
     formatHeaders(httpRequest, resourceFormat, null);
-    Response response = getHttpClient().newCall(httpRequest.build()).execute();
+    final Request request = httpRequest.build();
+    log(request.method(), request.url().toString(), request.headers(), request.body() != null ? request.body().toString().getBytes() : null);
+
+    Response response = getHttpClient().newCall(request).execute();
     return unmarshalFeed(response, resourceFormat);
   }
 
@@ -300,6 +305,26 @@ public class FhirRequestBuilder {
     } else {
       throw new EFhirClientException("Invalid format: " + format);
     }
+  }
+
+  /**
+   * Logs the given {@link Request}, using the current {@link ToolingClientLogger}. If the current
+   * {@link FhirRequestBuilder#logger} is null, no action is taken.
+   *
+   * @param method  HTTP request method
+   * @param url request URL
+   * @param requestHeaders {@link Headers} for request
+   * @param requestBody Byte array request
+   */
+  protected void log(String method, String url, Headers requestHeaders, byte[] requestBody) {
+    if (logger != null) {
+      List<String> headerList = new ArrayList<>(Collections.emptyList());
+      Map<String, List<String>> headerMap = requestHeaders.toMultimap();
+      headerMap.keySet().forEach(key -> headerMap.get(key).forEach(value -> headerList.add(key + ":" + value)));
+
+      logger.logRequest(method, url, headerList, requestBody);
+    }
+
   }
 
   /**
