@@ -3490,8 +3490,22 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return fmt.length() > 10 && (fmt.substring(10).contains("-") || fmt.substring(10).contains("+") || fmt.substring(10).contains("Z"));
   }
 
-  private boolean isAbsolute(String uri, String... protocols) {
-    return Utilities.noString(uri) || uri.startsWith("http:") || uri.startsWith("https:") || uri.startsWith("urn:");
+  private boolean isAbsolute(String uri) {
+    String protocol = null;
+    String tail = null;
+    if (uri.contains(":")) {
+      protocol = uri.substring(0, uri.indexOf(":"));
+      tail = uri.substring(uri.indexOf(":")+1);
+    }
+    if (Utilities.isToken(protocol)) {
+      if ("file".equals(protocol)) {
+        return tail.startsWith("/") || tail.contains(":");
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
   }
 
   private boolean isCodeSystemReferenceValid(String uri) {
