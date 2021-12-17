@@ -97,6 +97,8 @@ public class StructureDefinitionValidator extends BaseValidator {
             }
           }
         }
+        rule(errors, IssueType.NOTFOUND, stack.getLiteralPath(), base.getKindElement().primitiveValue().equals(src.getChildValue("kind")), 
+            I18nConstants.SD_DERIVATION_KIND_MISMATCH, base.getKindElement().primitiveValue(), src.getChildValue("kind"));
       }
     } catch (FHIRException | IOException e) {
       rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.ERROR_GENERATING_SNAPSHOT, e.getMessage());
