@@ -837,7 +837,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     for (CodingValidationRequest t : codes) {
       t.setCacheToken(txCache != null ? txCache.generateValidationToken(options, t.getCoding(), vs) : null);
       if (t.getCoding().hasSystem()) {
-        codeSystemsUsed.add(t.getCoding().getSystem());
+         codeSystemsUsed.add(t.getCoding().getSystem());
       }
       if (txCache != null) { 
         t.setResult(txCache.getValidation(t.getCacheToken()));
@@ -935,6 +935,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return validateCode(options, code, vs, ctxt);
   }
 
+  private final String getCodeKey(Coding code) {
+    return code.hasVersion() ? code.getSystem()+"|"+code.getVersion() : code.getSystem();
+  }
+
   @Override
   public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs, ValidationContextCarrier ctxt) {
     if (options == null) {
@@ -944,12 +948,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (code.hasSystem()) {
       codeSystemsUsed.add(code.getSystem());
     }
+
     final CacheToken cacheToken = txCache != null ? txCache.generateValidationToken(options, code, vs) : null;
     ValidationResult res = null;
     if (txCache != null) {
       res = txCache.getValidation(cacheToken);
     }
     if (res != null) {
+      updateUnsupportedCodeSystems(res, code, getCodeKey(code));
       return res;
     }
     //FIXME
@@ -969,10 +975,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
     
-    String codeKey = code.hasVersion() ? code.getSystem()+"|"+code.getVersion() : code.getSystem();
     if (!options.isUseServer()) {
       return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS);
     }
+    String codeKey = getCodeKey(code);
     if (unsupportedCodeSystems.contains(codeKey)) {
       return new ValidationResult(IssueSeverity.ERROR,formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, code.getSystem()), TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);      
     }
@@ -998,13 +1004,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog == null ? null : txLog.getLastId()).setErrorClass(TerminologyServiceErrorClass.SERVER_ERROR);
     }
-    if (res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED && !code.hasVersion()) {
-      unsupportedCodeSystems.add(codeKey);
-    }
+    updateUnsupportedCodeSystems(res, code, codeKey);
     if (txCache != null) { // we never cache unsupported code systems - we always keep trying (but only once per run)
       txCache.cacheValidation(cacheToken, res, TerminologyCache.PERMANENT);
     }
     return res;
+  }
+
+  private void updateUnsupportedCodeSystems(ValidationResult res, Coding code, String codeKey) {
+    if (res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED && !code.hasVersion()) {
+      unsupportedCodeSystems.add(codeKey);
+    }
   }
 
   private void setTerminologyOptions(ValidationOptions options, Parameters pIn) {
