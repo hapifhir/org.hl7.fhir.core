@@ -304,8 +304,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       } else if (item instanceof Element) {
         Element e = (Element) item;
-        if (e.getSpecial() != null) {
-          self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e, ctxt.getRootResource()), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage));          
+        if (e.getSpecial() == SpecialElement.CONTAINED) {
+          self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e, ctxt.getRootResource(), ctxt.getGroupingResource()), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage));          
+        } else if (e.getSpecial() != null) {
+          self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e, ctxt.getRootResource(), ctxt.getRootResource()), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage));          
         } else {
           self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage));
         }
@@ -1312,7 +1314,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String system = c.getSystem();
     String display = c.getDisplay();
     String version = c.getVersion();
-    rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, isAbsolute(system), I18nConstants.TERMINOLOGY_TX_SYSTEM_RELATIVE);
+    rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, system == null || isCodeSystemReferenceValid(system), I18nConstants.TERMINOLOGY_TX_SYSTEM_RELATIVE);
 
     if (system != null && code != null && !noTerminologyChecks) {
       rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, !isValueSet(system), I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET2, system);
@@ -1568,7 +1570,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private void checkCodedElement(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, boolean inCodeableConcept, boolean checkDisplay, NodeStack stack,
       String theCode, String theSystem, String theVersion, String theDisplay) {
-    rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, isAbsolute(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_RELATIVE);
+    rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, theSystem == null || isCodeSystemReferenceValid(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_RELATIVE);
     warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, Utilities.noString(theCode) || !Utilities.noString(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_NO_CODE);
 
     if (theSystem != null && theCode != null && !noTerminologyChecks) {
@@ -2023,7 +2025,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private void checkIdentifier(List<ValidationMessage> errors, String path, Element element, ElementDefinition context) {
     String system = element.getNamedChildValue("system");
-    rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, isAbsolute(system), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_SYSTEM);
+    rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, system == null || isIdentifierSystemReferenceValid(system), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_SYSTEM);
     if ("urn:ietf:rfc:3986".equals(system)) {
       String value = element.getNamedChildValue("value");
       rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, isAbsolute(value), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_VALUE); 
@@ -2889,7 +2891,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, !isSuspiciousReference(ref), I18nConstants.REFERENCE_REF_SUSPICIOUS, ref);      
 
-    ResolvedReference we = localResolve(ref, stack, errors, path, hostContext.getRootResource(), element);
+    ResolvedReference we = localResolve(ref, stack, errors, path, hostContext.getRootResource(), hostContext.getGroupingResource(), element);
     String refType;
     if (ref.startsWith("#")) {
       refType = "contained";
@@ -3488,13 +3490,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return fmt.length() > 10 && (fmt.substring(10).contains("-") || fmt.substring(10).contains("+") || fmt.substring(10).contains("Z"));
   }
 
-  private boolean isAbsolute(String uri) {
-    return Utilities.noString(uri) || uri.startsWith("http:") || uri.startsWith("https:") || uri.startsWith("urn:uuid:") || uri.startsWith("urn:oid:") || uri.startsWith("urn:ietf:")
-      || uri.startsWith("urn:iso:") || uri.startsWith("urn:iso-astm:") || uri.startsWith("mailto:")|| isValidFHIRUrn(uri);
+  private boolean isAbsolute(String uri, String... protocols) {
+    return Utilities.noString(uri) || uri.startsWith("http:") || uri.startsWith("https:") || uri.startsWith("urn:");
   }
 
-  private boolean isValidFHIRUrn(String uri) {
-    return (uri.equals("urn:x-fhir:uk:id:nhs-number")) || uri.startsWith("urn:"); // Anyone can invent a URN, so why should we complain?
+  private boolean isCodeSystemReferenceValid(String uri) {
+    return isSystemReferenceValid(uri);    
+  }
+
+  private boolean isIdentifierSystemReferenceValid(String uri) {
+    return isSystemReferenceValid(uri) || uri.startsWith("ldap:");
+  }
+
+  private boolean isSystemReferenceValid(String uri) {
+    return uri.startsWith("http:") || uri.startsWith("https:") || uri.startsWith("urn:");
   }
 
   public boolean isAnyExtensionsAllowed() {
@@ -3577,7 +3586,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return true;
   }
 
-  private ResolvedReference localResolve(String ref, NodeStack stack, List<ValidationMessage> errors, String path, Element rootResource, Element source) {
+  private ResolvedReference localResolve(String ref, NodeStack stack, List<ValidationMessage> errors, String path, Element rootResource, Element groupingResource, Element source) {
     if (ref.startsWith("#")) {
       // work back through the parent list.
       // really, there should only be one level for this (contained resources cannot contain
@@ -3677,11 +3686,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         stack = stack.getParent();
       }
       // we can get here if we got called via FHIRPath conformsTo which breaks the stack continuity.
-      if (rootResource != null && BUNDLE.equals(rootResource.fhirType())) {
-        String type = rootResource.getChildValue(TYPE);
-        Element entry = getEntryForSource(rootResource, source);
+      if (groupingResource != null && BUNDLE.equals(groupingResource.fhirType())) { // it could also be a Parameters resource - that case isn't handled yet
+        String type = groupingResource.getChildValue(TYPE);
+        Element entry = getEntryForSource(groupingResource, source);
         fullUrl = entry.getChildValue(FULL_URL);
-        IndexedElement res = getFromBundle(rootResource, ref, fullUrl, errors, path, type, "transaction".equals(type));
+        IndexedElement res = getFromBundle(groupingResource, ref, fullUrl, errors, path, type, "transaction".equals(type));
         if (res == null) {
           return null;
         } else {
@@ -3758,7 +3767,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
 
   private Element resolve(Object appContext, String ref, NodeStack stack, List<ValidationMessage> errors, String path) throws IOException, FHIRException {
-    Element local = localResolve(ref, stack, errors, path, null, null).getFocus();
+    Element local = localResolve(ref, stack, errors, path, null, null, null).getFocus();
     if (local != null)
       return local;
     if (fetcher == null)
@@ -4591,7 +4600,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ValidatorHostContext hc = null;
         if (special == SpecialElement.BUNDLE_ENTRY || special == SpecialElement.BUNDLE_OUTCOME || special == SpecialElement.PARAMETER) {
           resource = element;
-          hc = hostContext.forEntry(element);
+          assert Utilities.existsInList(hostContext.getRootResource().fhirType(), "Bundle", "Parameters");
+          hc = hostContext.forEntry(element, hostContext.getRootResource()); // root becomes the grouping resource (should be either bundle or parameters)
         } else {
           hc = hostContext.forContained(element);
         }
