@@ -110,26 +110,29 @@ class UtilitiesTest {
     return file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf('/')) + '/';
   }
 
-  public static final int BOUND = 500;
+  public static final int BOUND = 499;
   public static final Random RAND = new Random();
 
-  public static final int GB_MEASURE_JUST_OVER = (int) Math.pow(Utilities.ONE_MB, 3) + RAND.nextInt(BOUND);
+  public static int nextInt() {
+    return 1 + RAND.nextInt(BOUND);
+  }
+
+  public static final int GB_MEASURE_JUST_OVER = (int) Math.pow(Utilities.ONE_MB, 3) + nextInt();
   public static final int GB_MEASURE_EXACT = (int) Math.pow(Utilities.ONE_MB, 3);
-  public static final int GB_MEASURE_JUST_UNDER = (int) Math.pow(Utilities.ONE_MB, 3) - RAND.nextInt(BOUND);
+  public static final int GB_MEASURE_JUST_UNDER = (int) Math.pow(Utilities.ONE_MB, 3) - nextInt();
 
-  public static final int MB_MEASURE_JUST_OVER = (int) Math.pow(Utilities.ONE_MB, 2) + RAND.nextInt(BOUND);
+  public static final int MB_MEASURE_JUST_OVER = (int) Math.pow(Utilities.ONE_MB, 2) + nextInt();
   public static final int MB_MEASURE_EXACT = (int) Math.pow(Utilities.ONE_MB, 2);
-  public static final int MB_MEASURE_JUST_UNDER = (int) Math.pow(Utilities.ONE_MB, 2) - RAND.nextInt(BOUND);
+  public static final int MB_MEASURE_JUST_UNDER = (int) Math.pow(Utilities.ONE_MB, 2) - nextInt();
 
-  public static final int KB_MEASURE_JUST_OVER = Utilities.ONE_MB + RAND.nextInt(BOUND);
+  public static final int KB_MEASURE_JUST_OVER = Utilities.ONE_MB + nextInt();
   public static final int KB_MEASURE_EXACT = Utilities.ONE_MB;
-  public static final int KB_MEASURE_JUST_UNDER = Utilities.ONE_MB - RAND.nextInt(BOUND);
+  public static final int KB_MEASURE_JUST_UNDER = Utilities.ONE_MB - nextInt();
 
-  public static final int BT_MEASURE = Utilities.ONE_MB + RAND.nextInt(BOUND);
+  public static final int BT_MEASURE = Utilities.ONE_MB + nextInt();
   public static final int EMPTY = 0;
 
   public static final int BIG_NEG = Utilities.ONE_MB * -1;
-
 
   private static final String buildMeasureLimitMessage(int size, String contains) {
     return MessageFormat.format("\"{0}\" should contain \"{1}\"", size, contains);
