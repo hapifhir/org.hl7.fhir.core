@@ -361,6 +361,7 @@ public class I18nConstants {
   public static final String SD_MUST_HAVE_DERIVATION = "SD_MUST_HAVE_DERIVATION";
   public static final String SD_NESTED_MUST_SUPPORT_DIFF = "SD_NESTED_MUST_SUPPORT_DIFF";
   public static final String SD_NESTED_MUST_SUPPORT_SNAPSHOT = "SD_NESTED_MUST_SUPPORT_SNAPSHOT";
+  public static final String SD_DERIVATION_KIND_MISMATCH = "SD_DERIVATION_KIND_MISMATCH";
   public static final String SD_ED_TYPE_PROFILE_UNKNOWN = "SD_ED_TYPE_PROFILE_UNKNOWN";
   public static final String SD_ED_TYPE_PROFILE_NOTYPE = "SD_ED_TYPE_PROFILE_NOTYPE";
   public static final String SD_ED_TYPE_PROFILE_WRONG = "SD_ED_TYPE_PROFILE_WRONG";
