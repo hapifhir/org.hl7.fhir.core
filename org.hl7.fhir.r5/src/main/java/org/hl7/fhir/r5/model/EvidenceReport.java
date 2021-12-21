@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * The EvidenceReport Resource is a specialized container for a collection of resources and codable concepts, adapted to support compositions of Evidence, EvidenceVariable, and Citation resources and related concepts.
+ * The EvidenceReport Resource is a specialized container for a collection of resources and codeable concepts, adapted to support compositions of Evidence, EvidenceVariable, and Citation resources and related concepts.
  */
 @ResourceDef(name="EvidenceReport", profile="http://hl7.org/fhir/StructureDefinition/EvidenceReport")
 public class EvidenceReport extends MetadataResource {
@@ -939,11 +939,11 @@ public class EvidenceReport extends MetadataResource {
         /**
          * The target composition/document of this relationship.
          */
-        @Child(name = "target", type = {Identifier.class, EvidenceReport.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "target", type = {}, order=2, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Target of the relationship", formalDefinition="The target composition/document of this relationship." )
-        protected DataType target;
+        protected EvidenceReportRelatesToTargetComponent target;
 
-        private static final long serialVersionUID = -1091549831L;
+        private static final long serialVersionUID = -1716908969L;
 
     /**
      * Constructor
@@ -955,7 +955,7 @@ public class EvidenceReport extends MetadataResource {
     /**
      * Constructor
      */
-      public EvidenceReportRelatesToComponent(ReportRelationshipType code, DataType target) {
+      public EvidenceReportRelatesToComponent(ReportRelationshipType code, EvidenceReportRelatesToTargetComponent target) {
         super();
         this.setCode(code);
         this.setTarget(target);
@@ -1009,38 +1009,13 @@ public class EvidenceReport extends MetadataResource {
         /**
          * @return {@link #target} (The target composition/document of this relationship.)
          */
-        public DataType getTarget() { 
+        public EvidenceReportRelatesToTargetComponent getTarget() { 
+          if (this.target == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceReportRelatesToComponent.target");
+            else if (Configuration.doAutoCreate())
+              this.target = new EvidenceReportRelatesToTargetComponent(); // cc
           return this.target;
-        }
-
-        /**
-         * @return {@link #target} (The target composition/document of this relationship.)
-         */
-        public Identifier getTargetIdentifier() throws FHIRException { 
-          if (this.target == null)
-            this.target = new Identifier();
-          if (!(this.target instanceof Identifier))
-            throw new FHIRException("Type mismatch: the type Identifier was expected, but "+this.target.getClass().getName()+" was encountered");
-          return (Identifier) this.target;
-        }
-
-        public boolean hasTargetIdentifier() { 
-          return this != null && this.target instanceof Identifier;
-        }
-
-        /**
-         * @return {@link #target} (The target composition/document of this relationship.)
-         */
-        public Reference getTargetReference() throws FHIRException { 
-          if (this.target == null)
-            this.target = new Reference();
-          if (!(this.target instanceof Reference))
-            throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.target.getClass().getName()+" was encountered");
-          return (Reference) this.target;
-        }
-
-        public boolean hasTargetReference() { 
-          return this != null && this.target instanceof Reference;
         }
 
         public boolean hasTarget() { 
@@ -1050,9 +1025,7 @@ public class EvidenceReport extends MetadataResource {
         /**
          * @param value {@link #target} (The target composition/document of this relationship.)
          */
-        public EvidenceReportRelatesToComponent setTarget(DataType value) { 
-          if (value != null && !(value instanceof Identifier || value instanceof Reference))
-            throw new Error("Not the right type for EvidenceReport.relatesTo.target[x]: "+value.fhirType());
+        public EvidenceReportRelatesToComponent setTarget(EvidenceReportRelatesToTargetComponent value) { 
           this.target = value;
           return this;
         }
@@ -1060,17 +1033,14 @@ public class EvidenceReport extends MetadataResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("code", "code", "The type of relationship that this composition has with anther composition or document.", 0, 1, code));
-          children.add(new Property("target[x]", "Identifier|Reference(EvidenceReport)", "The target composition/document of this relationship.", 0, 1, target));
+          children.add(new Property("target", "", "The target composition/document of this relationship.", 0, 1, target));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3059181: /*code*/  return new Property("code", "code", "The type of relationship that this composition has with anther composition or document.", 0, 1, code);
-          case -815579825: /*target[x]*/  return new Property("target[x]", "Identifier|Reference(EvidenceReport)", "The target composition/document of this relationship.", 0, 1, target);
-          case -880905839: /*target*/  return new Property("target[x]", "Identifier|Reference(EvidenceReport)", "The target composition/document of this relationship.", 0, 1, target);
-          case 1690892570: /*targetIdentifier*/  return new Property("target[x]", "Identifier", "The target composition/document of this relationship.", 0, 1, target);
-          case 1259806906: /*targetReference*/  return new Property("target[x]", "Reference(EvidenceReport)", "The target composition/document of this relationship.", 0, 1, target);
+          case -880905839: /*target*/  return new Property("target", "", "The target composition/document of this relationship.", 0, 1, target);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1080,7 +1050,7 @@ public class EvidenceReport extends MetadataResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // Enumeration<ReportRelationshipType>
-        case -880905839: /*target*/ return this.target == null ? new Base[0] : new Base[] {this.target}; // DataType
+        case -880905839: /*target*/ return this.target == null ? new Base[0] : new Base[] {this.target}; // EvidenceReportRelatesToTargetComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1094,7 +1064,7 @@ public class EvidenceReport extends MetadataResource {
           this.code = (Enumeration) value; // Enumeration<ReportRelationshipType>
           return value;
         case -880905839: // target
-          this.target = TypeConvertor.castToType(value); // DataType
+          this.target = (EvidenceReportRelatesToTargetComponent) value; // EvidenceReportRelatesToTargetComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1106,8 +1076,8 @@ public class EvidenceReport extends MetadataResource {
         if (name.equals("code")) {
           value = new ReportRelationshipTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.code = (Enumeration) value; // Enumeration<ReportRelationshipType>
-        } else if (name.equals("target[x]")) {
-          this.target = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("target")) {
+          this.target = (EvidenceReportRelatesToTargetComponent) value; // EvidenceReportRelatesToTargetComponent
         } else
           return super.setProperty(name, value);
         return value;
@@ -1117,7 +1087,6 @@ public class EvidenceReport extends MetadataResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3059181:  return getCodeElement();
-        case -815579825:  return getTarget();
         case -880905839:  return getTarget();
         default: return super.makeProperty(hash, name);
         }
@@ -1128,7 +1097,7 @@ public class EvidenceReport extends MetadataResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3059181: /*code*/ return new String[] {"code"};
-        case -880905839: /*target*/ return new String[] {"Identifier", "Reference"};
+        case -880905839: /*target*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1139,12 +1108,8 @@ public class EvidenceReport extends MetadataResource {
         if (name.equals("code")) {
           throw new FHIRException("Cannot call addChild on a primitive type EvidenceReport.relatesTo.code");
         }
-        else if (name.equals("targetIdentifier")) {
-          this.target = new Identifier();
-          return this.target;
-        }
-        else if (name.equals("targetReference")) {
-          this.target = new Reference();
+        else if (name.equals("target")) {
+          this.target = new EvidenceReportRelatesToTargetComponent();
           return this.target;
         }
         else
@@ -1189,6 +1154,349 @@ public class EvidenceReport extends MetadataResource {
 
   public String fhirType() {
     return "EvidenceReport.relatesTo";
+
+  }
+
+  }
+
+    @Block()
+    public static class EvidenceReportRelatesToTargetComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Target of the relationship URL.
+         */
+        @Child(name = "url", type = {UriType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Target of the relationship URL", formalDefinition="Target of the relationship URL." )
+        protected UriType url;
+
+        /**
+         * Target of the relationship Identifier.
+         */
+        @Child(name = "identifier", type = {Identifier.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Target of the relationship Identifier", formalDefinition="Target of the relationship Identifier." )
+        protected Identifier identifier;
+
+        /**
+         * Target of the relationship Display.
+         */
+        @Child(name = "display", type = {MarkdownType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Target of the relationship Display", formalDefinition="Target of the relationship Display." )
+        protected MarkdownType display;
+
+        /**
+         * Target of the relationship Resource reference.
+         */
+        @Child(name = "resource", type = {Reference.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Target of the relationship Resource reference", formalDefinition="Target of the relationship Resource reference." )
+        protected Reference resource;
+
+        private static final long serialVersionUID = -804526425L;
+
+    /**
+     * Constructor
+     */
+      public EvidenceReportRelatesToTargetComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #url} (Target of the relationship URL.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+         */
+        public UriType getUrlElement() { 
+          if (this.url == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceReportRelatesToTargetComponent.url");
+            else if (Configuration.doAutoCreate())
+              this.url = new UriType(); // bb
+          return this.url;
+        }
+
+        public boolean hasUrlElement() { 
+          return this.url != null && !this.url.isEmpty();
+        }
+
+        public boolean hasUrl() { 
+          return this.url != null && !this.url.isEmpty();
+        }
+
+        /**
+         * @param value {@link #url} (Target of the relationship URL.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+         */
+        public EvidenceReportRelatesToTargetComponent setUrlElement(UriType value) { 
+          this.url = value;
+          return this;
+        }
+
+        /**
+         * @return Target of the relationship URL.
+         */
+        public String getUrl() { 
+          return this.url == null ? null : this.url.getValue();
+        }
+
+        /**
+         * @param value Target of the relationship URL.
+         */
+        public EvidenceReportRelatesToTargetComponent setUrl(String value) { 
+          if (Utilities.noString(value))
+            this.url = null;
+          else {
+            if (this.url == null)
+              this.url = new UriType();
+            this.url.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #identifier} (Target of the relationship Identifier.)
+         */
+        public Identifier getIdentifier() { 
+          if (this.identifier == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceReportRelatesToTargetComponent.identifier");
+            else if (Configuration.doAutoCreate())
+              this.identifier = new Identifier(); // cc
+          return this.identifier;
+        }
+
+        public boolean hasIdentifier() { 
+          return this.identifier != null && !this.identifier.isEmpty();
+        }
+
+        /**
+         * @param value {@link #identifier} (Target of the relationship Identifier.)
+         */
+        public EvidenceReportRelatesToTargetComponent setIdentifier(Identifier value) { 
+          this.identifier = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #display} (Target of the relationship Display.). This is the underlying object with id, value and extensions. The accessor "getDisplay" gives direct access to the value
+         */
+        public MarkdownType getDisplayElement() { 
+          if (this.display == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceReportRelatesToTargetComponent.display");
+            else if (Configuration.doAutoCreate())
+              this.display = new MarkdownType(); // bb
+          return this.display;
+        }
+
+        public boolean hasDisplayElement() { 
+          return this.display != null && !this.display.isEmpty();
+        }
+
+        public boolean hasDisplay() { 
+          return this.display != null && !this.display.isEmpty();
+        }
+
+        /**
+         * @param value {@link #display} (Target of the relationship Display.). This is the underlying object with id, value and extensions. The accessor "getDisplay" gives direct access to the value
+         */
+        public EvidenceReportRelatesToTargetComponent setDisplayElement(MarkdownType value) { 
+          this.display = value;
+          return this;
+        }
+
+        /**
+         * @return Target of the relationship Display.
+         */
+        public String getDisplay() { 
+          return this.display == null ? null : this.display.getValue();
+        }
+
+        /**
+         * @param value Target of the relationship Display.
+         */
+        public EvidenceReportRelatesToTargetComponent setDisplay(String value) { 
+          if (value == null)
+            this.display = null;
+          else {
+            if (this.display == null)
+              this.display = new MarkdownType();
+            this.display.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #resource} (Target of the relationship Resource reference.)
+         */
+        public Reference getResource() { 
+          if (this.resource == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceReportRelatesToTargetComponent.resource");
+            else if (Configuration.doAutoCreate())
+              this.resource = new Reference(); // cc
+          return this.resource;
+        }
+
+        public boolean hasResource() { 
+          return this.resource != null && !this.resource.isEmpty();
+        }
+
+        /**
+         * @param value {@link #resource} (Target of the relationship Resource reference.)
+         */
+        public EvidenceReportRelatesToTargetComponent setResource(Reference value) { 
+          this.resource = value;
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("url", "uri", "Target of the relationship URL.", 0, 1, url));
+          children.add(new Property("identifier", "Identifier", "Target of the relationship Identifier.", 0, 1, identifier));
+          children.add(new Property("display", "markdown", "Target of the relationship Display.", 0, 1, display));
+          children.add(new Property("resource", "Reference(Any)", "Target of the relationship Resource reference.", 0, 1, resource));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 116079: /*url*/  return new Property("url", "uri", "Target of the relationship URL.", 0, 1, url);
+          case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Target of the relationship Identifier.", 0, 1, identifier);
+          case 1671764162: /*display*/  return new Property("display", "markdown", "Target of the relationship Display.", 0, 1, display);
+          case -341064690: /*resource*/  return new Property("resource", "Reference(Any)", "Target of the relationship Resource reference.", 0, 1, resource);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
+        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : new Base[] {this.identifier}; // Identifier
+        case 1671764162: /*display*/ return this.display == null ? new Base[0] : new Base[] {this.display}; // MarkdownType
+        case -341064690: /*resource*/ return this.resource == null ? new Base[0] : new Base[] {this.resource}; // Reference
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 116079: // url
+          this.url = TypeConvertor.castToUri(value); // UriType
+          return value;
+        case -1618432855: // identifier
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
+          return value;
+        case 1671764162: // display
+          this.display = TypeConvertor.castToMarkdown(value); // MarkdownType
+          return value;
+        case -341064690: // resource
+          this.resource = TypeConvertor.castToReference(value); // Reference
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("url")) {
+          this.url = TypeConvertor.castToUri(value); // UriType
+        } else if (name.equals("identifier")) {
+          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
+        } else if (name.equals("display")) {
+          this.display = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else if (name.equals("resource")) {
+          this.resource = TypeConvertor.castToReference(value); // Reference
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 116079:  return getUrlElement();
+        case -1618432855:  return getIdentifier();
+        case 1671764162:  return getDisplayElement();
+        case -341064690:  return getResource();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 116079: /*url*/ return new String[] {"uri"};
+        case -1618432855: /*identifier*/ return new String[] {"Identifier"};
+        case 1671764162: /*display*/ return new String[] {"markdown"};
+        case -341064690: /*resource*/ return new String[] {"Reference"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("url")) {
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceReport.relatesTo.target.url");
+        }
+        else if (name.equals("identifier")) {
+          this.identifier = new Identifier();
+          return this.identifier;
+        }
+        else if (name.equals("display")) {
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceReport.relatesTo.target.display");
+        }
+        else if (name.equals("resource")) {
+          this.resource = new Reference();
+          return this.resource;
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public EvidenceReportRelatesToTargetComponent copy() {
+        EvidenceReportRelatesToTargetComponent dst = new EvidenceReportRelatesToTargetComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EvidenceReportRelatesToTargetComponent dst) {
+        super.copyValues(dst);
+        dst.url = url == null ? null : url.copy();
+        dst.identifier = identifier == null ? null : identifier.copy();
+        dst.display = display == null ? null : display.copy();
+        dst.resource = resource == null ? null : resource.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof EvidenceReportRelatesToTargetComponent))
+          return false;
+        EvidenceReportRelatesToTargetComponent o = (EvidenceReportRelatesToTargetComponent) other_;
+        return compareDeep(url, o.url, true) && compareDeep(identifier, o.identifier, true) && compareDeep(display, o.display, true)
+           && compareDeep(resource, o.resource, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof EvidenceReportRelatesToTargetComponent))
+          return false;
+        EvidenceReportRelatesToTargetComponent o = (EvidenceReportRelatesToTargetComponent) other_;
+        return compareValues(url, o.url, true) && compareValues(display, o.display, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, display
+          , resource);
+      }
+
+  public String fhirType() {
+    return "EvidenceReport.relatesTo.target";
 
   }
 
@@ -3980,186 +4288,6 @@ public class EvidenceReport extends MetadataResource {
   public ResourceType getResourceType() {
     return ResourceType.EvidenceReport;
    }
-
- /**
-   * Search parameter: <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the evidence report</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(EvidenceReport.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context", path="(EvidenceReport.useContext.value as CodeableConcept)", description="A use context assigned to the evidence report", type="token" )
-  public static final String SP_CONTEXT = "context";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the evidence report</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(EvidenceReport.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
-
- /**
-   * Search parameter: <b>context-quantity</b>
-   * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the evidence report</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>(EvidenceReport.useContext.value as Quantity) | (EvidenceReport.useContext.value as Range)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-quantity", path="(EvidenceReport.useContext.value as Quantity) | (EvidenceReport.useContext.value as Range)", description="A quantity- or range-valued use context assigned to the evidence report", type="quantity" )
-  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
-   * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the evidence report</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>(EvidenceReport.useContext.value as Quantity) | (EvidenceReport.useContext.value as Range)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
-
- /**
-   * Search parameter: <b>context-type</b>
-   * <p>
-   * Description: <b>A type of use context assigned to the evidence report</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>EvidenceReport.useContext.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type", path="EvidenceReport.useContext.code", description="A type of use context assigned to the evidence report", type="token" )
-  public static final String SP_CONTEXT_TYPE = "context-type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type</b>
-   * <p>
-   * Description: <b>A type of use context assigned to the evidence report</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>EvidenceReport.useContext.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>External identifier for the evidence report</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>EvidenceReport.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="EvidenceReport.identifier", description="External identifier for the evidence report", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>External identifier for the evidence report</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>EvidenceReport.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>publisher</b>
-   * <p>
-   * Description: <b>Name of the publisher of the evidence report</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>EvidenceReport.publisher</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="publisher", path="EvidenceReport.publisher", description="Name of the publisher of the evidence report", type="string" )
-  public static final String SP_PUBLISHER = "publisher";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>publisher</b>
-   * <p>
-   * Description: <b>Name of the publisher of the evidence report</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>EvidenceReport.publisher</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam PUBLISHER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PUBLISHER);
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>The current status of the evidence report</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>EvidenceReport.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="EvidenceReport.status", description="The current status of the evidence report", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>The current status of the evidence report</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>EvidenceReport.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
-
- /**
-   * Search parameter: <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the evidence report</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>EvidenceReport.url</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="url", path="EvidenceReport.url", description="The uri that identifies the evidence report", type="uri" )
-  public static final String SP_URL = "url";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the evidence report</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>EvidenceReport.url</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
-
- /**
-   * Search parameter: <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the evidence report</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>EvidenceReport.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-quantity", path="EvidenceReport.useContext", description="A use context type and quantity- or range-based value assigned to the evidence report", type="composite", compositeOf={"context-type", "context-quantity"} )
-  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the evidence report</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>EvidenceReport.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
-
- /**
-   * Search parameter: <b>context-type-value</b>
-   * <p>
-   * Description: <b>A use context type and value assigned to the evidence report</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>EvidenceReport.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-value", path="EvidenceReport.useContext", description="A use context type and value assigned to the evidence report", type="composite", compositeOf={"context-type", "context"} )
-  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
-   * <p>
-   * Description: <b>A use context type and value assigned to the evidence report</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>EvidenceReport.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
 
 
 }

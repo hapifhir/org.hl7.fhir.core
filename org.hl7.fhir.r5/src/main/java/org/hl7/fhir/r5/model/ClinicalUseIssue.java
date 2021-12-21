@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,146 +52,6 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="ClinicalUseIssue", profile="http://hl7.org/fhir/StructureDefinition/ClinicalUseIssue")
 public class ClinicalUseIssue extends DomainResource {
-
-    public enum ClinicalUseIssueType {
-        /**
-         * A reason for giving the medicaton.
-         */
-        INDICATION, 
-        /**
-         * A reason for not giving the medicaition.
-         */
-        CONTRAINDICATION, 
-        /**
-         * Interactions between the medication and other substances.
-         */
-        INTERACTION, 
-        /**
-         * Side effects or adverse effects associated with the medication.
-         */
-        UNDESIRABLEEFFECT, 
-        /**
-         * A general warning or issue that is not specifically one of the other types.
-         */
-        WARNING, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ClinicalUseIssueType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("indication".equals(codeString))
-          return INDICATION;
-        if ("contraindication".equals(codeString))
-          return CONTRAINDICATION;
-        if ("interaction".equals(codeString))
-          return INTERACTION;
-        if ("undesirable-effect".equals(codeString))
-          return UNDESIRABLEEFFECT;
-        if ("warning".equals(codeString))
-          return WARNING;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ClinicalUseIssueType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case INDICATION: return "indication";
-            case CONTRAINDICATION: return "contraindication";
-            case INTERACTION: return "interaction";
-            case UNDESIRABLEEFFECT: return "undesirable-effect";
-            case WARNING: return "warning";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case INDICATION: return "http://hl7.org/fhir/clinical-use-issue-type";
-            case CONTRAINDICATION: return "http://hl7.org/fhir/clinical-use-issue-type";
-            case INTERACTION: return "http://hl7.org/fhir/clinical-use-issue-type";
-            case UNDESIRABLEEFFECT: return "http://hl7.org/fhir/clinical-use-issue-type";
-            case WARNING: return "http://hl7.org/fhir/clinical-use-issue-type";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case INDICATION: return "A reason for giving the medicaton.";
-            case CONTRAINDICATION: return "A reason for not giving the medicaition.";
-            case INTERACTION: return "Interactions between the medication and other substances.";
-            case UNDESIRABLEEFFECT: return "Side effects or adverse effects associated with the medication.";
-            case WARNING: return "A general warning or issue that is not specifically one of the other types.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case INDICATION: return "Indication";
-            case CONTRAINDICATION: return "Contraindication";
-            case INTERACTION: return "Interaction";
-            case UNDESIRABLEEFFECT: return "Undesirable Effect";
-            case WARNING: return "Warning";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ClinicalUseIssueTypeEnumFactory implements EnumFactory<ClinicalUseIssueType> {
-    public ClinicalUseIssueType fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("indication".equals(codeString))
-          return ClinicalUseIssueType.INDICATION;
-        if ("contraindication".equals(codeString))
-          return ClinicalUseIssueType.CONTRAINDICATION;
-        if ("interaction".equals(codeString))
-          return ClinicalUseIssueType.INTERACTION;
-        if ("undesirable-effect".equals(codeString))
-          return ClinicalUseIssueType.UNDESIRABLEEFFECT;
-        if ("warning".equals(codeString))
-          return ClinicalUseIssueType.WARNING;
-        throw new IllegalArgumentException("Unknown ClinicalUseIssueType code '"+codeString+"'");
-        }
-        public Enumeration<ClinicalUseIssueType> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ClinicalUseIssueType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("indication".equals(codeString))
-          return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.INDICATION);
-        if ("contraindication".equals(codeString))
-          return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.CONTRAINDICATION);
-        if ("interaction".equals(codeString))
-          return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.INTERACTION);
-        if ("undesirable-effect".equals(codeString))
-          return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.UNDESIRABLEEFFECT);
-        if ("warning".equals(codeString))
-          return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.WARNING);
-        throw new FHIRException("Unknown ClinicalUseIssueType code '"+codeString+"'");
-        }
-    public String toCode(ClinicalUseIssueType code) {
-      if (code == ClinicalUseIssueType.INDICATION)
-        return "indication";
-      if (code == ClinicalUseIssueType.CONTRAINDICATION)
-        return "contraindication";
-      if (code == ClinicalUseIssueType.INTERACTION)
-        return "interaction";
-      if (code == ClinicalUseIssueType.UNDESIRABLEEFFECT)
-        return "undesirable-effect";
-      if (code == ClinicalUseIssueType.WARNING)
-        return "warning";
-      return "?";
-      }
-    public String toSystem(ClinicalUseIssueType code) {
-      return code.getSystem();
-      }
-    }
 
     @Block()
     public static class ClinicalUseIssueContraindicationComponent extends BackboneElement implements IBaseBackboneElement {
@@ -1407,11 +1267,11 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * Actions for managing the interaction.
          */
-        @Child(name = "management", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "management", type = {CodeableConcept.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Actions for managing the interaction", formalDefinition="Actions for managing the interaction." )
-        protected CodeableConcept management;
+        protected List<CodeableConcept> management;
 
-        private static final long serialVersionUID = -104458755L;
+        private static final long serialVersionUID = 1233301463L;
 
     /**
      * Constructor
@@ -1548,25 +1408,54 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * @return {@link #management} (Actions for managing the interaction.)
          */
-        public CodeableConcept getManagement() { 
+        public List<CodeableConcept> getManagement() { 
           if (this.management == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ClinicalUseIssueInteractionComponent.management");
-            else if (Configuration.doAutoCreate())
-              this.management = new CodeableConcept(); // cc
+            this.management = new ArrayList<CodeableConcept>();
           return this.management;
         }
 
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public ClinicalUseIssueInteractionComponent setManagement(List<CodeableConcept> theManagement) { 
+          this.management = theManagement;
+          return this;
+        }
+
         public boolean hasManagement() { 
-          return this.management != null && !this.management.isEmpty();
+          if (this.management == null)
+            return false;
+          for (CodeableConcept item : this.management)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CodeableConcept addManagement() { //3
+          CodeableConcept t = new CodeableConcept();
+          if (this.management == null)
+            this.management = new ArrayList<CodeableConcept>();
+          this.management.add(t);
+          return t;
+        }
+
+        public ClinicalUseIssueInteractionComponent addManagement(CodeableConcept t) { //3
+          if (t == null)
+            return this;
+          if (this.management == null)
+            this.management = new ArrayList<CodeableConcept>();
+          this.management.add(t);
+          return this;
         }
 
         /**
-         * @param value {@link #management} (Actions for managing the interaction.)
+         * @return The first repetition of repeating field {@link #management}, creating it if it does not already exist {3}
          */
-        public ClinicalUseIssueInteractionComponent setManagement(CodeableConcept value) { 
-          this.management = value;
-          return this;
+        public CodeableConcept getManagementFirstRep() { 
+          if (getManagement().isEmpty()) {
+            addManagement();
+          }
+          return getManagement().get(0);
         }
 
         protected void listChildren(List<Property> children) {
@@ -1575,7 +1464,7 @@ public class ClinicalUseIssue extends DomainResource {
           children.add(new Property("type", "CodeableConcept", "The type of the interaction e.g. drug-drug interaction, drug-food interaction, drug-lab test interaction.", 0, 1, type));
           children.add(new Property("effect", "CodeableReference(ObservationDefinition)", "The effect of the interaction, for example \"reduced gastric absorption of primary medication\".", 0, 1, effect));
           children.add(new Property("incidence", "CodeableConcept", "The incidence of the interaction, e.g. theoretical, observed.", 0, 1, incidence));
-          children.add(new Property("management", "CodeableConcept", "Actions for managing the interaction.", 0, 1, management));
+          children.add(new Property("management", "CodeableConcept", "Actions for managing the interaction.", 0, java.lang.Integer.MAX_VALUE, management));
         }
 
         @Override
@@ -1585,7 +1474,7 @@ public class ClinicalUseIssue extends DomainResource {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The type of the interaction e.g. drug-drug interaction, drug-food interaction, drug-lab test interaction.", 0, 1, type);
           case -1306084975: /*effect*/  return new Property("effect", "CodeableReference(ObservationDefinition)", "The effect of the interaction, for example \"reduced gastric absorption of primary medication\".", 0, 1, effect);
           case -1598467132: /*incidence*/  return new Property("incidence", "CodeableConcept", "The incidence of the interaction, e.g. theoretical, observed.", 0, 1, incidence);
-          case -1799980989: /*management*/  return new Property("management", "CodeableConcept", "Actions for managing the interaction.", 0, 1, management);
+          case -1799980989: /*management*/  return new Property("management", "CodeableConcept", "Actions for managing the interaction.", 0, java.lang.Integer.MAX_VALUE, management);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1598,7 +1487,7 @@ public class ClinicalUseIssue extends DomainResource {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case -1306084975: /*effect*/ return this.effect == null ? new Base[0] : new Base[] {this.effect}; // CodeableReference
         case -1598467132: /*incidence*/ return this.incidence == null ? new Base[0] : new Base[] {this.incidence}; // CodeableConcept
-        case -1799980989: /*management*/ return this.management == null ? new Base[0] : new Base[] {this.management}; // CodeableConcept
+        case -1799980989: /*management*/ return this.management == null ? new Base[0] : this.management.toArray(new Base[this.management.size()]); // CodeableConcept
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1620,7 +1509,7 @@ public class ClinicalUseIssue extends DomainResource {
           this.incidence = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1799980989: // management
-          this.management = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.getManagement().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1638,7 +1527,7 @@ public class ClinicalUseIssue extends DomainResource {
         } else if (name.equals("incidence")) {
           this.incidence = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("management")) {
-          this.management = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.getManagement().add(TypeConvertor.castToCodeableConcept(value));
         } else
           return super.setProperty(name, value);
         return value;
@@ -1651,7 +1540,7 @@ public class ClinicalUseIssue extends DomainResource {
         case 3575610:  return getType();
         case -1306084975:  return getEffect();
         case -1598467132:  return getIncidence();
-        case -1799980989:  return getManagement();
+        case -1799980989:  return addManagement(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -1688,8 +1577,7 @@ public class ClinicalUseIssue extends DomainResource {
           return this.incidence;
         }
         else if (name.equals("management")) {
-          this.management = new CodeableConcept();
-          return this.management;
+          return addManagement();
         }
         else
           return super.addChild(name);
@@ -1711,7 +1599,11 @@ public class ClinicalUseIssue extends DomainResource {
         dst.type = type == null ? null : type.copy();
         dst.effect = effect == null ? null : effect.copy();
         dst.incidence = incidence == null ? null : incidence.copy();
-        dst.management = management == null ? null : management.copy();
+        if (management != null) {
+          dst.management = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : management)
+            dst.management.add(i.copy());
+        };
       }
 
       @Override
@@ -2212,9 +2104,9 @@ public class ClinicalUseIssue extends DomainResource {
     /**
      * A categorisation of the issue, primarily for dividing warnings into subject heading areas such as "Pregnancy and Lactation", "Overdose", "Effects on Ability to Drive and Use Machines".
      */
-    @Child(name = "category", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "category", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A categorisation of the issue, primarily for dividing warnings into subject heading areas such as \"Pregnancy and Lactation\", \"Overdose\", \"Effects on Ability to Drive and Use Machines\"", formalDefinition="A categorisation of the issue, primarily for dividing warnings into subject heading areas such as \"Pregnancy and Lactation\", \"Overdose\", \"Effects on Ability to Drive and Use Machines\"." )
-    protected CodeableConcept category;
+    protected List<CodeableConcept> category;
 
     /**
      * The medication or procedure for which this is an indication.
@@ -2272,7 +2164,7 @@ public class ClinicalUseIssue extends DomainResource {
     @Description(shortDefinition="A possible negative outcome from the use of this treatment", formalDefinition="Describe the undesirable effects of the medicinal product." )
     protected ClinicalUseIssueUndesirableEffectComponent undesirableEffect;
 
-    private static final long serialVersionUID = 681484438L;
+    private static final long serialVersionUID = 313334576L;
 
   /**
    * Constructor
@@ -2390,25 +2282,54 @@ public class ClinicalUseIssue extends DomainResource {
     /**
      * @return {@link #category} (A categorisation of the issue, primarily for dividing warnings into subject heading areas such as "Pregnancy and Lactation", "Overdose", "Effects on Ability to Drive and Use Machines".)
      */
-    public CodeableConcept getCategory() { 
+    public List<CodeableConcept> getCategory() { 
       if (this.category == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ClinicalUseIssue.category");
-        else if (Configuration.doAutoCreate())
-          this.category = new CodeableConcept(); // cc
+        this.category = new ArrayList<CodeableConcept>();
       return this.category;
     }
 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ClinicalUseIssue setCategory(List<CodeableConcept> theCategory) { 
+      this.category = theCategory;
+      return this;
+    }
+
     public boolean hasCategory() { 
-      return this.category != null && !this.category.isEmpty();
+      if (this.category == null)
+        return false;
+      for (CodeableConcept item : this.category)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableConcept addCategory() { //3
+      CodeableConcept t = new CodeableConcept();
+      if (this.category == null)
+        this.category = new ArrayList<CodeableConcept>();
+      this.category.add(t);
+      return t;
+    }
+
+    public ClinicalUseIssue addCategory(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.category == null)
+        this.category = new ArrayList<CodeableConcept>();
+      this.category.add(t);
+      return this;
     }
 
     /**
-     * @param value {@link #category} (A categorisation of the issue, primarily for dividing warnings into subject heading areas such as "Pregnancy and Lactation", "Overdose", "Effects on Ability to Drive and Use Machines".)
+     * @return The first repetition of repeating field {@link #category}, creating it if it does not already exist {3}
      */
-    public ClinicalUseIssue setCategory(CodeableConcept value) { 
-      this.category = value;
-      return this;
+    public CodeableConcept getCategoryFirstRep() { 
+      if (getCategory().isEmpty()) {
+        addCategory();
+      }
+      return getCategory().get(0);
     }
 
     /**
@@ -2690,7 +2611,7 @@ public class ClinicalUseIssue extends DomainResource {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Business identifier for this issue.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("type", "code", "indication | contraindication | interaction | undesirable-effect | warning.", 0, 1, type));
-        children.add(new Property("category", "CodeableConcept", "A categorisation of the issue, primarily for dividing warnings into subject heading areas such as \"Pregnancy and Lactation\", \"Overdose\", \"Effects on Ability to Drive and Use Machines\".", 0, 1, category));
+        children.add(new Property("category", "CodeableConcept", "A categorisation of the issue, primarily for dividing warnings into subject heading areas such as \"Pregnancy and Lactation\", \"Overdose\", \"Effects on Ability to Drive and Use Machines\".", 0, java.lang.Integer.MAX_VALUE, category));
         children.add(new Property("subject", "Reference(MedicinalProductDefinition|Medication|ActivityDefinition|PlanDefinition|Device|DeviceDefinition|Substance)", "The medication or procedure for which this is an indication.", 0, java.lang.Integer.MAX_VALUE, subject));
         children.add(new Property("status", "CodeableConcept", "Whether this is a current issue or one that has been retired etc.", 0, 1, status));
         children.add(new Property("description", "markdown", "General description of an effect (particularly for a general warning, rather than any of the more specific types such as indication) for when a distinct coded or textual description is not appropriate using  Indication.diseaseSymptomProcedure.text, Contraindication.diseaseSymptomProcedure.text etc. For example \"May affect ability to drive\".", 0, 1, description));
@@ -2706,7 +2627,7 @@ public class ClinicalUseIssue extends DomainResource {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifier for this issue.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 3575610: /*type*/  return new Property("type", "code", "indication | contraindication | interaction | undesirable-effect | warning.", 0, 1, type);
-        case 50511102: /*category*/  return new Property("category", "CodeableConcept", "A categorisation of the issue, primarily for dividing warnings into subject heading areas such as \"Pregnancy and Lactation\", \"Overdose\", \"Effects on Ability to Drive and Use Machines\".", 0, 1, category);
+        case 50511102: /*category*/  return new Property("category", "CodeableConcept", "A categorisation of the issue, primarily for dividing warnings into subject heading areas such as \"Pregnancy and Lactation\", \"Overdose\", \"Effects on Ability to Drive and Use Machines\".", 0, java.lang.Integer.MAX_VALUE, category);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(MedicinalProductDefinition|Medication|ActivityDefinition|PlanDefinition|Device|DeviceDefinition|Substance)", "The medication or procedure for which this is an indication.", 0, java.lang.Integer.MAX_VALUE, subject);
         case -892481550: /*status*/  return new Property("status", "CodeableConcept", "Whether this is a current issue or one that has been retired etc.", 0, 1, status);
         case -1724546052: /*description*/  return new Property("description", "markdown", "General description of an effect (particularly for a general warning, rather than any of the more specific types such as indication) for when a distinct coded or textual description is not appropriate using  Indication.diseaseSymptomProcedure.text, Contraindication.diseaseSymptomProcedure.text etc. For example \"May affect ability to drive\".", 0, 1, description);
@@ -2725,7 +2646,7 @@ public class ClinicalUseIssue extends DomainResource {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<ClinicalUseIssueType>
-        case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // CodeableConcept
+        case 50511102: /*category*/ return this.category == null ? new Base[0] : this.category.toArray(new Base[this.category.size()]); // CodeableConcept
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : this.subject.toArray(new Base[this.subject.size()]); // Reference
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // CodeableConcept
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
@@ -2750,7 +2671,7 @@ public class ClinicalUseIssue extends DomainResource {
           this.type = (Enumeration) value; // Enumeration<ClinicalUseIssueType>
           return value;
         case 50511102: // category
-          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1867885268: // subject
           this.getSubject().add(TypeConvertor.castToReference(value)); // Reference
@@ -2789,7 +2710,7 @@ public class ClinicalUseIssue extends DomainResource {
           value = new ClinicalUseIssueTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ClinicalUseIssueType>
         } else if (name.equals("category")) {
-          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("subject")) {
           this.getSubject().add(TypeConvertor.castToReference(value));
         } else if (name.equals("status")) {
@@ -2816,7 +2737,7 @@ public class ClinicalUseIssue extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case 3575610:  return getTypeElement();
-        case 50511102:  return getCategory();
+        case 50511102:  return addCategory(); 
         case -1867885268:  return addSubject(); 
         case -892481550:  return getStatus();
         case -1724546052:  return getDescriptionElement();
@@ -2858,8 +2779,7 @@ public class ClinicalUseIssue extends DomainResource {
           throw new FHIRException("Cannot call addChild on a primitive type ClinicalUseIssue.type");
         }
         else if (name.equals("category")) {
-          this.category = new CodeableConcept();
-          return this.category;
+          return addCategory();
         }
         else if (name.equals("subject")) {
           return addSubject();
@@ -2913,7 +2833,11 @@ public class ClinicalUseIssue extends DomainResource {
             dst.identifier.add(i.copy());
         };
         dst.type = type == null ? null : type.copy();
-        dst.category = category == null ? null : category.copy();
+        if (category != null) {
+          dst.category = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : category)
+            dst.category.add(i.copy());
+        };
         if (subject != null) {
           dst.subject = new ArrayList<Reference>();
           for (Reference i : subject)
@@ -2970,256 +2894,6 @@ public class ClinicalUseIssue extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.ClinicalUseIssue;
    }
-
- /**
-   * Search parameter: <b>contraindication</b>
-   * <p>
-   * Description: <b>The situation that is being documented as contraindicating against this item, as a code</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ClinicalUseIssue.contraindication.diseaseSymptomProcedure</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="contraindication", path="ClinicalUseIssue.contraindication.diseaseSymptomProcedure", description="The situation that is being documented as contraindicating against this item, as a code", type="token" )
-  public static final String SP_CONTRAINDICATION = "contraindication";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>contraindication</b>
-   * <p>
-   * Description: <b>The situation that is being documented as contraindicating against this item, as a code</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ClinicalUseIssue.contraindication.diseaseSymptomProcedure</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTRAINDICATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTRAINDICATION);
-
- /**
-   * Search parameter: <b>contraindication-reference</b>
-   * <p>
-   * Description: <b>The situation that is being documented as contraindicating against this item, as a reference</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ClinicalUseIssue.contraindication.diseaseSymptomProcedure</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="contraindication-reference", path="ClinicalUseIssue.contraindication.diseaseSymptomProcedure", description="The situation that is being documented as contraindicating against this item, as a reference", type="reference" )
-  public static final String SP_CONTRAINDICATION_REFERENCE = "contraindication-reference";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>contraindication-reference</b>
-   * <p>
-   * Description: <b>The situation that is being documented as contraindicating against this item, as a reference</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ClinicalUseIssue.contraindication.diseaseSymptomProcedure</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam CONTRAINDICATION_REFERENCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_CONTRAINDICATION_REFERENCE);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ClinicalUseIssue:contraindication-reference</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_CONTRAINDICATION_REFERENCE = new ca.uhn.fhir.model.api.Include("ClinicalUseIssue:contraindication-reference").toLocked();
-
- /**
-   * Search parameter: <b>effect</b>
-   * <p>
-   * Description: <b>The situation in which the undesirable effect may manifest, as a code</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ClinicalUseIssue.undesirableEffect.symptomConditionEffect</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="effect", path="ClinicalUseIssue.undesirableEffect.symptomConditionEffect", description="The situation in which the undesirable effect may manifest, as a code", type="token" )
-  public static final String SP_EFFECT = "effect";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>effect</b>
-   * <p>
-   * Description: <b>The situation in which the undesirable effect may manifest, as a code</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ClinicalUseIssue.undesirableEffect.symptomConditionEffect</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EFFECT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EFFECT);
-
- /**
-   * Search parameter: <b>effect-reference</b>
-   * <p>
-   * Description: <b>The situation in which the undesirable effect may manifest, as a reference</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ClinicalUseIssue.undesirableEffect.symptomConditionEffect</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="effect-reference", path="ClinicalUseIssue.undesirableEffect.symptomConditionEffect", description="The situation in which the undesirable effect may manifest, as a reference", type="reference" )
-  public static final String SP_EFFECT_REFERENCE = "effect-reference";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>effect-reference</b>
-   * <p>
-   * Description: <b>The situation in which the undesirable effect may manifest, as a reference</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ClinicalUseIssue.undesirableEffect.symptomConditionEffect</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam EFFECT_REFERENCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_EFFECT_REFERENCE);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ClinicalUseIssue:effect-reference</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_EFFECT_REFERENCE = new ca.uhn.fhir.model.api.Include("ClinicalUseIssue:effect-reference").toLocked();
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>Business identifier for this issue</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ClinicalUseIssue.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="ClinicalUseIssue.identifier", description="Business identifier for this issue", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>Business identifier for this issue</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ClinicalUseIssue.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>indication</b>
-   * <p>
-   * Description: <b>The situation that is being documented as an indicaton for this item, as a code</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ClinicalUseIssue.indication.diseaseSymptomProcedure</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="indication", path="ClinicalUseIssue.indication.diseaseSymptomProcedure", description="The situation that is being documented as an indicaton for this item, as a code", type="token" )
-  public static final String SP_INDICATION = "indication";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>indication</b>
-   * <p>
-   * Description: <b>The situation that is being documented as an indicaton for this item, as a code</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ClinicalUseIssue.indication.diseaseSymptomProcedure</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INDICATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INDICATION);
-
- /**
-   * Search parameter: <b>indication-reference</b>
-   * <p>
-   * Description: <b>The situation that is being documented as an indicaton for this item, as a reference</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ClinicalUseIssue.indication.diseaseSymptomProcedure</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="indication-reference", path="ClinicalUseIssue.indication.diseaseSymptomProcedure", description="The situation that is being documented as an indicaton for this item, as a reference", type="reference" )
-  public static final String SP_INDICATION_REFERENCE = "indication-reference";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>indication-reference</b>
-   * <p>
-   * Description: <b>The situation that is being documented as an indicaton for this item, as a reference</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ClinicalUseIssue.indication.diseaseSymptomProcedure</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INDICATION_REFERENCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INDICATION_REFERENCE);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ClinicalUseIssue:indication-reference</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_INDICATION_REFERENCE = new ca.uhn.fhir.model.api.Include("ClinicalUseIssue:indication-reference").toLocked();
-
- /**
-   * Search parameter: <b>interaction</b>
-   * <p>
-   * Description: <b>The type of the interaction e.g. drug-drug interaction, drug-food interaction, drug-lab test interaction</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ClinicalUseIssue.interaction.type</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="interaction", path="ClinicalUseIssue.interaction.type", description="The type of the interaction e.g. drug-drug interaction, drug-food interaction, drug-lab test interaction", type="token" )
-  public static final String SP_INTERACTION = "interaction";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>interaction</b>
-   * <p>
-   * Description: <b>The type of the interaction e.g. drug-drug interaction, drug-food interaction, drug-lab test interaction</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ClinicalUseIssue.interaction.type</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INTERACTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INTERACTION);
-
- /**
-   * Search parameter: <b>product</b>
-   * <p>
-   * Description: <b>The medicinal product for which this is a clinical usage issue</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ClinicalUseIssue.subject.where(resolve() is MedicinalProductDefinition)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="product", path="ClinicalUseIssue.subject.where(resolve() is MedicinalProductDefinition)", description="The medicinal product for which this is a clinical usage issue", type="reference", target={ActivityDefinition.class, Device.class, DeviceDefinition.class, Medication.class, MedicinalProductDefinition.class, PlanDefinition.class, Substance.class } )
-  public static final String SP_PRODUCT = "product";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>product</b>
-   * <p>
-   * Description: <b>The medicinal product for which this is a clinical usage issue</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ClinicalUseIssue.subject.where(resolve() is MedicinalProductDefinition)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PRODUCT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PRODUCT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ClinicalUseIssue:product</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PRODUCT = new ca.uhn.fhir.model.api.Include("ClinicalUseIssue:product").toLocked();
-
- /**
-   * Search parameter: <b>subject</b>
-   * <p>
-   * Description: <b>The resource for which this is a clinical usage issue</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ClinicalUseIssue.subject</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="subject", path="ClinicalUseIssue.subject", description="The resource for which this is a clinical usage issue", type="reference", target={ActivityDefinition.class, Device.class, DeviceDefinition.class, Medication.class, MedicinalProductDefinition.class, PlanDefinition.class, Substance.class } )
-  public static final String SP_SUBJECT = "subject";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
-   * <p>
-   * Description: <b>The resource for which this is a clinical usage issue</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ClinicalUseIssue.subject</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ClinicalUseIssue:subject</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("ClinicalUseIssue:subject").toLocked();
-
- /**
-   * Search parameter: <b>type</b>
-   * <p>
-   * Description: <b>indication | contraindication | interaction | undesirable-effect | warning</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ClinicalUseIssue.type</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="type", path="ClinicalUseIssue.type", description="indication | contraindication | interaction | undesirable-effect | warning", type="token" )
-  public static final String SP_TYPE = "type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>type</b>
-   * <p>
-   * Description: <b>indication | contraindication | interaction | undesirable-effect | warning</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ClinicalUseIssue.type</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
 
 }

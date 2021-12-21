@@ -12,6 +12,7 @@ public class Params {
 
   public static final String VERSION = "-version";
   public static final String OUTPUT = "-output";
+  public static final String LEVEL = "-level";
   public static final String HTML_OUTPUT = "-html-output";
   public static final String PROXY = "-proxy";
   public static final String PROXY_AUTH = "-auth";
@@ -140,6 +141,13 @@ public class Params {
         else {
           String q = args[++i];
           cliContext.setQuestionnaireMode(QuestionnaireMode.fromCode(q));
+        }
+      } else if (args[i].equals(LEVEL)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -level without indicating level mode");
+        else {
+          String q = args[++i];
+          cliContext.setLevel(ValidationLevel.fromCode(q));
         }
       } else if (args[i].equals(NATIVE)) {
         cliContext.setDoNative(true);

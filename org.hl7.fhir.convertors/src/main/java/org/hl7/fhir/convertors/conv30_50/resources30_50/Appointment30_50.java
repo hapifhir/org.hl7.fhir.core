@@ -54,8 +54,8 @@ public class Appointment30_50 {
     for (org.hl7.fhir.r5.model.Reference t : src.getSlot()) tgt.addSlot(Reference30_50.convertReference(t));
     if (src.hasCreated())
       tgt.setCreatedElement(DateTime30_50.convertDateTime(src.getCreatedElement()));
-    if (src.hasComment())
-      tgt.setCommentElement(String30_50.convertString(src.getCommentElement()));
+    if (src.hasNote())
+      tgt.setCommentElement(String30_50.convertString(src.getNoteFirstRep().getTextElement()));
     for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn())
       tgt.addIncomingReferral(Reference30_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Appointment.AppointmentParticipantComponent t : src.getParticipant())
@@ -123,7 +123,7 @@ public class Appointment30_50 {
     if (src.hasCreated())
       tgt.setCreatedElement(DateTime30_50.convertDateTime(src.getCreatedElement()));
     if (src.hasComment())
-      tgt.setCommentElement(String30_50.convertString(src.getCommentElement()));
+      tgt.getNoteFirstRep().setTextElement(String30_50.convertStringToMarkdown(src.getCommentElement()));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getIncomingReferral())
       tgt.addBasedOn(Reference30_50.convertReference(t));
     for (org.hl7.fhir.dstu3.model.Appointment.AppointmentParticipantComponent t : src.getParticipant())
@@ -239,45 +239,35 @@ public class Appointment30_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Appointment.ParticipantRequired> convertParticipantRequired(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Appointment.ParticipantRequired> src) throws FHIRException {
+  static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Appointment.ParticipantRequired> convertParticipantRequired(org.hl7.fhir.r5.model.BooleanType src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Appointment.ParticipantRequired> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Appointment.ParticipantRequiredEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case REQUIRED:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Appointment.ParticipantRequired.REQUIRED);
-        break;
-      case OPTIONAL:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Appointment.ParticipantRequired.OPTIONAL);
-        break;
-      case INFORMATIONONLY:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Appointment.ParticipantRequired.INFORMATIONONLY);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.dstu3.model.Appointment.ParticipantRequired.NULL);
-        break;
+    if (src.getValue()) { // case REQUIRED:
+      tgt.setValue(org.hl7.fhir.dstu3.model.Appointment.ParticipantRequired.REQUIRED);
+    } else { // case OPTIONAL and others:
+      tgt.setValue(org.hl7.fhir.dstu3.model.Appointment.ParticipantRequired.OPTIONAL);
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Appointment.ParticipantRequired> convertParticipantRequired(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Appointment.ParticipantRequired> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.BooleanType convertParticipantRequired(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Appointment.ParticipantRequired> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Appointment.ParticipantRequired> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Appointment.ParticipantRequiredEnumFactory());
+    org.hl7.fhir.r5.model.BooleanType tgt = new org.hl7.fhir.r5.model.BooleanType();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case REQUIRED:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.ParticipantRequired.REQUIRED);
+        tgt.setValue(true);
         break;
       case OPTIONAL:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.ParticipantRequired.OPTIONAL);
+        tgt.setValue(false);
         break;
       case INFORMATIONONLY:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.ParticipantRequired.INFORMATIONONLY);
+        tgt.setValue(false);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.ParticipantRequired.NULL);
         break;
     }
     return tgt;

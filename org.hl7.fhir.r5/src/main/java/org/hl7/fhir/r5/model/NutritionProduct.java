@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -999,7 +999,14 @@ public class NutritionProduct extends DomainResource {
         @Description(shortDefinition="The date until which the product is expected to be good for consumption", formalDefinition="The time after which the product is no longer expected to be in proper condition, or its use is not advised or not allowed." )
         protected DateTimeType useBy;
 
-        private static final long serialVersionUID = -17755640L;
+        /**
+         * An identifier that supports traceability to the biological entity that is the source of biological material in the product.
+         */
+        @Child(name = "biologicalSource", type = {Identifier.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="An identifier that supports traceability to the biological entity that is the source of biological material in the product", formalDefinition="An identifier that supports traceability to the biological entity that is the source of biological material in the product." )
+        protected Identifier biologicalSource;
+
+        private static final long serialVersionUID = 1203492607L;
 
     /**
      * Constructor
@@ -1232,6 +1239,30 @@ public class NutritionProduct extends DomainResource {
           return this;
         }
 
+        /**
+         * @return {@link #biologicalSource} (An identifier that supports traceability to the biological entity that is the source of biological material in the product.)
+         */
+        public Identifier getBiologicalSource() { 
+          if (this.biologicalSource == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create NutritionProductInstanceComponent.biologicalSource");
+            else if (Configuration.doAutoCreate())
+              this.biologicalSource = new Identifier(); // cc
+          return this.biologicalSource;
+        }
+
+        public boolean hasBiologicalSource() { 
+          return this.biologicalSource != null && !this.biologicalSource.isEmpty();
+        }
+
+        /**
+         * @param value {@link #biologicalSource} (An identifier that supports traceability to the biological entity that is the source of biological material in the product.)
+         */
+        public NutritionProductInstanceComponent setBiologicalSource(Identifier value) { 
+          this.biologicalSource = value;
+          return this;
+        }
+
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("quantity", "Quantity", "The amount of items or instances that the resource considers, for instance when referring to 2 identical units together.", 0, 1, quantity));
@@ -1239,6 +1270,7 @@ public class NutritionProduct extends DomainResource {
           children.add(new Property("lotNumber", "string", "The identification of the batch or lot of the product.", 0, 1, lotNumber));
           children.add(new Property("expiry", "dateTime", "The time after which the product is no longer expected to be in proper condition, or its use is not advised or not allowed.", 0, 1, expiry));
           children.add(new Property("useBy", "dateTime", "The time after which the product is no longer expected to be in proper condition, or its use is not advised or not allowed.", 0, 1, useBy));
+          children.add(new Property("biologicalSource", "Identifier", "An identifier that supports traceability to the biological entity that is the source of biological material in the product.", 0, 1, biologicalSource));
         }
 
         @Override
@@ -1249,6 +1281,7 @@ public class NutritionProduct extends DomainResource {
           case 462547450: /*lotNumber*/  return new Property("lotNumber", "string", "The identification of the batch or lot of the product.", 0, 1, lotNumber);
           case -1289159373: /*expiry*/  return new Property("expiry", "dateTime", "The time after which the product is no longer expected to be in proper condition, or its use is not advised or not allowed.", 0, 1, expiry);
           case 111577150: /*useBy*/  return new Property("useBy", "dateTime", "The time after which the product is no longer expected to be in proper condition, or its use is not advised or not allowed.", 0, 1, useBy);
+          case -883952260: /*biologicalSource*/  return new Property("biologicalSource", "Identifier", "An identifier that supports traceability to the biological entity that is the source of biological material in the product.", 0, 1, biologicalSource);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1262,6 +1295,7 @@ public class NutritionProduct extends DomainResource {
         case 462547450: /*lotNumber*/ return this.lotNumber == null ? new Base[0] : new Base[] {this.lotNumber}; // StringType
         case -1289159373: /*expiry*/ return this.expiry == null ? new Base[0] : new Base[] {this.expiry}; // DateTimeType
         case 111577150: /*useBy*/ return this.useBy == null ? new Base[0] : new Base[] {this.useBy}; // DateTimeType
+        case -883952260: /*biologicalSource*/ return this.biologicalSource == null ? new Base[0] : new Base[] {this.biologicalSource}; // Identifier
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1285,6 +1319,9 @@ public class NutritionProduct extends DomainResource {
         case 111577150: // useBy
           this.useBy = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
+        case -883952260: // biologicalSource
+          this.biologicalSource = TypeConvertor.castToIdentifier(value); // Identifier
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -1302,6 +1339,8 @@ public class NutritionProduct extends DomainResource {
           this.expiry = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("useBy")) {
           this.useBy = TypeConvertor.castToDateTime(value); // DateTimeType
+        } else if (name.equals("biologicalSource")) {
+          this.biologicalSource = TypeConvertor.castToIdentifier(value); // Identifier
         } else
           return super.setProperty(name, value);
         return value;
@@ -1315,6 +1354,7 @@ public class NutritionProduct extends DomainResource {
         case 462547450:  return getLotNumberElement();
         case -1289159373:  return getExpiryElement();
         case 111577150:  return getUseByElement();
+        case -883952260:  return getBiologicalSource();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1328,6 +1368,7 @@ public class NutritionProduct extends DomainResource {
         case 462547450: /*lotNumber*/ return new String[] {"string"};
         case -1289159373: /*expiry*/ return new String[] {"dateTime"};
         case 111577150: /*useBy*/ return new String[] {"dateTime"};
+        case -883952260: /*biologicalSource*/ return new String[] {"Identifier"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1351,6 +1392,10 @@ public class NutritionProduct extends DomainResource {
         else if (name.equals("useBy")) {
           throw new FHIRException("Cannot call addChild on a primitive type NutritionProduct.instance.useBy");
         }
+        else if (name.equals("biologicalSource")) {
+          this.biologicalSource = new Identifier();
+          return this.biologicalSource;
+        }
         else
           return super.addChild(name);
       }
@@ -1372,6 +1417,7 @@ public class NutritionProduct extends DomainResource {
         dst.lotNumber = lotNumber == null ? null : lotNumber.copy();
         dst.expiry = expiry == null ? null : expiry.copy();
         dst.useBy = useBy == null ? null : useBy.copy();
+        dst.biologicalSource = biologicalSource == null ? null : biologicalSource.copy();
       }
 
       @Override
@@ -1382,7 +1428,8 @@ public class NutritionProduct extends DomainResource {
           return false;
         NutritionProductInstanceComponent o = (NutritionProductInstanceComponent) other_;
         return compareDeep(quantity, o.quantity, true) && compareDeep(identifier, o.identifier, true) && compareDeep(lotNumber, o.lotNumber, true)
-           && compareDeep(expiry, o.expiry, true) && compareDeep(useBy, o.useBy, true);
+           && compareDeep(expiry, o.expiry, true) && compareDeep(useBy, o.useBy, true) && compareDeep(biologicalSource, o.biologicalSource, true)
+          ;
       }
 
       @Override
@@ -1398,7 +1445,7 @@ public class NutritionProduct extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(quantity, identifier, lotNumber
-          , expiry, useBy);
+          , expiry, useBy, biologicalSource);
       }
 
   public String fhirType() {
@@ -2243,46 +2290,6 @@ public class NutritionProduct extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.NutritionProduct;
    }
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>The identifier for the physical instance, typically a serial number</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>NutritionProduct.instance.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="NutritionProduct.instance.identifier", description="The identifier for the physical instance, typically a serial number", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>The identifier for the physical instance, typically a serial number</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>NutritionProduct.instance.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>active | inactive | entered-in-error</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>NutritionProduct.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="NutritionProduct.status", description="active | inactive | entered-in-error", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>active | inactive | entered-in-error</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>NutritionProduct.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
 
 }

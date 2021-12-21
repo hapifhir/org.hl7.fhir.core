@@ -28,7 +28,7 @@ public class DeviceUseStatement10_50 {
     if (src.hasRecordedOnElement())
       tgt.setDateAssertedElement(DateTime10_50.convertDateTime(src.getRecordedOnElement()));
     if (src.hasSubject())
-      tgt.setSubject(Reference10_50.convertReference(src.getSubject()));
+      tgt.setPatient(Reference10_50.convertReference(src.getSubject()));
     if (src.hasTiming())
       tgt.setTiming(ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getTiming()));
     return tgt;
@@ -51,8 +51,8 @@ public class DeviceUseStatement10_50 {
     for (Annotation t : src.getNote()) tgt.addNotes(t.getText());
     if (src.hasDateAssertedElement())
       tgt.setRecordedOnElement(DateTime10_50.convertDateTime(src.getDateAssertedElement()));
-    if (src.hasSubject())
-      tgt.setSubject(Reference10_50.convertReference(src.getSubject()));
+    if (src.hasPatient())
+      tgt.setSubject(Reference10_50.convertReference(src.getPatient()));
     if (src.hasTiming())
       tgt.setTiming(ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getTiming()));
     return tgt;
