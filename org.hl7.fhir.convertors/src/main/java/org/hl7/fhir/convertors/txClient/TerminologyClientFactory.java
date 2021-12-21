@@ -51,6 +51,8 @@ public class TerminologyClientFactory {
         return new TerminologyClientR2(checkEndsWith("/r2", url), userAgent);
       case R4:
         return new TerminologyClientR5(checkEndsWith("/r4", url), userAgent);
+      case R4B:
+        return new TerminologyClientR5(checkEndsWith("/r4", url), userAgent);
       case R5:
         return new TerminologyClientR5(checkEndsWith("/r4", url), userAgent); // r4 for now, since the terminology is currently the same
       case STU3:

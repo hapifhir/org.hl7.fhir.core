@@ -142,10 +142,12 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (!ve.containsKey(version)) {
       if (version.startsWith("5.0"))
         ve.put(version, new ValidationEngine("hl7.fhir.r5.core#4.5.0", ValidationEngineTests.DEF_TX, txLog, FhirPublication.R5, true, "4.5.0", "fhir/test-cases"));
-      else if (version.startsWith("3.0"))
-        ve.put(version, new ValidationEngine("hl7.fhir.r3.core#3.0.2", ValidationEngineTests.DEF_TX, txLog, FhirPublication.STU3, true, "3.0.2", "fhir/test-cases"));
+      else if (version.startsWith("4.3"))
+        ve.put(version, new ValidationEngine("hl7.fhir.r4b.core#4.3.0", ValidationEngineTests.DEF_TX, txLog, FhirPublication.R4B, true, "4.3.0", "fhir/test-cases"));
       else if (version.startsWith("4.0"))
         ve.put(version, new ValidationEngine("hl7.fhir.r4.core#4.0.1", ValidationEngineTests.DEF_TX, txLog, FhirPublication.R4, true, "4.0.1", "fhir/test-cases"));
+      else if (version.startsWith("3.0"))
+        ve.put(version, new ValidationEngine("hl7.fhir.r3.core#3.0.2", ValidationEngineTests.DEF_TX, txLog, FhirPublication.STU3, true, "3.0.2", "fhir/test-cases"));
       else if (version.startsWith("1.0"))
         ve.put(version, new ValidationEngine("hl7.fhir.r2.core#1.0.2", ValidationEngineTests.DEF_TX, txLog, FhirPublication.DSTU2, true, "1.0.2", "fhir/test-cases"));
       else if (version.startsWith("1.4"))
