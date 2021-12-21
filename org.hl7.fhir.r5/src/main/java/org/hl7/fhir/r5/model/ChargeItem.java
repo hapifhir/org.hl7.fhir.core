@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -597,10 +597,10 @@ public class ChargeItem extends DomainResource {
     /**
      * Identifies the device, food, drug or other product being charged either by type code or reference to an instance.
      */
-    @Child(name = "product", type = {Device.class, Medication.class, Substance.class, CodeableConcept.class}, order=22, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "product", type = {CodeableReference.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Product charged", formalDefinition="Identifies the device, food, drug or other product being charged either by type code or reference to an instance." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-type")
-    protected DataType product;
+    protected List<CodeableReference> product;
 
     /**
      * Account into which this ChargeItems belongs.
@@ -623,7 +623,7 @@ public class ChargeItem extends DomainResource {
     @Description(shortDefinition="Further information supporting this charge", formalDefinition="Further information supporting this charge." )
     protected List<Reference> supportingInformation;
 
-    private static final long serialVersionUID = 2095236577L;
+    private static final long serialVersionUID = 244289087L;
 
   /**
    * Constructor
@@ -1577,52 +1577,54 @@ public class ChargeItem extends DomainResource {
     /**
      * @return {@link #product} (Identifies the device, food, drug or other product being charged either by type code or reference to an instance.)
      */
-    public DataType getProduct() { 
+    public List<CodeableReference> getProduct() { 
+      if (this.product == null)
+        this.product = new ArrayList<CodeableReference>();
       return this.product;
     }
 
     /**
-     * @return {@link #product} (Identifies the device, food, drug or other product being charged either by type code or reference to an instance.)
+     * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Reference getProductReference() throws FHIRException { 
-      if (this.product == null)
-        this.product = new Reference();
-      if (!(this.product instanceof Reference))
-        throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.product.getClass().getName()+" was encountered");
-      return (Reference) this.product;
-    }
-
-    public boolean hasProductReference() { 
-      return this != null && this.product instanceof Reference;
-    }
-
-    /**
-     * @return {@link #product} (Identifies the device, food, drug or other product being charged either by type code or reference to an instance.)
-     */
-    public CodeableConcept getProductCodeableConcept() throws FHIRException { 
-      if (this.product == null)
-        this.product = new CodeableConcept();
-      if (!(this.product instanceof CodeableConcept))
-        throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.product.getClass().getName()+" was encountered");
-      return (CodeableConcept) this.product;
-    }
-
-    public boolean hasProductCodeableConcept() { 
-      return this != null && this.product instanceof CodeableConcept;
+    public ChargeItem setProduct(List<CodeableReference> theProduct) { 
+      this.product = theProduct;
+      return this;
     }
 
     public boolean hasProduct() { 
-      return this.product != null && !this.product.isEmpty();
+      if (this.product == null)
+        return false;
+      for (CodeableReference item : this.product)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableReference addProduct() { //3
+      CodeableReference t = new CodeableReference();
+      if (this.product == null)
+        this.product = new ArrayList<CodeableReference>();
+      this.product.add(t);
+      return t;
+    }
+
+    public ChargeItem addProduct(CodeableReference t) { //3
+      if (t == null)
+        return this;
+      if (this.product == null)
+        this.product = new ArrayList<CodeableReference>();
+      this.product.add(t);
+      return this;
     }
 
     /**
-     * @param value {@link #product} (Identifies the device, food, drug or other product being charged either by type code or reference to an instance.)
+     * @return The first repetition of repeating field {@link #product}, creating it if it does not already exist {3}
      */
-    public ChargeItem setProduct(DataType value) { 
-      if (value != null && !(value instanceof Reference || value instanceof CodeableConcept))
-        throw new Error("Not the right type for ChargeItem.product[x]: "+value.fhirType());
-      this.product = value;
-      return this;
+    public CodeableReference getProductFirstRep() { 
+      if (getProduct().isEmpty()) {
+        addProduct();
+      }
+      return getProduct().get(0);
     }
 
     /**
@@ -1808,7 +1810,7 @@ public class ChargeItem extends DomainResource {
         children.add(new Property("enteredDate", "dateTime", "Date the charge item was entered.", 0, 1, enteredDate));
         children.add(new Property("reason", "CodeableConcept", "Describes why the event occurred in coded or textual form.", 0, java.lang.Integer.MAX_VALUE, reason));
         children.add(new Property("service", "Reference(DiagnosticReport|ImagingStudy|Immunization|MedicationAdministration|MedicationDispense|Observation|Procedure|SupplyDelivery)", "Indicated the rendered service that caused this charge.", 0, java.lang.Integer.MAX_VALUE, service));
-        children.add(new Property("product[x]", "Reference(Device|Medication|Substance)|CodeableConcept", "Identifies the device, food, drug or other product being charged either by type code or reference to an instance.", 0, 1, product));
+        children.add(new Property("product", "CodeableReference(Device|Medication|Substance)", "Identifies the device, food, drug or other product being charged either by type code or reference to an instance.", 0, java.lang.Integer.MAX_VALUE, product));
         children.add(new Property("account", "Reference(Account)", "Account into which this ChargeItems belongs.", 0, java.lang.Integer.MAX_VALUE, account));
         children.add(new Property("note", "Annotation", "Comments made about the event by the performer, subject or other participants.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("supportingInformation", "Reference(Any)", "Further information supporting this charge.", 0, java.lang.Integer.MAX_VALUE, supportingInformation));
@@ -1843,10 +1845,7 @@ public class ChargeItem extends DomainResource {
         case 555978181: /*enteredDate*/  return new Property("enteredDate", "dateTime", "Date the charge item was entered.", 0, 1, enteredDate);
         case -934964668: /*reason*/  return new Property("reason", "CodeableConcept", "Describes why the event occurred in coded or textual form.", 0, java.lang.Integer.MAX_VALUE, reason);
         case 1984153269: /*service*/  return new Property("service", "Reference(DiagnosticReport|ImagingStudy|Immunization|MedicationAdministration|MedicationDispense|Observation|Procedure|SupplyDelivery)", "Indicated the rendered service that caused this charge.", 0, java.lang.Integer.MAX_VALUE, service);
-        case 1753005361: /*product[x]*/  return new Property("product[x]", "Reference(Device|Medication|Substance)|CodeableConcept", "Identifies the device, food, drug or other product being charged either by type code or reference to an instance.", 0, 1, product);
-        case -309474065: /*product*/  return new Property("product[x]", "Reference(Device|Medication|Substance)|CodeableConcept", "Identifies the device, food, drug or other product being charged either by type code or reference to an instance.", 0, 1, product);
-        case -669667556: /*productReference*/  return new Property("product[x]", "Reference(Device|Medication|Substance)", "Identifies the device, food, drug or other product being charged either by type code or reference to an instance.", 0, 1, product);
-        case 906854066: /*productCodeableConcept*/  return new Property("product[x]", "CodeableConcept", "Identifies the device, food, drug or other product being charged either by type code or reference to an instance.", 0, 1, product);
+        case -309474065: /*product*/  return new Property("product", "CodeableReference(Device|Medication|Substance)", "Identifies the device, food, drug or other product being charged either by type code or reference to an instance.", 0, java.lang.Integer.MAX_VALUE, product);
         case -1177318867: /*account*/  return new Property("account", "Reference(Account)", "Account into which this ChargeItems belongs.", 0, java.lang.Integer.MAX_VALUE, account);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Comments made about the event by the performer, subject or other participants.", 0, java.lang.Integer.MAX_VALUE, note);
         case -1248768647: /*supportingInformation*/  return new Property("supportingInformation", "Reference(Any)", "Further information supporting this charge.", 0, java.lang.Integer.MAX_VALUE, supportingInformation);
@@ -1880,7 +1879,7 @@ public class ChargeItem extends DomainResource {
         case 555978181: /*enteredDate*/ return this.enteredDate == null ? new Base[0] : new Base[] {this.enteredDate}; // DateTimeType
         case -934964668: /*reason*/ return this.reason == null ? new Base[0] : this.reason.toArray(new Base[this.reason.size()]); // CodeableConcept
         case 1984153269: /*service*/ return this.service == null ? new Base[0] : this.service.toArray(new Base[this.service.size()]); // Reference
-        case -309474065: /*product*/ return this.product == null ? new Base[0] : new Base[] {this.product}; // DataType
+        case -309474065: /*product*/ return this.product == null ? new Base[0] : this.product.toArray(new Base[this.product.size()]); // CodeableReference
         case -1177318867: /*account*/ return this.account == null ? new Base[0] : this.account.toArray(new Base[this.account.size()]); // Reference
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         case -1248768647: /*supportingInformation*/ return this.supportingInformation == null ? new Base[0] : this.supportingInformation.toArray(new Base[this.supportingInformation.size()]); // Reference
@@ -1960,7 +1959,7 @@ public class ChargeItem extends DomainResource {
           this.getService().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -309474065: // product
-          this.product = TypeConvertor.castToType(value); // DataType
+          this.getProduct().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case -1177318867: // account
           this.getAccount().add(TypeConvertor.castToReference(value)); // Reference
@@ -2023,8 +2022,8 @@ public class ChargeItem extends DomainResource {
           this.getReason().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("service")) {
           this.getService().add(TypeConvertor.castToReference(value));
-        } else if (name.equals("product[x]")) {
-          this.product = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("product")) {
+          this.getProduct().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("account")) {
           this.getAccount().add(TypeConvertor.castToReference(value));
         } else if (name.equals("note")) {
@@ -2062,8 +2061,7 @@ public class ChargeItem extends DomainResource {
         case 555978181:  return getEnteredDateElement();
         case -934964668:  return addReason(); 
         case 1984153269:  return addService(); 
-        case 1753005361:  return getProduct();
-        case -309474065:  return getProduct();
+        case -309474065:  return addProduct(); 
         case -1177318867:  return addAccount(); 
         case 3387378:  return addNote(); 
         case -1248768647:  return addSupportingInformation(); 
@@ -2097,7 +2095,7 @@ public class ChargeItem extends DomainResource {
         case 555978181: /*enteredDate*/ return new String[] {"dateTime"};
         case -934964668: /*reason*/ return new String[] {"CodeableConcept"};
         case 1984153269: /*service*/ return new String[] {"Reference"};
-        case -309474065: /*product*/ return new String[] {"Reference", "CodeableConcept"};
+        case -309474065: /*product*/ return new String[] {"CodeableReference"};
         case -1177318867: /*account*/ return new String[] {"Reference"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         case -1248768647: /*supportingInformation*/ return new String[] {"Reference"};
@@ -2192,13 +2190,8 @@ public class ChargeItem extends DomainResource {
         else if (name.equals("service")) {
           return addService();
         }
-        else if (name.equals("productReference")) {
-          this.product = new Reference();
-          return this.product;
-        }
-        else if (name.equals("productCodeableConcept")) {
-          this.product = new CodeableConcept();
-          return this.product;
+        else if (name.equals("product")) {
+          return addProduct();
         }
         else if (name.equals("account")) {
           return addAccount();
@@ -2280,7 +2273,11 @@ public class ChargeItem extends DomainResource {
           for (Reference i : service)
             dst.service.add(i.copy());
         };
-        dst.product = product == null ? null : product.copy();
+        if (product != null) {
+          dst.product = new ArrayList<CodeableReference>();
+          for (CodeableReference i : product)
+            dst.product.add(i.copy());
+        };
         if (account != null) {
           dst.account = new ArrayList<Reference>();
           for (Reference i : account)
@@ -2346,400 +2343,6 @@ public class ChargeItem extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.ChargeItem;
    }
-
- /**
-   * Search parameter: <b>account</b>
-   * <p>
-   * Description: <b>Account to place this charge</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.account</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="account", path="ChargeItem.account", description="Account to place this charge", type="reference", target={Account.class } )
-  public static final String SP_ACCOUNT = "account";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>account</b>
-   * <p>
-   * Description: <b>Account to place this charge</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.account</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ACCOUNT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ACCOUNT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ChargeItem:account</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ACCOUNT = new ca.uhn.fhir.model.api.Include("ChargeItem:account").toLocked();
-
- /**
-   * Search parameter: <b>code</b>
-   * <p>
-   * Description: <b>A code that identifies the charge, like a billing code</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItem.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="code", path="ChargeItem.code", description="A code that identifies the charge, like a billing code", type="token" )
-  public static final String SP_CODE = "code";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>code</b>
-   * <p>
-   * Description: <b>A code that identifies the charge, like a billing code</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItem.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
-
- /**
-   * Search parameter: <b>context</b>
-   * <p>
-   * Description: <b>Encounter / Episode associated with event</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.context</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context", path="ChargeItem.context", description="Encounter / Episode associated with event", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Encounter") }, target={Encounter.class, EpisodeOfCare.class } )
-  public static final String SP_CONTEXT = "context";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
-   * <p>
-   * Description: <b>Encounter / Episode associated with event</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.context</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_CONTEXT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ChargeItem:context</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_CONTEXT = new ca.uhn.fhir.model.api.Include("ChargeItem:context").toLocked();
-
- /**
-   * Search parameter: <b>entered-date</b>
-   * <p>
-   * Description: <b>Date the charge item was entered</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ChargeItem.enteredDate</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="entered-date", path="ChargeItem.enteredDate", description="Date the charge item was entered", type="date" )
-  public static final String SP_ENTERED_DATE = "entered-date";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>entered-date</b>
-   * <p>
-   * Description: <b>Date the charge item was entered</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ChargeItem.enteredDate</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam ENTERED_DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_ENTERED_DATE);
-
- /**
-   * Search parameter: <b>enterer</b>
-   * <p>
-   * Description: <b>Individual who was entering</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.enterer</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="enterer", path="ChargeItem.enterer", description="Individual who was entering", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_ENTERER = "enterer";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>enterer</b>
-   * <p>
-   * Description: <b>Individual who was entering</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.enterer</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENTERER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENTERER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ChargeItem:enterer</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENTERER = new ca.uhn.fhir.model.api.Include("ChargeItem:enterer").toLocked();
-
- /**
-   * Search parameter: <b>factor-override</b>
-   * <p>
-   * Description: <b>Factor overriding the associated rules</b><br>
-   * Type: <b>number</b><br>
-   * Path: <b>ChargeItem.factorOverride</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="factor-override", path="ChargeItem.factorOverride", description="Factor overriding the associated rules", type="number" )
-  public static final String SP_FACTOR_OVERRIDE = "factor-override";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>factor-override</b>
-   * <p>
-   * Description: <b>Factor overriding the associated rules</b><br>
-   * Type: <b>number</b><br>
-   * Path: <b>ChargeItem.factorOverride</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.NumberClientParam FACTOR_OVERRIDE = new ca.uhn.fhir.rest.gclient.NumberClientParam(SP_FACTOR_OVERRIDE);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>Business Identifier for item</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItem.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="ChargeItem.identifier", description="Business Identifier for item", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>Business Identifier for item</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItem.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>occurrence</b>
-   * <p>
-   * Description: <b>When the charged service was applied</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ChargeItem.occurrence</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="occurrence", path="ChargeItem.occurrence", description="When the charged service was applied", type="date" )
-  public static final String SP_OCCURRENCE = "occurrence";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>occurrence</b>
-   * <p>
-   * Description: <b>When the charged service was applied</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ChargeItem.occurrence</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam OCCURRENCE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_OCCURRENCE);
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>Individual service was done for/to</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.subject.where(resolve() is Patient)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="ChargeItem.subject.where(resolve() is Patient)", description="Individual service was done for/to", type="reference", target={Group.class, Patient.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>Individual service was done for/to</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.subject.where(resolve() is Patient)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ChargeItem:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("ChargeItem:patient").toLocked();
-
- /**
-   * Search parameter: <b>performer-actor</b>
-   * <p>
-   * Description: <b>Individual who was performing</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.performer.actor</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="performer-actor", path="ChargeItem.performer.actor", description="Individual who was performing", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={CareTeam.class, Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_PERFORMER_ACTOR = "performer-actor";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>performer-actor</b>
-   * <p>
-   * Description: <b>Individual who was performing</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.performer.actor</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PERFORMER_ACTOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PERFORMER_ACTOR);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ChargeItem:performer-actor</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PERFORMER_ACTOR = new ca.uhn.fhir.model.api.Include("ChargeItem:performer-actor").toLocked();
-
- /**
-   * Search parameter: <b>performer-function</b>
-   * <p>
-   * Description: <b>What type of performance was done</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItem.performer.function</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="performer-function", path="ChargeItem.performer.function", description="What type of performance was done", type="token" )
-  public static final String SP_PERFORMER_FUNCTION = "performer-function";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>performer-function</b>
-   * <p>
-   * Description: <b>What type of performance was done</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItem.performer.function</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PERFORMER_FUNCTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PERFORMER_FUNCTION);
-
- /**
-   * Search parameter: <b>performing-organization</b>
-   * <p>
-   * Description: <b>Organization providing the charged service</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.performingOrganization</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="performing-organization", path="ChargeItem.performingOrganization", description="Organization providing the charged service", type="reference", target={Organization.class } )
-  public static final String SP_PERFORMING_ORGANIZATION = "performing-organization";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>performing-organization</b>
-   * <p>
-   * Description: <b>Organization providing the charged service</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.performingOrganization</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PERFORMING_ORGANIZATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PERFORMING_ORGANIZATION);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ChargeItem:performing-organization</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PERFORMING_ORGANIZATION = new ca.uhn.fhir.model.api.Include("ChargeItem:performing-organization").toLocked();
-
- /**
-   * Search parameter: <b>price-override</b>
-   * <p>
-   * Description: <b>Price overriding the associated rules</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>ChargeItem.priceOverride</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="price-override", path="ChargeItem.priceOverride", description="Price overriding the associated rules", type="quantity" )
-  public static final String SP_PRICE_OVERRIDE = "price-override";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>price-override</b>
-   * <p>
-   * Description: <b>Price overriding the associated rules</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>ChargeItem.priceOverride</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam PRICE_OVERRIDE = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_PRICE_OVERRIDE);
-
- /**
-   * Search parameter: <b>quantity</b>
-   * <p>
-   * Description: <b>Quantity of which the charge item has been serviced</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>ChargeItem.quantity</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="quantity", path="ChargeItem.quantity", description="Quantity of which the charge item has been serviced", type="quantity" )
-  public static final String SP_QUANTITY = "quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>quantity</b>
-   * <p>
-   * Description: <b>Quantity of which the charge item has been serviced</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>ChargeItem.quantity</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_QUANTITY);
-
- /**
-   * Search parameter: <b>requesting-organization</b>
-   * <p>
-   * Description: <b>Organization requesting the charged service</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.requestingOrganization</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="requesting-organization", path="ChargeItem.requestingOrganization", description="Organization requesting the charged service", type="reference", target={Organization.class } )
-  public static final String SP_REQUESTING_ORGANIZATION = "requesting-organization";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>requesting-organization</b>
-   * <p>
-   * Description: <b>Organization requesting the charged service</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.requestingOrganization</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REQUESTING_ORGANIZATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REQUESTING_ORGANIZATION);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ChargeItem:requesting-organization</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_REQUESTING_ORGANIZATION = new ca.uhn.fhir.model.api.Include("ChargeItem:requesting-organization").toLocked();
-
- /**
-   * Search parameter: <b>service</b>
-   * <p>
-   * Description: <b>Which rendered service is being charged?</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.service</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="service", path="ChargeItem.service", description="Which rendered service is being charged?", type="reference", target={DiagnosticReport.class, ImagingStudy.class, Immunization.class, MedicationAdministration.class, MedicationDispense.class, Observation.class, Procedure.class, SupplyDelivery.class } )
-  public static final String SP_SERVICE = "service";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>service</b>
-   * <p>
-   * Description: <b>Which rendered service is being charged?</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.service</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SERVICE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SERVICE);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ChargeItem:service</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SERVICE = new ca.uhn.fhir.model.api.Include("ChargeItem:service").toLocked();
-
- /**
-   * Search parameter: <b>subject</b>
-   * <p>
-   * Description: <b>Individual service was done for/to</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.subject</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="subject", path="ChargeItem.subject", description="Individual service was done for/to", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Group.class, Patient.class } )
-  public static final String SP_SUBJECT = "subject";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
-   * <p>
-   * Description: <b>Individual service was done for/to</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.subject</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ChargeItem:subject</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("ChargeItem:subject").toLocked();
 
 
 }

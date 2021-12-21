@@ -53,8 +53,8 @@ public class BodyStructure40_50 {
       tgt.setMorphology(CodeableConcept40_50.convertCodeableConcept(src.getMorphology()));
     if (src.hasLocation())
       tgt.setLocation(CodeableConcept40_50.convertCodeableConcept(src.getLocation()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getLocationQualifier())
-      tgt.addLocationQualifier(CodeableConcept40_50.convertCodeableConcept(t));
+//    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getLocationQualifier())
+//      tgt.addLocationQualifier(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
     for (org.hl7.fhir.r4.model.Attachment t : src.getImage()) tgt.addImage(Attachment40_50.convertAttachment(t));
@@ -76,8 +76,8 @@ public class BodyStructure40_50 {
       tgt.setMorphology(CodeableConcept40_50.convertCodeableConcept(src.getMorphology()));
     if (src.hasLocation())
       tgt.setLocation(CodeableConcept40_50.convertCodeableConcept(src.getLocation()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getLocationQualifier())
-      tgt.addLocationQualifier(CodeableConcept40_50.convertCodeableConcept(t));
+//    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getLocationQualifier())
+//      tgt.addLocationQualifier(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
     for (org.hl7.fhir.r5.model.Attachment t : src.getImage()) tgt.addImage(Attachment40_50.convertAttachment(t));

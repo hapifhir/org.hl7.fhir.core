@@ -55,7 +55,7 @@ public class SearchParameterValidator extends BaseValidator {
           rule(errors, IssueType.BUSINESSRULE,stack.getLiteralPath(), sp.hasBase(b.primitiveValue()) || sp.hasBase("Resource"), I18nConstants.SEARCHPARAMETER_BASE_WRONG, master, b.primitiveValue());
         }
         rule(errors, IssueType.BUSINESSRULE,stack.getLiteralPath(), !cs.hasChild("type") || sp.getType().toCode().equals(cs.getNamedChildValue("type")), I18nConstants.SEARCHPARAMETER_TYPE_WRONG, master, sp.getType().toCode(), cs.getNamedChildValue("type"));
-        if (cs.hasChild("expression") && !sp.getExpression().equals(cs.getNamedChildValue("expression"))) {
+        if (sp.hasExpression() && cs.hasChild("expression") && !sp.getExpression().equals(cs.getNamedChildValue("expression"))) {
           List<String> bases = new ArrayList<>();
           for (Element b : cs.getChildren("base")) {
             bases.add(b.primitiveValue());

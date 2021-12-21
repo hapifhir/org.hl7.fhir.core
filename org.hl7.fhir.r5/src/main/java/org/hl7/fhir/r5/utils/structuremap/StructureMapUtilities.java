@@ -44,12 +44,12 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Property;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
-import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupUnmappedMode;
 import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.Enumerations.ConceptMapGroupUnmappedMode;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
@@ -388,12 +388,12 @@ public class StructureMapUtilities {
           b.append(rd.getName());
           b.append("(");
           boolean ifirst = true;
-          for (StringType rdp : rd.getVariable()) {
+          for (StructureMapGroupRuleTargetParameterComponent rdp : rd.getParameter()) {
             if (ifirst)
               ifirst = false;
             else
               b.append(", ");
-            b.append(rdp.asStringValue());
+            renderTransformParam(b, rdp);
           }
           b.append(")");
         }
@@ -477,8 +477,7 @@ public class StructureMapUtilities {
     }
     if (rs.hasDefaultValue()) {
       b.append(" default ");
-      assert rs.getDefaultValue() instanceof StringType;
-      b.append("\"" + Utilities.escapeJson(((StringType) rs.getDefaultValue()).asStringValue()) + "\"");
+      b.append("\"" + Utilities.escapeJson(rs.getDefaultValue()) + "\"");
     }
     if (!abbreviate && rs.hasVariable()) {
       b.append(" as ");
@@ -934,7 +933,7 @@ public class StructureMapUtilities {
     lexer.token("(");
     boolean done = false;
     while (!done) {
-      ref.addVariable(lexer.take());
+      parseParameter(ref, lexer);
       done = !lexer.hasToken(",");
       if (!done)
         lexer.next();
@@ -968,7 +967,7 @@ public class StructureMapUtilities {
     }
     if (lexer.hasToken("default")) {
       lexer.token("default");
-      source.setDefaultValue(new StringType(lexer.readConstant("default value")));
+      source.setDefaultValue(lexer.readConstant("default value"));
     }
     if (Utilities.existsInList(lexer.getCurrent(), "first", "last", "not_first", "not_last", "only_one"))
       source.setListMode(StructureMapSourceListMode.fromCode(lexer.take()));
@@ -1071,6 +1070,16 @@ public class StructureMapUtilities {
     }
   }
 
+
+  private void parseParameter(StructureMapGroupRuleDependentComponent ref, FHIRLexer lexer) throws FHIRLexerException, FHIRFormatError {
+    if (!lexer.isConstant()) {
+      ref.addParameter().setValue(new IdType(lexer.take()));
+    } else if (lexer.isStringConstant())
+      ref.addParameter().setValue(new StringType(lexer.readConstant("??")));
+    else {
+      ref.addParameter().setValue(readConstant(lexer.take(), lexer));
+    }
+  }
 
   private void parseParameter(StructureMapGroupRuleTargetComponent target, FHIRLexer lexer) throws FHIRLexerException, FHIRFormatError {
     if (!lexer.isConstant()) {
@@ -1233,14 +1242,14 @@ public class StructureMapUtilities {
   private void executeDependency(String indent, TransformContext context, StructureMap map, Variables vin, StructureMapGroupComponent group, StructureMapGroupRuleDependentComponent dependent) throws FHIRException {
     ResolvedGroup rg = resolveGroupReference(map, group, dependent.getName());
 
-    if (rg.target.getInput().size() != dependent.getVariable().size()) {
-      throw new FHIRException("Rule '" + dependent.getName() + "' has " + rg.target.getInput().size() + " but the invocation has " + dependent.getVariable().size() + " variables");
+    if (rg.target.getInput().size() != dependent.getParameter().size()) {
+      throw new FHIRException("Rule '" + dependent.getName() + "' has " + rg.target.getInput().size() + " but the invocation has " + dependent.getParameter().size() + " variables");
     }
     Variables v = new Variables();
     for (int i = 0; i < rg.target.getInput().size(); i++) {
       StructureMapGroupInputComponent input = rg.target.getInput().get(i);
-      StringType rdp = dependent.getVariable().get(i);
-      String var = rdp.asStringValue();
+      StructureMapGroupRuleTargetParameterComponent rdp = dependent.getParameter().get(i);
+      String var = rdp.getValue().primitiveValue();
       VariableMode mode = input.getMode() == StructureMapInputMode.SOURCE ? VariableMode.INPUT : VariableMode.OUTPUT;
       Base vv = vin.get(mode, var);
       if (vv == null && mode == VariableMode.INPUT) //* once source, always source. but target can be treated as source at user convenient
@@ -1500,7 +1509,7 @@ public class StructureMapUtilities {
       else {
         getChildrenByName(b, src.getElement(), items);
         if (items.size() == 0 && src.hasDefaultValue())
-          items.add(src.getDefaultValue());
+          items.add(src.getDefaultValueElement());
       }
     }
 

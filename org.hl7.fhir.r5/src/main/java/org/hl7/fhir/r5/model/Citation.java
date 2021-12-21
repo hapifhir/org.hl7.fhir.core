@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,6 +52,236 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="Citation", profile="http://hl7.org/fhir/StructureDefinition/Citation")
 public class Citation extends MetadataResource {
+
+    @Block()
+    public static class CitationSummaryComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Format for display of the citation.
+         */
+        @Child(name = "style", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Format for display of the citation", formalDefinition="Format for display of the citation." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/citation-summary-style")
+        protected CodeableConcept style;
+
+        /**
+         * The human-readable display of the citation.
+         */
+        @Child(name = "text", type = {MarkdownType.class}, order=2, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="The human-readable display of the citation", formalDefinition="The human-readable display of the citation." )
+        protected MarkdownType text;
+
+        private static final long serialVersionUID = 123416446L;
+
+    /**
+     * Constructor
+     */
+      public CitationSummaryComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public CitationSummaryComponent(String text) {
+        super();
+        this.setText(text);
+      }
+
+        /**
+         * @return {@link #style} (Format for display of the citation.)
+         */
+        public CodeableConcept getStyle() { 
+          if (this.style == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationSummaryComponent.style");
+            else if (Configuration.doAutoCreate())
+              this.style = new CodeableConcept(); // cc
+          return this.style;
+        }
+
+        public boolean hasStyle() { 
+          return this.style != null && !this.style.isEmpty();
+        }
+
+        /**
+         * @param value {@link #style} (Format for display of the citation.)
+         */
+        public CitationSummaryComponent setStyle(CodeableConcept value) { 
+          this.style = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #text} (The human-readable display of the citation.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
+         */
+        public MarkdownType getTextElement() { 
+          if (this.text == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationSummaryComponent.text");
+            else if (Configuration.doAutoCreate())
+              this.text = new MarkdownType(); // bb
+          return this.text;
+        }
+
+        public boolean hasTextElement() { 
+          return this.text != null && !this.text.isEmpty();
+        }
+
+        public boolean hasText() { 
+          return this.text != null && !this.text.isEmpty();
+        }
+
+        /**
+         * @param value {@link #text} (The human-readable display of the citation.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
+         */
+        public CitationSummaryComponent setTextElement(MarkdownType value) { 
+          this.text = value;
+          return this;
+        }
+
+        /**
+         * @return The human-readable display of the citation.
+         */
+        public String getText() { 
+          return this.text == null ? null : this.text.getValue();
+        }
+
+        /**
+         * @param value The human-readable display of the citation.
+         */
+        public CitationSummaryComponent setText(String value) { 
+            if (this.text == null)
+              this.text = new MarkdownType();
+            this.text.setValue(value);
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("style", "CodeableConcept", "Format for display of the citation.", 0, 1, style));
+          children.add(new Property("text", "markdown", "The human-readable display of the citation.", 0, 1, text));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 109780401: /*style*/  return new Property("style", "CodeableConcept", "Format for display of the citation.", 0, 1, style);
+          case 3556653: /*text*/  return new Property("text", "markdown", "The human-readable display of the citation.", 0, 1, text);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 109780401: /*style*/ return this.style == null ? new Base[0] : new Base[] {this.style}; // CodeableConcept
+        case 3556653: /*text*/ return this.text == null ? new Base[0] : new Base[] {this.text}; // MarkdownType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 109780401: // style
+          this.style = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 3556653: // text
+          this.text = TypeConvertor.castToMarkdown(value); // MarkdownType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("style")) {
+          this.style = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("text")) {
+          this.text = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 109780401:  return getStyle();
+        case 3556653:  return getTextElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 109780401: /*style*/ return new String[] {"CodeableConcept"};
+        case 3556653: /*text*/ return new String[] {"markdown"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("style")) {
+          this.style = new CodeableConcept();
+          return this.style;
+        }
+        else if (name.equals("text")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.summary.text");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public CitationSummaryComponent copy() {
+        CitationSummaryComponent dst = new CitationSummaryComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CitationSummaryComponent dst) {
+        super.copyValues(dst);
+        dst.style = style == null ? null : style.copy();
+        dst.text = text == null ? null : text.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof CitationSummaryComponent))
+          return false;
+        CitationSummaryComponent o = (CitationSummaryComponent) other_;
+        return compareDeep(style, o.style, true) && compareDeep(text, o.text, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof CitationSummaryComponent))
+          return false;
+        CitationSummaryComponent o = (CitationSummaryComponent) other_;
+        return compareValues(text, o.text, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(style, text);
+      }
+
+  public String fhirType() {
+    return "Citation.summary";
+
+  }
+
+  }
 
     @Block()
     public static class CitationClassificationComponent extends BackboneElement implements IBaseBackboneElement {
@@ -568,373 +798,6 @@ public class Citation extends MetadataResource {
   }
 
     @Block()
-    public static class CitationRelatesToComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * How the Citation resource relates to the target artifact.
-         */
-        @Child(name = "relationshipType", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="How the Citation resource relates to the target artifact", formalDefinition="How the Citation resource relates to the target artifact." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/artifact-relationship-type")
-        protected CodeableConcept relationshipType;
-
-        /**
-         * The clasification of the related artifact.
-         */
-        @Child(name = "targetClassifier", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="The clasification of the related artifact", formalDefinition="The clasification of the related artifact." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/citation-artifact-classifier")
-        protected List<CodeableConcept> targetClassifier;
-
-        /**
-         * The article or artifact that the Citation Resource is related to.
-         */
-        @Child(name = "target", type = {UriType.class, Identifier.class, Reference.class, Attachment.class}, order=3, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The article or artifact that the Citation Resource is related to", formalDefinition="The article or artifact that the Citation Resource is related to." )
-        protected DataType target;
-
-        private static final long serialVersionUID = 819025047L;
-
-    /**
-     * Constructor
-     */
-      public CitationRelatesToComponent() {
-        super();
-      }
-
-    /**
-     * Constructor
-     */
-      public CitationRelatesToComponent(CodeableConcept relationshipType, DataType target) {
-        super();
-        this.setRelationshipType(relationshipType);
-        this.setTarget(target);
-      }
-
-        /**
-         * @return {@link #relationshipType} (How the Citation resource relates to the target artifact.)
-         */
-        public CodeableConcept getRelationshipType() { 
-          if (this.relationshipType == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationRelatesToComponent.relationshipType");
-            else if (Configuration.doAutoCreate())
-              this.relationshipType = new CodeableConcept(); // cc
-          return this.relationshipType;
-        }
-
-        public boolean hasRelationshipType() { 
-          return this.relationshipType != null && !this.relationshipType.isEmpty();
-        }
-
-        /**
-         * @param value {@link #relationshipType} (How the Citation resource relates to the target artifact.)
-         */
-        public CitationRelatesToComponent setRelationshipType(CodeableConcept value) { 
-          this.relationshipType = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #targetClassifier} (The clasification of the related artifact.)
-         */
-        public List<CodeableConcept> getTargetClassifier() { 
-          if (this.targetClassifier == null)
-            this.targetClassifier = new ArrayList<CodeableConcept>();
-          return this.targetClassifier;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public CitationRelatesToComponent setTargetClassifier(List<CodeableConcept> theTargetClassifier) { 
-          this.targetClassifier = theTargetClassifier;
-          return this;
-        }
-
-        public boolean hasTargetClassifier() { 
-          if (this.targetClassifier == null)
-            return false;
-          for (CodeableConcept item : this.targetClassifier)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public CodeableConcept addTargetClassifier() { //3
-          CodeableConcept t = new CodeableConcept();
-          if (this.targetClassifier == null)
-            this.targetClassifier = new ArrayList<CodeableConcept>();
-          this.targetClassifier.add(t);
-          return t;
-        }
-
-        public CitationRelatesToComponent addTargetClassifier(CodeableConcept t) { //3
-          if (t == null)
-            return this;
-          if (this.targetClassifier == null)
-            this.targetClassifier = new ArrayList<CodeableConcept>();
-          this.targetClassifier.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #targetClassifier}, creating it if it does not already exist {3}
-         */
-        public CodeableConcept getTargetClassifierFirstRep() { 
-          if (getTargetClassifier().isEmpty()) {
-            addTargetClassifier();
-          }
-          return getTargetClassifier().get(0);
-        }
-
-        /**
-         * @return {@link #target} (The article or artifact that the Citation Resource is related to.)
-         */
-        public DataType getTarget() { 
-          return this.target;
-        }
-
-        /**
-         * @return {@link #target} (The article or artifact that the Citation Resource is related to.)
-         */
-        public UriType getTargetUriType() throws FHIRException { 
-          if (this.target == null)
-            this.target = new UriType();
-          if (!(this.target instanceof UriType))
-            throw new FHIRException("Type mismatch: the type UriType was expected, but "+this.target.getClass().getName()+" was encountered");
-          return (UriType) this.target;
-        }
-
-        public boolean hasTargetUriType() { 
-          return this != null && this.target instanceof UriType;
-        }
-
-        /**
-         * @return {@link #target} (The article or artifact that the Citation Resource is related to.)
-         */
-        public Identifier getTargetIdentifier() throws FHIRException { 
-          if (this.target == null)
-            this.target = new Identifier();
-          if (!(this.target instanceof Identifier))
-            throw new FHIRException("Type mismatch: the type Identifier was expected, but "+this.target.getClass().getName()+" was encountered");
-          return (Identifier) this.target;
-        }
-
-        public boolean hasTargetIdentifier() { 
-          return this != null && this.target instanceof Identifier;
-        }
-
-        /**
-         * @return {@link #target} (The article or artifact that the Citation Resource is related to.)
-         */
-        public Reference getTargetReference() throws FHIRException { 
-          if (this.target == null)
-            this.target = new Reference();
-          if (!(this.target instanceof Reference))
-            throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.target.getClass().getName()+" was encountered");
-          return (Reference) this.target;
-        }
-
-        public boolean hasTargetReference() { 
-          return this != null && this.target instanceof Reference;
-        }
-
-        /**
-         * @return {@link #target} (The article or artifact that the Citation Resource is related to.)
-         */
-        public Attachment getTargetAttachment() throws FHIRException { 
-          if (this.target == null)
-            this.target = new Attachment();
-          if (!(this.target instanceof Attachment))
-            throw new FHIRException("Type mismatch: the type Attachment was expected, but "+this.target.getClass().getName()+" was encountered");
-          return (Attachment) this.target;
-        }
-
-        public boolean hasTargetAttachment() { 
-          return this != null && this.target instanceof Attachment;
-        }
-
-        public boolean hasTarget() { 
-          return this.target != null && !this.target.isEmpty();
-        }
-
-        /**
-         * @param value {@link #target} (The article or artifact that the Citation Resource is related to.)
-         */
-        public CitationRelatesToComponent setTarget(DataType value) { 
-          if (value != null && !(value instanceof UriType || value instanceof Identifier || value instanceof Reference || value instanceof Attachment))
-            throw new Error("Not the right type for Citation.relatesTo.target[x]: "+value.fhirType());
-          this.target = value;
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("relationshipType", "CodeableConcept", "How the Citation resource relates to the target artifact.", 0, 1, relationshipType));
-          children.add(new Property("targetClassifier", "CodeableConcept", "The clasification of the related artifact.", 0, java.lang.Integer.MAX_VALUE, targetClassifier));
-          children.add(new Property("target[x]", "uri|Identifier|Reference(Any)|Attachment", "The article or artifact that the Citation Resource is related to.", 0, 1, target));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case -1602839150: /*relationshipType*/  return new Property("relationshipType", "CodeableConcept", "How the Citation resource relates to the target artifact.", 0, 1, relationshipType);
-          case -1267112302: /*targetClassifier*/  return new Property("targetClassifier", "CodeableConcept", "The clasification of the related artifact.", 0, java.lang.Integer.MAX_VALUE, targetClassifier);
-          case -815579825: /*target[x]*/  return new Property("target[x]", "uri|Identifier|Reference(Any)|Attachment", "The article or artifact that the Citation Resource is related to.", 0, 1, target);
-          case -880905839: /*target*/  return new Property("target[x]", "uri|Identifier|Reference(Any)|Attachment", "The article or artifact that the Citation Resource is related to.", 0, 1, target);
-          case -815585765: /*targetUri*/  return new Property("target[x]", "uri", "The article or artifact that the Citation Resource is related to.", 0, 1, target);
-          case 1690892570: /*targetIdentifier*/  return new Property("target[x]", "Identifier", "The article or artifact that the Citation Resource is related to.", 0, 1, target);
-          case 1259806906: /*targetReference*/  return new Property("target[x]", "Reference(Any)", "The article or artifact that the Citation Resource is related to.", 0, 1, target);
-          case 1345824148: /*targetAttachment*/  return new Property("target[x]", "Attachment", "The article or artifact that the Citation Resource is related to.", 0, 1, target);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case -1602839150: /*relationshipType*/ return this.relationshipType == null ? new Base[0] : new Base[] {this.relationshipType}; // CodeableConcept
-        case -1267112302: /*targetClassifier*/ return this.targetClassifier == null ? new Base[0] : this.targetClassifier.toArray(new Base[this.targetClassifier.size()]); // CodeableConcept
-        case -880905839: /*target*/ return this.target == null ? new Base[0] : new Base[] {this.target}; // DataType
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case -1602839150: // relationshipType
-          this.relationshipType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case -1267112302: // targetClassifier
-          this.getTargetClassifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        case -880905839: // target
-          this.target = TypeConvertor.castToType(value); // DataType
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("relationshipType")) {
-          this.relationshipType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("targetClassifier")) {
-          this.getTargetClassifier().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("target[x]")) {
-          this.target = TypeConvertor.castToType(value); // DataType
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1602839150:  return getRelationshipType();
-        case -1267112302:  return addTargetClassifier(); 
-        case -815579825:  return getTarget();
-        case -880905839:  return getTarget();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1602839150: /*relationshipType*/ return new String[] {"CodeableConcept"};
-        case -1267112302: /*targetClassifier*/ return new String[] {"CodeableConcept"};
-        case -880905839: /*target*/ return new String[] {"uri", "Identifier", "Reference", "Attachment"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("relationshipType")) {
-          this.relationshipType = new CodeableConcept();
-          return this.relationshipType;
-        }
-        else if (name.equals("targetClassifier")) {
-          return addTargetClassifier();
-        }
-        else if (name.equals("targetUri")) {
-          this.target = new UriType();
-          return this.target;
-        }
-        else if (name.equals("targetIdentifier")) {
-          this.target = new Identifier();
-          return this.target;
-        }
-        else if (name.equals("targetReference")) {
-          this.target = new Reference();
-          return this.target;
-        }
-        else if (name.equals("targetAttachment")) {
-          this.target = new Attachment();
-          return this.target;
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public CitationRelatesToComponent copy() {
-        CitationRelatesToComponent dst = new CitationRelatesToComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(CitationRelatesToComponent dst) {
-        super.copyValues(dst);
-        dst.relationshipType = relationshipType == null ? null : relationshipType.copy();
-        if (targetClassifier != null) {
-          dst.targetClassifier = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : targetClassifier)
-            dst.targetClassifier.add(i.copy());
-        };
-        dst.target = target == null ? null : target.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof CitationRelatesToComponent))
-          return false;
-        CitationRelatesToComponent o = (CitationRelatesToComponent) other_;
-        return compareDeep(relationshipType, o.relationshipType, true) && compareDeep(targetClassifier, o.targetClassifier, true)
-           && compareDeep(target, o.target, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof CitationRelatesToComponent))
-          return false;
-        CitationRelatesToComponent o = (CitationRelatesToComponent) other_;
-        return true;
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(relationshipType, targetClassifier
-          , target);
-      }
-
-  public String fhirType() {
-    return "Citation.relatesTo";
-
-  }
-
-  }
-
-    @Block()
     public static class CitationCitedArtifactComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * A formal identifier that is used to identify this citation when it is represented in other formats, or referenced in a specification, model, design or an instance.
@@ -1003,9 +866,9 @@ public class Citation extends MetadataResource {
         /**
          * The artifact related to the cited artifact.
          */
-        @Child(name = "relatesTo", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "relatesTo", type = {RelatedArtifact.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="The artifact related to the cited artifact", formalDefinition="The artifact related to the cited artifact." )
-        protected List<CitationCitedArtifactRelatesToComponent> relatesTo;
+        protected List<RelatedArtifact> relatesTo;
 
         /**
          * If multiple, used to represent alternative forms of the article that are not separate citations.
@@ -1042,7 +905,7 @@ public class Citation extends MetadataResource {
         @Description(shortDefinition="Any additional information or content for the article or artifact", formalDefinition="Any additional information or content for the article or artifact." )
         protected List<Annotation> note;
 
-        private static final long serialVersionUID = -1685890486L;
+        private static final long serialVersionUID = 356898023L;
 
     /**
      * Constructor
@@ -1469,16 +1332,16 @@ public class Citation extends MetadataResource {
         /**
          * @return {@link #relatesTo} (The artifact related to the cited artifact.)
          */
-        public List<CitationCitedArtifactRelatesToComponent> getRelatesTo() { 
+        public List<RelatedArtifact> getRelatesTo() { 
           if (this.relatesTo == null)
-            this.relatesTo = new ArrayList<CitationCitedArtifactRelatesToComponent>();
+            this.relatesTo = new ArrayList<RelatedArtifact>();
           return this.relatesTo;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public CitationCitedArtifactComponent setRelatesTo(List<CitationCitedArtifactRelatesToComponent> theRelatesTo) { 
+        public CitationCitedArtifactComponent setRelatesTo(List<RelatedArtifact> theRelatesTo) { 
           this.relatesTo = theRelatesTo;
           return this;
         }
@@ -1486,25 +1349,25 @@ public class Citation extends MetadataResource {
         public boolean hasRelatesTo() { 
           if (this.relatesTo == null)
             return false;
-          for (CitationCitedArtifactRelatesToComponent item : this.relatesTo)
+          for (RelatedArtifact item : this.relatesTo)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public CitationCitedArtifactRelatesToComponent addRelatesTo() { //3
-          CitationCitedArtifactRelatesToComponent t = new CitationCitedArtifactRelatesToComponent();
+        public RelatedArtifact addRelatesTo() { //3
+          RelatedArtifact t = new RelatedArtifact();
           if (this.relatesTo == null)
-            this.relatesTo = new ArrayList<CitationCitedArtifactRelatesToComponent>();
+            this.relatesTo = new ArrayList<RelatedArtifact>();
           this.relatesTo.add(t);
           return t;
         }
 
-        public CitationCitedArtifactComponent addRelatesTo(CitationCitedArtifactRelatesToComponent t) { //3
+        public CitationCitedArtifactComponent addRelatesTo(RelatedArtifact t) { //3
           if (t == null)
             return this;
           if (this.relatesTo == null)
-            this.relatesTo = new ArrayList<CitationCitedArtifactRelatesToComponent>();
+            this.relatesTo = new ArrayList<RelatedArtifact>();
           this.relatesTo.add(t);
           return this;
         }
@@ -1512,7 +1375,7 @@ public class Citation extends MetadataResource {
         /**
          * @return The first repetition of repeating field {@link #relatesTo}, creating it if it does not already exist {3}
          */
-        public CitationCitedArtifactRelatesToComponent getRelatesToFirstRep() { 
+        public RelatedArtifact getRelatesToFirstRep() { 
           if (getRelatesTo().isEmpty()) {
             addRelatesTo();
           }
@@ -1766,7 +1629,7 @@ public class Citation extends MetadataResource {
           children.add(new Property("title", "", "The title details of the article or artifact.", 0, java.lang.Integer.MAX_VALUE, title));
           children.add(new Property("abstract", "", "Summary of the article or artifact.", 0, java.lang.Integer.MAX_VALUE, abstract_));
           children.add(new Property("part", "", "The component of the article or artifact.", 0, 1, part));
-          children.add(new Property("relatesTo", "", "The artifact related to the cited artifact.", 0, java.lang.Integer.MAX_VALUE, relatesTo));
+          children.add(new Property("relatesTo", "RelatedArtifact", "The artifact related to the cited artifact.", 0, java.lang.Integer.MAX_VALUE, relatesTo));
           children.add(new Property("publicationForm", "", "If multiple, used to represent alternative forms of the article that are not separate citations.", 0, java.lang.Integer.MAX_VALUE, publicationForm));
           children.add(new Property("webLocation", "", "Used for any URL for the article or artifact cited.", 0, java.lang.Integer.MAX_VALUE, webLocation));
           children.add(new Property("classification", "", "The assignment to an organizing scheme.", 0, java.lang.Integer.MAX_VALUE, classification));
@@ -1786,7 +1649,7 @@ public class Citation extends MetadataResource {
           case 110371416: /*title*/  return new Property("title", "", "The title details of the article or artifact.", 0, java.lang.Integer.MAX_VALUE, title);
           case 1732898850: /*abstract*/  return new Property("abstract", "", "Summary of the article or artifact.", 0, java.lang.Integer.MAX_VALUE, abstract_);
           case 3433459: /*part*/  return new Property("part", "", "The component of the article or artifact.", 0, 1, part);
-          case -7765931: /*relatesTo*/  return new Property("relatesTo", "", "The artifact related to the cited artifact.", 0, java.lang.Integer.MAX_VALUE, relatesTo);
+          case -7765931: /*relatesTo*/  return new Property("relatesTo", "RelatedArtifact", "The artifact related to the cited artifact.", 0, java.lang.Integer.MAX_VALUE, relatesTo);
           case 1470639376: /*publicationForm*/  return new Property("publicationForm", "", "If multiple, used to represent alternative forms of the article that are not separate citations.", 0, java.lang.Integer.MAX_VALUE, publicationForm);
           case -828032215: /*webLocation*/  return new Property("webLocation", "", "Used for any URL for the article or artifact cited.", 0, java.lang.Integer.MAX_VALUE, webLocation);
           case 382350310: /*classification*/  return new Property("classification", "", "The assignment to an organizing scheme.", 0, java.lang.Integer.MAX_VALUE, classification);
@@ -1809,7 +1672,7 @@ public class Citation extends MetadataResource {
         case 110371416: /*title*/ return this.title == null ? new Base[0] : this.title.toArray(new Base[this.title.size()]); // CitationCitedArtifactTitleComponent
         case 1732898850: /*abstract*/ return this.abstract_ == null ? new Base[0] : this.abstract_.toArray(new Base[this.abstract_.size()]); // CitationCitedArtifactAbstractComponent
         case 3433459: /*part*/ return this.part == null ? new Base[0] : new Base[] {this.part}; // CitationCitedArtifactPartComponent
-        case -7765931: /*relatesTo*/ return this.relatesTo == null ? new Base[0] : this.relatesTo.toArray(new Base[this.relatesTo.size()]); // CitationCitedArtifactRelatesToComponent
+        case -7765931: /*relatesTo*/ return this.relatesTo == null ? new Base[0] : this.relatesTo.toArray(new Base[this.relatesTo.size()]); // RelatedArtifact
         case 1470639376: /*publicationForm*/ return this.publicationForm == null ? new Base[0] : this.publicationForm.toArray(new Base[this.publicationForm.size()]); // CitationCitedArtifactPublicationFormComponent
         case -828032215: /*webLocation*/ return this.webLocation == null ? new Base[0] : this.webLocation.toArray(new Base[this.webLocation.size()]); // CitationCitedArtifactWebLocationComponent
         case 382350310: /*classification*/ return this.classification == null ? new Base[0] : this.classification.toArray(new Base[this.classification.size()]); // CitationCitedArtifactClassificationComponent
@@ -1851,7 +1714,7 @@ public class Citation extends MetadataResource {
           this.part = (CitationCitedArtifactPartComponent) value; // CitationCitedArtifactPartComponent
           return value;
         case -7765931: // relatesTo
-          this.getRelatesTo().add((CitationCitedArtifactRelatesToComponent) value); // CitationCitedArtifactRelatesToComponent
+          this.getRelatesTo().add(TypeConvertor.castToRelatedArtifact(value)); // RelatedArtifact
           return value;
         case 1470639376: // publicationForm
           this.getPublicationForm().add((CitationCitedArtifactPublicationFormComponent) value); // CitationCitedArtifactPublicationFormComponent
@@ -1894,7 +1757,7 @@ public class Citation extends MetadataResource {
         } else if (name.equals("part")) {
           this.part = (CitationCitedArtifactPartComponent) value; // CitationCitedArtifactPartComponent
         } else if (name.equals("relatesTo")) {
-          this.getRelatesTo().add((CitationCitedArtifactRelatesToComponent) value);
+          this.getRelatesTo().add(TypeConvertor.castToRelatedArtifact(value));
         } else if (name.equals("publicationForm")) {
           this.getPublicationForm().add((CitationCitedArtifactPublicationFormComponent) value);
         } else if (name.equals("webLocation")) {
@@ -1945,7 +1808,7 @@ public class Citation extends MetadataResource {
         case 110371416: /*title*/ return new String[] {};
         case 1732898850: /*abstract*/ return new String[] {};
         case 3433459: /*part*/ return new String[] {};
-        case -7765931: /*relatesTo*/ return new String[] {};
+        case -7765931: /*relatesTo*/ return new String[] {"RelatedArtifact"};
         case 1470639376: /*publicationForm*/ return new String[] {};
         case -828032215: /*webLocation*/ return new String[] {};
         case 382350310: /*classification*/ return new String[] {};
@@ -2052,8 +1915,8 @@ public class Citation extends MetadataResource {
         };
         dst.part = part == null ? null : part.copy();
         if (relatesTo != null) {
-          dst.relatesTo = new ArrayList<CitationCitedArtifactRelatesToComponent>();
-          for (CitationCitedArtifactRelatesToComponent i : relatesTo)
+          dst.relatesTo = new ArrayList<RelatedArtifact>();
+          for (RelatedArtifact i : relatesTo)
             dst.relatesTo.add(i.copy());
         };
         if (publicationForm != null) {
@@ -2630,10 +2493,10 @@ public class Citation extends MetadataResource {
         /**
          * Used to express the reason or specific aspect for the title.
          */
-        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="The kind of title", formalDefinition="Used to express the reason or specific aspect for the title." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/title-type")
-        protected CodeableConcept type;
+        protected List<CodeableConcept> type;
 
         /**
          * Used to express the specific language.
@@ -2650,7 +2513,7 @@ public class Citation extends MetadataResource {
         @Description(shortDefinition="The title of the article or artifact", formalDefinition="The title of the article or artifact." )
         protected MarkdownType text;
 
-        private static final long serialVersionUID = 10089224L;
+        private static final long serialVersionUID = 1526221998L;
 
     /**
      * Constructor
@@ -2670,25 +2533,54 @@ public class Citation extends MetadataResource {
         /**
          * @return {@link #type} (Used to express the reason or specific aspect for the title.)
          */
-        public CodeableConcept getType() { 
+        public List<CodeableConcept> getType() { 
           if (this.type == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationCitedArtifactTitleComponent.type");
-            else if (Configuration.doAutoCreate())
-              this.type = new CodeableConcept(); // cc
+            this.type = new ArrayList<CodeableConcept>();
           return this.type;
         }
 
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public CitationCitedArtifactTitleComponent setType(List<CodeableConcept> theType) { 
+          this.type = theType;
+          return this;
+        }
+
         public boolean hasType() { 
-          return this.type != null && !this.type.isEmpty();
+          if (this.type == null)
+            return false;
+          for (CodeableConcept item : this.type)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CodeableConcept addType() { //3
+          CodeableConcept t = new CodeableConcept();
+          if (this.type == null)
+            this.type = new ArrayList<CodeableConcept>();
+          this.type.add(t);
+          return t;
+        }
+
+        public CitationCitedArtifactTitleComponent addType(CodeableConcept t) { //3
+          if (t == null)
+            return this;
+          if (this.type == null)
+            this.type = new ArrayList<CodeableConcept>();
+          this.type.add(t);
+          return this;
         }
 
         /**
-         * @param value {@link #type} (Used to express the reason or specific aspect for the title.)
+         * @return The first repetition of repeating field {@link #type}, creating it if it does not already exist {3}
          */
-        public CitationCitedArtifactTitleComponent setType(CodeableConcept value) { 
-          this.type = value;
-          return this;
+        public CodeableConcept getTypeFirstRep() { 
+          if (getType().isEmpty()) {
+            addType();
+          }
+          return getType().get(0);
         }
 
         /**
@@ -2762,7 +2654,7 @@ public class Citation extends MetadataResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("type", "CodeableConcept", "Used to express the reason or specific aspect for the title.", 0, 1, type));
+          children.add(new Property("type", "CodeableConcept", "Used to express the reason or specific aspect for the title.", 0, java.lang.Integer.MAX_VALUE, type));
           children.add(new Property("language", "CodeableConcept", "Used to express the specific language.", 0, 1, language));
           children.add(new Property("text", "markdown", "The title of the article or artifact.", 0, 1, text));
         }
@@ -2770,7 +2662,7 @@ public class Citation extends MetadataResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Used to express the reason or specific aspect for the title.", 0, 1, type);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Used to express the reason or specific aspect for the title.", 0, java.lang.Integer.MAX_VALUE, type);
           case -1613589672: /*language*/  return new Property("language", "CodeableConcept", "Used to express the specific language.", 0, 1, language);
           case 3556653: /*text*/  return new Property("text", "markdown", "The title of the article or artifact.", 0, 1, text);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -2781,7 +2673,7 @@ public class Citation extends MetadataResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : this.type.toArray(new Base[this.type.size()]); // CodeableConcept
         case -1613589672: /*language*/ return this.language == null ? new Base[0] : new Base[] {this.language}; // CodeableConcept
         case 3556653: /*text*/ return this.text == null ? new Base[0] : new Base[] {this.text}; // MarkdownType
         default: return super.getProperty(hash, name, checkValid);
@@ -2793,7 +2685,7 @@ public class Citation extends MetadataResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1613589672: // language
           this.language = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -2809,7 +2701,7 @@ public class Citation extends MetadataResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.getType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("language")) {
           this.language = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("text")) {
@@ -2822,7 +2714,7 @@ public class Citation extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType();
+        case 3575610:  return addType(); 
         case -1613589672:  return getLanguage();
         case 3556653:  return getTextElement();
         default: return super.makeProperty(hash, name);
@@ -2844,8 +2736,7 @@ public class Citation extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          this.type = new CodeableConcept();
-          return this.type;
+          return addType();
         }
         else if (name.equals("language")) {
           this.language = new CodeableConcept();
@@ -2866,7 +2757,11 @@ public class Citation extends MetadataResource {
 
       public void copyValues(CitationCitedArtifactTitleComponent dst) {
         super.copyValues(dst);
-        dst.type = type == null ? null : type.copy();
+        if (type != null) {
+          dst.type = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : type)
+            dst.type.add(i.copy());
+        };
         dst.language = language == null ? null : language.copy();
         dst.text = text == null ? null : text.copy();
       }
@@ -3521,373 +3416,6 @@ public class Citation extends MetadataResource {
 
   public String fhirType() {
     return "Citation.citedArtifact.part";
-
-  }
-
-  }
-
-    @Block()
-    public static class CitationCitedArtifactRelatesToComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * How the cited artifact resource relates to the target artifact.
-         */
-        @Child(name = "relationshipType", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="How the cited artifact resource relates to the target artifact", formalDefinition="How the cited artifact resource relates to the target artifact." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/artifact-relationship-type")
-        protected CodeableConcept relationshipType;
-
-        /**
-         * The clasification of the related artifact.
-         */
-        @Child(name = "targetClassifier", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="The clasification of the related artifact", formalDefinition="The clasification of the related artifact." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/citation-artifact-classifier")
-        protected List<CodeableConcept> targetClassifier;
-
-        /**
-         * The article or artifact that the cited artifact is related to.
-         */
-        @Child(name = "target", type = {UriType.class, Identifier.class, Reference.class, Attachment.class}, order=3, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The article or artifact that the cited artifact is related to", formalDefinition="The article or artifact that the cited artifact is related to." )
-        protected DataType target;
-
-        private static final long serialVersionUID = 819025047L;
-
-    /**
-     * Constructor
-     */
-      public CitationCitedArtifactRelatesToComponent() {
-        super();
-      }
-
-    /**
-     * Constructor
-     */
-      public CitationCitedArtifactRelatesToComponent(CodeableConcept relationshipType, DataType target) {
-        super();
-        this.setRelationshipType(relationshipType);
-        this.setTarget(target);
-      }
-
-        /**
-         * @return {@link #relationshipType} (How the cited artifact resource relates to the target artifact.)
-         */
-        public CodeableConcept getRelationshipType() { 
-          if (this.relationshipType == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationCitedArtifactRelatesToComponent.relationshipType");
-            else if (Configuration.doAutoCreate())
-              this.relationshipType = new CodeableConcept(); // cc
-          return this.relationshipType;
-        }
-
-        public boolean hasRelationshipType() { 
-          return this.relationshipType != null && !this.relationshipType.isEmpty();
-        }
-
-        /**
-         * @param value {@link #relationshipType} (How the cited artifact resource relates to the target artifact.)
-         */
-        public CitationCitedArtifactRelatesToComponent setRelationshipType(CodeableConcept value) { 
-          this.relationshipType = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #targetClassifier} (The clasification of the related artifact.)
-         */
-        public List<CodeableConcept> getTargetClassifier() { 
-          if (this.targetClassifier == null)
-            this.targetClassifier = new ArrayList<CodeableConcept>();
-          return this.targetClassifier;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public CitationCitedArtifactRelatesToComponent setTargetClassifier(List<CodeableConcept> theTargetClassifier) { 
-          this.targetClassifier = theTargetClassifier;
-          return this;
-        }
-
-        public boolean hasTargetClassifier() { 
-          if (this.targetClassifier == null)
-            return false;
-          for (CodeableConcept item : this.targetClassifier)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public CodeableConcept addTargetClassifier() { //3
-          CodeableConcept t = new CodeableConcept();
-          if (this.targetClassifier == null)
-            this.targetClassifier = new ArrayList<CodeableConcept>();
-          this.targetClassifier.add(t);
-          return t;
-        }
-
-        public CitationCitedArtifactRelatesToComponent addTargetClassifier(CodeableConcept t) { //3
-          if (t == null)
-            return this;
-          if (this.targetClassifier == null)
-            this.targetClassifier = new ArrayList<CodeableConcept>();
-          this.targetClassifier.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #targetClassifier}, creating it if it does not already exist {3}
-         */
-        public CodeableConcept getTargetClassifierFirstRep() { 
-          if (getTargetClassifier().isEmpty()) {
-            addTargetClassifier();
-          }
-          return getTargetClassifier().get(0);
-        }
-
-        /**
-         * @return {@link #target} (The article or artifact that the cited artifact is related to.)
-         */
-        public DataType getTarget() { 
-          return this.target;
-        }
-
-        /**
-         * @return {@link #target} (The article or artifact that the cited artifact is related to.)
-         */
-        public UriType getTargetUriType() throws FHIRException { 
-          if (this.target == null)
-            this.target = new UriType();
-          if (!(this.target instanceof UriType))
-            throw new FHIRException("Type mismatch: the type UriType was expected, but "+this.target.getClass().getName()+" was encountered");
-          return (UriType) this.target;
-        }
-
-        public boolean hasTargetUriType() { 
-          return this != null && this.target instanceof UriType;
-        }
-
-        /**
-         * @return {@link #target} (The article or artifact that the cited artifact is related to.)
-         */
-        public Identifier getTargetIdentifier() throws FHIRException { 
-          if (this.target == null)
-            this.target = new Identifier();
-          if (!(this.target instanceof Identifier))
-            throw new FHIRException("Type mismatch: the type Identifier was expected, but "+this.target.getClass().getName()+" was encountered");
-          return (Identifier) this.target;
-        }
-
-        public boolean hasTargetIdentifier() { 
-          return this != null && this.target instanceof Identifier;
-        }
-
-        /**
-         * @return {@link #target} (The article or artifact that the cited artifact is related to.)
-         */
-        public Reference getTargetReference() throws FHIRException { 
-          if (this.target == null)
-            this.target = new Reference();
-          if (!(this.target instanceof Reference))
-            throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.target.getClass().getName()+" was encountered");
-          return (Reference) this.target;
-        }
-
-        public boolean hasTargetReference() { 
-          return this != null && this.target instanceof Reference;
-        }
-
-        /**
-         * @return {@link #target} (The article or artifact that the cited artifact is related to.)
-         */
-        public Attachment getTargetAttachment() throws FHIRException { 
-          if (this.target == null)
-            this.target = new Attachment();
-          if (!(this.target instanceof Attachment))
-            throw new FHIRException("Type mismatch: the type Attachment was expected, but "+this.target.getClass().getName()+" was encountered");
-          return (Attachment) this.target;
-        }
-
-        public boolean hasTargetAttachment() { 
-          return this != null && this.target instanceof Attachment;
-        }
-
-        public boolean hasTarget() { 
-          return this.target != null && !this.target.isEmpty();
-        }
-
-        /**
-         * @param value {@link #target} (The article or artifact that the cited artifact is related to.)
-         */
-        public CitationCitedArtifactRelatesToComponent setTarget(DataType value) { 
-          if (value != null && !(value instanceof UriType || value instanceof Identifier || value instanceof Reference || value instanceof Attachment))
-            throw new Error("Not the right type for Citation.citedArtifact.relatesTo.target[x]: "+value.fhirType());
-          this.target = value;
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("relationshipType", "CodeableConcept", "How the cited artifact resource relates to the target artifact.", 0, 1, relationshipType));
-          children.add(new Property("targetClassifier", "CodeableConcept", "The clasification of the related artifact.", 0, java.lang.Integer.MAX_VALUE, targetClassifier));
-          children.add(new Property("target[x]", "uri|Identifier|Reference(Any)|Attachment", "The article or artifact that the cited artifact is related to.", 0, 1, target));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case -1602839150: /*relationshipType*/  return new Property("relationshipType", "CodeableConcept", "How the cited artifact resource relates to the target artifact.", 0, 1, relationshipType);
-          case -1267112302: /*targetClassifier*/  return new Property("targetClassifier", "CodeableConcept", "The clasification of the related artifact.", 0, java.lang.Integer.MAX_VALUE, targetClassifier);
-          case -815579825: /*target[x]*/  return new Property("target[x]", "uri|Identifier|Reference(Any)|Attachment", "The article or artifact that the cited artifact is related to.", 0, 1, target);
-          case -880905839: /*target*/  return new Property("target[x]", "uri|Identifier|Reference(Any)|Attachment", "The article or artifact that the cited artifact is related to.", 0, 1, target);
-          case -815585765: /*targetUri*/  return new Property("target[x]", "uri", "The article or artifact that the cited artifact is related to.", 0, 1, target);
-          case 1690892570: /*targetIdentifier*/  return new Property("target[x]", "Identifier", "The article or artifact that the cited artifact is related to.", 0, 1, target);
-          case 1259806906: /*targetReference*/  return new Property("target[x]", "Reference(Any)", "The article or artifact that the cited artifact is related to.", 0, 1, target);
-          case 1345824148: /*targetAttachment*/  return new Property("target[x]", "Attachment", "The article or artifact that the cited artifact is related to.", 0, 1, target);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case -1602839150: /*relationshipType*/ return this.relationshipType == null ? new Base[0] : new Base[] {this.relationshipType}; // CodeableConcept
-        case -1267112302: /*targetClassifier*/ return this.targetClassifier == null ? new Base[0] : this.targetClassifier.toArray(new Base[this.targetClassifier.size()]); // CodeableConcept
-        case -880905839: /*target*/ return this.target == null ? new Base[0] : new Base[] {this.target}; // DataType
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case -1602839150: // relationshipType
-          this.relationshipType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case -1267112302: // targetClassifier
-          this.getTargetClassifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        case -880905839: // target
-          this.target = TypeConvertor.castToType(value); // DataType
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("relationshipType")) {
-          this.relationshipType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("targetClassifier")) {
-          this.getTargetClassifier().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("target[x]")) {
-          this.target = TypeConvertor.castToType(value); // DataType
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1602839150:  return getRelationshipType();
-        case -1267112302:  return addTargetClassifier(); 
-        case -815579825:  return getTarget();
-        case -880905839:  return getTarget();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1602839150: /*relationshipType*/ return new String[] {"CodeableConcept"};
-        case -1267112302: /*targetClassifier*/ return new String[] {"CodeableConcept"};
-        case -880905839: /*target*/ return new String[] {"uri", "Identifier", "Reference", "Attachment"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("relationshipType")) {
-          this.relationshipType = new CodeableConcept();
-          return this.relationshipType;
-        }
-        else if (name.equals("targetClassifier")) {
-          return addTargetClassifier();
-        }
-        else if (name.equals("targetUri")) {
-          this.target = new UriType();
-          return this.target;
-        }
-        else if (name.equals("targetIdentifier")) {
-          this.target = new Identifier();
-          return this.target;
-        }
-        else if (name.equals("targetReference")) {
-          this.target = new Reference();
-          return this.target;
-        }
-        else if (name.equals("targetAttachment")) {
-          this.target = new Attachment();
-          return this.target;
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public CitationCitedArtifactRelatesToComponent copy() {
-        CitationCitedArtifactRelatesToComponent dst = new CitationCitedArtifactRelatesToComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(CitationCitedArtifactRelatesToComponent dst) {
-        super.copyValues(dst);
-        dst.relationshipType = relationshipType == null ? null : relationshipType.copy();
-        if (targetClassifier != null) {
-          dst.targetClassifier = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : targetClassifier)
-            dst.targetClassifier.add(i.copy());
-        };
-        dst.target = target == null ? null : target.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof CitationCitedArtifactRelatesToComponent))
-          return false;
-        CitationCitedArtifactRelatesToComponent o = (CitationCitedArtifactRelatesToComponent) other_;
-        return compareDeep(relationshipType, o.relationshipType, true) && compareDeep(targetClassifier, o.targetClassifier, true)
-           && compareDeep(target, o.target, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof CitationCitedArtifactRelatesToComponent))
-          return false;
-        CitationCitedArtifactRelatesToComponent o = (CitationCitedArtifactRelatesToComponent) other_;
-        return true;
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(relationshipType, targetClassifier
-          , target);
-      }
-
-  public String fhirType() {
-    return "Citation.citedArtifact.relatesTo";
 
   }
 
@@ -5173,7 +4701,7 @@ public class Citation extends MetadataResource {
          */
         @Child(name = "citedMedium", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Internet or Print", formalDefinition="Describes the form of the medium cited. Common codes are \"Internet\" or \"Print\"." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/journal-issue-medium")
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/cited-medium")
         protected CodeableConcept citedMedium;
 
         /**
@@ -6049,10 +5577,10 @@ public class Citation extends MetadataResource {
         /**
          * Code the reason for different URLs, e.g. abstract and full-text.
          */
-        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "classifier", type = {CodeableConcept.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Code the reason for different URLs, e.g. abstract and full-text", formalDefinition="Code the reason for different URLs, e.g. abstract and full-text." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/article-url-type")
-        protected CodeableConcept type;
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/artifact-url-classifier")
+        protected List<CodeableConcept> classifier;
 
         /**
          * The specific URL.
@@ -6061,7 +5589,7 @@ public class Citation extends MetadataResource {
         @Description(shortDefinition="The specific URL", formalDefinition="The specific URL." )
         protected UriType url;
 
-        private static final long serialVersionUID = 397204034L;
+        private static final long serialVersionUID = -1300703403L;
 
     /**
      * Constructor
@@ -6071,27 +5599,56 @@ public class Citation extends MetadataResource {
       }
 
         /**
-         * @return {@link #type} (Code the reason for different URLs, e.g. abstract and full-text.)
+         * @return {@link #classifier} (Code the reason for different URLs, e.g. abstract and full-text.)
          */
-        public CodeableConcept getType() { 
-          if (this.type == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationCitedArtifactWebLocationComponent.type");
-            else if (Configuration.doAutoCreate())
-              this.type = new CodeableConcept(); // cc
-          return this.type;
-        }
-
-        public boolean hasType() { 
-          return this.type != null && !this.type.isEmpty();
+        public List<CodeableConcept> getClassifier() { 
+          if (this.classifier == null)
+            this.classifier = new ArrayList<CodeableConcept>();
+          return this.classifier;
         }
 
         /**
-         * @param value {@link #type} (Code the reason for different URLs, e.g. abstract and full-text.)
+         * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public CitationCitedArtifactWebLocationComponent setType(CodeableConcept value) { 
-          this.type = value;
+        public CitationCitedArtifactWebLocationComponent setClassifier(List<CodeableConcept> theClassifier) { 
+          this.classifier = theClassifier;
           return this;
+        }
+
+        public boolean hasClassifier() { 
+          if (this.classifier == null)
+            return false;
+          for (CodeableConcept item : this.classifier)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CodeableConcept addClassifier() { //3
+          CodeableConcept t = new CodeableConcept();
+          if (this.classifier == null)
+            this.classifier = new ArrayList<CodeableConcept>();
+          this.classifier.add(t);
+          return t;
+        }
+
+        public CitationCitedArtifactWebLocationComponent addClassifier(CodeableConcept t) { //3
+          if (t == null)
+            return this;
+          if (this.classifier == null)
+            this.classifier = new ArrayList<CodeableConcept>();
+          this.classifier.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #classifier}, creating it if it does not already exist {3}
+         */
+        public CodeableConcept getClassifierFirstRep() { 
+          if (getClassifier().isEmpty()) {
+            addClassifier();
+          }
+          return getClassifier().get(0);
         }
 
         /**
@@ -6145,14 +5702,14 @@ public class Citation extends MetadataResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("type", "CodeableConcept", "Code the reason for different URLs, e.g. abstract and full-text.", 0, 1, type));
+          children.add(new Property("classifier", "CodeableConcept", "Code the reason for different URLs, e.g. abstract and full-text.", 0, java.lang.Integer.MAX_VALUE, classifier));
           children.add(new Property("url", "uri", "The specific URL.", 0, 1, url));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Code the reason for different URLs, e.g. abstract and full-text.", 0, 1, type);
+          case -281470431: /*classifier*/  return new Property("classifier", "CodeableConcept", "Code the reason for different URLs, e.g. abstract and full-text.", 0, java.lang.Integer.MAX_VALUE, classifier);
           case 116079: /*url*/  return new Property("url", "uri", "The specific URL.", 0, 1, url);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -6162,7 +5719,7 @@ public class Citation extends MetadataResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case -281470431: /*classifier*/ return this.classifier == null ? new Base[0] : this.classifier.toArray(new Base[this.classifier.size()]); // CodeableConcept
         case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -6172,8 +5729,8 @@ public class Citation extends MetadataResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case 3575610: // type
-          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        case -281470431: // classifier
+          this.getClassifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 116079: // url
           this.url = TypeConvertor.castToUri(value); // UriType
@@ -6185,8 +5742,8 @@ public class Citation extends MetadataResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("type")) {
-          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        if (name.equals("classifier")) {
+          this.getClassifier().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("url")) {
           this.url = TypeConvertor.castToUri(value); // UriType
         } else
@@ -6197,7 +5754,7 @@ public class Citation extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType();
+        case -281470431:  return addClassifier(); 
         case 116079:  return getUrlElement();
         default: return super.makeProperty(hash, name);
         }
@@ -6207,7 +5764,7 @@ public class Citation extends MetadataResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case -281470431: /*classifier*/ return new String[] {"CodeableConcept"};
         case 116079: /*url*/ return new String[] {"uri"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -6216,9 +5773,8 @@ public class Citation extends MetadataResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("type")) {
-          this.type = new CodeableConcept();
-          return this.type;
+        if (name.equals("classifier")) {
+          return addClassifier();
         }
         else if (name.equals("url")) {
           throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.webLocation.url");
@@ -6235,7 +5791,11 @@ public class Citation extends MetadataResource {
 
       public void copyValues(CitationCitedArtifactWebLocationComponent dst) {
         super.copyValues(dst);
-        dst.type = type == null ? null : type.copy();
+        if (classifier != null) {
+          dst.classifier = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : classifier)
+            dst.classifier.add(i.copy());
+        };
         dst.url = url == null ? null : url.copy();
       }
 
@@ -6246,7 +5806,7 @@ public class Citation extends MetadataResource {
         if (!(other_ instanceof CitationCitedArtifactWebLocationComponent))
           return false;
         CitationCitedArtifactWebLocationComponent o = (CitationCitedArtifactWebLocationComponent) other_;
-        return compareDeep(type, o.type, true) && compareDeep(url, o.url, true);
+        return compareDeep(classifier, o.classifier, true) && compareDeep(url, o.url, true);
       }
 
       @Override
@@ -6260,7 +5820,7 @@ public class Citation extends MetadataResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, url);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(classifier, url);
       }
 
   public String fhirType() {
@@ -7300,7 +6860,7 @@ public class Citation extends MetadataResource {
          * Unique person identifier.
          */
         @Child(name = "identifier", type = {Identifier.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Author identifier, eg ORCID", formalDefinition="Unique person identifier." )
+        @Description(shortDefinition="Author identifier, e.g., ORCID", formalDefinition="Unique person identifier." )
         protected List<Identifier> identifier;
 
         /**
@@ -7355,13 +6915,13 @@ public class Citation extends MetadataResource {
         protected BooleanType correspondingContact;
 
         /**
-         * Used to code order of authors.
+         * Provides a numerical ranking to represent the degree of contributorship relative to other contributors, such as 1 for first author and 2 for second author.
          */
-        @Child(name = "listOrder", type = {PositiveIntType.class}, order=12, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Used to code order of authors", formalDefinition="Used to code order of authors." )
-        protected PositiveIntType listOrder;
+        @Child(name = "rankingOrder", type = {PositiveIntType.class}, order=12, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Ranked order of contribution", formalDefinition="Provides a numerical ranking to represent the degree of contributorship relative to other contributors, such as 1 for first author and 2 for second author." )
+        protected PositiveIntType rankingOrder;
 
-        private static final long serialVersionUID = -1994433623L;
+        private static final long serialVersionUID = -1625647137L;
 
     /**
      * Constructor
@@ -7880,47 +7440,47 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #listOrder} (Used to code order of authors.). This is the underlying object with id, value and extensions. The accessor "getListOrder" gives direct access to the value
+         * @return {@link #rankingOrder} (Provides a numerical ranking to represent the degree of contributorship relative to other contributors, such as 1 for first author and 2 for second author.). This is the underlying object with id, value and extensions. The accessor "getRankingOrder" gives direct access to the value
          */
-        public PositiveIntType getListOrderElement() { 
-          if (this.listOrder == null)
+        public PositiveIntType getRankingOrderElement() { 
+          if (this.rankingOrder == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationCitedArtifactContributorshipEntryComponent.listOrder");
+              throw new Error("Attempt to auto-create CitationCitedArtifactContributorshipEntryComponent.rankingOrder");
             else if (Configuration.doAutoCreate())
-              this.listOrder = new PositiveIntType(); // bb
-          return this.listOrder;
+              this.rankingOrder = new PositiveIntType(); // bb
+          return this.rankingOrder;
         }
 
-        public boolean hasListOrderElement() { 
-          return this.listOrder != null && !this.listOrder.isEmpty();
+        public boolean hasRankingOrderElement() { 
+          return this.rankingOrder != null && !this.rankingOrder.isEmpty();
         }
 
-        public boolean hasListOrder() { 
-          return this.listOrder != null && !this.listOrder.isEmpty();
+        public boolean hasRankingOrder() { 
+          return this.rankingOrder != null && !this.rankingOrder.isEmpty();
         }
 
         /**
-         * @param value {@link #listOrder} (Used to code order of authors.). This is the underlying object with id, value and extensions. The accessor "getListOrder" gives direct access to the value
+         * @param value {@link #rankingOrder} (Provides a numerical ranking to represent the degree of contributorship relative to other contributors, such as 1 for first author and 2 for second author.). This is the underlying object with id, value and extensions. The accessor "getRankingOrder" gives direct access to the value
          */
-        public CitationCitedArtifactContributorshipEntryComponent setListOrderElement(PositiveIntType value) { 
-          this.listOrder = value;
+        public CitationCitedArtifactContributorshipEntryComponent setRankingOrderElement(PositiveIntType value) { 
+          this.rankingOrder = value;
           return this;
         }
 
         /**
-         * @return Used to code order of authors.
+         * @return Provides a numerical ranking to represent the degree of contributorship relative to other contributors, such as 1 for first author and 2 for second author.
          */
-        public int getListOrder() { 
-          return this.listOrder == null || this.listOrder.isEmpty() ? 0 : this.listOrder.getValue();
+        public int getRankingOrder() { 
+          return this.rankingOrder == null || this.rankingOrder.isEmpty() ? 0 : this.rankingOrder.getValue();
         }
 
         /**
-         * @param value Used to code order of authors.
+         * @param value Provides a numerical ranking to represent the degree of contributorship relative to other contributors, such as 1 for first author and 2 for second author.
          */
-        public CitationCitedArtifactContributorshipEntryComponent setListOrder(int value) { 
-            if (this.listOrder == null)
-              this.listOrder = new PositiveIntType();
-            this.listOrder.setValue(value);
+        public CitationCitedArtifactContributorshipEntryComponent setRankingOrder(int value) { 
+            if (this.rankingOrder == null)
+              this.rankingOrder = new PositiveIntType();
+            this.rankingOrder.setValue(value);
           return this;
         }
 
@@ -7937,7 +7497,7 @@ public class Citation extends MetadataResource {
           children.add(new Property("role", "CodeableConcept", "The role of the contributor (e.g. author, editor, reviewer).", 0, 1, role));
           children.add(new Property("contributionInstance", "", "Contributions with accounting for time or number.", 0, java.lang.Integer.MAX_VALUE, contributionInstance));
           children.add(new Property("correspondingContact", "boolean", "Indication of which contributor is the corresponding contributor for the role.", 0, 1, correspondingContact));
-          children.add(new Property("listOrder", "positiveInt", "Used to code order of authors.", 0, 1, listOrder));
+          children.add(new Property("rankingOrder", "positiveInt", "Provides a numerical ranking to represent the degree of contributorship relative to other contributors, such as 1 for first author and 2 for second author.", 0, 1, rankingOrder));
         }
 
         @Override
@@ -7954,7 +7514,7 @@ public class Citation extends MetadataResource {
           case 3506294: /*role*/  return new Property("role", "CodeableConcept", "The role of the contributor (e.g. author, editor, reviewer).", 0, 1, role);
           case -547910459: /*contributionInstance*/  return new Property("contributionInstance", "", "Contributions with accounting for time or number.", 0, java.lang.Integer.MAX_VALUE, contributionInstance);
           case -1816008851: /*correspondingContact*/  return new Property("correspondingContact", "boolean", "Indication of which contributor is the corresponding contributor for the role.", 0, 1, correspondingContact);
-          case -1238918832: /*listOrder*/  return new Property("listOrder", "positiveInt", "Used to code order of authors.", 0, 1, listOrder);
+          case -762905416: /*rankingOrder*/  return new Property("rankingOrder", "positiveInt", "Provides a numerical ranking to represent the degree of contributorship relative to other contributors, such as 1 for first author and 2 for second author.", 0, 1, rankingOrder);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -7974,7 +7534,7 @@ public class Citation extends MetadataResource {
         case 3506294: /*role*/ return this.role == null ? new Base[0] : new Base[] {this.role}; // CodeableConcept
         case -547910459: /*contributionInstance*/ return this.contributionInstance == null ? new Base[0] : this.contributionInstance.toArray(new Base[this.contributionInstance.size()]); // CitationCitedArtifactContributorshipEntryContributionInstanceComponent
         case -1816008851: /*correspondingContact*/ return this.correspondingContact == null ? new Base[0] : new Base[] {this.correspondingContact}; // BooleanType
-        case -1238918832: /*listOrder*/ return this.listOrder == null ? new Base[0] : new Base[] {this.listOrder}; // PositiveIntType
+        case -762905416: /*rankingOrder*/ return this.rankingOrder == null ? new Base[0] : new Base[] {this.rankingOrder}; // PositiveIntType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -8016,8 +7576,8 @@ public class Citation extends MetadataResource {
         case -1816008851: // correspondingContact
           this.correspondingContact = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
-        case -1238918832: // listOrder
-          this.listOrder = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+        case -762905416: // rankingOrder
+          this.rankingOrder = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -8048,8 +7608,8 @@ public class Citation extends MetadataResource {
           this.getContributionInstance().add((CitationCitedArtifactContributorshipEntryContributionInstanceComponent) value);
         } else if (name.equals("correspondingContact")) {
           this.correspondingContact = TypeConvertor.castToBoolean(value); // BooleanType
-        } else if (name.equals("listOrder")) {
-          this.listOrder = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+        } else if (name.equals("rankingOrder")) {
+          this.rankingOrder = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else
           return super.setProperty(name, value);
         return value;
@@ -8069,7 +7629,7 @@ public class Citation extends MetadataResource {
         case 3506294:  return getRole();
         case -547910459:  return addContributionInstance(); 
         case -1816008851:  return getCorrespondingContactElement();
-        case -1238918832:  return getListOrderElement();
+        case -762905416:  return getRankingOrderElement();
         default: return super.makeProperty(hash, name);
         }
 
@@ -8089,7 +7649,7 @@ public class Citation extends MetadataResource {
         case 3506294: /*role*/ return new String[] {"CodeableConcept"};
         case -547910459: /*contributionInstance*/ return new String[] {};
         case -1816008851: /*correspondingContact*/ return new String[] {"boolean"};
-        case -1238918832: /*listOrder*/ return new String[] {"positiveInt"};
+        case -762905416: /*rankingOrder*/ return new String[] {"positiveInt"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -8132,8 +7692,8 @@ public class Citation extends MetadataResource {
         else if (name.equals("correspondingContact")) {
           throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.contributorship.entry.correspondingContact");
         }
-        else if (name.equals("listOrder")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.contributorship.entry.listOrder");
+        else if (name.equals("rankingOrder")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.contributorship.entry.rankingOrder");
         }
         else
           return super.addChild(name);
@@ -8182,7 +7742,7 @@ public class Citation extends MetadataResource {
             dst.contributionInstance.add(i.copy());
         };
         dst.correspondingContact = correspondingContact == null ? null : correspondingContact.copy();
-        dst.listOrder = listOrder == null ? null : listOrder.copy();
+        dst.rankingOrder = rankingOrder == null ? null : rankingOrder.copy();
       }
 
       @Override
@@ -8196,7 +7756,7 @@ public class Citation extends MetadataResource {
            && compareDeep(identifier, o.identifier, true) && compareDeep(affiliationInfo, o.affiliationInfo, true)
            && compareDeep(address, o.address, true) && compareDeep(telecom, o.telecom, true) && compareDeep(contributionType, o.contributionType, true)
            && compareDeep(role, o.role, true) && compareDeep(contributionInstance, o.contributionInstance, true)
-           && compareDeep(correspondingContact, o.correspondingContact, true) && compareDeep(listOrder, o.listOrder, true)
+           && compareDeep(correspondingContact, o.correspondingContact, true) && compareDeep(rankingOrder, o.rankingOrder, true)
           ;
       }
 
@@ -8208,14 +7768,14 @@ public class Citation extends MetadataResource {
           return false;
         CitationCitedArtifactContributorshipEntryComponent o = (CitationCitedArtifactContributorshipEntryComponent) other_;
         return compareValues(initials, o.initials, true) && compareValues(collectiveName, o.collectiveName, true)
-           && compareValues(correspondingContact, o.correspondingContact, true) && compareValues(listOrder, o.listOrder, true)
+           && compareValues(correspondingContact, o.correspondingContact, true) && compareValues(rankingOrder, o.rankingOrder, true)
           ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, initials, collectiveName
           , identifier, affiliationInfo, address, telecom, contributionType, role, contributionInstance
-          , correspondingContact, listOrder);
+          , correspondingContact, rankingOrder);
       }
 
   public String fhirType() {
@@ -9273,9 +8833,9 @@ public class Citation extends MetadataResource {
     /**
      * A human-readable display of the citation.
      */
-    @Child(name = "summary", type = {ContactDetail.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "summary", type = {}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A human-readable display of the citation", formalDefinition="A human-readable display of the citation." )
-    protected List<ContactDetail> summary;
+    protected List<CitationSummaryComponent> summary;
 
     /**
      * The assignment to an organizing scheme.
@@ -9309,9 +8869,9 @@ public class Citation extends MetadataResource {
     /**
      * Artifact related to the Citation Resource.
      */
-    @Child(name = "relatesTo", type = {}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Artifact related to the Citation Resource", formalDefinition="Artifact related to the Citation Resource." )
-    protected List<CitationRelatesToComponent> relatesTo;
+    protected List<RelatedArtifact> relatedArtifact;
 
     /**
      * The article or artifact being described.
@@ -9320,7 +8880,7 @@ public class Citation extends MetadataResource {
     @Description(shortDefinition="The article or artifact being described", formalDefinition="The article or artifact being described." )
     protected CitationCitedArtifactComponent citedArtifact;
 
-    private static final long serialVersionUID = 2083863417L;
+    private static final long serialVersionUID = 3140818L;
 
   /**
    * Constructor
@@ -10417,16 +9977,16 @@ public class Citation extends MetadataResource {
     /**
      * @return {@link #summary} (A human-readable display of the citation.)
      */
-    public List<ContactDetail> getSummary() { 
+    public List<CitationSummaryComponent> getSummary() { 
       if (this.summary == null)
-        this.summary = new ArrayList<ContactDetail>();
+        this.summary = new ArrayList<CitationSummaryComponent>();
       return this.summary;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Citation setSummary(List<ContactDetail> theSummary) { 
+    public Citation setSummary(List<CitationSummaryComponent> theSummary) { 
       this.summary = theSummary;
       return this;
     }
@@ -10434,25 +9994,25 @@ public class Citation extends MetadataResource {
     public boolean hasSummary() { 
       if (this.summary == null)
         return false;
-      for (ContactDetail item : this.summary)
+      for (CitationSummaryComponent item : this.summary)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public ContactDetail addSummary() { //3
-      ContactDetail t = new ContactDetail();
+    public CitationSummaryComponent addSummary() { //3
+      CitationSummaryComponent t = new CitationSummaryComponent();
       if (this.summary == null)
-        this.summary = new ArrayList<ContactDetail>();
+        this.summary = new ArrayList<CitationSummaryComponent>();
       this.summary.add(t);
       return t;
     }
 
-    public Citation addSummary(ContactDetail t) { //3
+    public Citation addSummary(CitationSummaryComponent t) { //3
       if (t == null)
         return this;
       if (this.summary == null)
-        this.summary = new ArrayList<ContactDetail>();
+        this.summary = new ArrayList<CitationSummaryComponent>();
       this.summary.add(t);
       return this;
     }
@@ -10460,7 +10020,7 @@ public class Citation extends MetadataResource {
     /**
      * @return The first repetition of repeating field {@link #summary}, creating it if it does not already exist {3}
      */
-    public ContactDetail getSummaryFirstRep() { 
+    public CitationSummaryComponent getSummaryFirstRep() { 
       if (getSummary().isEmpty()) {
         addSummary();
       }
@@ -10680,56 +10240,56 @@ public class Citation extends MetadataResource {
     }
 
     /**
-     * @return {@link #relatesTo} (Artifact related to the Citation Resource.)
+     * @return {@link #relatedArtifact} (Artifact related to the Citation Resource.)
      */
-    public List<CitationRelatesToComponent> getRelatesTo() { 
-      if (this.relatesTo == null)
-        this.relatesTo = new ArrayList<CitationRelatesToComponent>();
-      return this.relatesTo;
+    public List<RelatedArtifact> getRelatedArtifact() { 
+      if (this.relatedArtifact == null)
+        this.relatedArtifact = new ArrayList<RelatedArtifact>();
+      return this.relatedArtifact;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Citation setRelatesTo(List<CitationRelatesToComponent> theRelatesTo) { 
-      this.relatesTo = theRelatesTo;
+    public Citation setRelatedArtifact(List<RelatedArtifact> theRelatedArtifact) { 
+      this.relatedArtifact = theRelatedArtifact;
       return this;
     }
 
-    public boolean hasRelatesTo() { 
-      if (this.relatesTo == null)
+    public boolean hasRelatedArtifact() { 
+      if (this.relatedArtifact == null)
         return false;
-      for (CitationRelatesToComponent item : this.relatesTo)
+      for (RelatedArtifact item : this.relatedArtifact)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public CitationRelatesToComponent addRelatesTo() { //3
-      CitationRelatesToComponent t = new CitationRelatesToComponent();
-      if (this.relatesTo == null)
-        this.relatesTo = new ArrayList<CitationRelatesToComponent>();
-      this.relatesTo.add(t);
+    public RelatedArtifact addRelatedArtifact() { //3
+      RelatedArtifact t = new RelatedArtifact();
+      if (this.relatedArtifact == null)
+        this.relatedArtifact = new ArrayList<RelatedArtifact>();
+      this.relatedArtifact.add(t);
       return t;
     }
 
-    public Citation addRelatesTo(CitationRelatesToComponent t) { //3
+    public Citation addRelatedArtifact(RelatedArtifact t) { //3
       if (t == null)
         return this;
-      if (this.relatesTo == null)
-        this.relatesTo = new ArrayList<CitationRelatesToComponent>();
-      this.relatesTo.add(t);
+      if (this.relatedArtifact == null)
+        this.relatedArtifact = new ArrayList<RelatedArtifact>();
+      this.relatedArtifact.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #relatesTo}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #relatedArtifact}, creating it if it does not already exist {3}
      */
-    public CitationRelatesToComponent getRelatesToFirstRep() { 
-      if (getRelatesTo().isEmpty()) {
-        addRelatesTo();
+    public RelatedArtifact getRelatedArtifactFirstRep() { 
+      if (getRelatedArtifact().isEmpty()) {
+        addRelatedArtifact();
       }
-      return getRelatesTo().get(0);
+      return getRelatedArtifact().get(0);
     }
 
     /**
@@ -10791,41 +10351,6 @@ public class Citation extends MetadataResource {
     public CodeableConcept getTopicFirstRep() { 
       throw new Error("The resource type \"Citation\" does not implement the property \"topic\"");
     }
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getRelatedArtifactMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #relatedArtifact} (Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts.)
-     */
-    public List<RelatedArtifact> getRelatedArtifact() { 
-      return new ArrayList<>();
-    }
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public Citation setRelatedArtifact(List<RelatedArtifact> theRelatedArtifact) { 
-      throw new Error("The resource type \"Citation\" does not implement the property \"relatedArtifact\"");
-    }
-    public boolean hasRelatedArtifact() { 
-      return false;
-    }
-
-    public RelatedArtifact addRelatedArtifact() { //3
-      throw new Error("The resource type \"Citation\" does not implement the property \"relatedArtifact\"");
-    }
-    public Citation addRelatedArtifact(RelatedArtifact t) { //3
-      throw new Error("The resource type \"Citation\" does not implement the property \"relatedArtifact\"");
-    }
-    /**
-     * @return The first repetition of repeating field {@link #relatedArtifact}, creating it if it does not already exist {2}
-     */
-    public RelatedArtifact getRelatedArtifactFirstRep() { 
-      throw new Error("The resource type \"Citation\" does not implement the property \"relatedArtifact\"");
-    }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("url", "uri", "An absolute URI that is used to identify this citation when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.", 0, 1, url));
@@ -10850,12 +10375,12 @@ public class Citation extends MetadataResource {
         children.add(new Property("editor", "ContactDetail", "Who edited the Citation.", 0, java.lang.Integer.MAX_VALUE, editor));
         children.add(new Property("reviewer", "ContactDetail", "Who reviewed the Citation.", 0, java.lang.Integer.MAX_VALUE, reviewer));
         children.add(new Property("endorser", "ContactDetail", "Who endorsed the Citation.", 0, java.lang.Integer.MAX_VALUE, endorser));
-        children.add(new Property("summary", "ContactDetail", "A human-readable display of the citation.", 0, java.lang.Integer.MAX_VALUE, summary));
+        children.add(new Property("summary", "", "A human-readable display of the citation.", 0, java.lang.Integer.MAX_VALUE, summary));
         children.add(new Property("classification", "", "The assignment to an organizing scheme.", 0, java.lang.Integer.MAX_VALUE, classification));
         children.add(new Property("note", "Annotation", "Used for general notes and annotations not coded elsewhere.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("currentState", "CodeableConcept", "The status of the citation.", 0, java.lang.Integer.MAX_VALUE, currentState));
         children.add(new Property("statusDate", "", "An effective date or period for a status of the citation.", 0, java.lang.Integer.MAX_VALUE, statusDate));
-        children.add(new Property("relatesTo", "", "Artifact related to the Citation Resource.", 0, java.lang.Integer.MAX_VALUE, relatesTo));
+        children.add(new Property("relatedArtifact", "RelatedArtifact", "Artifact related to the Citation Resource.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact));
         children.add(new Property("citedArtifact", "", "The article or artifact being described.", 0, 1, citedArtifact));
       }
 
@@ -10884,12 +10409,12 @@ public class Citation extends MetadataResource {
         case -1307827859: /*editor*/  return new Property("editor", "ContactDetail", "Who edited the Citation.", 0, java.lang.Integer.MAX_VALUE, editor);
         case -261190139: /*reviewer*/  return new Property("reviewer", "ContactDetail", "Who reviewed the Citation.", 0, java.lang.Integer.MAX_VALUE, reviewer);
         case 1740277666: /*endorser*/  return new Property("endorser", "ContactDetail", "Who endorsed the Citation.", 0, java.lang.Integer.MAX_VALUE, endorser);
-        case -1857640538: /*summary*/  return new Property("summary", "ContactDetail", "A human-readable display of the citation.", 0, java.lang.Integer.MAX_VALUE, summary);
+        case -1857640538: /*summary*/  return new Property("summary", "", "A human-readable display of the citation.", 0, java.lang.Integer.MAX_VALUE, summary);
         case 382350310: /*classification*/  return new Property("classification", "", "The assignment to an organizing scheme.", 0, java.lang.Integer.MAX_VALUE, classification);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Used for general notes and annotations not coded elsewhere.", 0, java.lang.Integer.MAX_VALUE, note);
         case 1457822360: /*currentState*/  return new Property("currentState", "CodeableConcept", "The status of the citation.", 0, java.lang.Integer.MAX_VALUE, currentState);
         case 247524032: /*statusDate*/  return new Property("statusDate", "", "An effective date or period for a status of the citation.", 0, java.lang.Integer.MAX_VALUE, statusDate);
-        case -7765931: /*relatesTo*/  return new Property("relatesTo", "", "Artifact related to the Citation Resource.", 0, java.lang.Integer.MAX_VALUE, relatesTo);
+        case 666807069: /*relatedArtifact*/  return new Property("relatedArtifact", "RelatedArtifact", "Artifact related to the Citation Resource.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact);
         case -495272225: /*citedArtifact*/  return new Property("citedArtifact", "", "The article or artifact being described.", 0, 1, citedArtifact);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -10921,12 +10446,12 @@ public class Citation extends MetadataResource {
         case -1307827859: /*editor*/ return this.editor == null ? new Base[0] : this.editor.toArray(new Base[this.editor.size()]); // ContactDetail
         case -261190139: /*reviewer*/ return this.reviewer == null ? new Base[0] : this.reviewer.toArray(new Base[this.reviewer.size()]); // ContactDetail
         case 1740277666: /*endorser*/ return this.endorser == null ? new Base[0] : this.endorser.toArray(new Base[this.endorser.size()]); // ContactDetail
-        case -1857640538: /*summary*/ return this.summary == null ? new Base[0] : this.summary.toArray(new Base[this.summary.size()]); // ContactDetail
+        case -1857640538: /*summary*/ return this.summary == null ? new Base[0] : this.summary.toArray(new Base[this.summary.size()]); // CitationSummaryComponent
         case 382350310: /*classification*/ return this.classification == null ? new Base[0] : this.classification.toArray(new Base[this.classification.size()]); // CitationClassificationComponent
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         case 1457822360: /*currentState*/ return this.currentState == null ? new Base[0] : this.currentState.toArray(new Base[this.currentState.size()]); // CodeableConcept
         case 247524032: /*statusDate*/ return this.statusDate == null ? new Base[0] : this.statusDate.toArray(new Base[this.statusDate.size()]); // CitationStatusDateComponent
-        case -7765931: /*relatesTo*/ return this.relatesTo == null ? new Base[0] : this.relatesTo.toArray(new Base[this.relatesTo.size()]); // CitationRelatesToComponent
+        case 666807069: /*relatedArtifact*/ return this.relatedArtifact == null ? new Base[0] : this.relatedArtifact.toArray(new Base[this.relatedArtifact.size()]); // RelatedArtifact
         case -495272225: /*citedArtifact*/ return this.citedArtifact == null ? new Base[0] : new Base[] {this.citedArtifact}; // CitationCitedArtifactComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -11004,7 +10529,7 @@ public class Citation extends MetadataResource {
           this.getEndorser().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1857640538: // summary
-          this.getSummary().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
+          this.getSummary().add((CitationSummaryComponent) value); // CitationSummaryComponent
           return value;
         case 382350310: // classification
           this.getClassification().add((CitationClassificationComponent) value); // CitationClassificationComponent
@@ -11018,8 +10543,8 @@ public class Citation extends MetadataResource {
         case 247524032: // statusDate
           this.getStatusDate().add((CitationStatusDateComponent) value); // CitationStatusDateComponent
           return value;
-        case -7765931: // relatesTo
-          this.getRelatesTo().add((CitationRelatesToComponent) value); // CitationRelatesToComponent
+        case 666807069: // relatedArtifact
+          this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value)); // RelatedArtifact
           return value;
         case -495272225: // citedArtifact
           this.citedArtifact = (CitationCitedArtifactComponent) value; // CitationCitedArtifactComponent
@@ -11077,7 +10602,7 @@ public class Citation extends MetadataResource {
         } else if (name.equals("endorser")) {
           this.getEndorser().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("summary")) {
-          this.getSummary().add(TypeConvertor.castToContactDetail(value));
+          this.getSummary().add((CitationSummaryComponent) value);
         } else if (name.equals("classification")) {
           this.getClassification().add((CitationClassificationComponent) value);
         } else if (name.equals("note")) {
@@ -11086,8 +10611,8 @@ public class Citation extends MetadataResource {
           this.getCurrentState().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("statusDate")) {
           this.getStatusDate().add((CitationStatusDateComponent) value);
-        } else if (name.equals("relatesTo")) {
-          this.getRelatesTo().add((CitationRelatesToComponent) value);
+        } else if (name.equals("relatedArtifact")) {
+          this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value));
         } else if (name.equals("citedArtifact")) {
           this.citedArtifact = (CitationCitedArtifactComponent) value; // CitationCitedArtifactComponent
         } else
@@ -11125,7 +10650,7 @@ public class Citation extends MetadataResource {
         case 3387378:  return addNote(); 
         case 1457822360:  return addCurrentState(); 
         case 247524032:  return addStatusDate(); 
-        case -7765931:  return addRelatesTo(); 
+        case 666807069:  return addRelatedArtifact(); 
         case -495272225:  return getCitedArtifact();
         default: return super.makeProperty(hash, name);
         }
@@ -11157,12 +10682,12 @@ public class Citation extends MetadataResource {
         case -1307827859: /*editor*/ return new String[] {"ContactDetail"};
         case -261190139: /*reviewer*/ return new String[] {"ContactDetail"};
         case 1740277666: /*endorser*/ return new String[] {"ContactDetail"};
-        case -1857640538: /*summary*/ return new String[] {"ContactDetail"};
+        case -1857640538: /*summary*/ return new String[] {};
         case 382350310: /*classification*/ return new String[] {};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         case 1457822360: /*currentState*/ return new String[] {"CodeableConcept"};
         case 247524032: /*statusDate*/ return new String[] {};
-        case -7765931: /*relatesTo*/ return new String[] {};
+        case 666807069: /*relatedArtifact*/ return new String[] {"RelatedArtifact"};
         case -495272225: /*citedArtifact*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -11253,8 +10778,8 @@ public class Citation extends MetadataResource {
         else if (name.equals("statusDate")) {
           return addStatusDate();
         }
-        else if (name.equals("relatesTo")) {
-          return addRelatesTo();
+        else if (name.equals("relatedArtifact")) {
+          return addRelatedArtifact();
         }
         else if (name.equals("citedArtifact")) {
           this.citedArtifact = new CitationCitedArtifactComponent();
@@ -11332,8 +10857,8 @@ public class Citation extends MetadataResource {
             dst.endorser.add(i.copy());
         };
         if (summary != null) {
-          dst.summary = new ArrayList<ContactDetail>();
-          for (ContactDetail i : summary)
+          dst.summary = new ArrayList<CitationSummaryComponent>();
+          for (CitationSummaryComponent i : summary)
             dst.summary.add(i.copy());
         };
         if (classification != null) {
@@ -11356,10 +10881,10 @@ public class Citation extends MetadataResource {
           for (CitationStatusDateComponent i : statusDate)
             dst.statusDate.add(i.copy());
         };
-        if (relatesTo != null) {
-          dst.relatesTo = new ArrayList<CitationRelatesToComponent>();
-          for (CitationRelatesToComponent i : relatesTo)
-            dst.relatesTo.add(i.copy());
+        if (relatedArtifact != null) {
+          dst.relatedArtifact = new ArrayList<RelatedArtifact>();
+          for (RelatedArtifact i : relatedArtifact)
+            dst.relatedArtifact.add(i.copy());
         };
         dst.citedArtifact = citedArtifact == null ? null : citedArtifact.copy();
       }
@@ -11385,7 +10910,7 @@ public class Citation extends MetadataResource {
            && compareDeep(editor, o.editor, true) && compareDeep(reviewer, o.reviewer, true) && compareDeep(endorser, o.endorser, true)
            && compareDeep(summary, o.summary, true) && compareDeep(classification, o.classification, true)
            && compareDeep(note, o.note, true) && compareDeep(currentState, o.currentState, true) && compareDeep(statusDate, o.statusDate, true)
-           && compareDeep(relatesTo, o.relatesTo, true) && compareDeep(citedArtifact, o.citedArtifact, true)
+           && compareDeep(relatedArtifact, o.relatedArtifact, true) && compareDeep(citedArtifact, o.citedArtifact, true)
           ;
       }
 
@@ -11408,333 +10933,13 @@ public class Citation extends MetadataResource {
           , name, title, status, experimental, date, publisher, contact, description, useContext
           , jurisdiction, purpose, copyright, approvalDate, lastReviewDate, effectivePeriod
           , author, editor, reviewer, endorser, summary, classification, note, currentState
-          , statusDate, relatesTo, citedArtifact);
+          , statusDate, relatedArtifact, citedArtifact);
       }
 
   @Override
   public ResourceType getResourceType() {
     return ResourceType.Citation;
    }
-
- /**
-   * Search parameter: <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the citation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(Citation.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context", path="(Citation.useContext.value as CodeableConcept)", description="A use context assigned to the citation", type="token" )
-  public static final String SP_CONTEXT = "context";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the citation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(Citation.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
-
- /**
-   * Search parameter: <b>context-quantity</b>
-   * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the citation</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>(Citation.useContext.value as Quantity) | (Citation.useContext.value as Range)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-quantity", path="(Citation.useContext.value as Quantity) | (Citation.useContext.value as Range)", description="A quantity- or range-valued use context assigned to the citation", type="quantity" )
-  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
-   * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the citation</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>(Citation.useContext.value as Quantity) | (Citation.useContext.value as Range)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
-
- /**
-   * Search parameter: <b>context-type</b>
-   * <p>
-   * Description: <b>A type of use context assigned to the citation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Citation.useContext.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type", path="Citation.useContext.code", description="A type of use context assigned to the citation", type="token" )
-  public static final String SP_CONTEXT_TYPE = "context-type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type</b>
-   * <p>
-   * Description: <b>A type of use context assigned to the citation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Citation.useContext.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
-
- /**
-   * Search parameter: <b>date</b>
-   * <p>
-   * Description: <b>The citation publication date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Citation.date</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="date", path="Citation.date", description="The citation publication date", type="date" )
-  public static final String SP_DATE = "date";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>date</b>
-   * <p>
-   * Description: <b>The citation publication date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Citation.date</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
-
- /**
-   * Search parameter: <b>description</b>
-   * <p>
-   * Description: <b>The description of the citation</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Citation.description</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="description", path="Citation.description", description="The description of the citation", type="string" )
-  public static final String SP_DESCRIPTION = "description";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>description</b>
-   * <p>
-   * Description: <b>The description of the citation</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Citation.description</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
-
- /**
-   * Search parameter: <b>effective</b>
-   * <p>
-   * Description: <b>The time during which the citation is intended to be in use</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Citation.effectivePeriod</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="effective", path="Citation.effectivePeriod", description="The time during which the citation is intended to be in use", type="date" )
-  public static final String SP_EFFECTIVE = "effective";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>effective</b>
-   * <p>
-   * Description: <b>The time during which the citation is intended to be in use</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Citation.effectivePeriod</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam EFFECTIVE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_EFFECTIVE);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>External identifier for the citation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Citation.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="Citation.identifier", description="External identifier for the citation", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>External identifier for the citation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Citation.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the citation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Citation.jurisdiction</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="jurisdiction", path="Citation.jurisdiction", description="Intended jurisdiction for the citation", type="token" )
-  public static final String SP_JURISDICTION = "jurisdiction";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the citation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Citation.jurisdiction</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
-
- /**
-   * Search parameter: <b>name</b>
-   * <p>
-   * Description: <b>Computationally friendly name of the citation</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Citation.name</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="name", path="Citation.name", description="Computationally friendly name of the citation", type="string" )
-  public static final String SP_NAME = "name";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>name</b>
-   * <p>
-   * Description: <b>Computationally friendly name of the citation</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Citation.name</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
-
- /**
-   * Search parameter: <b>publisher</b>
-   * <p>
-   * Description: <b>Name of the publisher of the citation</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Citation.publisher</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="publisher", path="Citation.publisher", description="Name of the publisher of the citation", type="string" )
-  public static final String SP_PUBLISHER = "publisher";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>publisher</b>
-   * <p>
-   * Description: <b>Name of the publisher of the citation</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Citation.publisher</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam PUBLISHER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PUBLISHER);
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>The current status of the citation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Citation.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="Citation.status", description="The current status of the citation", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>The current status of the citation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Citation.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
-
- /**
-   * Search parameter: <b>title</b>
-   * <p>
-   * Description: <b>The human-friendly name of the citation</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Citation.title</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="title", path="Citation.title", description="The human-friendly name of the citation", type="string" )
-  public static final String SP_TITLE = "title";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>title</b>
-   * <p>
-   * Description: <b>The human-friendly name of the citation</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Citation.title</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
-
- /**
-   * Search parameter: <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the citation</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>Citation.url</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="url", path="Citation.url", description="The uri that identifies the citation", type="uri" )
-  public static final String SP_URL = "url";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the citation</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>Citation.url</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
-
- /**
-   * Search parameter: <b>version</b>
-   * <p>
-   * Description: <b>The business version of the citation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Citation.version</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="version", path="Citation.version", description="The business version of the citation", type="token" )
-  public static final String SP_VERSION = "version";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>version</b>
-   * <p>
-   * Description: <b>The business version of the citation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Citation.version</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
-
- /**
-   * Search parameter: <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the citation</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>Citation.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-quantity", path="Citation.useContext", description="A use context type and quantity- or range-based value assigned to the citation", type="composite", compositeOf={"context-type", "context-quantity"} )
-  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the citation</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>Citation.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
-
- /**
-   * Search parameter: <b>context-type-value</b>
-   * <p>
-   * Description: <b>A use context type and value assigned to the citation</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>Citation.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-value", path="Citation.useContext", description="A use context type and value assigned to the citation", type="composite", compositeOf={"context-type", "context"} )
-  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
-   * <p>
-   * Description: <b>A use context type and value assigned to the citation</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>Citation.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
 
 
 }

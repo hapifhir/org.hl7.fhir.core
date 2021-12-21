@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -418,16 +418,23 @@ public class Practitioner extends DomainResource {
     protected List<ContactPoint> telecom;
 
     /**
+     * Indicates if the practitioner is deceased or not.
+     */
+    @Child(name = "deceased", type = {BooleanType.class, DateTimeType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Indicates if the practitioner is deceased or not", formalDefinition="Indicates if the practitioner is deceased or not." )
+    protected DataType deceased;
+
+    /**
      * Address(es) of the practitioner that are not role specific (typically home address). Work addresses are not typically entered in this property as they are usually role dependent.
      */
-    @Child(name = "address", type = {Address.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "address", type = {Address.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Address(es) of the practitioner that are not role specific (typically home address)", formalDefinition="Address(es) of the practitioner that are not role specific (typically home address). \rWork addresses are not typically entered in this property as they are usually role dependent." )
     protected List<Address> address;
 
     /**
      * Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes.
      */
-    @Child(name = "gender", type = {CodeType.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "gender", type = {CodeType.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="male | female | other | unknown", formalDefinition="Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/administrative-gender")
     protected Enumeration<AdministrativeGender> gender;
@@ -435,33 +442,33 @@ public class Practitioner extends DomainResource {
     /**
      * The date of birth for the practitioner.
      */
-    @Child(name = "birthDate", type = {DateType.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "birthDate", type = {DateType.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The date  on which the practitioner was born", formalDefinition="The date of birth for the practitioner." )
     protected DateType birthDate;
 
     /**
      * Image of the person.
      */
-    @Child(name = "photo", type = {Attachment.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "photo", type = {Attachment.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Image of the person", formalDefinition="Image of the person." )
     protected List<Attachment> photo;
 
     /**
-     * The official certifications, training, and licenses that authorize or otherwise pertain to the provision of care by the practitioner.  For example, a medical license issued by a medical board authorizing the practitioner to practice medicine within a certian locality.
+     * The official certifications, training, and licenses that authorize or otherwise pertain to the provision of care by the practitioner.  For example, a medical license issued by a medical board authorizing the practitioner to practice medicine within a certain locality.
      */
-    @Child(name = "qualification", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Certification, licenses, or training pertaining to the provision of care", formalDefinition="The official certifications, training, and licenses that authorize or otherwise pertain to the provision of care by the practitioner.  For example, a medical license issued by a medical board authorizing the practitioner to practice medicine within a certian locality." )
+    @Child(name = "qualification", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Certification, licenses, or training pertaining to the provision of care", formalDefinition="The official certifications, training, and licenses that authorize or otherwise pertain to the provision of care by the practitioner.  For example, a medical license issued by a medical board authorizing the practitioner to practice medicine within a certain locality." )
     protected List<PractitionerQualificationComponent> qualification;
 
     /**
      * A language the practitioner can use in patient communication.
      */
-    @Child(name = "communication", type = {CodeableConcept.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "communication", type = {CodeableConcept.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A language the practitioner can use in patient communication", formalDefinition="A language the practitioner can use in patient communication." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/languages")
     protected List<CodeableConcept> communication;
 
-    private static final long serialVersionUID = 2128349259L;
+    private static final long serialVersionUID = 908417317L;
 
   /**
    * Constructor
@@ -675,6 +682,57 @@ public class Practitioner extends DomainResource {
     }
 
     /**
+     * @return {@link #deceased} (Indicates if the practitioner is deceased or not.)
+     */
+    public DataType getDeceased() { 
+      return this.deceased;
+    }
+
+    /**
+     * @return {@link #deceased} (Indicates if the practitioner is deceased or not.)
+     */
+    public BooleanType getDeceasedBooleanType() throws FHIRException { 
+      if (this.deceased == null)
+        this.deceased = new BooleanType();
+      if (!(this.deceased instanceof BooleanType))
+        throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.deceased.getClass().getName()+" was encountered");
+      return (BooleanType) this.deceased;
+    }
+
+    public boolean hasDeceasedBooleanType() { 
+      return this != null && this.deceased instanceof BooleanType;
+    }
+
+    /**
+     * @return {@link #deceased} (Indicates if the practitioner is deceased or not.)
+     */
+    public DateTimeType getDeceasedDateTimeType() throws FHIRException { 
+      if (this.deceased == null)
+        this.deceased = new DateTimeType();
+      if (!(this.deceased instanceof DateTimeType))
+        throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.deceased.getClass().getName()+" was encountered");
+      return (DateTimeType) this.deceased;
+    }
+
+    public boolean hasDeceasedDateTimeType() { 
+      return this != null && this.deceased instanceof DateTimeType;
+    }
+
+    public boolean hasDeceased() { 
+      return this.deceased != null && !this.deceased.isEmpty();
+    }
+
+    /**
+     * @param value {@link #deceased} (Indicates if the practitioner is deceased or not.)
+     */
+    public Practitioner setDeceased(DataType value) { 
+      if (value != null && !(value instanceof BooleanType || value instanceof DateTimeType))
+        throw new Error("Not the right type for Practitioner.deceased[x]: "+value.fhirType());
+      this.deceased = value;
+      return this;
+    }
+
+    /**
      * @return {@link #address} (Address(es) of the practitioner that are not role specific (typically home address). Work addresses are not typically entered in this property as they are usually role dependent.)
      */
     public List<Address> getAddress() { 
@@ -879,7 +937,7 @@ public class Practitioner extends DomainResource {
     }
 
     /**
-     * @return {@link #qualification} (The official certifications, training, and licenses that authorize or otherwise pertain to the provision of care by the practitioner.  For example, a medical license issued by a medical board authorizing the practitioner to practice medicine within a certian locality.)
+     * @return {@link #qualification} (The official certifications, training, and licenses that authorize or otherwise pertain to the provision of care by the practitioner.  For example, a medical license issued by a medical board authorizing the practitioner to practice medicine within a certain locality.)
      */
     public List<PractitionerQualificationComponent> getQualification() { 
       if (this.qualification == null)
@@ -990,11 +1048,12 @@ public class Practitioner extends DomainResource {
         children.add(new Property("active", "boolean", "Whether this practitioner's record is in active use.", 0, 1, active));
         children.add(new Property("name", "HumanName", "The name(s) associated with the practitioner.", 0, java.lang.Integer.MAX_VALUE, name));
         children.add(new Property("telecom", "ContactPoint", "A contact detail for the practitioner, e.g. a telephone number or an email address.", 0, java.lang.Integer.MAX_VALUE, telecom));
+        children.add(new Property("deceased[x]", "boolean|dateTime", "Indicates if the practitioner is deceased or not.", 0, 1, deceased));
         children.add(new Property("address", "Address", "Address(es) of the practitioner that are not role specific (typically home address). \rWork addresses are not typically entered in this property as they are usually role dependent.", 0, java.lang.Integer.MAX_VALUE, address));
         children.add(new Property("gender", "code", "Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes.", 0, 1, gender));
         children.add(new Property("birthDate", "date", "The date of birth for the practitioner.", 0, 1, birthDate));
         children.add(new Property("photo", "Attachment", "Image of the person.", 0, java.lang.Integer.MAX_VALUE, photo));
-        children.add(new Property("qualification", "", "The official certifications, training, and licenses that authorize or otherwise pertain to the provision of care by the practitioner.  For example, a medical license issued by a medical board authorizing the practitioner to practice medicine within a certian locality.", 0, java.lang.Integer.MAX_VALUE, qualification));
+        children.add(new Property("qualification", "", "The official certifications, training, and licenses that authorize or otherwise pertain to the provision of care by the practitioner.  For example, a medical license issued by a medical board authorizing the practitioner to practice medicine within a certain locality.", 0, java.lang.Integer.MAX_VALUE, qualification));
         children.add(new Property("communication", "CodeableConcept", "A language the practitioner can use in patient communication.", 0, java.lang.Integer.MAX_VALUE, communication));
       }
 
@@ -1005,11 +1064,15 @@ public class Practitioner extends DomainResource {
         case -1422950650: /*active*/  return new Property("active", "boolean", "Whether this practitioner's record is in active use.", 0, 1, active);
         case 3373707: /*name*/  return new Property("name", "HumanName", "The name(s) associated with the practitioner.", 0, java.lang.Integer.MAX_VALUE, name);
         case -1429363305: /*telecom*/  return new Property("telecom", "ContactPoint", "A contact detail for the practitioner, e.g. a telephone number or an email address.", 0, java.lang.Integer.MAX_VALUE, telecom);
+        case -1311442804: /*deceased[x]*/  return new Property("deceased[x]", "boolean|dateTime", "Indicates if the practitioner is deceased or not.", 0, 1, deceased);
+        case 561497972: /*deceased*/  return new Property("deceased[x]", "boolean|dateTime", "Indicates if the practitioner is deceased or not.", 0, 1, deceased);
+        case 497463828: /*deceasedBoolean*/  return new Property("deceased[x]", "boolean", "Indicates if the practitioner is deceased or not.", 0, 1, deceased);
+        case -1971804369: /*deceasedDateTime*/  return new Property("deceased[x]", "dateTime", "Indicates if the practitioner is deceased or not.", 0, 1, deceased);
         case -1147692044: /*address*/  return new Property("address", "Address", "Address(es) of the practitioner that are not role specific (typically home address). \rWork addresses are not typically entered in this property as they are usually role dependent.", 0, java.lang.Integer.MAX_VALUE, address);
         case -1249512767: /*gender*/  return new Property("gender", "code", "Administrative Gender - the gender that the person is considered to have for administration and record keeping purposes.", 0, 1, gender);
         case -1210031859: /*birthDate*/  return new Property("birthDate", "date", "The date of birth for the practitioner.", 0, 1, birthDate);
         case 106642994: /*photo*/  return new Property("photo", "Attachment", "Image of the person.", 0, java.lang.Integer.MAX_VALUE, photo);
-        case -631333393: /*qualification*/  return new Property("qualification", "", "The official certifications, training, and licenses that authorize or otherwise pertain to the provision of care by the practitioner.  For example, a medical license issued by a medical board authorizing the practitioner to practice medicine within a certian locality.", 0, java.lang.Integer.MAX_VALUE, qualification);
+        case -631333393: /*qualification*/  return new Property("qualification", "", "The official certifications, training, and licenses that authorize or otherwise pertain to the provision of care by the practitioner.  For example, a medical license issued by a medical board authorizing the practitioner to practice medicine within a certain locality.", 0, java.lang.Integer.MAX_VALUE, qualification);
         case -1035284522: /*communication*/  return new Property("communication", "CodeableConcept", "A language the practitioner can use in patient communication.", 0, java.lang.Integer.MAX_VALUE, communication);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -1023,6 +1086,7 @@ public class Practitioner extends DomainResource {
         case -1422950650: /*active*/ return this.active == null ? new Base[0] : new Base[] {this.active}; // BooleanType
         case 3373707: /*name*/ return this.name == null ? new Base[0] : this.name.toArray(new Base[this.name.size()]); // HumanName
         case -1429363305: /*telecom*/ return this.telecom == null ? new Base[0] : this.telecom.toArray(new Base[this.telecom.size()]); // ContactPoint
+        case 561497972: /*deceased*/ return this.deceased == null ? new Base[0] : new Base[] {this.deceased}; // DataType
         case -1147692044: /*address*/ return this.address == null ? new Base[0] : this.address.toArray(new Base[this.address.size()]); // Address
         case -1249512767: /*gender*/ return this.gender == null ? new Base[0] : new Base[] {this.gender}; // Enumeration<AdministrativeGender>
         case -1210031859: /*birthDate*/ return this.birthDate == null ? new Base[0] : new Base[] {this.birthDate}; // DateType
@@ -1048,6 +1112,9 @@ public class Practitioner extends DomainResource {
           return value;
         case -1429363305: // telecom
           this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
+          return value;
+        case 561497972: // deceased
+          this.deceased = TypeConvertor.castToType(value); // DataType
           return value;
         case -1147692044: // address
           this.getAddress().add(TypeConvertor.castToAddress(value)); // Address
@@ -1083,6 +1150,8 @@ public class Practitioner extends DomainResource {
           this.getName().add(TypeConvertor.castToHumanName(value));
         } else if (name.equals("telecom")) {
           this.getTelecom().add(TypeConvertor.castToContactPoint(value));
+        } else if (name.equals("deceased[x]")) {
+          this.deceased = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("address")) {
           this.getAddress().add(TypeConvertor.castToAddress(value));
         } else if (name.equals("gender")) {
@@ -1108,6 +1177,8 @@ public class Practitioner extends DomainResource {
         case -1422950650:  return getActiveElement();
         case 3373707:  return addName(); 
         case -1429363305:  return addTelecom(); 
+        case -1311442804:  return getDeceased();
+        case 561497972:  return getDeceased();
         case -1147692044:  return addAddress(); 
         case -1249512767:  return getGenderElement();
         case -1210031859:  return getBirthDateElement();
@@ -1126,6 +1197,7 @@ public class Practitioner extends DomainResource {
         case -1422950650: /*active*/ return new String[] {"boolean"};
         case 3373707: /*name*/ return new String[] {"HumanName"};
         case -1429363305: /*telecom*/ return new String[] {"ContactPoint"};
+        case 561497972: /*deceased*/ return new String[] {"boolean", "dateTime"};
         case -1147692044: /*address*/ return new String[] {"Address"};
         case -1249512767: /*gender*/ return new String[] {"code"};
         case -1210031859: /*birthDate*/ return new String[] {"date"};
@@ -1150,6 +1222,14 @@ public class Practitioner extends DomainResource {
         }
         else if (name.equals("telecom")) {
           return addTelecom();
+        }
+        else if (name.equals("deceasedBoolean")) {
+          this.deceased = new BooleanType();
+          return this.deceased;
+        }
+        else if (name.equals("deceasedDateTime")) {
+          this.deceased = new DateTimeType();
+          return this.deceased;
         }
         else if (name.equals("address")) {
           return addAddress();
@@ -1202,6 +1282,7 @@ public class Practitioner extends DomainResource {
           for (ContactPoint i : telecom)
             dst.telecom.add(i.copy());
         };
+        dst.deceased = deceased == null ? null : deceased.copy();
         if (address != null) {
           dst.address = new ArrayList<Address>();
           for (Address i : address)
@@ -1238,9 +1319,10 @@ public class Practitioner extends DomainResource {
           return false;
         Practitioner o = (Practitioner) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(active, o.active, true) && compareDeep(name, o.name, true)
-           && compareDeep(telecom, o.telecom, true) && compareDeep(address, o.address, true) && compareDeep(gender, o.gender, true)
-           && compareDeep(birthDate, o.birthDate, true) && compareDeep(photo, o.photo, true) && compareDeep(qualification, o.qualification, true)
-           && compareDeep(communication, o.communication, true);
+           && compareDeep(telecom, o.telecom, true) && compareDeep(deceased, o.deceased, true) && compareDeep(address, o.address, true)
+           && compareDeep(gender, o.gender, true) && compareDeep(birthDate, o.birthDate, true) && compareDeep(photo, o.photo, true)
+           && compareDeep(qualification, o.qualification, true) && compareDeep(communication, o.communication, true)
+          ;
       }
 
       @Override
@@ -1256,507 +1338,14 @@ public class Practitioner extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, active, name
-          , telecom, address, gender, birthDate, photo, qualification, communication);
+          , telecom, deceased, address, gender, birthDate, photo, qualification, communication
+          );
       }
 
   @Override
   public ResourceType getResourceType() {
     return ResourceType.Practitioner;
    }
-
- /**
-   * Search parameter: <b>address</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-* [Person](person.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-* [Practitioner](practitioner.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-* [RelatedPerson](relatedperson.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Patient.address | Person.address | Practitioner.address | RelatedPerson.address</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address", path="Patient.address | Person.address | Practitioner.address | RelatedPerson.address", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text\r\n* [Person](person.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text\r\n* [Practitioner](practitioner.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text\r\n* [RelatedPerson](relatedperson.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text\r\n", type="string" )
-  public static final String SP_ADDRESS = "address";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-* [Person](person.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-* [Practitioner](practitioner.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-* [RelatedPerson](relatedperson.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Patient.address | Person.address | Practitioner.address | RelatedPerson.address</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS);
-
- /**
-   * Search parameter: <b>address-city</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A city specified in an address
-* [Person](person.html): A city specified in an address
-* [Practitioner](practitioner.html): A city specified in an address
-* [RelatedPerson](relatedperson.html): A city specified in an address
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Patient.address.city | Person.address.city | Practitioner.address.city | RelatedPerson.address.city</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address-city", path="Patient.address.city | Person.address.city | Practitioner.address.city | RelatedPerson.address.city", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A city specified in an address\r\n* [Person](person.html): A city specified in an address\r\n* [Practitioner](practitioner.html): A city specified in an address\r\n* [RelatedPerson](relatedperson.html): A city specified in an address\r\n", type="string" )
-  public static final String SP_ADDRESS_CITY = "address-city";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-city</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A city specified in an address
-* [Person](person.html): A city specified in an address
-* [Practitioner](practitioner.html): A city specified in an address
-* [RelatedPerson](relatedperson.html): A city specified in an address
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Patient.address.city | Person.address.city | Practitioner.address.city | RelatedPerson.address.city</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_CITY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_CITY);
-
- /**
-   * Search parameter: <b>address-country</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A country specified in an address
-* [Person](person.html): A country specified in an address
-* [Practitioner](practitioner.html): A country specified in an address
-* [RelatedPerson](relatedperson.html): A country specified in an address
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Patient.address.country | Person.address.country | Practitioner.address.country | RelatedPerson.address.country</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address-country", path="Patient.address.country | Person.address.country | Practitioner.address.country | RelatedPerson.address.country", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A country specified in an address\r\n* [Person](person.html): A country specified in an address\r\n* [Practitioner](practitioner.html): A country specified in an address\r\n* [RelatedPerson](relatedperson.html): A country specified in an address\r\n", type="string" )
-  public static final String SP_ADDRESS_COUNTRY = "address-country";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-country</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A country specified in an address
-* [Person](person.html): A country specified in an address
-* [Practitioner](practitioner.html): A country specified in an address
-* [RelatedPerson](relatedperson.html): A country specified in an address
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Patient.address.country | Person.address.country | Practitioner.address.country | RelatedPerson.address.country</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_COUNTRY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_COUNTRY);
-
- /**
-   * Search parameter: <b>address-postalcode</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A postalCode specified in an address
-* [Person](person.html): A postal code specified in an address
-* [Practitioner](practitioner.html): A postalCode specified in an address
-* [RelatedPerson](relatedperson.html): A postal code specified in an address
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Patient.address.postalCode | Person.address.postalCode | Practitioner.address.postalCode | RelatedPerson.address.postalCode</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address-postalcode", path="Patient.address.postalCode | Person.address.postalCode | Practitioner.address.postalCode | RelatedPerson.address.postalCode", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A postalCode specified in an address\r\n* [Person](person.html): A postal code specified in an address\r\n* [Practitioner](practitioner.html): A postalCode specified in an address\r\n* [RelatedPerson](relatedperson.html): A postal code specified in an address\r\n", type="string" )
-  public static final String SP_ADDRESS_POSTALCODE = "address-postalcode";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-postalcode</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A postalCode specified in an address
-* [Person](person.html): A postal code specified in an address
-* [Practitioner](practitioner.html): A postalCode specified in an address
-* [RelatedPerson](relatedperson.html): A postal code specified in an address
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Patient.address.postalCode | Person.address.postalCode | Practitioner.address.postalCode | RelatedPerson.address.postalCode</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_POSTALCODE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_POSTALCODE);
-
- /**
-   * Search parameter: <b>address-state</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A state specified in an address
-* [Person](person.html): A state specified in an address
-* [Practitioner](practitioner.html): A state specified in an address
-* [RelatedPerson](relatedperson.html): A state specified in an address
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Patient.address.state | Person.address.state | Practitioner.address.state | RelatedPerson.address.state</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address-state", path="Patient.address.state | Person.address.state | Practitioner.address.state | RelatedPerson.address.state", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A state specified in an address\r\n* [Person](person.html): A state specified in an address\r\n* [Practitioner](practitioner.html): A state specified in an address\r\n* [RelatedPerson](relatedperson.html): A state specified in an address\r\n", type="string" )
-  public static final String SP_ADDRESS_STATE = "address-state";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-state</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A state specified in an address
-* [Person](person.html): A state specified in an address
-* [Practitioner](practitioner.html): A state specified in an address
-* [RelatedPerson](relatedperson.html): A state specified in an address
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Patient.address.state | Person.address.state | Practitioner.address.state | RelatedPerson.address.state</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_STATE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_STATE);
-
- /**
-   * Search parameter: <b>address-use</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A use code specified in an address
-* [Person](person.html): A use code specified in an address
-* [Practitioner](practitioner.html): A use code specified in an address
-* [RelatedPerson](relatedperson.html): A use code specified in an address
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Patient.address.use | Person.address.use | Practitioner.address.use | RelatedPerson.address.use</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address-use", path="Patient.address.use | Person.address.use | Practitioner.address.use | RelatedPerson.address.use", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A use code specified in an address\r\n* [Person](person.html): A use code specified in an address\r\n* [Practitioner](practitioner.html): A use code specified in an address\r\n* [RelatedPerson](relatedperson.html): A use code specified in an address\r\n", type="token" )
-  public static final String SP_ADDRESS_USE = "address-use";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-use</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A use code specified in an address
-* [Person](person.html): A use code specified in an address
-* [Practitioner](practitioner.html): A use code specified in an address
-* [RelatedPerson](relatedperson.html): A use code specified in an address
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Patient.address.use | Person.address.use | Practitioner.address.use | RelatedPerson.address.use</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ADDRESS_USE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ADDRESS_USE);
-
- /**
-   * Search parameter: <b>email</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A value in an email contact
-* [Person](person.html): A value in an email contact
-* [Practitioner](practitioner.html): A value in an email contact
-* [PractitionerRole](practitionerrole.html): A value in an email contact
-* [RelatedPerson](relatedperson.html): A value in an email contact
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="email", path="Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A value in an email contact\r\n* [Person](person.html): A value in an email contact\r\n* [Practitioner](practitioner.html): A value in an email contact\r\n* [PractitionerRole](practitionerrole.html): A value in an email contact\r\n* [RelatedPerson](relatedperson.html): A value in an email contact\r\n", type="token" )
-  public static final String SP_EMAIL = "email";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>email</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A value in an email contact
-* [Person](person.html): A value in an email contact
-* [Practitioner](practitioner.html): A value in an email contact
-* [PractitionerRole](practitionerrole.html): A value in an email contact
-* [RelatedPerson](relatedperson.html): A value in an email contact
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EMAIL = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EMAIL);
-
- /**
-   * Search parameter: <b>family</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A portion of the family name of the patient
-* [Practitioner](practitioner.html): A portion of the family name
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Patient.name.family | Practitioner.name.family</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="family", path="Patient.name.family | Practitioner.name.family", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A portion of the family name of the patient\r\n* [Practitioner](practitioner.html): A portion of the family name\r\n", type="string" )
-  public static final String SP_FAMILY = "family";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>family</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A portion of the family name of the patient
-* [Practitioner](practitioner.html): A portion of the family name
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Patient.name.family | Practitioner.name.family</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam FAMILY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_FAMILY);
-
- /**
-   * Search parameter: <b>gender</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): Gender of the patient
-* [Person](person.html): The gender of the person
-* [Practitioner](practitioner.html): Gender of the practitioner
-* [RelatedPerson](relatedperson.html): Gender of the related person
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Patient.gender | Person.gender | Practitioner.gender | RelatedPerson.gender</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="gender", path="Patient.gender | Person.gender | Practitioner.gender | RelatedPerson.gender", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): Gender of the patient\r\n* [Person](person.html): The gender of the person\r\n* [Practitioner](practitioner.html): Gender of the practitioner\r\n* [RelatedPerson](relatedperson.html): Gender of the related person\r\n", type="token" )
-  public static final String SP_GENDER = "gender";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>gender</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): Gender of the patient
-* [Person](person.html): The gender of the person
-* [Practitioner](practitioner.html): Gender of the practitioner
-* [RelatedPerson](relatedperson.html): Gender of the related person
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Patient.gender | Person.gender | Practitioner.gender | RelatedPerson.gender</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam GENDER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_GENDER);
-
- /**
-   * Search parameter: <b>given</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A portion of the given name of the patient
-* [Practitioner](practitioner.html): A portion of the given name
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Patient.name.given | Practitioner.name.given</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="given", path="Patient.name.given | Practitioner.name.given", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A portion of the given name of the patient\r\n* [Practitioner](practitioner.html): A portion of the given name\r\n", type="string" )
-  public static final String SP_GIVEN = "given";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>given</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A portion of the given name of the patient
-* [Practitioner](practitioner.html): A portion of the given name
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Patient.name.given | Practitioner.name.given</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam GIVEN = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_GIVEN);
-
- /**
-   * Search parameter: <b>phone</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A value in a phone contact
-* [Person](person.html): A value in a phone contact
-* [Practitioner](practitioner.html): A value in a phone contact
-* [PractitionerRole](practitionerrole.html): A value in a phone contact
-* [RelatedPerson](relatedperson.html): A value in a phone contact
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="phone", path="Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A value in a phone contact\r\n* [Person](person.html): A value in a phone contact\r\n* [Practitioner](practitioner.html): A value in a phone contact\r\n* [PractitionerRole](practitionerrole.html): A value in a phone contact\r\n* [RelatedPerson](relatedperson.html): A value in a phone contact\r\n", type="token" )
-  public static final String SP_PHONE = "phone";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>phone</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A value in a phone contact
-* [Person](person.html): A value in a phone contact
-* [Practitioner](practitioner.html): A value in a phone contact
-* [PractitionerRole](practitionerrole.html): A value in a phone contact
-* [RelatedPerson](relatedperson.html): A value in a phone contact
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PHONE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PHONE);
-
- /**
-   * Search parameter: <b>phonetic</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A portion of either family or given name using some kind of phonetic matching algorithm
-* [Person](person.html): A portion of name using some kind of phonetic matching algorithm
-* [Practitioner](practitioner.html): A portion of either family or given name using some kind of phonetic matching algorithm
-* [RelatedPerson](relatedperson.html): A portion of name using some kind of phonetic matching algorithm
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Patient.name | Person.name | Practitioner.name | RelatedPerson.name</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="phonetic", path="Patient.name | Person.name | Practitioner.name | RelatedPerson.name", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A portion of either family or given name using some kind of phonetic matching algorithm\r\n* [Person](person.html): A portion of name using some kind of phonetic matching algorithm\r\n* [Practitioner](practitioner.html): A portion of either family or given name using some kind of phonetic matching algorithm\r\n* [RelatedPerson](relatedperson.html): A portion of name using some kind of phonetic matching algorithm\r\n", type="string" )
-  public static final String SP_PHONETIC = "phonetic";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>phonetic</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A portion of either family or given name using some kind of phonetic matching algorithm
-* [Person](person.html): A portion of name using some kind of phonetic matching algorithm
-* [Practitioner](practitioner.html): A portion of either family or given name using some kind of phonetic matching algorithm
-* [RelatedPerson](relatedperson.html): A portion of name using some kind of phonetic matching algorithm
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Patient.name | Person.name | Practitioner.name | RelatedPerson.name</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam PHONETIC = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PHONETIC);
-
- /**
-   * Search parameter: <b>telecom</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): The value in any kind of telecom details of the patient
-* [Person](person.html): The value in any kind of contact
-* [Practitioner](practitioner.html): The value in any kind of contact
-* [PractitionerRole](practitionerrole.html): The value in any kind of contact
-* [RelatedPerson](relatedperson.html): The value in any kind of contact
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.telecom | RelatedPerson.telecom</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="telecom", path="Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.telecom | RelatedPerson.telecom", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): The value in any kind of telecom details of the patient\r\n* [Person](person.html): The value in any kind of contact\r\n* [Practitioner](practitioner.html): The value in any kind of contact\r\n* [PractitionerRole](practitionerrole.html): The value in any kind of contact\r\n* [RelatedPerson](relatedperson.html): The value in any kind of contact\r\n", type="token" )
-  public static final String SP_TELECOM = "telecom";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>telecom</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): The value in any kind of telecom details of the patient
-* [Person](person.html): The value in any kind of contact
-* [Practitioner](practitioner.html): The value in any kind of contact
-* [PractitionerRole](practitionerrole.html): The value in any kind of contact
-* [RelatedPerson](relatedperson.html): The value in any kind of contact
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.telecom | RelatedPerson.telecom</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TELECOM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TELECOM);
-
- /**
-   * Search parameter: <b>active</b>
-   * <p>
-   * Description: <b>Whether the practitioner record is active</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Practitioner.active</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="active", path="Practitioner.active", description="Whether the practitioner record is active", type="token" )
-  public static final String SP_ACTIVE = "active";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>active</b>
-   * <p>
-   * Description: <b>Whether the practitioner record is active</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Practitioner.active</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ACTIVE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ACTIVE);
-
- /**
-   * Search parameter: <b>communication</b>
-   * <p>
-   * Description: <b>One of the languages that the practitioner can communicate with</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Practitioner.communication</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="communication", path="Practitioner.communication", description="One of the languages that the practitioner can communicate with", type="token" )
-  public static final String SP_COMMUNICATION = "communication";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>communication</b>
-   * <p>
-   * Description: <b>One of the languages that the practitioner can communicate with</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Practitioner.communication</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam COMMUNICATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_COMMUNICATION);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>A practitioner's Identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Practitioner.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="Practitioner.identifier", description="A practitioner's Identifier", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>A practitioner's Identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Practitioner.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>name</b>
-   * <p>
-   * Description: <b>A server defined search that may match any of the string fields in the HumanName, including family, give, prefix, suffix, suffix, and/or text</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Practitioner.name</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="name", path="Practitioner.name", description="A server defined search that may match any of the string fields in the HumanName, including family, give, prefix, suffix, suffix, and/or text", type="string" )
-  public static final String SP_NAME = "name";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>name</b>
-   * <p>
-   * Description: <b>A server defined search that may match any of the string fields in the HumanName, including family, give, prefix, suffix, suffix, and/or text</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Practitioner.name</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
 
 
 }

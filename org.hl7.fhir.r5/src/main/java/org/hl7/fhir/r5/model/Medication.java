@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,15 +55,15 @@ public class Medication extends DomainResource {
 
     public enum MedicationStatusCodes {
         /**
-         * The medication is available for use.
+         * The medication record is current and is appropriate for reference in new instances.
          */
         ACTIVE, 
         /**
-         * The medication is not available for use.
+         * The medication record is not current and is not is appropriate for reference in new instances.
          */
         INACTIVE, 
         /**
-         * The medication was entered in error.
+         * The medication record was created erroneously and is not appropriated for reference in new instances.
          */
         ENTEREDINERROR, 
         /**
@@ -102,9 +102,9 @@ public class Medication extends DomainResource {
         }
         public String getDefinition() {
           switch (this) {
-            case ACTIVE: return "The medication is available for use.";
-            case INACTIVE: return "The medication is not available for use.";
-            case ENTEREDINERROR: return "The medication was entered in error.";
+            case ACTIVE: return "The medication record is current and is appropriate for reference in new instances.";
+            case INACTIVE: return "The medication record is not current and is not is appropriate for reference in new instances.";
+            case ENTEREDINERROR: return "The medication record was created erroneously and is not appropriated for reference in new instances.";
             default: return "?";
           }
         }
@@ -168,6 +168,7 @@ public class Medication extends DomainResource {
          */
         @Child(name = "item", type = {CodeableReference.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The ingredient (substance or medication) that the ingredient.strength relates to", formalDefinition="The ingredient (substance or medication) that the ingredient.strength relates to.  This is represented as a concept from a code system or described in another resource (Substance or Medication)." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medication-codes")
         protected CodeableReference item;
 
         /**
@@ -770,11 +771,11 @@ public class Medication extends DomainResource {
     protected Enumeration<MedicationStatusCodes> status;
 
     /**
-     * Describes the details of the manufacturer of the medication product. This is not intended to represent the distributor of a medication product.  Describes the organization that is responsible for the manufacturing of the item and holds the registration to market the product in a jurisdiction.. This might not be the company that physically manufactures the product.  May be known as Market Authorization Holder.
+     * Describes the organization that is responsible for the manufacturing of the item and holds the registration to market the product in a jurisdiction. This might not be the company that physically manufactures the product.  May be known as "Sponsor" and is commonly called "Manufacturer".
      */
-    @Child(name = "sponsor", type = {Organization.class}, order=3, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Organization responsible for manufacturing the item", formalDefinition="Describes the details of the manufacturer of the medication product. This is not intended to represent the distributor of a medication product.  Describes the organization that is responsible for the manufacturing of the item and holds the registration to market the product in a jurisdiction.. This might not be the company that physically manufactures the product.  May be known as Market Authorization Holder." )
-    protected Reference sponsor;
+    @Child(name = "marketingAuthorizationHolder", type = {Organization.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Organization responsible for manufacturing the item", formalDefinition="Describes the organization that is responsible for the manufacturing of the item and holds the registration to market the product in a jurisdiction. This might not be the company that physically manufactures the product.  May be known as \"Sponsor\" and is commonly called \"Manufacturer\"." )
+    protected Reference marketingAuthorizationHolder;
 
     /**
      * Describes the form of the item.  Powder; tablets; capsule.
@@ -785,11 +786,11 @@ public class Medication extends DomainResource {
     protected CodeableConcept doseForm;
 
     /**
-     * Specific amount of the drug in the packaged product.  For example, when specifying a product that has the same strength (For example, Insulin glargine 100 unit per mL solution for injection), this attribute provides additional clarification of the package amount (For example, 3 mL, 10mL, etc.).
+     * When the specified product code does not infer a package size, this is the specific amount of drug in the product.  For example, when specifying a product that has the same strength (For example, Insulin glargine 100 unit per mL solution for injection), this attribute provides additional clarification of the package amount (For example, 3 mL, 10mL, etc.).
      */
-    @Child(name = "amount", type = {Ratio.class}, order=5, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Amount of drug in package", formalDefinition="Specific amount of the drug in the packaged product.  For example, when specifying a product that has the same strength (For example, Insulin glargine 100 unit per mL solution for injection), this attribute provides additional clarification of the package amount (For example, 3 mL, 10mL, etc.)." )
-    protected Ratio amount;
+    @Child(name = "totalVolume", type = {Ratio.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="When the specified product code does not infer a package size, this is the specific amount of drug in the product", formalDefinition="When the specified product code does not infer a package size, this is the specific amount of drug in the product.  For example, when specifying a product that has the same strength (For example, Insulin glargine 100 unit per mL solution for injection), this attribute provides additional clarification of the package amount (For example, 3 mL, 10mL, etc.)." )
+    protected Ratio totalVolume;
 
     /**
      * Identifies a particular constituent of interest in the product.
@@ -805,7 +806,7 @@ public class Medication extends DomainResource {
     @Description(shortDefinition="Details about packaged medications", formalDefinition="Information that only applies to packages (not products)." )
     protected MedicationBatchComponent batch;
 
-    private static final long serialVersionUID = -730564602L;
+    private static final long serialVersionUID = -528893053L;
 
   /**
    * Constructor
@@ -941,26 +942,26 @@ public class Medication extends DomainResource {
     }
 
     /**
-     * @return {@link #sponsor} (Describes the details of the manufacturer of the medication product. This is not intended to represent the distributor of a medication product.  Describes the organization that is responsible for the manufacturing of the item and holds the registration to market the product in a jurisdiction.. This might not be the company that physically manufactures the product.  May be known as Market Authorization Holder.)
+     * @return {@link #marketingAuthorizationHolder} (Describes the organization that is responsible for the manufacturing of the item and holds the registration to market the product in a jurisdiction. This might not be the company that physically manufactures the product.  May be known as "Sponsor" and is commonly called "Manufacturer".)
      */
-    public Reference getSponsor() { 
-      if (this.sponsor == null)
+    public Reference getMarketingAuthorizationHolder() { 
+      if (this.marketingAuthorizationHolder == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Medication.sponsor");
+          throw new Error("Attempt to auto-create Medication.marketingAuthorizationHolder");
         else if (Configuration.doAutoCreate())
-          this.sponsor = new Reference(); // cc
-      return this.sponsor;
+          this.marketingAuthorizationHolder = new Reference(); // cc
+      return this.marketingAuthorizationHolder;
     }
 
-    public boolean hasSponsor() { 
-      return this.sponsor != null && !this.sponsor.isEmpty();
+    public boolean hasMarketingAuthorizationHolder() { 
+      return this.marketingAuthorizationHolder != null && !this.marketingAuthorizationHolder.isEmpty();
     }
 
     /**
-     * @param value {@link #sponsor} (Describes the details of the manufacturer of the medication product. This is not intended to represent the distributor of a medication product.  Describes the organization that is responsible for the manufacturing of the item and holds the registration to market the product in a jurisdiction.. This might not be the company that physically manufactures the product.  May be known as Market Authorization Holder.)
+     * @param value {@link #marketingAuthorizationHolder} (Describes the organization that is responsible for the manufacturing of the item and holds the registration to market the product in a jurisdiction. This might not be the company that physically manufactures the product.  May be known as "Sponsor" and is commonly called "Manufacturer".)
      */
-    public Medication setSponsor(Reference value) { 
-      this.sponsor = value;
+    public Medication setMarketingAuthorizationHolder(Reference value) { 
+      this.marketingAuthorizationHolder = value;
       return this;
     }
 
@@ -989,26 +990,26 @@ public class Medication extends DomainResource {
     }
 
     /**
-     * @return {@link #amount} (Specific amount of the drug in the packaged product.  For example, when specifying a product that has the same strength (For example, Insulin glargine 100 unit per mL solution for injection), this attribute provides additional clarification of the package amount (For example, 3 mL, 10mL, etc.).)
+     * @return {@link #totalVolume} (When the specified product code does not infer a package size, this is the specific amount of drug in the product.  For example, when specifying a product that has the same strength (For example, Insulin glargine 100 unit per mL solution for injection), this attribute provides additional clarification of the package amount (For example, 3 mL, 10mL, etc.).)
      */
-    public Ratio getAmount() { 
-      if (this.amount == null)
+    public Ratio getTotalVolume() { 
+      if (this.totalVolume == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Medication.amount");
+          throw new Error("Attempt to auto-create Medication.totalVolume");
         else if (Configuration.doAutoCreate())
-          this.amount = new Ratio(); // cc
-      return this.amount;
+          this.totalVolume = new Ratio(); // cc
+      return this.totalVolume;
     }
 
-    public boolean hasAmount() { 
-      return this.amount != null && !this.amount.isEmpty();
+    public boolean hasTotalVolume() { 
+      return this.totalVolume != null && !this.totalVolume.isEmpty();
     }
 
     /**
-     * @param value {@link #amount} (Specific amount of the drug in the packaged product.  For example, when specifying a product that has the same strength (For example, Insulin glargine 100 unit per mL solution for injection), this attribute provides additional clarification of the package amount (For example, 3 mL, 10mL, etc.).)
+     * @param value {@link #totalVolume} (When the specified product code does not infer a package size, this is the specific amount of drug in the product.  For example, when specifying a product that has the same strength (For example, Insulin glargine 100 unit per mL solution for injection), this attribute provides additional clarification of the package amount (For example, 3 mL, 10mL, etc.).)
      */
-    public Medication setAmount(Ratio value) { 
-      this.amount = value;
+    public Medication setTotalVolume(Ratio value) { 
+      this.totalVolume = value;
       return this;
     }
 
@@ -1094,9 +1095,9 @@ public class Medication extends DomainResource {
         children.add(new Property("identifier", "Identifier", "Business identifier for this medication.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("code", "CodeableConcept", "A code (or set of codes) that specify this medication, or a textual description if no code is available. Usage note: This could be a standard medication code such as a code from RxNorm, SNOMED CT, IDMP etc. It could also be a national or local formulary code, optionally with translations to other code systems.", 0, 1, code));
         children.add(new Property("status", "code", "A code to indicate if the medication is in active use.", 0, 1, status));
-        children.add(new Property("sponsor", "Reference(Organization)", "Describes the details of the manufacturer of the medication product. This is not intended to represent the distributor of a medication product.  Describes the organization that is responsible for the manufacturing of the item and holds the registration to market the product in a jurisdiction.. This might not be the company that physically manufactures the product.  May be known as Market Authorization Holder.", 0, 1, sponsor));
+        children.add(new Property("marketingAuthorizationHolder", "Reference(Organization)", "Describes the organization that is responsible for the manufacturing of the item and holds the registration to market the product in a jurisdiction. This might not be the company that physically manufactures the product.  May be known as \"Sponsor\" and is commonly called \"Manufacturer\".", 0, 1, marketingAuthorizationHolder));
         children.add(new Property("doseForm", "CodeableConcept", "Describes the form of the item.  Powder; tablets; capsule.", 0, 1, doseForm));
-        children.add(new Property("amount", "Ratio", "Specific amount of the drug in the packaged product.  For example, when specifying a product that has the same strength (For example, Insulin glargine 100 unit per mL solution for injection), this attribute provides additional clarification of the package amount (For example, 3 mL, 10mL, etc.).", 0, 1, amount));
+        children.add(new Property("totalVolume", "Ratio", "When the specified product code does not infer a package size, this is the specific amount of drug in the product.  For example, when specifying a product that has the same strength (For example, Insulin glargine 100 unit per mL solution for injection), this attribute provides additional clarification of the package amount (For example, 3 mL, 10mL, etc.).", 0, 1, totalVolume));
         children.add(new Property("ingredient", "", "Identifies a particular constituent of interest in the product.", 0, java.lang.Integer.MAX_VALUE, ingredient));
         children.add(new Property("batch", "", "Information that only applies to packages (not products).", 0, 1, batch));
       }
@@ -1107,9 +1108,9 @@ public class Medication extends DomainResource {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifier for this medication.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 3059181: /*code*/  return new Property("code", "CodeableConcept", "A code (or set of codes) that specify this medication, or a textual description if no code is available. Usage note: This could be a standard medication code such as a code from RxNorm, SNOMED CT, IDMP etc. It could also be a national or local formulary code, optionally with translations to other code systems.", 0, 1, code);
         case -892481550: /*status*/  return new Property("status", "code", "A code to indicate if the medication is in active use.", 0, 1, status);
-        case -1998892262: /*sponsor*/  return new Property("sponsor", "Reference(Organization)", "Describes the details of the manufacturer of the medication product. This is not intended to represent the distributor of a medication product.  Describes the organization that is responsible for the manufacturing of the item and holds the registration to market the product in a jurisdiction.. This might not be the company that physically manufactures the product.  May be known as Market Authorization Holder.", 0, 1, sponsor);
+        case -1565971585: /*marketingAuthorizationHolder*/  return new Property("marketingAuthorizationHolder", "Reference(Organization)", "Describes the organization that is responsible for the manufacturing of the item and holds the registration to market the product in a jurisdiction. This might not be the company that physically manufactures the product.  May be known as \"Sponsor\" and is commonly called \"Manufacturer\".", 0, 1, marketingAuthorizationHolder);
         case 1303858817: /*doseForm*/  return new Property("doseForm", "CodeableConcept", "Describes the form of the item.  Powder; tablets; capsule.", 0, 1, doseForm);
-        case -1413853096: /*amount*/  return new Property("amount", "Ratio", "Specific amount of the drug in the packaged product.  For example, when specifying a product that has the same strength (For example, Insulin glargine 100 unit per mL solution for injection), this attribute provides additional clarification of the package amount (For example, 3 mL, 10mL, etc.).", 0, 1, amount);
+        case -654431362: /*totalVolume*/  return new Property("totalVolume", "Ratio", "When the specified product code does not infer a package size, this is the specific amount of drug in the product.  For example, when specifying a product that has the same strength (For example, Insulin glargine 100 unit per mL solution for injection), this attribute provides additional clarification of the package amount (For example, 3 mL, 10mL, etc.).", 0, 1, totalVolume);
         case -206409263: /*ingredient*/  return new Property("ingredient", "", "Identifies a particular constituent of interest in the product.", 0, java.lang.Integer.MAX_VALUE, ingredient);
         case 93509434: /*batch*/  return new Property("batch", "", "Information that only applies to packages (not products).", 0, 1, batch);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -1123,9 +1124,9 @@ public class Medication extends DomainResource {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<MedicationStatusCodes>
-        case -1998892262: /*sponsor*/ return this.sponsor == null ? new Base[0] : new Base[] {this.sponsor}; // Reference
+        case -1565971585: /*marketingAuthorizationHolder*/ return this.marketingAuthorizationHolder == null ? new Base[0] : new Base[] {this.marketingAuthorizationHolder}; // Reference
         case 1303858817: /*doseForm*/ return this.doseForm == null ? new Base[0] : new Base[] {this.doseForm}; // CodeableConcept
-        case -1413853096: /*amount*/ return this.amount == null ? new Base[0] : new Base[] {this.amount}; // Ratio
+        case -654431362: /*totalVolume*/ return this.totalVolume == null ? new Base[0] : new Base[] {this.totalVolume}; // Ratio
         case -206409263: /*ingredient*/ return this.ingredient == null ? new Base[0] : this.ingredient.toArray(new Base[this.ingredient.size()]); // MedicationIngredientComponent
         case 93509434: /*batch*/ return this.batch == null ? new Base[0] : new Base[] {this.batch}; // MedicationBatchComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -1146,14 +1147,14 @@ public class Medication extends DomainResource {
           value = new MedicationStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<MedicationStatusCodes>
           return value;
-        case -1998892262: // sponsor
-          this.sponsor = TypeConvertor.castToReference(value); // Reference
+        case -1565971585: // marketingAuthorizationHolder
+          this.marketingAuthorizationHolder = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1303858817: // doseForm
           this.doseForm = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
-        case -1413853096: // amount
-          this.amount = TypeConvertor.castToRatio(value); // Ratio
+        case -654431362: // totalVolume
+          this.totalVolume = TypeConvertor.castToRatio(value); // Ratio
           return value;
         case -206409263: // ingredient
           this.getIngredient().add((MedicationIngredientComponent) value); // MedicationIngredientComponent
@@ -1175,12 +1176,12 @@ public class Medication extends DomainResource {
         } else if (name.equals("status")) {
           value = new MedicationStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<MedicationStatusCodes>
-        } else if (name.equals("sponsor")) {
-          this.sponsor = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("marketingAuthorizationHolder")) {
+          this.marketingAuthorizationHolder = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("doseForm")) {
           this.doseForm = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("amount")) {
-          this.amount = TypeConvertor.castToRatio(value); // Ratio
+        } else if (name.equals("totalVolume")) {
+          this.totalVolume = TypeConvertor.castToRatio(value); // Ratio
         } else if (name.equals("ingredient")) {
           this.getIngredient().add((MedicationIngredientComponent) value);
         } else if (name.equals("batch")) {
@@ -1196,9 +1197,9 @@ public class Medication extends DomainResource {
         case -1618432855:  return addIdentifier(); 
         case 3059181:  return getCode();
         case -892481550:  return getStatusElement();
-        case -1998892262:  return getSponsor();
+        case -1565971585:  return getMarketingAuthorizationHolder();
         case 1303858817:  return getDoseForm();
-        case -1413853096:  return getAmount();
+        case -654431362:  return getTotalVolume();
         case -206409263:  return addIngredient(); 
         case 93509434:  return getBatch();
         default: return super.makeProperty(hash, name);
@@ -1212,9 +1213,9 @@ public class Medication extends DomainResource {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case 3059181: /*code*/ return new String[] {"CodeableConcept"};
         case -892481550: /*status*/ return new String[] {"code"};
-        case -1998892262: /*sponsor*/ return new String[] {"Reference"};
+        case -1565971585: /*marketingAuthorizationHolder*/ return new String[] {"Reference"};
         case 1303858817: /*doseForm*/ return new String[] {"CodeableConcept"};
-        case -1413853096: /*amount*/ return new String[] {"Ratio"};
+        case -654431362: /*totalVolume*/ return new String[] {"Ratio"};
         case -206409263: /*ingredient*/ return new String[] {};
         case 93509434: /*batch*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
@@ -1234,17 +1235,17 @@ public class Medication extends DomainResource {
         else if (name.equals("status")) {
           throw new FHIRException("Cannot call addChild on a primitive type Medication.status");
         }
-        else if (name.equals("sponsor")) {
-          this.sponsor = new Reference();
-          return this.sponsor;
+        else if (name.equals("marketingAuthorizationHolder")) {
+          this.marketingAuthorizationHolder = new Reference();
+          return this.marketingAuthorizationHolder;
         }
         else if (name.equals("doseForm")) {
           this.doseForm = new CodeableConcept();
           return this.doseForm;
         }
-        else if (name.equals("amount")) {
-          this.amount = new Ratio();
-          return this.amount;
+        else if (name.equals("totalVolume")) {
+          this.totalVolume = new Ratio();
+          return this.totalVolume;
         }
         else if (name.equals("ingredient")) {
           return addIngredient();
@@ -1277,9 +1278,9 @@ public class Medication extends DomainResource {
         };
         dst.code = code == null ? null : code.copy();
         dst.status = status == null ? null : status.copy();
-        dst.sponsor = sponsor == null ? null : sponsor.copy();
+        dst.marketingAuthorizationHolder = marketingAuthorizationHolder == null ? null : marketingAuthorizationHolder.copy();
         dst.doseForm = doseForm == null ? null : doseForm.copy();
-        dst.amount = amount == null ? null : amount.copy();
+        dst.totalVolume = totalVolume == null ? null : totalVolume.copy();
         if (ingredient != null) {
           dst.ingredient = new ArrayList<MedicationIngredientComponent>();
           for (MedicationIngredientComponent i : ingredient)
@@ -1300,8 +1301,9 @@ public class Medication extends DomainResource {
           return false;
         Medication o = (Medication) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(code, o.code, true) && compareDeep(status, o.status, true)
-           && compareDeep(sponsor, o.sponsor, true) && compareDeep(doseForm, o.doseForm, true) && compareDeep(amount, o.amount, true)
-           && compareDeep(ingredient, o.ingredient, true) && compareDeep(batch, o.batch, true);
+           && compareDeep(marketingAuthorizationHolder, o.marketingAuthorizationHolder, true) && compareDeep(doseForm, o.doseForm, true)
+           && compareDeep(totalVolume, o.totalVolume, true) && compareDeep(ingredient, o.ingredient, true)
+           && compareDeep(batch, o.batch, true);
       }
 
       @Override
@@ -1316,237 +1318,13 @@ public class Medication extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, code, status
-          , sponsor, doseForm, amount, ingredient, batch);
+          , marketingAuthorizationHolder, doseForm, totalVolume, ingredient, batch);
       }
 
   @Override
   public ResourceType getResourceType() {
     return ResourceType.Medication;
    }
-
- /**
-   * Search parameter: <b>code</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [AllergyIntolerance](allergyintolerance.html): Code that identifies the allergy or intolerance
-* [Condition](condition.html): Code for the condition
-* [DeviceRequest](devicerequest.html): Code for what is being requested/ordered
-* [DiagnosticReport](diagnosticreport.html): The code for the report, as opposed to codes for the atomic results, which are the names on the observation resource referred to from the result
-* [FamilyMemberHistory](familymemberhistory.html): A search by a condition code
-* [List](list.html): What the purpose of this list is
-* [Medication](medication.html): Returns medications for a specific code
-* [MedicationAdministration](medicationadministration.html): Return administrations of this medication code
-* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine code
-* [MedicationRequest](medicationrequest.html): Return prescriptions of this medication code
-* [MedicationUsage](medicationusage.html): Return statements of this medication code
-* [Observation](observation.html): The code of the observation type
-* [Procedure](procedure.html): A code to identify a  procedure
-* [ServiceRequest](servicerequest.html): What is being requested/ordered
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code | ServiceRequest.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="code", path="AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code | ServiceRequest.code", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Code that identifies the allergy or intolerance\r\n* [Condition](condition.html): Code for the condition\r\n* [DeviceRequest](devicerequest.html): Code for what is being requested/ordered\r\n* [DiagnosticReport](diagnosticreport.html): The code for the report, as opposed to codes for the atomic results, which are the names on the observation resource referred to from the result\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a condition code\r\n* [List](list.html): What the purpose of this list is\r\n* [Medication](medication.html): Returns medications for a specific code\r\n* [MedicationAdministration](medicationadministration.html): Return administrations of this medication code\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine code\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions of this medication code\r\n* [MedicationUsage](medicationusage.html): Return statements of this medication code\r\n* [Observation](observation.html): The code of the observation type\r\n* [Procedure](procedure.html): A code to identify a  procedure\r\n* [ServiceRequest](servicerequest.html): What is being requested/ordered\r\n", type="token" )
-  public static final String SP_CODE = "code";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>code</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [AllergyIntolerance](allergyintolerance.html): Code that identifies the allergy or intolerance
-* [Condition](condition.html): Code for the condition
-* [DeviceRequest](devicerequest.html): Code for what is being requested/ordered
-* [DiagnosticReport](diagnosticreport.html): The code for the report, as opposed to codes for the atomic results, which are the names on the observation resource referred to from the result
-* [FamilyMemberHistory](familymemberhistory.html): A search by a condition code
-* [List](list.html): What the purpose of this list is
-* [Medication](medication.html): Returns medications for a specific code
-* [MedicationAdministration](medicationadministration.html): Return administrations of this medication code
-* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine code
-* [MedicationRequest](medicationrequest.html): Return prescriptions of this medication code
-* [MedicationUsage](medicationusage.html): Return statements of this medication code
-* [Observation](observation.html): The code of the observation type
-* [Procedure](procedure.html): A code to identify a  procedure
-* [ServiceRequest](servicerequest.html): What is being requested/ordered
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code | ServiceRequest.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
-
- /**
-   * Search parameter: <b>expiration-date</b>
-   * <p>
-   * Description: <b>Returns medications in a batch with this expiration date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Medication.batch.expirationDate</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="expiration-date", path="Medication.batch.expirationDate", description="Returns medications in a batch with this expiration date", type="date" )
-  public static final String SP_EXPIRATION_DATE = "expiration-date";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>expiration-date</b>
-   * <p>
-   * Description: <b>Returns medications in a batch with this expiration date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Medication.batch.expirationDate</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam EXPIRATION_DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_EXPIRATION_DATE);
-
- /**
-   * Search parameter: <b>form</b>
-   * <p>
-   * Description: <b>Returns medications for a specific dose form</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>null</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="form", path="", description="Returns medications for a specific dose form", type="token" )
-  public static final String SP_FORM = "form";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>form</b>
-   * <p>
-   * Description: <b>Returns medications for a specific dose form</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>null</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam FORM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FORM);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>Returns medications with this external identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Medication.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="Medication.identifier", description="Returns medications with this external identifier", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>Returns medications with this external identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Medication.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>ingredient</b>
-   * <p>
-   * Description: <b>Returns medications for this ingredient reference</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Medication.ingredient.item.reference</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="ingredient", path="Medication.ingredient.item.reference", description="Returns medications for this ingredient reference", type="reference" )
-  public static final String SP_INGREDIENT = "ingredient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>ingredient</b>
-   * <p>
-   * Description: <b>Returns medications for this ingredient reference</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Medication.ingredient.item.reference</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INGREDIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INGREDIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Medication:ingredient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_INGREDIENT = new ca.uhn.fhir.model.api.Include("Medication:ingredient").toLocked();
-
- /**
-   * Search parameter: <b>ingredient-code</b>
-   * <p>
-   * Description: <b>Returns medications for this ingredient code</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Medication.ingredient.item.concept</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="ingredient-code", path="Medication.ingredient.item.concept", description="Returns medications for this ingredient code", type="token" )
-  public static final String SP_INGREDIENT_CODE = "ingredient-code";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>ingredient-code</b>
-   * <p>
-   * Description: <b>Returns medications for this ingredient code</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Medication.ingredient.item.concept</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INGREDIENT_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INGREDIENT_CODE);
-
- /**
-   * Search parameter: <b>lot-number</b>
-   * <p>
-   * Description: <b>Returns medications in a batch with this lot number</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Medication.batch.lotNumber</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="lot-number", path="Medication.batch.lotNumber", description="Returns medications in a batch with this lot number", type="token" )
-  public static final String SP_LOT_NUMBER = "lot-number";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>lot-number</b>
-   * <p>
-   * Description: <b>Returns medications in a batch with this lot number</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Medication.batch.lotNumber</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam LOT_NUMBER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_LOT_NUMBER);
-
- /**
-   * Search parameter: <b>sponsor</b>
-   * <p>
-   * Description: <b>Returns medications made or sold for this manufacturer</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Medication.sponsor</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="sponsor", path="Medication.sponsor", description="Returns medications made or sold for this manufacturer", type="reference", target={Organization.class } )
-  public static final String SP_SPONSOR = "sponsor";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>sponsor</b>
-   * <p>
-   * Description: <b>Returns medications made or sold for this manufacturer</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Medication.sponsor</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SPONSOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SPONSOR);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Medication:sponsor</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SPONSOR = new ca.uhn.fhir.model.api.Include("Medication:sponsor").toLocked();
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>Returns medications for this status</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Medication.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="Medication.status", description="Returns medications for this status", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>Returns medications for this status</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Medication.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
 
 }

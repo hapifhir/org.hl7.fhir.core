@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -720,9 +720,17 @@ A coverage may only be responsible for specific types of charges, and the sequen
     protected Enumeration<AccountStatus> status;
 
     /**
+     * The BillingStatus tracks the lifecycle of the account through the billing process. It indicates how transactions are treated when they are allocated to the account.
+     */
+    @Child(name = "billingStatus", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Tracks the lifecycle of the account through the billing process", formalDefinition="The BillingStatus tracks the lifecycle of the account through the billing process. It indicates how transactions are treated when they are allocated to the account." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/account-billing-status")
+    protected CodeableConcept billingStatus;
+
+    /**
      * Categorizes the account for reporting and searching purposes.
      */
-    @Child(name = "type", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "type", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="E.g. patient, expense, depreciation", formalDefinition="Categorizes the account for reporting and searching purposes." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/account-type")
     protected CodeableConcept type;
@@ -730,60 +738,60 @@ A coverage may only be responsible for specific types of charges, and the sequen
     /**
      * Name used for the account when displaying it to humans in reports, etc.
      */
-    @Child(name = "name", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "name", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Human-readable label", formalDefinition="Name used for the account when displaying it to humans in reports, etc." )
     protected StringType name;
 
     /**
      * Identifies the entity which incurs the expenses. While the immediate recipients of services or goods might be entities related to the subject, the expenses were ultimately incurred by the subject of the Account.
      */
-    @Child(name = "subject", type = {Patient.class, Device.class, Practitioner.class, PractitionerRole.class, Location.class, HealthcareService.class, Organization.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "subject", type = {Patient.class, Device.class, Practitioner.class, PractitionerRole.class, Location.class, HealthcareService.class, Organization.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The entity that caused the expenses", formalDefinition="Identifies the entity which incurs the expenses. While the immediate recipients of services or goods might be entities related to the subject, the expenses were ultimately incurred by the subject of the Account." )
     protected List<Reference> subject;
 
     /**
      * The date range of services associated with this account.
      */
-    @Child(name = "servicePeriod", type = {Period.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "servicePeriod", type = {Period.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Transaction window", formalDefinition="The date range of services associated with this account." )
     protected Period servicePeriod;
 
     /**
      * The party(s) that are responsible for covering the payment of this account, and what order should they be applied to the account.
      */
-    @Child(name = "coverage", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "coverage", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The party(s) that are responsible for covering the payment of this account, and what order should they be applied to the account", formalDefinition="The party(s) that are responsible for covering the payment of this account, and what order should they be applied to the account." )
     protected List<CoverageComponent> coverage;
 
     /**
      * Indicates the service area, hospital, department, etc. with responsibility for managing the Account.
      */
-    @Child(name = "owner", type = {Organization.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "owner", type = {Organization.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Entity managing the Account", formalDefinition="Indicates the service area, hospital, department, etc. with responsibility for managing the Account." )
     protected Reference owner;
 
     /**
      * Provides additional information about what the account tracks and how it is used.
      */
-    @Child(name = "description", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "description", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Explanation of purpose/use", formalDefinition="Provides additional information about what the account tracks and how it is used." )
     protected StringType description;
 
     /**
      * The parties responsible for balancing the account if other payment options fall short.
      */
-    @Child(name = "guarantor", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "guarantor", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The parties ultimately responsible for balancing the Account", formalDefinition="The parties responsible for balancing the account if other payment options fall short." )
     protected List<GuarantorComponent> guarantor;
 
     /**
      * Reference to a parent Account.
      */
-    @Child(name = "partOf", type = {Account.class}, order=10, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "partOf", type = {Account.class}, order=11, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Reference to a parent Account", formalDefinition="Reference to a parent Account." )
     protected Reference partOf;
 
-    private static final long serialVersionUID = 1572782679L;
+    private static final long serialVersionUID = 1419356403L;
 
   /**
    * Constructor
@@ -895,6 +903,30 @@ A coverage may only be responsible for specific types of charges, and the sequen
         if (this.status == null)
           this.status = new Enumeration<AccountStatus>(new AccountStatusEnumFactory());
         this.status.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #billingStatus} (The BillingStatus tracks the lifecycle of the account through the billing process. It indicates how transactions are treated when they are allocated to the account.)
+     */
+    public CodeableConcept getBillingStatus() { 
+      if (this.billingStatus == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Account.billingStatus");
+        else if (Configuration.doAutoCreate())
+          this.billingStatus = new CodeableConcept(); // cc
+      return this.billingStatus;
+    }
+
+    public boolean hasBillingStatus() { 
+      return this.billingStatus != null && !this.billingStatus.isEmpty();
+    }
+
+    /**
+     * @param value {@link #billingStatus} (The BillingStatus tracks the lifecycle of the account through the billing process. It indicates how transactions are treated when they are allocated to the account.)
+     */
+    public Account setBillingStatus(CodeableConcept value) { 
+      this.billingStatus = value;
       return this;
     }
 
@@ -1255,6 +1287,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Unique identifier used to reference the account.  Might or might not be intended for human use (e.g. credit card number).", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("status", "code", "Indicates whether the account is presently used/usable or not.", 0, 1, status));
+        children.add(new Property("billingStatus", "CodeableConcept", "The BillingStatus tracks the lifecycle of the account through the billing process. It indicates how transactions are treated when they are allocated to the account.", 0, 1, billingStatus));
         children.add(new Property("type", "CodeableConcept", "Categorizes the account for reporting and searching purposes.", 0, 1, type));
         children.add(new Property("name", "string", "Name used for the account when displaying it to humans in reports, etc.", 0, 1, name));
         children.add(new Property("subject", "Reference(Patient|Device|Practitioner|PractitionerRole|Location|HealthcareService|Organization)", "Identifies the entity which incurs the expenses. While the immediate recipients of services or goods might be entities related to the subject, the expenses were ultimately incurred by the subject of the Account.", 0, java.lang.Integer.MAX_VALUE, subject));
@@ -1271,6 +1304,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Unique identifier used to reference the account.  Might or might not be intended for human use (e.g. credit card number).", 0, java.lang.Integer.MAX_VALUE, identifier);
         case -892481550: /*status*/  return new Property("status", "code", "Indicates whether the account is presently used/usable or not.", 0, 1, status);
+        case -1524378035: /*billingStatus*/  return new Property("billingStatus", "CodeableConcept", "The BillingStatus tracks the lifecycle of the account through the billing process. It indicates how transactions are treated when they are allocated to the account.", 0, 1, billingStatus);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Categorizes the account for reporting and searching purposes.", 0, 1, type);
         case 3373707: /*name*/  return new Property("name", "string", "Name used for the account when displaying it to humans in reports, etc.", 0, 1, name);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Device|Practitioner|PractitionerRole|Location|HealthcareService|Organization)", "Identifies the entity which incurs the expenses. While the immediate recipients of services or goods might be entities related to the subject, the expenses were ultimately incurred by the subject of the Account.", 0, java.lang.Integer.MAX_VALUE, subject);
@@ -1290,6 +1324,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<AccountStatus>
+        case -1524378035: /*billingStatus*/ return this.billingStatus == null ? new Base[0] : new Base[] {this.billingStatus}; // CodeableConcept
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : this.subject.toArray(new Base[this.subject.size()]); // Reference
@@ -1313,6 +1348,9 @@ A coverage may only be responsible for specific types of charges, and the sequen
         case -892481550: // status
           value = new AccountStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<AccountStatus>
+          return value;
+        case -1524378035: // billingStatus
+          this.billingStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 3575610: // type
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -1353,6 +1391,8 @@ A coverage may only be responsible for specific types of charges, and the sequen
         } else if (name.equals("status")) {
           value = new AccountStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<AccountStatus>
+        } else if (name.equals("billingStatus")) {
+          this.billingStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("type")) {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("name")) {
@@ -1381,6 +1421,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
+        case -1524378035:  return getBillingStatus();
         case 3575610:  return getType();
         case 3373707:  return getNameElement();
         case -1867885268:  return addSubject(); 
@@ -1400,6 +1441,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
         switch (hash) {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case -892481550: /*status*/ return new String[] {"code"};
+        case -1524378035: /*billingStatus*/ return new String[] {"CodeableConcept"};
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case 3373707: /*name*/ return new String[] {"string"};
         case -1867885268: /*subject*/ return new String[] {"Reference"};
@@ -1421,6 +1463,10 @@ A coverage may only be responsible for specific types of charges, and the sequen
         }
         else if (name.equals("status")) {
           throw new FHIRException("Cannot call addChild on a primitive type Account.status");
+        }
+        else if (name.equals("billingStatus")) {
+          this.billingStatus = new CodeableConcept();
+          return this.billingStatus;
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
@@ -1476,6 +1522,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
             dst.identifier.add(i.copy());
         };
         dst.status = status == null ? null : status.copy();
+        dst.billingStatus = billingStatus == null ? null : billingStatus.copy();
         dst.type = type == null ? null : type.copy();
         dst.name = name == null ? null : name.copy();
         if (subject != null) {
@@ -1510,10 +1557,11 @@ A coverage may only be responsible for specific types of charges, and the sequen
         if (!(other_ instanceof Account))
           return false;
         Account o = (Account) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(type, o.type, true)
-           && compareDeep(name, o.name, true) && compareDeep(subject, o.subject, true) && compareDeep(servicePeriod, o.servicePeriod, true)
-           && compareDeep(coverage, o.coverage, true) && compareDeep(owner, o.owner, true) && compareDeep(description, o.description, true)
-           && compareDeep(guarantor, o.guarantor, true) && compareDeep(partOf, o.partOf, true);
+        return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(billingStatus, o.billingStatus, true)
+           && compareDeep(type, o.type, true) && compareDeep(name, o.name, true) && compareDeep(subject, o.subject, true)
+           && compareDeep(servicePeriod, o.servicePeriod, true) && compareDeep(coverage, o.coverage, true)
+           && compareDeep(owner, o.owner, true) && compareDeep(description, o.description, true) && compareDeep(guarantor, o.guarantor, true)
+           && compareDeep(partOf, o.partOf, true);
       }
 
       @Override
@@ -1528,193 +1576,15 @@ A coverage may only be responsible for specific types of charges, and the sequen
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, type
-          , name, subject, servicePeriod, coverage, owner, description, guarantor, partOf
-          );
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, billingStatus
+          , type, name, subject, servicePeriod, coverage, owner, description, guarantor
+          , partOf);
       }
 
   @Override
   public ResourceType getResourceType() {
     return ResourceType.Account;
    }
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>Account number</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Account.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="Account.identifier", description="Account number", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>Account number</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Account.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>name</b>
-   * <p>
-   * Description: <b>Human-readable label</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Account.name</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="name", path="Account.name", description="Human-readable label", type="string" )
-  public static final String SP_NAME = "name";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>name</b>
-   * <p>
-   * Description: <b>Human-readable label</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Account.name</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
-
- /**
-   * Search parameter: <b>owner</b>
-   * <p>
-   * Description: <b>Entity managing the Account</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Account.owner</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="owner", path="Account.owner", description="Entity managing the Account", type="reference", target={Organization.class } )
-  public static final String SP_OWNER = "owner";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>owner</b>
-   * <p>
-   * Description: <b>Entity managing the Account</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Account.owner</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam OWNER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_OWNER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Account:owner</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_OWNER = new ca.uhn.fhir.model.api.Include("Account:owner").toLocked();
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>The entity that caused the expenses</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Account.subject.where(resolve() is Patient)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="Account.subject.where(resolve() is Patient)", description="The entity that caused the expenses", type="reference", target={Device.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>The entity that caused the expenses</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Account.subject.where(resolve() is Patient)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Account:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Account:patient").toLocked();
-
- /**
-   * Search parameter: <b>period</b>
-   * <p>
-   * Description: <b>Transaction window</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Account.servicePeriod</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="period", path="Account.servicePeriod", description="Transaction window", type="date" )
-  public static final String SP_PERIOD = "period";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>period</b>
-   * <p>
-   * Description: <b>Transaction window</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Account.servicePeriod</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam PERIOD = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_PERIOD);
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>active | inactive | entered-in-error | on-hold | unknown</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Account.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="Account.status", description="active | inactive | entered-in-error | on-hold | unknown", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>active | inactive | entered-in-error | on-hold | unknown</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Account.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
-
- /**
-   * Search parameter: <b>subject</b>
-   * <p>
-   * Description: <b>The entity that caused the expenses</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Account.subject</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="subject", path="Account.subject", description="The entity that caused the expenses", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Device.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class } )
-  public static final String SP_SUBJECT = "subject";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
-   * <p>
-   * Description: <b>The entity that caused the expenses</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Account.subject</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Account:subject</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("Account:subject").toLocked();
-
- /**
-   * Search parameter: <b>type</b>
-   * <p>
-   * Description: <b>E.g. patient, expense, depreciation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Account.type</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="type", path="Account.type", description="E.g. patient, expense, depreciation", type="token" )
-  public static final String SP_TYPE = "type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>type</b>
-   * <p>
-   * Description: <b>E.g. patient, expense, depreciation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Account.type</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
 
 }

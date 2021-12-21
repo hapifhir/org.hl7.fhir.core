@@ -59,7 +59,7 @@ public class UTGVersionSorter {
       p.addTarget().setReference(cr.fhirType() + "/" + cr.getId());
       p.getOccurredPeriod().setEnd(runTime, TemporalPrecisionEnum.DAY);
       p.setRecorded(runTime);
-      p.addReason().setText("Reset Version after migration to UTG").addCoding("http://terminology.hl7.org/CodeSystem/v3-ActReason", "METAMGT", null);
+      p.addAuthorization().getConcept().setText("Reset Version after migration to UTG").addCoding("http://terminology.hl7.org/CodeSystem/v3-ActReason", "METAMGT", null);
       p.getActivity().addCoding("http://terminology.hl7.org/CodeSystem/v3-DataOperation", "UPDATE", null);
       ProvenanceAgentComponent pa = p.addAgent();
       pa.getType().addCoding("http://terminology.hl7.org/CodeSystem/provenance-participant-type", "author", null);
