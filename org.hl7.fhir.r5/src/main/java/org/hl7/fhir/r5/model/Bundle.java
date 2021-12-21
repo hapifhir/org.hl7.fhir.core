@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -3108,118 +3108,6 @@ public class Bundle extends Resource implements IBaseBundle {
   public ResourceType getResourceType() {
     return ResourceType.Bundle;
    }
-
- /**
-   * Search parameter: <b>composition</b>
-   * <p>
-   * Description: <b>The first resource in the bundle, if the bundle type is "document" - this is a composition, and this parameter provides access to search its contents</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Bundle.entry[0].resource</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="composition", path="Bundle.entry[0].resource", description="The first resource in the bundle, if the bundle type is \"document\" - this is a composition, and this parameter provides access to search its contents", type="reference" )
-  public static final String SP_COMPOSITION = "composition";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>composition</b>
-   * <p>
-   * Description: <b>The first resource in the bundle, if the bundle type is "document" - this is a composition, and this parameter provides access to search its contents</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Bundle.entry[0].resource</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam COMPOSITION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_COMPOSITION);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Bundle:composition</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_COMPOSITION = new ca.uhn.fhir.model.api.Include("Bundle:composition").toLocked();
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>Persistent identifier for the bundle</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Bundle.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="Bundle.identifier", description="Persistent identifier for the bundle", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>Persistent identifier for the bundle</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Bundle.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>message</b>
-   * <p>
-   * Description: <b>The first resource in the bundle, if the bundle type is "message" - this is a message header, and this parameter provides access to search its contents</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Bundle.entry[0].resource</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="message", path="Bundle.entry[0].resource", description="The first resource in the bundle, if the bundle type is \"message\" - this is a message header, and this parameter provides access to search its contents", type="reference" )
-  public static final String SP_MESSAGE = "message";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>message</b>
-   * <p>
-   * Description: <b>The first resource in the bundle, if the bundle type is "message" - this is a message header, and this parameter provides access to search its contents</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Bundle.entry[0].resource</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MESSAGE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MESSAGE);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Bundle:message</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_MESSAGE = new ca.uhn.fhir.model.api.Include("Bundle:message").toLocked();
-
- /**
-   * Search parameter: <b>timestamp</b>
-   * <p>
-   * Description: <b>When the bundle was assembled</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Bundle.timestamp</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="timestamp", path="Bundle.timestamp", description="When the bundle was assembled", type="date" )
-  public static final String SP_TIMESTAMP = "timestamp";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>timestamp</b>
-   * <p>
-   * Description: <b>When the bundle was assembled</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Bundle.timestamp</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam TIMESTAMP = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_TIMESTAMP);
-
- /**
-   * Search parameter: <b>type</b>
-   * <p>
-   * Description: <b>document | message | transaction | transaction-response | batch | batch-response | history | searchset | collection | subscription-notification</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Bundle.type</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="type", path="Bundle.type", description="document | message | transaction | transaction-response | batch | batch-response | history | searchset | collection | subscription-notification", type="token" )
-  public static final String SP_TYPE = "type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>type</b>
-   * <p>
-   * Description: <b>document | message | transaction | transaction-response | batch | batch-response | history | searchset | collection | subscription-notification</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Bundle.type</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
 // Manual code (from Configuration.txt):
 /** 

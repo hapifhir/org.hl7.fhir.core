@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,6 +63,10 @@ public class DeviceUsage extends DomainResource {
          */
         COMPLETED, 
         /**
+         * The device was not used.
+         */
+        NOTDONE, 
+        /**
          * The statement was recorded incorrectly.
          */
         ENTEREDINERROR, 
@@ -89,6 +93,8 @@ public class DeviceUsage extends DomainResource {
           return ACTIVE;
         if ("completed".equals(codeString))
           return COMPLETED;
+        if ("not-done".equals(codeString))
+          return NOTDONE;
         if ("entered-in-error".equals(codeString))
           return ENTEREDINERROR;
         if ("intended".equals(codeString))
@@ -106,6 +112,7 @@ public class DeviceUsage extends DomainResource {
           switch (this) {
             case ACTIVE: return "active";
             case COMPLETED: return "completed";
+            case NOTDONE: return "not-done";
             case ENTEREDINERROR: return "entered-in-error";
             case INTENDED: return "intended";
             case STOPPED: return "stopped";
@@ -117,6 +124,7 @@ public class DeviceUsage extends DomainResource {
           switch (this) {
             case ACTIVE: return "http://hl7.org/fhir/device-usage-status";
             case COMPLETED: return "http://hl7.org/fhir/device-usage-status";
+            case NOTDONE: return "http://hl7.org/fhir/device-usage-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/device-usage-status";
             case INTENDED: return "http://hl7.org/fhir/device-usage-status";
             case STOPPED: return "http://hl7.org/fhir/device-usage-status";
@@ -128,6 +136,7 @@ public class DeviceUsage extends DomainResource {
           switch (this) {
             case ACTIVE: return "The device is still being used.";
             case COMPLETED: return "The device is no longer being used.";
+            case NOTDONE: return "The device was not used.";
             case ENTEREDINERROR: return "The statement was recorded incorrectly.";
             case INTENDED: return "The device may be used at some time in the future.";
             case STOPPED: return "Actions implied by the statement have been permanently halted, before all of them occurred.";
@@ -139,6 +148,7 @@ public class DeviceUsage extends DomainResource {
           switch (this) {
             case ACTIVE: return "Active";
             case COMPLETED: return "Completed";
+            case NOTDONE: return "Not done";
             case ENTEREDINERROR: return "Entered in Error";
             case INTENDED: return "Intended";
             case STOPPED: return "Stopped";
@@ -157,6 +167,8 @@ public class DeviceUsage extends DomainResource {
           return DeviceUsageStatus.ACTIVE;
         if ("completed".equals(codeString))
           return DeviceUsageStatus.COMPLETED;
+        if ("not-done".equals(codeString))
+          return DeviceUsageStatus.NOTDONE;
         if ("entered-in-error".equals(codeString))
           return DeviceUsageStatus.ENTEREDINERROR;
         if ("intended".equals(codeString))
@@ -179,6 +191,8 @@ public class DeviceUsage extends DomainResource {
           return new Enumeration<DeviceUsageStatus>(this, DeviceUsageStatus.ACTIVE);
         if ("completed".equals(codeString))
           return new Enumeration<DeviceUsageStatus>(this, DeviceUsageStatus.COMPLETED);
+        if ("not-done".equals(codeString))
+          return new Enumeration<DeviceUsageStatus>(this, DeviceUsageStatus.NOTDONE);
         if ("entered-in-error".equals(codeString))
           return new Enumeration<DeviceUsageStatus>(this, DeviceUsageStatus.ENTEREDINERROR);
         if ("intended".equals(codeString))
@@ -194,6 +208,8 @@ public class DeviceUsage extends DomainResource {
         return "active";
       if (code == DeviceUsageStatus.COMPLETED)
         return "completed";
+      if (code == DeviceUsageStatus.NOTDONE)
+        return "not-done";
       if (code == DeviceUsageStatus.ENTEREDINERROR)
         return "entered-in-error";
       if (code == DeviceUsageStatus.INTENDED)
@@ -227,7 +243,7 @@ public class DeviceUsage extends DomainResource {
      * A code representing the patient or other source's judgment about the state of the device used that this statement is about.  Generally this will be active or completed.
      */
     @Child(name = "status", type = {CodeType.class}, order=2, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="active | completed | entered-in-error +", formalDefinition="A code representing the patient or other source's judgment about the state of the device used that this statement is about.  Generally this will be active or completed." )
+    @Description(shortDefinition="active | completed | not-done | entered-in-error +", formalDefinition="A code representing the patient or other source's judgment about the state of the device used that this statement is about.  Generally this will be active or completed." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-usage-status")
     protected Enumeration<DeviceUsageStatus> status;
 
@@ -241,9 +257,9 @@ public class DeviceUsage extends DomainResource {
     /**
      * The patient who used the device.
      */
-    @Child(name = "subject", type = {Patient.class}, order=4, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "patient", type = {Patient.class}, order=4, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Patient using device", formalDefinition="The patient who used the device." )
-    protected Reference subject;
+    protected Reference patient;
 
     /**
      * Allows linking the DeviceUsage to the underlying Request, or to other information that supports or is used to derive the DeviceUsage.
@@ -324,7 +340,7 @@ public class DeviceUsage extends DomainResource {
     @Description(shortDefinition="Addition details (comments, instructions)", formalDefinition="Details about the device statement that were not represented at all or sufficiently in one of the attributes provided in a class. These may include for example a comment, an instruction, or a note associated with the statement." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = -196510255L;
+    private static final long serialVersionUID = 979004394L;
 
   /**
    * Constructor
@@ -336,10 +352,10 @@ public class DeviceUsage extends DomainResource {
   /**
    * Constructor
    */
-    public DeviceUsage(DeviceUsageStatus status, Reference subject, CodeableReference device) {
+    public DeviceUsage(DeviceUsageStatus status, Reference patient, CodeableReference device) {
       super();
       this.setStatus(status);
-      this.setSubject(subject);
+      this.setPatient(patient);
       this.setDevice(device);
     }
 
@@ -548,26 +564,26 @@ public class DeviceUsage extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} (The patient who used the device.)
+     * @return {@link #patient} (The patient who used the device.)
      */
-    public Reference getSubject() { 
-      if (this.subject == null)
+    public Reference getPatient() { 
+      if (this.patient == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create DeviceUsage.subject");
+          throw new Error("Attempt to auto-create DeviceUsage.patient");
         else if (Configuration.doAutoCreate())
-          this.subject = new Reference(); // cc
-      return this.subject;
+          this.patient = new Reference(); // cc
+      return this.patient;
     }
 
-    public boolean hasSubject() { 
-      return this.subject != null && !this.subject.isEmpty();
+    public boolean hasPatient() { 
+      return this.patient != null && !this.patient.isEmpty();
     }
 
     /**
-     * @param value {@link #subject} (The patient who used the device.)
+     * @param value {@link #patient} (The patient who used the device.)
      */
-    public DeviceUsage setSubject(Reference value) { 
-      this.subject = value;
+    public DeviceUsage setPatient(Reference value) { 
+      this.patient = value;
       return this;
     }
 
@@ -1024,7 +1040,7 @@ public class DeviceUsage extends DomainResource {
         children.add(new Property("basedOn", "Reference(ServiceRequest)", "A plan, proposal or order that is fulfilled in whole or in part by this DeviceUsage.", 0, java.lang.Integer.MAX_VALUE, basedOn));
         children.add(new Property("status", "code", "A code representing the patient or other source's judgment about the state of the device used that this statement is about.  Generally this will be active or completed.", 0, 1, status));
         children.add(new Property("category", "CodeableConcept", "This attribute indicates a category for the statement - The device statement may be made in an inpatient or outpatient settting (inpatient | outpatient | community | patientspecified).", 0, java.lang.Integer.MAX_VALUE, category));
-        children.add(new Property("subject", "Reference(Patient)", "The patient who used the device.", 0, 1, subject));
+        children.add(new Property("patient", "Reference(Patient)", "The patient who used the device.", 0, 1, patient));
         children.add(new Property("derivedFrom", "Reference(ServiceRequest|Procedure|Claim|Observation|QuestionnaireResponse|DocumentReference)", "Allows linking the DeviceUsage to the underlying Request, or to other information that supports or is used to derive the DeviceUsage.", 0, java.lang.Integer.MAX_VALUE, derivedFrom));
         children.add(new Property("context", "Reference(Encounter|EpisodeOfCare)", "The encounter or episode of care that establishes the context for this device use statement.", 0, 1, context));
         children.add(new Property("timing[x]", "Timing|Period|dateTime", "How often the device was used.", 0, 1, timing));
@@ -1045,7 +1061,7 @@ public class DeviceUsage extends DomainResource {
         case -332612366: /*basedOn*/  return new Property("basedOn", "Reference(ServiceRequest)", "A plan, proposal or order that is fulfilled in whole or in part by this DeviceUsage.", 0, java.lang.Integer.MAX_VALUE, basedOn);
         case -892481550: /*status*/  return new Property("status", "code", "A code representing the patient or other source's judgment about the state of the device used that this statement is about.  Generally this will be active or completed.", 0, 1, status);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "This attribute indicates a category for the statement - The device statement may be made in an inpatient or outpatient settting (inpatient | outpatient | community | patientspecified).", 0, java.lang.Integer.MAX_VALUE, category);
-        case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient)", "The patient who used the device.", 0, 1, subject);
+        case -791418107: /*patient*/  return new Property("patient", "Reference(Patient)", "The patient who used the device.", 0, 1, patient);
         case 1077922663: /*derivedFrom*/  return new Property("derivedFrom", "Reference(ServiceRequest|Procedure|Claim|Observation|QuestionnaireResponse|DocumentReference)", "Allows linking the DeviceUsage to the underlying Request, or to other information that supports or is used to derive the DeviceUsage.", 0, java.lang.Integer.MAX_VALUE, derivedFrom);
         case 951530927: /*context*/  return new Property("context", "Reference(Encounter|EpisodeOfCare)", "The encounter or episode of care that establishes the context for this device use statement.", 0, 1, context);
         case 164632566: /*timing[x]*/  return new Property("timing[x]", "Timing|Period|dateTime", "How often the device was used.", 0, 1, timing);
@@ -1073,7 +1089,7 @@ public class DeviceUsage extends DomainResource {
         case -332612366: /*basedOn*/ return this.basedOn == null ? new Base[0] : this.basedOn.toArray(new Base[this.basedOn.size()]); // Reference
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<DeviceUsageStatus>
         case 50511102: /*category*/ return this.category == null ? new Base[0] : this.category.toArray(new Base[this.category.size()]); // CodeableConcept
-        case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
+        case -791418107: /*patient*/ return this.patient == null ? new Base[0] : new Base[] {this.patient}; // Reference
         case 1077922663: /*derivedFrom*/ return this.derivedFrom == null ? new Base[0] : this.derivedFrom.toArray(new Base[this.derivedFrom.size()]); // Reference
         case 951530927: /*context*/ return this.context == null ? new Base[0] : new Base[] {this.context}; // Reference
         case -873664438: /*timing*/ return this.timing == null ? new Base[0] : new Base[] {this.timing}; // DataType
@@ -1106,8 +1122,8 @@ public class DeviceUsage extends DomainResource {
         case 50511102: // category
           this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
-        case -1867885268: // subject
-          this.subject = TypeConvertor.castToReference(value); // Reference
+        case -791418107: // patient
+          this.patient = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1077922663: // derivedFrom
           this.getDerivedFrom().add(TypeConvertor.castToReference(value)); // Reference
@@ -1158,8 +1174,8 @@ public class DeviceUsage extends DomainResource {
           this.status = (Enumeration) value; // Enumeration<DeviceUsageStatus>
         } else if (name.equals("category")) {
           this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("subject")) {
-          this.subject = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("patient")) {
+          this.patient = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("derivedFrom")) {
           this.getDerivedFrom().add(TypeConvertor.castToReference(value));
         } else if (name.equals("context")) {
@@ -1194,7 +1210,7 @@ public class DeviceUsage extends DomainResource {
         case -332612366:  return addBasedOn(); 
         case -892481550:  return getStatusElement();
         case 50511102:  return addCategory(); 
-        case -1867885268:  return getSubject();
+        case -791418107:  return getPatient();
         case 1077922663:  return addDerivedFrom(); 
         case 951530927:  return getContext();
         case 164632566:  return getTiming();
@@ -1219,7 +1235,7 @@ public class DeviceUsage extends DomainResource {
         case -332612366: /*basedOn*/ return new String[] {"Reference"};
         case -892481550: /*status*/ return new String[] {"code"};
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
-        case -1867885268: /*subject*/ return new String[] {"Reference"};
+        case -791418107: /*patient*/ return new String[] {"Reference"};
         case 1077922663: /*derivedFrom*/ return new String[] {"Reference"};
         case 951530927: /*context*/ return new String[] {"Reference"};
         case -873664438: /*timing*/ return new String[] {"Timing", "Period", "dateTime"};
@@ -1250,9 +1266,9 @@ public class DeviceUsage extends DomainResource {
         else if (name.equals("category")) {
           return addCategory();
         }
-        else if (name.equals("subject")) {
-          this.subject = new Reference();
-          return this.subject;
+        else if (name.equals("patient")) {
+          this.patient = new Reference();
+          return this.patient;
         }
         else if (name.equals("derivedFrom")) {
           return addDerivedFrom();
@@ -1334,7 +1350,7 @@ public class DeviceUsage extends DomainResource {
           for (CodeableConcept i : category)
             dst.category.add(i.copy());
         };
-        dst.subject = subject == null ? null : subject.copy();
+        dst.patient = patient == null ? null : patient.copy();
         if (derivedFrom != null) {
           dst.derivedFrom = new ArrayList<Reference>();
           for (Reference i : derivedFrom)
@@ -1376,7 +1392,7 @@ public class DeviceUsage extends DomainResource {
           return false;
         DeviceUsage o = (DeviceUsage) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(basedOn, o.basedOn, true) && compareDeep(status, o.status, true)
-           && compareDeep(category, o.category, true) && compareDeep(subject, o.subject, true) && compareDeep(derivedFrom, o.derivedFrom, true)
+           && compareDeep(category, o.category, true) && compareDeep(patient, o.patient, true) && compareDeep(derivedFrom, o.derivedFrom, true)
            && compareDeep(context, o.context, true) && compareDeep(timing, o.timing, true) && compareDeep(dateAsserted, o.dateAsserted, true)
            && compareDeep(usageStatus, o.usageStatus, true) && compareDeep(usageReason, o.usageReason, true)
            && compareDeep(informationSource, o.informationSource, true) && compareDeep(device, o.device, true)
@@ -1396,7 +1412,7 @@ public class DeviceUsage extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, basedOn, status
-          , category, subject, derivedFrom, context, timing, dateAsserted, usageStatus, usageReason
+          , category, patient, derivedFrom, context, timing, dateAsserted, usageStatus, usageReason
           , informationSource, device, reason, bodySite, note);
       }
 
@@ -1404,166 +1420,6 @@ public class DeviceUsage extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.DeviceUsage;
    }
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
-* [CarePlan](careplan.html): Who the care plan is for
-* [CareTeam](careteam.html): Who care team is for
-* [ClinicalImpression](clinicalimpression.html): Patient or group assessed
-* [Composition](composition.html): Who and/or what the composition is about
-* [Condition](condition.html): Who has the condition?
-* [Consent](consent.html): Who the consent applies to
-* [DetectedIssue](detectedissue.html): Associated patient
-* [DeviceRequest](devicerequest.html): Individual the service is ordered for
-* [DeviceUsage](deviceusage.html): Search by subject - a patient
-* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
-* [DocumentManifest](documentmanifest.html): The subject of the set of documents
-* [DocumentReference](documentreference.html): Who/what is the subject of the document
-* [Encounter](encounter.html): The patient or group present at the encounter
-* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
-* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
-* [Flag](flag.html): The identity of a subject to list flags for
-* [Goal](goal.html): Who this goal is intended for
-* [ImagingStudy](imagingstudy.html): Who the study is about
-* [Immunization](immunization.html): The patient for the vaccination record
-* [List](list.html): If all resources have the same subject
-* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for
-* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
-* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
-* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
-* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
-* [Observation](observation.html): The subject that the observation is about (if patient)
-* [Procedure](procedure.html): Search by subject - a patient
-* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
-* [ServiceRequest](servicerequest.html): Search by subject - a patient
-* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
-* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
-</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient or group assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by subject - a patient\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient or group present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
-* [CarePlan](careplan.html): Who the care plan is for
-* [CareTeam](careteam.html): Who care team is for
-* [ClinicalImpression](clinicalimpression.html): Patient or group assessed
-* [Composition](composition.html): Who and/or what the composition is about
-* [Condition](condition.html): Who has the condition?
-* [Consent](consent.html): Who the consent applies to
-* [DetectedIssue](detectedissue.html): Associated patient
-* [DeviceRequest](devicerequest.html): Individual the service is ordered for
-* [DeviceUsage](deviceusage.html): Search by subject - a patient
-* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
-* [DocumentManifest](documentmanifest.html): The subject of the set of documents
-* [DocumentReference](documentreference.html): Who/what is the subject of the document
-* [Encounter](encounter.html): The patient or group present at the encounter
-* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
-* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
-* [Flag](flag.html): The identity of a subject to list flags for
-* [Goal](goal.html): Who this goal is intended for
-* [ImagingStudy](imagingstudy.html): Who the study is about
-* [Immunization](immunization.html): The patient for the vaccination record
-* [List](list.html): If all resources have the same subject
-* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for
-* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
-* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
-* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
-* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
-* [Observation](observation.html): The subject that the observation is about (if patient)
-* [Procedure](procedure.html): Search by subject - a patient
-* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
-* [ServiceRequest](servicerequest.html): Search by subject - a patient
-* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
-* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
-</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>DeviceUsage:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("DeviceUsage:patient").toLocked();
-
- /**
-   * Search parameter: <b>device</b>
-   * <p>
-   * Description: <b>Search by device</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceUsage.device.concept</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="device", path="DeviceUsage.device.concept", description="Search by device", type="token" )
-  public static final String SP_DEVICE = "device";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>device</b>
-   * <p>
-   * Description: <b>Search by device</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceUsage.device.concept</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam DEVICE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_DEVICE);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>Search by identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceUsage.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="DeviceUsage.identifier", description="Search by identifier", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>Search by identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceUsage.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>subject</b>
-   * <p>
-   * Description: <b>Search by subject</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>DeviceUsage.subject</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="subject", path="DeviceUsage.subject", description="Search by subject", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
-  public static final String SP_SUBJECT = "subject";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
-   * <p>
-   * Description: <b>Search by subject</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>DeviceUsage.subject</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>DeviceUsage:subject</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("DeviceUsage:subject").toLocked();
 
 
 }

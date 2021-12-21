@@ -53,11 +53,11 @@ public class Medication40_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertMedicationStatus(src.getStatusElement()));
     if (src.hasManufacturer())
-      tgt.setSponsor(Reference40_50.convertReference(src.getManufacturer()));
+      tgt.setMarketingAuthorizationHolder(Reference40_50.convertReference(src.getManufacturer()));
     if (src.hasForm())
       tgt.setDoseForm(CodeableConcept40_50.convertCodeableConcept(src.getForm()));
     if (src.hasAmount())
-      tgt.setAmount(Ratio40_50.convertRatio(src.getAmount()));
+      tgt.setTotalVolume(Ratio40_50.convertRatio(src.getAmount()));
     for (org.hl7.fhir.r4.model.Medication.MedicationIngredientComponent t : src.getIngredient())
       tgt.addIngredient(convertMedicationIngredientComponent(t));
     if (src.hasBatch())
@@ -76,12 +76,12 @@ public class Medication40_50 {
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasStatus())
       tgt.setStatusElement(convertMedicationStatus(src.getStatusElement()));
-    if (src.hasSponsor())
-      tgt.setManufacturer(Reference40_50.convertReference(src.getSponsor()));
+    if (src.hasMarketingAuthorizationHolder())
+      tgt.setManufacturer(Reference40_50.convertReference(src.getMarketingAuthorizationHolder()));
     if (src.hasDoseForm())
       tgt.setForm(CodeableConcept40_50.convertCodeableConcept(src.getDoseForm()));
-    if (src.hasAmount())
-      tgt.setAmount(Ratio40_50.convertRatio(src.getAmount()));
+    if (src.hasTotalVolume())
+      tgt.setAmount(Ratio40_50.convertRatio(src.getTotalVolume()));
     for (org.hl7.fhir.r5.model.Medication.MedicationIngredientComponent t : src.getIngredient())
       tgt.addIngredient(convertMedicationIngredientComponent(t));
     if (src.hasBatch())

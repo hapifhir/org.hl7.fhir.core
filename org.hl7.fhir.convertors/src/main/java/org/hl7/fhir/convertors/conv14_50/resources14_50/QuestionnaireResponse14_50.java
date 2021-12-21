@@ -15,7 +15,7 @@ public class QuestionnaireResponse14_50 {
     org.hl7.fhir.dstu2016may.model.QuestionnaireResponse tgt = new org.hl7.fhir.dstu2016may.model.QuestionnaireResponse();
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyDomainResource(src, tgt);
     if (src.hasIdentifier())
-      tgt.setIdentifier(Identifier14_50.convertIdentifier(src.getIdentifier()));
+      tgt.setIdentifier(Identifier14_50.convertIdentifier(src.getIdentifierFirstRep()));
     if (src.hasQuestionnaireElement())
       tgt.setQuestionnaire(Reference14_50.convertCanonicalToReference(src.getQuestionnaireElement()));
     if (src.hasStatus())
@@ -41,7 +41,7 @@ public class QuestionnaireResponse14_50 {
     org.hl7.fhir.r5.model.QuestionnaireResponse tgt = new org.hl7.fhir.r5.model.QuestionnaireResponse();
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyDomainResource(src, tgt);
     if (src.hasIdentifier())
-      tgt.setIdentifier(Identifier14_50.convertIdentifier(src.getIdentifier()));
+      tgt.addIdentifier(Identifier14_50.convertIdentifier(src.getIdentifier()));
     if (src.hasQuestionnaire())
       tgt.setQuestionnaireElement(Reference14_50.convertReferenceToCanonical(src.getQuestionnaire()));
     if (src.hasStatus())

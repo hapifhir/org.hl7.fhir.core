@@ -166,7 +166,7 @@ public class Specimen40_50 {
     if (src.hasMethod())
       tgt.setMethod(CodeableConcept40_50.convertCodeableConcept(src.getMethod()));
     if (src.hasBodySite())
-      tgt.setBodySite(CodeableConcept40_50.convertCodeableConcept(src.getBodySite()));
+      tgt.getBodySite().setConcept(CodeableConcept40_50.convertCodeableConcept(src.getBodySite()));
     if (src.hasFastingStatus())
       tgt.setFastingStatus(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getFastingStatus()));
     return tgt;
@@ -187,8 +187,8 @@ public class Specimen40_50 {
       tgt.setQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getQuantity()));
     if (src.hasMethod())
       tgt.setMethod(CodeableConcept40_50.convertCodeableConcept(src.getMethod()));
-    if (src.hasBodySite())
-      tgt.setBodySite(CodeableConcept40_50.convertCodeableConcept(src.getBodySite()));
+    if (src.getBodySite().hasConcept())
+      tgt.setBodySite(CodeableConcept40_50.convertCodeableConcept(src.getBodySite().getConcept()));
     if (src.hasFastingStatus())
       tgt.setFastingStatus(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getFastingStatus()));
     return tgt;
@@ -201,8 +201,8 @@ public class Specimen40_50 {
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-    if (src.hasProcedure())
-      tgt.setProcedure(CodeableConcept40_50.convertCodeableConcept(src.getProcedure()));
+//    if (src.hasProcedure())
+//      tgt.setProcedure(CodeableConcept40_50.convertCodeableConcept(src.getProcedure()));
     for (org.hl7.fhir.r4.model.Reference t : src.getAdditive()) tgt.addAdditive(Reference40_50.convertReference(t));
     if (src.hasTime())
       tgt.setTime(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTime()));
@@ -216,8 +216,8 @@ public class Specimen40_50 {
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-    if (src.hasProcedure())
-      tgt.setProcedure(CodeableConcept40_50.convertCodeableConcept(src.getProcedure()));
+//    if (src.hasProcedure())
+//      tgt.setProcedure(CodeableConcept40_50.convertCodeableConcept(src.getProcedure()));
     for (org.hl7.fhir.r5.model.Reference t : src.getAdditive()) tgt.addAdditive(Reference40_50.convertReference(t));
     if (src.hasTime())
       tgt.setTime(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTime()));

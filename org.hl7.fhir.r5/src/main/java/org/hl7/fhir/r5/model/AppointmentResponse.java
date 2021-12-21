@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -92,8 +92,8 @@ public class AppointmentResponse extends DomainResource {
     /**
      * A Person, Location, HealthcareService, or Device that is participating in the appointment.
      */
-    @Child(name = "actor", type = {Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, Device.class, HealthcareService.class, Location.class}, order=5, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Person, Location, HealthcareService, or Device", formalDefinition="A Person, Location, HealthcareService, or Device that is participating in the appointment." )
+    @Child(name = "actor", type = {Patient.class, Group.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, Device.class, HealthcareService.class, Location.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Person(s), Location, HealthcareService, or Device", formalDefinition="A Person, Location, HealthcareService, or Device that is participating in the appointment." )
     protected Reference actor;
 
     /**
@@ -482,7 +482,7 @@ public class AppointmentResponse extends DomainResource {
         children.add(new Property("start", "instant", "Date/Time that the appointment is to take place, or requested new start time.", 0, 1, start));
         children.add(new Property("end", "instant", "This may be either the same as the appointment request to confirm the details of the appointment, or alternately a new time to request a re-negotiation of the end time.", 0, 1, end));
         children.add(new Property("participantType", "CodeableConcept", "Role of participant in the appointment.", 0, java.lang.Integer.MAX_VALUE, participantType));
-        children.add(new Property("actor", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson|Device|HealthcareService|Location)", "A Person, Location, HealthcareService, or Device that is participating in the appointment.", 0, 1, actor));
+        children.add(new Property("actor", "Reference(Patient|Group|Practitioner|PractitionerRole|RelatedPerson|Device|HealthcareService|Location)", "A Person, Location, HealthcareService, or Device that is participating in the appointment.", 0, 1, actor));
         children.add(new Property("participantStatus", "code", "Participation status of the participant. When the status is declined or tentative if the start/end times are different to the appointment, then these times should be interpreted as a requested time change. When the status is accepted, the times can either be the time of the appointment (as a confirmation of the time) or can be empty.", 0, 1, participantStatus));
         children.add(new Property("comment", "string", "Additional comments about the appointment.", 0, 1, comment));
       }
@@ -495,7 +495,7 @@ public class AppointmentResponse extends DomainResource {
         case 109757538: /*start*/  return new Property("start", "instant", "Date/Time that the appointment is to take place, or requested new start time.", 0, 1, start);
         case 100571: /*end*/  return new Property("end", "instant", "This may be either the same as the appointment request to confirm the details of the appointment, or alternately a new time to request a re-negotiation of the end time.", 0, 1, end);
         case 841294093: /*participantType*/  return new Property("participantType", "CodeableConcept", "Role of participant in the appointment.", 0, java.lang.Integer.MAX_VALUE, participantType);
-        case 92645877: /*actor*/  return new Property("actor", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson|Device|HealthcareService|Location)", "A Person, Location, HealthcareService, or Device that is participating in the appointment.", 0, 1, actor);
+        case 92645877: /*actor*/  return new Property("actor", "Reference(Patient|Group|Practitioner|PractitionerRole|RelatedPerson|Device|HealthcareService|Location)", "A Person, Location, HealthcareService, or Device that is participating in the appointment.", 0, 1, actor);
         case 996096261: /*participantStatus*/  return new Property("participantStatus", "code", "Participation status of the participant. When the status is declined or tentative if the start/end times are different to the appointment, then these times should be interpreted as a requested time change. When the status is accepted, the times can either be the time of the appointment (as a confirmation of the time) or can be empty.", 0, 1, participantStatus);
         case 950398559: /*comment*/  return new Property("comment", "string", "Additional comments about the appointment.", 0, 1, comment);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -708,176 +708,6 @@ public class AppointmentResponse extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.AppointmentResponse;
    }
-
- /**
-   * Search parameter: <b>actor</b>
-   * <p>
-   * Description: <b>The Person, Location/HealthcareService or Device that this appointment response replies for</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AppointmentResponse.actor</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="actor", path="AppointmentResponse.actor", description="The Person, Location/HealthcareService or Device that this appointment response replies for", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Device.class, HealthcareService.class, Location.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_ACTOR = "actor";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>actor</b>
-   * <p>
-   * Description: <b>The Person, Location/HealthcareService or Device that this appointment response replies for</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AppointmentResponse.actor</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ACTOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ACTOR);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>AppointmentResponse:actor</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ACTOR = new ca.uhn.fhir.model.api.Include("AppointmentResponse:actor").toLocked();
-
- /**
-   * Search parameter: <b>appointment</b>
-   * <p>
-   * Description: <b>The appointment that the response is attached to</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AppointmentResponse.appointment</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="appointment", path="AppointmentResponse.appointment", description="The appointment that the response is attached to", type="reference", target={Appointment.class } )
-  public static final String SP_APPOINTMENT = "appointment";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>appointment</b>
-   * <p>
-   * Description: <b>The appointment that the response is attached to</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AppointmentResponse.appointment</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam APPOINTMENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_APPOINTMENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>AppointmentResponse:appointment</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_APPOINTMENT = new ca.uhn.fhir.model.api.Include("AppointmentResponse:appointment").toLocked();
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>An Identifier in this appointment response</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AppointmentResponse.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="AppointmentResponse.identifier", description="An Identifier in this appointment response", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>An Identifier in this appointment response</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AppointmentResponse.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>location</b>
-   * <p>
-   * Description: <b>This Response is for this Location</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AppointmentResponse.actor.where(resolve() is Location)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="location", path="AppointmentResponse.actor.where(resolve() is Location)", description="This Response is for this Location", type="reference", target={Device.class, HealthcareService.class, Location.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_LOCATION = "location";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>location</b>
-   * <p>
-   * Description: <b>This Response is for this Location</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AppointmentResponse.actor.where(resolve() is Location)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam LOCATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_LOCATION);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>AppointmentResponse:location</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_LOCATION = new ca.uhn.fhir.model.api.Include("AppointmentResponse:location").toLocked();
-
- /**
-   * Search parameter: <b>part-status</b>
-   * <p>
-   * Description: <b>The participants acceptance status for this appointment</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AppointmentResponse.participantStatus</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="part-status", path="AppointmentResponse.participantStatus", description="The participants acceptance status for this appointment", type="token" )
-  public static final String SP_PART_STATUS = "part-status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>part-status</b>
-   * <p>
-   * Description: <b>The participants acceptance status for this appointment</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AppointmentResponse.participantStatus</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PART_STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PART_STATUS);
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>This Response is for this Patient</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AppointmentResponse.actor.where(resolve() is Patient)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="AppointmentResponse.actor.where(resolve() is Patient)", description="This Response is for this Patient", type="reference", target={Device.class, HealthcareService.class, Location.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>This Response is for this Patient</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AppointmentResponse.actor.where(resolve() is Patient)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>AppointmentResponse:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("AppointmentResponse:patient").toLocked();
-
- /**
-   * Search parameter: <b>practitioner</b>
-   * <p>
-   * Description: <b>This Response is for this Practitioner</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AppointmentResponse.actor.where(resolve() is Practitioner)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="practitioner", path="AppointmentResponse.actor.where(resolve() is Practitioner)", description="This Response is for this Practitioner", type="reference", target={Device.class, HealthcareService.class, Location.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_PRACTITIONER = "practitioner";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>practitioner</b>
-   * <p>
-   * Description: <b>This Response is for this Practitioner</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AppointmentResponse.actor.where(resolve() is Practitioner)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PRACTITIONER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PRACTITIONER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>AppointmentResponse:practitioner</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PRACTITIONER = new ca.uhn.fhir.model.api.Include("AppointmentResponse:practitioner").toLocked();
 
 
 }
