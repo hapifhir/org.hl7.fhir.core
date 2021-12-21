@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2922,9 +2922,9 @@ public String toString() {
         /**
          * A value to use if there is no existing value in the source object.
          */
-        @Child(name = "defaultValue", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=5, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "defaultValue", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Default value if no value exists", formalDefinition="A value to use if there is no existing value in the source object." )
-        protected DataType defaultValue;
+        protected StringType defaultValue;
 
         /**
          * Optional field for this source.
@@ -2969,7 +2969,7 @@ public String toString() {
         @Description(shortDefinition="Message to put in log if source exists (FHIRPath)", formalDefinition="A FHIRPath expression which specifies a message to put in the transform log when content matching the source rule is found." )
         protected StringType logMessage;
 
-        private static final long serialVersionUID = 1708673504L;
+        private static final long serialVersionUID = 214178119L;
 
     /**
      * Constructor
@@ -3175,775 +3175,19 @@ public String toString() {
         }
 
         /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
+         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.). This is the underlying object with id, value and extensions. The accessor "getDefaultValue" gives direct access to the value
          */
-        public DataType getDefaultValue() { 
+        public StringType getDefaultValueElement() { 
+          if (this.defaultValue == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create StructureMapGroupRuleSourceComponent.defaultValue");
+            else if (Configuration.doAutoCreate())
+              this.defaultValue = new StringType(); // bb
           return this.defaultValue;
         }
 
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Base64BinaryType getDefaultValueBase64BinaryType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Base64BinaryType();
-          if (!(this.defaultValue instanceof Base64BinaryType))
-            throw new FHIRException("Type mismatch: the type Base64BinaryType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Base64BinaryType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueBase64BinaryType() { 
-          return this != null && this.defaultValue instanceof Base64BinaryType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public BooleanType getDefaultValueBooleanType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new BooleanType();
-          if (!(this.defaultValue instanceof BooleanType))
-            throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (BooleanType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueBooleanType() { 
-          return this != null && this.defaultValue instanceof BooleanType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public CanonicalType getDefaultValueCanonicalType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new CanonicalType();
-          if (!(this.defaultValue instanceof CanonicalType))
-            throw new FHIRException("Type mismatch: the type CanonicalType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (CanonicalType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueCanonicalType() { 
-          return this != null && this.defaultValue instanceof CanonicalType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public CodeType getDefaultValueCodeType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new CodeType();
-          if (!(this.defaultValue instanceof CodeType))
-            throw new FHIRException("Type mismatch: the type CodeType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (CodeType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueCodeType() { 
-          return this != null && this.defaultValue instanceof CodeType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public DateType getDefaultValueDateType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new DateType();
-          if (!(this.defaultValue instanceof DateType))
-            throw new FHIRException("Type mismatch: the type DateType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (DateType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueDateType() { 
-          return this != null && this.defaultValue instanceof DateType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public DateTimeType getDefaultValueDateTimeType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new DateTimeType();
-          if (!(this.defaultValue instanceof DateTimeType))
-            throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (DateTimeType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueDateTimeType() { 
-          return this != null && this.defaultValue instanceof DateTimeType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public DecimalType getDefaultValueDecimalType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new DecimalType();
-          if (!(this.defaultValue instanceof DecimalType))
-            throw new FHIRException("Type mismatch: the type DecimalType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (DecimalType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueDecimalType() { 
-          return this != null && this.defaultValue instanceof DecimalType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public IdType getDefaultValueIdType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new IdType();
-          if (!(this.defaultValue instanceof IdType))
-            throw new FHIRException("Type mismatch: the type IdType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (IdType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueIdType() { 
-          return this != null && this.defaultValue instanceof IdType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public InstantType getDefaultValueInstantType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new InstantType();
-          if (!(this.defaultValue instanceof InstantType))
-            throw new FHIRException("Type mismatch: the type InstantType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (InstantType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueInstantType() { 
-          return this != null && this.defaultValue instanceof InstantType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public IntegerType getDefaultValueIntegerType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new IntegerType();
-          if (!(this.defaultValue instanceof IntegerType))
-            throw new FHIRException("Type mismatch: the type IntegerType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (IntegerType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueIntegerType() { 
-          return this != null && this.defaultValue instanceof IntegerType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Integer64Type getDefaultValueInteger64Type() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Integer64Type();
-          if (!(this.defaultValue instanceof Integer64Type))
-            throw new FHIRException("Type mismatch: the type Integer64Type was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Integer64Type) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueInteger64Type() { 
-          return this != null && this.defaultValue instanceof Integer64Type;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public MarkdownType getDefaultValueMarkdownType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new MarkdownType();
-          if (!(this.defaultValue instanceof MarkdownType))
-            throw new FHIRException("Type mismatch: the type MarkdownType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (MarkdownType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueMarkdownType() { 
-          return this != null && this.defaultValue instanceof MarkdownType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public OidType getDefaultValueOidType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new OidType();
-          if (!(this.defaultValue instanceof OidType))
-            throw new FHIRException("Type mismatch: the type OidType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (OidType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueOidType() { 
-          return this != null && this.defaultValue instanceof OidType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public PositiveIntType getDefaultValuePositiveIntType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new PositiveIntType();
-          if (!(this.defaultValue instanceof PositiveIntType))
-            throw new FHIRException("Type mismatch: the type PositiveIntType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (PositiveIntType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValuePositiveIntType() { 
-          return this != null && this.defaultValue instanceof PositiveIntType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public StringType getDefaultValueStringType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new StringType();
-          if (!(this.defaultValue instanceof StringType))
-            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (StringType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueStringType() { 
-          return this != null && this.defaultValue instanceof StringType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public TimeType getDefaultValueTimeType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new TimeType();
-          if (!(this.defaultValue instanceof TimeType))
-            throw new FHIRException("Type mismatch: the type TimeType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (TimeType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueTimeType() { 
-          return this != null && this.defaultValue instanceof TimeType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public UnsignedIntType getDefaultValueUnsignedIntType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new UnsignedIntType();
-          if (!(this.defaultValue instanceof UnsignedIntType))
-            throw new FHIRException("Type mismatch: the type UnsignedIntType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (UnsignedIntType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueUnsignedIntType() { 
-          return this != null && this.defaultValue instanceof UnsignedIntType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public UriType getDefaultValueUriType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new UriType();
-          if (!(this.defaultValue instanceof UriType))
-            throw new FHIRException("Type mismatch: the type UriType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (UriType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueUriType() { 
-          return this != null && this.defaultValue instanceof UriType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public UrlType getDefaultValueUrlType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new UrlType();
-          if (!(this.defaultValue instanceof UrlType))
-            throw new FHIRException("Type mismatch: the type UrlType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (UrlType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueUrlType() { 
-          return this != null && this.defaultValue instanceof UrlType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public UuidType getDefaultValueUuidType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new UuidType();
-          if (!(this.defaultValue instanceof UuidType))
-            throw new FHIRException("Type mismatch: the type UuidType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (UuidType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueUuidType() { 
-          return this != null && this.defaultValue instanceof UuidType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Address getDefaultValueAddress() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Address();
-          if (!(this.defaultValue instanceof Address))
-            throw new FHIRException("Type mismatch: the type Address was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Address) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueAddress() { 
-          return this != null && this.defaultValue instanceof Address;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Age getDefaultValueAge() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Age();
-          if (!(this.defaultValue instanceof Age))
-            throw new FHIRException("Type mismatch: the type Age was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Age) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueAge() { 
-          return this != null && this.defaultValue instanceof Age;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Annotation getDefaultValueAnnotation() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Annotation();
-          if (!(this.defaultValue instanceof Annotation))
-            throw new FHIRException("Type mismatch: the type Annotation was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Annotation) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueAnnotation() { 
-          return this != null && this.defaultValue instanceof Annotation;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Attachment getDefaultValueAttachment() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Attachment();
-          if (!(this.defaultValue instanceof Attachment))
-            throw new FHIRException("Type mismatch: the type Attachment was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Attachment) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueAttachment() { 
-          return this != null && this.defaultValue instanceof Attachment;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public CodeableConcept getDefaultValueCodeableConcept() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new CodeableConcept();
-          if (!(this.defaultValue instanceof CodeableConcept))
-            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (CodeableConcept) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueCodeableConcept() { 
-          return this != null && this.defaultValue instanceof CodeableConcept;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Coding getDefaultValueCoding() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Coding();
-          if (!(this.defaultValue instanceof Coding))
-            throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Coding) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueCoding() { 
-          return this != null && this.defaultValue instanceof Coding;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public ContactPoint getDefaultValueContactPoint() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new ContactPoint();
-          if (!(this.defaultValue instanceof ContactPoint))
-            throw new FHIRException("Type mismatch: the type ContactPoint was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (ContactPoint) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueContactPoint() { 
-          return this != null && this.defaultValue instanceof ContactPoint;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Count getDefaultValueCount() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Count();
-          if (!(this.defaultValue instanceof Count))
-            throw new FHIRException("Type mismatch: the type Count was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Count) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueCount() { 
-          return this != null && this.defaultValue instanceof Count;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Distance getDefaultValueDistance() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Distance();
-          if (!(this.defaultValue instanceof Distance))
-            throw new FHIRException("Type mismatch: the type Distance was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Distance) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueDistance() { 
-          return this != null && this.defaultValue instanceof Distance;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Duration getDefaultValueDuration() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Duration();
-          if (!(this.defaultValue instanceof Duration))
-            throw new FHIRException("Type mismatch: the type Duration was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Duration) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueDuration() { 
-          return this != null && this.defaultValue instanceof Duration;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public HumanName getDefaultValueHumanName() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new HumanName();
-          if (!(this.defaultValue instanceof HumanName))
-            throw new FHIRException("Type mismatch: the type HumanName was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (HumanName) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueHumanName() { 
-          return this != null && this.defaultValue instanceof HumanName;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Identifier getDefaultValueIdentifier() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Identifier();
-          if (!(this.defaultValue instanceof Identifier))
-            throw new FHIRException("Type mismatch: the type Identifier was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Identifier) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueIdentifier() { 
-          return this != null && this.defaultValue instanceof Identifier;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Money getDefaultValueMoney() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Money();
-          if (!(this.defaultValue instanceof Money))
-            throw new FHIRException("Type mismatch: the type Money was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Money) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueMoney() { 
-          return this != null && this.defaultValue instanceof Money;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Period getDefaultValuePeriod() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Period();
-          if (!(this.defaultValue instanceof Period))
-            throw new FHIRException("Type mismatch: the type Period was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Period) this.defaultValue;
-        }
-
-        public boolean hasDefaultValuePeriod() { 
-          return this != null && this.defaultValue instanceof Period;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Quantity getDefaultValueQuantity() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Quantity();
-          if (!(this.defaultValue instanceof Quantity))
-            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Quantity) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueQuantity() { 
-          return this != null && this.defaultValue instanceof Quantity;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Range getDefaultValueRange() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Range();
-          if (!(this.defaultValue instanceof Range))
-            throw new FHIRException("Type mismatch: the type Range was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Range) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueRange() { 
-          return this != null && this.defaultValue instanceof Range;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Ratio getDefaultValueRatio() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Ratio();
-          if (!(this.defaultValue instanceof Ratio))
-            throw new FHIRException("Type mismatch: the type Ratio was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Ratio) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueRatio() { 
-          return this != null && this.defaultValue instanceof Ratio;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Reference getDefaultValueReference() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Reference();
-          if (!(this.defaultValue instanceof Reference))
-            throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Reference) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueReference() { 
-          return this != null && this.defaultValue instanceof Reference;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public SampledData getDefaultValueSampledData() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new SampledData();
-          if (!(this.defaultValue instanceof SampledData))
-            throw new FHIRException("Type mismatch: the type SampledData was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (SampledData) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueSampledData() { 
-          return this != null && this.defaultValue instanceof SampledData;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Signature getDefaultValueSignature() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Signature();
-          if (!(this.defaultValue instanceof Signature))
-            throw new FHIRException("Type mismatch: the type Signature was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Signature) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueSignature() { 
-          return this != null && this.defaultValue instanceof Signature;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Timing getDefaultValueTiming() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Timing();
-          if (!(this.defaultValue instanceof Timing))
-            throw new FHIRException("Type mismatch: the type Timing was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Timing) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueTiming() { 
-          return this != null && this.defaultValue instanceof Timing;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public ContactDetail getDefaultValueContactDetail() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new ContactDetail();
-          if (!(this.defaultValue instanceof ContactDetail))
-            throw new FHIRException("Type mismatch: the type ContactDetail was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (ContactDetail) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueContactDetail() { 
-          return this != null && this.defaultValue instanceof ContactDetail;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Contributor getDefaultValueContributor() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Contributor();
-          if (!(this.defaultValue instanceof Contributor))
-            throw new FHIRException("Type mismatch: the type Contributor was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Contributor) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueContributor() { 
-          return this != null && this.defaultValue instanceof Contributor;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public DataRequirement getDefaultValueDataRequirement() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new DataRequirement();
-          if (!(this.defaultValue instanceof DataRequirement))
-            throw new FHIRException("Type mismatch: the type DataRequirement was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (DataRequirement) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueDataRequirement() { 
-          return this != null && this.defaultValue instanceof DataRequirement;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Expression getDefaultValueExpression() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Expression();
-          if (!(this.defaultValue instanceof Expression))
-            throw new FHIRException("Type mismatch: the type Expression was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Expression) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueExpression() { 
-          return this != null && this.defaultValue instanceof Expression;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public ParameterDefinition getDefaultValueParameterDefinition() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new ParameterDefinition();
-          if (!(this.defaultValue instanceof ParameterDefinition))
-            throw new FHIRException("Type mismatch: the type ParameterDefinition was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (ParameterDefinition) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueParameterDefinition() { 
-          return this != null && this.defaultValue instanceof ParameterDefinition;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public RelatedArtifact getDefaultValueRelatedArtifact() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new RelatedArtifact();
-          if (!(this.defaultValue instanceof RelatedArtifact))
-            throw new FHIRException("Type mismatch: the type RelatedArtifact was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (RelatedArtifact) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueRelatedArtifact() { 
-          return this != null && this.defaultValue instanceof RelatedArtifact;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public TriggerDefinition getDefaultValueTriggerDefinition() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new TriggerDefinition();
-          if (!(this.defaultValue instanceof TriggerDefinition))
-            throw new FHIRException("Type mismatch: the type TriggerDefinition was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (TriggerDefinition) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueTriggerDefinition() { 
-          return this != null && this.defaultValue instanceof TriggerDefinition;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public UsageContext getDefaultValueUsageContext() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new UsageContext();
-          if (!(this.defaultValue instanceof UsageContext))
-            throw new FHIRException("Type mismatch: the type UsageContext was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (UsageContext) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueUsageContext() { 
-          return this != null && this.defaultValue instanceof UsageContext;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Dosage getDefaultValueDosage() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Dosage();
-          if (!(this.defaultValue instanceof Dosage))
-            throw new FHIRException("Type mismatch: the type Dosage was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Dosage) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueDosage() { 
-          return this != null && this.defaultValue instanceof Dosage;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Meta getDefaultValueMeta() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Meta();
-          if (!(this.defaultValue instanceof Meta))
-            throw new FHIRException("Type mismatch: the type Meta was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Meta) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueMeta() { 
-          return this != null && this.defaultValue instanceof Meta;
+        public boolean hasDefaultValueElement() { 
+          return this.defaultValue != null && !this.defaultValue.isEmpty();
         }
 
         public boolean hasDefaultValue() { 
@@ -3951,12 +3195,31 @@ public String toString() {
         }
 
         /**
-         * @param value {@link #defaultValue} (A value to use if there is no existing value in the source object.)
+         * @param value {@link #defaultValue} (A value to use if there is no existing value in the source object.). This is the underlying object with id, value and extensions. The accessor "getDefaultValue" gives direct access to the value
          */
-        public StructureMapGroupRuleSourceComponent setDefaultValue(DataType value) { 
-          if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
-            throw new Error("Not the right type for StructureMap.group.rule.source.defaultValue[x]: "+value.fhirType());
+        public StructureMapGroupRuleSourceComponent setDefaultValueElement(StringType value) { 
           this.defaultValue = value;
+          return this;
+        }
+
+        /**
+         * @return A value to use if there is no existing value in the source object.
+         */
+        public String getDefaultValue() { 
+          return this.defaultValue == null ? null : this.defaultValue.getValue();
+        }
+
+        /**
+         * @param value A value to use if there is no existing value in the source object.
+         */
+        public StructureMapGroupRuleSourceComponent setDefaultValue(String value) { 
+          if (Utilities.noString(value))
+            this.defaultValue = null;
+          else {
+            if (this.defaultValue == null)
+              this.defaultValue = new StringType();
+            this.defaultValue.setValue(value);
+          }
           return this;
         }
 
@@ -4260,7 +3523,7 @@ public String toString() {
           children.add(new Property("min", "integer", "Specified minimum cardinality for the element. This is optional; if present, it acts an implicit check on the input content.", 0, 1, min));
           children.add(new Property("max", "string", "Specified maximum cardinality for the element - a number or a \"*\". This is optional; if present, it acts an implicit check on the input content (* just serves as documentation; it's the default value).", 0, 1, max));
           children.add(new Property("type", "string", "Specified type for the element. This works as a condition on the mapping - use for polymorphic elements.", 0, 1, type));
-          children.add(new Property("defaultValue[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue));
+          children.add(new Property("defaultValue", "string", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue));
           children.add(new Property("element", "string", "Optional field for this source.", 0, 1, element));
           children.add(new Property("listMode", "code", "How to handle the list mode for this element.", 0, 1, listMode));
           children.add(new Property("variable", "id", "Named context for field, if a field is specified.", 0, 1, variable));
@@ -4276,59 +3539,7 @@ public String toString() {
           case 108114: /*min*/  return new Property("min", "integer", "Specified minimum cardinality for the element. This is optional; if present, it acts an implicit check on the input content.", 0, 1, min);
           case 107876: /*max*/  return new Property("max", "string", "Specified maximum cardinality for the element - a number or a \"*\". This is optional; if present, it acts an implicit check on the input content (* just serves as documentation; it's the default value).", 0, 1, max);
           case 3575610: /*type*/  return new Property("type", "string", "Specified type for the element. This works as a condition on the mapping - use for polymorphic elements.", 0, 1, type);
-          case 587922128: /*defaultValue[x]*/  return new Property("defaultValue[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -659125328: /*defaultValue*/  return new Property("defaultValue[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 1470297600: /*defaultValueBase64Binary*/  return new Property("defaultValue[x]", "base64Binary", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 600437336: /*defaultValueBoolean*/  return new Property("defaultValue[x]", "boolean", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 264593188: /*defaultValueCanonical*/  return new Property("defaultValue[x]", "canonical", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 1044993469: /*defaultValueCode*/  return new Property("defaultValue[x]", "code", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 1045010302: /*defaultValueDate*/  return new Property("defaultValue[x]", "date", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 1220374379: /*defaultValueDateTime*/  return new Property("defaultValue[x]", "dateTime", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 2077989249: /*defaultValueDecimal*/  return new Property("defaultValue[x]", "decimal", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -2059245333: /*defaultValueId*/  return new Property("defaultValue[x]", "id", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -1801671663: /*defaultValueInstant*/  return new Property("defaultValue[x]", "instant", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -1801189522: /*defaultValueInteger*/  return new Property("defaultValue[x]", "integer", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -71308628: /*defaultValueInteger64*/  return new Property("defaultValue[x]", "integer64", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -325436225: /*defaultValueMarkdown*/  return new Property("defaultValue[x]", "markdown", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 587910138: /*defaultValueOid*/  return new Property("defaultValue[x]", "oid", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -737344154: /*defaultValuePositiveInt*/  return new Property("defaultValue[x]", "positiveInt", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -320515103: /*defaultValueString*/  return new Property("defaultValue[x]", "string", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 1045494429: /*defaultValueTime*/  return new Property("defaultValue[x]", "time", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 539117290: /*defaultValueUnsignedInt*/  return new Property("defaultValue[x]", "unsignedInt", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 587916188: /*defaultValueUri*/  return new Property("defaultValue[x]", "uri", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 587916191: /*defaultValueUrl*/  return new Property("defaultValue[x]", "url", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 1045535627: /*defaultValueUuid*/  return new Property("defaultValue[x]", "uuid", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -611966428: /*defaultValueAddress*/  return new Property("defaultValue[x]", "Address", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 587896623: /*defaultValueAge*/  return new Property("defaultValue[x]", "Age", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -1851689217: /*defaultValueAnnotation*/  return new Property("defaultValue[x]", "Annotation", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 2034820339: /*defaultValueAttachment*/  return new Property("defaultValue[x]", "Attachment", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -410434095: /*defaultValueCodeableConcept*/  return new Property("defaultValue[x]", "CodeableConcept", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -783616198: /*defaultValueCoding*/  return new Property("defaultValue[x]", "Coding", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -344740576: /*defaultValueContactPoint*/  return new Property("defaultValue[x]", "ContactPoint", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -1964924097: /*defaultValueCount*/  return new Property("defaultValue[x]", "Count", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -283915323: /*defaultValueDistance*/  return new Property("defaultValue[x]", "Distance", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 1730579812: /*defaultValueDuration*/  return new Property("defaultValue[x]", "Duration", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -975393912: /*defaultValueHumanName*/  return new Property("defaultValue[x]", "HumanName", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -1915078535: /*defaultValueIdentifier*/  return new Property("defaultValue[x]", "Identifier", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -1955695888: /*defaultValueMoney*/  return new Property("defaultValue[x]", "Money", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -420255343: /*defaultValuePeriod*/  return new Property("defaultValue[x]", "Period", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -1857379237: /*defaultValueQuantity*/  return new Property("defaultValue[x]", "Quantity", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -1951495315: /*defaultValueRange*/  return new Property("defaultValue[x]", "Range", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -1951489477: /*defaultValueRatio*/  return new Property("defaultValue[x]", "Ratio", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -1488914053: /*defaultValueReference*/  return new Property("defaultValue[x]", "Reference", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -449641228: /*defaultValueSampledData*/  return new Property("defaultValue[x]", "SampledData", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 509825768: /*defaultValueSignature*/  return new Property("defaultValue[x]", "Signature", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -302193638: /*defaultValueTiming*/  return new Property("defaultValue[x]", "Timing", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 1845473985: /*defaultValueContactDetail*/  return new Property("defaultValue[x]", "ContactDetail", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 1793609483: /*defaultValueContributor*/  return new Property("defaultValue[x]", "Contributor", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 375217257: /*defaultValueDataRequirement*/  return new Property("defaultValue[x]", "DataRequirement", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -2092097944: /*defaultValueExpression*/  return new Property("defaultValue[x]", "Expression", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -701053940: /*defaultValueParameterDefinition*/  return new Property("defaultValue[x]", "ParameterDefinition", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 412877133: /*defaultValueRelatedArtifact*/  return new Property("defaultValue[x]", "RelatedArtifact", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 1913203547: /*defaultValueTriggerDefinition*/  return new Property("defaultValue[x]", "TriggerDefinition", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -701644642: /*defaultValueUsageContext*/  return new Property("defaultValue[x]", "UsageContext", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -754548089: /*defaultValueDosage*/  return new Property("defaultValue[x]", "Dosage", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 1045282261: /*defaultValueMeta*/  return new Property("defaultValue[x]", "Meta", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
+          case -659125328: /*defaultValue*/  return new Property("defaultValue", "string", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
           case -1662836996: /*element*/  return new Property("element", "string", "Optional field for this source.", 0, 1, element);
           case 1345445729: /*listMode*/  return new Property("listMode", "code", "How to handle the list mode for this element.", 0, 1, listMode);
           case -1249586564: /*variable*/  return new Property("variable", "id", "Named context for field, if a field is specified.", 0, 1, variable);
@@ -4347,7 +3558,7 @@ public String toString() {
         case 108114: /*min*/ return this.min == null ? new Base[0] : new Base[] {this.min}; // IntegerType
         case 107876: /*max*/ return this.max == null ? new Base[0] : new Base[] {this.max}; // StringType
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // StringType
-        case -659125328: /*defaultValue*/ return this.defaultValue == null ? new Base[0] : new Base[] {this.defaultValue}; // DataType
+        case -659125328: /*defaultValue*/ return this.defaultValue == null ? new Base[0] : new Base[] {this.defaultValue}; // StringType
         case -1662836996: /*element*/ return this.element == null ? new Base[0] : new Base[] {this.element}; // StringType
         case 1345445729: /*listMode*/ return this.listMode == null ? new Base[0] : new Base[] {this.listMode}; // Enumeration<StructureMapSourceListMode>
         case -1249586564: /*variable*/ return this.variable == null ? new Base[0] : new Base[] {this.variable}; // IdType
@@ -4375,7 +3586,7 @@ public String toString() {
           this.type = TypeConvertor.castToString(value); // StringType
           return value;
         case -659125328: // defaultValue
-          this.defaultValue = TypeConvertor.castToType(value); // DataType
+          this.defaultValue = TypeConvertor.castToString(value); // StringType
           return value;
         case -1662836996: // element
           this.element = TypeConvertor.castToString(value); // StringType
@@ -4411,8 +3622,8 @@ public String toString() {
           this.max = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("type")) {
           this.type = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("defaultValue[x]")) {
-          this.defaultValue = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("defaultValue")) {
+          this.defaultValue = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("element")) {
           this.element = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("listMode")) {
@@ -4438,8 +3649,7 @@ public String toString() {
         case 108114:  return getMinElement();
         case 107876:  return getMaxElement();
         case 3575610:  return getTypeElement();
-        case 587922128:  return getDefaultValue();
-        case -659125328:  return getDefaultValue();
+        case -659125328:  return getDefaultValueElement();
         case -1662836996:  return getElementElement();
         case 1345445729:  return getListModeElement();
         case -1249586564:  return getVariableElement();
@@ -4458,7 +3668,7 @@ public String toString() {
         case 108114: /*min*/ return new String[] {"integer"};
         case 107876: /*max*/ return new String[] {"string"};
         case 3575610: /*type*/ return new String[] {"string"};
-        case -659125328: /*defaultValue*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
+        case -659125328: /*defaultValue*/ return new String[] {"string"};
         case -1662836996: /*element*/ return new String[] {"string"};
         case 1345445729: /*listMode*/ return new String[] {"code"};
         case -1249586564: /*variable*/ return new String[] {"id"};
@@ -4484,209 +3694,8 @@ public String toString() {
         else if (name.equals("type")) {
           throw new FHIRException("Cannot call addChild on a primitive type StructureMap.group.rule.source.type");
         }
-        else if (name.equals("defaultValueBase64Binary")) {
-          this.defaultValue = new Base64BinaryType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueBoolean")) {
-          this.defaultValue = new BooleanType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueCanonical")) {
-          this.defaultValue = new CanonicalType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueCode")) {
-          this.defaultValue = new CodeType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueDate")) {
-          this.defaultValue = new DateType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueDateTime")) {
-          this.defaultValue = new DateTimeType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueDecimal")) {
-          this.defaultValue = new DecimalType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueId")) {
-          this.defaultValue = new IdType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueInstant")) {
-          this.defaultValue = new InstantType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueInteger")) {
-          this.defaultValue = new IntegerType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueInteger64")) {
-          this.defaultValue = new Integer64Type();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueMarkdown")) {
-          this.defaultValue = new MarkdownType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueOid")) {
-          this.defaultValue = new OidType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValuePositiveInt")) {
-          this.defaultValue = new PositiveIntType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueString")) {
-          this.defaultValue = new StringType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueTime")) {
-          this.defaultValue = new TimeType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueUnsignedInt")) {
-          this.defaultValue = new UnsignedIntType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueUri")) {
-          this.defaultValue = new UriType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueUrl")) {
-          this.defaultValue = new UrlType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueUuid")) {
-          this.defaultValue = new UuidType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueAddress")) {
-          this.defaultValue = new Address();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueAge")) {
-          this.defaultValue = new Age();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueAnnotation")) {
-          this.defaultValue = new Annotation();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueAttachment")) {
-          this.defaultValue = new Attachment();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueCodeableConcept")) {
-          this.defaultValue = new CodeableConcept();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueCoding")) {
-          this.defaultValue = new Coding();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueContactPoint")) {
-          this.defaultValue = new ContactPoint();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueCount")) {
-          this.defaultValue = new Count();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueDistance")) {
-          this.defaultValue = new Distance();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueDuration")) {
-          this.defaultValue = new Duration();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueHumanName")) {
-          this.defaultValue = new HumanName();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueIdentifier")) {
-          this.defaultValue = new Identifier();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueMoney")) {
-          this.defaultValue = new Money();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValuePeriod")) {
-          this.defaultValue = new Period();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueQuantity")) {
-          this.defaultValue = new Quantity();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueRange")) {
-          this.defaultValue = new Range();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueRatio")) {
-          this.defaultValue = new Ratio();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueReference")) {
-          this.defaultValue = new Reference();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueSampledData")) {
-          this.defaultValue = new SampledData();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueSignature")) {
-          this.defaultValue = new Signature();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueTiming")) {
-          this.defaultValue = new Timing();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueContactDetail")) {
-          this.defaultValue = new ContactDetail();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueContributor")) {
-          this.defaultValue = new Contributor();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueDataRequirement")) {
-          this.defaultValue = new DataRequirement();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueExpression")) {
-          this.defaultValue = new Expression();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueParameterDefinition")) {
-          this.defaultValue = new ParameterDefinition();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueRelatedArtifact")) {
-          this.defaultValue = new RelatedArtifact();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueTriggerDefinition")) {
-          this.defaultValue = new TriggerDefinition();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueUsageContext")) {
-          this.defaultValue = new UsageContext();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueDosage")) {
-          this.defaultValue = new Dosage();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueMeta")) {
-          this.defaultValue = new Meta();
-          return this.defaultValue;
+        else if (name.equals("defaultValue")) {
+          throw new FHIRException("Cannot call addChild on a primitive type StructureMap.group.rule.source.defaultValue");
         }
         else if (name.equals("element")) {
           throw new FHIRException("Cannot call addChild on a primitive type StructureMap.group.rule.source.element");
@@ -4752,9 +3761,9 @@ public String toString() {
           return false;
         StructureMapGroupRuleSourceComponent o = (StructureMapGroupRuleSourceComponent) other_;
         return compareValues(context, o.context, true) && compareValues(min, o.min, true) && compareValues(max, o.max, true)
-           && compareValues(type, o.type, true) && compareValues(element, o.element, true) && compareValues(listMode, o.listMode, true)
-           && compareValues(variable, o.variable, true) && compareValues(condition, o.condition, true) && compareValues(check, o.check, true)
-           && compareValues(logMessage, o.logMessage, true);
+           && compareValues(type, o.type, true) && compareValues(defaultValue, o.defaultValue, true) && compareValues(element, o.element, true)
+           && compareValues(listMode, o.listMode, true) && compareValues(variable, o.variable, true) && compareValues(condition, o.condition, true)
+           && compareValues(check, o.check, true) && compareValues(logMessage, o.logMessage, true);
       }
 
       public boolean isEmpty() {
@@ -5418,7 +4427,7 @@ public String toString() {
         /**
          * Parameter value - variable or literal.
          */
-        @Child(name = "value", type = {IdType.class, StringType.class, BooleanType.class, IntegerType.class, DecimalType.class}, order=1, min=1, max=1, modifier=false, summary=true)
+        @Child(name = "value", type = {IdType.class, StringType.class, BooleanType.class, IntegerType.class, DecimalType.class, DateType.class, TimeType.class, DateTimeType.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Parameter value - variable or literal", formalDefinition="Parameter value - variable or literal." )
         protected DataType value;
 
@@ -5521,6 +4530,51 @@ public String toString() {
           return this != null && this.value instanceof DecimalType;
         }
 
+        /**
+         * @return {@link #value} (Parameter value - variable or literal.)
+         */
+        public DateType getValueDateType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DateType();
+          if (!(this.value instanceof DateType))
+            throw new FHIRException("Type mismatch: the type DateType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DateType) this.value;
+        }
+
+        public boolean hasValueDateType() { 
+          return this != null && this.value instanceof DateType;
+        }
+
+        /**
+         * @return {@link #value} (Parameter value - variable or literal.)
+         */
+        public TimeType getValueTimeType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new TimeType();
+          if (!(this.value instanceof TimeType))
+            throw new FHIRException("Type mismatch: the type TimeType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (TimeType) this.value;
+        }
+
+        public boolean hasValueTimeType() { 
+          return this != null && this.value instanceof TimeType;
+        }
+
+        /**
+         * @return {@link #value} (Parameter value - variable or literal.)
+         */
+        public DateTimeType getValueDateTimeType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DateTimeType();
+          if (!(this.value instanceof DateTimeType))
+            throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DateTimeType) this.value;
+        }
+
+        public boolean hasValueDateTimeType() { 
+          return this != null && this.value instanceof DateTimeType;
+        }
+
         public boolean hasValue() { 
           return this.value != null && !this.value.isEmpty();
         }
@@ -5529,7 +4583,7 @@ public String toString() {
          * @param value {@link #value} (Parameter value - variable or literal.)
          */
         public StructureMapGroupRuleTargetParameterComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof IdType || value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof DecimalType))
+          if (value != null && !(value instanceof IdType || value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof DecimalType || value instanceof DateType || value instanceof TimeType || value instanceof DateTimeType))
             throw new Error("Not the right type for StructureMap.group.rule.target.parameter.value[x]: "+value.fhirType());
           this.value = value;
           return this;
@@ -5537,19 +4591,22 @@ public String toString() {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("value[x]", "id|string|boolean|integer|decimal", "Parameter value - variable or literal.", 0, 1, value));
+          children.add(new Property("value[x]", "id|string|boolean|integer|decimal|date|time|dateTime", "Parameter value - variable or literal.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "id|string|boolean|integer|decimal", "Parameter value - variable or literal.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "id|string|boolean|integer|decimal", "Parameter value - variable or literal.", 0, 1, value);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "id|string|boolean|integer|decimal|date|time|dateTime", "Parameter value - variable or literal.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "id|string|boolean|integer|decimal|date|time|dateTime", "Parameter value - variable or literal.", 0, 1, value);
           case 231604844: /*valueId*/  return new Property("value[x]", "id", "Parameter value - variable or literal.", 0, 1, value);
           case -1424603934: /*valueString*/  return new Property("value[x]", "string", "Parameter value - variable or literal.", 0, 1, value);
           case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "Parameter value - variable or literal.", 0, 1, value);
           case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "Parameter value - variable or literal.", 0, 1, value);
           case -2083993440: /*valueDecimal*/  return new Property("value[x]", "decimal", "Parameter value - variable or literal.", 0, 1, value);
+          case -766192449: /*valueDate*/  return new Property("value[x]", "date", "Parameter value - variable or literal.", 0, 1, value);
+          case -765708322: /*valueTime*/  return new Property("value[x]", "time", "Parameter value - variable or literal.", 0, 1, value);
+          case 1047929900: /*valueDateTime*/  return new Property("value[x]", "dateTime", "Parameter value - variable or literal.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -5597,7 +4654,7 @@ public String toString() {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 111972721: /*value*/ return new String[] {"id", "string", "boolean", "integer", "decimal"};
+        case 111972721: /*value*/ return new String[] {"id", "string", "boolean", "integer", "decimal", "date", "time", "dateTime"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -5623,6 +4680,18 @@ public String toString() {
         }
         else if (name.equals("valueDecimal")) {
           this.value = new DecimalType();
+          return this.value;
+        }
+        else if (name.equals("valueDate")) {
+          this.value = new DateType();
+          return this.value;
+        }
+        else if (name.equals("valueTime")) {
+          this.value = new TimeType();
+          return this.value;
+        }
+        else if (name.equals("valueDateTime")) {
+          this.value = new DateTimeType();
           return this.value;
         }
         else
@@ -5686,13 +4755,13 @@ public String toString() {
         protected IdType name;
 
         /**
-         * Variable to pass to the rule or group.
+         * Parameter to pass to the rule or group.
          */
-        @Child(name = "variable", type = {StringType.class}, order=2, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Variable to pass to the rule or group", formalDefinition="Variable to pass to the rule or group." )
-        protected List<StringType> variable;
+        @Child(name = "parameter", type = {StructureMapGroupRuleTargetParameterComponent.class}, order=2, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Description(shortDefinition="Parameter to pass to the rule or group", formalDefinition="Parameter to pass to the rule or group." )
+        protected List<StructureMapGroupRuleTargetParameterComponent> parameter;
 
-        private static final long serialVersionUID = 1021661591L;
+        private static final long serialVersionUID = -290346576L;
 
     /**
      * Constructor
@@ -5704,10 +4773,10 @@ public String toString() {
     /**
      * Constructor
      */
-      public StructureMapGroupRuleDependentComponent(String name, String variable) {
+      public StructureMapGroupRuleDependentComponent(String name, StructureMapGroupRuleTargetParameterComponent parameter) {
         super();
         this.setName(name);
-        this.addVariable(variable);
+        this.addParameter(parameter);
       }
 
         /**
@@ -5756,77 +4825,69 @@ public String toString() {
         }
 
         /**
-         * @return {@link #variable} (Variable to pass to the rule or group.)
+         * @return {@link #parameter} (Parameter to pass to the rule or group.)
          */
-        public List<StringType> getVariable() { 
-          if (this.variable == null)
-            this.variable = new ArrayList<StringType>();
-          return this.variable;
+        public List<StructureMapGroupRuleTargetParameterComponent> getParameter() { 
+          if (this.parameter == null)
+            this.parameter = new ArrayList<StructureMapGroupRuleTargetParameterComponent>();
+          return this.parameter;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public StructureMapGroupRuleDependentComponent setVariable(List<StringType> theVariable) { 
-          this.variable = theVariable;
+        public StructureMapGroupRuleDependentComponent setParameter(List<StructureMapGroupRuleTargetParameterComponent> theParameter) { 
+          this.parameter = theParameter;
           return this;
         }
 
-        public boolean hasVariable() { 
-          if (this.variable == null)
+        public boolean hasParameter() { 
+          if (this.parameter == null)
             return false;
-          for (StringType item : this.variable)
+          for (StructureMapGroupRuleTargetParameterComponent item : this.parameter)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        /**
-         * @return {@link #variable} (Variable to pass to the rule or group.)
-         */
-        public StringType addVariableElement() {//2 
-          StringType t = new StringType();
-          if (this.variable == null)
-            this.variable = new ArrayList<StringType>();
-          this.variable.add(t);
+        public StructureMapGroupRuleTargetParameterComponent addParameter() { //3
+          StructureMapGroupRuleTargetParameterComponent t = new StructureMapGroupRuleTargetParameterComponent();
+          if (this.parameter == null)
+            this.parameter = new ArrayList<StructureMapGroupRuleTargetParameterComponent>();
+          this.parameter.add(t);
           return t;
         }
 
-        /**
-         * @param value {@link #variable} (Variable to pass to the rule or group.)
-         */
-        public StructureMapGroupRuleDependentComponent addVariable(String value) { //1
-          StringType t = new StringType();
-          t.setValue(value);
-          if (this.variable == null)
-            this.variable = new ArrayList<StringType>();
-          this.variable.add(t);
+        public StructureMapGroupRuleDependentComponent addParameter(StructureMapGroupRuleTargetParameterComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.parameter == null)
+            this.parameter = new ArrayList<StructureMapGroupRuleTargetParameterComponent>();
+          this.parameter.add(t);
           return this;
         }
 
         /**
-         * @param value {@link #variable} (Variable to pass to the rule or group.)
+         * @return The first repetition of repeating field {@link #parameter}, creating it if it does not already exist {3}
          */
-        public boolean hasVariable(String value) { 
-          if (this.variable == null)
-            return false;
-          for (StringType v : this.variable)
-            if (v.getValue().equals(value)) // string
-              return true;
-          return false;
+        public StructureMapGroupRuleTargetParameterComponent getParameterFirstRep() { 
+          if (getParameter().isEmpty()) {
+            addParameter();
+          }
+          return getParameter().get(0);
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("name", "id", "Name of a rule or group to apply.", 0, 1, name));
-          children.add(new Property("variable", "string", "Variable to pass to the rule or group.", 0, java.lang.Integer.MAX_VALUE, variable));
+          children.add(new Property("parameter", "@StructureMap.group.rule.target.parameter", "Parameter to pass to the rule or group.", 0, java.lang.Integer.MAX_VALUE, parameter));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3373707: /*name*/  return new Property("name", "id", "Name of a rule or group to apply.", 0, 1, name);
-          case -1249586564: /*variable*/  return new Property("variable", "string", "Variable to pass to the rule or group.", 0, java.lang.Integer.MAX_VALUE, variable);
+          case 1954460585: /*parameter*/  return new Property("parameter", "@StructureMap.group.rule.target.parameter", "Parameter to pass to the rule or group.", 0, java.lang.Integer.MAX_VALUE, parameter);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -5836,7 +4897,7 @@ public String toString() {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // IdType
-        case -1249586564: /*variable*/ return this.variable == null ? new Base[0] : this.variable.toArray(new Base[this.variable.size()]); // StringType
+        case 1954460585: /*parameter*/ return this.parameter == null ? new Base[0] : this.parameter.toArray(new Base[this.parameter.size()]); // StructureMapGroupRuleTargetParameterComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -5848,8 +4909,8 @@ public String toString() {
         case 3373707: // name
           this.name = TypeConvertor.castToId(value); // IdType
           return value;
-        case -1249586564: // variable
-          this.getVariable().add(TypeConvertor.castToString(value)); // StringType
+        case 1954460585: // parameter
+          this.getParameter().add((StructureMapGroupRuleTargetParameterComponent) value); // StructureMapGroupRuleTargetParameterComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -5860,8 +4921,8 @@ public String toString() {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name")) {
           this.name = TypeConvertor.castToId(value); // IdType
-        } else if (name.equals("variable")) {
-          this.getVariable().add(TypeConvertor.castToString(value));
+        } else if (name.equals("parameter")) {
+          this.getParameter().add((StructureMapGroupRuleTargetParameterComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -5871,7 +4932,7 @@ public String toString() {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3373707:  return getNameElement();
-        case -1249586564:  return addVariableElement();
+        case 1954460585:  return addParameter(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -5881,7 +4942,7 @@ public String toString() {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3373707: /*name*/ return new String[] {"id"};
-        case -1249586564: /*variable*/ return new String[] {"string"};
+        case 1954460585: /*parameter*/ return new String[] {"@StructureMap.group.rule.target.parameter"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -5892,8 +4953,8 @@ public String toString() {
         if (name.equals("name")) {
           throw new FHIRException("Cannot call addChild on a primitive type StructureMap.group.rule.dependent.name");
         }
-        else if (name.equals("variable")) {
-          throw new FHIRException("Cannot call addChild on a primitive type StructureMap.group.rule.dependent.variable");
+        else if (name.equals("parameter")) {
+          return addParameter();
         }
         else
           return super.addChild(name);
@@ -5908,10 +4969,10 @@ public String toString() {
       public void copyValues(StructureMapGroupRuleDependentComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
-        if (variable != null) {
-          dst.variable = new ArrayList<StringType>();
-          for (StringType i : variable)
-            dst.variable.add(i.copy());
+        if (parameter != null) {
+          dst.parameter = new ArrayList<StructureMapGroupRuleTargetParameterComponent>();
+          for (StructureMapGroupRuleTargetParameterComponent i : parameter)
+            dst.parameter.add(i.copy());
         };
       }
 
@@ -5922,7 +4983,7 @@ public String toString() {
         if (!(other_ instanceof StructureMapGroupRuleDependentComponent))
           return false;
         StructureMapGroupRuleDependentComponent o = (StructureMapGroupRuleDependentComponent) other_;
-        return compareDeep(name, o.name, true) && compareDeep(variable, o.variable, true);
+        return compareDeep(name, o.name, true) && compareDeep(parameter, o.parameter, true);
       }
 
       @Override
@@ -5932,11 +4993,11 @@ public String toString() {
         if (!(other_ instanceof StructureMapGroupRuleDependentComponent))
           return false;
         StructureMapGroupRuleDependentComponent o = (StructureMapGroupRuleDependentComponent) other_;
-        return compareValues(name, o.name, true) && compareValues(variable, o.variable, true);
+        return compareValues(name, o.name, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, variable);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, parameter);
       }
 
   public String fhirType() {
@@ -7394,762 +6455,6 @@ public String toString() {
   public ResourceType getResourceType() {
     return ResourceType.StructureMap;
    }
-
- /**
-   * Search parameter: <b>context</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement
-* [CodeSystem](codesystem.html): A use context assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A use context assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition
-* [NamingSystem](namingsystem.html): A use context assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition
-* [SearchParameter](searchparameter.html): A use context assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition
-* [StructureMap](structuremap.html): A use context assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities
-* [ValueSet](valueset.html): A use context assigned to the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(CapabilityStatement.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context", path="(CapabilityStatement.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement\r\n* [CodeSystem](codesystem.html): A use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context assigned to the concept map\r\n* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide\r\n* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition\r\n* [SearchParameter](searchparameter.html): A use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities\r\n* [ValueSet](valueset.html): A use context assigned to the value set\r\n", type="token" )
-  public static final String SP_CONTEXT = "context";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement
-* [CodeSystem](codesystem.html): A use context assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A use context assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition
-* [NamingSystem](namingsystem.html): A use context assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition
-* [SearchParameter](searchparameter.html): A use context assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition
-* [StructureMap](structuremap.html): A use context assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities
-* [ValueSet](valueset.html): A use context assigned to the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(CapabilityStatement.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
-
- /**
-   * Search parameter: <b>context-quantity</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A quantity- or range-valued use context assigned to the capability statement
-* [CodeSystem](codesystem.html): A quantity- or range-valued use context assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A quantity- or range-valued use context assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A quantity- or range-valued use context assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A quantity- or range-valued use context assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A quantity- or range-valued use context assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A quantity- or range-valued use context assigned to the message definition
-* [NamingSystem](namingsystem.html): A quantity- or range-valued use context assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A quantity- or range-valued use context assigned to the operation definition
-* [SearchParameter](searchparameter.html): A quantity- or range-valued use context assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A quantity- or range-valued use context assigned to the structure definition
-* [StructureMap](structuremap.html): A quantity- or range-valued use context assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A quantity- or range-valued use context assigned to the terminology capabilities
-* [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set
-</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>(CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range) | (CodeSystem.useContext.value as Quantity) | (CodeSystem.useContext.value as Range) | (CompartmentDefinition.useContext.value as Quantity) | (CompartmentDefinition.useContext.value as Range) | (ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range) | (GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range) | (ImplementationGuide.useContext.value as Quantity) | (ImplementationGuide.useContext.value as Range) | (MessageDefinition.useContext.value as Quantity) | (MessageDefinition.useContext.value as Range) | (NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range) | (OperationDefinition.useContext.value as Quantity) | (OperationDefinition.useContext.value as Range) | (SearchParameter.useContext.value as Quantity) | (SearchParameter.useContext.value as Range) | (StructureDefinition.useContext.value as Quantity) | (StructureDefinition.useContext.value as Range) | (StructureMap.useContext.value as Quantity) | (StructureMap.useContext.value as Range) | (TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range) | (ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-quantity", path="(CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range) | (CodeSystem.useContext.value as Quantity) | (CodeSystem.useContext.value as Range) | (CompartmentDefinition.useContext.value as Quantity) | (CompartmentDefinition.useContext.value as Range) | (ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range) | (GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range) | (ImplementationGuide.useContext.value as Quantity) | (ImplementationGuide.useContext.value as Range) | (MessageDefinition.useContext.value as Quantity) | (MessageDefinition.useContext.value as Range) | (NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range) | (OperationDefinition.useContext.value as Quantity) | (OperationDefinition.useContext.value as Range) | (SearchParameter.useContext.value as Quantity) | (SearchParameter.useContext.value as Range) | (StructureDefinition.useContext.value as Quantity) | (StructureDefinition.useContext.value as Range) | (StructureMap.useContext.value as Quantity) | (StructureMap.useContext.value as Range) | (TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range) | (ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range)", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): A quantity- or range-valued use context assigned to the capability statement\r\n* [CodeSystem](codesystem.html): A quantity- or range-valued use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A quantity- or range-valued use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A quantity- or range-valued use context assigned to the concept map\r\n* [GraphDefinition](graphdefinition.html): A quantity- or range-valued use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A quantity- or range-valued use context assigned to the implementation guide\r\n* [MessageDefinition](messagedefinition.html): A quantity- or range-valued use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A quantity- or range-valued use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A quantity- or range-valued use context assigned to the operation definition\r\n* [SearchParameter](searchparameter.html): A quantity- or range-valued use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A quantity- or range-valued use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A quantity- or range-valued use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A quantity- or range-valued use context assigned to the terminology capabilities\r\n* [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set\r\n", type="quantity" )
-  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A quantity- or range-valued use context assigned to the capability statement
-* [CodeSystem](codesystem.html): A quantity- or range-valued use context assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A quantity- or range-valued use context assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A quantity- or range-valued use context assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A quantity- or range-valued use context assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A quantity- or range-valued use context assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A quantity- or range-valued use context assigned to the message definition
-* [NamingSystem](namingsystem.html): A quantity- or range-valued use context assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A quantity- or range-valued use context assigned to the operation definition
-* [SearchParameter](searchparameter.html): A quantity- or range-valued use context assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A quantity- or range-valued use context assigned to the structure definition
-* [StructureMap](structuremap.html): A quantity- or range-valued use context assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A quantity- or range-valued use context assigned to the terminology capabilities
-* [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set
-</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>(CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range) | (CodeSystem.useContext.value as Quantity) | (CodeSystem.useContext.value as Range) | (CompartmentDefinition.useContext.value as Quantity) | (CompartmentDefinition.useContext.value as Range) | (ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range) | (GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range) | (ImplementationGuide.useContext.value as Quantity) | (ImplementationGuide.useContext.value as Range) | (MessageDefinition.useContext.value as Quantity) | (MessageDefinition.useContext.value as Range) | (NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range) | (OperationDefinition.useContext.value as Quantity) | (OperationDefinition.useContext.value as Range) | (SearchParameter.useContext.value as Quantity) | (SearchParameter.useContext.value as Range) | (StructureDefinition.useContext.value as Quantity) | (StructureDefinition.useContext.value as Range) | (StructureMap.useContext.value as Quantity) | (StructureMap.useContext.value as Range) | (TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range) | (ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
-
- /**
-   * Search parameter: <b>context-type</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A type of use context assigned to the capability statement
-* [CodeSystem](codesystem.html): A type of use context assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A type of use context assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A type of use context assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A type of use context assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A type of use context assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A type of use context assigned to the message definition
-* [NamingSystem](namingsystem.html): A type of use context assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A type of use context assigned to the operation definition
-* [SearchParameter](searchparameter.html): A type of use context assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A type of use context assigned to the structure definition
-* [StructureMap](structuremap.html): A type of use context assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A type of use context assigned to the terminology capabilities
-* [ValueSet](valueset.html): A type of use context assigned to the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.useContext.code | CodeSystem.useContext.code | CompartmentDefinition.useContext.code | ConceptMap.useContext.code | GraphDefinition.useContext.code | ImplementationGuide.useContext.code | MessageDefinition.useContext.code | NamingSystem.useContext.code | OperationDefinition.useContext.code | SearchParameter.useContext.code | StructureDefinition.useContext.code | StructureMap.useContext.code | TerminologyCapabilities.useContext.code | ValueSet.useContext.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type", path="CapabilityStatement.useContext.code | CodeSystem.useContext.code | CompartmentDefinition.useContext.code | ConceptMap.useContext.code | GraphDefinition.useContext.code | ImplementationGuide.useContext.code | MessageDefinition.useContext.code | NamingSystem.useContext.code | OperationDefinition.useContext.code | SearchParameter.useContext.code | StructureDefinition.useContext.code | StructureMap.useContext.code | TerminologyCapabilities.useContext.code | ValueSet.useContext.code", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): A type of use context assigned to the capability statement\r\n* [CodeSystem](codesystem.html): A type of use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A type of use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A type of use context assigned to the concept map\r\n* [GraphDefinition](graphdefinition.html): A type of use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A type of use context assigned to the implementation guide\r\n* [MessageDefinition](messagedefinition.html): A type of use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A type of use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A type of use context assigned to the operation definition\r\n* [SearchParameter](searchparameter.html): A type of use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A type of use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A type of use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A type of use context assigned to the terminology capabilities\r\n* [ValueSet](valueset.html): A type of use context assigned to the value set\r\n", type="token" )
-  public static final String SP_CONTEXT_TYPE = "context-type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A type of use context assigned to the capability statement
-* [CodeSystem](codesystem.html): A type of use context assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A type of use context assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A type of use context assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A type of use context assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A type of use context assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A type of use context assigned to the message definition
-* [NamingSystem](namingsystem.html): A type of use context assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A type of use context assigned to the operation definition
-* [SearchParameter](searchparameter.html): A type of use context assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A type of use context assigned to the structure definition
-* [StructureMap](structuremap.html): A type of use context assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A type of use context assigned to the terminology capabilities
-* [ValueSet](valueset.html): A type of use context assigned to the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.useContext.code | CodeSystem.useContext.code | CompartmentDefinition.useContext.code | ConceptMap.useContext.code | GraphDefinition.useContext.code | ImplementationGuide.useContext.code | MessageDefinition.useContext.code | NamingSystem.useContext.code | OperationDefinition.useContext.code | SearchParameter.useContext.code | StructureDefinition.useContext.code | StructureMap.useContext.code | TerminologyCapabilities.useContext.code | ValueSet.useContext.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
-
- /**
-   * Search parameter: <b>date</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The capability statement publication date
-* [CodeSystem](codesystem.html): The code system publication date
-* [CompartmentDefinition](compartmentdefinition.html): The compartment definition publication date
-* [ConceptMap](conceptmap.html): The concept map publication date
-* [GraphDefinition](graphdefinition.html): The graph definition publication date
-* [ImplementationGuide](implementationguide.html): The implementation guide publication date
-* [MessageDefinition](messagedefinition.html): The message definition publication date
-* [NamingSystem](namingsystem.html): The naming system publication date
-* [OperationDefinition](operationdefinition.html): The operation definition publication date
-* [SearchParameter](searchparameter.html): The search parameter publication date
-* [StructureDefinition](structuredefinition.html): The structure definition publication date
-* [StructureMap](structuremap.html): The structure map publication date
-* [TerminologyCapabilities](terminologycapabilities.html): The terminology capabilities publication date
-* [ValueSet](valueset.html): The value set publication date
-</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>CapabilityStatement.date | CodeSystem.date | CompartmentDefinition.date | ConceptMap.date | GraphDefinition.date | ImplementationGuide.date | MessageDefinition.date | NamingSystem.date | OperationDefinition.date | SearchParameter.date | StructureDefinition.date | StructureMap.date | TerminologyCapabilities.date | ValueSet.date</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="date", path="CapabilityStatement.date | CodeSystem.date | CompartmentDefinition.date | ConceptMap.date | GraphDefinition.date | ImplementationGuide.date | MessageDefinition.date | NamingSystem.date | OperationDefinition.date | SearchParameter.date | StructureDefinition.date | StructureMap.date | TerminologyCapabilities.date | ValueSet.date", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The capability statement publication date\r\n* [CodeSystem](codesystem.html): The code system publication date\r\n* [CompartmentDefinition](compartmentdefinition.html): The compartment definition publication date\r\n* [ConceptMap](conceptmap.html): The concept map publication date\r\n* [GraphDefinition](graphdefinition.html): The graph definition publication date\r\n* [ImplementationGuide](implementationguide.html): The implementation guide publication date\r\n* [MessageDefinition](messagedefinition.html): The message definition publication date\r\n* [NamingSystem](namingsystem.html): The naming system publication date\r\n* [OperationDefinition](operationdefinition.html): The operation definition publication date\r\n* [SearchParameter](searchparameter.html): The search parameter publication date\r\n* [StructureDefinition](structuredefinition.html): The structure definition publication date\r\n* [StructureMap](structuremap.html): The structure map publication date\r\n* [TerminologyCapabilities](terminologycapabilities.html): The terminology capabilities publication date\r\n* [ValueSet](valueset.html): The value set publication date\r\n", type="date" )
-  public static final String SP_DATE = "date";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>date</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The capability statement publication date
-* [CodeSystem](codesystem.html): The code system publication date
-* [CompartmentDefinition](compartmentdefinition.html): The compartment definition publication date
-* [ConceptMap](conceptmap.html): The concept map publication date
-* [GraphDefinition](graphdefinition.html): The graph definition publication date
-* [ImplementationGuide](implementationguide.html): The implementation guide publication date
-* [MessageDefinition](messagedefinition.html): The message definition publication date
-* [NamingSystem](namingsystem.html): The naming system publication date
-* [OperationDefinition](operationdefinition.html): The operation definition publication date
-* [SearchParameter](searchparameter.html): The search parameter publication date
-* [StructureDefinition](structuredefinition.html): The structure definition publication date
-* [StructureMap](structuremap.html): The structure map publication date
-* [TerminologyCapabilities](terminologycapabilities.html): The terminology capabilities publication date
-* [ValueSet](valueset.html): The value set publication date
-</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>CapabilityStatement.date | CodeSystem.date | CompartmentDefinition.date | ConceptMap.date | GraphDefinition.date | ImplementationGuide.date | MessageDefinition.date | NamingSystem.date | OperationDefinition.date | SearchParameter.date | StructureDefinition.date | StructureMap.date | TerminologyCapabilities.date | ValueSet.date</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
-
- /**
-   * Search parameter: <b>description</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The description of the capability statement
-* [CodeSystem](codesystem.html): The description of the code system
-* [CompartmentDefinition](compartmentdefinition.html): The description of the compartment definition
-* [ConceptMap](conceptmap.html): The description of the concept map
-* [GraphDefinition](graphdefinition.html): The description of the graph definition
-* [ImplementationGuide](implementationguide.html): The description of the implementation guide
-* [MessageDefinition](messagedefinition.html): The description of the message definition
-* [NamingSystem](namingsystem.html): The description of the naming system
-* [OperationDefinition](operationdefinition.html): The description of the operation definition
-* [SearchParameter](searchparameter.html): The description of the search parameter
-* [StructureDefinition](structuredefinition.html): The description of the structure definition
-* [StructureMap](structuremap.html): The description of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): The description of the terminology capabilities
-* [ValueSet](valueset.html): The description of the value set
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.description | CodeSystem.description | CompartmentDefinition.description | ConceptMap.description | GraphDefinition.description | ImplementationGuide.description | MessageDefinition.description | NamingSystem.description | OperationDefinition.description | SearchParameter.description | StructureDefinition.description | StructureMap.description | TerminologyCapabilities.description | ValueSet.description</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="description", path="CapabilityStatement.description | CodeSystem.description | CompartmentDefinition.description | ConceptMap.description | GraphDefinition.description | ImplementationGuide.description | MessageDefinition.description | NamingSystem.description | OperationDefinition.description | SearchParameter.description | StructureDefinition.description | StructureMap.description | TerminologyCapabilities.description | ValueSet.description", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The description of the capability statement\r\n* [CodeSystem](codesystem.html): The description of the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The description of the compartment definition\r\n* [ConceptMap](conceptmap.html): The description of the concept map\r\n* [GraphDefinition](graphdefinition.html): The description of the graph definition\r\n* [ImplementationGuide](implementationguide.html): The description of the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The description of the message definition\r\n* [NamingSystem](namingsystem.html): The description of the naming system\r\n* [OperationDefinition](operationdefinition.html): The description of the operation definition\r\n* [SearchParameter](searchparameter.html): The description of the search parameter\r\n* [StructureDefinition](structuredefinition.html): The description of the structure definition\r\n* [StructureMap](structuremap.html): The description of the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The description of the terminology capabilities\r\n* [ValueSet](valueset.html): The description of the value set\r\n", type="string" )
-  public static final String SP_DESCRIPTION = "description";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>description</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The description of the capability statement
-* [CodeSystem](codesystem.html): The description of the code system
-* [CompartmentDefinition](compartmentdefinition.html): The description of the compartment definition
-* [ConceptMap](conceptmap.html): The description of the concept map
-* [GraphDefinition](graphdefinition.html): The description of the graph definition
-* [ImplementationGuide](implementationguide.html): The description of the implementation guide
-* [MessageDefinition](messagedefinition.html): The description of the message definition
-* [NamingSystem](namingsystem.html): The description of the naming system
-* [OperationDefinition](operationdefinition.html): The description of the operation definition
-* [SearchParameter](searchparameter.html): The description of the search parameter
-* [StructureDefinition](structuredefinition.html): The description of the structure definition
-* [StructureMap](structuremap.html): The description of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): The description of the terminology capabilities
-* [ValueSet](valueset.html): The description of the value set
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.description | CodeSystem.description | CompartmentDefinition.description | ConceptMap.description | GraphDefinition.description | ImplementationGuide.description | MessageDefinition.description | NamingSystem.description | OperationDefinition.description | SearchParameter.description | StructureDefinition.description | StructureMap.description | TerminologyCapabilities.description | ValueSet.description</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
-
- /**
-   * Search parameter: <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): Intended jurisdiction for the capability statement
-* [CodeSystem](codesystem.html): Intended jurisdiction for the code system
-* [ConceptMap](conceptmap.html): Intended jurisdiction for the concept map
-* [GraphDefinition](graphdefinition.html): Intended jurisdiction for the graph definition
-* [ImplementationGuide](implementationguide.html): Intended jurisdiction for the implementation guide
-* [MessageDefinition](messagedefinition.html): Intended jurisdiction for the message definition
-* [NamingSystem](namingsystem.html): Intended jurisdiction for the naming system
-* [OperationDefinition](operationdefinition.html): Intended jurisdiction for the operation definition
-* [SearchParameter](searchparameter.html): Intended jurisdiction for the search parameter
-* [StructureDefinition](structuredefinition.html): Intended jurisdiction for the structure definition
-* [StructureMap](structuremap.html): Intended jurisdiction for the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): Intended jurisdiction for the terminology capabilities
-* [ValueSet](valueset.html): Intended jurisdiction for the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.jurisdiction | CodeSystem.jurisdiction | ConceptMap.jurisdiction | GraphDefinition.jurisdiction | ImplementationGuide.jurisdiction | MessageDefinition.jurisdiction | NamingSystem.jurisdiction | OperationDefinition.jurisdiction | SearchParameter.jurisdiction | StructureDefinition.jurisdiction | StructureMap.jurisdiction | TerminologyCapabilities.jurisdiction | ValueSet.jurisdiction</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="jurisdiction", path="CapabilityStatement.jurisdiction | CodeSystem.jurisdiction | ConceptMap.jurisdiction | GraphDefinition.jurisdiction | ImplementationGuide.jurisdiction | MessageDefinition.jurisdiction | NamingSystem.jurisdiction | OperationDefinition.jurisdiction | SearchParameter.jurisdiction | StructureDefinition.jurisdiction | StructureMap.jurisdiction | TerminologyCapabilities.jurisdiction | ValueSet.jurisdiction", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): Intended jurisdiction for the capability statement\r\n* [CodeSystem](codesystem.html): Intended jurisdiction for the code system\r\n* [ConceptMap](conceptmap.html): Intended jurisdiction for the concept map\r\n* [GraphDefinition](graphdefinition.html): Intended jurisdiction for the graph definition\r\n* [ImplementationGuide](implementationguide.html): Intended jurisdiction for the implementation guide\r\n* [MessageDefinition](messagedefinition.html): Intended jurisdiction for the message definition\r\n* [NamingSystem](namingsystem.html): Intended jurisdiction for the naming system\r\n* [OperationDefinition](operationdefinition.html): Intended jurisdiction for the operation definition\r\n* [SearchParameter](searchparameter.html): Intended jurisdiction for the search parameter\r\n* [StructureDefinition](structuredefinition.html): Intended jurisdiction for the structure definition\r\n* [StructureMap](structuremap.html): Intended jurisdiction for the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): Intended jurisdiction for the terminology capabilities\r\n* [ValueSet](valueset.html): Intended jurisdiction for the value set\r\n", type="token" )
-  public static final String SP_JURISDICTION = "jurisdiction";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): Intended jurisdiction for the capability statement
-* [CodeSystem](codesystem.html): Intended jurisdiction for the code system
-* [ConceptMap](conceptmap.html): Intended jurisdiction for the concept map
-* [GraphDefinition](graphdefinition.html): Intended jurisdiction for the graph definition
-* [ImplementationGuide](implementationguide.html): Intended jurisdiction for the implementation guide
-* [MessageDefinition](messagedefinition.html): Intended jurisdiction for the message definition
-* [NamingSystem](namingsystem.html): Intended jurisdiction for the naming system
-* [OperationDefinition](operationdefinition.html): Intended jurisdiction for the operation definition
-* [SearchParameter](searchparameter.html): Intended jurisdiction for the search parameter
-* [StructureDefinition](structuredefinition.html): Intended jurisdiction for the structure definition
-* [StructureMap](structuremap.html): Intended jurisdiction for the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): Intended jurisdiction for the terminology capabilities
-* [ValueSet](valueset.html): Intended jurisdiction for the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.jurisdiction | CodeSystem.jurisdiction | ConceptMap.jurisdiction | GraphDefinition.jurisdiction | ImplementationGuide.jurisdiction | MessageDefinition.jurisdiction | NamingSystem.jurisdiction | OperationDefinition.jurisdiction | SearchParameter.jurisdiction | StructureDefinition.jurisdiction | StructureMap.jurisdiction | TerminologyCapabilities.jurisdiction | ValueSet.jurisdiction</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
-
- /**
-   * Search parameter: <b>name</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): Computationally friendly name of the capability statement
-* [CodeSystem](codesystem.html): Computationally friendly name of the code system
-* [CompartmentDefinition](compartmentdefinition.html): Computationally friendly name of the compartment definition
-* [ConceptMap](conceptmap.html): Computationally friendly name of the concept map
-* [GraphDefinition](graphdefinition.html): Computationally friendly name of the graph definition
-* [ImplementationGuide](implementationguide.html): Computationally friendly name of the implementation guide
-* [MessageDefinition](messagedefinition.html): Computationally friendly name of the message definition
-* [NamingSystem](namingsystem.html): Computationally friendly name of the naming system
-* [OperationDefinition](operationdefinition.html): Computationally friendly name of the operation definition
-* [SearchParameter](searchparameter.html): Computationally friendly name of the search parameter
-* [StructureDefinition](structuredefinition.html): Computationally friendly name of the structure definition
-* [StructureMap](structuremap.html): Computationally friendly name of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): Computationally friendly name of the terminology capabilities
-* [ValueSet](valueset.html): Computationally friendly name of the value set
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.name | CodeSystem.name | CompartmentDefinition.name | ConceptMap.name | GraphDefinition.name | ImplementationGuide.name | MessageDefinition.name | NamingSystem.name | OperationDefinition.name | SearchParameter.name | StructureDefinition.name | StructureMap.name | TerminologyCapabilities.name | ValueSet.name</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="name", path="CapabilityStatement.name | CodeSystem.name | CompartmentDefinition.name | ConceptMap.name | GraphDefinition.name | ImplementationGuide.name | MessageDefinition.name | NamingSystem.name | OperationDefinition.name | SearchParameter.name | StructureDefinition.name | StructureMap.name | TerminologyCapabilities.name | ValueSet.name", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): Computationally friendly name of the capability statement\r\n* [CodeSystem](codesystem.html): Computationally friendly name of the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): Computationally friendly name of the compartment definition\r\n* [ConceptMap](conceptmap.html): Computationally friendly name of the concept map\r\n* [GraphDefinition](graphdefinition.html): Computationally friendly name of the graph definition\r\n* [ImplementationGuide](implementationguide.html): Computationally friendly name of the implementation guide\r\n* [MessageDefinition](messagedefinition.html): Computationally friendly name of the message definition\r\n* [NamingSystem](namingsystem.html): Computationally friendly name of the naming system\r\n* [OperationDefinition](operationdefinition.html): Computationally friendly name of the operation definition\r\n* [SearchParameter](searchparameter.html): Computationally friendly name of the search parameter\r\n* [StructureDefinition](structuredefinition.html): Computationally friendly name of the structure definition\r\n* [StructureMap](structuremap.html): Computationally friendly name of the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): Computationally friendly name of the terminology capabilities\r\n* [ValueSet](valueset.html): Computationally friendly name of the value set\r\n", type="string" )
-  public static final String SP_NAME = "name";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>name</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): Computationally friendly name of the capability statement
-* [CodeSystem](codesystem.html): Computationally friendly name of the code system
-* [CompartmentDefinition](compartmentdefinition.html): Computationally friendly name of the compartment definition
-* [ConceptMap](conceptmap.html): Computationally friendly name of the concept map
-* [GraphDefinition](graphdefinition.html): Computationally friendly name of the graph definition
-* [ImplementationGuide](implementationguide.html): Computationally friendly name of the implementation guide
-* [MessageDefinition](messagedefinition.html): Computationally friendly name of the message definition
-* [NamingSystem](namingsystem.html): Computationally friendly name of the naming system
-* [OperationDefinition](operationdefinition.html): Computationally friendly name of the operation definition
-* [SearchParameter](searchparameter.html): Computationally friendly name of the search parameter
-* [StructureDefinition](structuredefinition.html): Computationally friendly name of the structure definition
-* [StructureMap](structuremap.html): Computationally friendly name of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): Computationally friendly name of the terminology capabilities
-* [ValueSet](valueset.html): Computationally friendly name of the value set
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.name | CodeSystem.name | CompartmentDefinition.name | ConceptMap.name | GraphDefinition.name | ImplementationGuide.name | MessageDefinition.name | NamingSystem.name | OperationDefinition.name | SearchParameter.name | StructureDefinition.name | StructureMap.name | TerminologyCapabilities.name | ValueSet.name</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
-
- /**
-   * Search parameter: <b>publisher</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): Name of the publisher of the capability statement
-* [CodeSystem](codesystem.html): Name of the publisher of the code system
-* [CompartmentDefinition](compartmentdefinition.html): Name of the publisher of the compartment definition
-* [ConceptMap](conceptmap.html): Name of the publisher of the concept map
-* [GraphDefinition](graphdefinition.html): Name of the publisher of the graph definition
-* [ImplementationGuide](implementationguide.html): Name of the publisher of the implementation guide
-* [MessageDefinition](messagedefinition.html): Name of the publisher of the message definition
-* [NamingSystem](namingsystem.html): Name of the publisher of the naming system
-* [OperationDefinition](operationdefinition.html): Name of the publisher of the operation definition
-* [SearchParameter](searchparameter.html): Name of the publisher of the search parameter
-* [StructureDefinition](structuredefinition.html): Name of the publisher of the structure definition
-* [StructureMap](structuremap.html): Name of the publisher of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): Name of the publisher of the terminology capabilities
-* [ValueSet](valueset.html): Name of the publisher of the value set
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.publisher | CodeSystem.publisher | CompartmentDefinition.publisher | ConceptMap.publisher | GraphDefinition.publisher | ImplementationGuide.publisher | MessageDefinition.publisher | NamingSystem.publisher | OperationDefinition.publisher | SearchParameter.publisher | StructureDefinition.publisher | StructureMap.publisher | TerminologyCapabilities.publisher | ValueSet.publisher</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="publisher", path="CapabilityStatement.publisher | CodeSystem.publisher | CompartmentDefinition.publisher | ConceptMap.publisher | GraphDefinition.publisher | ImplementationGuide.publisher | MessageDefinition.publisher | NamingSystem.publisher | OperationDefinition.publisher | SearchParameter.publisher | StructureDefinition.publisher | StructureMap.publisher | TerminologyCapabilities.publisher | ValueSet.publisher", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): Name of the publisher of the capability statement\r\n* [CodeSystem](codesystem.html): Name of the publisher of the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): Name of the publisher of the compartment definition\r\n* [ConceptMap](conceptmap.html): Name of the publisher of the concept map\r\n* [GraphDefinition](graphdefinition.html): Name of the publisher of the graph definition\r\n* [ImplementationGuide](implementationguide.html): Name of the publisher of the implementation guide\r\n* [MessageDefinition](messagedefinition.html): Name of the publisher of the message definition\r\n* [NamingSystem](namingsystem.html): Name of the publisher of the naming system\r\n* [OperationDefinition](operationdefinition.html): Name of the publisher of the operation definition\r\n* [SearchParameter](searchparameter.html): Name of the publisher of the search parameter\r\n* [StructureDefinition](structuredefinition.html): Name of the publisher of the structure definition\r\n* [StructureMap](structuremap.html): Name of the publisher of the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): Name of the publisher of the terminology capabilities\r\n* [ValueSet](valueset.html): Name of the publisher of the value set\r\n", type="string" )
-  public static final String SP_PUBLISHER = "publisher";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>publisher</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): Name of the publisher of the capability statement
-* [CodeSystem](codesystem.html): Name of the publisher of the code system
-* [CompartmentDefinition](compartmentdefinition.html): Name of the publisher of the compartment definition
-* [ConceptMap](conceptmap.html): Name of the publisher of the concept map
-* [GraphDefinition](graphdefinition.html): Name of the publisher of the graph definition
-* [ImplementationGuide](implementationguide.html): Name of the publisher of the implementation guide
-* [MessageDefinition](messagedefinition.html): Name of the publisher of the message definition
-* [NamingSystem](namingsystem.html): Name of the publisher of the naming system
-* [OperationDefinition](operationdefinition.html): Name of the publisher of the operation definition
-* [SearchParameter](searchparameter.html): Name of the publisher of the search parameter
-* [StructureDefinition](structuredefinition.html): Name of the publisher of the structure definition
-* [StructureMap](structuremap.html): Name of the publisher of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): Name of the publisher of the terminology capabilities
-* [ValueSet](valueset.html): Name of the publisher of the value set
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.publisher | CodeSystem.publisher | CompartmentDefinition.publisher | ConceptMap.publisher | GraphDefinition.publisher | ImplementationGuide.publisher | MessageDefinition.publisher | NamingSystem.publisher | OperationDefinition.publisher | SearchParameter.publisher | StructureDefinition.publisher | StructureMap.publisher | TerminologyCapabilities.publisher | ValueSet.publisher</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam PUBLISHER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PUBLISHER);
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The current status of the capability statement
-* [CodeSystem](codesystem.html): The current status of the code system
-* [CompartmentDefinition](compartmentdefinition.html): The current status of the compartment definition
-* [ConceptMap](conceptmap.html): The current status of the concept map
-* [GraphDefinition](graphdefinition.html): The current status of the graph definition
-* [ImplementationGuide](implementationguide.html): The current status of the implementation guide
-* [MessageDefinition](messagedefinition.html): The current status of the message definition
-* [NamingSystem](namingsystem.html): The current status of the naming system
-* [OperationDefinition](operationdefinition.html): The current status of the operation definition
-* [SearchParameter](searchparameter.html): The current status of the search parameter
-* [StructureDefinition](structuredefinition.html): The current status of the structure definition
-* [StructureMap](structuremap.html): The current status of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): The current status of the terminology capabilities
-* [ValueSet](valueset.html): The current status of the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.status | CodeSystem.status | CompartmentDefinition.status | ConceptMap.status | GraphDefinition.status | ImplementationGuide.status | MessageDefinition.status | NamingSystem.status | OperationDefinition.status | SearchParameter.status | StructureDefinition.status | StructureMap.status | TerminologyCapabilities.status | ValueSet.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="CapabilityStatement.status | CodeSystem.status | CompartmentDefinition.status | ConceptMap.status | GraphDefinition.status | ImplementationGuide.status | MessageDefinition.status | NamingSystem.status | OperationDefinition.status | SearchParameter.status | StructureDefinition.status | StructureMap.status | TerminologyCapabilities.status | ValueSet.status", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The current status of the capability statement\r\n* [CodeSystem](codesystem.html): The current status of the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The current status of the compartment definition\r\n* [ConceptMap](conceptmap.html): The current status of the concept map\r\n* [GraphDefinition](graphdefinition.html): The current status of the graph definition\r\n* [ImplementationGuide](implementationguide.html): The current status of the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The current status of the message definition\r\n* [NamingSystem](namingsystem.html): The current status of the naming system\r\n* [OperationDefinition](operationdefinition.html): The current status of the operation definition\r\n* [SearchParameter](searchparameter.html): The current status of the search parameter\r\n* [StructureDefinition](structuredefinition.html): The current status of the structure definition\r\n* [StructureMap](structuremap.html): The current status of the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The current status of the terminology capabilities\r\n* [ValueSet](valueset.html): The current status of the value set\r\n", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The current status of the capability statement
-* [CodeSystem](codesystem.html): The current status of the code system
-* [CompartmentDefinition](compartmentdefinition.html): The current status of the compartment definition
-* [ConceptMap](conceptmap.html): The current status of the concept map
-* [GraphDefinition](graphdefinition.html): The current status of the graph definition
-* [ImplementationGuide](implementationguide.html): The current status of the implementation guide
-* [MessageDefinition](messagedefinition.html): The current status of the message definition
-* [NamingSystem](namingsystem.html): The current status of the naming system
-* [OperationDefinition](operationdefinition.html): The current status of the operation definition
-* [SearchParameter](searchparameter.html): The current status of the search parameter
-* [StructureDefinition](structuredefinition.html): The current status of the structure definition
-* [StructureMap](structuremap.html): The current status of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): The current status of the terminology capabilities
-* [ValueSet](valueset.html): The current status of the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.status | CodeSystem.status | CompartmentDefinition.status | ConceptMap.status | GraphDefinition.status | ImplementationGuide.status | MessageDefinition.status | NamingSystem.status | OperationDefinition.status | SearchParameter.status | StructureDefinition.status | StructureMap.status | TerminologyCapabilities.status | ValueSet.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
-
- /**
-   * Search parameter: <b>title</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The human-friendly name of the capability statement
-* [CodeSystem](codesystem.html): The human-friendly name of the code system
-* [ConceptMap](conceptmap.html): The human-friendly name of the concept map
-* [ImplementationGuide](implementationguide.html): The human-friendly name of the implementation guide
-* [MessageDefinition](messagedefinition.html): The human-friendly name of the message definition
-* [OperationDefinition](operationdefinition.html): The human-friendly name of the operation definition
-* [StructureDefinition](structuredefinition.html): The human-friendly name of the structure definition
-* [StructureMap](structuremap.html): The human-friendly name of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): The human-friendly name of the terminology capabilities
-* [ValueSet](valueset.html): The human-friendly name of the value set
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.title | CodeSystem.title | ConceptMap.title | ImplementationGuide.title | MessageDefinition.title | OperationDefinition.title | StructureDefinition.title | StructureMap.title | TerminologyCapabilities.title | ValueSet.title</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="title", path="CapabilityStatement.title | CodeSystem.title | ConceptMap.title | ImplementationGuide.title | MessageDefinition.title | OperationDefinition.title | StructureDefinition.title | StructureMap.title | TerminologyCapabilities.title | ValueSet.title", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The human-friendly name of the capability statement\r\n* [CodeSystem](codesystem.html): The human-friendly name of the code system\r\n* [ConceptMap](conceptmap.html): The human-friendly name of the concept map\r\n* [ImplementationGuide](implementationguide.html): The human-friendly name of the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The human-friendly name of the message definition\r\n* [OperationDefinition](operationdefinition.html): The human-friendly name of the operation definition\r\n* [StructureDefinition](structuredefinition.html): The human-friendly name of the structure definition\r\n* [StructureMap](structuremap.html): The human-friendly name of the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The human-friendly name of the terminology capabilities\r\n* [ValueSet](valueset.html): The human-friendly name of the value set\r\n", type="string" )
-  public static final String SP_TITLE = "title";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>title</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The human-friendly name of the capability statement
-* [CodeSystem](codesystem.html): The human-friendly name of the code system
-* [ConceptMap](conceptmap.html): The human-friendly name of the concept map
-* [ImplementationGuide](implementationguide.html): The human-friendly name of the implementation guide
-* [MessageDefinition](messagedefinition.html): The human-friendly name of the message definition
-* [OperationDefinition](operationdefinition.html): The human-friendly name of the operation definition
-* [StructureDefinition](structuredefinition.html): The human-friendly name of the structure definition
-* [StructureMap](structuremap.html): The human-friendly name of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): The human-friendly name of the terminology capabilities
-* [ValueSet](valueset.html): The human-friendly name of the value set
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.title | CodeSystem.title | ConceptMap.title | ImplementationGuide.title | MessageDefinition.title | OperationDefinition.title | StructureDefinition.title | StructureMap.title | TerminologyCapabilities.title | ValueSet.title</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
-
- /**
-   * Search parameter: <b>url</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement
-* [CodeSystem](codesystem.html): The uri that identifies the code system
-* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition
-* [ConceptMap](conceptmap.html): The uri that identifies the concept map
-* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition
-* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide
-* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition
-* [NamingSystem](namingsystem.html): The uri that identifies the naming system
-* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition
-* [SearchParameter](searchparameter.html): The uri that identifies the search parameter
-* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition
-* [StructureMap](structuremap.html): The uri that identifies the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities
-* [ValueSet](valueset.html): The uri that identifies the value set
-</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="url", path="CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement\r\n* [CodeSystem](codesystem.html): The uri that identifies the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition\r\n* [ConceptMap](conceptmap.html): The uri that identifies the concept map\r\n* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition\r\n* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition\r\n* [NamingSystem](namingsystem.html): The uri that identifies the naming system\r\n* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition\r\n* [SearchParameter](searchparameter.html): The uri that identifies the search parameter\r\n* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition\r\n* [StructureMap](structuremap.html): The uri that identifies the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities\r\n* [ValueSet](valueset.html): The uri that identifies the value set\r\n", type="uri" )
-  public static final String SP_URL = "url";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>url</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement
-* [CodeSystem](codesystem.html): The uri that identifies the code system
-* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition
-* [ConceptMap](conceptmap.html): The uri that identifies the concept map
-* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition
-* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide
-* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition
-* [NamingSystem](namingsystem.html): The uri that identifies the naming system
-* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition
-* [SearchParameter](searchparameter.html): The uri that identifies the search parameter
-* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition
-* [StructureMap](structuremap.html): The uri that identifies the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities
-* [ValueSet](valueset.html): The uri that identifies the value set
-</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
-
- /**
-   * Search parameter: <b>version</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The business version of the capability statement
-* [CodeSystem](codesystem.html): The business version of the code system
-* [CompartmentDefinition](compartmentdefinition.html): The business version of the compartment definition
-* [ConceptMap](conceptmap.html): The business version of the concept map
-* [GraphDefinition](graphdefinition.html): The business version of the graph definition
-* [ImplementationGuide](implementationguide.html): The business version of the implementation guide
-* [MessageDefinition](messagedefinition.html): The business version of the message definition
-* [NamingSystem](namingsystem.html): The business version of the naming system
-* [OperationDefinition](operationdefinition.html): The business version of the operation definition
-* [SearchParameter](searchparameter.html): The business version of the search parameter
-* [StructureDefinition](structuredefinition.html): The business version of the structure definition
-* [StructureMap](structuremap.html): The business version of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): The business version of the terminology capabilities
-* [ValueSet](valueset.html): The business version of the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.version | CodeSystem.version | CompartmentDefinition.version | ConceptMap.version | GraphDefinition.version | ImplementationGuide.version | MessageDefinition.version | NamingSystem.version | OperationDefinition.version | SearchParameter.version | StructureDefinition.version | StructureMap.version | TerminologyCapabilities.version | ValueSet.version</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="version", path="CapabilityStatement.version | CodeSystem.version | CompartmentDefinition.version | ConceptMap.version | GraphDefinition.version | ImplementationGuide.version | MessageDefinition.version | NamingSystem.version | OperationDefinition.version | SearchParameter.version | StructureDefinition.version | StructureMap.version | TerminologyCapabilities.version | ValueSet.version", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The business version of the capability statement\r\n* [CodeSystem](codesystem.html): The business version of the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The business version of the compartment definition\r\n* [ConceptMap](conceptmap.html): The business version of the concept map\r\n* [GraphDefinition](graphdefinition.html): The business version of the graph definition\r\n* [ImplementationGuide](implementationguide.html): The business version of the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The business version of the message definition\r\n* [NamingSystem](namingsystem.html): The business version of the naming system\r\n* [OperationDefinition](operationdefinition.html): The business version of the operation definition\r\n* [SearchParameter](searchparameter.html): The business version of the search parameter\r\n* [StructureDefinition](structuredefinition.html): The business version of the structure definition\r\n* [StructureMap](structuremap.html): The business version of the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The business version of the terminology capabilities\r\n* [ValueSet](valueset.html): The business version of the value set\r\n", type="token" )
-  public static final String SP_VERSION = "version";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>version</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The business version of the capability statement
-* [CodeSystem](codesystem.html): The business version of the code system
-* [CompartmentDefinition](compartmentdefinition.html): The business version of the compartment definition
-* [ConceptMap](conceptmap.html): The business version of the concept map
-* [GraphDefinition](graphdefinition.html): The business version of the graph definition
-* [ImplementationGuide](implementationguide.html): The business version of the implementation guide
-* [MessageDefinition](messagedefinition.html): The business version of the message definition
-* [NamingSystem](namingsystem.html): The business version of the naming system
-* [OperationDefinition](operationdefinition.html): The business version of the operation definition
-* [SearchParameter](searchparameter.html): The business version of the search parameter
-* [StructureDefinition](structuredefinition.html): The business version of the structure definition
-* [StructureMap](structuremap.html): The business version of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): The business version of the terminology capabilities
-* [ValueSet](valueset.html): The business version of the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.version | CodeSystem.version | CompartmentDefinition.version | ConceptMap.version | GraphDefinition.version | ImplementationGuide.version | MessageDefinition.version | NamingSystem.version | OperationDefinition.version | SearchParameter.version | StructureDefinition.version | StructureMap.version | TerminologyCapabilities.version | ValueSet.version</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
-
- /**
-   * Search parameter: <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A use context type and quantity- or range-based value assigned to the capability statement
-* [CodeSystem](codesystem.html): A use context type and quantity- or range-based value assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A use context type and quantity- or range-based value assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A use context type and quantity- or range-based value assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A use context type and quantity- or range-based value assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A use context type and quantity- or range-based value assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A use context type and quantity- or range-based value assigned to the message definition
-* [NamingSystem](namingsystem.html): A use context type and quantity- or range-based value assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A use context type and quantity- or range-based value assigned to the operation definition
-* [SearchParameter](searchparameter.html): A use context type and quantity- or range-based value assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A use context type and quantity- or range-based value assigned to the structure definition
-* [StructureMap](structuremap.html): A use context type and quantity- or range-based value assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A use context type and quantity- or range-based value assigned to the terminology capabilities
-* [ValueSet](valueset.html): A use context type and quantity- or range-based value assigned to the value set
-</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-quantity", path="CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): A use context type and quantity- or range-based value assigned to the capability statement\r\n* [CodeSystem](codesystem.html): A use context type and quantity- or range-based value assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context type and quantity- or range-based value assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context type and quantity- or range-based value assigned to the concept map\r\n* [GraphDefinition](graphdefinition.html): A use context type and quantity- or range-based value assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context type and quantity- or range-based value assigned to the implementation guide\r\n* [MessageDefinition](messagedefinition.html): A use context type and quantity- or range-based value assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context type and quantity- or range-based value assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context type and quantity- or range-based value assigned to the operation definition\r\n* [SearchParameter](searchparameter.html): A use context type and quantity- or range-based value assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context type and quantity- or range-based value assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context type and quantity- or range-based value assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context type and quantity- or range-based value assigned to the terminology capabilities\r\n* [ValueSet](valueset.html): A use context type and quantity- or range-based value assigned to the value set\r\n", type="composite", compositeOf={"context-type", "context-quantity"} )
-  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A use context type and quantity- or range-based value assigned to the capability statement
-* [CodeSystem](codesystem.html): A use context type and quantity- or range-based value assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A use context type and quantity- or range-based value assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A use context type and quantity- or range-based value assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A use context type and quantity- or range-based value assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A use context type and quantity- or range-based value assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A use context type and quantity- or range-based value assigned to the message definition
-* [NamingSystem](namingsystem.html): A use context type and quantity- or range-based value assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A use context type and quantity- or range-based value assigned to the operation definition
-* [SearchParameter](searchparameter.html): A use context type and quantity- or range-based value assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A use context type and quantity- or range-based value assigned to the structure definition
-* [StructureMap](structuremap.html): A use context type and quantity- or range-based value assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A use context type and quantity- or range-based value assigned to the terminology capabilities
-* [ValueSet](valueset.html): A use context type and quantity- or range-based value assigned to the value set
-</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
-
- /**
-   * Search parameter: <b>context-type-value</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A use context type and value assigned to the capability statement
-* [CodeSystem](codesystem.html): A use context type and value assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A use context type and value assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A use context type and value assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A use context type and value assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A use context type and value assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A use context type and value assigned to the message definition
-* [NamingSystem](namingsystem.html): A use context type and value assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A use context type and value assigned to the operation definition
-* [SearchParameter](searchparameter.html): A use context type and value assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A use context type and value assigned to the structure definition
-* [StructureMap](structuremap.html): A use context type and value assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A use context type and value assigned to the terminology capabilities
-* [ValueSet](valueset.html): A use context type and value assigned to the value set
-</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-value", path="CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): A use context type and value assigned to the capability statement\r\n* [CodeSystem](codesystem.html): A use context type and value assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context type and value assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context type and value assigned to the concept map\r\n* [GraphDefinition](graphdefinition.html): A use context type and value assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context type and value assigned to the implementation guide\r\n* [MessageDefinition](messagedefinition.html): A use context type and value assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context type and value assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context type and value assigned to the operation definition\r\n* [SearchParameter](searchparameter.html): A use context type and value assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context type and value assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context type and value assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context type and value assigned to the terminology capabilities\r\n* [ValueSet](valueset.html): A use context type and value assigned to the value set\r\n", type="composite", compositeOf={"context-type", "context"} )
-  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A use context type and value assigned to the capability statement
-* [CodeSystem](codesystem.html): A use context type and value assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A use context type and value assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A use context type and value assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A use context type and value assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A use context type and value assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A use context type and value assigned to the message definition
-* [NamingSystem](namingsystem.html): A use context type and value assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A use context type and value assigned to the operation definition
-* [SearchParameter](searchparameter.html): A use context type and value assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A use context type and value assigned to the structure definition
-* [StructureMap](structuremap.html): A use context type and value assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A use context type and value assigned to the terminology capabilities
-* [ValueSet](valueset.html): A use context type and value assigned to the value set
-</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CodeSystem](codesystem.html): External identifier for the code system
-* [ConceptMap](conceptmap.html): External identifier for the concept map
-* [MessageDefinition](messagedefinition.html): External identifier for the message definition
-* [StructureDefinition](structuredefinition.html): External identifier for the structure definition
-* [StructureMap](structuremap.html): External identifier for the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities
-* [ValueSet](valueset.html): External identifier for the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier", description="Multiple Resources: \r\n\r\n* [CodeSystem](codesystem.html): External identifier for the code system\r\n* [ConceptMap](conceptmap.html): External identifier for the concept map\r\n* [MessageDefinition](messagedefinition.html): External identifier for the message definition\r\n* [StructureDefinition](structuredefinition.html): External identifier for the structure definition\r\n* [StructureMap](structuremap.html): External identifier for the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities\r\n* [ValueSet](valueset.html): External identifier for the value set\r\n", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CodeSystem](codesystem.html): External identifier for the code system
-* [ConceptMap](conceptmap.html): External identifier for the concept map
-* [MessageDefinition](messagedefinition.html): External identifier for the message definition
-* [StructureDefinition](structuredefinition.html): External identifier for the structure definition
-* [StructureMap](structuremap.html): External identifier for the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities
-* [ValueSet](valueset.html): External identifier for the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
 // Manual code (from Configuration.txt):
 public String toString() {

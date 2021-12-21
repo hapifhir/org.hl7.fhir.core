@@ -54,7 +54,7 @@ public class Slot40_50 {
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSpecialty())
       tgt.addSpecialty(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasAppointmentType())
-      tgt.setAppointmentType(CodeableConcept40_50.convertCodeableConcept(src.getAppointmentType()));
+      tgt.addAppointmentType(CodeableConcept40_50.convertCodeableConcept(src.getAppointmentType()));
     if (src.hasSchedule())
       tgt.setSchedule(Reference40_50.convertReference(src.getSchedule()));
     if (src.hasStatus())
@@ -84,7 +84,7 @@ public class Slot40_50 {
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSpecialty())
       tgt.addSpecialty(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasAppointmentType())
-      tgt.setAppointmentType(CodeableConcept40_50.convertCodeableConcept(src.getAppointmentType()));
+      tgt.setAppointmentType(CodeableConcept40_50.convertCodeableConcept(src.getAppointmentTypeFirstRep()));
     if (src.hasSchedule())
       tgt.setSchedule(Reference40_50.convertReference(src.getSchedule()));
     if (src.hasStatus())

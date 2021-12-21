@@ -9,6 +9,7 @@ import java.util.Objects;
 
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
+import org.hl7.fhir.validation.cli.utils.ValidationLevel;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -72,6 +73,8 @@ public class CliContext {
   private List<String> igs = new ArrayList<String>();
   @JsonProperty("questionnaire")
   private QuestionnaireMode questionnaireMode = QuestionnaireMode.CHECK;
+  @JsonProperty("level")
+  private ValidationLevel level = ValidationLevel.HINTS;
   
   @JsonProperty("profiles")
   private List<String> profiles = new ArrayList<String>();
@@ -149,6 +152,17 @@ public class CliContext {
   @JsonProperty("questionnaire")
   public CliContext setQuestionnaireMode(QuestionnaireMode questionnaireMode) {
     this.questionnaireMode = questionnaireMode;
+    return this;
+  }
+
+  @JsonProperty("level")
+  public ValidationLevel getLevel() {
+    return level;
+  }
+
+  @JsonProperty("level")
+  public CliContext setLevel(ValidationLevel level) {
+    this.level = level;
     return this;
   }
 
@@ -568,6 +582,7 @@ public class CliContext {
       Objects.equals(targetVer, that.targetVer) &&
       Objects.equals(igs, that.igs) &&
       Objects.equals(questionnaireMode, that.questionnaireMode) &&
+      Objects.equals(level, that.level) &&
       Objects.equals(profiles, that.profiles) &&
       Objects.equals(sources, that.sources) &&
       Objects.equals(crumbTrails, that.crumbTrails) &&
@@ -583,7 +598,7 @@ public class CliContext {
   public int hashCode() {
     return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, 
             noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, htmlOutput, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, 
-            targetVer, igs, questionnaireMode, profiles, sources, mode, locale, locations, crumbTrails, showTimes, allowExampleUrls, outputStyle, noUnicodeBiDiControlChars);
+            targetVer, igs, questionnaireMode, level, profiles, sources, mode, locale, locations, crumbTrails, showTimes, allowExampleUrls, outputStyle, noUnicodeBiDiControlChars);
   }
 
   @Override
@@ -614,6 +629,7 @@ public class CliContext {
       ", targetVer='" + targetVer + '\'' +
       ", igs=" + igs +
       ", questionnaireMode=" + questionnaireMode +
+      ", level=" + level +
       ", profiles=" + profiles +
       ", sources=" + sources +
       ", mode=" + mode +

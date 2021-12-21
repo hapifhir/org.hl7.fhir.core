@@ -276,7 +276,7 @@ public class LibraryRenderer extends ResourceRenderer {
     if (ra.hasResource()) {
       renderCanonical(lib, tr.td(), ra.getResource());
     } else {
-      tr.td().tx(ra.getUrl());
+      renderAttachment(tr.td(), ra.getDocument(), false, 0, lib.getId());
     }
   }
 

@@ -50,7 +50,7 @@ public class MedicationRequest30_50 {
       }
     }
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(Annotation30_50.convertAnnotation(t));
-    for (org.hl7.fhir.r5.model.Dosage t : src.getDosageInstruction())
+    for (org.hl7.fhir.r5.model.Dosage t : src.getDose().getDosageInstruction())
       tgt.addDosageInstruction(Dosage30_50.convertDosage(t));
     if (src.hasDispenseRequest())
       tgt.setDispenseRequest(convertMedicationRequestDispenseRequestComponent(src.getDispenseRequest()));
@@ -101,7 +101,7 @@ public class MedicationRequest30_50 {
       tgt.addReason(new CodeableReference().setReference(Reference30_50.convertReference(t)));
     for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(Annotation30_50.convertAnnotation(t));
     for (org.hl7.fhir.dstu3.model.Dosage t : src.getDosageInstruction())
-      tgt.addDosageInstruction(Dosage30_50.convertDosage(t));
+      tgt.getDose().addDosageInstruction(Dosage30_50.convertDosage(t));
     if (src.hasDispenseRequest())
       tgt.setDispenseRequest(convertMedicationRequestDispenseRequestComponent(src.getDispenseRequest()));
     if (src.hasSubstitution())

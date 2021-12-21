@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1568,26 +1568,6 @@ public class Permission extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.Permission;
    }
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>active | entered-in-error | draft | rejected</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Permission.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="Permission.status", description="active | entered-in-error | draft | rejected", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>active | entered-in-error | draft | rejected</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Permission.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
 
 }

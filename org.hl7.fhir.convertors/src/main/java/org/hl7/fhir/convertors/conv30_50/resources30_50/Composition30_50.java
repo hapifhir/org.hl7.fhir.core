@@ -1,6 +1,8 @@
 package org.hl7.fhir.convertors.conv30_50.resources30_50;
 
+import org.hl7.fhir.convertors.context.ConversionContext10_50;
 import org.hl7.fhir.convertors.context.ConversionContext30_50;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Narrative30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
@@ -9,6 +11,7 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Period
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.DateTime30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.RelatedArtifact;
 
 import java.util.Collections;
 
@@ -79,7 +82,7 @@ public class Composition30_50 {
       tgt.addAttester(convertCompositionAttesterComponent(t));
     if (src.hasCustodian())
       tgt.setCustodian(Reference30_50.convertReference(src.getCustodian()));
-    for (org.hl7.fhir.r5.model.Composition.CompositionRelatesToComponent t : src.getRelatesTo())
+    for (RelatedArtifact t : src.getRelatesTo())
       tgt.addRelatesTo(convertCompositionRelatesToComponent(t));
     for (org.hl7.fhir.r5.model.Composition.CompositionEventComponent t : src.getEvent())
       tgt.addEvent(convertCompositionEventComponent(t));
@@ -88,22 +91,22 @@ public class Composition30_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.CompositionAttestationMode> convertCompositionAttestationMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Composition.CompositionAttestationMode> src) throws FHIRException {
+  static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.CompositionAttestationMode> convertCompositionAttestationMode(org.hl7.fhir.r5.model.CodeableConcept src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.CompositionAttestationMode> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Composition.CompositionAttestationModeEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case PERSONAL:
+    switch (src.getCode("http://hl7.org/fhir/composition-attestation-mode")) {
+      case "personal":
         tgt.setValue(org.hl7.fhir.dstu3.model.Composition.CompositionAttestationMode.PERSONAL);
         break;
-      case PROFESSIONAL:
+      case "professional":
         tgt.setValue(org.hl7.fhir.dstu3.model.Composition.CompositionAttestationMode.PROFESSIONAL);
         break;
-      case LEGAL:
+      case "legal":
         tgt.setValue(org.hl7.fhir.dstu3.model.Composition.CompositionAttestationMode.LEGAL);
         break;
-      case OFFICIAL:
+      case "official":
         tgt.setValue(org.hl7.fhir.dstu3.model.Composition.CompositionAttestationMode.OFFICIAL);
         break;
       default:
@@ -113,26 +116,26 @@ public class Composition30_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Composition.CompositionAttestationMode> convertCompositionAttestationMode(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.CompositionAttestationMode> src) throws FHIRException {
+
+  static public org.hl7.fhir.r5.model.CodeableConcept convertCompositionAttestationMode(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.CompositionAttestationMode> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Composition.CompositionAttestationMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Composition.CompositionAttestationModeEnumFactory());
+    org.hl7.fhir.r5.model.CodeableConcept tgt = new org.hl7.fhir.r5.model.CodeableConcept();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case PERSONAL:
-        tgt.setValue(org.hl7.fhir.r5.model.Composition.CompositionAttestationMode.PERSONAL);
+        tgt.addCoding().setSystem("http://hl7.org/fhir/composition-attestation-mode").setCode("personal");
         break;
       case PROFESSIONAL:
-        tgt.setValue(org.hl7.fhir.r5.model.Composition.CompositionAttestationMode.PROFESSIONAL);
+        tgt.addCoding().setSystem("http://hl7.org/fhir/composition-attestation-mode").setCode("professional");
         break;
       case LEGAL:
-        tgt.setValue(org.hl7.fhir.r5.model.Composition.CompositionAttestationMode.LEGAL);
+        tgt.addCoding().setSystem("http://hl7.org/fhir/composition-attestation-mode").setCode("legal");
         break;
       case OFFICIAL:
-        tgt.setValue(org.hl7.fhir.r5.model.Composition.CompositionAttestationMode.OFFICIAL);
+        tgt.addCoding().setSystem("http://hl7.org/fhir/composition-attestation-mode").setCode("official");
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.Composition.CompositionAttestationMode.NULL);
         break;
     }
     return tgt;
@@ -144,7 +147,7 @@ public class Composition30_50 {
     org.hl7.fhir.r5.model.Composition.CompositionAttesterComponent tgt = new org.hl7.fhir.r5.model.Composition.CompositionAttesterComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasMode())
-      tgt.setModeElement(convertCompositionAttestationMode(src.getMode().get(0)));
+      tgt.setMode(convertCompositionAttestationMode(src.getMode().get(0)));
     if (src.hasTime())
       tgt.setTimeElement(DateTime30_50.convertDateTime(src.getTimeElement()));
     if (src.hasParty())
@@ -158,7 +161,7 @@ public class Composition30_50 {
     org.hl7.fhir.dstu3.model.Composition.CompositionAttesterComponent tgt = new org.hl7.fhir.dstu3.model.Composition.CompositionAttesterComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasMode())
-      tgt.setMode(Collections.singletonList(convertCompositionAttestationMode(src.getModeElement())));
+      tgt.setMode(Collections.singletonList(convertCompositionAttestationMode(src.getMode())));
     if (src.hasTime())
       tgt.setTimeElement(DateTime30_50.convertDateTime(src.getTimeElement()));
     if (src.hasParty())
@@ -192,31 +195,31 @@ public class Composition30_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.dstu3.model.Composition.CompositionRelatesToComponent convertCompositionRelatesToComponent(org.hl7.fhir.r5.model.Composition.CompositionRelatesToComponent src) throws FHIRException {
+  public static org.hl7.fhir.dstu3.model.Composition.CompositionRelatesToComponent convertCompositionRelatesToComponent(org.hl7.fhir.r5.model.RelatedArtifact src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Composition.CompositionRelatesToComponent tgt = new org.hl7.fhir.dstu3.model.Composition.CompositionRelatesToComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    if (src.hasCode())
-      tgt.setCodeElement(convertDocumentRelationshipType(src.getCodeElement()));
-    if (src.hasTarget())
-      tgt.setTarget(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getTarget()));
+    if (src.hasType())
+      tgt.setCodeElement(convertDocumentRelationshipType(src.getTypeElement()));
+    if (src.hasResourceReference())
+      tgt.setTarget(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getResourceReference()));
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Composition.CompositionRelatesToComponent convertCompositionRelatesToComponent(org.hl7.fhir.dstu3.model.Composition.CompositionRelatesToComponent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.RelatedArtifact convertCompositionRelatesToComponent(org.hl7.fhir.dstu3.model.Composition.CompositionRelatesToComponent src) throws FHIRException {
     if (src == null)
       return null;
-    org.hl7.fhir.r5.model.Composition.CompositionRelatesToComponent tgt = new org.hl7.fhir.r5.model.Composition.CompositionRelatesToComponent();
+    org.hl7.fhir.r5.model.RelatedArtifact tgt = new org.hl7.fhir.r5.model.RelatedArtifact();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasCode())
-      tgt.setCodeElement(convertDocumentRelationshipType(src.getCodeElement()));
-    if (src.hasTarget())
-      tgt.setTarget(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getTarget()));
+      tgt.setTypeElement(convertDocumentRelationshipType(src.getCodeElement()));
+    if (src.hasTargetReference())
+      tgt.setResourceReference(Reference30_50.convertReference(src.getTargetReference()));
     return tgt;
   }
 
-  static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipType> convertDocumentRelationshipType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType> src) throws FHIRException {
+  static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipType> convertDocumentRelationshipType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.RelatedArtifact.RelatedArtifactType> src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipTypeEnumFactory());
@@ -241,26 +244,26 @@ public class Composition30_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType> convertDocumentRelationshipType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipType> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.RelatedArtifact.RelatedArtifactType> convertDocumentRelationshipType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Composition.DocumentRelationshipType> src) throws FHIRException {
     if (src == null)
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipTypeEnumFactory());
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.RelatedArtifact.RelatedArtifactType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.RelatedArtifact.RelatedArtifactTypeEnumFactory());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case REPLACES:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType.REPLACES);
+        tgt.setValue(org.hl7.fhir.r5.model.RelatedArtifact.RelatedArtifactType.REPLACES);
         break;
       case TRANSFORMS:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType.TRANSFORMS);
+        tgt.setValue(org.hl7.fhir.r5.model.RelatedArtifact.RelatedArtifactType.TRANSFORMS);
         break;
       case SIGNS:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType.SIGNS);
+        tgt.setValue(org.hl7.fhir.r5.model.RelatedArtifact.RelatedArtifactType.SIGNS);
         break;
       case APPENDS:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType.APPENDS);
+        tgt.setValue(org.hl7.fhir.r5.model.RelatedArtifact.RelatedArtifactType.APPENDS);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DocumentRelationshipType.NULL);
+        tgt.setValue(org.hl7.fhir.r5.model.RelatedArtifact.RelatedArtifactType.NULL);
         break;
     }
     return tgt;

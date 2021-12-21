@@ -75,7 +75,7 @@ public class Person30_50 {
       tgt.setBirthDateElement(Date30_50.convertDate(src.getBirthDateElement()));
     for (org.hl7.fhir.r5.model.Address t : src.getAddress()) tgt.addAddress(Address30_50.convertAddress(t));
     if (src.hasPhoto())
-      tgt.setPhoto(Attachment30_50.convertAttachment(src.getPhoto()));
+      tgt.setPhoto(Attachment30_50.convertAttachment(src.getPhotoFirstRep()));
     if (src.hasManagingOrganization())
       tgt.setManagingOrganization(Reference30_50.convertReference(src.getManagingOrganization()));
     if (src.hasActive())
@@ -100,7 +100,7 @@ public class Person30_50 {
       tgt.setBirthDateElement(Date30_50.convertDate(src.getBirthDateElement()));
     for (org.hl7.fhir.dstu3.model.Address t : src.getAddress()) tgt.addAddress(Address30_50.convertAddress(t));
     if (src.hasPhoto())
-      tgt.setPhoto(Attachment30_50.convertAttachment(src.getPhoto()));
+      tgt.addPhoto(Attachment30_50.convertAttachment(src.getPhoto()));
     if (src.hasManagingOrganization())
       tgt.setManagingOrganization(Reference30_50.convertReference(src.getManagingOrganization()));
     if (src.hasActive())

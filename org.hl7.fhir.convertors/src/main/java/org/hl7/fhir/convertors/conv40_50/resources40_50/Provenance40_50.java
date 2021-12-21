@@ -7,6 +7,7 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Instant40
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeableReference;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -53,7 +54,7 @@ public class Provenance40_50 {
     if (src.hasLocation())
       tgt.setLocation(Reference40_50.convertReference(src.getLocation()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReason())
-      tgt.addReason(CodeableConcept40_50.convertCodeableConcept(t));
+      tgt.addAuthorization().setConcept(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasActivity())
       tgt.setActivity(CodeableConcept40_50.convertCodeableConcept(src.getActivity()));
     for (org.hl7.fhir.r4.model.Provenance.ProvenanceAgentComponent t : src.getAgent())
@@ -77,8 +78,9 @@ public class Provenance40_50 {
     for (org.hl7.fhir.r5.model.UriType t : src.getPolicy()) tgt.getPolicy().add(Uri40_50.convertUri(t));
     if (src.hasLocation())
       tgt.setLocation(Reference40_50.convertReference(src.getLocation()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReason())
-      tgt.addReason(CodeableConcept40_50.convertCodeableConcept(t));
+    for (CodeableReference t : src.getAuthorization())
+      if (t.hasConcept())
+        tgt.addReason(CodeableConcept40_50.convertCodeableConcept(t.getConcept()));
     if (src.hasActivity())
       tgt.setActivity(CodeableConcept40_50.convertCodeableConcept(src.getActivity()));
     for (org.hl7.fhir.r5.model.Provenance.ProvenanceAgentComponent t : src.getAgent())
