@@ -312,64 +312,66 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         map = new HashMap<String, ResourceProxy>();
         allResourcesById.put(r.getType(), map);
       }
-      map.put(r.getId(), new ResourceProxy(r));
+      if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
+        map.put(r.getId(), new ResourceProxy(r));
+      }
 
-        String url = r.getUrl();
-        if (!allowLoadingDuplicates && hasResource(r.getType(), url)) {
-          // spcial workaround for known problems with existing packages
-          if (Utilities.existsInList(url, "http://hl7.org/fhir/SearchParameter/example")) {
-            return;
-          }
-          throw new DefinitionException(formatMessage(I18nConstants.DUPLICATE_RESOURCE_, url));
+      String url = r.getUrl();
+      if (!allowLoadingDuplicates && hasResource(r.getType(), url)) {
+        // spcial workaround for known problems with existing packages
+        if (Utilities.existsInList(url, "http://hl7.org/fhir/SearchParameter/example")) {
+          return;
         }
-        switch(r.getType()) {
-          case "StructureDefinition":
-            if ("1.4.0".equals(version)) {
-              StructureDefinition sd = (StructureDefinition) r.getResource();
-              fixOldSD(sd);
-            }
-            structures.register(r, packageInfo);
-            break;
-          case "ValueSet":
-            valueSets.register(r, packageInfo);
-            break;
-          case "CodeSystem":
-            codeSystems.register(r, packageInfo);
-            break;
-          case "ImplementationGuide":
-            guides.register(r, packageInfo);
-            break;
-          case "CapabilityStatement":
-            capstmts.register(r, packageInfo);
-            break;
-          case "Measure":
-            measures.register(r, packageInfo);
-            break;
-          case "Library":
-            libraries.register(r, packageInfo);
-            break;
-          case "SearchParameter":
-            searchParameters.register(r, packageInfo);
-            break;
-          case "PlanDefinition":
-            plans.register(r, packageInfo);
-            break;
-          case "OperationDefinition":
-            operations.register(r, packageInfo);
-            break;
-          case "Questionnaire":
-            questionnaires.register(r, packageInfo);
-            break;
-          case "ConceptMap":
-            maps.register(r, packageInfo);
-            break;
-          case "StructureMap":
-            transforms.register(r, packageInfo);
-            break;
-          case "NamingSystem":
-            systems.register(r, packageInfo);
-            break;
+        throw new DefinitionException(formatMessage(I18nConstants.DUPLICATE_RESOURCE_, url));
+      }
+      switch(r.getType()) {
+      case "StructureDefinition":
+        if ("1.4.0".equals(version)) {
+          StructureDefinition sd = (StructureDefinition) r.getResource();
+          fixOldSD(sd);
         }
+        structures.register(r, packageInfo);
+        break;
+      case "ValueSet":
+        valueSets.register(r, packageInfo);
+        break;
+      case "CodeSystem":
+        codeSystems.register(r, packageInfo);
+        break;
+      case "ImplementationGuide":
+        guides.register(r, packageInfo);
+        break;
+      case "CapabilityStatement":
+        capstmts.register(r, packageInfo);
+        break;
+      case "Measure":
+        measures.register(r, packageInfo);
+        break;
+      case "Library":
+        libraries.register(r, packageInfo);
+        break;
+      case "SearchParameter":
+        searchParameters.register(r, packageInfo);
+        break;
+      case "PlanDefinition":
+        plans.register(r, packageInfo);
+        break;
+      case "OperationDefinition":
+        operations.register(r, packageInfo);
+        break;
+      case "Questionnaire":
+        questionnaires.register(r, packageInfo);
+        break;
+      case "ConceptMap":
+        maps.register(r, packageInfo);
+        break;
+      case "StructureMap":
+        transforms.register(r, packageInfo);
+        break;
+      case "NamingSystem":
+        systems.register(r, packageInfo);
+        break;
+      }
     }
   }
 
@@ -382,12 +384,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
       if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
         map.put(r.getId(), new ResourceProxy(r));
+      } else {
+        System.out.println("Ingore "+r.fhirType()+"/"+r.getId()+" from package "+packageInfo.toString());
       }
 
       if (r instanceof CodeSystem || r instanceof NamingSystem) {
         oidCache.clear();
       }
-      
+
       if (r instanceof CanonicalResource) {
         CanonicalResource m = (CanonicalResource) r;
         String url = m.getUrl();

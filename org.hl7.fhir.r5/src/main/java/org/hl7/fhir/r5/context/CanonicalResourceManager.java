@@ -218,7 +218,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     if (cr.getPackageInfo() != null && cr.getPackageInfo().getId() != null && cr.getPackageInfo().getId().startsWith("hl7.terminology") && "http://nucc.org/provider-taxonomy".equals(cr.getUrl())) {
       return;
     }
-    
+        
     if (enforceUniqueId && map.containsKey(cr.getId())) {
       drop(cr.getId());      
     }
@@ -236,7 +236,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       }
     }
     CachedCanonicalResource<T> existing = cr.hasVersion() ? map.get(cr.getUrl()+"|"+cr.getVersion()) : map.get(cr.getUrl()+"|#0");
-    if (existing != null && (cr.getPackageInfo() != null && cr.getPackageInfo().isExamplesPackage())) {
+    if (map.get(cr.getUrl()) != null && (cr.getPackageInfo() != null && cr.getPackageInfo().isExamplesPackage())) {
       return;
     }
     if (existing != null) {
@@ -245,6 +245,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     
     list.add(cr);
     map.put(cr.getId(), cr); // we do this so we can drop by id
+    map.put(cr.getUrl(), cr);
 
     if (cr.getUrl() != null) {
       // first, this is the correct reosurce for this version (if it has a version)
