@@ -5,6 +5,7 @@ import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.ConceptMap;
 import org.hl7.fhir.r4.model.Enumerations;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ class ConceptMapEngineTest {
   public static final String TARGET_CODE_STRING = "vital-signs";
 
   @Test
+  @DisplayName("Coding is converted according to ConceptMap")
   void translate() throws IOException {
     ConceptMap conceptMap = getConceptMap();
     ConceptMapEngine conceptMapEngine = getConceptMapEngine(conceptMap);
