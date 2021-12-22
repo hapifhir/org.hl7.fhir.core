@@ -86,6 +86,16 @@ public class Element extends Base {
         return CONTAINED;
       throw new FHIRException("Unknown resource containing a native resource: "+property.getDefinition().getId());
     }
+
+    public String toHuman() {
+      switch (this) {
+      case BUNDLE_ENTRY: return "entry";
+      case BUNDLE_OUTCOME: return "outcome";
+      case CONTAINED: return "contained";
+      case PARAMETER: return "parameter";
+      default: return "??";        
+      }
+    }
 	}
 
 	private List<String> comments;// not relevant for production, but useful in documentation
