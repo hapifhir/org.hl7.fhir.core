@@ -26,6 +26,7 @@ class ConceptMapEngineTest {
     sourceElementComponent.setTarget(Collections.singletonList(targetElementComponent));
 
     ConceptMap.ConceptMapGroupComponent conceptMapGroupComponent = new ConceptMap.ConceptMapGroupComponent();
+    conceptMapGroupComponent.addElement(sourceElementComponent);
 
     ConceptMap conceptMap = new ConceptMap();
     conceptMap.addGroup(conceptMapGroupComponent);
