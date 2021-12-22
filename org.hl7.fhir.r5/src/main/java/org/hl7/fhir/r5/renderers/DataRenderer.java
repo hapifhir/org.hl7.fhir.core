@@ -53,6 +53,7 @@ import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.Range;
 import org.hl7.fhir.r5.model.Reference;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.SampledData;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -559,7 +560,11 @@ public class DataRenderer extends Renderer {
       } else if (uri.getValue().startsWith("mailto:")) {
         x.ah(uri.getValue()).addText(uri.getValue().substring(7));
       } else {
-        if (uri.getValue().contains("|")) {
+        Resource target = context.getContext().fetchResource(Resource.class, uri.getValue());
+        if (target != null && target.hasUserData("path")) {
+          String title = target instanceof CanonicalResource ? ((CanonicalResource) target).present() : uri.getValue();
+          x.ah(target.getUserString("path")).addText(title);
+        } else if (uri.getValue().contains("|")) {
           x.ah(uri.getValue().substring(0, uri.getValue().indexOf("|"))).addText(uri.getValue());
         } else if (url.startsWith("http:") || url.startsWith("https:") || url.startsWith("ftp:")) {
           x.ah(uri.getValue()).addText(uri.getValue());        
