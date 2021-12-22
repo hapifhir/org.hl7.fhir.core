@@ -135,6 +135,7 @@ import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorCla
 import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r5.utils.FHIRPathEngine.TypedElementDefinition;
 import org.hl7.fhir.r5.utils.validation.*;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
@@ -3370,7 +3371,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         discriminator = discriminator.substring(0, discriminator.length() - 10);
     }
 
-    ElementDefinition ed = null;
+    TypedElementDefinition ted = null;
     String fp = fixExpr(discriminator, null);
     ExpressionNode expr = null;
     try {
@@ -3380,10 +3381,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       throw new FHIRException(context.formatMessage(I18nConstants.DISCRIMINATOR_BAD_PATH, e.getMessage(), fp), e);
     }
     long t2 = System.nanoTime();
-    ed = fpe.evaluateDefinition(expr, profile, element, srcProfile);
+    ted = fpe.evaluateDefinition(expr, profile, new TypedElementDefinition(element), srcProfile);
     timeTracker.sd(t2);
-    if (ed != null)
-      elements.add(ed);
+    if (ted != null)
+      elements.add(ted.getElement());
 
     for (TypeRefComponent type : element.getType()) {
       for (CanonicalType p : type.getProfile()) {
@@ -3405,10 +3406,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
         expr = fpe.parse(fp);
         t2 = System.nanoTime();
-        ed = fpe.evaluateDefinition(expr, profile, element, srcProfile);
+        ted = fpe.evaluateDefinition(expr, profile, new TypedElementDefinition(element), srcProfile);
         timeTracker.sd(t2);
-        if (ed != null)
-          elements.add(ed);
+        if (ted != null)
+          elements.add(ted.getElement());
       }
     }
     return elements;
@@ -4452,7 +4453,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       return;
     }
-    if (rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), defn.hasSnapshot(), I18nConstants.VALIDATION_VAL_PROFILE_NOSNAPSHOT)) {
+    if (rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), defn.hasSnapshot(), I18nConstants.VALIDATION_VAL_PROFILE_NOSNAPSHOT, defn.getUrl())) {
       List<ValidationMessage> localErrors = new ArrayList<ValidationMessage>();
       resTracker.startValidating(defn);
       trackUsage(defn, hostContext, element);
@@ -4644,7 +4645,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           timeTracker.sd(t);
           trackUsage(profile, hostContext, element);
           if (rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
-            profile != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOPROFILE, resourceName)) {
+            profile != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOPROFILE_EXPL, special.toHuman(), resourceName, typeForResource.getProfile().get(0).asStringValue())) {
             validateResource(hc, errors, resource, element, profile, idstatus, stack);
           }
         } else if (typeForResource.getProfile().isEmpty()) {
@@ -4654,7 +4655,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           timeTracker.sd(t);
           trackUsage(profile, hostContext, element);
           if (rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
-            profile != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOPROFILE, resourceName)) {
+            profile != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOPROFILE_TYPE, special.toHuman(), resourceName)) {
             validateResource(hc, errors, resource, element, profile, idstatus, stack);
           }
         } else {
@@ -4663,7 +4664,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             b.append(u.asStringValue());
           }
           rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
-            false, I18nConstants.BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES, typeForResource.getCode(), b.toString());
+            false, I18nConstants.BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES, special.toHuman(), typeForResource.getCode(), b.toString());
         }
       }
     } else {
