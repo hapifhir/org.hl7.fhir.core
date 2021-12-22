@@ -309,7 +309,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (e.getSpecial() == SpecialElement.CONTAINED) {
           self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e, ctxt.getRootResource(), ctxt.getGroupingResource()), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage));          
         } else if (e.getSpecial() != null) {
-          self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e, ctxt.getRootResource(), ctxt.getRootResource()), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage));          
+          self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e, e, ctxt.getRootResource()), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage));          
         } else {
           self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage));
         }
@@ -2343,14 +2343,19 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  private List<String> listExpectedCanonicalTypes(ElementDefinition context) {
-    List<String> res = new ArrayList<>();
+  private Set<String> listExpectedCanonicalTypes(ElementDefinition context) {
+    Set<String> res = new HashSet<>();
     TypeRefComponent tr = context.getType("canonical");
     if (tr != null) {
       for (CanonicalType p : tr.getTargetProfile()) {
         String url = p.getValue();
-        if (url != null && url.startsWith("http://hl7.org/fhir/StructureDefinition/")) {
-          res.add(url.substring("http://hl7.org/fhir/StructureDefinition/".length()));
+        StructureDefinition sd = this.context.fetchResource(StructureDefinition.class, url);
+        if (sd != null) {
+          res.add(sd.getType());
+        } else {
+          if (url != null && url.startsWith("http://hl7.org/fhir/StructureDefinition/")) {
+            res.add(url.substring("http://hl7.org/fhir/StructureDefinition/".length()));
+          }
         }
       }
     }
@@ -2375,19 +2380,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean isCorrectCanonicalType(Resource r, CanonicalType p) {
     String url = p.getValue();
     String t = null;
-    if (url.startsWith("http://hl7.org/fhir/StructureDefinition/")) {
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+    if (sd != null) {
+      t = sd.getType();
+    } else if (url.startsWith("http://hl7.org/fhir/StructureDefinition/")) {
       t = url.substring("http://hl7.org/fhir/StructureDefinition/".length());
     } else {
-      StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
-      if (sd != null) {
-        t = sd.getType();
-      }
-    }
-    if (t == null ) {
       return false;
-    } else {
-      return Utilities.existsInList(t, "Resource", "CanonicalResource") || t.equals(r.fhirType());
     }
+    return Utilities.existsInList(t, "Resource", "CanonicalResource") || t.equals(r.fhirType());
   }
 
   private boolean isCanonicalURLElement(Element e) {
@@ -4616,7 +4617,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ValidatorHostContext hc = null;
         if (special == SpecialElement.BUNDLE_ENTRY || special == SpecialElement.BUNDLE_OUTCOME || special == SpecialElement.PARAMETER) {
           resource = element;
-          assert Utilities.existsInList(hostContext.getRootResource().fhirType(), "Bundle", "Parameters");
+          assert Utilities.existsInList(hostContext.getRootResource().fhirType(), "Bundle", "Parameters") : "Resource is "+hostContext.getRootResource().fhirType()+", expected Bundle or Parameters";
           hc = hostContext.forEntry(element, hostContext.getRootResource()); // root becomes the grouping resource (should be either bundle or parameters)
         } else {
           hc = hostContext.forContained(element);
