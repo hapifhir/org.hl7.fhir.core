@@ -22,8 +22,7 @@ class ConceptMapEngineTest {
   @Test
   @DisplayName("Coding is converted according to ConceptMap")
   void translate() throws IOException {
-    ConceptMap conceptMap = getConceptMap();
-    ConceptMapEngine conceptMapEngine = getConceptMapEngine(conceptMap);
+    ConceptMapEngine conceptMapEngine = getConceptMapEngine();
     Coding coding = new Coding(null, SOURCE_CODE_STRING, "Body Weight");
 
     Coding actual = conceptMapEngine.translate(coding, CONCEPT_MAP_URL);
@@ -32,7 +31,9 @@ class ConceptMapEngineTest {
   }
 
   @NotNull
-  private ConceptMapEngine getConceptMapEngine(ConceptMap conceptMap) throws IOException {
+  private ConceptMapEngine getConceptMapEngine() throws IOException {
+    ConceptMap conceptMap = getConceptMap();
+
     SimpleWorkerContext simpleWorkerContext = new SimpleWorkerContext();
     simpleWorkerContext.cacheResource(conceptMap);
 
