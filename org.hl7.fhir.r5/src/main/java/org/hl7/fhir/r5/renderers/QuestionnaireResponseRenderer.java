@@ -62,7 +62,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
   
   public boolean render(XhtmlNode x, ResourceWrapper qr) throws UnsupportedEncodingException, IOException {
     switch (context.getQuestionnaireMode()) {
-    case FORM:  return renderForm(x, qr);
+    case FORM:  return renderTree(x, qr);
     case LINKS: return renderLinks(x, qr);
 //    case LOGIC: return renderLogic(x, q);
 //    case DEFNS: return renderDefns(x, q);
@@ -74,7 +74,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
   
   public boolean renderTree(XhtmlNode x, ResourceWrapper qr) throws UnsupportedEncodingException, IOException {
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(), true);
-    TableModel model = gen.new TableModel("qtree="+qr.getId(), true);    
+    TableModel model = gen.new TableModel("qtree="+qr.getId(), false);    
     model.setAlternating(true);
     model.setDocoImg(context.getSpecificationLink() +"help16.png");
     model.setDocoRef(context.getSpecificationLink()+"formats.html#table");
@@ -175,25 +175,43 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
       }
     } else if (answers.size() == 1) {
       BaseWrapper ans = answers.get(0);
-      Base b = ans.get("value[x]");
-      if (b == null) {
-        r.getCells().add(gen.new Cell(null, null, "null!", null, null));
-      } else if (b.isPrimitive()) {
-        r.getCells().add(gen.new Cell(null, null, b.primitiveValue(), null, null));
-      } else {
-        XhtmlNode x = new XhtmlNode(NodeType.Element, "span");
-        Cell cell = gen.new Cell(null, null, null, null, null);
-        Piece p = gen.new Piece("span");
-        p.getChildren().add(x);
-        cell.addPiece(p);
-        render(x, (DataType) b);
-        r.getCells().add(cell);
-      }
+      renderAnswer(gen, q, r, ans);
     } else {
-      r.getCells().add(gen.new Cell(null, null, "{todo #2}", null, null));      
+      r.getCells().add(gen.new Cell(null, null, null, null, null));          
+      for (BaseWrapper ans : answers) {
+        Row ar = gen.new Row();
+        ar.setIcon("icon-q-string.png", "Item");
+        ar.getSubRows().add(ar);
+        ar.getCells().add(gen.new Cell(null, null, null, null, null));
+        ar.getCells().add(gen.new Cell(null, null, text, null, null));
+        ar.getCells().add(gen.new Cell(null, null, null, null, null));
+        renderAnswer(gen, q, ar, ans);
+      }
     }
 
     return hasExt;    
+  }
+
+  public void renderAnswer(HierarchicalTableGenerator gen, ResourceWrapper q, Row r, BaseWrapper ans) throws UnsupportedEncodingException, IOException {
+    List<BaseWrapper> items;
+    Base b = ans.get("value[x]");
+    if (b == null) {
+      r.getCells().add(gen.new Cell(null, null, "null!", null, null));
+    } else if (b.isPrimitive()) {
+      r.getCells().add(gen.new Cell(null, null, b.primitiveValue(), null, null));
+    } else {
+      XhtmlNode x = new XhtmlNode(NodeType.Element, "span");
+      Cell cell = gen.new Cell(null, null, null, null, null);
+      Piece p = gen.new Piece("span");
+      p.getChildren().add(x);
+      cell.addPiece(p);
+      render(x, (DataType) b);
+      r.getCells().add(cell);
+    }
+    items = ans.children("item");
+    for (BaseWrapper si : items) {
+      renderTreeItem(gen, r.getSubRows(), q, si);
+    }
   }
   
   private boolean renderTreeItem(HierarchicalTableGenerator gen, List<Row> rows, QuestionnaireResponse q, QuestionnaireResponseItemComponent i) throws IOException {
