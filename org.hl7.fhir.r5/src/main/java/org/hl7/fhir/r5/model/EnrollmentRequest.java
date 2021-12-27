@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -574,6 +574,98 @@ public class EnrollmentRequest extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.EnrollmentRequest;
    }
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>The business identifier of the Enrollment</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>EnrollmentRequest.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="EnrollmentRequest.identifier", description="The business identifier of the Enrollment", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>The business identifier of the Enrollment</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>EnrollmentRequest.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>The party to be enrolled</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>EnrollmentRequest.candidate</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="EnrollmentRequest.candidate", description="The party to be enrolled", type="reference", target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>The party to be enrolled</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>EnrollmentRequest.candidate</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>EnrollmentRequest:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("EnrollmentRequest:patient").toLocked();
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>The status of the enrollment</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>EnrollmentRequest.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="EnrollmentRequest.status", description="The status of the enrollment", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>The status of the enrollment</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>EnrollmentRequest.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>The party to be enrolled</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>EnrollmentRequest.candidate</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="EnrollmentRequest.candidate", description="The party to be enrolled", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>The party to be enrolled</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>EnrollmentRequest.candidate</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>EnrollmentRequest:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("EnrollmentRequest:subject").toLocked();
 
 
 }

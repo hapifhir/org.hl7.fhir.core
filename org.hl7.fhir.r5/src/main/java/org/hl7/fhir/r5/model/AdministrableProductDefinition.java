@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2206,6 +2206,184 @@ public class AdministrableProductDefinition extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.AdministrableProductDefinition;
    }
+
+ /**
+   * Search parameter: <b>device</b>
+   * <p>
+   * Description: <b>A device that is integral to the medicinal product, in effect being considered as an "ingredient" of the medicinal product. This is not intended for devices that are just co-packaged</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AdministrableProductDefinition.device</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="device", path="AdministrableProductDefinition.device", description="A device that is integral to the medicinal product, in effect being considered as an \"ingredient\" of the medicinal product. This is not intended for devices that are just co-packaged", type="reference", target={DeviceDefinition.class } )
+  public static final String SP_DEVICE = "device";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>device</b>
+   * <p>
+   * Description: <b>A device that is integral to the medicinal product, in effect being considered as an "ingredient" of the medicinal product. This is not intended for devices that are just co-packaged</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AdministrableProductDefinition.device</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DEVICE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DEVICE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>AdministrableProductDefinition:device</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_DEVICE = new ca.uhn.fhir.model.api.Include("AdministrableProductDefinition:device").toLocked();
+
+ /**
+   * Search parameter: <b>dose-form</b>
+   * <p>
+   * Description: <b>The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AdministrableProductDefinition.administrableDoseForm</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="dose-form", path="AdministrableProductDefinition.administrableDoseForm", description="The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing", type="token" )
+  public static final String SP_DOSE_FORM = "dose-form";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>dose-form</b>
+   * <p>
+   * Description: <b>The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AdministrableProductDefinition.administrableDoseForm</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam DOSE_FORM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_DOSE_FORM);
+
+ /**
+   * Search parameter: <b>form-of</b>
+   * <p>
+   * Description: <b>The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AdministrableProductDefinition.formOf</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="form-of", path="AdministrableProductDefinition.formOf", description="The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product", type="reference", target={MedicinalProductDefinition.class } )
+  public static final String SP_FORM_OF = "form-of";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>form-of</b>
+   * <p>
+   * Description: <b>The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AdministrableProductDefinition.formOf</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam FORM_OF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_FORM_OF);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>AdministrableProductDefinition:form-of</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_FORM_OF = new ca.uhn.fhir.model.api.Include("AdministrableProductDefinition:form-of").toLocked();
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>An identifier for the administrable product</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AdministrableProductDefinition.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="AdministrableProductDefinition.identifier", description="An identifier for the administrable product", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>An identifier for the administrable product</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AdministrableProductDefinition.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>ingredient</b>
+   * <p>
+   * Description: <b>The ingredients of this administrable medicinal product</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AdministrableProductDefinition.ingredient</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="ingredient", path="AdministrableProductDefinition.ingredient", description="The ingredients of this administrable medicinal product", type="token" )
+  public static final String SP_INGREDIENT = "ingredient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>ingredient</b>
+   * <p>
+   * Description: <b>The ingredients of this administrable medicinal product</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AdministrableProductDefinition.ingredient</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INGREDIENT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INGREDIENT);
+
+ /**
+   * Search parameter: <b>manufactured-item</b>
+   * <p>
+   * Description: <b>The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AdministrableProductDefinition.producedFrom</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="manufactured-item", path="AdministrableProductDefinition.producedFrom", description="The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients", type="reference", target={ManufacturedItemDefinition.class } )
+  public static final String SP_MANUFACTURED_ITEM = "manufactured-item";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>manufactured-item</b>
+   * <p>
+   * Description: <b>The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AdministrableProductDefinition.producedFrom</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MANUFACTURED_ITEM = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MANUFACTURED_ITEM);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>AdministrableProductDefinition:manufactured-item</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_MANUFACTURED_ITEM = new ca.uhn.fhir.model.api.Include("AdministrableProductDefinition:manufactured-item").toLocked();
+
+ /**
+   * Search parameter: <b>route</b>
+   * <p>
+   * Description: <b>Coded expression for the route</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AdministrableProductDefinition.routeOfAdministration.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="route", path="AdministrableProductDefinition.routeOfAdministration.code", description="Coded expression for the route", type="token" )
+  public static final String SP_ROUTE = "route";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>route</b>
+   * <p>
+   * Description: <b>Coded expression for the route</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AdministrableProductDefinition.routeOfAdministration.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ROUTE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ROUTE);
+
+ /**
+   * Search parameter: <b>target-species</b>
+   * <p>
+   * Description: <b>Coded expression for the species</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AdministrableProductDefinition.routeOfAdministration.targetSpecies.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="target-species", path="AdministrableProductDefinition.routeOfAdministration.targetSpecies.code", description="Coded expression for the species", type="token" )
+  public static final String SP_TARGET_SPECIES = "target-species";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>target-species</b>
+   * <p>
+   * Description: <b>Coded expression for the species</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AdministrableProductDefinition.routeOfAdministration.targetSpecies.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TARGET_SPECIES = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TARGET_SPECIES);
 
 
 }

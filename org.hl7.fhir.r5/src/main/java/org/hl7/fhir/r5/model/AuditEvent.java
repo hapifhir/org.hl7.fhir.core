@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -3520,6 +3520,342 @@ public class AuditEvent extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.AuditEvent;
    }
+
+ /**
+   * Search parameter: <b>action</b>
+   * <p>
+   * Description: <b>Type of action performed during the event</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AuditEvent.action</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="action", path="AuditEvent.action", description="Type of action performed during the event", type="token" )
+  public static final String SP_ACTION = "action";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>action</b>
+   * <p>
+   * Description: <b>Type of action performed during the event</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AuditEvent.action</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ACTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ACTION);
+
+ /**
+   * Search parameter: <b>agent-role</b>
+   * <p>
+   * Description: <b>Agent role in the event</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AuditEvent.agent.role</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="agent-role", path="AuditEvent.agent.role", description="Agent role in the event", type="token" )
+  public static final String SP_AGENT_ROLE = "agent-role";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>agent-role</b>
+   * <p>
+   * Description: <b>Agent role in the event</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AuditEvent.agent.role</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam AGENT_ROLE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_AGENT_ROLE);
+
+ /**
+   * Search parameter: <b>agent</b>
+   * <p>
+   * Description: <b>Identifier of who</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AuditEvent.agent.who</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="agent", path="AuditEvent.agent.who", description="Identifier of who", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={CareTeam.class, Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_AGENT = "agent";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>agent</b>
+   * <p>
+   * Description: <b>Identifier of who</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AuditEvent.agent.who</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam AGENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_AGENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>AuditEvent:agent</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_AGENT = new ca.uhn.fhir.model.api.Include("AuditEvent:agent").toLocked();
+
+ /**
+   * Search parameter: <b>based-on</b>
+   * <p>
+   * Description: <b>Reference to the service request.</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AuditEvent.basedOn</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="based-on", path="AuditEvent.basedOn", description="Reference to the service request.", type="reference", target={CarePlan.class, DeviceRequest.class, ImmunizationRecommendation.class, MedicationRequest.class, NutritionOrder.class, ServiceRequest.class, Task.class } )
+  public static final String SP_BASED_ON = "based-on";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>based-on</b>
+   * <p>
+   * Description: <b>Reference to the service request.</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AuditEvent.basedOn</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam BASED_ON = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_BASED_ON);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>AuditEvent:based-on</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_BASED_ON = new ca.uhn.fhir.model.api.Include("AuditEvent:based-on").toLocked();
+
+ /**
+   * Search parameter: <b>category</b>
+   * <p>
+   * Description: <b>Category of event</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AuditEvent.category</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="category", path="AuditEvent.category", description="Category of event", type="token" )
+  public static final String SP_CATEGORY = "category";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>category</b>
+   * <p>
+   * Description: <b>Category of event</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AuditEvent.category</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CATEGORY);
+
+ /**
+   * Search parameter: <b>code</b>
+   * <p>
+   * Description: <b>More specific code for the event</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AuditEvent.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="code", path="AuditEvent.code", description="More specific code for the event", type="token" )
+  public static final String SP_CODE = "code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>code</b>
+   * <p>
+   * Description: <b>More specific code for the event</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AuditEvent.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
+
+ /**
+   * Search parameter: <b>date</b>
+   * <p>
+   * Description: <b>Time when the event was recorded</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>AuditEvent.recorded</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="date", path="AuditEvent.recorded", description="Time when the event was recorded", type="date" )
+  public static final String SP_DATE = "date";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>date</b>
+   * <p>
+   * Description: <b>Time when the event was recorded</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>AuditEvent.recorded</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+
+ /**
+   * Search parameter: <b>encounter</b>
+   * <p>
+   * Description: <b>Encounter related to the activity recorded in the AuditEvent</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AuditEvent.encounter</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="encounter", path="AuditEvent.encounter", description="Encounter related to the activity recorded in the AuditEvent", type="reference", target={Encounter.class } )
+  public static final String SP_ENCOUNTER = "encounter";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
+   * <p>
+   * Description: <b>Encounter related to the activity recorded in the AuditEvent</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AuditEvent.encounter</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>AuditEvent:encounter</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("AuditEvent:encounter").toLocked();
+
+ /**
+   * Search parameter: <b>entity-role</b>
+   * <p>
+   * Description: <b>What role the entity played</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AuditEvent.entity.role</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="entity-role", path="AuditEvent.entity.role", description="What role the entity played", type="token" )
+  public static final String SP_ENTITY_ROLE = "entity-role";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>entity-role</b>
+   * <p>
+   * Description: <b>What role the entity played</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AuditEvent.entity.role</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ENTITY_ROLE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ENTITY_ROLE);
+
+ /**
+   * Search parameter: <b>entity</b>
+   * <p>
+   * Description: <b>Specific instance of resource</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AuditEvent.entity.what</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="entity", path="AuditEvent.entity.what", description="Specific instance of resource", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_ENTITY = "entity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>entity</b>
+   * <p>
+   * Description: <b>Specific instance of resource</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AuditEvent.entity.what</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENTITY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENTITY);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>AuditEvent:entity</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENTITY = new ca.uhn.fhir.model.api.Include("AuditEvent:entity").toLocked();
+
+ /**
+   * Search parameter: <b>outcome</b>
+   * <p>
+   * Description: <b>Whether the event succeeded or failed</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AuditEvent.outcome.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="outcome", path="AuditEvent.outcome.code", description="Whether the event succeeded or failed", type="token" )
+  public static final String SP_OUTCOME = "outcome";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>outcome</b>
+   * <p>
+   * Description: <b>Whether the event succeeded or failed</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AuditEvent.outcome.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam OUTCOME = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_OUTCOME);
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>Identifier of who</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AuditEvent.agent.who.where(resolve() is Patient) | AuditEvent.entity.what.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="AuditEvent.agent.who.where(resolve() is Patient) | AuditEvent.entity.what.where(resolve() is Patient)", description="Identifier of who", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>Identifier of who</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AuditEvent.agent.who.where(resolve() is Patient) | AuditEvent.entity.what.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>AuditEvent:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("AuditEvent:patient").toLocked();
+
+ /**
+   * Search parameter: <b>policy</b>
+   * <p>
+   * Description: <b>Policy that authorized event</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>AuditEvent.agent.policy</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="policy", path="AuditEvent.agent.policy", description="Policy that authorized event", type="uri" )
+  public static final String SP_POLICY = "policy";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>policy</b>
+   * <p>
+   * Description: <b>Policy that authorized event</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>AuditEvent.agent.policy</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam POLICY = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_POLICY);
+
+ /**
+   * Search parameter: <b>purpose</b>
+   * <p>
+   * Description: <b>The authorization (purposeOfUse) of the event</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AuditEvent.authorization | AuditEvent.agent.authorization</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="purpose", path="AuditEvent.authorization | AuditEvent.agent.authorization", description="The authorization (purposeOfUse) of the event", type="token" )
+  public static final String SP_PURPOSE = "purpose";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>purpose</b>
+   * <p>
+   * Description: <b>The authorization (purposeOfUse) of the event</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AuditEvent.authorization | AuditEvent.agent.authorization</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PURPOSE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PURPOSE);
+
+ /**
+   * Search parameter: <b>source</b>
+   * <p>
+   * Description: <b>The identity of source detecting the event</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AuditEvent.source.observer</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="source", path="AuditEvent.source.observer", description="The identity of source detecting the event", type="reference", target={CareTeam.class, Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_SOURCE = "source";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>source</b>
+   * <p>
+   * Description: <b>The identity of source detecting the event</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AuditEvent.source.observer</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SOURCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SOURCE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>AuditEvent:source</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SOURCE = new ca.uhn.fhir.model.api.Include("AuditEvent:source").toLocked();
 
 
 }
