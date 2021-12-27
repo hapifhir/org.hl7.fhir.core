@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 06:28+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1831,6 +1831,308 @@ public class Provenance extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.Provenance;
    }
+
+ /**
+   * Search parameter: <b>activity</b>
+   * <p>
+   * Description: <b>Activity that occurred</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Provenance.activity</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="activity", path="Provenance.activity", description="Activity that occurred", type="token" )
+  public static final String SP_ACTIVITY = "activity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>activity</b>
+   * <p>
+   * Description: <b>Activity that occurred</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Provenance.activity</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ACTIVITY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ACTIVITY);
+
+ /**
+   * Search parameter: <b>agent-role</b>
+   * <p>
+   * Description: <b>What the agents role was</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Provenance.agent.role</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="agent-role", path="Provenance.agent.role", description="What the agents role was", type="token" )
+  public static final String SP_AGENT_ROLE = "agent-role";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>agent-role</b>
+   * <p>
+   * Description: <b>What the agents role was</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Provenance.agent.role</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam AGENT_ROLE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_AGENT_ROLE);
+
+ /**
+   * Search parameter: <b>agent-type</b>
+   * <p>
+   * Description: <b>How the agent participated</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Provenance.agent.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="agent-type", path="Provenance.agent.type", description="How the agent participated", type="token" )
+  public static final String SP_AGENT_TYPE = "agent-type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>agent-type</b>
+   * <p>
+   * Description: <b>How the agent participated</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Provenance.agent.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam AGENT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_AGENT_TYPE);
+
+ /**
+   * Search parameter: <b>agent</b>
+   * <p>
+   * Description: <b>Who participated</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Provenance.agent.who</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="agent", path="Provenance.agent.who", description="Who participated", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={CareTeam.class, Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_AGENT = "agent";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>agent</b>
+   * <p>
+   * Description: <b>Who participated</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Provenance.agent.who</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam AGENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_AGENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Provenance:agent</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_AGENT = new ca.uhn.fhir.model.api.Include("Provenance:agent").toLocked();
+
+ /**
+   * Search parameter: <b>based-on</b>
+   * <p>
+   * Description: <b>Reference to the service request.</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Provenance.basedOn</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="based-on", path="Provenance.basedOn", description="Reference to the service request.", type="reference", target={CarePlan.class, DeviceRequest.class, ImmunizationRecommendation.class, MedicationRequest.class, NutritionOrder.class, ServiceRequest.class, Task.class } )
+  public static final String SP_BASED_ON = "based-on";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>based-on</b>
+   * <p>
+   * Description: <b>Reference to the service request.</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Provenance.basedOn</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam BASED_ON = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_BASED_ON);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Provenance:based-on</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_BASED_ON = new ca.uhn.fhir.model.api.Include("Provenance:based-on").toLocked();
+
+ /**
+   * Search parameter: <b>encounter</b>
+   * <p>
+   * Description: <b>Encounter related to the Provenance</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Provenance.encounter</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="encounter", path="Provenance.encounter", description="Encounter related to the Provenance", type="reference", target={Encounter.class } )
+  public static final String SP_ENCOUNTER = "encounter";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
+   * <p>
+   * Description: <b>Encounter related to the Provenance</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Provenance.encounter</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Provenance:encounter</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("Provenance:encounter").toLocked();
+
+ /**
+   * Search parameter: <b>entity</b>
+   * <p>
+   * Description: <b>Identity of entity</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Provenance.entity.what</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="entity", path="Provenance.entity.what", description="Identity of entity", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_ENTITY = "entity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>entity</b>
+   * <p>
+   * Description: <b>Identity of entity</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Provenance.entity.what</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENTITY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENTITY);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Provenance:entity</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENTITY = new ca.uhn.fhir.model.api.Include("Provenance:entity").toLocked();
+
+ /**
+   * Search parameter: <b>location</b>
+   * <p>
+   * Description: <b>Where the activity occurred, if relevant</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Provenance.location</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="location", path="Provenance.location", description="Where the activity occurred, if relevant", type="reference", target={Location.class } )
+  public static final String SP_LOCATION = "location";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>location</b>
+   * <p>
+   * Description: <b>Where the activity occurred, if relevant</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Provenance.location</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam LOCATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_LOCATION);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Provenance:location</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_LOCATION = new ca.uhn.fhir.model.api.Include("Provenance:location").toLocked();
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>Target Reference(s) (usually version specific)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Provenance.target.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="Provenance.target.where(resolve() is Patient)", description="Target Reference(s) (usually version specific)", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>Target Reference(s) (usually version specific)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Provenance.target.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Provenance:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Provenance:patient").toLocked();
+
+ /**
+   * Search parameter: <b>recorded</b>
+   * <p>
+   * Description: <b>When the activity was recorded / updated</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>Provenance.recorded</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="recorded", path="Provenance.recorded", description="When the activity was recorded / updated", type="date" )
+  public static final String SP_RECORDED = "recorded";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>recorded</b>
+   * <p>
+   * Description: <b>When the activity was recorded / updated</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>Provenance.recorded</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam RECORDED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_RECORDED);
+
+ /**
+   * Search parameter: <b>signature-type</b>
+   * <p>
+   * Description: <b>Indication of the reason the entity signed the object(s)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Provenance.signature.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="signature-type", path="Provenance.signature.type", description="Indication of the reason the entity signed the object(s)", type="token" )
+  public static final String SP_SIGNATURE_TYPE = "signature-type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>signature-type</b>
+   * <p>
+   * Description: <b>Indication of the reason the entity signed the object(s)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Provenance.signature.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SIGNATURE_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SIGNATURE_TYPE);
+
+ /**
+   * Search parameter: <b>target</b>
+   * <p>
+   * Description: <b>Target Reference(s) (usually version specific)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Provenance.target</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="target", path="Provenance.target", description="Target Reference(s) (usually version specific)", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_TARGET = "target";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>target</b>
+   * <p>
+   * Description: <b>Target Reference(s) (usually version specific)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Provenance.target</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam TARGET = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_TARGET);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Provenance:target</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_TARGET = new ca.uhn.fhir.model.api.Include("Provenance:target").toLocked();
+
+ /**
+   * Search parameter: <b>when</b>
+   * <p>
+   * Description: <b>When the activity occurred</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>(Provenance.occurred as dateTime)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="when", path="(Provenance.occurred as dateTime)", description="When the activity occurred", type="date" )
+  public static final String SP_WHEN = "when";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>when</b>
+   * <p>
+   * Description: <b>When the activity occurred</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>(Provenance.occurred as dateTime)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam WHEN = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_WHEN);
 
 
 }

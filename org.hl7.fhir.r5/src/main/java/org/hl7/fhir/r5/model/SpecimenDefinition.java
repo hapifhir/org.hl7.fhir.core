@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 06:28+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -3917,6 +3917,186 @@ public class SpecimenDefinition extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.SpecimenDefinition;
    }
+
+ /**
+   * Search parameter: <b>container</b>
+   * <p>
+   * Description: <b>The type of specimen conditioned in container expected by the lab</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SpecimenDefinition.typeTested.container.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="container", path="SpecimenDefinition.typeTested.container.type", description="The type of specimen conditioned in container expected by the lab", type="token" )
+  public static final String SP_CONTAINER = "container";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>container</b>
+   * <p>
+   * Description: <b>The type of specimen conditioned in container expected by the lab</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SpecimenDefinition.typeTested.container.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTAINER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTAINER);
+
+ /**
+   * Search parameter: <b>experimental</b>
+   * <p>
+   * Description: <b>Not for genuine usage (true)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SpecimenDefinition.experimental</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="experimental", path="SpecimenDefinition.experimental", description="Not for genuine usage (true)", type="token" )
+  public static final String SP_EXPERIMENTAL = "experimental";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>experimental</b>
+   * <p>
+   * Description: <b>Not for genuine usage (true)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SpecimenDefinition.experimental</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EXPERIMENTAL = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EXPERIMENTAL);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>The unique identifier associated with the SpecimenDefinition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SpecimenDefinition.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="SpecimenDefinition.identifier", description="The unique identifier associated with the SpecimenDefinition", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>The unique identifier associated with the SpecimenDefinition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SpecimenDefinition.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>is-derived</b>
+   * <p>
+   * Description: <b>Primary specimen (false) or derived specimen (true)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SpecimenDefinition.typeTested.isDerived</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="is-derived", path="SpecimenDefinition.typeTested.isDerived", description="Primary specimen (false) or derived specimen (true)", type="token" )
+  public static final String SP_IS_DERIVED = "is-derived";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>is-derived</b>
+   * <p>
+   * Description: <b>Primary specimen (false) or derived specimen (true)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SpecimenDefinition.typeTested.isDerived</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IS_DERIVED = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IS_DERIVED);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>Publication status of the SpecimenDefinition: draft, active, retired, unknown</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SpecimenDefinition.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="SpecimenDefinition.status", description="Publication status of the SpecimenDefinition: draft, active, retired, unknown", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>Publication status of the SpecimenDefinition: draft, active, retired, unknown</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SpecimenDefinition.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>title</b>
+   * <p>
+   * Description: <b>Human-friendly name of the SpecimenDefinition</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>SpecimenDefinition.title</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="title", path="SpecimenDefinition.title", description="Human-friendly name of the SpecimenDefinition", type="string" )
+  public static final String SP_TITLE = "title";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>title</b>
+   * <p>
+   * Description: <b>Human-friendly name of the SpecimenDefinition</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>SpecimenDefinition.title</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
+
+ /**
+   * Search parameter: <b>type-tested</b>
+   * <p>
+   * Description: <b>The type of specimen conditioned for testing</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SpecimenDefinition.typeTested.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="type-tested", path="SpecimenDefinition.typeTested.type", description="The type of specimen conditioned for testing", type="token" )
+  public static final String SP_TYPE_TESTED = "type-tested";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>type-tested</b>
+   * <p>
+   * Description: <b>The type of specimen conditioned for testing</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SpecimenDefinition.typeTested.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE_TESTED = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE_TESTED);
+
+ /**
+   * Search parameter: <b>type</b>
+   * <p>
+   * Description: <b>The type of collected specimen</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SpecimenDefinition.typeCollected</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="type", path="SpecimenDefinition.typeCollected", description="The type of collected specimen", type="token" )
+  public static final String SP_TYPE = "type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>type</b>
+   * <p>
+   * Description: <b>The type of collected specimen</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SpecimenDefinition.typeCollected</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
+
+ /**
+   * Search parameter: <b>url</b>
+   * <p>
+   * Description: <b>The uri that identifies the specimen definition</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>SpecimenDefinition.url</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="url", path="SpecimenDefinition.url", description="The uri that identifies the specimen definition", type="uri" )
+  public static final String SP_URL = "url";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>url</b>
+   * <p>
+   * Description: <b>The uri that identifies the specimen definition</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>SpecimenDefinition.url</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
 
 
 }

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 06:28+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1984,6 +1984,300 @@ public class QuestionnaireResponse extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.QuestionnaireResponse;
    }
+
+ /**
+   * Search parameter: <b>author</b>
+   * <p>
+   * Description: <b>The author of the questionnaire response</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>QuestionnaireResponse.author</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="author", path="QuestionnaireResponse.author", description="The author of the questionnaire response", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_AUTHOR = "author";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>author</b>
+   * <p>
+   * Description: <b>The author of the questionnaire response</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>QuestionnaireResponse.author</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam AUTHOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_AUTHOR);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>QuestionnaireResponse:author</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_AUTHOR = new ca.uhn.fhir.model.api.Include("QuestionnaireResponse:author").toLocked();
+
+ /**
+   * Search parameter: <b>authored</b>
+   * <p>
+   * Description: <b>When the questionnaire response was last changed</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>QuestionnaireResponse.authored</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="authored", path="QuestionnaireResponse.authored", description="When the questionnaire response was last changed", type="date" )
+  public static final String SP_AUTHORED = "authored";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>authored</b>
+   * <p>
+   * Description: <b>When the questionnaire response was last changed</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>QuestionnaireResponse.authored</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam AUTHORED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_AUTHORED);
+
+ /**
+   * Search parameter: <b>based-on</b>
+   * <p>
+   * Description: <b>Plan/proposal/order fulfilled by this questionnaire response</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>QuestionnaireResponse.basedOn</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="based-on", path="QuestionnaireResponse.basedOn", description="Plan/proposal/order fulfilled by this questionnaire response", type="reference", target={CarePlan.class, ServiceRequest.class } )
+  public static final String SP_BASED_ON = "based-on";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>based-on</b>
+   * <p>
+   * Description: <b>Plan/proposal/order fulfilled by this questionnaire response</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>QuestionnaireResponse.basedOn</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam BASED_ON = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_BASED_ON);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>QuestionnaireResponse:based-on</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_BASED_ON = new ca.uhn.fhir.model.api.Include("QuestionnaireResponse:based-on").toLocked();
+
+ /**
+   * Search parameter: <b>encounter</b>
+   * <p>
+   * Description: <b>Encounter associated with the questionnaire response</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>QuestionnaireResponse.encounter</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="encounter", path="QuestionnaireResponse.encounter", description="Encounter associated with the questionnaire response", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Encounter") }, target={Encounter.class } )
+  public static final String SP_ENCOUNTER = "encounter";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
+   * <p>
+   * Description: <b>Encounter associated with the questionnaire response</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>QuestionnaireResponse.encounter</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>QuestionnaireResponse:encounter</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("QuestionnaireResponse:encounter").toLocked();
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>The unique identifier for the questionnaire response</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>QuestionnaireResponse.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="QuestionnaireResponse.identifier", description="The unique identifier for the questionnaire response", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>The unique identifier for the questionnaire response</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>QuestionnaireResponse.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>item-subject</b>
+   * <p>
+   * Description: <b>Allows searching for QuestionnaireResponses by item value where the item has isSubject=true</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>QuestionnaireResponse.item.where(extension('http://hl7.org/fhir/StructureDefinition/questionnaireresponse-isSubject').exists()).answer.value.ofType(Reference)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="item-subject", path="QuestionnaireResponse.item.where(extension('http://hl7.org/fhir/StructureDefinition/questionnaireresponse-isSubject').exists()).answer.value.ofType(Reference)", description="Allows searching for QuestionnaireResponses by item value where the item has isSubject=true", type="reference" )
+  public static final String SP_ITEM_SUBJECT = "item-subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>item-subject</b>
+   * <p>
+   * Description: <b>Allows searching for QuestionnaireResponses by item value where the item has isSubject=true</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>QuestionnaireResponse.item.where(extension('http://hl7.org/fhir/StructureDefinition/questionnaireresponse-isSubject').exists()).answer.value.ofType(Reference)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ITEM_SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ITEM_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>QuestionnaireResponse:item-subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ITEM_SUBJECT = new ca.uhn.fhir.model.api.Include("QuestionnaireResponse:item-subject").toLocked();
+
+ /**
+   * Search parameter: <b>part-of</b>
+   * <p>
+   * Description: <b>Procedure or observation this questionnaire response was performed as a part of</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>QuestionnaireResponse.partOf</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="part-of", path="QuestionnaireResponse.partOf", description="Procedure or observation this questionnaire response was performed as a part of", type="reference", target={Observation.class, Procedure.class } )
+  public static final String SP_PART_OF = "part-of";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>part-of</b>
+   * <p>
+   * Description: <b>Procedure or observation this questionnaire response was performed as a part of</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>QuestionnaireResponse.partOf</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PART_OF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PART_OF);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>QuestionnaireResponse:part-of</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PART_OF = new ca.uhn.fhir.model.api.Include("QuestionnaireResponse:part-of").toLocked();
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>The patient that is the subject of the questionnaire response</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>QuestionnaireResponse.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="QuestionnaireResponse.subject.where(resolve() is Patient)", description="The patient that is the subject of the questionnaire response", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>The patient that is the subject of the questionnaire response</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>QuestionnaireResponse.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>QuestionnaireResponse:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("QuestionnaireResponse:patient").toLocked();
+
+ /**
+   * Search parameter: <b>questionnaire</b>
+   * <p>
+   * Description: <b>The questionnaire the answers are provided for</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>QuestionnaireResponse.questionnaire</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="questionnaire", path="QuestionnaireResponse.questionnaire", description="The questionnaire the answers are provided for", type="reference", target={Questionnaire.class } )
+  public static final String SP_QUESTIONNAIRE = "questionnaire";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>questionnaire</b>
+   * <p>
+   * Description: <b>The questionnaire the answers are provided for</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>QuestionnaireResponse.questionnaire</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam QUESTIONNAIRE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_QUESTIONNAIRE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>QuestionnaireResponse:questionnaire</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_QUESTIONNAIRE = new ca.uhn.fhir.model.api.Include("QuestionnaireResponse:questionnaire").toLocked();
+
+ /**
+   * Search parameter: <b>source</b>
+   * <p>
+   * Description: <b>The individual providing the information reflected in the questionnaire respose</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>QuestionnaireResponse.source</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="source", path="QuestionnaireResponse.source", description="The individual providing the information reflected in the questionnaire respose", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_SOURCE = "source";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>source</b>
+   * <p>
+   * Description: <b>The individual providing the information reflected in the questionnaire respose</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>QuestionnaireResponse.source</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SOURCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SOURCE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>QuestionnaireResponse:source</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SOURCE = new ca.uhn.fhir.model.api.Include("QuestionnaireResponse:source").toLocked();
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>The status of the questionnaire response</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>QuestionnaireResponse.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="QuestionnaireResponse.status", description="The status of the questionnaire response", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>The status of the questionnaire response</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>QuestionnaireResponse.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>The subject of the questionnaire response</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>QuestionnaireResponse.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="QuestionnaireResponse.subject", description="The subject of the questionnaire response", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>The subject of the questionnaire response</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>QuestionnaireResponse.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>QuestionnaireResponse:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("QuestionnaireResponse:subject").toLocked();
 
 
 }

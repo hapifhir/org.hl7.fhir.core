@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 06:28+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -3986,6 +3986,186 @@ public class SubscriptionTopic extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.SubscriptionTopic;
    }
+
+ /**
+   * Search parameter: <b>date</b>
+   * <p>
+   * Description: <b>Date status first applied</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>SubscriptionTopic.date</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="date", path="SubscriptionTopic.date", description="Date status first applied", type="date" )
+  public static final String SP_DATE = "date";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>date</b>
+   * <p>
+   * Description: <b>Date status first applied</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>SubscriptionTopic.date</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+
+ /**
+   * Search parameter: <b>derived-or-self</b>
+   * <p>
+   * Description: <b>A server defined search that matches either the url or derivedFrom</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>SubscriptionTopic.url | SubscriptionTopic.derivedFrom</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="derived-or-self", path="SubscriptionTopic.url | SubscriptionTopic.derivedFrom", description="A server defined search that matches either the url or derivedFrom", type="uri" )
+  public static final String SP_DERIVED_OR_SELF = "derived-or-self";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>derived-or-self</b>
+   * <p>
+   * Description: <b>A server defined search that matches either the url or derivedFrom</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>SubscriptionTopic.url | SubscriptionTopic.derivedFrom</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam DERIVED_OR_SELF = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_DERIVED_OR_SELF);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Business Identifier for SubscriptionTopic</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SubscriptionTopic.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="SubscriptionTopic.identifier", description="Business Identifier for SubscriptionTopic", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Business Identifier for SubscriptionTopic</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SubscriptionTopic.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>resource</b>
+   * <p>
+   * Description: <b>Allowed Data type or Resource (reference to definition) for this definition, searches resourceTrigger, eventTrigger, and notificationShape for matches.</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>SubscriptionTopic.resourceTrigger.resource</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="resource", path="SubscriptionTopic.resourceTrigger.resource", description="Allowed Data type or Resource (reference to definition) for this definition, searches resourceTrigger, eventTrigger, and notificationShape for matches.", type="uri" )
+  public static final String SP_RESOURCE = "resource";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>resource</b>
+   * <p>
+   * Description: <b>Allowed Data type or Resource (reference to definition) for this definition, searches resourceTrigger, eventTrigger, and notificationShape for matches.</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>SubscriptionTopic.resourceTrigger.resource</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam RESOURCE = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_RESOURCE);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>draft | active | retired | unknown</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SubscriptionTopic.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="SubscriptionTopic.status", description="draft | active | retired | unknown", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>draft | active | retired | unknown</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SubscriptionTopic.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>title</b>
+   * <p>
+   * Description: <b>Name for this SubscriptionTopic (Human friendly)</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>SubscriptionTopic.title</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="title", path="SubscriptionTopic.title", description="Name for this SubscriptionTopic (Human friendly)", type="string" )
+  public static final String SP_TITLE = "title";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>title</b>
+   * <p>
+   * Description: <b>Name for this SubscriptionTopic (Human friendly)</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>SubscriptionTopic.title</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
+
+ /**
+   * Search parameter: <b>trigger-description</b>
+   * <p>
+   * Description: <b>Text representation of the trigger</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>SubscriptionTopic.resourceTrigger.description</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="trigger-description", path="SubscriptionTopic.resourceTrigger.description", description="Text representation of the trigger", type="string" )
+  public static final String SP_TRIGGER_DESCRIPTION = "trigger-description";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>trigger-description</b>
+   * <p>
+   * Description: <b>Text representation of the trigger</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>SubscriptionTopic.resourceTrigger.description</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam TRIGGER_DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TRIGGER_DESCRIPTION);
+
+ /**
+   * Search parameter: <b>url</b>
+   * <p>
+   * Description: <b>Logical canonical URL to reference this SubscriptionTopic (globally unique)</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>SubscriptionTopic.url</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="url", path="SubscriptionTopic.url", description="Logical canonical URL to reference this SubscriptionTopic (globally unique)", type="uri" )
+  public static final String SP_URL = "url";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>url</b>
+   * <p>
+   * Description: <b>Logical canonical URL to reference this SubscriptionTopic (globally unique)</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>SubscriptionTopic.url</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
+
+ /**
+   * Search parameter: <b>version</b>
+   * <p>
+   * Description: <b>Business version of the SubscriptionTopic</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SubscriptionTopic.version</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="version", path="SubscriptionTopic.version", description="Business version of the SubscriptionTopic", type="token" )
+  public static final String SP_VERSION = "version";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>version</b>
+   * <p>
+   * Description: <b>Business version of the SubscriptionTopic</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SubscriptionTopic.version</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
 
 }

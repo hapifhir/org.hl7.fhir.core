@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 06:28+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2015,6 +2015,126 @@ public class Subscription extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.Subscription;
    }
+
+ /**
+   * Search parameter: <b>contact</b>
+   * <p>
+   * Description: <b>Contact details for the subscription</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Subscription.contact</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="contact", path="Subscription.contact", description="Contact details for the subscription", type="token" )
+  public static final String SP_CONTACT = "contact";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>contact</b>
+   * <p>
+   * Description: <b>Contact details for the subscription</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Subscription.contact</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTACT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTACT);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>A subscription identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Subscription.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="Subscription.identifier", description="A subscription identifier", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>A subscription identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Subscription.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>payload</b>
+   * <p>
+   * Description: <b>The mime-type of the notification payload</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>null</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="payload", path="", description="The mime-type of the notification payload", type="token" )
+  public static final String SP_PAYLOAD = "payload";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>payload</b>
+   * <p>
+   * Description: <b>The mime-type of the notification payload</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>null</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PAYLOAD = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PAYLOAD);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>The current state of the subscription</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Subscription.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="Subscription.status", description="The current state of the subscription", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>The current state of the subscription</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Subscription.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>type</b>
+   * <p>
+   * Description: <b>The type of channel for the sent notifications</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>null</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="type", path="", description="The type of channel for the sent notifications", type="token" )
+  public static final String SP_TYPE = "type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>type</b>
+   * <p>
+   * Description: <b>The type of channel for the sent notifications</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>null</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
+
+ /**
+   * Search parameter: <b>url</b>
+   * <p>
+   * Description: <b>The uri that will receive the notifications</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>null</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="url", path="", description="The uri that will receive the notifications", type="uri" )
+  public static final String SP_URL = "url";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>url</b>
+   * <p>
+   * Description: <b>The uri that will receive the notifications</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>null</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
 
 
 }

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 06:28+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2443,6 +2443,210 @@ public class ImagingSelection extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.ImagingSelection;
    }
+
+ /**
+   * Search parameter: <b>based-on</b>
+   * <p>
+   * Description: <b>The request associated with an imaging selection</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ImagingSelection.basedOn</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="based-on", path="ImagingSelection.basedOn", description="The request associated with an imaging selection", type="reference", target={Appointment.class, AppointmentResponse.class, CarePlan.class, ServiceRequest.class, Task.class } )
+  public static final String SP_BASED_ON = "based-on";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>based-on</b>
+   * <p>
+   * Description: <b>The request associated with an imaging selection</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ImagingSelection.basedOn</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam BASED_ON = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_BASED_ON);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ImagingSelection:based-on</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_BASED_ON = new ca.uhn.fhir.model.api.Include("ImagingSelection:based-on").toLocked();
+
+ /**
+   * Search parameter: <b>body-site</b>
+   * <p>
+   * Description: <b>The body site associated with the imaging selection</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ImagingSelection.bodySite</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="body-site", path="ImagingSelection.bodySite", description="The body site associated with the imaging selection", type="token" )
+  public static final String SP_BODY_SITE = "body-site";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>body-site</b>
+   * <p>
+   * Description: <b>The body site associated with the imaging selection</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ImagingSelection.bodySite</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam BODY_SITE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_BODY_SITE);
+
+ /**
+   * Search parameter: <b>code</b>
+   * <p>
+   * Description: <b>The imaging selection description text or code</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ImagingSelection.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="code", path="ImagingSelection.code", description="The imaging selection description text or code", type="token" )
+  public static final String SP_CODE = "code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>code</b>
+   * <p>
+   * Description: <b>The imaging selection description text or code</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ImagingSelection.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
+
+ /**
+   * Search parameter: <b>derived-from</b>
+   * <p>
+   * Description: <b>The imaging study from which the imaging selection was derived</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ImagingSelection.derivedFrom</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="derived-from", path="ImagingSelection.derivedFrom", description="The imaging study from which the imaging selection was derived", type="reference", target={ImagingStudy.class } )
+  public static final String SP_DERIVED_FROM = "derived-from";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>derived-from</b>
+   * <p>
+   * Description: <b>The imaging study from which the imaging selection was derived</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ImagingSelection.derivedFrom</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DERIVED_FROM = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DERIVED_FROM);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ImagingSelection:derived-from</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_DERIVED_FROM = new ca.uhn.fhir.model.api.Include("ImagingSelection:derived-from").toLocked();
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Identifiers for the imaging selection</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ImagingSelection.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="ImagingSelection.identifier", description="Identifiers for the imaging selection", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Identifiers for the imaging selection</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ImagingSelection.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>issued</b>
+   * <p>
+   * Description: <b>The date / time the imaging selection was created</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>ImagingSelection.issued</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="issued", path="ImagingSelection.issued", description="The date / time the imaging selection was created", type="date" )
+  public static final String SP_ISSUED = "issued";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>issued</b>
+   * <p>
+   * Description: <b>The date / time the imaging selection was created</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>ImagingSelection.issued</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam ISSUED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_ISSUED);
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>Who the study is about</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ImagingSelection.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="ImagingSelection.subject.where(resolve() is Patient)", description="Who the study is about", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Device.class, Group.class, Location.class, Medication.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Specimen.class, Substance.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>Who the study is about</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ImagingSelection.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ImagingSelection:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("ImagingSelection:patient").toLocked();
+
+ /**
+   * Search parameter: <b>study-uid</b>
+   * <p>
+   * Description: <b>The DICOM Study Instance UID from which the images were selected</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>ImagingSelection.studyUid</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="study-uid", path="ImagingSelection.studyUid", description="The DICOM Study Instance UID from which the images were selected", type="uri" )
+  public static final String SP_STUDY_UID = "study-uid";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>study-uid</b>
+   * <p>
+   * Description: <b>The DICOM Study Instance UID from which the images were selected</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>ImagingSelection.studyUid</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam STUDY_UID = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_STUDY_UID);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>The subject of the Imaging Selection, such as the associated Patient</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ImagingSelection.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="ImagingSelection.subject", description="The subject of the Imaging Selection, such as the associated Patient", type="reference", target={Device.class, Group.class, Location.class, Medication.class, Organization.class, Patient.class, Practitioner.class, Procedure.class, Specimen.class, Substance.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>The subject of the Imaging Selection, such as the associated Patient</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ImagingSelection.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ImagingSelection:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("ImagingSelection:subject").toLocked();
 
 
 }
