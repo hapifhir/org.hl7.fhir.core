@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 06:28+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -4288,6 +4288,186 @@ public class EvidenceReport extends MetadataResource {
   public ResourceType getResourceType() {
     return ResourceType.EvidenceReport;
    }
+
+ /**
+   * Search parameter: <b>context-quantity</b>
+   * <p>
+   * Description: <b>A quantity- or range-valued use context assigned to the evidence report</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>(EvidenceReport.useContext.value as Quantity) | (EvidenceReport.useContext.value as Range)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-quantity", path="(EvidenceReport.useContext.value as Quantity) | (EvidenceReport.useContext.value as Range)", description="A quantity- or range-valued use context assigned to the evidence report", type="quantity" )
+  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
+   * <p>
+   * Description: <b>A quantity- or range-valued use context assigned to the evidence report</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>(EvidenceReport.useContext.value as Quantity) | (EvidenceReport.useContext.value as Range)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
+
+ /**
+   * Search parameter: <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the evidence report</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>EvidenceReport.useContext</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type-quantity", path="EvidenceReport.useContext", description="A use context type and quantity- or range-based value assigned to the evidence report", type="composite", compositeOf={"context-type", "context-quantity"} )
+  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the evidence report</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>EvidenceReport.useContext</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
+
+ /**
+   * Search parameter: <b>context-type-value</b>
+   * <p>
+   * Description: <b>A use context type and value assigned to the evidence report</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>EvidenceReport.useContext</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type-value", path="EvidenceReport.useContext", description="A use context type and value assigned to the evidence report", type="composite", compositeOf={"context-type", "context"} )
+  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
+   * <p>
+   * Description: <b>A use context type and value assigned to the evidence report</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>EvidenceReport.useContext</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
+
+ /**
+   * Search parameter: <b>context-type</b>
+   * <p>
+   * Description: <b>A type of use context assigned to the evidence report</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>EvidenceReport.useContext.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type", path="EvidenceReport.useContext.code", description="A type of use context assigned to the evidence report", type="token" )
+  public static final String SP_CONTEXT_TYPE = "context-type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type</b>
+   * <p>
+   * Description: <b>A type of use context assigned to the evidence report</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>EvidenceReport.useContext.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
+
+ /**
+   * Search parameter: <b>context</b>
+   * <p>
+   * Description: <b>A use context assigned to the evidence report</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(EvidenceReport.useContext.value as CodeableConcept)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context", path="(EvidenceReport.useContext.value as CodeableConcept)", description="A use context assigned to the evidence report", type="token" )
+  public static final String SP_CONTEXT = "context";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context</b>
+   * <p>
+   * Description: <b>A use context assigned to the evidence report</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(EvidenceReport.useContext.value as CodeableConcept)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>External identifier for the evidence report</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>EvidenceReport.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="EvidenceReport.identifier", description="External identifier for the evidence report", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>External identifier for the evidence report</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>EvidenceReport.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>publisher</b>
+   * <p>
+   * Description: <b>Name of the publisher of the evidence report</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>EvidenceReport.publisher</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="publisher", path="EvidenceReport.publisher", description="Name of the publisher of the evidence report", type="string" )
+  public static final String SP_PUBLISHER = "publisher";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>publisher</b>
+   * <p>
+   * Description: <b>Name of the publisher of the evidence report</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>EvidenceReport.publisher</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam PUBLISHER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PUBLISHER);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>The current status of the evidence report</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>EvidenceReport.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="EvidenceReport.status", description="The current status of the evidence report", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>The current status of the evidence report</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>EvidenceReport.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>url</b>
+   * <p>
+   * Description: <b>The uri that identifies the evidence report</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>EvidenceReport.url</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="url", path="EvidenceReport.url", description="The uri that identifies the evidence report", type="uri" )
+  public static final String SP_URL = "url";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>url</b>
+   * <p>
+   * Description: <b>The uri that identifies the evidence report</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>EvidenceReport.url</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
 
 
 }

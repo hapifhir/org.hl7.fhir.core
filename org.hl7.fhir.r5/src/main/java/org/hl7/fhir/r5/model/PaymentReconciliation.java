@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 06:28+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2069,6 +2069,184 @@ public class PaymentReconciliation extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.PaymentReconciliation;
    }
+
+ /**
+   * Search parameter: <b>created</b>
+   * <p>
+   * Description: <b>The creation date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>PaymentReconciliation.created</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="created", path="PaymentReconciliation.created", description="The creation date", type="date" )
+  public static final String SP_CREATED = "created";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>created</b>
+   * <p>
+   * Description: <b>The creation date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>PaymentReconciliation.created</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam CREATED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_CREATED);
+
+ /**
+   * Search parameter: <b>disposition</b>
+   * <p>
+   * Description: <b>The contents of the disposition message</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>PaymentReconciliation.disposition</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="disposition", path="PaymentReconciliation.disposition", description="The contents of the disposition message", type="string" )
+  public static final String SP_DISPOSITION = "disposition";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>disposition</b>
+   * <p>
+   * Description: <b>The contents of the disposition message</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>PaymentReconciliation.disposition</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam DISPOSITION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DISPOSITION);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>The business identifier of the ExplanationOfBenefit</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PaymentReconciliation.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="PaymentReconciliation.identifier", description="The business identifier of the ExplanationOfBenefit", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>The business identifier of the ExplanationOfBenefit</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PaymentReconciliation.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>outcome</b>
+   * <p>
+   * Description: <b>The processing outcome</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PaymentReconciliation.outcome</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="outcome", path="PaymentReconciliation.outcome", description="The processing outcome", type="token" )
+  public static final String SP_OUTCOME = "outcome";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>outcome</b>
+   * <p>
+   * Description: <b>The processing outcome</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PaymentReconciliation.outcome</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam OUTCOME = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_OUTCOME);
+
+ /**
+   * Search parameter: <b>payment-issuer</b>
+   * <p>
+   * Description: <b>The organization which generated this resource</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PaymentReconciliation.paymentIssuer</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="payment-issuer", path="PaymentReconciliation.paymentIssuer", description="The organization which generated this resource", type="reference", target={Organization.class } )
+  public static final String SP_PAYMENT_ISSUER = "payment-issuer";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>payment-issuer</b>
+   * <p>
+   * Description: <b>The organization which generated this resource</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PaymentReconciliation.paymentIssuer</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PAYMENT_ISSUER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PAYMENT_ISSUER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>PaymentReconciliation:payment-issuer</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PAYMENT_ISSUER = new ca.uhn.fhir.model.api.Include("PaymentReconciliation:payment-issuer").toLocked();
+
+ /**
+   * Search parameter: <b>request</b>
+   * <p>
+   * Description: <b>The reference to the claim</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PaymentReconciliation.request</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="request", path="PaymentReconciliation.request", description="The reference to the claim", type="reference", target={Task.class } )
+  public static final String SP_REQUEST = "request";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>request</b>
+   * <p>
+   * Description: <b>The reference to the claim</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PaymentReconciliation.request</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REQUEST = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REQUEST);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>PaymentReconciliation:request</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_REQUEST = new ca.uhn.fhir.model.api.Include("PaymentReconciliation:request").toLocked();
+
+ /**
+   * Search parameter: <b>requestor</b>
+   * <p>
+   * Description: <b>The reference to the provider who submitted the claim</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PaymentReconciliation.requestor</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="requestor", path="PaymentReconciliation.requestor", description="The reference to the provider who submitted the claim", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Organization.class, Practitioner.class, PractitionerRole.class } )
+  public static final String SP_REQUESTOR = "requestor";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>requestor</b>
+   * <p>
+   * Description: <b>The reference to the provider who submitted the claim</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PaymentReconciliation.requestor</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REQUESTOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REQUESTOR);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>PaymentReconciliation:requestor</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_REQUESTOR = new ca.uhn.fhir.model.api.Include("PaymentReconciliation:requestor").toLocked();
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>The status of the payment reconciliation</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PaymentReconciliation.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="PaymentReconciliation.status", description="The status of the payment reconciliation", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>The status of the payment reconciliation</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PaymentReconciliation.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
 
 }

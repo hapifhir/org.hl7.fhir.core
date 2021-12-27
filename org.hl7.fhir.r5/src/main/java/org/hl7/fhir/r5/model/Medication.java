@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 06:28+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1325,6 +1325,230 @@ public class Medication extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.Medication;
    }
+
+ /**
+   * Search parameter: <b>expiration-date</b>
+   * <p>
+   * Description: <b>Returns medications in a batch with this expiration date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>Medication.batch.expirationDate</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="expiration-date", path="Medication.batch.expirationDate", description="Returns medications in a batch with this expiration date", type="date" )
+  public static final String SP_EXPIRATION_DATE = "expiration-date";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>expiration-date</b>
+   * <p>
+   * Description: <b>Returns medications in a batch with this expiration date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>Medication.batch.expirationDate</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam EXPIRATION_DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_EXPIRATION_DATE);
+
+ /**
+   * Search parameter: <b>form</b>
+   * <p>
+   * Description: <b>Returns medications for a specific dose form</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>null</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="form", path="", description="Returns medications for a specific dose form", type="token" )
+  public static final String SP_FORM = "form";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>form</b>
+   * <p>
+   * Description: <b>Returns medications for a specific dose form</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>null</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam FORM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FORM);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Returns medications with this external identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Medication.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="Medication.identifier", description="Returns medications with this external identifier", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Returns medications with this external identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Medication.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>ingredient-code</b>
+   * <p>
+   * Description: <b>Returns medications for this ingredient code</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Medication.ingredient.item.concept</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="ingredient-code", path="Medication.ingredient.item.concept", description="Returns medications for this ingredient code", type="token" )
+  public static final String SP_INGREDIENT_CODE = "ingredient-code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>ingredient-code</b>
+   * <p>
+   * Description: <b>Returns medications for this ingredient code</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Medication.ingredient.item.concept</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INGREDIENT_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INGREDIENT_CODE);
+
+ /**
+   * Search parameter: <b>ingredient</b>
+   * <p>
+   * Description: <b>Returns medications for this ingredient reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Medication.ingredient.item.reference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="ingredient", path="Medication.ingredient.item.reference", description="Returns medications for this ingredient reference", type="reference" )
+  public static final String SP_INGREDIENT = "ingredient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>ingredient</b>
+   * <p>
+   * Description: <b>Returns medications for this ingredient reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Medication.ingredient.item.reference</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INGREDIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INGREDIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Medication:ingredient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_INGREDIENT = new ca.uhn.fhir.model.api.Include("Medication:ingredient").toLocked();
+
+ /**
+   * Search parameter: <b>lot-number</b>
+   * <p>
+   * Description: <b>Returns medications in a batch with this lot number</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Medication.batch.lotNumber</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="lot-number", path="Medication.batch.lotNumber", description="Returns medications in a batch with this lot number", type="token" )
+  public static final String SP_LOT_NUMBER = "lot-number";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>lot-number</b>
+   * <p>
+   * Description: <b>Returns medications in a batch with this lot number</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Medication.batch.lotNumber</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam LOT_NUMBER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_LOT_NUMBER);
+
+ /**
+   * Search parameter: <b>marketingauthorizationholder</b>
+   * <p>
+   * Description: <b>Returns medications made or sold for this marketing authorization holder</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Medication.marketingAuthorizationHolder</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="marketingauthorizationholder", path="Medication.marketingAuthorizationHolder", description="Returns medications made or sold for this marketing authorization holder", type="reference", target={Organization.class } )
+  public static final String SP_MARKETINGAUTHORIZATIONHOLDER = "marketingauthorizationholder";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>marketingauthorizationholder</b>
+   * <p>
+   * Description: <b>Returns medications made or sold for this marketing authorization holder</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Medication.marketingAuthorizationHolder</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MARKETINGAUTHORIZATIONHOLDER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MARKETINGAUTHORIZATIONHOLDER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Medication:marketingauthorizationholder</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_MARKETINGAUTHORIZATIONHOLDER = new ca.uhn.fhir.model.api.Include("Medication:marketingauthorizationholder").toLocked();
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>Returns medications for this status</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Medication.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="Medication.status", description="Returns medications for this status", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>Returns medications for this status</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Medication.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>code</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): Code that identifies the allergy or intolerance
+* [Condition](condition.html): Code for the condition
+* [DeviceRequest](devicerequest.html): Code for what is being requested/ordered
+* [DiagnosticReport](diagnosticreport.html): The code for the report, as opposed to codes for the atomic results, which are the names on the observation resource referred to from the result
+* [FamilyMemberHistory](familymemberhistory.html): A search by a condition code
+* [List](list.html): What the purpose of this list is
+* [Medication](medication.html): Returns medications for a specific code
+* [MedicationAdministration](medicationadministration.html): Return administrations of this medication code
+* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine code
+* [MedicationRequest](medicationrequest.html): Return prescriptions of this medication code
+* [MedicationUsage](medicationusage.html): Return statements of this medication code
+* [Observation](observation.html): The code of the observation type
+* [Procedure](procedure.html): A code to identify a  procedure
+* [ServiceRequest](servicerequest.html): What is being requested/ordered
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code | ServiceRequest.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="code", path="AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code | ServiceRequest.code", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Code that identifies the allergy or intolerance\r\n* [Condition](condition.html): Code for the condition\r\n* [DeviceRequest](devicerequest.html): Code for what is being requested/ordered\r\n* [DiagnosticReport](diagnosticreport.html): The code for the report, as opposed to codes for the atomic results, which are the names on the observation resource referred to from the result\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a condition code\r\n* [List](list.html): What the purpose of this list is\r\n* [Medication](medication.html): Returns medications for a specific code\r\n* [MedicationAdministration](medicationadministration.html): Return administrations of this medication code\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine code\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions of this medication code\r\n* [MedicationUsage](medicationusage.html): Return statements of this medication code\r\n* [Observation](observation.html): The code of the observation type\r\n* [Procedure](procedure.html): A code to identify a  procedure\r\n* [ServiceRequest](servicerequest.html): What is being requested/ordered\r\n", type="token" )
+  public static final String SP_CODE = "code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>code</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): Code that identifies the allergy or intolerance
+* [Condition](condition.html): Code for the condition
+* [DeviceRequest](devicerequest.html): Code for what is being requested/ordered
+* [DiagnosticReport](diagnosticreport.html): The code for the report, as opposed to codes for the atomic results, which are the names on the observation resource referred to from the result
+* [FamilyMemberHistory](familymemberhistory.html): A search by a condition code
+* [List](list.html): What the purpose of this list is
+* [Medication](medication.html): Returns medications for a specific code
+* [MedicationAdministration](medicationadministration.html): Return administrations of this medication code
+* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine code
+* [MedicationRequest](medicationrequest.html): Return prescriptions of this medication code
+* [MedicationUsage](medicationusage.html): Return statements of this medication code
+* [Observation](observation.html): The code of the observation type
+* [Procedure](procedure.html): A code to identify a  procedure
+* [ServiceRequest](servicerequest.html): What is being requested/ordered
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code | ServiceRequest.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
 
 
 }

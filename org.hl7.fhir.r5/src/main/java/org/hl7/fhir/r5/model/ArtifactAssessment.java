@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 06:28+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1321,16 +1321,16 @@ public class ArtifactAssessment extends MetadataResource {
     /**
      * The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    @Child(name = "approvalDate", type = {DateType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "approvalDate", type = {DateTimeType.class}, order=4, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the artifact assessment was approved by publisher", formalDefinition="The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage." )
-    protected DateType approvalDate;
+    protected DateTimeType approvalDate;
 
     /**
      * The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
-    @Child(name = "lastReviewDate", type = {DateType.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "lastReviewDate", type = {DateTimeType.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When the artifact assessment was last reviewed", formalDefinition="The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date." )
-    protected DateType lastReviewDate;
+    protected DateTimeType lastReviewDate;
 
     /**
      * A reference to a resource, canonical resource, or non-FHIR resource which the comment or assessment is about.
@@ -1584,12 +1584,12 @@ public class ArtifactAssessment extends MetadataResource {
     /**
      * @return {@link #approvalDate} (The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.). This is the underlying object with id, value and extensions. The accessor "getApprovalDate" gives direct access to the value
      */
-    public DateType getApprovalDateElement() { 
+    public DateTimeType getApprovalDateElement() { 
       if (this.approvalDate == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ArtifactAssessment.approvalDate");
         else if (Configuration.doAutoCreate())
-          this.approvalDate = new DateType(); // bb
+          this.approvalDate = new DateTimeType(); // bb
       return this.approvalDate;
     }
 
@@ -1604,7 +1604,7 @@ public class ArtifactAssessment extends MetadataResource {
     /**
      * @param value {@link #approvalDate} (The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.). This is the underlying object with id, value and extensions. The accessor "getApprovalDate" gives direct access to the value
      */
-    public ArtifactAssessment setApprovalDateElement(DateType value) { 
+    public ArtifactAssessment setApprovalDateElement(DateTimeType value) { 
       this.approvalDate = value;
       return this;
     }
@@ -1624,7 +1624,7 @@ public class ArtifactAssessment extends MetadataResource {
         this.approvalDate = null;
       else {
         if (this.approvalDate == null)
-          this.approvalDate = new DateType();
+          this.approvalDate = new DateTimeType();
         this.approvalDate.setValue(value);
       }
       return this;
@@ -1633,12 +1633,12 @@ public class ArtifactAssessment extends MetadataResource {
     /**
      * @return {@link #lastReviewDate} (The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.). This is the underlying object with id, value and extensions. The accessor "getLastReviewDate" gives direct access to the value
      */
-    public DateType getLastReviewDateElement() { 
+    public DateTimeType getLastReviewDateElement() { 
       if (this.lastReviewDate == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ArtifactAssessment.lastReviewDate");
         else if (Configuration.doAutoCreate())
-          this.lastReviewDate = new DateType(); // bb
+          this.lastReviewDate = new DateTimeType(); // bb
       return this.lastReviewDate;
     }
 
@@ -1653,7 +1653,7 @@ public class ArtifactAssessment extends MetadataResource {
     /**
      * @param value {@link #lastReviewDate} (The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.). This is the underlying object with id, value and extensions. The accessor "getLastReviewDate" gives direct access to the value
      */
-    public ArtifactAssessment setLastReviewDateElement(DateType value) { 
+    public ArtifactAssessment setLastReviewDateElement(DateTimeType value) { 
       this.lastReviewDate = value;
       return this;
     }
@@ -1673,7 +1673,7 @@ public class ArtifactAssessment extends MetadataResource {
         this.lastReviewDate = null;
       else {
         if (this.lastReviewDate == null)
-          this.lastReviewDate = new DateType();
+          this.lastReviewDate = new DateTimeType();
         this.lastReviewDate.setValue(value);
       }
       return this;
@@ -2631,10 +2631,10 @@ public class ArtifactAssessment extends MetadataResource {
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 223539345: // approvalDate
-          this.approvalDate = TypeConvertor.castToDate(value); // DateTimeType
+          this.approvalDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -1687512484: // lastReviewDate
-          this.lastReviewDate = TypeConvertor.castToDate(value); // DateTimeType
+          this.lastReviewDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -1228798510: // artifact
           this.artifact = TypeConvertor.castToType(value); // DataType
@@ -2666,9 +2666,9 @@ public class ArtifactAssessment extends MetadataResource {
         } else if (name.equals("copyright")) {
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("approvalDate")) {
-          this.approvalDate = TypeConvertor.castToDate(value); // DateTimeType
+          this.approvalDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("lastReviewDate")) {
-          this.lastReviewDate = TypeConvertor.castToDate(value); // DateTimeType
+          this.lastReviewDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("artifact[x]")) {
           this.artifact = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("content")) {
@@ -2845,6 +2845,26 @@ public class ArtifactAssessment extends MetadataResource {
   public ResourceType getResourceType() {
     return ResourceType.ArtifactAssessment;
    }
+
+ /**
+   * Search parameter: <b>date</b>
+   * <p>
+   * Description: <b>The artifact assessment publication date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>ArtifactAssessment.date</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="date", path="ArtifactAssessment.date", description="The artifact assessment publication date", type="date" )
+  public static final String SP_DATE = "date";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>date</b>
+   * <p>
+   * Description: <b>The artifact assessment publication date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>ArtifactAssessment.date</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
 
 
 }

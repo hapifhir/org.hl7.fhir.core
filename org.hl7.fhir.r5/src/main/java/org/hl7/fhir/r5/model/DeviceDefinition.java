@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 06:28+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -7470,6 +7470,72 @@ RegisteredName | UserFriendlyName | PatientReportedName.
   public ResourceType getResourceType() {
     return ResourceType.DeviceDefinition;
    }
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>The identifier of the component</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>DeviceDefinition.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="DeviceDefinition.identifier", description="The identifier of the component", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>The identifier of the component</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>DeviceDefinition.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>parent</b>
+   * <p>
+   * Description: <b>The parent DeviceDefinition resource</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>DeviceDefinition.parentDevice</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="parent", path="DeviceDefinition.parentDevice", description="The parent DeviceDefinition resource", type="reference", target={DeviceDefinition.class } )
+  public static final String SP_PARENT = "parent";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>parent</b>
+   * <p>
+   * Description: <b>The parent DeviceDefinition resource</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>DeviceDefinition.parentDevice</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PARENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PARENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>DeviceDefinition:parent</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PARENT = new ca.uhn.fhir.model.api.Include("DeviceDefinition:parent").toLocked();
+
+ /**
+   * Search parameter: <b>type</b>
+   * <p>
+   * Description: <b>The device component type</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>DeviceDefinition.classification.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="type", path="DeviceDefinition.classification.type", description="The device component type", type="token" )
+  public static final String SP_TYPE = "type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>type</b>
+   * <p>
+   * Description: <b>The device component type</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>DeviceDefinition.classification.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
 
 }

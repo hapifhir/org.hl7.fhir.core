@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 06:28+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1872,6 +1872,52 @@ public class DeviceDispense extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.DeviceDispense;
    }
+
+ /**
+   * Search parameter: <b>code</b>
+   * <p>
+   * Description: <b>Search for devices that match this code</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>DeviceDispense.device.concept</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="code", path="DeviceDispense.device.concept", description="Search for devices that match this code", type="token" )
+  public static final String SP_CODE = "code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>code</b>
+   * <p>
+   * Description: <b>Search for devices that match this code</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>DeviceDispense.device.concept</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>The identity of a patient for whom to list dispenses</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>DeviceDispense.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="DeviceDispense.subject", description="The identity of a patient for whom to list dispenses", type="reference", target={Patient.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>The identity of a patient for whom to list dispenses</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>DeviceDispense.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>DeviceDispense:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("DeviceDispense:subject").toLocked();
 
 
 }

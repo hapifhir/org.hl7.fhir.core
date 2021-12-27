@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 06:28+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -955,6 +955,66 @@ public class ManufacturedItemDefinition extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.ManufacturedItemDefinition;
    }
+
+ /**
+   * Search parameter: <b>dose-form</b>
+   * <p>
+   * Description: <b>Dose form as manufactured and before any transformation into the pharmaceutical product</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ManufacturedItemDefinition.manufacturedDoseForm</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="dose-form", path="ManufacturedItemDefinition.manufacturedDoseForm", description="Dose form as manufactured and before any transformation into the pharmaceutical product", type="token" )
+  public static final String SP_DOSE_FORM = "dose-form";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>dose-form</b>
+   * <p>
+   * Description: <b>Dose form as manufactured and before any transformation into the pharmaceutical product</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ManufacturedItemDefinition.manufacturedDoseForm</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam DOSE_FORM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_DOSE_FORM);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Unique identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ManufacturedItemDefinition.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="ManufacturedItemDefinition.identifier", description="Unique identifier", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Unique identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ManufacturedItemDefinition.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>ingredient</b>
+   * <p>
+   * Description: <b>An ingredient of this item</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ManufacturedItemDefinition.ingredient</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="ingredient", path="ManufacturedItemDefinition.ingredient", description="An ingredient of this item", type="token" )
+  public static final String SP_INGREDIENT = "ingredient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>ingredient</b>
+   * <p>
+   * Description: <b>An ingredient of this item</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ManufacturedItemDefinition.ingredient</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INGREDIENT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INGREDIENT);
 
 
 }

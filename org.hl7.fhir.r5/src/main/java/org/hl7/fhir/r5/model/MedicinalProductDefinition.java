@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 06:28+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -4051,6 +4051,258 @@ public class MedicinalProductDefinition extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.MedicinalProductDefinition;
    }
+
+ /**
+   * Search parameter: <b>characteristic-type</b>
+   * <p>
+   * Description: <b>A category for the characteristic</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicinalProductDefinition.characteristic.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="characteristic-type", path="MedicinalProductDefinition.characteristic.type", description="A category for the characteristic", type="token" )
+  public static final String SP_CHARACTERISTIC_TYPE = "characteristic-type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>characteristic-type</b>
+   * <p>
+   * Description: <b>A category for the characteristic</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicinalProductDefinition.characteristic.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CHARACTERISTIC_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CHARACTERISTIC_TYPE);
+
+ /**
+   * Search parameter: <b>characteristic</b>
+   * <p>
+   * Description: <b>Allows the key product features to be recorded, such as "sugar free", "modified release", "parallel import"</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicinalProductDefinition.characteristic.value</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="characteristic", path="MedicinalProductDefinition.characteristic.value", description="Allows the key product features to be recorded, such as \"sugar free\", \"modified release\", \"parallel import\"", type="token" )
+  public static final String SP_CHARACTERISTIC = "characteristic";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>characteristic</b>
+   * <p>
+   * Description: <b>Allows the key product features to be recorded, such as "sugar free", "modified release", "parallel import"</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicinalProductDefinition.characteristic.value</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CHARACTERISTIC = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CHARACTERISTIC);
+
+ /**
+   * Search parameter: <b>contact</b>
+   * <p>
+   * Description: <b>A product specific contact, person (in a role), or an organization</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MedicinalProductDefinition.contact.contact</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="contact", path="MedicinalProductDefinition.contact.contact", description="A product specific contact, person (in a role), or an organization", type="reference", target={Organization.class, PractitionerRole.class } )
+  public static final String SP_CONTACT = "contact";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>contact</b>
+   * <p>
+   * Description: <b>A product specific contact, person (in a role), or an organization</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MedicinalProductDefinition.contact.contact</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam CONTACT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_CONTACT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>MedicinalProductDefinition:contact</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_CONTACT = new ca.uhn.fhir.model.api.Include("MedicinalProductDefinition:contact").toLocked();
+
+ /**
+   * Search parameter: <b>domain</b>
+   * <p>
+   * Description: <b>If this medicine applies to human or veterinary uses</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicinalProductDefinition.domain</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="domain", path="MedicinalProductDefinition.domain", description="If this medicine applies to human or veterinary uses", type="token" )
+  public static final String SP_DOMAIN = "domain";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>domain</b>
+   * <p>
+   * Description: <b>If this medicine applies to human or veterinary uses</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicinalProductDefinition.domain</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam DOMAIN = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_DOMAIN);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Business identifier for this product. Could be an MPID</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicinalProductDefinition.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="MedicinalProductDefinition.identifier", description="Business identifier for this product. Could be an MPID", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Business identifier for this product. Could be an MPID</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicinalProductDefinition.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>ingredient</b>
+   * <p>
+   * Description: <b>An ingredient of this product</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicinalProductDefinition.ingredient</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="ingredient", path="MedicinalProductDefinition.ingredient", description="An ingredient of this product", type="token" )
+  public static final String SP_INGREDIENT = "ingredient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>ingredient</b>
+   * <p>
+   * Description: <b>An ingredient of this product</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicinalProductDefinition.ingredient</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INGREDIENT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INGREDIENT);
+
+ /**
+   * Search parameter: <b>master-file</b>
+   * <p>
+   * Description: <b>A master file for to the medicinal product (e.g. Pharmacovigilance System Master File)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MedicinalProductDefinition.masterFile</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="master-file", path="MedicinalProductDefinition.masterFile", description="A master file for to the medicinal product (e.g. Pharmacovigilance System Master File)", type="reference", target={DocumentReference.class } )
+  public static final String SP_MASTER_FILE = "master-file";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>master-file</b>
+   * <p>
+   * Description: <b>A master file for to the medicinal product (e.g. Pharmacovigilance System Master File)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MedicinalProductDefinition.masterFile</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MASTER_FILE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MASTER_FILE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>MedicinalProductDefinition:master-file</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_MASTER_FILE = new ca.uhn.fhir.model.api.Include("MedicinalProductDefinition:master-file").toLocked();
+
+ /**
+   * Search parameter: <b>name-language</b>
+   * <p>
+   * Description: <b>Language code for this name</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicinalProductDefinition.name.countryLanguage.language</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="name-language", path="MedicinalProductDefinition.name.countryLanguage.language", description="Language code for this name", type="token" )
+  public static final String SP_NAME_LANGUAGE = "name-language";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>name-language</b>
+   * <p>
+   * Description: <b>Language code for this name</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicinalProductDefinition.name.countryLanguage.language</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam NAME_LANGUAGE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_NAME_LANGUAGE);
+
+ /**
+   * Search parameter: <b>name</b>
+   * <p>
+   * Description: <b>The full product name</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>MedicinalProductDefinition.name.productName</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="name", path="MedicinalProductDefinition.name.productName", description="The full product name", type="string" )
+  public static final String SP_NAME = "name";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>name</b>
+   * <p>
+   * Description: <b>The full product name</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>MedicinalProductDefinition.name.productName</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
+
+ /**
+   * Search parameter: <b>product-classification</b>
+   * <p>
+   * Description: <b>Allows the product to be classified by various systems</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicinalProductDefinition.classification</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="product-classification", path="MedicinalProductDefinition.classification", description="Allows the product to be classified by various systems", type="token" )
+  public static final String SP_PRODUCT_CLASSIFICATION = "product-classification";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>product-classification</b>
+   * <p>
+   * Description: <b>Allows the product to be classified by various systems</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicinalProductDefinition.classification</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PRODUCT_CLASSIFICATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PRODUCT_CLASSIFICATION);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>The status within the lifecycle of this product record. A high-level status, this is not intended to duplicate details carried elsewhere such as legal status, or authorization status</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicinalProductDefinition.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="MedicinalProductDefinition.status", description="The status within the lifecycle of this product record. A high-level status, this is not intended to duplicate details carried elsewhere such as legal status, or authorization status", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>The status within the lifecycle of this product record. A high-level status, this is not intended to duplicate details carried elsewhere such as legal status, or authorization status</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicinalProductDefinition.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>type</b>
+   * <p>
+   * Description: <b>Regulatory type, e.g. Investigational or Authorized</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicinalProductDefinition.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="type", path="MedicinalProductDefinition.type", description="Regulatory type, e.g. Investigational or Authorized", type="token" )
+  public static final String SP_TYPE = "type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>type</b>
+   * <p>
+   * Description: <b>Regulatory type, e.g. Investigational or Authorized</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicinalProductDefinition.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
 
 }

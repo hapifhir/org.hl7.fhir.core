@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 06:28+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -6312,6 +6312,338 @@ public class MedicationKnowledge extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.MedicationKnowledge;
    }
+
+ /**
+   * Search parameter: <b>classification-type</b>
+   * <p>
+   * Description: <b>The type of category for the medication (for example, therapeutic classification, therapeutic sub-classification)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.medicineClassification.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="classification-type", path="MedicationKnowledge.medicineClassification.type", description="The type of category for the medication (for example, therapeutic classification, therapeutic sub-classification)", type="token" )
+  public static final String SP_CLASSIFICATION_TYPE = "classification-type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>classification-type</b>
+   * <p>
+   * Description: <b>The type of category for the medication (for example, therapeutic classification, therapeutic sub-classification)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.medicineClassification.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CLASSIFICATION_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CLASSIFICATION_TYPE);
+
+ /**
+   * Search parameter: <b>classification</b>
+   * <p>
+   * Description: <b>Specific category assigned to the medication</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.medicineClassification.classification</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="classification", path="MedicationKnowledge.medicineClassification.classification", description="Specific category assigned to the medication", type="token" )
+  public static final String SP_CLASSIFICATION = "classification";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>classification</b>
+   * <p>
+   * Description: <b>Specific category assigned to the medication</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.medicineClassification.classification</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CLASSIFICATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CLASSIFICATION);
+
+ /**
+   * Search parameter: <b>code</b>
+   * <p>
+   * Description: <b>Code that identifies this medication</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="code", path="MedicationKnowledge.code", description="Code that identifies this medication", type="token" )
+  public static final String SP_CODE = "code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>code</b>
+   * <p>
+   * Description: <b>Code that identifies this medication</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
+
+ /**
+   * Search parameter: <b>doseform</b>
+   * <p>
+   * Description: <b>powder | tablets | capsule +</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.definitional.doseForm</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="doseform", path="MedicationKnowledge.definitional.doseForm", description="powder | tablets | capsule +", type="token" )
+  public static final String SP_DOSEFORM = "doseform";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>doseform</b>
+   * <p>
+   * Description: <b>powder | tablets | capsule +</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.definitional.doseForm</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam DOSEFORM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_DOSEFORM);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Business identifier for this medication</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="MedicationKnowledge.identifier", description="Business identifier for this medication", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Business identifier for this medication</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>ingredient-code</b>
+   * <p>
+   * Description: <b>Reference to a concept (by class)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.definitional.ingredient.item.concept</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="ingredient-code", path="MedicationKnowledge.definitional.ingredient.item.concept", description="Reference to a concept (by class)", type="token" )
+  public static final String SP_INGREDIENT_CODE = "ingredient-code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>ingredient-code</b>
+   * <p>
+   * Description: <b>Reference to a concept (by class)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.definitional.ingredient.item.concept</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INGREDIENT_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INGREDIENT_CODE);
+
+ /**
+   * Search parameter: <b>ingredient</b>
+   * <p>
+   * Description: <b>Reference to a resource (by instance)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MedicationKnowledge.definitional.ingredient.item.reference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="ingredient", path="MedicationKnowledge.definitional.ingredient.item.reference", description="Reference to a resource (by instance)", type="reference" )
+  public static final String SP_INGREDIENT = "ingredient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>ingredient</b>
+   * <p>
+   * Description: <b>Reference to a resource (by instance)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MedicationKnowledge.definitional.ingredient.item.reference</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INGREDIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INGREDIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>MedicationKnowledge:ingredient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_INGREDIENT = new ca.uhn.fhir.model.api.Include("MedicationKnowledge:ingredient").toLocked();
+
+ /**
+   * Search parameter: <b>monitoring-program-name</b>
+   * <p>
+   * Description: <b>Name of the reviewing program</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.monitoringProgram.name</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="monitoring-program-name", path="MedicationKnowledge.monitoringProgram.name", description="Name of the reviewing program", type="token" )
+  public static final String SP_MONITORING_PROGRAM_NAME = "monitoring-program-name";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>monitoring-program-name</b>
+   * <p>
+   * Description: <b>Name of the reviewing program</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.monitoringProgram.name</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam MONITORING_PROGRAM_NAME = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_MONITORING_PROGRAM_NAME);
+
+ /**
+   * Search parameter: <b>monitoring-program-type</b>
+   * <p>
+   * Description: <b>Type of program under which the medication is monitored</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.monitoringProgram.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="monitoring-program-type", path="MedicationKnowledge.monitoringProgram.type", description="Type of program under which the medication is monitored", type="token" )
+  public static final String SP_MONITORING_PROGRAM_TYPE = "monitoring-program-type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>monitoring-program-type</b>
+   * <p>
+   * Description: <b>Type of program under which the medication is monitored</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.monitoringProgram.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam MONITORING_PROGRAM_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_MONITORING_PROGRAM_TYPE);
+
+ /**
+   * Search parameter: <b>monograph-type</b>
+   * <p>
+   * Description: <b>The category of medication document</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.monograph.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="monograph-type", path="MedicationKnowledge.monograph.type", description="The category of medication document", type="token" )
+  public static final String SP_MONOGRAPH_TYPE = "monograph-type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>monograph-type</b>
+   * <p>
+   * Description: <b>The category of medication document</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.monograph.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam MONOGRAPH_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_MONOGRAPH_TYPE);
+
+ /**
+   * Search parameter: <b>monograph</b>
+   * <p>
+   * Description: <b>Associated documentation about the medication</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MedicationKnowledge.monograph.source</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="monograph", path="MedicationKnowledge.monograph.source", description="Associated documentation about the medication", type="reference", target={DocumentReference.class } )
+  public static final String SP_MONOGRAPH = "monograph";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>monograph</b>
+   * <p>
+   * Description: <b>Associated documentation about the medication</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MedicationKnowledge.monograph.source</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MONOGRAPH = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MONOGRAPH);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>MedicationKnowledge:monograph</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_MONOGRAPH = new ca.uhn.fhir.model.api.Include("MedicationKnowledge:monograph").toLocked();
+
+ /**
+   * Search parameter: <b>packaging-cost-concept</b>
+   * <p>
+   * Description: <b>The cost of the packaged medication, if the cost is a CodeableConcept</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>null</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="packaging-cost-concept", path="", description="The cost of the packaged medication, if the cost is a CodeableConcept", type="token" )
+  public static final String SP_PACKAGING_COST_CONCEPT = "packaging-cost-concept";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>packaging-cost-concept</b>
+   * <p>
+   * Description: <b>The cost of the packaged medication, if the cost is a CodeableConcept</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>null</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PACKAGING_COST_CONCEPT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PACKAGING_COST_CONCEPT);
+
+ /**
+   * Search parameter: <b>packaging-cost</b>
+   * <p>
+   * Description: <b>The cost of the packaged medication, if the cost is Money</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>null</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="packaging-cost", path="", description="The cost of the packaged medication, if the cost is Money", type="quantity" )
+  public static final String SP_PACKAGING_COST = "packaging-cost";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>packaging-cost</b>
+   * <p>
+   * Description: <b>The cost of the packaged medication, if the cost is Money</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>null</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam PACKAGING_COST = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_PACKAGING_COST);
+
+ /**
+   * Search parameter: <b>product-type</b>
+   * <p>
+   * Description: <b>Category of the medication or product</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.productType</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="product-type", path="MedicationKnowledge.productType", description="Category of the medication or product", type="token" )
+  public static final String SP_PRODUCT_TYPE = "product-type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>product-type</b>
+   * <p>
+   * Description: <b>Category of the medication or product</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.productType</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PRODUCT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PRODUCT_TYPE);
+
+ /**
+   * Search parameter: <b>source-cost</b>
+   * <p>
+   * Description: <b>The source or owner for the price information</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.cost.source</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="source-cost", path="MedicationKnowledge.cost.source", description="The source or owner for the price information", type="token" )
+  public static final String SP_SOURCE_COST = "source-cost";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>source-cost</b>
+   * <p>
+   * Description: <b>The source or owner for the price information</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.cost.source</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SOURCE_COST = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SOURCE_COST);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>active | inactive | entered-in-error</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="MedicationKnowledge.status", description="active | inactive | entered-in-error", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>active | inactive | entered-in-error</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationKnowledge.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
 
 }
