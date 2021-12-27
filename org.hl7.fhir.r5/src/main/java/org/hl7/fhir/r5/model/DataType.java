@@ -29,37 +29,48 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
-import ca.uhn.fhir.model.api.IElement;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
-import org.hl7.fhir.instance.model.api.IBaseDatatype;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
+import org.hl7.fhir.instance.model.api.IBaseDatatype;
+import  ca.uhn.fhir.model.api.IElement;
 /**
  * Base StructureDefinition for DataType Type: The base class for all re-useable types defined as part of the FHIR Specification.
  */
-@DatatypeDef(name = "DataType")
+@DatatypeDef(name="DataType")
 public abstract class DataType extends Element implements IBaseDatatype, IElement {
 
-  private static final long serialVersionUID = 0L;
+    private static final long serialVersionUID = 0L;
 
   /**
    * Constructor
    */
-  public DataType() {
-    super();
-  }
+    public DataType() {
+      super();
+    }
 
   public String fhirType() {
     return "DataType";
 
   }
 
-  public abstract DataType copy();
+      public abstract DataType copy();
 
-  public void copyValues(DataType dst) {
-    super.copyValues(dst);
-  }
+      public void copyValues(DataType dst) {
+        super.copyValues(dst);
+      }
 
 
 }
