@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1001,6 +1001,322 @@ public class OrganizationAffiliation extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.OrganizationAffiliation;
    }
+
+ /**
+   * Search parameter: <b>active</b>
+   * <p>
+   * Description: <b>Whether this organization affiliation record is in active use</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>OrganizationAffiliation.active</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="active", path="OrganizationAffiliation.active", description="Whether this organization affiliation record is in active use", type="token" )
+  public static final String SP_ACTIVE = "active";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>active</b>
+   * <p>
+   * Description: <b>Whether this organization affiliation record is in active use</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>OrganizationAffiliation.active</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ACTIVE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ACTIVE);
+
+ /**
+   * Search parameter: <b>date</b>
+   * <p>
+   * Description: <b>The period during which the participatingOrganization is affiliated with the primary organization</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>OrganizationAffiliation.period</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="date", path="OrganizationAffiliation.period", description="The period during which the participatingOrganization is affiliated with the primary organization", type="date" )
+  public static final String SP_DATE = "date";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>date</b>
+   * <p>
+   * Description: <b>The period during which the participatingOrganization is affiliated with the primary organization</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>OrganizationAffiliation.period</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+
+ /**
+   * Search parameter: <b>email</b>
+   * <p>
+   * Description: <b>A value in an email contact</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>OrganizationAffiliation.telecom.where(system='email')</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="email", path="OrganizationAffiliation.telecom.where(system='email')", description="A value in an email contact", type="token" )
+  public static final String SP_EMAIL = "email";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>email</b>
+   * <p>
+   * Description: <b>A value in an email contact</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>OrganizationAffiliation.telecom.where(system='email')</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EMAIL = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EMAIL);
+
+ /**
+   * Search parameter: <b>endpoint</b>
+   * <p>
+   * Description: <b>Technical endpoints providing access to services operated for this role</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>OrganizationAffiliation.endpoint</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="endpoint", path="OrganizationAffiliation.endpoint", description="Technical endpoints providing access to services operated for this role", type="reference", target={Endpoint.class } )
+  public static final String SP_ENDPOINT = "endpoint";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>endpoint</b>
+   * <p>
+   * Description: <b>Technical endpoints providing access to services operated for this role</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>OrganizationAffiliation.endpoint</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENDPOINT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENDPOINT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>OrganizationAffiliation:endpoint</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENDPOINT = new ca.uhn.fhir.model.api.Include("OrganizationAffiliation:endpoint").toLocked();
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>An organization affiliation's Identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>OrganizationAffiliation.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="OrganizationAffiliation.identifier", description="An organization affiliation's Identifier", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>An organization affiliation's Identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>OrganizationAffiliation.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>location</b>
+   * <p>
+   * Description: <b>The location(s) at which the role occurs</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>OrganizationAffiliation.location</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="location", path="OrganizationAffiliation.location", description="The location(s) at which the role occurs", type="reference", target={Location.class } )
+  public static final String SP_LOCATION = "location";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>location</b>
+   * <p>
+   * Description: <b>The location(s) at which the role occurs</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>OrganizationAffiliation.location</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam LOCATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_LOCATION);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>OrganizationAffiliation:location</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_LOCATION = new ca.uhn.fhir.model.api.Include("OrganizationAffiliation:location").toLocked();
+
+ /**
+   * Search parameter: <b>network</b>
+   * <p>
+   * Description: <b>Health insurance provider network in which the participatingOrganization provides the role's services (if defined) at the indicated locations (if defined)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>OrganizationAffiliation.network</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="network", path="OrganizationAffiliation.network", description="Health insurance provider network in which the participatingOrganization provides the role's services (if defined) at the indicated locations (if defined)", type="reference", target={Organization.class } )
+  public static final String SP_NETWORK = "network";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>network</b>
+   * <p>
+   * Description: <b>Health insurance provider network in which the participatingOrganization provides the role's services (if defined) at the indicated locations (if defined)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>OrganizationAffiliation.network</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam NETWORK = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_NETWORK);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>OrganizationAffiliation:network</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_NETWORK = new ca.uhn.fhir.model.api.Include("OrganizationAffiliation:network").toLocked();
+
+ /**
+   * Search parameter: <b>participating-organization</b>
+   * <p>
+   * Description: <b>The organization that provides services to the primary organization</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>OrganizationAffiliation.participatingOrganization</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="participating-organization", path="OrganizationAffiliation.participatingOrganization", description="The organization that provides services to the primary organization", type="reference", target={Organization.class } )
+  public static final String SP_PARTICIPATING_ORGANIZATION = "participating-organization";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>participating-organization</b>
+   * <p>
+   * Description: <b>The organization that provides services to the primary organization</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>OrganizationAffiliation.participatingOrganization</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PARTICIPATING_ORGANIZATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PARTICIPATING_ORGANIZATION);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>OrganizationAffiliation:participating-organization</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PARTICIPATING_ORGANIZATION = new ca.uhn.fhir.model.api.Include("OrganizationAffiliation:participating-organization").toLocked();
+
+ /**
+   * Search parameter: <b>phone</b>
+   * <p>
+   * Description: <b>A value in a phone contact</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>OrganizationAffiliation.telecom.where(system='phone')</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="phone", path="OrganizationAffiliation.telecom.where(system='phone')", description="A value in a phone contact", type="token" )
+  public static final String SP_PHONE = "phone";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>phone</b>
+   * <p>
+   * Description: <b>A value in a phone contact</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>OrganizationAffiliation.telecom.where(system='phone')</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PHONE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PHONE);
+
+ /**
+   * Search parameter: <b>primary-organization</b>
+   * <p>
+   * Description: <b>The organization that receives the services from the participating organization</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>OrganizationAffiliation.organization</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="primary-organization", path="OrganizationAffiliation.organization", description="The organization that receives the services from the participating organization", type="reference", target={Organization.class } )
+  public static final String SP_PRIMARY_ORGANIZATION = "primary-organization";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>primary-organization</b>
+   * <p>
+   * Description: <b>The organization that receives the services from the participating organization</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>OrganizationAffiliation.organization</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PRIMARY_ORGANIZATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PRIMARY_ORGANIZATION);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>OrganizationAffiliation:primary-organization</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PRIMARY_ORGANIZATION = new ca.uhn.fhir.model.api.Include("OrganizationAffiliation:primary-organization").toLocked();
+
+ /**
+   * Search parameter: <b>role</b>
+   * <p>
+   * Description: <b>Definition of the role the participatingOrganization plays</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>OrganizationAffiliation.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="role", path="OrganizationAffiliation.code", description="Definition of the role the participatingOrganization plays", type="token" )
+  public static final String SP_ROLE = "role";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>role</b>
+   * <p>
+   * Description: <b>Definition of the role the participatingOrganization plays</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>OrganizationAffiliation.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ROLE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ROLE);
+
+ /**
+   * Search parameter: <b>service</b>
+   * <p>
+   * Description: <b>Healthcare services provided through the role</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>OrganizationAffiliation.healthcareService</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="service", path="OrganizationAffiliation.healthcareService", description="Healthcare services provided through the role", type="reference", target={HealthcareService.class } )
+  public static final String SP_SERVICE = "service";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>service</b>
+   * <p>
+   * Description: <b>Healthcare services provided through the role</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>OrganizationAffiliation.healthcareService</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SERVICE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SERVICE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>OrganizationAffiliation:service</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SERVICE = new ca.uhn.fhir.model.api.Include("OrganizationAffiliation:service").toLocked();
+
+ /**
+   * Search parameter: <b>specialty</b>
+   * <p>
+   * Description: <b>Specific specialty of the participatingOrganization in the context of the role</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>OrganizationAffiliation.specialty</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="specialty", path="OrganizationAffiliation.specialty", description="Specific specialty of the participatingOrganization in the context of the role", type="token" )
+  public static final String SP_SPECIALTY = "specialty";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>specialty</b>
+   * <p>
+   * Description: <b>Specific specialty of the participatingOrganization in the context of the role</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>OrganizationAffiliation.specialty</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SPECIALTY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SPECIALTY);
+
+ /**
+   * Search parameter: <b>telecom</b>
+   * <p>
+   * Description: <b>The value in any kind of contact</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>OrganizationAffiliation.telecom</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="telecom", path="OrganizationAffiliation.telecom", description="The value in any kind of contact", type="token" )
+  public static final String SP_TELECOM = "telecom";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>telecom</b>
+   * <p>
+   * Description: <b>The value in any kind of contact</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>OrganizationAffiliation.telecom</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TELECOM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TELECOM);
 
 
 }

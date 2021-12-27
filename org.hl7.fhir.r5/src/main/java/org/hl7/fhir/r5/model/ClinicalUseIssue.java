@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2894,6 +2894,256 @@ public class ClinicalUseIssue extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.ClinicalUseIssue;
    }
+
+ /**
+   * Search parameter: <b>contraindication-reference</b>
+   * <p>
+   * Description: <b>The situation that is being documented as contraindicating against this item, as a reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ClinicalUseIssue.contraindication.diseaseSymptomProcedure</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="contraindication-reference", path="ClinicalUseIssue.contraindication.diseaseSymptomProcedure", description="The situation that is being documented as contraindicating against this item, as a reference", type="reference" )
+  public static final String SP_CONTRAINDICATION_REFERENCE = "contraindication-reference";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>contraindication-reference</b>
+   * <p>
+   * Description: <b>The situation that is being documented as contraindicating against this item, as a reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ClinicalUseIssue.contraindication.diseaseSymptomProcedure</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam CONTRAINDICATION_REFERENCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_CONTRAINDICATION_REFERENCE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ClinicalUseIssue:contraindication-reference</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_CONTRAINDICATION_REFERENCE = new ca.uhn.fhir.model.api.Include("ClinicalUseIssue:contraindication-reference").toLocked();
+
+ /**
+   * Search parameter: <b>contraindication</b>
+   * <p>
+   * Description: <b>The situation that is being documented as contraindicating against this item, as a code</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseIssue.contraindication.diseaseSymptomProcedure</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="contraindication", path="ClinicalUseIssue.contraindication.diseaseSymptomProcedure", description="The situation that is being documented as contraindicating against this item, as a code", type="token" )
+  public static final String SP_CONTRAINDICATION = "contraindication";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>contraindication</b>
+   * <p>
+   * Description: <b>The situation that is being documented as contraindicating against this item, as a code</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseIssue.contraindication.diseaseSymptomProcedure</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTRAINDICATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTRAINDICATION);
+
+ /**
+   * Search parameter: <b>effect-reference</b>
+   * <p>
+   * Description: <b>The situation in which the undesirable effect may manifest, as a reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ClinicalUseIssue.undesirableEffect.symptomConditionEffect</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="effect-reference", path="ClinicalUseIssue.undesirableEffect.symptomConditionEffect", description="The situation in which the undesirable effect may manifest, as a reference", type="reference" )
+  public static final String SP_EFFECT_REFERENCE = "effect-reference";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>effect-reference</b>
+   * <p>
+   * Description: <b>The situation in which the undesirable effect may manifest, as a reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ClinicalUseIssue.undesirableEffect.symptomConditionEffect</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam EFFECT_REFERENCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_EFFECT_REFERENCE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ClinicalUseIssue:effect-reference</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_EFFECT_REFERENCE = new ca.uhn.fhir.model.api.Include("ClinicalUseIssue:effect-reference").toLocked();
+
+ /**
+   * Search parameter: <b>effect</b>
+   * <p>
+   * Description: <b>The situation in which the undesirable effect may manifest, as a code</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseIssue.undesirableEffect.symptomConditionEffect</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="effect", path="ClinicalUseIssue.undesirableEffect.symptomConditionEffect", description="The situation in which the undesirable effect may manifest, as a code", type="token" )
+  public static final String SP_EFFECT = "effect";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>effect</b>
+   * <p>
+   * Description: <b>The situation in which the undesirable effect may manifest, as a code</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseIssue.undesirableEffect.symptomConditionEffect</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EFFECT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EFFECT);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Business identifier for this issue</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseIssue.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="ClinicalUseIssue.identifier", description="Business identifier for this issue", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Business identifier for this issue</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseIssue.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>indication-reference</b>
+   * <p>
+   * Description: <b>The situation that is being documented as an indicaton for this item, as a reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ClinicalUseIssue.indication.diseaseSymptomProcedure</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="indication-reference", path="ClinicalUseIssue.indication.diseaseSymptomProcedure", description="The situation that is being documented as an indicaton for this item, as a reference", type="reference" )
+  public static final String SP_INDICATION_REFERENCE = "indication-reference";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>indication-reference</b>
+   * <p>
+   * Description: <b>The situation that is being documented as an indicaton for this item, as a reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ClinicalUseIssue.indication.diseaseSymptomProcedure</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INDICATION_REFERENCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INDICATION_REFERENCE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ClinicalUseIssue:indication-reference</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_INDICATION_REFERENCE = new ca.uhn.fhir.model.api.Include("ClinicalUseIssue:indication-reference").toLocked();
+
+ /**
+   * Search parameter: <b>indication</b>
+   * <p>
+   * Description: <b>The situation that is being documented as an indicaton for this item, as a code</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseIssue.indication.diseaseSymptomProcedure</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="indication", path="ClinicalUseIssue.indication.diseaseSymptomProcedure", description="The situation that is being documented as an indicaton for this item, as a code", type="token" )
+  public static final String SP_INDICATION = "indication";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>indication</b>
+   * <p>
+   * Description: <b>The situation that is being documented as an indicaton for this item, as a code</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseIssue.indication.diseaseSymptomProcedure</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INDICATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INDICATION);
+
+ /**
+   * Search parameter: <b>interaction</b>
+   * <p>
+   * Description: <b>The type of the interaction e.g. drug-drug interaction, drug-food interaction, drug-lab test interaction</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseIssue.interaction.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="interaction", path="ClinicalUseIssue.interaction.type", description="The type of the interaction e.g. drug-drug interaction, drug-food interaction, drug-lab test interaction", type="token" )
+  public static final String SP_INTERACTION = "interaction";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>interaction</b>
+   * <p>
+   * Description: <b>The type of the interaction e.g. drug-drug interaction, drug-food interaction, drug-lab test interaction</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseIssue.interaction.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INTERACTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INTERACTION);
+
+ /**
+   * Search parameter: <b>product</b>
+   * <p>
+   * Description: <b>The medicinal product for which this is a clinical usage issue</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ClinicalUseIssue.subject.where(resolve() is MedicinalProductDefinition)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="product", path="ClinicalUseIssue.subject.where(resolve() is MedicinalProductDefinition)", description="The medicinal product for which this is a clinical usage issue", type="reference", target={ActivityDefinition.class, Device.class, DeviceDefinition.class, Medication.class, MedicinalProductDefinition.class, PlanDefinition.class, Substance.class } )
+  public static final String SP_PRODUCT = "product";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>product</b>
+   * <p>
+   * Description: <b>The medicinal product for which this is a clinical usage issue</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ClinicalUseIssue.subject.where(resolve() is MedicinalProductDefinition)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PRODUCT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PRODUCT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ClinicalUseIssue:product</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PRODUCT = new ca.uhn.fhir.model.api.Include("ClinicalUseIssue:product").toLocked();
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>The resource for which this is a clinical usage issue</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ClinicalUseIssue.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="ClinicalUseIssue.subject", description="The resource for which this is a clinical usage issue", type="reference", target={ActivityDefinition.class, Device.class, DeviceDefinition.class, Medication.class, MedicinalProductDefinition.class, PlanDefinition.class, Substance.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>The resource for which this is a clinical usage issue</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ClinicalUseIssue.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ClinicalUseIssue:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("ClinicalUseIssue:subject").toLocked();
+
+ /**
+   * Search parameter: <b>type</b>
+   * <p>
+   * Description: <b>indication | contraindication | interaction | undesirable-effect | warning</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseIssue.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="type", path="ClinicalUseIssue.type", description="indication | contraindication | interaction | undesirable-effect | warning", type="token" )
+  public static final String SP_TYPE = "type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>type</b>
+   * <p>
+   * Description: <b>indication | contraindication | interaction | undesirable-effect | warning</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ClinicalUseIssue.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
 
 }

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -4034,6 +4034,304 @@ public class InsurancePlan extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.InsurancePlan;
    }
+
+ /**
+   * Search parameter: <b>address-city</b>
+   * <p>
+   * Description: <b>A city specified in an address</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>InsurancePlan.contact.address.city</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="address-city", path="InsurancePlan.contact.address.city", description="A city specified in an address", type="string" )
+  public static final String SP_ADDRESS_CITY = "address-city";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>address-city</b>
+   * <p>
+   * Description: <b>A city specified in an address</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>InsurancePlan.contact.address.city</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_CITY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_CITY);
+
+ /**
+   * Search parameter: <b>address-country</b>
+   * <p>
+   * Description: <b>A country specified in an address</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>InsurancePlan.contact.address.country</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="address-country", path="InsurancePlan.contact.address.country", description="A country specified in an address", type="string" )
+  public static final String SP_ADDRESS_COUNTRY = "address-country";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>address-country</b>
+   * <p>
+   * Description: <b>A country specified in an address</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>InsurancePlan.contact.address.country</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_COUNTRY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_COUNTRY);
+
+ /**
+   * Search parameter: <b>address-postalcode</b>
+   * <p>
+   * Description: <b>A postal code specified in an address</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>InsurancePlan.contact.address.postalCode</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="address-postalcode", path="InsurancePlan.contact.address.postalCode", description="A postal code specified in an address", type="string" )
+  public static final String SP_ADDRESS_POSTALCODE = "address-postalcode";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>address-postalcode</b>
+   * <p>
+   * Description: <b>A postal code specified in an address</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>InsurancePlan.contact.address.postalCode</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_POSTALCODE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_POSTALCODE);
+
+ /**
+   * Search parameter: <b>address-state</b>
+   * <p>
+   * Description: <b>A state specified in an address</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>InsurancePlan.contact.address.state</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="address-state", path="InsurancePlan.contact.address.state", description="A state specified in an address", type="string" )
+  public static final String SP_ADDRESS_STATE = "address-state";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>address-state</b>
+   * <p>
+   * Description: <b>A state specified in an address</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>InsurancePlan.contact.address.state</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_STATE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_STATE);
+
+ /**
+   * Search parameter: <b>address-use</b>
+   * <p>
+   * Description: <b>A use code specified in an address</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>InsurancePlan.contact.address.use</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="address-use", path="InsurancePlan.contact.address.use", description="A use code specified in an address", type="token" )
+  public static final String SP_ADDRESS_USE = "address-use";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>address-use</b>
+   * <p>
+   * Description: <b>A use code specified in an address</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>InsurancePlan.contact.address.use</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ADDRESS_USE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ADDRESS_USE);
+
+ /**
+   * Search parameter: <b>address</b>
+   * <p>
+   * Description: <b>A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>InsurancePlan.contact.address</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="address", path="InsurancePlan.contact.address", description="A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text", type="string" )
+  public static final String SP_ADDRESS = "address";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>address</b>
+   * <p>
+   * Description: <b>A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>InsurancePlan.contact.address</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS);
+
+ /**
+   * Search parameter: <b>administered-by</b>
+   * <p>
+   * Description: <b>Product administrator</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>InsurancePlan.administeredBy</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="administered-by", path="InsurancePlan.administeredBy", description="Product administrator", type="reference", target={Organization.class } )
+  public static final String SP_ADMINISTERED_BY = "administered-by";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>administered-by</b>
+   * <p>
+   * Description: <b>Product administrator</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>InsurancePlan.administeredBy</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ADMINISTERED_BY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ADMINISTERED_BY);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>InsurancePlan:administered-by</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ADMINISTERED_BY = new ca.uhn.fhir.model.api.Include("InsurancePlan:administered-by").toLocked();
+
+ /**
+   * Search parameter: <b>endpoint</b>
+   * <p>
+   * Description: <b>Technical endpoint</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>InsurancePlan.endpoint</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="endpoint", path="InsurancePlan.endpoint", description="Technical endpoint", type="reference", target={Endpoint.class } )
+  public static final String SP_ENDPOINT = "endpoint";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>endpoint</b>
+   * <p>
+   * Description: <b>Technical endpoint</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>InsurancePlan.endpoint</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENDPOINT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENDPOINT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>InsurancePlan:endpoint</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENDPOINT = new ca.uhn.fhir.model.api.Include("InsurancePlan:endpoint").toLocked();
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Any identifier for the organization (not the accreditation issuer's identifier)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>InsurancePlan.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="InsurancePlan.identifier", description="Any identifier for the organization (not the accreditation issuer's identifier)", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Any identifier for the organization (not the accreditation issuer's identifier)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>InsurancePlan.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>name</b>
+   * <p>
+   * Description: <b>A portion of the organization's name or alias</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>InsurancePlan.name | InsurancePlan.alias</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="name", path="InsurancePlan.name | InsurancePlan.alias", description="A portion of the organization's name or alias", type="string" )
+  public static final String SP_NAME = "name";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>name</b>
+   * <p>
+   * Description: <b>A portion of the organization's name or alias</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>InsurancePlan.name | InsurancePlan.alias</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
+
+ /**
+   * Search parameter: <b>owned-by</b>
+   * <p>
+   * Description: <b>An organization of which this organization forms a part</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>InsurancePlan.ownedBy</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="owned-by", path="InsurancePlan.ownedBy", description="An organization of which this organization forms a part", type="reference", target={Organization.class } )
+  public static final String SP_OWNED_BY = "owned-by";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>owned-by</b>
+   * <p>
+   * Description: <b>An organization of which this organization forms a part</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>InsurancePlan.ownedBy</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam OWNED_BY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_OWNED_BY);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>InsurancePlan:owned-by</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_OWNED_BY = new ca.uhn.fhir.model.api.Include("InsurancePlan:owned-by").toLocked();
+
+ /**
+   * Search parameter: <b>phonetic</b>
+   * <p>
+   * Description: <b>A portion of the organization's name using some kind of phonetic matching algorithm</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>InsurancePlan.name</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="phonetic", path="InsurancePlan.name", description="A portion of the organization's name using some kind of phonetic matching algorithm", type="string" )
+  public static final String SP_PHONETIC = "phonetic";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>phonetic</b>
+   * <p>
+   * Description: <b>A portion of the organization's name using some kind of phonetic matching algorithm</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>InsurancePlan.name</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam PHONETIC = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PHONETIC);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>Is the Organization record active</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>InsurancePlan.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="InsurancePlan.status", description="Is the Organization record active", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>Is the Organization record active</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>InsurancePlan.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>type</b>
+   * <p>
+   * Description: <b>A code for the type of organization</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>InsurancePlan.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="type", path="InsurancePlan.type", description="A code for the type of organization", type="token" )
+  public static final String SP_TYPE = "type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>type</b>
+   * <p>
+   * Description: <b>A code for the type of organization</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>InsurancePlan.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
 
 }

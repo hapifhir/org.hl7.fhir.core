@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1247,6 +1247,118 @@ public class GuidanceResponse extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.GuidanceResponse;
    }
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>The identifier of the guidance response</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>GuidanceResponse.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="GuidanceResponse.identifier", description="The identifier of the guidance response", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>The identifier of the guidance response</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>GuidanceResponse.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>The identity of a patient to search for guidance response results</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>GuidanceResponse.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="GuidanceResponse.subject.where(resolve() is Patient)", description="The identity of a patient to search for guidance response results", type="reference", target={Group.class, Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>The identity of a patient to search for guidance response results</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>GuidanceResponse.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>GuidanceResponse:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("GuidanceResponse:patient").toLocked();
+
+ /**
+   * Search parameter: <b>request</b>
+   * <p>
+   * Description: <b>The identifier of the request associated with the response</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>GuidanceResponse.requestIdentifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="request", path="GuidanceResponse.requestIdentifier", description="The identifier of the request associated with the response", type="token" )
+  public static final String SP_REQUEST = "request";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>request</b>
+   * <p>
+   * Description: <b>The identifier of the request associated with the response</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>GuidanceResponse.requestIdentifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam REQUEST = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_REQUEST);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>The status of the guidance response</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>GuidanceResponse.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="GuidanceResponse.status", description="The status of the guidance response", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>The status of the guidance response</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>GuidanceResponse.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>The subject that the guidance response is about</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>GuidanceResponse.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="GuidanceResponse.subject", description="The subject that the guidance response is about", type="reference", target={Group.class, Patient.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>The subject that the guidance response is about</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>GuidanceResponse.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>GuidanceResponse:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("GuidanceResponse:subject").toLocked();
 
 
 }
