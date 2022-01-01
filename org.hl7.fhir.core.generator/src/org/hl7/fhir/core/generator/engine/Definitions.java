@@ -6,6 +6,7 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CompartmentDefinition;
 import org.hl7.fhir.r5.model.ConceptMap;
+import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.OperationDefinition;
 import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -75,6 +76,27 @@ public class Definitions {
     StructureDefinition sd = structures.get("http://hl7.org/fhir/StructureDefinition/"+tn);
     return sd;
   }
+  public void fix() {
+    StructureDefinition aa = structures.get("http://hl7.org/fhir/StructureDefinition/ArtifactAssessment");
+    if (aa != null) {
+      for (ElementDefinition ed : aa.getSnapshot().getElement()) {
+        fixAATypes(ed);
+      }
+      for (ElementDefinition ed : aa.getDifferential().getElement()) {
+        fixAATypes(ed);
+      }
+    }
+  }
+  
+  private void fixAATypes(ElementDefinition ed) {
+    if (ed.getPath().equals("ArtifactAssessment.approvalDate")) {
+      ed.getTypeFirstRep().setCode("date");
+    }
+    if (ed.getPath().equals("ArtifactAssessment.lastReviewDate")) {
+      ed.getTypeFirstRep().setCode("date");
+    }
+  }
+ 
  
   
 }
