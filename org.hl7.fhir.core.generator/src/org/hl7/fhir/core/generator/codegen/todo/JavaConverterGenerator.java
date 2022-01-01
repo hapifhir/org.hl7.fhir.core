@@ -45,9 +45,9 @@ import org.hl7.fhir.utilities.Utilities;
 
 public class JavaConverterGenerator extends JavaBaseGenerator {
 
-  public JavaConverterGenerator(OutputStream arg0, Definitions definitions, Configuration config, String version, Date genDate)
+  public JavaConverterGenerator(OutputStream arg0, Definitions definitions, Configuration config, String version, Date genDate, String jid)
       throws UnsupportedEncodingException {
-    super(arg0, definitions, config, version, genDate);
+    super(arg0, definitions, config, version, genDate, jid);
     // TODO Auto-generated constructor stub
   }
 //  public enum JavaGenClass { Structure, Type, Resource, AbstractResource, BackboneElement, Constraint }

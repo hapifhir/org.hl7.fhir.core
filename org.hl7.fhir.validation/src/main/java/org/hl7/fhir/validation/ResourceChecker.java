@@ -34,6 +34,10 @@ public class ResourceChecker {
 //  }
   public static Manager.FhirFormat checkIsResource(SimpleWorkerContext context, boolean debug, byte[] cnt, String filename, boolean guessFromExtension) {
     System.out.println("   ..Detect format for " + filename);
+    if (cnt.length == 0) {
+      System.out.println("   " + filename+" is empty");
+      return null;
+    }
     if (guessFromExtension) {
       String ext = Utilities.getFileExtension(filename);
       if (Utilities.existsInList(ext, "xml")) {

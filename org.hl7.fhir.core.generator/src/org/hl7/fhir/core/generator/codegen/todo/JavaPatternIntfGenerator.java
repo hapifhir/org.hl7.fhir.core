@@ -59,9 +59,9 @@ changes for James
 */
 public class JavaPatternIntfGenerator extends JavaBaseGenerator {
 
-  public JavaPatternIntfGenerator(OutputStream arg0, Definitions definitions, Configuration config, String version, Date genDate)
+  public JavaPatternIntfGenerator(OutputStream arg0, Definitions definitions, Configuration config, String version, Date genDate, String jid)
       throws UnsupportedEncodingException {
-    super(arg0, definitions, config, version, genDate);
+    super(arg0, definitions, config, version, genDate, jid);
     // TODO Auto-generated constructor stub
   }
 //

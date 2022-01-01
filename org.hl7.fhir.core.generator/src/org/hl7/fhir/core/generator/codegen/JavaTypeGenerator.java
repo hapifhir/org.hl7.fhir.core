@@ -50,12 +50,13 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 public class JavaTypeGenerator extends JavaBaseGenerator {
 
   
-  public JavaTypeGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version) throws UnsupportedEncodingException {
-    super(out, definitions, configuration, version, genDate);
+  public JavaTypeGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version, String jid) throws UnsupportedEncodingException {
+    super(out, definitions, configuration, version, genDate, jid);
   }
 
 	public void generate() throws Exception {
 	  String template = config.getAdornments().get("ResourceType");
+    template = template.replace("{{jid}}", jid);
 	  template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
     template = template.replace("{{types-enum}}", genEnums());

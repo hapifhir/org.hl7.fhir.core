@@ -3,6 +3,7 @@ package org.hl7.fhir.core.generator.engine;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,6 +31,7 @@ import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
@@ -61,110 +63,73 @@ public class JavaCoreGenerator {
     String ap = Utilities.path(src);
     System.out.println("Load Configuration from "+ap);
     Configuration config = new Configuration(ap);
-    String pid = "r5";
-    String jid = "r5";
+    String pid = VersionUtilities.isR4BVer(version) ? "r4b" : "r5";
+    String jid = VersionUtilities.isR4BVer(version) ? "r4b" : "r5";
+    
     
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     System.out.println("Cache: "+pcm.getFolder());
     System.out.println("Load hl7.fhir."+pid+".core");
     NpmPackage npm = pcm.loadPackage("hl7.fhir."+pid+".core", version);
-    Definitions master = DefinitionsLoader.load(npm); 
-    
+    Definitions master = VersionUtilities.isR4BVer(version) ? DefinitionsLoaderR4B.load(npm) : DefinitionsLoaderR5.load(npm); 
+    master.fix();
     markValueSets(master, config);
     
     System.out.println("Load hl7.fhir."+pid+".expansions");
-    Definitions expansions = DefinitionsLoader.load(pcm.loadPackage("hl7.fhir."+pid+".expansions", version));
+    Definitions expansions = DefinitionsLoaderR5.load(pcm.loadPackage("hl7.fhir."+pid+".expansions", version));
     
     System.out.println("Process Expansions");
     updateExpansions(master, expansions);
     
     System.out.println("Generate Model");   
     System.out.println(" .. Constants");
-    JavaConstantsGenerator cgen = new JavaConstantsGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "model", "Constants.java")), master, config, date, npm.version());
+    JavaConstantsGenerator cgen = new JavaConstantsGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", jid, "model", "Constants.java")), master, config, date, npm.version(), jid);
     cgen.generate();
     cgen.close();
     System.out.println(" .. Enumerations");
-    JavaEnumerationsGenerator egen = new JavaEnumerationsGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "model", "Enumerations.java")), master, config, date, npm.version());
+    JavaEnumerationsGenerator egen = new JavaEnumerationsGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", jid, "model", "Enumerations.java")), master, config, date, npm.version(), jid);
     egen.generate();
     egen.close();
     
-    JavaFactoryGenerator fgen = new JavaFactoryGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "model", "ResourceFactory.java")), master, config, date, npm.version());
-    JavaTypeGenerator tgen = new JavaTypeGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "model", "ResourceType.java")), master, config, date, npm.version());
-    JavaParserJsonGenerator jgen = new JavaParserJsonGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "formats", "JsonParser.java")), master, config, date, npm.version());
-    JavaParserXmlGenerator xgen = new JavaParserXmlGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "formats", "XmlParser.java")), master, config, date, npm.version());
-    JavaParserRdfGenerator rgen = new JavaParserRdfGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "formats", "RdfParser.java")), master, config, date, npm.version());
+    JavaFactoryGenerator fgen = new JavaFactoryGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", jid, "model", "ResourceFactory.java")), master, config, date, npm.version(), jid);
+    JavaTypeGenerator tgen = new JavaTypeGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", jid, "model", "ResourceType.java")), master, config, date, npm.version(), jid);
+    JavaParserJsonGenerator jgen = new JavaParserJsonGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", jid, "formats", "JsonParser.java")), master, config, date, npm.version(), jid);
+    JavaParserXmlGenerator xgen = new JavaParserXmlGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", jid, "formats", "XmlParser.java")), master, config, date, npm.version(), jid);
+    JavaParserRdfGenerator rgen = new JavaParserRdfGenerator(new FileOutputStream(Utilities.path(dest, "src", "org", "hl7", "fhir", jid, "formats", "RdfParser.java")), master, config, date, npm.version(), jid);
     
+    if (VersionUtilities.isR4BVer(version)) {
+      StructureDefinition sd = master.getStructures().get("http://hl7.org/fhir/StructureDefinition/Element");
+      genClass(version, dest, date, config, jid, npm, master, jgen, xgen, rgen, sd);      
+    }
     for (StructureDefinition sd : master.getStructures().getList()) {
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.COMPLEXTYPE) {
         if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && sd.getAbstract()) {
-          String name = javaName(sd.getName());
-
-          System.out.println(" .. "+name);
-          Analyser jca = new Analyser(master, config);
-          Analysis analysis = jca.analyse(sd);
-          
-          String fn = Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "model", name+".java");
-          JavaResourceGenerator gen = new JavaResourceGenerator(new FileOutputStream(fn), master, config, date, npm.version());
-          gen.generate(analysis); 
-          gen.close();
-          jgen.seeClass(analysis);
-          xgen.seeClass(analysis);
-          rgen.seeClass(analysis);
+          genClass(version, dest, date, config, jid, npm, master, jgen, xgen, rgen, sd);
         }
       }
     }
     for (StructureDefinition sd : master.getStructures().getList()) {
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.COMPLEXTYPE) {
         if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && !sd.getAbstract()) {
-          String name = javaName(sd.getName());
-
-          System.out.println(" .. "+name);
-          Analyser jca = new Analyser(master, config);
-          Analysis analysis = jca.analyse(sd);
-          String fn = Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "model", name+".java");
-          JavaResourceGenerator gen = new JavaResourceGenerator(new FileOutputStream(fn), master, config, date, npm.version());
-          gen.generate(analysis); 
-          gen.close();
-          jgen.seeClass(analysis);
-          xgen.seeClass(analysis);
-          rgen.seeClass(analysis);
+          genClass(version, dest, date, config, jid, npm, master, jgen, xgen, rgen, sd);
         }
       }
+    }
+    if (VersionUtilities.isR4BVer(version)) {
+      StructureDefinition sd = master.getStructures().get("http://hl7.org/fhir/StructureDefinition/Resource");
+      genClass(version, dest, date, config, jid, npm, master, jgen, xgen, rgen, sd);      
     }
     for (StructureDefinition sd : master.getStructures().getList()) {
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.RESOURCE) {
         if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && sd.getAbstract()) {
-          String name = javaName(sd.getName());
-
-          System.out.println(" .. "+name);
-          Analyser jca = new Analyser(master, config);
-          Analysis analysis = jca.analyse(sd);
-          
-          String fn = Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "model", name+".java");
-          JavaResourceGenerator gen = new JavaResourceGenerator(new FileOutputStream(fn), master, config, date, npm.version());
-          gen.generate(analysis); 
-          gen.close();
-          jgen.seeClass(analysis);
-          xgen.seeClass(analysis);
-          rgen.seeClass(analysis);
+          genClass(version, dest, date, config, jid, npm, master, jgen, xgen, rgen, sd);
         }
       }
     }
     for (StructureDefinition sd : master.getStructures().getList()) {
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.RESOURCE) {
         if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && !sd.getAbstract()) {
-          String name = javaName(sd.getName());
-
-          System.out.println(" .. "+name);
-          Analyser jca = new Analyser(master, config);
-          Analysis analysis = jca.analyse(sd);
-          String fn = Utilities.path(dest, "src", "org", "hl7", "fhir", "r5", "model", name+".java");
-          JavaResourceGenerator gen = new JavaResourceGenerator(new FileOutputStream(fn), master, config, date, npm.version());
-          gen.generate(analysis); 
-          gen.close();
-          jgen.seeClass(analysis);
-          xgen.seeClass(analysis);
-          rgen.seeClass(analysis);
+          genClass(version, dest, date, config, jid, npm, master, jgen, xgen, rgen, sd);
         }
       }
     }
@@ -185,6 +150,24 @@ public class JavaCoreGenerator {
     rgen.close();
     System.out.println("Done ("+Long.toString(System.currentTimeMillis()-start)+"ms)");   
     
+  }
+
+  public void genClass(String version, String dest, Date date, Configuration config, String jid, NpmPackage npm, Definitions master,
+      JavaParserJsonGenerator jgen, JavaParserXmlGenerator xgen, JavaParserRdfGenerator rgen, StructureDefinition sd)
+      throws Exception, IOException, UnsupportedEncodingException, FileNotFoundException {
+    String name = javaName(sd.getName());
+
+    System.out.println(" .. "+name);
+    Analyser jca = new Analyser(master, config, version);
+    Analysis analysis = jca.analyse(sd);
+    
+    String fn = Utilities.path(dest, "src", "org", "hl7", "fhir", jid, "model", name+".java");
+    JavaResourceGenerator gen = new JavaResourceGenerator(new FileOutputStream(fn), master, config, date, npm.version(), jid);
+    gen.generate(analysis); 
+    gen.close();
+    jgen.seeClass(analysis);
+    xgen.seeClass(analysis);
+    rgen.seeClass(analysis);
   }
 
   @SuppressWarnings("unchecked")
