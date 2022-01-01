@@ -439,7 +439,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         try {
           loadDefinitionItem(s, pi.load("package", s), loader, null, new PackageVersion(pi.id(), pi.version()));
           t++;
-        } catch (FHIRException e) {
+        } catch (Exception e) {
           throw new FHIRException(formatMessage(I18nConstants.ERROR_READING__FROM_PACKAGE__, s, pi.name(), pi.version(), e.getMessage()), e);
         }
       }

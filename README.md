@@ -9,6 +9,7 @@ included in this repo:
 
 * org.fhir.fhir.utilities: Shared code used by all the other projects - including the internationalization code
 * org.fhir.fhir.r5: Object models and utilities for R5 candidate (will change regularly as new R5 candidates are released)
+* org.fhir.fhir.r4b: Object models and utilities for R4B
 * org.fhir.fhir.r4: Object models and utilities for R4
 * org.fhir.fhir.dstu3: Object models and utilities for STU3
 * org.fhir.fhir.dstu2: Object models and utilities for STU2
