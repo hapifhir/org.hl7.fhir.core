@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2235,6 +2235,302 @@ public class Invoice extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.Invoice;
    }
+
+ /**
+   * Search parameter: <b>account</b>
+   * <p>
+   * Description: <b>Account that is being balanced</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Invoice.account</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="account", path="Invoice.account", description="Account that is being balanced", type="reference", target={Account.class } )
+  public static final String SP_ACCOUNT = "account";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>account</b>
+   * <p>
+   * Description: <b>Account that is being balanced</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Invoice.account</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ACCOUNT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ACCOUNT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Invoice:account</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ACCOUNT = new ca.uhn.fhir.model.api.Include("Invoice:account").toLocked();
+
+ /**
+   * Search parameter: <b>date</b>
+   * <p>
+   * Description: <b>Invoice date / posting date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>Invoice.date</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="date", path="Invoice.date", description="Invoice date / posting date", type="date" )
+  public static final String SP_DATE = "date";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>date</b>
+   * <p>
+   * Description: <b>Invoice date / posting date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>Invoice.date</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Business Identifier for item</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Invoice.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="Invoice.identifier", description="Business Identifier for item", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Business Identifier for item</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Invoice.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>issuer</b>
+   * <p>
+   * Description: <b>Issuing Organization of Invoice</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Invoice.issuer</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="issuer", path="Invoice.issuer", description="Issuing Organization of Invoice", type="reference", target={Organization.class } )
+  public static final String SP_ISSUER = "issuer";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>issuer</b>
+   * <p>
+   * Description: <b>Issuing Organization of Invoice</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Invoice.issuer</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ISSUER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ISSUER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Invoice:issuer</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ISSUER = new ca.uhn.fhir.model.api.Include("Invoice:issuer").toLocked();
+
+ /**
+   * Search parameter: <b>participant-role</b>
+   * <p>
+   * Description: <b>Type of involvement in creation of this Invoice</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Invoice.participant.role</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="participant-role", path="Invoice.participant.role", description="Type of involvement in creation of this Invoice", type="token" )
+  public static final String SP_PARTICIPANT_ROLE = "participant-role";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>participant-role</b>
+   * <p>
+   * Description: <b>Type of involvement in creation of this Invoice</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Invoice.participant.role</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PARTICIPANT_ROLE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PARTICIPANT_ROLE);
+
+ /**
+   * Search parameter: <b>participant</b>
+   * <p>
+   * Description: <b>Individual who was involved</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Invoice.participant.actor</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="participant", path="Invoice.participant.actor", description="Individual who was involved", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_PARTICIPANT = "participant";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>participant</b>
+   * <p>
+   * Description: <b>Individual who was involved</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Invoice.participant.actor</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PARTICIPANT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PARTICIPANT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Invoice:participant</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PARTICIPANT = new ca.uhn.fhir.model.api.Include("Invoice:participant").toLocked();
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>Recipient(s) of goods and services</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Invoice.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="Invoice.subject.where(resolve() is Patient)", description="Recipient(s) of goods and services", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Group.class, Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>Recipient(s) of goods and services</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Invoice.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Invoice:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Invoice:patient").toLocked();
+
+ /**
+   * Search parameter: <b>recipient</b>
+   * <p>
+   * Description: <b>Recipient of this invoice</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Invoice.recipient</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="recipient", path="Invoice.recipient", description="Recipient of this invoice", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Organization.class, Patient.class, RelatedPerson.class } )
+  public static final String SP_RECIPIENT = "recipient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>recipient</b>
+   * <p>
+   * Description: <b>Recipient of this invoice</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Invoice.recipient</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam RECIPIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_RECIPIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Invoice:recipient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_RECIPIENT = new ca.uhn.fhir.model.api.Include("Invoice:recipient").toLocked();
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>draft | issued | balanced | cancelled | entered-in-error</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Invoice.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="Invoice.status", description="draft | issued | balanced | cancelled | entered-in-error", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>draft | issued | balanced | cancelled | entered-in-error</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Invoice.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>Recipient(s) of goods and services</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Invoice.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="Invoice.subject", description="Recipient(s) of goods and services", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Group.class, Patient.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>Recipient(s) of goods and services</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Invoice.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Invoice:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("Invoice:subject").toLocked();
+
+ /**
+   * Search parameter: <b>totalgross</b>
+   * <p>
+   * Description: <b>Gross total of this Invoice</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>Invoice.totalGross</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="totalgross", path="Invoice.totalGross", description="Gross total of this Invoice", type="quantity" )
+  public static final String SP_TOTALGROSS = "totalgross";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>totalgross</b>
+   * <p>
+   * Description: <b>Gross total of this Invoice</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>Invoice.totalGross</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam TOTALGROSS = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_TOTALGROSS);
+
+ /**
+   * Search parameter: <b>totalnet</b>
+   * <p>
+   * Description: <b>Net total of this Invoice</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>Invoice.totalNet</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="totalnet", path="Invoice.totalNet", description="Net total of this Invoice", type="quantity" )
+  public static final String SP_TOTALNET = "totalnet";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>totalnet</b>
+   * <p>
+   * Description: <b>Net total of this Invoice</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>Invoice.totalNet</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam TOTALNET = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_TOTALNET);
+
+ /**
+   * Search parameter: <b>type</b>
+   * <p>
+   * Description: <b>Type of Invoice</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Invoice.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="type", path="Invoice.type", description="Type of Invoice", type="token" )
+  public static final String SP_TYPE = "type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>type</b>
+   * <p>
+   * Description: <b>Type of Invoice</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Invoice.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
 
 }

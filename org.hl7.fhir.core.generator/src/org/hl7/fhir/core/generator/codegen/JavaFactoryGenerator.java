@@ -50,13 +50,14 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 public class JavaFactoryGenerator extends JavaBaseGenerator {
 
   
-  public JavaFactoryGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version) throws UnsupportedEncodingException {
-    super(out, definitions, configuration, version, genDate);
+  public JavaFactoryGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version, String jid) throws UnsupportedEncodingException {
+    super(out, definitions, configuration, version, genDate, jid);
   }
 
 	public void generate() throws Exception {
 	  String template = config.getAdornments().get("ResourceFactory");
-	  template = template.replace("{{license}}", config.getLicense());
+    template = template.replace("{{jid}}", jid);
+  template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
     template = template.replace("{{resource-factory}}", genResourceFactory());
     template = template.replace("{{type-factory}}", genTypeFactory());

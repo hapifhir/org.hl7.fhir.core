@@ -54,13 +54,15 @@ public class JavaBaseGenerator extends OutputStreamWriter {
   protected Configuration config;
   protected String version;
   protected Date genDate;
+  protected String jid;
 
-  public JavaBaseGenerator(OutputStream arg0, Definitions definitions, Configuration config, String version, Date genDate) throws UnsupportedEncodingException {
+  public JavaBaseGenerator(OutputStream arg0, Definitions definitions, Configuration config, String version, Date genDate, String jid) throws UnsupportedEncodingException {
     super(arg0, "UTF-8");
     this.definitions = definitions;
     this.config = config;
     this.version = version;
     this.genDate = genDate;
+    this.jid = jid;
   }
 
   public void startMark(String version, Date genDate) throws IOException {

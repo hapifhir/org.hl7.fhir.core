@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -4610,6 +4610,462 @@ RegisteredName | UserFriendlyName | PatientReportedName.
   public ResourceType getResourceType() {
     return ResourceType.Device;
    }
+
+ /**
+   * Search parameter: <b>biological-source</b>
+   * <p>
+   * Description: <b>The biological source for the device</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Device.biologicalSource</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="biological-source", path="Device.biologicalSource", description="The biological source for the device", type="token" )
+  public static final String SP_BIOLOGICAL_SOURCE = "biological-source";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>biological-source</b>
+   * <p>
+   * Description: <b>The biological source for the device</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Device.biologicalSource</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam BIOLOGICAL_SOURCE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_BIOLOGICAL_SOURCE);
+
+ /**
+   * Search parameter: <b>definition</b>
+   * <p>
+   * Description: <b>The definition / type of the device</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Device.definition.reference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="definition", path="Device.definition.reference", description="The definition / type of the device", type="reference" )
+  public static final String SP_DEFINITION = "definition";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>definition</b>
+   * <p>
+   * Description: <b>The definition / type of the device</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Device.definition.reference</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DEFINITION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DEFINITION);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Device:definition</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_DEFINITION = new ca.uhn.fhir.model.api.Include("Device:definition").toLocked();
+
+ /**
+   * Search parameter: <b>device-name</b>
+   * <p>
+   * Description: <b>A server defined search that may match any of the string fields in Device.deviceName or Device.type.</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.deviceName.name | Device.type.coding.display | Device.type.text</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="device-name", path="Device.deviceName.name | Device.type.coding.display | Device.type.text", description="A server defined search that may match any of the string fields in Device.deviceName or Device.type.", type="string" )
+  public static final String SP_DEVICE_NAME = "device-name";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>device-name</b>
+   * <p>
+   * Description: <b>A server defined search that may match any of the string fields in Device.deviceName or Device.type.</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.deviceName.name | Device.type.coding.display | Device.type.text</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam DEVICE_NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DEVICE_NAME);
+
+ /**
+   * Search parameter: <b>expiration-date</b>
+   * <p>
+   * Description: <b>The expiration date of the device</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>Device.expirationDate</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="expiration-date", path="Device.expirationDate", description="The expiration date of the device", type="date" )
+  public static final String SP_EXPIRATION_DATE = "expiration-date";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>expiration-date</b>
+   * <p>
+   * Description: <b>The expiration date of the device</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>Device.expirationDate</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam EXPIRATION_DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_EXPIRATION_DATE);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Instance id from manufacturer, owner, and others</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Device.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="Device.identifier", description="Instance id from manufacturer, owner, and others", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Instance id from manufacturer, owner, and others</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Device.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>location</b>
+   * <p>
+   * Description: <b>A location, where the resource is found</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Device.location</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="location", path="Device.location", description="A location, where the resource is found", type="reference", target={Location.class } )
+  public static final String SP_LOCATION = "location";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>location</b>
+   * <p>
+   * Description: <b>A location, where the resource is found</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Device.location</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam LOCATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_LOCATION);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Device:location</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_LOCATION = new ca.uhn.fhir.model.api.Include("Device:location").toLocked();
+
+ /**
+   * Search parameter: <b>lot-number</b>
+   * <p>
+   * Description: <b>The lot number of the device</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.lotNumber</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="lot-number", path="Device.lotNumber", description="The lot number of the device", type="string" )
+  public static final String SP_LOT_NUMBER = "lot-number";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>lot-number</b>
+   * <p>
+   * Description: <b>The lot number of the device</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.lotNumber</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam LOT_NUMBER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_LOT_NUMBER);
+
+ /**
+   * Search parameter: <b>manufacture-date</b>
+   * <p>
+   * Description: <b>The manufacture date of the device</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>Device.manufactureDate</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="manufacture-date", path="Device.manufactureDate", description="The manufacture date of the device", type="date" )
+  public static final String SP_MANUFACTURE_DATE = "manufacture-date";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>manufacture-date</b>
+   * <p>
+   * Description: <b>The manufacture date of the device</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>Device.manufactureDate</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam MANUFACTURE_DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_MANUFACTURE_DATE);
+
+ /**
+   * Search parameter: <b>manufacturer</b>
+   * <p>
+   * Description: <b>The manufacturer of the device</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.manufacturer</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="manufacturer", path="Device.manufacturer", description="The manufacturer of the device", type="string" )
+  public static final String SP_MANUFACTURER = "manufacturer";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>manufacturer</b>
+   * <p>
+   * Description: <b>The manufacturer of the device</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.manufacturer</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam MANUFACTURER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_MANUFACTURER);
+
+ /**
+   * Search parameter: <b>model</b>
+   * <p>
+   * Description: <b>The model of the device</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.modelNumber</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="model", path="Device.modelNumber", description="The model of the device", type="string" )
+  public static final String SP_MODEL = "model";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>model</b>
+   * <p>
+   * Description: <b>The model of the device</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.modelNumber</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam MODEL = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_MODEL);
+
+ /**
+   * Search parameter: <b>organization</b>
+   * <p>
+   * Description: <b>The organization responsible for the device</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Device.owner</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="organization", path="Device.owner", description="The organization responsible for the device", type="reference", target={Organization.class } )
+  public static final String SP_ORGANIZATION = "organization";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>organization</b>
+   * <p>
+   * Description: <b>The organization responsible for the device</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Device.owner</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ORGANIZATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ORGANIZATION);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Device:organization</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ORGANIZATION = new ca.uhn.fhir.model.api.Include("Device:organization").toLocked();
+
+ /**
+   * Search parameter: <b>parent</b>
+   * <p>
+   * Description: <b>The parent device</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Device.parent</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="parent", path="Device.parent", description="The parent device", type="reference", target={Device.class } )
+  public static final String SP_PARENT = "parent";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>parent</b>
+   * <p>
+   * Description: <b>The parent device</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Device.parent</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PARENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PARENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Device:parent</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PARENT = new ca.uhn.fhir.model.api.Include("Device:parent").toLocked();
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>Patient information, if the resource is affixed to a person</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Device.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="Device.subject.where(resolve() is Patient)", description="Patient information, if the resource is affixed to a person", type="reference", target={Patient.class, Person.class, Practitioner.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>Patient information, if the resource is affixed to a person</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Device.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Device:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Device:patient").toLocked();
+
+ /**
+   * Search parameter: <b>serial-number</b>
+   * <p>
+   * Description: <b>The serial number of the device</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.serialNumber</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="serial-number", path="Device.serialNumber", description="The serial number of the device", type="string" )
+  public static final String SP_SERIAL_NUMBER = "serial-number";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>serial-number</b>
+   * <p>
+   * Description: <b>The serial number of the device</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.serialNumber</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam SERIAL_NUMBER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_SERIAL_NUMBER);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>active | inactive | entered-in-error | unknown</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Device.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="Device.status", description="active | inactive | entered-in-error | unknown", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>active | inactive | entered-in-error | unknown</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Device.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>Subject information, to which the device is associated of affixed</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Device.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="Device.subject", description="Subject information, to which the device is associated of affixed", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class, Person.class, Practitioner.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>Subject information, to which the device is associated of affixed</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Device.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Device:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("Device:subject").toLocked();
+
+ /**
+   * Search parameter: <b>type</b>
+   * <p>
+   * Description: <b>The type of the device</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Device.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="type", path="Device.type", description="The type of the device", type="token" )
+  public static final String SP_TYPE = "type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>type</b>
+   * <p>
+   * Description: <b>The type of the device</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Device.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
+
+ /**
+   * Search parameter: <b>udi-carrier</b>
+   * <p>
+   * Description: <b>UDI Barcode (RFID or other technology) string in *HRF* format.</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.udiCarrier.carrierHRF</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="udi-carrier", path="Device.udiCarrier.carrierHRF", description="UDI Barcode (RFID or other technology) string in *HRF* format.", type="string" )
+  public static final String SP_UDI_CARRIER = "udi-carrier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>udi-carrier</b>
+   * <p>
+   * Description: <b>UDI Barcode (RFID or other technology) string in *HRF* format.</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.udiCarrier.carrierHRF</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam UDI_CARRIER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_UDI_CARRIER);
+
+ /**
+   * Search parameter: <b>udi-di</b>
+   * <p>
+   * Description: <b>The udi Device Identifier (DI)</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.udiCarrier.deviceIdentifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="udi-di", path="Device.udiCarrier.deviceIdentifier", description="The udi Device Identifier (DI)", type="string" )
+  public static final String SP_UDI_DI = "udi-di";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>udi-di</b>
+   * <p>
+   * Description: <b>The udi Device Identifier (DI)</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.udiCarrier.deviceIdentifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam UDI_DI = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_UDI_DI);
+
+ /**
+   * Search parameter: <b>url</b>
+   * <p>
+   * Description: <b>Network address to contact device</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>Device.url</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="url", path="Device.url", description="Network address to contact device", type="uri" )
+  public static final String SP_URL = "url";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>url</b>
+   * <p>
+   * Description: <b>Network address to contact device</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>Device.url</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
+
+ /**
+   * Search parameter: <b>version</b>
+   * <p>
+   * Description: <b>The specific version of the device</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.version.value</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="version", path="Device.version.value", description="The specific version of the device", type="string" )
+  public static final String SP_VERSION = "version";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>version</b>
+   * <p>
+   * Description: <b>The specific version of the device</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Device.version.value</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam VERSION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_VERSION);
 
  /**
    * Search parameter: <b>din</b>
