@@ -241,6 +241,9 @@ public class ValidatorCli {
       case TRANSFORM:
         validationService.transform(cliContext, validator);
         break;
+      case COMPILE:
+        validationService.compile(cliContext, validator);
+        break;
       case NARRATIVE:
         validationService.generateNarrative(cliContext, validator);
         break;
