@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2290,6 +2290,66 @@ public class NutritionProduct extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.NutritionProduct;
    }
+
+ /**
+   * Search parameter: <b>biological-source</b>
+   * <p>
+   * Description: <b>The biological source for the nutrition product</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>NutritionProduct.instance.biologicalSource</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="biological-source", path="NutritionProduct.instance.biologicalSource", description="The biological source for the nutrition product", type="token" )
+  public static final String SP_BIOLOGICAL_SOURCE = "biological-source";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>biological-source</b>
+   * <p>
+   * Description: <b>The biological source for the nutrition product</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>NutritionProduct.instance.biologicalSource</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam BIOLOGICAL_SOURCE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_BIOLOGICAL_SOURCE);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>The identifier for the physical instance, typically a serial number</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>NutritionProduct.instance.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="NutritionProduct.instance.identifier", description="The identifier for the physical instance, typically a serial number", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>The identifier for the physical instance, typically a serial number</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>NutritionProduct.instance.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>active | inactive | entered-in-error</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>NutritionProduct.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="NutritionProduct.status", description="active | inactive | entered-in-error", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>active | inactive | entered-in-error</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>NutritionProduct.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
 
 }

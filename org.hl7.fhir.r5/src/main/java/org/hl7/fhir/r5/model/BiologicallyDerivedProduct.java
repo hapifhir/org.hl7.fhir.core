@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1896,6 +1896,26 @@ public class BiologicallyDerivedProduct extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.BiologicallyDerivedProduct;
    }
+
+ /**
+   * Search parameter: <b>biological-source</b>
+   * <p>
+   * Description: <b>The biological source for the biologically derived product</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.biologicalSource</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="biological-source", path="BiologicallyDerivedProduct.biologicalSource", description="The biological source for the biologically derived product", type="token" )
+  public static final String SP_BIOLOGICAL_SOURCE = "biological-source";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>biological-source</b>
+   * <p>
+   * Description: <b>The biological source for the biologically derived product</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.biologicalSource</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam BIOLOGICAL_SOURCE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_BIOLOGICAL_SOURCE);
 
 
 }

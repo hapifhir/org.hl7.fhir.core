@@ -62,8 +62,8 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
   private StringBuilder cRN = new StringBuilder();
   private StringBuilder cType = new StringBuilder();
 
-  public JavaParserXmlGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version) throws UnsupportedEncodingException {
-    super(out, definitions, configuration, version, genDate);
+  public JavaParserXmlGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version, String jid) throws UnsupportedEncodingException {
+    super(out, definitions, configuration, version, genDate, jid);
   }
 
   public void seeClass(Analysis analysis) throws Exception {
@@ -88,6 +88,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
   public void generate() throws Exception {
     
     String template = config.getAdornments().get("XmlParser");
+    template = template.replace("{{jid}}", jid);
     template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
 
@@ -128,7 +129,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
 
     if (!analysis.isAbstract() || ti != analysis.getRootType()) {
       parser.append("  protected "+stn+" parse"+pfx+tn+"(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {\r\n");
-      parser.append("    "+stn+" res = new "+stn+"();\r\n");
+      parser.append("    "+stn+" res = new "+stn+"();\r\n");      
       if (ti == analysis.getRootType() && analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE) {
         parser.append("    parseResourceAttributes(xpp, res);\r\n");
       } else {
@@ -187,7 +188,11 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
       parser.append("    } else ");
     else
       parser.append("    ");
-    parser.append("if (!parse"+ti.getAncestorName()+"Content(eventType, xpp, res)){ \r\n");
+    if (ti.getAncestorName() != null) {
+      parser.append("if (!parse"+ti.getAncestorName()+"Content(eventType, xpp, res)){ \r\n");
+    } else {
+      parser.append(" { \r\n");
+    }
     parser.append("        return false;\r\n");
     parser.append("    }\r\n");
     parser.append("    return true;\r\n");
@@ -296,7 +301,9 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
     composer.append("  }\r\n\r\n");    
 
     composer.append("  protected void compose"+pfx+tn+"Elements("+stn+" element) throws IOException {\r\n");
-    composer.append("    compose"+ti.getAncestorName()+"Elements(element);\r\n");
+    if (!"Element".equals(tn) && analysis.getAncestor() != null) {
+      composer.append("    compose"+ti.getAncestorName()+"Elements(element);\r\n");
+    }
     
     for (ElementDefinition ed : ti.getChildren()) {
       if (!ed.hasRepresentation(PropertyRepresentation.XMLATTR)) {

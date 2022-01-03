@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1362,7 +1362,7 @@ public class ArtifactAssessment extends MetadataResource {
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/artifactassessment-disposition")
     protected Enumeration<ArtifactAssessmentDisposition> disposition;
 
-    private static final long serialVersionUID = 2088637814L;
+    private static final long serialVersionUID = -2002325424L;
 
   /**
    * Constructor
@@ -2564,8 +2564,8 @@ public class ArtifactAssessment extends MetadataResource {
         children.add(new Property("citeAs[x]", "Reference(Citation)|markdown", "Display of or reference to the bibliographic citation of the comment, classifier, or rating.", 0, 1, citeAs));
         children.add(new Property("date", "dateTime", "The date  (and optionally time) when the artifact assessment was published. The date must change when the disposition changes and it must change if the workflow status code changes. In addition, it should change when the substantive content of the artifact assessment changes.", 0, 1, date));
         children.add(new Property("copyright", "markdown", "A copyright statement relating to the artifact assessment and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the artifact assessment.", 0, 1, copyright));
-        children.add(new Property("approvalDate", "dateTime", "The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate));
-        children.add(new Property("lastReviewDate", "dateTime", "The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.", 0, 1, lastReviewDate));
+        children.add(new Property("approvalDate", "date", "The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate));
+        children.add(new Property("lastReviewDate", "date", "The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.", 0, 1, lastReviewDate));
         children.add(new Property("artifact[x]", "Reference(Any)|canonical|uri", "A reference to a resource, canonical resource, or non-FHIR resource which the comment or assessment is about.", 0, 1, artifact));
         children.add(new Property("content", "", "A component comment, classifier, or rating of the artifact.", 0, java.lang.Integer.MAX_VALUE, content));
         children.add(new Property("workflowStatus", "code", "Indicates the workflow status of the comment or change request.", 0, 1, workflowStatus));
@@ -2582,8 +2582,8 @@ public class ArtifactAssessment extends MetadataResource {
         case 456265720: /*citeAsMarkdown*/  return new Property("citeAs[x]", "markdown", "Display of or reference to the bibliographic citation of the comment, classifier, or rating.", 0, 1, citeAs);
         case 3076014: /*date*/  return new Property("date", "dateTime", "The date  (and optionally time) when the artifact assessment was published. The date must change when the disposition changes and it must change if the workflow status code changes. In addition, it should change when the substantive content of the artifact assessment changes.", 0, 1, date);
         case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to the artifact assessment and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the artifact assessment.", 0, 1, copyright);
-        case 223539345: /*approvalDate*/  return new Property("approvalDate", "dateTime", "The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate);
-        case -1687512484: /*lastReviewDate*/  return new Property("lastReviewDate", "dateTime", "The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.", 0, 1, lastReviewDate);
+        case 223539345: /*approvalDate*/  return new Property("approvalDate", "date", "The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate);
+        case -1687512484: /*lastReviewDate*/  return new Property("lastReviewDate", "date", "The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.", 0, 1, lastReviewDate);
         case -1130056338: /*artifact[x]*/  return new Property("artifact[x]", "Reference(Any)|canonical|uri", "A reference to a resource, canonical resource, or non-FHIR resource which the comment or assessment is about.", 0, 1, artifact);
         case -1228798510: /*artifact*/  return new Property("artifact[x]", "Reference(Any)|canonical|uri", "A reference to a resource, canonical resource, or non-FHIR resource which the comment or assessment is about.", 0, 1, artifact);
         case -683686503: /*artifactReference*/  return new Property("artifact[x]", "Reference(Any)", "A reference to a resource, canonical resource, or non-FHIR resource which the comment or assessment is about.", 0, 1, artifact);
@@ -2604,8 +2604,8 @@ public class ArtifactAssessment extends MetadataResource {
         case -1360156695: /*citeAs*/ return this.citeAs == null ? new Base[0] : new Base[] {this.citeAs}; // DataType
         case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
         case 1522889671: /*copyright*/ return this.copyright == null ? new Base[0] : new Base[] {this.copyright}; // MarkdownType
-        case 223539345: /*approvalDate*/ return this.approvalDate == null ? new Base[0] : new Base[] {this.approvalDate}; // DateTimeType
-        case -1687512484: /*lastReviewDate*/ return this.lastReviewDate == null ? new Base[0] : new Base[] {this.lastReviewDate}; // DateTimeType
+        case 223539345: /*approvalDate*/ return this.approvalDate == null ? new Base[0] : new Base[] {this.approvalDate}; // DateType
+        case -1687512484: /*lastReviewDate*/ return this.lastReviewDate == null ? new Base[0] : new Base[] {this.lastReviewDate}; // DateType
         case -1228798510: /*artifact*/ return this.artifact == null ? new Base[0] : new Base[] {this.artifact}; // DataType
         case 951530617: /*content*/ return this.content == null ? new Base[0] : this.content.toArray(new Base[this.content.size()]); // ArtifactAssessmentContentComponent
         case 697796753: /*workflowStatus*/ return this.workflowStatus == null ? new Base[0] : new Base[] {this.workflowStatus}; // Enumeration<ArtifactAssessmentWorkflowStatus>
@@ -2631,10 +2631,10 @@ public class ArtifactAssessment extends MetadataResource {
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 223539345: // approvalDate
-          this.approvalDate = TypeConvertor.castToDate(value); // DateTimeType
+          this.approvalDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case -1687512484: // lastReviewDate
-          this.lastReviewDate = TypeConvertor.castToDate(value); // DateTimeType
+          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
           return value;
         case -1228798510: // artifact
           this.artifact = TypeConvertor.castToType(value); // DataType
@@ -2666,9 +2666,9 @@ public class ArtifactAssessment extends MetadataResource {
         } else if (name.equals("copyright")) {
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("approvalDate")) {
-          this.approvalDate = TypeConvertor.castToDate(value); // DateTimeType
+          this.approvalDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("lastReviewDate")) {
-          this.lastReviewDate = TypeConvertor.castToDate(value); // DateTimeType
+          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
         } else if (name.equals("artifact[x]")) {
           this.artifact = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("content")) {
@@ -2711,8 +2711,8 @@ public class ArtifactAssessment extends MetadataResource {
         case -1360156695: /*citeAs*/ return new String[] {"Reference", "markdown"};
         case 3076014: /*date*/ return new String[] {"dateTime"};
         case 1522889671: /*copyright*/ return new String[] {"markdown"};
-        case 223539345: /*approvalDate*/ return new String[] {"dateTime"};
-        case -1687512484: /*lastReviewDate*/ return new String[] {"dateTime"};
+        case 223539345: /*approvalDate*/ return new String[] {"date"};
+        case -1687512484: /*lastReviewDate*/ return new String[] {"date"};
         case -1228798510: /*artifact*/ return new String[] {"Reference", "canonical", "uri"};
         case 951530617: /*content*/ return new String[] {};
         case 697796753: /*workflowStatus*/ return new String[] {"code"};
@@ -2845,6 +2845,26 @@ public class ArtifactAssessment extends MetadataResource {
   public ResourceType getResourceType() {
     return ResourceType.ArtifactAssessment;
    }
+
+ /**
+   * Search parameter: <b>date</b>
+   * <p>
+   * Description: <b>The artifact assessment publication date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>ArtifactAssessment.date</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="date", path="ArtifactAssessment.date", description="The artifact assessment publication date", type="date" )
+  public static final String SP_DATE = "date";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>date</b>
+   * <p>
+   * Description: <b>The artifact assessment publication date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>ArtifactAssessment.date</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
 
 
 }

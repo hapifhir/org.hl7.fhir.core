@@ -28,7 +28,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 21, 2021 05:44+1100 for FHIR v5.0.0-snapshot1
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 
   
@@ -690,31 +690,31 @@ public class ResourceFactory extends Factory {
     }
   }
 
-  public static DataType createPrimitive(String type, String value) {
-    switch (type) {
-    case "boolean": return new BooleanType(value);
-    case "integer": return new IntegerType(value);
-    case "integer64": return new Integer64Type(value);
-    case "string": return new StringType(value);
-    case "decimal": return new DecimalType(value);
-    case "uri": return new UriType(value);
-    case "url": return new UrlType(value);
-    case "canonical": return new CanonicalType(value);
-    case "base64Binary": return new Base64BinaryType(value);
-    case "instant": return new InstantType(value);
-    case "date": return new DateType(value);
-    case "dateTime": return new DateTimeType(value);
-    case "time": return new TimeType(value);
-    case "code": return new CodeType(value);
-    case "oid": return new OidType(value);
-    case "id": return new IdType(value);
-    case "markdown": return new MarkdownType(value);
-    case "unsignedInt": return new UnsignedIntType(value);
-    case "positiveInt": return new PositiveIntType(value);
-    case "uuid": return new UuidType(value);
-    default:
-      throw new FHIRException("Unknown Primitive Type '"+type+"'");
+    public static DataType createPrimitive(String type, String value) {
+      switch (type) {
+      case "boolean": return new BooleanType(value);
+      case "integer": return new IntegerType(value);
+      case "integer64": return new Integer64Type(value);
+      case "string": return new StringType(value);
+      case "decimal": return new DecimalType(value);
+      case "uri": return new UriType(value);
+      case "url": return new UrlType(value);
+      case "canonical": return new CanonicalType(value);
+      case "base64Binary": return new Base64BinaryType(value);
+      case "instant": return new InstantType(value);
+      case "date": return new DateType(value);
+      case "dateTime": return new DateTimeType(value);
+      case "time": return new TimeType(value);
+      case "code": return new CodeType(value);
+      case "oid": return new OidType(value);
+      case "id": return new IdType(value);
+      case "markdown": return new MarkdownType(value);
+      case "unsignedInt": return new UnsignedIntType(value);
+      case "positiveInt": return new PositiveIntType(value);
+      case "uuid": return new UuidType(value);
+      default:
+        throw new FHIRException("Unknown Primitive Type '"+type+"'");
+      }
     }
-  }
 
 }
