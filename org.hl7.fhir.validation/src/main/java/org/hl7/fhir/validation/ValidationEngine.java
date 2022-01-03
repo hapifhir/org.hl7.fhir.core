@@ -410,6 +410,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return transform(cnt.focus, cnt.cntType, map);
   }
 
+  public StructureMap compile(String mapUri) throws FHIRException, IOException {
+    StructureMap map = context.getTransform(mapUri);
+    return map;
+  }
+
   public org.hl7.fhir.r5.elementmodel.Element transform(byte[] source, FhirFormat cntType, String mapUri) throws FHIRException, IOException {
     List<Base> outputs = new ArrayList<>();
     StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs, mapLog, context));
