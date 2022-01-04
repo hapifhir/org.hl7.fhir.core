@@ -165,7 +165,6 @@ public class FhirRequestBuilder {
     OkHttpClient.Builder builder = okHttpClient.newBuilder();
     if (logger != null) builder.addInterceptor(logger);
     builder.addInterceptor(new RetryInterceptor(retryCount));
-
     builder.addInterceptor(TxInterceptor.getInstance());
 
     return builder.connectTimeout(timeout, timeoutUnit)

@@ -164,16 +164,10 @@ public class TerminologyCache {
     return ct;
   }
 
-  private String getValueSetHash(ValueSet vsc) {
-    final String expansionKey = vsc.getExpansion().getContains().stream().map(x -> x.getCode()).collect(Collectors.joining(","));
-    final String composeKey = vsc.getCompose().getIncludeFirstRep().getConcept().stream().map(x -> x.getCode()).collect(Collectors.joining(","));
-    return Integer.toString((expansionKey + "\t" + composeKey).hashCode());
-  }
-
   public String extracted(JsonParser json, ValueSet vsc) throws IOException {
     String s = null;
     if (vsc.getExpansion().getContains().size() > 1000 || vsc.getCompose().getIncludeFirstRep().getConcept().size() > 1000) {
-      s =  vsc.getUrl();//getValueSetHash(vsc); // save a hash representation instead of a complete valueset
+      s =  vsc.getUrl();
     } else {
       s = json.composeString(vsc);
     }
@@ -187,7 +181,6 @@ public class TerminologyCache {
         ct.setName(getNameForSystem(c.getSystem()));
         ct.hasVersion = c.hasVersion();
     }
-
     JsonParser json = new JsonParser();
     json.setOutputStyle(OutputStyle.PRETTY);
     ValueSet vsc = getVSEssense(vs);
@@ -317,7 +310,6 @@ public class TerminologyCache {
       return;
     }
 
-
     boolean n = nc.map.containsKey(cacheToken.key);
     nc.map.put(cacheToken.key, e);
     if (persistent) {
@@ -334,11 +326,9 @@ public class TerminologyCache {
   }
 
   public ValidationResult getValidation(CacheToken cacheToken) {
-
     if (cacheToken.key == null) {
       return null;
     }
-
     synchronized (lock) {
       requestCount++;
       NamedCache nc = getNamedCache(cacheToken);
