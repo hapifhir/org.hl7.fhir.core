@@ -841,7 +841,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     for (CodingValidationRequest t : codes) {
       t.setCacheToken(txCache != null ? txCache.generateValidationToken(options, t.getCoding(), vs) : null);
       if (t.getCoding().hasSystem()) {
-         codeSystemsUsed.add(t.getCoding().getSystem());
+        codeSystemsUsed.add(t.getCoding().getSystem());
       }
       if (txCache != null) { 
         t.setResult(txCache.getValidation(t.getCacheToken()));
@@ -962,8 +962,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       updateUnsupportedCodeSystems(res, code, getCodeKey(code));
       return res;
     }
-    //FIXME
-    System.out.print("");
+
     if (options.isUseClient()) {
       // ok, first we try to validate locally
       try {
