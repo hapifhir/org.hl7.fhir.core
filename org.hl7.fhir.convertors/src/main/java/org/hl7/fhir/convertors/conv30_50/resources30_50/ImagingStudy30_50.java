@@ -11,7 +11,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Unsi
 import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
-import org.hl7.fhir.r5.model.ImagingStudy.ImagingStudyProcedureComponent;
 
 import java.util.List;
 
@@ -85,11 +84,11 @@ public class ImagingStudy30_50 {
       if (src.hasNumberOfInstancesElement())
         tgt.setNumberOfInstancesElement(UnsignedInt30_50.convertUnsignedInt(src.getNumberOfInstancesElement()));
     }
-    for (ImagingStudyProcedureComponent t : src.getProcedure()) {
-      if (t.hasValueReference()) {
-        tgt.addProcedureReference(Reference30_50.convertReference(t.getValueReference()));
+    for (CodeableReference t : src.getProcedure()) {
+      if (t.hasReference()) {
+        tgt.addProcedureReference(Reference30_50.convertReference(t.getReference()));
       } else {
-        tgt.addProcedureCode(CodeableConcept30_50.convertCodeableConcept(t.getValueCodeableConcept()));
+        tgt.addProcedureCode(CodeableConcept30_50.convertCodeableConcept(t.getConcept()));
       }
     }
     List<CodeableReference> reasonCodes = src.getReason();
@@ -179,10 +178,10 @@ public class ImagingStudy30_50 {
     }
     List<Reference> procedureReferences = src.getProcedureReference();
     if (procedureReferences.size() > 0) {
-      tgt.addProcedure().setValue(Reference30_50.convertReference(procedureReferences.get(0)));
+      tgt.addProcedure().setReference(Reference30_50.convertReference(procedureReferences.get(0)));
     }
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getProcedureCode()) {
-      tgt.addProcedure().setValue(CodeableConcept30_50.convertCodeableConcept(t));
+      tgt.addProcedure().setConcept(CodeableConcept30_50.convertCodeableConcept(t));
     }
     if (src.hasReason()) {
       if (src.hasReason())

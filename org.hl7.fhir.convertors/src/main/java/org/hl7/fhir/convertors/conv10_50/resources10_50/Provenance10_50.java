@@ -10,6 +10,7 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Signat
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Instant10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Uri10_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.utilities.Utilities;
 
 /*
@@ -57,7 +58,7 @@ public class Provenance10_50 {
     if (src.hasLocation())
       tgt.setLocation(Reference10_50.convertReference(src.getLocation()));
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getReason())
-      tgt.addReason(CodeableConcept10_50.convertCodeableConcept(t));
+      tgt.addAuthorization().setConcept(CodeableConcept10_50.convertCodeableConcept(t));
     if (src.hasActivity())
       tgt.setActivity(CodeableConcept10_50.convertCodeableConcept(src.getActivity()));
     for (org.hl7.fhir.dstu2.model.Provenance.ProvenanceAgentComponent t : src.getAgent())
@@ -82,8 +83,9 @@ public class Provenance10_50 {
     for (org.hl7.fhir.r5.model.UriType t : src.getPolicy()) tgt.getPolicy().add(Uri10_50.convertUri(t));
     if (src.hasLocation())
       tgt.setLocation(Reference10_50.convertReference(src.getLocation()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReason())
-      tgt.addReason(CodeableConcept10_50.convertCodeableConcept(t));
+    for (CodeableReference t : src.getAuthorization())
+      if (t.hasConcept())
+        tgt.addReason(CodeableConcept10_50.convertCodeableConcept(t.getConcept()));
     if (src.hasActivity())
       tgt.setActivity(CodeableConcept10_50.convertCodeableConcept(src.getActivity()));
     for (org.hl7.fhir.r5.model.Provenance.ProvenanceAgentComponent t : src.getAgent())

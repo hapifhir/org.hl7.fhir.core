@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1519,7 +1519,7 @@ public class SpecimenDefinition extends DomainResource {
         /**
          * Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.
          */
-        @Child(name = "additive", type = {CodeableConcept.class, Substance.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "additive", type = {CodeableConcept.class, SubstanceDefinition.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Additive associated with container", formalDefinition="Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v2-0371")
         protected DataType additive;
@@ -1594,16 +1594,16 @@ public class SpecimenDefinition extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("additive[x]", "CodeableConcept|Reference(Substance)", "Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.", 0, 1, additive));
+          children.add(new Property("additive[x]", "CodeableConcept|Reference(SubstanceDefinition)", "Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.", 0, 1, additive));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 261915956: /*additive[x]*/  return new Property("additive[x]", "CodeableConcept|Reference(Substance)", "Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.", 0, 1, additive);
-          case -1226589236: /*additive*/  return new Property("additive[x]", "CodeableConcept|Reference(Substance)", "Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.", 0, 1, additive);
+          case 261915956: /*additive[x]*/  return new Property("additive[x]", "CodeableConcept|Reference(SubstanceDefinition)", "Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.", 0, 1, additive);
+          case -1226589236: /*additive*/  return new Property("additive[x]", "CodeableConcept|Reference(SubstanceDefinition)", "Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.", 0, 1, additive);
           case 1330272821: /*additiveCodeableConcept*/  return new Property("additive[x]", "CodeableConcept", "Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.", 0, 1, additive);
-          case -386783009: /*additiveReference*/  return new Property("additive[x]", "Reference(Substance)", "Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.", 0, 1, additive);
+          case -386783009: /*additiveReference*/  return new Property("additive[x]", "Reference(SubstanceDefinition)", "Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.", 0, 1, additive);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -4039,26 +4039,6 @@ public class SpecimenDefinition extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
 
  /**
-   * Search parameter: <b>type</b>
-   * <p>
-   * Description: <b>The type of collected specimen</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>SpecimenDefinition.typeCollected</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="type", path="SpecimenDefinition.typeCollected", description="The type of collected specimen", type="token" )
-  public static final String SP_TYPE = "type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>type</b>
-   * <p>
-   * Description: <b>The type of collected specimen</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>SpecimenDefinition.typeCollected</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
-
- /**
    * Search parameter: <b>type-tested</b>
    * <p>
    * Description: <b>The type of specimen conditioned for testing</b><br>
@@ -4077,6 +4057,26 @@ public class SpecimenDefinition extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE_TESTED = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE_TESTED);
+
+ /**
+   * Search parameter: <b>type</b>
+   * <p>
+   * Description: <b>The type of collected specimen</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SpecimenDefinition.typeCollected</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="type", path="SpecimenDefinition.typeCollected", description="The type of collected specimen", type="token" )
+  public static final String SP_TYPE = "type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>type</b>
+   * <p>
+   * Description: <b>The type of collected specimen</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SpecimenDefinition.typeCollected</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
  /**
    * Search parameter: <b>url</b>

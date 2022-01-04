@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,7 +60,7 @@ public class ProductShelfLife extends BackboneType implements ICompositeType {
     /**
      * The shelf life time period can be specified using a numerical value for the period of time and its unit of time measurement The unit of measurement shall be specified in accordance with ISO 11240 and the resulting terminology The symbol and the symbol identifier shall be used.
      */
-    @Child(name = "period", type = {Quantity.class, StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "period", type = {Duration.class, StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The shelf life time period can be specified using a numerical value for the period of time and its unit of time measurement The unit of measurement shall be specified in accordance with ISO 11240 and the resulting terminology The symbol and the symbol identifier shall be used", formalDefinition="The shelf life time period can be specified using a numerical value for the period of time and its unit of time measurement The unit of measurement shall be specified in accordance with ISO 11240 and the resulting terminology The symbol and the symbol identifier shall be used." )
     protected DataType period;
 
@@ -114,16 +114,16 @@ public class ProductShelfLife extends BackboneType implements ICompositeType {
     /**
      * @return {@link #period} (The shelf life time period can be specified using a numerical value for the period of time and its unit of time measurement The unit of measurement shall be specified in accordance with ISO 11240 and the resulting terminology The symbol and the symbol identifier shall be used.)
      */
-    public Quantity getPeriodQuantity() throws FHIRException { 
+    public Duration getPeriodDuration() throws FHIRException { 
       if (this.period == null)
-        this.period = new Quantity();
-      if (!(this.period instanceof Quantity))
-        throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.period.getClass().getName()+" was encountered");
-      return (Quantity) this.period;
+        this.period = new Duration();
+      if (!(this.period instanceof Duration))
+        throw new FHIRException("Type mismatch: the type Duration was expected, but "+this.period.getClass().getName()+" was encountered");
+      return (Duration) this.period;
     }
 
-    public boolean hasPeriodQuantity() { 
-      return this != null && this.period instanceof Quantity;
+    public boolean hasPeriodDuration() { 
+      return this != null && this.period instanceof Duration;
     }
 
     /**
@@ -149,7 +149,7 @@ public class ProductShelfLife extends BackboneType implements ICompositeType {
      * @param value {@link #period} (The shelf life time period can be specified using a numerical value for the period of time and its unit of time measurement The unit of measurement shall be specified in accordance with ISO 11240 and the resulting terminology The symbol and the symbol identifier shall be used.)
      */
     public ProductShelfLife setPeriod(DataType value) { 
-      if (value != null && !(value instanceof Quantity || value instanceof StringType))
+      if (value != null && !(value instanceof Duration || value instanceof StringType))
         throw new Error("Not the right type for ProductShelfLife.period[x]: "+value.fhirType());
       this.period = value;
       return this;
@@ -211,7 +211,7 @@ public class ProductShelfLife extends BackboneType implements ICompositeType {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("type", "CodeableConcept", "This describes the shelf life, taking into account various scenarios such as shelf life of the packaged Medicinal Product itself, shelf life after transformation where necessary and shelf life after the first opening of a bottle, etc. The shelf life type shall be specified using an appropriate controlled vocabulary The controlled term and the controlled term identifier shall be specified.", 0, 1, type));
-        children.add(new Property("period[x]", "Quantity|string", "The shelf life time period can be specified using a numerical value for the period of time and its unit of time measurement The unit of measurement shall be specified in accordance with ISO 11240 and the resulting terminology The symbol and the symbol identifier shall be used.", 0, 1, period));
+        children.add(new Property("period[x]", "Duration|string", "The shelf life time period can be specified using a numerical value for the period of time and its unit of time measurement The unit of measurement shall be specified in accordance with ISO 11240 and the resulting terminology The symbol and the symbol identifier shall be used.", 0, 1, period));
         children.add(new Property("specialPrecautionsForStorage", "CodeableConcept", "Special precautions for storage, if any, can be specified using an appropriate controlled vocabulary The controlled term and the controlled term identifier shall be specified.", 0, java.lang.Integer.MAX_VALUE, specialPrecautionsForStorage));
       }
 
@@ -219,9 +219,9 @@ public class ProductShelfLife extends BackboneType implements ICompositeType {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "This describes the shelf life, taking into account various scenarios such as shelf life of the packaged Medicinal Product itself, shelf life after transformation where necessary and shelf life after the first opening of a bottle, etc. The shelf life type shall be specified using an appropriate controlled vocabulary The controlled term and the controlled term identifier shall be specified.", 0, 1, type);
-        case 566594335: /*period[x]*/  return new Property("period[x]", "Quantity|string", "The shelf life time period can be specified using a numerical value for the period of time and its unit of time measurement The unit of measurement shall be specified in accordance with ISO 11240 and the resulting terminology The symbol and the symbol identifier shall be used.", 0, 1, period);
-        case -991726143: /*period*/  return new Property("period[x]", "Quantity|string", "The shelf life time period can be specified using a numerical value for the period of time and its unit of time measurement The unit of measurement shall be specified in accordance with ISO 11240 and the resulting terminology The symbol and the symbol identifier shall be used.", 0, 1, period);
-        case -143069844: /*periodQuantity*/  return new Property("period[x]", "Quantity", "The shelf life time period can be specified using a numerical value for the period of time and its unit of time measurement The unit of measurement shall be specified in accordance with ISO 11240 and the resulting terminology The symbol and the symbol identifier shall be used.", 0, 1, period);
+        case 566594335: /*period[x]*/  return new Property("period[x]", "Duration|string", "The shelf life time period can be specified using a numerical value for the period of time and its unit of time measurement The unit of measurement shall be specified in accordance with ISO 11240 and the resulting terminology The symbol and the symbol identifier shall be used.", 0, 1, period);
+        case -991726143: /*period*/  return new Property("period[x]", "Duration|string", "The shelf life time period can be specified using a numerical value for the period of time and its unit of time measurement The unit of measurement shall be specified in accordance with ISO 11240 and the resulting terminology The symbol and the symbol identifier shall be used.", 0, 1, period);
+        case -850078091: /*periodDuration*/  return new Property("period[x]", "Duration", "The shelf life time period can be specified using a numerical value for the period of time and its unit of time measurement The unit of measurement shall be specified in accordance with ISO 11240 and the resulting terminology The symbol and the symbol identifier shall be used.", 0, 1, period);
         case -41636558: /*periodString*/  return new Property("period[x]", "string", "The shelf life time period can be specified using a numerical value for the period of time and its unit of time measurement The unit of measurement shall be specified in accordance with ISO 11240 and the resulting terminology The symbol and the symbol identifier shall be used.", 0, 1, period);
         case 2103459492: /*specialPrecautionsForStorage*/  return new Property("specialPrecautionsForStorage", "CodeableConcept", "Special precautions for storage, if any, can be specified using an appropriate controlled vocabulary The controlled term and the controlled term identifier shall be specified.", 0, java.lang.Integer.MAX_VALUE, specialPrecautionsForStorage);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -286,7 +286,7 @@ public class ProductShelfLife extends BackboneType implements ICompositeType {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case -991726143: /*period*/ return new String[] {"Quantity", "string"};
+        case -991726143: /*period*/ return new String[] {"Duration", "string"};
         case 2103459492: /*specialPrecautionsForStorage*/ return new String[] {"CodeableConcept"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -299,8 +299,8 @@ public class ProductShelfLife extends BackboneType implements ICompositeType {
           this.type = new CodeableConcept();
           return this.type;
         }
-        else if (name.equals("periodQuantity")) {
-          this.period = new Quantity();
+        else if (name.equals("periodDuration")) {
+          this.period = new Duration();
           return this.period;
         }
         else if (name.equals("periodString")) {

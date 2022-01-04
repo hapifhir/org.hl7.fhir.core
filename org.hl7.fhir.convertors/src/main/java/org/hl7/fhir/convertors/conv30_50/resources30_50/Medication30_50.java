@@ -21,7 +21,7 @@ public class Medication30_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertMedicationStatus(src.getStatusElement()));
     if (src.hasManufacturer())
-      tgt.setSponsor(Reference30_50.convertReference(src.getManufacturer()));
+      tgt.setMarketingAuthorizationHolder(Reference30_50.convertReference(src.getManufacturer()));
     if (src.hasForm())
       tgt.setDoseForm(CodeableConcept30_50.convertCodeableConcept(src.getForm()));
     for (org.hl7.fhir.dstu3.model.Medication.MedicationIngredientComponent t : src.getIngredient())
@@ -40,8 +40,8 @@ public class Medication30_50 {
       tgt.setCode(CodeableConcept30_50.convertCodeableConcept(src.getCode()));
     if (src.hasStatus())
       tgt.setStatusElement(convertMedicationStatus(src.getStatusElement()));
-    if (src.hasSponsor())
-      tgt.setManufacturer(Reference30_50.convertReference(src.getSponsor()));
+    if (src.hasMarketingAuthorizationHolder())
+      tgt.setManufacturer(Reference30_50.convertReference(src.getMarketingAuthorizationHolder()));
     if (src.hasDoseForm())
       tgt.setForm(CodeableConcept30_50.convertCodeableConcept(src.getDoseForm()));
     for (org.hl7.fhir.r5.model.Medication.MedicationIngredientComponent t : src.getIngredient())

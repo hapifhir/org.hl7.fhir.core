@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1411,62 +1411,70 @@ public class AdministrableProductDefinition extends DomainResource {
     protected List<Identifier> identifier;
 
     /**
-     * The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product.
+     * The status of this administrable product. Enables tracking the life-cycle of the content.
      */
-    @Child(name = "subject", type = {MedicinalProductDefinition.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product", formalDefinition="The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product." )
-    protected List<Reference> subject;
+    @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this administrable product. Enables tracking the life-cycle of the content." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
+    protected Enumeration<PublicationStatus> status;
 
     /**
-     * The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing.
+     * The medicinal product that this is a prepared administrable form of. This element is not a reference to the item(s) that make up this administrable form (for which see AdministrableProductDefinition.producedFrom). It is medicinal product as a whole, which may have several components (as well as packaging, devices etc.), that are given to the patient in this final administrable form. A single medicinal product may have several different administrable products (e.g. a tablet and a cream), and these could have different administrable forms (e.g. tablet as oral solid, or tablet crushed).
      */
-    @Child(name = "administrableDoseForm", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing", formalDefinition="The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing." )
+    @Child(name = "formOf", type = {MedicinalProductDefinition.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="The medicinal product that this is a prepared administrable form of. This element is not a reference to the item(s) that make up this administrable form (for which see AdministrableProductDefinition.producedFrom). It is medicinal product as a whole, which may have several components (as well as packaging, devices etc.), that are given to the patient in this final administrable form. A single medicinal product may have several different administrable products (e.g. a tablet and a cream), and these could have different administrable forms (e.g. tablet as oral solid, or tablet crushed)", formalDefinition="The medicinal product that this is a prepared administrable form of. This element is not a reference to the item(s) that make up this administrable form (for which see AdministrableProductDefinition.producedFrom). It is medicinal product as a whole, which may have several components (as well as packaging, devices etc.), that are given to the patient in this final administrable form. A single medicinal product may have several different administrable products (e.g. a tablet and a cream), and these could have different administrable forms (e.g. tablet as oral solid, or tablet crushed)." )
+    protected List<Reference> formOf;
+
+    /**
+     * The dose form of the final product after necessary reconstitution or processing. Contrasts to the manufactured dose form (see ManufacturedItemDefinition). If the manufactured form was 'powder for solution for injection', the administrable dose form could be 'solution for injection' (once mixed with another item having manufactured form 'solvent for solution for injection').
+     */
+    @Child(name = "administrableDoseForm", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="The dose form of the final product after necessary reconstitution or processing. Contrasts to the manufactured dose form (see ManufacturedItemDefinition). If the manufactured form was 'powder for solution for injection', the administrable dose form could be 'solution for injection' (once mixed with another item having manufactured form 'solvent for solution for injection')", formalDefinition="The dose form of the final product after necessary reconstitution or processing. Contrasts to the manufactured dose form (see ManufacturedItemDefinition). If the manufactured form was 'powder for solution for injection', the administrable dose form could be 'solution for injection' (once mixed with another item having manufactured form 'solvent for solution for injection')." )
     protected CodeableConcept administrableDoseForm;
 
     /**
-     * The units of presentation for the administrable product, for example 'tablet'.
+     * The presentation type in which this item is given to a patient. e.g. for a spray - 'puff' (as in 'contains 100 mcg per puff'), or for a liquid - 'vial' (as in 'contains 5 ml per vial').
      */
-    @Child(name = "unitOfPresentation", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The units of presentation for the administrable product, for example 'tablet'", formalDefinition="The units of presentation for the administrable product, for example 'tablet'." )
+    @Child(name = "unitOfPresentation", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="The presentation type in which this item is given to a patient. e.g. for a spray - 'puff' (as in 'contains 100 mcg per puff'), or for a liquid - 'vial' (as in 'contains 5 ml per vial')", formalDefinition="The presentation type in which this item is given to a patient. e.g. for a spray - 'puff' (as in 'contains 100 mcg per puff'), or for a liquid - 'vial' (as in 'contains 5 ml per vial')." )
     protected CodeableConcept unitOfPresentation;
 
     /**
-     * The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients.
+     * The constituent manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solvent item, to make a consumable solution). Note the items this is produced from are not raw ingredients (see AdministrableProductDefinition.ingredient), but manufactured medication items (ManufacturedItemDefinitions), which may be combined or prepared and transformed for patient use. The constituent items that this administrable form is produced from are all part of the product (for which see AdministrableProductDefinition.formOf).
      */
-    @Child(name = "producedFrom", type = {ManufacturedItemDefinition.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients", formalDefinition="The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients." )
+    @Child(name = "producedFrom", type = {ManufacturedItemDefinition.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="The constituent manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solvent item, to make a consumable solution). Note the items this is produced from are not raw ingredients (see AdministrableProductDefinition.ingredient), but manufactured medication items (ManufacturedItemDefinitions), which may be combined or prepared and transformed for patient use. The constituent items that this administrable form is produced from are all part of the product (for which see AdministrableProductDefinition.formOf)", formalDefinition="The constituent manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solvent item, to make a consumable solution). Note the items this is produced from are not raw ingredients (see AdministrableProductDefinition.ingredient), but manufactured medication items (ManufacturedItemDefinitions), which may be combined or prepared and transformed for patient use. The constituent items that this administrable form is produced from are all part of the product (for which see AdministrableProductDefinition.formOf)." )
     protected List<Reference> producedFrom;
 
     /**
-     * The ingredients of this administrable medicinal product. Sometimes it may be appropriate to specify these via the associated manufactured item(s).
+     * The ingredients of this administrable medicinal product. This is only needed if the ingredients are not specified either using ManufacturedItemDefiniton (via AdministrableProductDefinition.producedFrom) to state which component items are used to make this, or using by incoming references from the Ingredient resource, to state in detail which substances exist within this. This element allows a basic coded ingredient to be used.
      */
-    @Child(name = "ingredient", type = {Ingredient.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The ingredients of this administrable medicinal product. Sometimes it may be appropriate to specify these via the associated manufactured item(s)", formalDefinition="The ingredients of this administrable medicinal product. Sometimes it may be appropriate to specify these via the associated manufactured item(s)." )
-    protected List<Reference> ingredient;
+    @Child(name = "ingredient", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="The ingredients of this administrable medicinal product. This is only needed if the ingredients are not specified either using ManufacturedItemDefiniton (via AdministrableProductDefinition.producedFrom) to state which component items are used to make this, or using by incoming references from the Ingredient resource, to state in detail which substances exist within this. This element allows a basic coded ingredient to be used", formalDefinition="The ingredients of this administrable medicinal product. This is only needed if the ingredients are not specified either using ManufacturedItemDefiniton (via AdministrableProductDefinition.producedFrom) to state which component items are used to make this, or using by incoming references from the Ingredient resource, to state in detail which substances exist within this. This element allows a basic coded ingredient to be used." )
+    protected List<CodeableConcept> ingredient;
 
     /**
      * A device that is integral to the medicinal product, in effect being considered as an "ingredient" of the medicinal product. This is not intended for devices that are just co-packaged.
      */
-    @Child(name = "device", type = {DeviceDefinition.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "device", type = {DeviceDefinition.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="A device that is integral to the medicinal product, in effect being considered as an \"ingredient\" of the medicinal product. This is not intended for devices that are just co-packaged", formalDefinition="A device that is integral to the medicinal product, in effect being considered as an \"ingredient\" of the medicinal product. This is not intended for devices that are just co-packaged." )
-    protected List<Reference> device;
+    protected Reference device;
 
     /**
      * Characteristics e.g. a products onset of action.
      */
-    @Child(name = "property", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "property", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Characteristics e.g. a products onset of action", formalDefinition="Characteristics e.g. a products onset of action." )
     protected List<AdministrableProductDefinitionPropertyComponent> property;
 
     /**
      * The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route.
      */
-    @Child(name = "routeOfAdministration", type = {}, order=8, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "routeOfAdministration", type = {}, order=9, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route", formalDefinition="The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route." )
     protected List<AdministrableProductDefinitionRouteOfAdministrationComponent> routeOfAdministration;
 
-    private static final long serialVersionUID = -1072766896L;
+    private static final long serialVersionUID = 1447528370L;
 
   /**
    * Constructor
@@ -1478,8 +1486,9 @@ public class AdministrableProductDefinition extends DomainResource {
   /**
    * Constructor
    */
-    public AdministrableProductDefinition(AdministrableProductDefinitionRouteOfAdministrationComponent routeOfAdministration) {
+    public AdministrableProductDefinition(PublicationStatus status, AdministrableProductDefinitionRouteOfAdministrationComponent routeOfAdministration) {
       super();
+      this.setStatus(status);
       this.addRouteOfAdministration(routeOfAdministration);
     }
 
@@ -1537,60 +1546,105 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} (The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product.)
+     * @return {@link #status} (The status of this administrable product. Enables tracking the life-cycle of the content.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public List<Reference> getSubject() { 
-      if (this.subject == null)
-        this.subject = new ArrayList<Reference>();
-      return this.subject;
+    public Enumeration<PublicationStatus> getStatusElement() { 
+      if (this.status == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create AdministrableProductDefinition.status");
+        else if (Configuration.doAutoCreate())
+          this.status = new Enumeration<PublicationStatus>(new PublicationStatusEnumFactory()); // bb
+      return this.status;
+    }
+
+    public boolean hasStatusElement() { 
+      return this.status != null && !this.status.isEmpty();
+    }
+
+    public boolean hasStatus() { 
+      return this.status != null && !this.status.isEmpty();
+    }
+
+    /**
+     * @param value {@link #status} (The status of this administrable product. Enables tracking the life-cycle of the content.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     */
+    public AdministrableProductDefinition setStatusElement(Enumeration<PublicationStatus> value) { 
+      this.status = value;
+      return this;
+    }
+
+    /**
+     * @return The status of this administrable product. Enables tracking the life-cycle of the content.
+     */
+    public PublicationStatus getStatus() { 
+      return this.status == null ? null : this.status.getValue();
+    }
+
+    /**
+     * @param value The status of this administrable product. Enables tracking the life-cycle of the content.
+     */
+    public AdministrableProductDefinition setStatus(PublicationStatus value) { 
+        if (this.status == null)
+          this.status = new Enumeration<PublicationStatus>(new PublicationStatusEnumFactory());
+        this.status.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #formOf} (The medicinal product that this is a prepared administrable form of. This element is not a reference to the item(s) that make up this administrable form (for which see AdministrableProductDefinition.producedFrom). It is medicinal product as a whole, which may have several components (as well as packaging, devices etc.), that are given to the patient in this final administrable form. A single medicinal product may have several different administrable products (e.g. a tablet and a cream), and these could have different administrable forms (e.g. tablet as oral solid, or tablet crushed).)
+     */
+    public List<Reference> getFormOf() { 
+      if (this.formOf == null)
+        this.formOf = new ArrayList<Reference>();
+      return this.formOf;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public AdministrableProductDefinition setSubject(List<Reference> theSubject) { 
-      this.subject = theSubject;
+    public AdministrableProductDefinition setFormOf(List<Reference> theFormOf) { 
+      this.formOf = theFormOf;
       return this;
     }
 
-    public boolean hasSubject() { 
-      if (this.subject == null)
+    public boolean hasFormOf() { 
+      if (this.formOf == null)
         return false;
-      for (Reference item : this.subject)
+      for (Reference item : this.formOf)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public Reference addSubject() { //3
+    public Reference addFormOf() { //3
       Reference t = new Reference();
-      if (this.subject == null)
-        this.subject = new ArrayList<Reference>();
-      this.subject.add(t);
+      if (this.formOf == null)
+        this.formOf = new ArrayList<Reference>();
+      this.formOf.add(t);
       return t;
     }
 
-    public AdministrableProductDefinition addSubject(Reference t) { //3
+    public AdministrableProductDefinition addFormOf(Reference t) { //3
       if (t == null)
         return this;
-      if (this.subject == null)
-        this.subject = new ArrayList<Reference>();
-      this.subject.add(t);
+      if (this.formOf == null)
+        this.formOf = new ArrayList<Reference>();
+      this.formOf.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #subject}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #formOf}, creating it if it does not already exist {3}
      */
-    public Reference getSubjectFirstRep() { 
-      if (getSubject().isEmpty()) {
-        addSubject();
+    public Reference getFormOfFirstRep() { 
+      if (getFormOf().isEmpty()) {
+        addFormOf();
       }
-      return getSubject().get(0);
+      return getFormOf().get(0);
     }
 
     /**
-     * @return {@link #administrableDoseForm} (The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing.)
+     * @return {@link #administrableDoseForm} (The dose form of the final product after necessary reconstitution or processing. Contrasts to the manufactured dose form (see ManufacturedItemDefinition). If the manufactured form was 'powder for solution for injection', the administrable dose form could be 'solution for injection' (once mixed with another item having manufactured form 'solvent for solution for injection').)
      */
     public CodeableConcept getAdministrableDoseForm() { 
       if (this.administrableDoseForm == null)
@@ -1606,7 +1660,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @param value {@link #administrableDoseForm} (The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing.)
+     * @param value {@link #administrableDoseForm} (The dose form of the final product after necessary reconstitution or processing. Contrasts to the manufactured dose form (see ManufacturedItemDefinition). If the manufactured form was 'powder for solution for injection', the administrable dose form could be 'solution for injection' (once mixed with another item having manufactured form 'solvent for solution for injection').)
      */
     public AdministrableProductDefinition setAdministrableDoseForm(CodeableConcept value) { 
       this.administrableDoseForm = value;
@@ -1614,7 +1668,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #unitOfPresentation} (The units of presentation for the administrable product, for example 'tablet'.)
+     * @return {@link #unitOfPresentation} (The presentation type in which this item is given to a patient. e.g. for a spray - 'puff' (as in 'contains 100 mcg per puff'), or for a liquid - 'vial' (as in 'contains 5 ml per vial').)
      */
     public CodeableConcept getUnitOfPresentation() { 
       if (this.unitOfPresentation == null)
@@ -1630,7 +1684,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @param value {@link #unitOfPresentation} (The units of presentation for the administrable product, for example 'tablet'.)
+     * @param value {@link #unitOfPresentation} (The presentation type in which this item is given to a patient. e.g. for a spray - 'puff' (as in 'contains 100 mcg per puff'), or for a liquid - 'vial' (as in 'contains 5 ml per vial').)
      */
     public AdministrableProductDefinition setUnitOfPresentation(CodeableConcept value) { 
       this.unitOfPresentation = value;
@@ -1638,7 +1692,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #producedFrom} (The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients.)
+     * @return {@link #producedFrom} (The constituent manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solvent item, to make a consumable solution). Note the items this is produced from are not raw ingredients (see AdministrableProductDefinition.ingredient), but manufactured medication items (ManufacturedItemDefinitions), which may be combined or prepared and transformed for patient use. The constituent items that this administrable form is produced from are all part of the product (for which see AdministrableProductDefinition.formOf).)
      */
     public List<Reference> getProducedFrom() { 
       if (this.producedFrom == null)
@@ -1691,18 +1745,18 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #ingredient} (The ingredients of this administrable medicinal product. Sometimes it may be appropriate to specify these via the associated manufactured item(s).)
+     * @return {@link #ingredient} (The ingredients of this administrable medicinal product. This is only needed if the ingredients are not specified either using ManufacturedItemDefiniton (via AdministrableProductDefinition.producedFrom) to state which component items are used to make this, or using by incoming references from the Ingredient resource, to state in detail which substances exist within this. This element allows a basic coded ingredient to be used.)
      */
-    public List<Reference> getIngredient() { 
+    public List<CodeableConcept> getIngredient() { 
       if (this.ingredient == null)
-        this.ingredient = new ArrayList<Reference>();
+        this.ingredient = new ArrayList<CodeableConcept>();
       return this.ingredient;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public AdministrableProductDefinition setIngredient(List<Reference> theIngredient) { 
+    public AdministrableProductDefinition setIngredient(List<CodeableConcept> theIngredient) { 
       this.ingredient = theIngredient;
       return this;
     }
@@ -1710,25 +1764,25 @@ public class AdministrableProductDefinition extends DomainResource {
     public boolean hasIngredient() { 
       if (this.ingredient == null)
         return false;
-      for (Reference item : this.ingredient)
+      for (CodeableConcept item : this.ingredient)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public Reference addIngredient() { //3
-      Reference t = new Reference();
+    public CodeableConcept addIngredient() { //3
+      CodeableConcept t = new CodeableConcept();
       if (this.ingredient == null)
-        this.ingredient = new ArrayList<Reference>();
+        this.ingredient = new ArrayList<CodeableConcept>();
       this.ingredient.add(t);
       return t;
     }
 
-    public AdministrableProductDefinition addIngredient(Reference t) { //3
+    public AdministrableProductDefinition addIngredient(CodeableConcept t) { //3
       if (t == null)
         return this;
       if (this.ingredient == null)
-        this.ingredient = new ArrayList<Reference>();
+        this.ingredient = new ArrayList<CodeableConcept>();
       this.ingredient.add(t);
       return this;
     }
@@ -1736,7 +1790,7 @@ public class AdministrableProductDefinition extends DomainResource {
     /**
      * @return The first repetition of repeating field {@link #ingredient}, creating it if it does not already exist {3}
      */
-    public Reference getIngredientFirstRep() { 
+    public CodeableConcept getIngredientFirstRep() { 
       if (getIngredient().isEmpty()) {
         addIngredient();
       }
@@ -1746,54 +1800,25 @@ public class AdministrableProductDefinition extends DomainResource {
     /**
      * @return {@link #device} (A device that is integral to the medicinal product, in effect being considered as an "ingredient" of the medicinal product. This is not intended for devices that are just co-packaged.)
      */
-    public List<Reference> getDevice() { 
+    public Reference getDevice() { 
       if (this.device == null)
-        this.device = new ArrayList<Reference>();
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create AdministrableProductDefinition.device");
+        else if (Configuration.doAutoCreate())
+          this.device = new Reference(); // cc
       return this.device;
     }
 
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public AdministrableProductDefinition setDevice(List<Reference> theDevice) { 
-      this.device = theDevice;
-      return this;
-    }
-
     public boolean hasDevice() { 
-      if (this.device == null)
-        return false;
-      for (Reference item : this.device)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public Reference addDevice() { //3
-      Reference t = new Reference();
-      if (this.device == null)
-        this.device = new ArrayList<Reference>();
-      this.device.add(t);
-      return t;
-    }
-
-    public AdministrableProductDefinition addDevice(Reference t) { //3
-      if (t == null)
-        return this;
-      if (this.device == null)
-        this.device = new ArrayList<Reference>();
-      this.device.add(t);
-      return this;
+      return this.device != null && !this.device.isEmpty();
     }
 
     /**
-     * @return The first repetition of repeating field {@link #device}, creating it if it does not already exist {3}
+     * @param value {@link #device} (A device that is integral to the medicinal product, in effect being considered as an "ingredient" of the medicinal product. This is not intended for devices that are just co-packaged.)
      */
-    public Reference getDeviceFirstRep() { 
-      if (getDevice().isEmpty()) {
-        addDevice();
-      }
-      return getDevice().get(0);
+    public AdministrableProductDefinition setDevice(Reference value) { 
+      this.device = value;
+      return this;
     }
 
     /**
@@ -1905,12 +1930,13 @@ public class AdministrableProductDefinition extends DomainResource {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "An identifier for the administrable product.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("subject", "Reference(MedicinalProductDefinition)", "The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product.", 0, java.lang.Integer.MAX_VALUE, subject));
-        children.add(new Property("administrableDoseForm", "CodeableConcept", "The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing.", 0, 1, administrableDoseForm));
-        children.add(new Property("unitOfPresentation", "CodeableConcept", "The units of presentation for the administrable product, for example 'tablet'.", 0, 1, unitOfPresentation));
-        children.add(new Property("producedFrom", "Reference(ManufacturedItemDefinition)", "The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients.", 0, java.lang.Integer.MAX_VALUE, producedFrom));
-        children.add(new Property("ingredient", "Reference(Ingredient)", "The ingredients of this administrable medicinal product. Sometimes it may be appropriate to specify these via the associated manufactured item(s).", 0, java.lang.Integer.MAX_VALUE, ingredient));
-        children.add(new Property("device", "Reference(DeviceDefinition)", "A device that is integral to the medicinal product, in effect being considered as an \"ingredient\" of the medicinal product. This is not intended for devices that are just co-packaged.", 0, java.lang.Integer.MAX_VALUE, device));
+        children.add(new Property("status", "code", "The status of this administrable product. Enables tracking the life-cycle of the content.", 0, 1, status));
+        children.add(new Property("formOf", "Reference(MedicinalProductDefinition)", "The medicinal product that this is a prepared administrable form of. This element is not a reference to the item(s) that make up this administrable form (for which see AdministrableProductDefinition.producedFrom). It is medicinal product as a whole, which may have several components (as well as packaging, devices etc.), that are given to the patient in this final administrable form. A single medicinal product may have several different administrable products (e.g. a tablet and a cream), and these could have different administrable forms (e.g. tablet as oral solid, or tablet crushed).", 0, java.lang.Integer.MAX_VALUE, formOf));
+        children.add(new Property("administrableDoseForm", "CodeableConcept", "The dose form of the final product after necessary reconstitution or processing. Contrasts to the manufactured dose form (see ManufacturedItemDefinition). If the manufactured form was 'powder for solution for injection', the administrable dose form could be 'solution for injection' (once mixed with another item having manufactured form 'solvent for solution for injection').", 0, 1, administrableDoseForm));
+        children.add(new Property("unitOfPresentation", "CodeableConcept", "The presentation type in which this item is given to a patient. e.g. for a spray - 'puff' (as in 'contains 100 mcg per puff'), or for a liquid - 'vial' (as in 'contains 5 ml per vial').", 0, 1, unitOfPresentation));
+        children.add(new Property("producedFrom", "Reference(ManufacturedItemDefinition)", "The constituent manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solvent item, to make a consumable solution). Note the items this is produced from are not raw ingredients (see AdministrableProductDefinition.ingredient), but manufactured medication items (ManufacturedItemDefinitions), which may be combined or prepared and transformed for patient use. The constituent items that this administrable form is produced from are all part of the product (for which see AdministrableProductDefinition.formOf).", 0, java.lang.Integer.MAX_VALUE, producedFrom));
+        children.add(new Property("ingredient", "CodeableConcept", "The ingredients of this administrable medicinal product. This is only needed if the ingredients are not specified either using ManufacturedItemDefiniton (via AdministrableProductDefinition.producedFrom) to state which component items are used to make this, or using by incoming references from the Ingredient resource, to state in detail which substances exist within this. This element allows a basic coded ingredient to be used.", 0, java.lang.Integer.MAX_VALUE, ingredient));
+        children.add(new Property("device", "Reference(DeviceDefinition)", "A device that is integral to the medicinal product, in effect being considered as an \"ingredient\" of the medicinal product. This is not intended for devices that are just co-packaged.", 0, 1, device));
         children.add(new Property("property", "", "Characteristics e.g. a products onset of action.", 0, java.lang.Integer.MAX_VALUE, property));
         children.add(new Property("routeOfAdministration", "", "The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route.", 0, java.lang.Integer.MAX_VALUE, routeOfAdministration));
       }
@@ -1919,12 +1945,13 @@ public class AdministrableProductDefinition extends DomainResource {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "An identifier for the administrable product.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case -1867885268: /*subject*/  return new Property("subject", "Reference(MedicinalProductDefinition)", "The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product.", 0, java.lang.Integer.MAX_VALUE, subject);
-        case 1446105202: /*administrableDoseForm*/  return new Property("administrableDoseForm", "CodeableConcept", "The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing.", 0, 1, administrableDoseForm);
-        case -1427765963: /*unitOfPresentation*/  return new Property("unitOfPresentation", "CodeableConcept", "The units of presentation for the administrable product, for example 'tablet'.", 0, 1, unitOfPresentation);
-        case 588380494: /*producedFrom*/  return new Property("producedFrom", "Reference(ManufacturedItemDefinition)", "The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients.", 0, java.lang.Integer.MAX_VALUE, producedFrom);
-        case -206409263: /*ingredient*/  return new Property("ingredient", "Reference(Ingredient)", "The ingredients of this administrable medicinal product. Sometimes it may be appropriate to specify these via the associated manufactured item(s).", 0, java.lang.Integer.MAX_VALUE, ingredient);
-        case -1335157162: /*device*/  return new Property("device", "Reference(DeviceDefinition)", "A device that is integral to the medicinal product, in effect being considered as an \"ingredient\" of the medicinal product. This is not intended for devices that are just co-packaged.", 0, java.lang.Integer.MAX_VALUE, device);
+        case -892481550: /*status*/  return new Property("status", "code", "The status of this administrable product. Enables tracking the life-cycle of the content.", 0, 1, status);
+        case -1268779589: /*formOf*/  return new Property("formOf", "Reference(MedicinalProductDefinition)", "The medicinal product that this is a prepared administrable form of. This element is not a reference to the item(s) that make up this administrable form (for which see AdministrableProductDefinition.producedFrom). It is medicinal product as a whole, which may have several components (as well as packaging, devices etc.), that are given to the patient in this final administrable form. A single medicinal product may have several different administrable products (e.g. a tablet and a cream), and these could have different administrable forms (e.g. tablet as oral solid, or tablet crushed).", 0, java.lang.Integer.MAX_VALUE, formOf);
+        case 1446105202: /*administrableDoseForm*/  return new Property("administrableDoseForm", "CodeableConcept", "The dose form of the final product after necessary reconstitution or processing. Contrasts to the manufactured dose form (see ManufacturedItemDefinition). If the manufactured form was 'powder for solution for injection', the administrable dose form could be 'solution for injection' (once mixed with another item having manufactured form 'solvent for solution for injection').", 0, 1, administrableDoseForm);
+        case -1427765963: /*unitOfPresentation*/  return new Property("unitOfPresentation", "CodeableConcept", "The presentation type in which this item is given to a patient. e.g. for a spray - 'puff' (as in 'contains 100 mcg per puff'), or for a liquid - 'vial' (as in 'contains 5 ml per vial').", 0, 1, unitOfPresentation);
+        case 588380494: /*producedFrom*/  return new Property("producedFrom", "Reference(ManufacturedItemDefinition)", "The constituent manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solvent item, to make a consumable solution). Note the items this is produced from are not raw ingredients (see AdministrableProductDefinition.ingredient), but manufactured medication items (ManufacturedItemDefinitions), which may be combined or prepared and transformed for patient use. The constituent items that this administrable form is produced from are all part of the product (for which see AdministrableProductDefinition.formOf).", 0, java.lang.Integer.MAX_VALUE, producedFrom);
+        case -206409263: /*ingredient*/  return new Property("ingredient", "CodeableConcept", "The ingredients of this administrable medicinal product. This is only needed if the ingredients are not specified either using ManufacturedItemDefiniton (via AdministrableProductDefinition.producedFrom) to state which component items are used to make this, or using by incoming references from the Ingredient resource, to state in detail which substances exist within this. This element allows a basic coded ingredient to be used.", 0, java.lang.Integer.MAX_VALUE, ingredient);
+        case -1335157162: /*device*/  return new Property("device", "Reference(DeviceDefinition)", "A device that is integral to the medicinal product, in effect being considered as an \"ingredient\" of the medicinal product. This is not intended for devices that are just co-packaged.", 0, 1, device);
         case -993141291: /*property*/  return new Property("property", "", "Characteristics e.g. a products onset of action.", 0, java.lang.Integer.MAX_VALUE, property);
         case 1742084734: /*routeOfAdministration*/  return new Property("routeOfAdministration", "", "The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route.", 0, java.lang.Integer.MAX_VALUE, routeOfAdministration);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -1936,12 +1963,13 @@ public class AdministrableProductDefinition extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
-        case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : this.subject.toArray(new Base[this.subject.size()]); // Reference
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
+        case -1268779589: /*formOf*/ return this.formOf == null ? new Base[0] : this.formOf.toArray(new Base[this.formOf.size()]); // Reference
         case 1446105202: /*administrableDoseForm*/ return this.administrableDoseForm == null ? new Base[0] : new Base[] {this.administrableDoseForm}; // CodeableConcept
         case -1427765963: /*unitOfPresentation*/ return this.unitOfPresentation == null ? new Base[0] : new Base[] {this.unitOfPresentation}; // CodeableConcept
         case 588380494: /*producedFrom*/ return this.producedFrom == null ? new Base[0] : this.producedFrom.toArray(new Base[this.producedFrom.size()]); // Reference
-        case -206409263: /*ingredient*/ return this.ingredient == null ? new Base[0] : this.ingredient.toArray(new Base[this.ingredient.size()]); // Reference
-        case -1335157162: /*device*/ return this.device == null ? new Base[0] : this.device.toArray(new Base[this.device.size()]); // Reference
+        case -206409263: /*ingredient*/ return this.ingredient == null ? new Base[0] : this.ingredient.toArray(new Base[this.ingredient.size()]); // CodeableConcept
+        case -1335157162: /*device*/ return this.device == null ? new Base[0] : new Base[] {this.device}; // Reference
         case -993141291: /*property*/ return this.property == null ? new Base[0] : this.property.toArray(new Base[this.property.size()]); // AdministrableProductDefinitionPropertyComponent
         case 1742084734: /*routeOfAdministration*/ return this.routeOfAdministration == null ? new Base[0] : this.routeOfAdministration.toArray(new Base[this.routeOfAdministration.size()]); // AdministrableProductDefinitionRouteOfAdministrationComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -1955,8 +1983,12 @@ public class AdministrableProductDefinition extends DomainResource {
         case -1618432855: // identifier
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
-        case -1867885268: // subject
-          this.getSubject().add(TypeConvertor.castToReference(value)); // Reference
+        case -892481550: // status
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+          return value;
+        case -1268779589: // formOf
+          this.getFormOf().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1446105202: // administrableDoseForm
           this.administrableDoseForm = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -1968,10 +2000,10 @@ public class AdministrableProductDefinition extends DomainResource {
           this.getProducedFrom().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -206409263: // ingredient
-          this.getIngredient().add(TypeConvertor.castToReference(value)); // Reference
+          this.getIngredient().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1335157162: // device
-          this.getDevice().add(TypeConvertor.castToReference(value)); // Reference
+          this.device = TypeConvertor.castToReference(value); // Reference
           return value;
         case -993141291: // property
           this.getProperty().add((AdministrableProductDefinitionPropertyComponent) value); // AdministrableProductDefinitionPropertyComponent
@@ -1988,8 +2020,11 @@ public class AdministrableProductDefinition extends DomainResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
-        } else if (name.equals("subject")) {
-          this.getSubject().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("status")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("formOf")) {
+          this.getFormOf().add(TypeConvertor.castToReference(value));
         } else if (name.equals("administrableDoseForm")) {
           this.administrableDoseForm = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("unitOfPresentation")) {
@@ -1997,9 +2032,9 @@ public class AdministrableProductDefinition extends DomainResource {
         } else if (name.equals("producedFrom")) {
           this.getProducedFrom().add(TypeConvertor.castToReference(value));
         } else if (name.equals("ingredient")) {
-          this.getIngredient().add(TypeConvertor.castToReference(value));
+          this.getIngredient().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("device")) {
-          this.getDevice().add(TypeConvertor.castToReference(value));
+          this.device = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("property")) {
           this.getProperty().add((AdministrableProductDefinitionPropertyComponent) value);
         } else if (name.equals("routeOfAdministration")) {
@@ -2013,12 +2048,13 @@ public class AdministrableProductDefinition extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
-        case -1867885268:  return addSubject(); 
+        case -892481550:  return getStatusElement();
+        case -1268779589:  return addFormOf(); 
         case 1446105202:  return getAdministrableDoseForm();
         case -1427765963:  return getUnitOfPresentation();
         case 588380494:  return addProducedFrom(); 
         case -206409263:  return addIngredient(); 
-        case -1335157162:  return addDevice(); 
+        case -1335157162:  return getDevice();
         case -993141291:  return addProperty(); 
         case 1742084734:  return addRouteOfAdministration(); 
         default: return super.makeProperty(hash, name);
@@ -2030,11 +2066,12 @@ public class AdministrableProductDefinition extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
-        case -1867885268: /*subject*/ return new String[] {"Reference"};
+        case -892481550: /*status*/ return new String[] {"code"};
+        case -1268779589: /*formOf*/ return new String[] {"Reference"};
         case 1446105202: /*administrableDoseForm*/ return new String[] {"CodeableConcept"};
         case -1427765963: /*unitOfPresentation*/ return new String[] {"CodeableConcept"};
         case 588380494: /*producedFrom*/ return new String[] {"Reference"};
-        case -206409263: /*ingredient*/ return new String[] {"Reference"};
+        case -206409263: /*ingredient*/ return new String[] {"CodeableConcept"};
         case -1335157162: /*device*/ return new String[] {"Reference"};
         case -993141291: /*property*/ return new String[] {};
         case 1742084734: /*routeOfAdministration*/ return new String[] {};
@@ -2048,8 +2085,11 @@ public class AdministrableProductDefinition extends DomainResource {
         if (name.equals("identifier")) {
           return addIdentifier();
         }
-        else if (name.equals("subject")) {
-          return addSubject();
+        else if (name.equals("status")) {
+          throw new FHIRException("Cannot call addChild on a primitive type AdministrableProductDefinition.status");
+        }
+        else if (name.equals("formOf")) {
+          return addFormOf();
         }
         else if (name.equals("administrableDoseForm")) {
           this.administrableDoseForm = new CodeableConcept();
@@ -2066,7 +2106,8 @@ public class AdministrableProductDefinition extends DomainResource {
           return addIngredient();
         }
         else if (name.equals("device")) {
-          return addDevice();
+          this.device = new Reference();
+          return this.device;
         }
         else if (name.equals("property")) {
           return addProperty();
@@ -2096,10 +2137,11 @@ public class AdministrableProductDefinition extends DomainResource {
           for (Identifier i : identifier)
             dst.identifier.add(i.copy());
         };
-        if (subject != null) {
-          dst.subject = new ArrayList<Reference>();
-          for (Reference i : subject)
-            dst.subject.add(i.copy());
+        dst.status = status == null ? null : status.copy();
+        if (formOf != null) {
+          dst.formOf = new ArrayList<Reference>();
+          for (Reference i : formOf)
+            dst.formOf.add(i.copy());
         };
         dst.administrableDoseForm = administrableDoseForm == null ? null : administrableDoseForm.copy();
         dst.unitOfPresentation = unitOfPresentation == null ? null : unitOfPresentation.copy();
@@ -2109,15 +2151,11 @@ public class AdministrableProductDefinition extends DomainResource {
             dst.producedFrom.add(i.copy());
         };
         if (ingredient != null) {
-          dst.ingredient = new ArrayList<Reference>();
-          for (Reference i : ingredient)
+          dst.ingredient = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : ingredient)
             dst.ingredient.add(i.copy());
         };
-        if (device != null) {
-          dst.device = new ArrayList<Reference>();
-          for (Reference i : device)
-            dst.device.add(i.copy());
-        };
+        dst.device = device == null ? null : device.copy();
         if (property != null) {
           dst.property = new ArrayList<AdministrableProductDefinitionPropertyComponent>();
           for (AdministrableProductDefinitionPropertyComponent i : property)
@@ -2141,10 +2179,11 @@ public class AdministrableProductDefinition extends DomainResource {
         if (!(other_ instanceof AdministrableProductDefinition))
           return false;
         AdministrableProductDefinition o = (AdministrableProductDefinition) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(subject, o.subject, true) && compareDeep(administrableDoseForm, o.administrableDoseForm, true)
-           && compareDeep(unitOfPresentation, o.unitOfPresentation, true) && compareDeep(producedFrom, o.producedFrom, true)
-           && compareDeep(ingredient, o.ingredient, true) && compareDeep(device, o.device, true) && compareDeep(property, o.property, true)
-           && compareDeep(routeOfAdministration, o.routeOfAdministration, true);
+        return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(formOf, o.formOf, true)
+           && compareDeep(administrableDoseForm, o.administrableDoseForm, true) && compareDeep(unitOfPresentation, o.unitOfPresentation, true)
+           && compareDeep(producedFrom, o.producedFrom, true) && compareDeep(ingredient, o.ingredient, true)
+           && compareDeep(device, o.device, true) && compareDeep(property, o.property, true) && compareDeep(routeOfAdministration, o.routeOfAdministration, true)
+          ;
       }
 
       @Override
@@ -2154,13 +2193,13 @@ public class AdministrableProductDefinition extends DomainResource {
         if (!(other_ instanceof AdministrableProductDefinition))
           return false;
         AdministrableProductDefinition o = (AdministrableProductDefinition) other_;
-        return true;
+        return compareValues(status, o.status, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, subject, administrableDoseForm
-          , unitOfPresentation, producedFrom, ingredient, device, property, routeOfAdministration
-          );
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, formOf
+          , administrableDoseForm, unitOfPresentation, producedFrom, ingredient, device, property
+          , routeOfAdministration);
       }
 
   @Override
@@ -2215,6 +2254,32 @@ public class AdministrableProductDefinition extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam DOSE_FORM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_DOSE_FORM);
 
  /**
+   * Search parameter: <b>form-of</b>
+   * <p>
+   * Description: <b>The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AdministrableProductDefinition.formOf</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="form-of", path="AdministrableProductDefinition.formOf", description="The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product", type="reference", target={MedicinalProductDefinition.class } )
+  public static final String SP_FORM_OF = "form-of";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>form-of</b>
+   * <p>
+   * Description: <b>The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AdministrableProductDefinition.formOf</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam FORM_OF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_FORM_OF);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>AdministrableProductDefinition:form-of</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_FORM_OF = new ca.uhn.fhir.model.api.Include("AdministrableProductDefinition:form-of").toLocked();
+
+ /**
    * Search parameter: <b>identifier</b>
    * <p>
    * Description: <b>An identifier for the administrable product</b><br>
@@ -2237,28 +2302,22 @@ public class AdministrableProductDefinition extends DomainResource {
  /**
    * Search parameter: <b>ingredient</b>
    * <p>
-   * Description: <b>The ingredients of this administrable medicinal product. Sometimes it may be appropriate to specify these via the associated manufactured item(s)</b><br>
-   * Type: <b>reference</b><br>
+   * Description: <b>The ingredients of this administrable medicinal product</b><br>
+   * Type: <b>token</b><br>
    * Path: <b>AdministrableProductDefinition.ingredient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="ingredient", path="AdministrableProductDefinition.ingredient", description="The ingredients of this administrable medicinal product. Sometimes it may be appropriate to specify these via the associated manufactured item(s)", type="reference", target={Ingredient.class } )
+  @SearchParamDefinition(name="ingredient", path="AdministrableProductDefinition.ingredient", description="The ingredients of this administrable medicinal product", type="token" )
   public static final String SP_INGREDIENT = "ingredient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>ingredient</b>
    * <p>
-   * Description: <b>The ingredients of this administrable medicinal product. Sometimes it may be appropriate to specify these via the associated manufactured item(s)</b><br>
-   * Type: <b>reference</b><br>
+   * Description: <b>The ingredients of this administrable medicinal product</b><br>
+   * Type: <b>token</b><br>
    * Path: <b>AdministrableProductDefinition.ingredient</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INGREDIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INGREDIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>AdministrableProductDefinition:ingredient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_INGREDIENT = new ca.uhn.fhir.model.api.Include("AdministrableProductDefinition:ingredient").toLocked();
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INGREDIENT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INGREDIENT);
 
  /**
    * Search parameter: <b>manufactured-item</b>
@@ -2305,32 +2364,6 @@ public class AdministrableProductDefinition extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam ROUTE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ROUTE);
-
- /**
-   * Search parameter: <b>subject</b>
-   * <p>
-   * Description: <b>The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AdministrableProductDefinition.subject</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="subject", path="AdministrableProductDefinition.subject", description="The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product", type="reference", target={MedicinalProductDefinition.class } )
-  public static final String SP_SUBJECT = "subject";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
-   * <p>
-   * Description: <b>The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AdministrableProductDefinition.subject</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>AdministrableProductDefinition:subject</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("AdministrableProductDefinition:subject").toLocked();
 
  /**
    * Search parameter: <b>target-species</b>
