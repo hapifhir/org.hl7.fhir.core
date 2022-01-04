@@ -84,7 +84,7 @@ public class Specimen30_50 {
     if (src.hasMethod())
       tgt.setMethod(CodeableConcept30_50.convertCodeableConcept(src.getMethod()));
     if (src.hasBodySite())
-      tgt.setBodySite(CodeableConcept30_50.convertCodeableConcept(src.getBodySite()));
+      tgt.getBodySite().setConcept(CodeableConcept30_50.convertCodeableConcept(src.getBodySite()));
     return tgt;
   }
 
@@ -101,8 +101,8 @@ public class Specimen30_50 {
       tgt.setQuantity(SimpleQuantity30_50.convertSimpleQuantity(src.getQuantity()));
     if (src.hasMethod())
       tgt.setMethod(CodeableConcept30_50.convertCodeableConcept(src.getMethod()));
-    if (src.hasBodySite())
-      tgt.setBodySite(CodeableConcept30_50.convertCodeableConcept(src.getBodySite()));
+    if (src.getBodySite().hasConcept())
+      tgt.setBodySite(CodeableConcept30_50.convertCodeableConcept(src.getBodySite().getConcept()));
     return tgt;
   }
 
@@ -153,8 +153,8 @@ public class Specimen30_50 {
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasDescription())
       tgt.setDescriptionElement(String30_50.convertString(src.getDescriptionElement()));
-    if (src.hasProcedure())
-      tgt.setProcedure(CodeableConcept30_50.convertCodeableConcept(src.getProcedure()));
+//    if (src.hasProcedure())
+//      tgt.setProcedure(CodeableConcept30_50.convertCodeableConcept(src.getProcedure()));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getAdditive()) tgt.addAdditive(Reference30_50.convertReference(t));
     if (src.hasTime())
       tgt.setTime(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getTime()));
@@ -168,8 +168,8 @@ public class Specimen30_50 {
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasDescription())
       tgt.setDescriptionElement(String30_50.convertString(src.getDescriptionElement()));
-    if (src.hasProcedure())
-      tgt.setProcedure(CodeableConcept30_50.convertCodeableConcept(src.getProcedure()));
+//    if (src.hasProcedure())
+//      tgt.setProcedure(CodeableConcept30_50.convertCodeableConcept(src.getProcedure()));
     for (org.hl7.fhir.r5.model.Reference t : src.getAdditive()) tgt.addAdditive(Reference30_50.convertReference(t));
     if (src.hasTime())
       tgt.setTime(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getTime()));

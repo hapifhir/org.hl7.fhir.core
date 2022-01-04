@@ -5,9 +5,11 @@ import org.hl7.fhir.convertors.conv14_50.datatypes14_50.complextypes14_50.Codeab
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.complextypes14_50.ContactPoint14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.complextypes14_50.Identifier14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.*;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
 import org.hl7.fhir.dstu2016may.model.StructureMap;
 import org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapContextType;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent;
 
 import java.util.stream.Collectors;
 
@@ -238,7 +240,7 @@ public class StructureMap14_50 {
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     if (src.hasNameElement())
       tgt.setNameElement(Id14_50.convertId(src.getNameElement()));
-    for (org.hl7.fhir.r5.model.StringType t : src.getVariable()) tgt.addVariable(t.asStringValue());
+    for (StructureMapGroupRuleTargetParameterComponent t : src.getParameter()) tgt.addVariable(t.getValue().primitiveValue());
     return tgt;
   }
 
@@ -249,7 +251,7 @@ public class StructureMap14_50 {
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     if (src.hasNameElement())
       tgt.setNameElement(Id14_50.convertId(src.getNameElement()));
-    for (org.hl7.fhir.dstu2016may.model.StringType t : src.getVariable()) tgt.addVariable(t.asStringValue());
+    for (org.hl7.fhir.dstu2016may.model.StringType t : src.getVariable()) tgt.addParameter().setValue(String14_50.convertString(t));
     return tgt;
   }
 

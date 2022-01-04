@@ -4,6 +4,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.TerminologyCache;
 import org.hl7.fhir.r5.elementmodel.Manager;
+import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
@@ -26,14 +27,18 @@ import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.ValidationRecord;
 import org.hl7.fhir.validation.cli.model.*;
+import org.hl7.fhir.validation.cli.renderers.CSVRenderer;
 import org.hl7.fhir.validation.cli.renderers.DefaultRenderer;
 import org.hl7.fhir.validation.cli.renderers.ESLintCompactRenderer;
+import org.hl7.fhir.validation.cli.renderers.NativeRenderer;
 import org.hl7.fhir.validation.cli.renderers.ValidationOutputRenderer;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.util.ArrayList;
@@ -103,12 +108,23 @@ public class ValidationService {
     System.out.println("Done. " + validator.getContext().clock().report()+". Memory = "+Utilities.describeSize(mbean.getHeapMemoryUsage().getUsed()+mbean.getNonHeapMemoryUsage().getUsed()));
     System.out.println();
 
+    PrintStream dst = null;
+    if (cliContext.getOutput() == null) {
+      dst = System.out;
+    } else {
+      dst = new PrintStream(new FileOutputStream(cliContext.getOutput()));
+    }
+
     ValidationOutputRenderer renderer = makeValidationOutputRenderer(cliContext);
+    renderer.setOutput(dst);
     renderer.setCrumbTrails(validator.isCrumbTrails());
     
     int ec = 0;
-    if (cliContext.getOutput() == null) {
-      if (r instanceof Bundle) {
+    
+    if (r instanceof Bundle) {
+      if (renderer.handlesBundleDirectly()) {
+        renderer.render((Bundle) r);
+      } else {
         renderer.start(((Bundle) r).getEntry().size() > 1);
         for (Bundle.BundleEntryComponent e : ((Bundle) r).getEntry()) {
           OperationOutcome op = (OperationOutcome) e.getResource();
@@ -116,28 +132,22 @@ public class ValidationService {
           renderer.render(op);
         }
         renderer.finish();
-      } else if (r == null) {
-        ec = ec + 1;
-        System.out.println("No output from validation - nothing to validate");
-      } else {
-        renderer.start(false);
-        OperationOutcome op = (OperationOutcome) r;
-        ec = countErrors(op);
-        renderer.render((OperationOutcome) r);
-        renderer.finish();
       }
+    } else if (r == null) {
+      ec = ec + 1;
+      System.out.println("No output from validation - nothing to validate");
     } else {
-      IParser x;
-      if (cliContext.getOutput() != null && cliContext.getOutput().endsWith(".json")) {
-        x = new JsonParser();
-      } else {
-        x = new XmlParser();
-      }
-      x.setOutputStyle(IParser.OutputStyle.PRETTY);
-      FileOutputStream s = new FileOutputStream(cliContext.getOutput());
-      x.compose(s, r);
-      s.close();
+      renderer.start(false);
+      OperationOutcome op = (OperationOutcome) r;
+      ec = countErrors(op);
+      renderer.render((OperationOutcome) r);
+      renderer.finish();
     }
+    
+    if (cliContext.getOutput() != null) {
+      dst.close();
+    }
+
     if (cliContext.getHtmlOutput() != null) {
       String html = new HTMLOutputGenerator(records).generate(System.currentTimeMillis() - start);
       TextFile.stringToFile(html, cliContext.getHtmlOutput());
@@ -161,9 +171,21 @@ public class ValidationService {
     // Must document the option at https://confluence.hl7.org/display/FHIR/Using+the+FHIR+Validator#UsingtheFHIRValidator-ManagingOutput
     // if you're going to make a PR, document the link where the outputstyle is documented, along with a sentence that describes it, in the PR notes 
     if (Utilities.noString(style)) {
-      return new DefaultRenderer();
+      if (cliContext.getOutput() == null) {
+        return new DefaultRenderer();        
+      } else if (cliContext.getOutput().endsWith(".json")) {
+        return new NativeRenderer(FhirFormat.JSON);
+      } else {
+        return new NativeRenderer(FhirFormat.XML);
+      }
     } else if (Utilities.existsInList(style, "eslint-compact")) {
       return new ESLintCompactRenderer();
+    } else if (Utilities.existsInList(style, "csv")) {
+      return new CSVRenderer();
+    } else if (Utilities.existsInList(style, "xml")) {
+      return new NativeRenderer(FhirFormat.XML);
+    } else if (Utilities.existsInList(style, "json")) {
+      return new NativeRenderer(FhirFormat.JSON);
     } else {
       System.out.println("Unknown output style '"+style+"'");
       return new DefaultRenderer();      
@@ -281,6 +303,7 @@ public class ValidationService {
       }
       System.out.print("  Get set... ");
       validator.setQuestionnaireMode(cliContext.getQuestionnaireMode());
+      validator.setLevel(cliContext.getLevel());
       validator.setDoNative(cliContext.isDoNative());
       validator.setHintAboutNonMustSupport(cliContext.isHintAboutNonMustSupport());
       validator.setAnyExtensionsAllowed(cliContext.isAnyExtensionsAllowed());

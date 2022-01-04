@@ -171,8 +171,14 @@ public interface IWorkerContext {
       return version;
     }
     public boolean isExamplesPackage() {
-      return !(id.startsWith("hl7.fhir.") && id.endsWith(".example"));
+      boolean b = id.startsWith("hl7.fhir.") && id.endsWith(".examples");
+      return b;
     }
+    @Override
+    public String toString() {
+      return id+"#"+version;
+    }
+    
   }
 
   public class PackageDetails extends PackageVersion {

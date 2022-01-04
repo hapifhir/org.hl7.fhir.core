@@ -1167,7 +1167,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               }
             }
             if (sd != null) {
-              if (!isMatchingType(sd, diffMatches.get(0).getType())) {
+              if (!isMatchingType(sd, diffMatches.get(0).getType(), p.getExtensionString(ToolingExtensions.EXT_PROFILE_ELEMENT))) {
                 throw new DefinitionException(context.formatMessage(I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE2, sd.getUrl(), diffMatches.get(0).getPath(), sd.getType(), p.getValue(), diffMatches.get(0).getType().get(0).getWorkingCode()));            
               }
               if (isGenerating(sd)) {
@@ -1948,17 +1948,39 @@ public class ProfileUtilities extends TranslatingUtilities {
     return b.toString();
   }
 
-  private boolean isMatchingType(StructureDefinition sd, List<TypeRefComponent> types) {
+  private boolean isMatchingType(StructureDefinition sd, List<TypeRefComponent> types, String inner) {
     while (sd != null) {
       for (TypeRefComponent tr : types) {
         if (sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition") && sd.getType().equals(tr.getCode())) {
           return true;
         }
-        if (sd.getUrl().equals(tr.getCode())) {
+        if (inner == null && sd.getUrl().equals(tr.getCode())) {
           return true;
+        }
+        if (inner != null) {
+          ElementDefinition ed = null;
+          for (ElementDefinition t : sd.getSnapshot().getElement()) {
+            if (inner.equals(t.getId())) {
+              ed = t;
+            }
+          }
+          if (ed != null) {
+            return isMatchingType(ed.getType(), types);
+          }
         }
       }
       sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());    
+    }
+    return false;
+  }
+
+  private boolean isMatchingType(List<TypeRefComponent> test, List<TypeRefComponent> desired) {
+    for (TypeRefComponent t : test) {
+      for (TypeRefComponent d : desired) {
+        if (t.getCode().equals(d.getCode())) {
+          return true;          
+        }
+      }
     }
     return false;
   }

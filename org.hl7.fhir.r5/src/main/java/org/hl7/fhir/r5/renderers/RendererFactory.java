@@ -117,6 +117,9 @@ public class RendererFactory {
     if ("DiagnosticReport".equals(resource.getName())) {
       return new DiagnosticReportRenderer(context);
     }
+    if ("QuestionnaireResponse".equals(resource.getName())) {
+      return new QuestionnaireResponseRenderer(context);
+    }
 
     return new ProfileDrivenRenderer(context, resourceContext);    
   }

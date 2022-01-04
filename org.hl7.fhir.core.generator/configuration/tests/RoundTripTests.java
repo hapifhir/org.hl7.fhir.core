@@ -10,12 +10,12 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.DomainResource;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.{{jid}}.formats.IParser.OutputStyle;
+import org.hl7.fhir.{{jid}}.formats.JsonParser;
+import org.hl7.fhir.{{jid}}.formats.XmlParser;
+import org.hl7.fhir.{{jid}}.model.DomainResource;
+import org.hl7.fhir.{{jid}}.model.Resource;
+import org.hl7.fhir.{{jid}}.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.XMLUtil;

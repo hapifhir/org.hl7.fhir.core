@@ -51,7 +51,7 @@ public class DeviceUseStatement40_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertDeviceUseStatementStatus(src.getStatusElement()));
     if (src.hasSubject())
-      tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
+      tgt.setPatient(Reference40_50.convertReference(src.getSubject()));
     for (org.hl7.fhir.r4.model.Reference t : src.getDerivedFrom())
       tgt.addDerivedFrom(Reference40_50.convertReference(t));
     if (src.hasTiming())
@@ -82,8 +82,8 @@ public class DeviceUseStatement40_50 {
     for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
     if (src.hasStatus())
       tgt.setStatusElement(convertDeviceUseStatementStatus(src.getStatusElement()));
-    if (src.hasSubject())
-      tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
+    if (src.hasPatient())
+      tgt.setSubject(Reference40_50.convertReference(src.getPatient()));
     for (org.hl7.fhir.r5.model.Reference t : src.getDerivedFrom())
       tgt.addDerivedFrom(Reference40_50.convertReference(t));
     if (src.hasTiming())

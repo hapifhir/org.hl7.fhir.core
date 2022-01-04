@@ -67,8 +67,8 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
   private StringBuilder cregtp = new StringBuilder();
   private StringBuilder cregti = new StringBuilder();
 
-  public JavaParserJsonGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version) throws UnsupportedEncodingException {
-    super(out, definitions, configuration, version, genDate);
+  public JavaParserJsonGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version, String jid) throws UnsupportedEncodingException {
+    super(out, definitions, configuration, version, genDate, jid);
   }
 
   public void seeClass(Analysis analysis) throws Exception {
@@ -93,6 +93,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
   public void generate() throws Exception {
     
     String template = config.getAdornments().get("JsonParser");
+    template = template.replace("{{jid}}", jid);
     template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
 
@@ -168,7 +169,9 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
 
     parser.append("  protected void parse"+upFirst(tn).replace(".", "")+"Properties(JsonObject json, "+tn+" res) throws IOException, FHIRFormatError {\r\n");
 
-    parser.append("    parse"+analysis.getAncestor().getName()+"Properties(json, res);\r\n");
+    if (!"Element".equals(tn) && analysis.getAncestor() != null) {
+      parser.append("    parse"+analysis.getAncestor().getName()+"Properties(json, res);\r\n");
+    }
     if (!analysis.isInterface()) {
       for (ElementDefinition e : analysis.getRootType().getChildren()) {
         genElementParser(analysis, analysis.getRootType(), e, bUseOwner, null);
@@ -312,7 +315,9 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     String tn = analysis.getRootType().getName();
 
     composer.append("  protected void compose"+tn+"Properties("+tn+" element) throws IOException {\r\n");
-    composer.append("      compose"+analysis.getAncestor().getName()+"Properties(element);\r\n");
+    if (!"Element".equals(tn) && analysis.getAncestor() != null) {
+      composer.append("      compose"+analysis.getAncestor().getName()+"Properties(element);\r\n");
+    }
     if (!analysis.isInterface()) {
       for (ElementDefinition e : analysis.getRootType().getChildren()) {
         genElementComposer(analysis, analysis.getRootType(), e, null);

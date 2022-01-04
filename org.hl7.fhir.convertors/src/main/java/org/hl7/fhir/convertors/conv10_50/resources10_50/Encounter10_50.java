@@ -36,8 +36,8 @@ public class Encounter10_50 {
       tgt.addParticipant(convertEncounterParticipantComponent(t));
     if (src.hasAppointment())
       tgt.setAppointment(Reference10_50.convertReference(src.getAppointmentFirstRep()));
-    if (src.hasPeriod())
-      tgt.setPeriod(Period10_50.convertPeriod(src.getPeriod()));
+    if (src.hasActualPeriod())
+      tgt.setPeriod(Period10_50.convertPeriod(src.getActualPeriod()));
     if (src.hasLength())
       tgt.setLength(Duration10_50.convertDuration(src.getLength()));
     for (CodeableReference t : src.getReason())
@@ -80,7 +80,7 @@ public class Encounter10_50 {
     if (src.hasAppointment())
       tgt.addAppointment(Reference10_50.convertReference(src.getAppointment()));
     if (src.hasPeriod())
-      tgt.setPeriod(Period10_50.convertPeriod(src.getPeriod()));
+      tgt.setActualPeriod(Period10_50.convertPeriod(src.getPeriod()));
     if (src.hasLength())
       tgt.setLength(Duration10_50.convertDuration(src.getLength()));
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getReason())
@@ -283,7 +283,7 @@ public class Encounter10_50 {
     if (src.hasPeriod())
       tgt.setPeriod(Period10_50.convertPeriod(src.getPeriod()));
     if (src.hasIndividual())
-      tgt.setIndividual(Reference10_50.convertReference(src.getIndividual()));
+      tgt.setActor(Reference10_50.convertReference(src.getIndividual()));
     return tgt;
   }
 
@@ -296,8 +296,8 @@ public class Encounter10_50 {
       tgt.addType(CodeableConcept10_50.convertCodeableConcept(t));
     if (src.hasPeriod())
       tgt.setPeriod(Period10_50.convertPeriod(src.getPeriod()));
-    if (src.hasIndividual())
-      tgt.setIndividual(Reference10_50.convertReference(src.getIndividual()));
+    if (src.hasActor())
+      tgt.setIndividual(Reference10_50.convertReference(src.getActor()));
     return tgt;
   }
 

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -621,55 +621,20 @@ public class SubstanceDefinition extends DomainResource {
     @Block()
     public static class SubstanceDefinitionPropertyComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * A category for this property, e.g. Physical, Chemical, Enzymatic.
+         * A code expressing the type of characteristic.
          */
-        @Child(name = "category", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="A category for this property, e.g. Physical, Chemical, Enzymatic", formalDefinition="A category for this property, e.g. Physical, Chemical, Enzymatic." )
-        protected CodeableConcept category;
+        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="A code expressing the type of characteristic", formalDefinition="A code expressing the type of characteristic." )
+        protected CodeableConcept type;
 
         /**
-         * Property type e.g. viscosity, pH, isoelectric point.
+         * A value for the characteristic.
          */
-        @Child(name = "code", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Property type e.g. viscosity, pH, isoelectric point", formalDefinition="Property type e.g. viscosity, pH, isoelectric point." )
-        protected CodeableConcept code;
+        @Child(name = "value", type = {CodeableConcept.class, Quantity.class, DateType.class, BooleanType.class, Attachment.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="A value for the characteristic", formalDefinition="A value for the characteristic." )
+        protected DataType value;
 
-        /**
-         * Parameters that were used in the measurement of a property (e.g. for viscosity: measured at 20C with a pH of 7.1).
-         */
-        @Child(name = "parameters", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Parameters that were used in the measurement of a property (e.g. for viscosity: measured at 20C with a pH of 7.1)", formalDefinition="Parameters that were used in the measurement of a property (e.g. for viscosity: measured at 20C with a pH of 7.1)." )
-        protected StringType parameters;
-
-        /**
-         * A substance upon which a defining property depends (e.g. for solubility: in water, in alcohol).
-         */
-        @Child(name = "definingSubstance", type = {CodeableReference.class}, order=4, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="A substance upon which a defining property depends (e.g. for solubility: in water, in alcohol)", formalDefinition="A substance upon which a defining property depends (e.g. for solubility: in water, in alcohol)." )
-        protected CodeableReference definingSubstance;
-
-        /**
-         * Quantitative value for this property.
-         */
-        @Child(name = "amount", type = {Quantity.class, StringType.class}, order=5, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Quantitative value for this property", formalDefinition="Quantitative value for this property." )
-        protected DataType amount;
-
-        /**
-         * Range of typical values.
-         */
-        @Child(name = "referenceRange", type = {Range.class}, order=6, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Range of typical values", formalDefinition="Range of typical values." )
-        protected Range referenceRange;
-
-        /**
-         * Supporting literature.
-         */
-        @Child(name = "source", type = {DocumentReference.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Supporting literature", formalDefinition="Supporting literature." )
-        protected List<Reference> source;
-
-        private static final long serialVersionUID = 468287211L;
+        private static final long serialVersionUID = -1659186716L;
 
     /**
      * Constructor
@@ -678,279 +643,151 @@ public class SubstanceDefinition extends DomainResource {
         super();
       }
 
+    /**
+     * Constructor
+     */
+      public SubstanceDefinitionPropertyComponent(CodeableConcept type) {
+        super();
+        this.setType(type);
+      }
+
         /**
-         * @return {@link #category} (A category for this property, e.g. Physical, Chemical, Enzymatic.)
+         * @return {@link #type} (A code expressing the type of characteristic.)
          */
-        public CodeableConcept getCategory() { 
-          if (this.category == null)
+        public CodeableConcept getType() { 
+          if (this.type == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstanceDefinitionPropertyComponent.category");
+              throw new Error("Attempt to auto-create SubstanceDefinitionPropertyComponent.type");
             else if (Configuration.doAutoCreate())
-              this.category = new CodeableConcept(); // cc
-          return this.category;
+              this.type = new CodeableConcept(); // cc
+          return this.type;
         }
 
-        public boolean hasCategory() { 
-          return this.category != null && !this.category.isEmpty();
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
         }
 
         /**
-         * @param value {@link #category} (A category for this property, e.g. Physical, Chemical, Enzymatic.)
+         * @param value {@link #type} (A code expressing the type of characteristic.)
          */
-        public SubstanceDefinitionPropertyComponent setCategory(CodeableConcept value) { 
-          this.category = value;
+        public SubstanceDefinitionPropertyComponent setType(CodeableConcept value) { 
+          this.type = value;
           return this;
         }
 
         /**
-         * @return {@link #code} (Property type e.g. viscosity, pH, isoelectric point.)
+         * @return {@link #value} (A value for the characteristic.)
          */
-        public CodeableConcept getCode() { 
-          if (this.code == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstanceDefinitionPropertyComponent.code");
-            else if (Configuration.doAutoCreate())
-              this.code = new CodeableConcept(); // cc
-          return this.code;
-        }
-
-        public boolean hasCode() { 
-          return this.code != null && !this.code.isEmpty();
+        public DataType getValue() { 
+          return this.value;
         }
 
         /**
-         * @param value {@link #code} (Property type e.g. viscosity, pH, isoelectric point.)
+         * @return {@link #value} (A value for the characteristic.)
          */
-        public SubstanceDefinitionPropertyComponent setCode(CodeableConcept value) { 
-          this.code = value;
+        public CodeableConcept getValueCodeableConcept() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CodeableConcept();
+          if (!(this.value instanceof CodeableConcept))
+            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CodeableConcept) this.value;
+        }
+
+        public boolean hasValueCodeableConcept() { 
+          return this != null && this.value instanceof CodeableConcept;
+        }
+
+        /**
+         * @return {@link #value} (A value for the characteristic.)
+         */
+        public Quantity getValueQuantity() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Quantity();
+          if (!(this.value instanceof Quantity))
+            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Quantity) this.value;
+        }
+
+        public boolean hasValueQuantity() { 
+          return this != null && this.value instanceof Quantity;
+        }
+
+        /**
+         * @return {@link #value} (A value for the characteristic.)
+         */
+        public DateType getValueDateType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DateType();
+          if (!(this.value instanceof DateType))
+            throw new FHIRException("Type mismatch: the type DateType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DateType) this.value;
+        }
+
+        public boolean hasValueDateType() { 
+          return this != null && this.value instanceof DateType;
+        }
+
+        /**
+         * @return {@link #value} (A value for the characteristic.)
+         */
+        public BooleanType getValueBooleanType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new BooleanType();
+          if (!(this.value instanceof BooleanType))
+            throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (BooleanType) this.value;
+        }
+
+        public boolean hasValueBooleanType() { 
+          return this != null && this.value instanceof BooleanType;
+        }
+
+        /**
+         * @return {@link #value} (A value for the characteristic.)
+         */
+        public Attachment getValueAttachment() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Attachment();
+          if (!(this.value instanceof Attachment))
+            throw new FHIRException("Type mismatch: the type Attachment was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Attachment) this.value;
+        }
+
+        public boolean hasValueAttachment() { 
+          return this != null && this.value instanceof Attachment;
+        }
+
+        public boolean hasValue() { 
+          return this.value != null && !this.value.isEmpty();
+        }
+
+        /**
+         * @param value {@link #value} (A value for the characteristic.)
+         */
+        public SubstanceDefinitionPropertyComponent setValue(DataType value) { 
+          if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity || value instanceof DateType || value instanceof BooleanType || value instanceof Attachment))
+            throw new Error("Not the right type for SubstanceDefinition.property.value[x]: "+value.fhirType());
+          this.value = value;
           return this;
-        }
-
-        /**
-         * @return {@link #parameters} (Parameters that were used in the measurement of a property (e.g. for viscosity: measured at 20C with a pH of 7.1).). This is the underlying object with id, value and extensions. The accessor "getParameters" gives direct access to the value
-         */
-        public StringType getParametersElement() { 
-          if (this.parameters == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstanceDefinitionPropertyComponent.parameters");
-            else if (Configuration.doAutoCreate())
-              this.parameters = new StringType(); // bb
-          return this.parameters;
-        }
-
-        public boolean hasParametersElement() { 
-          return this.parameters != null && !this.parameters.isEmpty();
-        }
-
-        public boolean hasParameters() { 
-          return this.parameters != null && !this.parameters.isEmpty();
-        }
-
-        /**
-         * @param value {@link #parameters} (Parameters that were used in the measurement of a property (e.g. for viscosity: measured at 20C with a pH of 7.1).). This is the underlying object with id, value and extensions. The accessor "getParameters" gives direct access to the value
-         */
-        public SubstanceDefinitionPropertyComponent setParametersElement(StringType value) { 
-          this.parameters = value;
-          return this;
-        }
-
-        /**
-         * @return Parameters that were used in the measurement of a property (e.g. for viscosity: measured at 20C with a pH of 7.1).
-         */
-        public String getParameters() { 
-          return this.parameters == null ? null : this.parameters.getValue();
-        }
-
-        /**
-         * @param value Parameters that were used in the measurement of a property (e.g. for viscosity: measured at 20C with a pH of 7.1).
-         */
-        public SubstanceDefinitionPropertyComponent setParameters(String value) { 
-          if (Utilities.noString(value))
-            this.parameters = null;
-          else {
-            if (this.parameters == null)
-              this.parameters = new StringType();
-            this.parameters.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #definingSubstance} (A substance upon which a defining property depends (e.g. for solubility: in water, in alcohol).)
-         */
-        public CodeableReference getDefiningSubstance() { 
-          if (this.definingSubstance == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstanceDefinitionPropertyComponent.definingSubstance");
-            else if (Configuration.doAutoCreate())
-              this.definingSubstance = new CodeableReference(); // cc
-          return this.definingSubstance;
-        }
-
-        public boolean hasDefiningSubstance() { 
-          return this.definingSubstance != null && !this.definingSubstance.isEmpty();
-        }
-
-        /**
-         * @param value {@link #definingSubstance} (A substance upon which a defining property depends (e.g. for solubility: in water, in alcohol).)
-         */
-        public SubstanceDefinitionPropertyComponent setDefiningSubstance(CodeableReference value) { 
-          this.definingSubstance = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #amount} (Quantitative value for this property.)
-         */
-        public DataType getAmount() { 
-          return this.amount;
-        }
-
-        /**
-         * @return {@link #amount} (Quantitative value for this property.)
-         */
-        public Quantity getAmountQuantity() throws FHIRException { 
-          if (this.amount == null)
-            this.amount = new Quantity();
-          if (!(this.amount instanceof Quantity))
-            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.amount.getClass().getName()+" was encountered");
-          return (Quantity) this.amount;
-        }
-
-        public boolean hasAmountQuantity() { 
-          return this != null && this.amount instanceof Quantity;
-        }
-
-        /**
-         * @return {@link #amount} (Quantitative value for this property.)
-         */
-        public StringType getAmountStringType() throws FHIRException { 
-          if (this.amount == null)
-            this.amount = new StringType();
-          if (!(this.amount instanceof StringType))
-            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.amount.getClass().getName()+" was encountered");
-          return (StringType) this.amount;
-        }
-
-        public boolean hasAmountStringType() { 
-          return this != null && this.amount instanceof StringType;
-        }
-
-        public boolean hasAmount() { 
-          return this.amount != null && !this.amount.isEmpty();
-        }
-
-        /**
-         * @param value {@link #amount} (Quantitative value for this property.)
-         */
-        public SubstanceDefinitionPropertyComponent setAmount(DataType value) { 
-          if (value != null && !(value instanceof Quantity || value instanceof StringType))
-            throw new Error("Not the right type for SubstanceDefinition.property.amount[x]: "+value.fhirType());
-          this.amount = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #referenceRange} (Range of typical values.)
-         */
-        public Range getReferenceRange() { 
-          if (this.referenceRange == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstanceDefinitionPropertyComponent.referenceRange");
-            else if (Configuration.doAutoCreate())
-              this.referenceRange = new Range(); // cc
-          return this.referenceRange;
-        }
-
-        public boolean hasReferenceRange() { 
-          return this.referenceRange != null && !this.referenceRange.isEmpty();
-        }
-
-        /**
-         * @param value {@link #referenceRange} (Range of typical values.)
-         */
-        public SubstanceDefinitionPropertyComponent setReferenceRange(Range value) { 
-          this.referenceRange = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #source} (Supporting literature.)
-         */
-        public List<Reference> getSource() { 
-          if (this.source == null)
-            this.source = new ArrayList<Reference>();
-          return this.source;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public SubstanceDefinitionPropertyComponent setSource(List<Reference> theSource) { 
-          this.source = theSource;
-          return this;
-        }
-
-        public boolean hasSource() { 
-          if (this.source == null)
-            return false;
-          for (Reference item : this.source)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public Reference addSource() { //3
-          Reference t = new Reference();
-          if (this.source == null)
-            this.source = new ArrayList<Reference>();
-          this.source.add(t);
-          return t;
-        }
-
-        public SubstanceDefinitionPropertyComponent addSource(Reference t) { //3
-          if (t == null)
-            return this;
-          if (this.source == null)
-            this.source = new ArrayList<Reference>();
-          this.source.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #source}, creating it if it does not already exist {3}
-         */
-        public Reference getSourceFirstRep() { 
-          if (getSource().isEmpty()) {
-            addSource();
-          }
-          return getSource().get(0);
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("category", "CodeableConcept", "A category for this property, e.g. Physical, Chemical, Enzymatic.", 0, 1, category));
-          children.add(new Property("code", "CodeableConcept", "Property type e.g. viscosity, pH, isoelectric point.", 0, 1, code));
-          children.add(new Property("parameters", "string", "Parameters that were used in the measurement of a property (e.g. for viscosity: measured at 20C with a pH of 7.1).", 0, 1, parameters));
-          children.add(new Property("definingSubstance", "CodeableReference(SubstanceDefinition|Substance)", "A substance upon which a defining property depends (e.g. for solubility: in water, in alcohol).", 0, 1, definingSubstance));
-          children.add(new Property("amount[x]", "Quantity|string", "Quantitative value for this property.", 0, 1, amount));
-          children.add(new Property("referenceRange", "Range", "Range of typical values.", 0, 1, referenceRange));
-          children.add(new Property("source", "Reference(DocumentReference)", "Supporting literature.", 0, java.lang.Integer.MAX_VALUE, source));
+          children.add(new Property("type", "CodeableConcept", "A code expressing the type of characteristic.", 0, 1, type));
+          children.add(new Property("value[x]", "CodeableConcept|Quantity|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 50511102: /*category*/  return new Property("category", "CodeableConcept", "A category for this property, e.g. Physical, Chemical, Enzymatic.", 0, 1, category);
-          case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Property type e.g. viscosity, pH, isoelectric point.", 0, 1, code);
-          case 458736106: /*parameters*/  return new Property("parameters", "string", "Parameters that were used in the measurement of a property (e.g. for viscosity: measured at 20C with a pH of 7.1).", 0, 1, parameters);
-          case 1901076632: /*definingSubstance*/  return new Property("definingSubstance", "CodeableReference(SubstanceDefinition|Substance)", "A substance upon which a defining property depends (e.g. for solubility: in water, in alcohol).", 0, 1, definingSubstance);
-          case 646780200: /*amount[x]*/  return new Property("amount[x]", "Quantity|string", "Quantitative value for this property.", 0, 1, amount);
-          case -1413853096: /*amount*/  return new Property("amount[x]", "Quantity|string", "Quantitative value for this property.", 0, 1, amount);
-          case 1664303363: /*amountQuantity*/  return new Property("amount[x]", "Quantity", "Quantitative value for this property.", 0, 1, amount);
-          case 773651081: /*amountString*/  return new Property("amount[x]", "string", "Quantitative value for this property.", 0, 1, amount);
-          case -1912545102: /*referenceRange*/  return new Property("referenceRange", "Range", "Range of typical values.", 0, 1, referenceRange);
-          case -896505829: /*source*/  return new Property("source", "Reference(DocumentReference)", "Supporting literature.", 0, java.lang.Integer.MAX_VALUE, source);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "A code expressing the type of characteristic.", 0, 1, type);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "CodeableConcept|Quantity|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "CodeableConcept|Quantity|date|boolean|Attachment", "A value for the characteristic.", 0, 1, value);
+          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "A value for the characteristic.", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "A value for the characteristic.", 0, 1, value);
+          case -766192449: /*valueDate*/  return new Property("value[x]", "date", "A value for the characteristic.", 0, 1, value);
+          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "A value for the characteristic.", 0, 1, value);
+          case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "A value for the characteristic.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -959,13 +796,8 @@ public class SubstanceDefinition extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // CodeableConcept
-        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
-        case 458736106: /*parameters*/ return this.parameters == null ? new Base[0] : new Base[] {this.parameters}; // StringType
-        case 1901076632: /*definingSubstance*/ return this.definingSubstance == null ? new Base[0] : new Base[] {this.definingSubstance}; // CodeableReference
-        case -1413853096: /*amount*/ return this.amount == null ? new Base[0] : new Base[] {this.amount}; // DataType
-        case -1912545102: /*referenceRange*/ return this.referenceRange == null ? new Base[0] : new Base[] {this.referenceRange}; // Range
-        case -896505829: /*source*/ return this.source == null ? new Base[0] : this.source.toArray(new Base[this.source.size()]); // Reference
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -974,26 +806,11 @@ public class SubstanceDefinition extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case 50511102: // category
-          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        case 3575610: // type
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
-        case 3059181: // code
-          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case 458736106: // parameters
-          this.parameters = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 1901076632: // definingSubstance
-          this.definingSubstance = TypeConvertor.castToCodeableReference(value); // CodeableReference
-          return value;
-        case -1413853096: // amount
-          this.amount = TypeConvertor.castToType(value); // DataType
-          return value;
-        case -1912545102: // referenceRange
-          this.referenceRange = TypeConvertor.castToRange(value); // Range
-          return value;
-        case -896505829: // source
-          this.getSource().add(TypeConvertor.castToReference(value)); // Reference
+        case 111972721: // value
+          this.value = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1002,20 +819,10 @@ public class SubstanceDefinition extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("category")) {
-          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("code")) {
-          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("parameters")) {
-          this.parameters = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("definingSubstance")) {
-          this.definingSubstance = TypeConvertor.castToCodeableReference(value); // CodeableReference
-        } else if (name.equals("amount[x]")) {
-          this.amount = TypeConvertor.castToType(value); // DataType
-        } else if (name.equals("referenceRange")) {
-          this.referenceRange = TypeConvertor.castToRange(value); // Range
-        } else if (name.equals("source")) {
-          this.getSource().add(TypeConvertor.castToReference(value));
+        if (name.equals("type")) {
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("value[x]")) {
+          this.value = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1024,14 +831,9 @@ public class SubstanceDefinition extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 50511102:  return getCategory();
-        case 3059181:  return getCode();
-        case 458736106:  return getParametersElement();
-        case 1901076632:  return getDefiningSubstance();
-        case 646780200:  return getAmount();
-        case -1413853096:  return getAmount();
-        case -1912545102:  return getReferenceRange();
-        case -896505829:  return addSource(); 
+        case 3575610:  return getType();
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1040,13 +842,8 @@ public class SubstanceDefinition extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 50511102: /*category*/ return new String[] {"CodeableConcept"};
-        case 3059181: /*code*/ return new String[] {"CodeableConcept"};
-        case 458736106: /*parameters*/ return new String[] {"string"};
-        case 1901076632: /*definingSubstance*/ return new String[] {"CodeableReference"};
-        case -1413853096: /*amount*/ return new String[] {"Quantity", "string"};
-        case -1912545102: /*referenceRange*/ return new String[] {"Range"};
-        case -896505829: /*source*/ return new String[] {"Reference"};
+        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case 111972721: /*value*/ return new String[] {"CodeableConcept", "Quantity", "date", "boolean", "Attachment"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1054,35 +851,29 @@ public class SubstanceDefinition extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("category")) {
-          this.category = new CodeableConcept();
-          return this.category;
+        if (name.equals("type")) {
+          this.type = new CodeableConcept();
+          return this.type;
         }
-        else if (name.equals("code")) {
-          this.code = new CodeableConcept();
-          return this.code;
+        else if (name.equals("valueCodeableConcept")) {
+          this.value = new CodeableConcept();
+          return this.value;
         }
-        else if (name.equals("parameters")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SubstanceDefinition.property.parameters");
+        else if (name.equals("valueQuantity")) {
+          this.value = new Quantity();
+          return this.value;
         }
-        else if (name.equals("definingSubstance")) {
-          this.definingSubstance = new CodeableReference();
-          return this.definingSubstance;
+        else if (name.equals("valueDate")) {
+          this.value = new DateType();
+          return this.value;
         }
-        else if (name.equals("amountQuantity")) {
-          this.amount = new Quantity();
-          return this.amount;
+        else if (name.equals("valueBoolean")) {
+          this.value = new BooleanType();
+          return this.value;
         }
-        else if (name.equals("amountString")) {
-          this.amount = new StringType();
-          return this.amount;
-        }
-        else if (name.equals("referenceRange")) {
-          this.referenceRange = new Range();
-          return this.referenceRange;
-        }
-        else if (name.equals("source")) {
-          return addSource();
+        else if (name.equals("valueAttachment")) {
+          this.value = new Attachment();
+          return this.value;
         }
         else
           return super.addChild(name);
@@ -1096,17 +887,8 @@ public class SubstanceDefinition extends DomainResource {
 
       public void copyValues(SubstanceDefinitionPropertyComponent dst) {
         super.copyValues(dst);
-        dst.category = category == null ? null : category.copy();
-        dst.code = code == null ? null : code.copy();
-        dst.parameters = parameters == null ? null : parameters.copy();
-        dst.definingSubstance = definingSubstance == null ? null : definingSubstance.copy();
-        dst.amount = amount == null ? null : amount.copy();
-        dst.referenceRange = referenceRange == null ? null : referenceRange.copy();
-        if (source != null) {
-          dst.source = new ArrayList<Reference>();
-          for (Reference i : source)
-            dst.source.add(i.copy());
-        };
+        dst.type = type == null ? null : type.copy();
+        dst.value = value == null ? null : value.copy();
       }
 
       @Override
@@ -1116,9 +898,7 @@ public class SubstanceDefinition extends DomainResource {
         if (!(other_ instanceof SubstanceDefinitionPropertyComponent))
           return false;
         SubstanceDefinitionPropertyComponent o = (SubstanceDefinitionPropertyComponent) other_;
-        return compareDeep(category, o.category, true) && compareDeep(code, o.code, true) && compareDeep(parameters, o.parameters, true)
-           && compareDeep(definingSubstance, o.definingSubstance, true) && compareDeep(amount, o.amount, true)
-           && compareDeep(referenceRange, o.referenceRange, true) && compareDeep(source, o.source, true);
+        return compareDeep(type, o.type, true) && compareDeep(value, o.value, true);
       }
 
       @Override
@@ -1128,16 +908,271 @@ public class SubstanceDefinition extends DomainResource {
         if (!(other_ instanceof SubstanceDefinitionPropertyComponent))
           return false;
         SubstanceDefinitionPropertyComponent o = (SubstanceDefinitionPropertyComponent) other_;
-        return compareValues(parameters, o.parameters, true);
+        return true;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(category, code, parameters
-          , definingSubstance, amount, referenceRange, source);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, value);
       }
 
   public String fhirType() {
     return "SubstanceDefinition.property";
+
+  }
+
+  }
+
+    @Block()
+    public static class SubstanceDefinitionMolecularWeightComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * The method by which the molecular weight was determined.
+         */
+        @Child(name = "method", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="The method by which the molecular weight was determined", formalDefinition="The method by which the molecular weight was determined." )
+        protected CodeableConcept method;
+
+        /**
+         * Type of molecular weight such as exact, average (also known as. number average), weight average.
+         */
+        @Child(name = "type", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Type of molecular weight such as exact, average (also known as. number average), weight average", formalDefinition="Type of molecular weight such as exact, average (also known as. number average), weight average." )
+        protected CodeableConcept type;
+
+        /**
+         * Used to capture quantitative values for a variety of elements. If only limits are given, the arithmetic mean would be the average. If only a single definite value for a given element is given, it would be captured in this field.
+         */
+        @Child(name = "amount", type = {Quantity.class}, order=3, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Used to capture quantitative values for a variety of elements. If only limits are given, the arithmetic mean would be the average. If only a single definite value for a given element is given, it would be captured in this field", formalDefinition="Used to capture quantitative values for a variety of elements. If only limits are given, the arithmetic mean would be the average. If only a single definite value for a given element is given, it would be captured in this field." )
+        protected Quantity amount;
+
+        private static final long serialVersionUID = 805939780L;
+
+    /**
+     * Constructor
+     */
+      public SubstanceDefinitionMolecularWeightComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public SubstanceDefinitionMolecularWeightComponent(Quantity amount) {
+        super();
+        this.setAmount(amount);
+      }
+
+        /**
+         * @return {@link #method} (The method by which the molecular weight was determined.)
+         */
+        public CodeableConcept getMethod() { 
+          if (this.method == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubstanceDefinitionMolecularWeightComponent.method");
+            else if (Configuration.doAutoCreate())
+              this.method = new CodeableConcept(); // cc
+          return this.method;
+        }
+
+        public boolean hasMethod() { 
+          return this.method != null && !this.method.isEmpty();
+        }
+
+        /**
+         * @param value {@link #method} (The method by which the molecular weight was determined.)
+         */
+        public SubstanceDefinitionMolecularWeightComponent setMethod(CodeableConcept value) { 
+          this.method = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #type} (Type of molecular weight such as exact, average (also known as. number average), weight average.)
+         */
+        public CodeableConcept getType() { 
+          if (this.type == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubstanceDefinitionMolecularWeightComponent.type");
+            else if (Configuration.doAutoCreate())
+              this.type = new CodeableConcept(); // cc
+          return this.type;
+        }
+
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        /**
+         * @param value {@link #type} (Type of molecular weight such as exact, average (also known as. number average), weight average.)
+         */
+        public SubstanceDefinitionMolecularWeightComponent setType(CodeableConcept value) { 
+          this.type = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #amount} (Used to capture quantitative values for a variety of elements. If only limits are given, the arithmetic mean would be the average. If only a single definite value for a given element is given, it would be captured in this field.)
+         */
+        public Quantity getAmount() { 
+          if (this.amount == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubstanceDefinitionMolecularWeightComponent.amount");
+            else if (Configuration.doAutoCreate())
+              this.amount = new Quantity(); // cc
+          return this.amount;
+        }
+
+        public boolean hasAmount() { 
+          return this.amount != null && !this.amount.isEmpty();
+        }
+
+        /**
+         * @param value {@link #amount} (Used to capture quantitative values for a variety of elements. If only limits are given, the arithmetic mean would be the average. If only a single definite value for a given element is given, it would be captured in this field.)
+         */
+        public SubstanceDefinitionMolecularWeightComponent setAmount(Quantity value) { 
+          this.amount = value;
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("method", "CodeableConcept", "The method by which the molecular weight was determined.", 0, 1, method));
+          children.add(new Property("type", "CodeableConcept", "Type of molecular weight such as exact, average (also known as. number average), weight average.", 0, 1, type));
+          children.add(new Property("amount", "Quantity", "Used to capture quantitative values for a variety of elements. If only limits are given, the arithmetic mean would be the average. If only a single definite value for a given element is given, it would be captured in this field.", 0, 1, amount));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case -1077554975: /*method*/  return new Property("method", "CodeableConcept", "The method by which the molecular weight was determined.", 0, 1, method);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Type of molecular weight such as exact, average (also known as. number average), weight average.", 0, 1, type);
+          case -1413853096: /*amount*/  return new Property("amount", "Quantity", "Used to capture quantitative values for a variety of elements. If only limits are given, the arithmetic mean would be the average. If only a single definite value for a given element is given, it would be captured in this field.", 0, 1, amount);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case -1077554975: /*method*/ return this.method == null ? new Base[0] : new Base[] {this.method}; // CodeableConcept
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case -1413853096: /*amount*/ return this.amount == null ? new Base[0] : new Base[] {this.amount}; // Quantity
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case -1077554975: // method
+          this.method = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 3575610: // type
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -1413853096: // amount
+          this.amount = TypeConvertor.castToQuantity(value); // Quantity
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("method")) {
+          this.method = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("type")) {
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("amount")) {
+          this.amount = TypeConvertor.castToQuantity(value); // Quantity
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1077554975:  return getMethod();
+        case 3575610:  return getType();
+        case -1413853096:  return getAmount();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1077554975: /*method*/ return new String[] {"CodeableConcept"};
+        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case -1413853096: /*amount*/ return new String[] {"Quantity"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("method")) {
+          this.method = new CodeableConcept();
+          return this.method;
+        }
+        else if (name.equals("type")) {
+          this.type = new CodeableConcept();
+          return this.type;
+        }
+        else if (name.equals("amount")) {
+          this.amount = new Quantity();
+          return this.amount;
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public SubstanceDefinitionMolecularWeightComponent copy() {
+        SubstanceDefinitionMolecularWeightComponent dst = new SubstanceDefinitionMolecularWeightComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceDefinitionMolecularWeightComponent dst) {
+        super.copyValues(dst);
+        dst.method = method == null ? null : method.copy();
+        dst.type = type == null ? null : type.copy();
+        dst.amount = amount == null ? null : amount.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof SubstanceDefinitionMolecularWeightComponent))
+          return false;
+        SubstanceDefinitionMolecularWeightComponent o = (SubstanceDefinitionMolecularWeightComponent) other_;
+        return compareDeep(method, o.method, true) && compareDeep(type, o.type, true) && compareDeep(amount, o.amount, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof SubstanceDefinitionMolecularWeightComponent))
+          return false;
+        SubstanceDefinitionMolecularWeightComponent o = (SubstanceDefinitionMolecularWeightComponent) other_;
+        return true;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(method, type, amount);
+      }
+
+  public String fhirType() {
+    return "SubstanceDefinition.molecularWeight";
 
   }
 
@@ -1174,41 +1209,34 @@ public class SubstanceDefinition extends DomainResource {
         protected StringType molecularFormulaByMoiety;
 
         /**
-         * Applicable for single substances that contain a radionuclide or a non-natural isotopic ratio.
-         */
-        @Child(name = "isotope", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Applicable for single substances that contain a radionuclide or a non-natural isotopic ratio", formalDefinition="Applicable for single substances that contain a radionuclide or a non-natural isotopic ratio." )
-        protected List<SubstanceDefinitionStructureIsotopeComponent> isotope;
-
-        /**
          * The molecular weight or weight range (for proteins, polymers or nucleic acids).
          */
-        @Child(name = "molecularWeight", type = {SubstanceDefinitionStructureIsotopeMolecularWeightComponent.class}, order=6, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "molecularWeight", type = {SubstanceDefinitionMolecularWeightComponent.class}, order=5, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="The molecular weight or weight range (for proteins, polymers or nucleic acids)", formalDefinition="The molecular weight or weight range (for proteins, polymers or nucleic acids)." )
-        protected SubstanceDefinitionStructureIsotopeMolecularWeightComponent molecularWeight;
+        protected SubstanceDefinitionMolecularWeightComponent molecularWeight;
 
         /**
          * The method used to elucidate the structure or characterization of the drug substance. Examples: X-ray, HPLC, NMR, Peptide mapping, Ligand binding assay.
          */
-        @Child(name = "technique", type = {CodeableConcept.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Child(name = "technique", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="The method used to elucidate the structure or characterization of the drug substance. Examples: X-ray, HPLC, NMR, Peptide mapping, Ligand binding assay", formalDefinition="The method used to elucidate the structure or characterization of the drug substance. Examples: X-ray, HPLC, NMR, Peptide mapping, Ligand binding assay." )
         protected List<CodeableConcept> technique;
 
         /**
          * Supporting literature about the source of information.
          */
-        @Child(name = "sourceDocument", type = {DocumentReference.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Child(name = "sourceDocument", type = {DocumentReference.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Supporting literature about the source of information", formalDefinition="Supporting literature about the source of information." )
         protected List<Reference> sourceDocument;
 
         /**
          * A depiction of the structure or characterization of the substance.
          */
-        @Child(name = "representation", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Child(name = "representation", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="A depiction of the structure or characterization of the substance", formalDefinition="A depiction of the structure or characterization of the substance." )
         protected List<SubstanceDefinitionStructureRepresentationComponent> representation;
 
-        private static final long serialVersionUID = -1648605311L;
+        private static final long serialVersionUID = -2137814144L;
 
     /**
      * Constructor
@@ -1364,67 +1392,14 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #isotope} (Applicable for single substances that contain a radionuclide or a non-natural isotopic ratio.)
-         */
-        public List<SubstanceDefinitionStructureIsotopeComponent> getIsotope() { 
-          if (this.isotope == null)
-            this.isotope = new ArrayList<SubstanceDefinitionStructureIsotopeComponent>();
-          return this.isotope;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public SubstanceDefinitionStructureComponent setIsotope(List<SubstanceDefinitionStructureIsotopeComponent> theIsotope) { 
-          this.isotope = theIsotope;
-          return this;
-        }
-
-        public boolean hasIsotope() { 
-          if (this.isotope == null)
-            return false;
-          for (SubstanceDefinitionStructureIsotopeComponent item : this.isotope)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public SubstanceDefinitionStructureIsotopeComponent addIsotope() { //3
-          SubstanceDefinitionStructureIsotopeComponent t = new SubstanceDefinitionStructureIsotopeComponent();
-          if (this.isotope == null)
-            this.isotope = new ArrayList<SubstanceDefinitionStructureIsotopeComponent>();
-          this.isotope.add(t);
-          return t;
-        }
-
-        public SubstanceDefinitionStructureComponent addIsotope(SubstanceDefinitionStructureIsotopeComponent t) { //3
-          if (t == null)
-            return this;
-          if (this.isotope == null)
-            this.isotope = new ArrayList<SubstanceDefinitionStructureIsotopeComponent>();
-          this.isotope.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #isotope}, creating it if it does not already exist {3}
-         */
-        public SubstanceDefinitionStructureIsotopeComponent getIsotopeFirstRep() { 
-          if (getIsotope().isEmpty()) {
-            addIsotope();
-          }
-          return getIsotope().get(0);
-        }
-
-        /**
          * @return {@link #molecularWeight} (The molecular weight or weight range (for proteins, polymers or nucleic acids).)
          */
-        public SubstanceDefinitionStructureIsotopeMolecularWeightComponent getMolecularWeight() { 
+        public SubstanceDefinitionMolecularWeightComponent getMolecularWeight() { 
           if (this.molecularWeight == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SubstanceDefinitionStructureComponent.molecularWeight");
             else if (Configuration.doAutoCreate())
-              this.molecularWeight = new SubstanceDefinitionStructureIsotopeMolecularWeightComponent(); // cc
+              this.molecularWeight = new SubstanceDefinitionMolecularWeightComponent(); // cc
           return this.molecularWeight;
         }
 
@@ -1435,7 +1410,7 @@ public class SubstanceDefinition extends DomainResource {
         /**
          * @param value {@link #molecularWeight} (The molecular weight or weight range (for proteins, polymers or nucleic acids).)
          */
-        public SubstanceDefinitionStructureComponent setMolecularWeight(SubstanceDefinitionStructureIsotopeMolecularWeightComponent value) { 
+        public SubstanceDefinitionStructureComponent setMolecularWeight(SubstanceDefinitionMolecularWeightComponent value) { 
           this.molecularWeight = value;
           return this;
         }
@@ -1605,8 +1580,7 @@ public class SubstanceDefinition extends DomainResource {
           children.add(new Property("opticalActivity", "CodeableConcept", "Optical activity type.", 0, 1, opticalActivity));
           children.add(new Property("molecularFormula", "string", "Molecular formula of this substance, typically using the Hill system.", 0, 1, molecularFormula));
           children.add(new Property("molecularFormulaByMoiety", "string", "Specified per moiety according to the Hill system, i.e. first C, then H, then alphabetical, each moiety separated by a dot.", 0, 1, molecularFormulaByMoiety));
-          children.add(new Property("isotope", "", "Applicable for single substances that contain a radionuclide or a non-natural isotopic ratio.", 0, java.lang.Integer.MAX_VALUE, isotope));
-          children.add(new Property("molecularWeight", "@SubstanceDefinition.structure.isotope.molecularWeight", "The molecular weight or weight range (for proteins, polymers or nucleic acids).", 0, 1, molecularWeight));
+          children.add(new Property("molecularWeight", "@SubstanceDefinition.molecularWeight", "The molecular weight or weight range (for proteins, polymers or nucleic acids).", 0, 1, molecularWeight));
           children.add(new Property("technique", "CodeableConcept", "The method used to elucidate the structure or characterization of the drug substance. Examples: X-ray, HPLC, NMR, Peptide mapping, Ligand binding assay.", 0, java.lang.Integer.MAX_VALUE, technique));
           children.add(new Property("sourceDocument", "Reference(DocumentReference)", "Supporting literature about the source of information.", 0, java.lang.Integer.MAX_VALUE, sourceDocument));
           children.add(new Property("representation", "", "A depiction of the structure or characterization of the substance.", 0, java.lang.Integer.MAX_VALUE, representation));
@@ -1619,8 +1593,7 @@ public class SubstanceDefinition extends DomainResource {
           case 1420900135: /*opticalActivity*/  return new Property("opticalActivity", "CodeableConcept", "Optical activity type.", 0, 1, opticalActivity);
           case 616660246: /*molecularFormula*/  return new Property("molecularFormula", "string", "Molecular formula of this substance, typically using the Hill system.", 0, 1, molecularFormula);
           case 1315452848: /*molecularFormulaByMoiety*/  return new Property("molecularFormulaByMoiety", "string", "Specified per moiety according to the Hill system, i.e. first C, then H, then alphabetical, each moiety separated by a dot.", 0, 1, molecularFormulaByMoiety);
-          case 2097035189: /*isotope*/  return new Property("isotope", "", "Applicable for single substances that contain a radionuclide or a non-natural isotopic ratio.", 0, java.lang.Integer.MAX_VALUE, isotope);
-          case 635625672: /*molecularWeight*/  return new Property("molecularWeight", "@SubstanceDefinition.structure.isotope.molecularWeight", "The molecular weight or weight range (for proteins, polymers or nucleic acids).", 0, 1, molecularWeight);
+          case 635625672: /*molecularWeight*/  return new Property("molecularWeight", "@SubstanceDefinition.molecularWeight", "The molecular weight or weight range (for proteins, polymers or nucleic acids).", 0, 1, molecularWeight);
           case 1469675088: /*technique*/  return new Property("technique", "CodeableConcept", "The method used to elucidate the structure or characterization of the drug substance. Examples: X-ray, HPLC, NMR, Peptide mapping, Ligand binding assay.", 0, java.lang.Integer.MAX_VALUE, technique);
           case -501788074: /*sourceDocument*/  return new Property("sourceDocument", "Reference(DocumentReference)", "Supporting literature about the source of information.", 0, java.lang.Integer.MAX_VALUE, sourceDocument);
           case -671065907: /*representation*/  return new Property("representation", "", "A depiction of the structure or characterization of the substance.", 0, java.lang.Integer.MAX_VALUE, representation);
@@ -1636,8 +1609,7 @@ public class SubstanceDefinition extends DomainResource {
         case 1420900135: /*opticalActivity*/ return this.opticalActivity == null ? new Base[0] : new Base[] {this.opticalActivity}; // CodeableConcept
         case 616660246: /*molecularFormula*/ return this.molecularFormula == null ? new Base[0] : new Base[] {this.molecularFormula}; // StringType
         case 1315452848: /*molecularFormulaByMoiety*/ return this.molecularFormulaByMoiety == null ? new Base[0] : new Base[] {this.molecularFormulaByMoiety}; // StringType
-        case 2097035189: /*isotope*/ return this.isotope == null ? new Base[0] : this.isotope.toArray(new Base[this.isotope.size()]); // SubstanceDefinitionStructureIsotopeComponent
-        case 635625672: /*molecularWeight*/ return this.molecularWeight == null ? new Base[0] : new Base[] {this.molecularWeight}; // SubstanceDefinitionStructureIsotopeMolecularWeightComponent
+        case 635625672: /*molecularWeight*/ return this.molecularWeight == null ? new Base[0] : new Base[] {this.molecularWeight}; // SubstanceDefinitionMolecularWeightComponent
         case 1469675088: /*technique*/ return this.technique == null ? new Base[0] : this.technique.toArray(new Base[this.technique.size()]); // CodeableConcept
         case -501788074: /*sourceDocument*/ return this.sourceDocument == null ? new Base[0] : this.sourceDocument.toArray(new Base[this.sourceDocument.size()]); // Reference
         case -671065907: /*representation*/ return this.representation == null ? new Base[0] : this.representation.toArray(new Base[this.representation.size()]); // SubstanceDefinitionStructureRepresentationComponent
@@ -1661,11 +1633,8 @@ public class SubstanceDefinition extends DomainResource {
         case 1315452848: // molecularFormulaByMoiety
           this.molecularFormulaByMoiety = TypeConvertor.castToString(value); // StringType
           return value;
-        case 2097035189: // isotope
-          this.getIsotope().add((SubstanceDefinitionStructureIsotopeComponent) value); // SubstanceDefinitionStructureIsotopeComponent
-          return value;
         case 635625672: // molecularWeight
-          this.molecularWeight = (SubstanceDefinitionStructureIsotopeMolecularWeightComponent) value; // SubstanceDefinitionStructureIsotopeMolecularWeightComponent
+          this.molecularWeight = (SubstanceDefinitionMolecularWeightComponent) value; // SubstanceDefinitionMolecularWeightComponent
           return value;
         case 1469675088: // technique
           this.getTechnique().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -1691,10 +1660,8 @@ public class SubstanceDefinition extends DomainResource {
           this.molecularFormula = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("molecularFormulaByMoiety")) {
           this.molecularFormulaByMoiety = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("isotope")) {
-          this.getIsotope().add((SubstanceDefinitionStructureIsotopeComponent) value);
         } else if (name.equals("molecularWeight")) {
-          this.molecularWeight = (SubstanceDefinitionStructureIsotopeMolecularWeightComponent) value; // SubstanceDefinitionStructureIsotopeMolecularWeightComponent
+          this.molecularWeight = (SubstanceDefinitionMolecularWeightComponent) value; // SubstanceDefinitionMolecularWeightComponent
         } else if (name.equals("technique")) {
           this.getTechnique().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("sourceDocument")) {
@@ -1713,7 +1680,6 @@ public class SubstanceDefinition extends DomainResource {
         case 1420900135:  return getOpticalActivity();
         case 616660246:  return getMolecularFormulaElement();
         case 1315452848:  return getMolecularFormulaByMoietyElement();
-        case 2097035189:  return addIsotope(); 
         case 635625672:  return getMolecularWeight();
         case 1469675088:  return addTechnique(); 
         case -501788074:  return addSourceDocument(); 
@@ -1730,8 +1696,7 @@ public class SubstanceDefinition extends DomainResource {
         case 1420900135: /*opticalActivity*/ return new String[] {"CodeableConcept"};
         case 616660246: /*molecularFormula*/ return new String[] {"string"};
         case 1315452848: /*molecularFormulaByMoiety*/ return new String[] {"string"};
-        case 2097035189: /*isotope*/ return new String[] {};
-        case 635625672: /*molecularWeight*/ return new String[] {"@SubstanceDefinition.structure.isotope.molecularWeight"};
+        case 635625672: /*molecularWeight*/ return new String[] {"@SubstanceDefinition.molecularWeight"};
         case 1469675088: /*technique*/ return new String[] {"CodeableConcept"};
         case -501788074: /*sourceDocument*/ return new String[] {"Reference"};
         case -671065907: /*representation*/ return new String[] {};
@@ -1756,11 +1721,8 @@ public class SubstanceDefinition extends DomainResource {
         else if (name.equals("molecularFormulaByMoiety")) {
           throw new FHIRException("Cannot call addChild on a primitive type SubstanceDefinition.structure.molecularFormulaByMoiety");
         }
-        else if (name.equals("isotope")) {
-          return addIsotope();
-        }
         else if (name.equals("molecularWeight")) {
-          this.molecularWeight = new SubstanceDefinitionStructureIsotopeMolecularWeightComponent();
+          this.molecularWeight = new SubstanceDefinitionMolecularWeightComponent();
           return this.molecularWeight;
         }
         else if (name.equals("technique")) {
@@ -1788,11 +1750,6 @@ public class SubstanceDefinition extends DomainResource {
         dst.opticalActivity = opticalActivity == null ? null : opticalActivity.copy();
         dst.molecularFormula = molecularFormula == null ? null : molecularFormula.copy();
         dst.molecularFormulaByMoiety = molecularFormulaByMoiety == null ? null : molecularFormulaByMoiety.copy();
-        if (isotope != null) {
-          dst.isotope = new ArrayList<SubstanceDefinitionStructureIsotopeComponent>();
-          for (SubstanceDefinitionStructureIsotopeComponent i : isotope)
-            dst.isotope.add(i.copy());
-        };
         dst.molecularWeight = molecularWeight == null ? null : molecularWeight.copy();
         if (technique != null) {
           dst.technique = new ArrayList<CodeableConcept>();
@@ -1820,9 +1777,9 @@ public class SubstanceDefinition extends DomainResource {
         SubstanceDefinitionStructureComponent o = (SubstanceDefinitionStructureComponent) other_;
         return compareDeep(stereochemistry, o.stereochemistry, true) && compareDeep(opticalActivity, o.opticalActivity, true)
            && compareDeep(molecularFormula, o.molecularFormula, true) && compareDeep(molecularFormulaByMoiety, o.molecularFormulaByMoiety, true)
-           && compareDeep(isotope, o.isotope, true) && compareDeep(molecularWeight, o.molecularWeight, true)
-           && compareDeep(technique, o.technique, true) && compareDeep(sourceDocument, o.sourceDocument, true)
-           && compareDeep(representation, o.representation, true);
+           && compareDeep(molecularWeight, o.molecularWeight, true) && compareDeep(technique, o.technique, true)
+           && compareDeep(sourceDocument, o.sourceDocument, true) && compareDeep(representation, o.representation, true)
+          ;
       }
 
       @Override
@@ -1838,8 +1795,8 @@ public class SubstanceDefinition extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(stereochemistry, opticalActivity
-          , molecularFormula, molecularFormulaByMoiety, isotope, molecularWeight, technique
-          , sourceDocument, representation);
+          , molecularFormula, molecularFormulaByMoiety, molecularWeight, technique, sourceDocument
+          , representation);
       }
 
   public String fhirType() {
@@ -1850,602 +1807,12 @@ public class SubstanceDefinition extends DomainResource {
   }
 
     @Block()
-    public static class SubstanceDefinitionStructureIsotopeComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * Substance identifier for each non-natural or radioisotope.
-         */
-        @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Substance identifier for each non-natural or radioisotope", formalDefinition="Substance identifier for each non-natural or radioisotope." )
-        protected Identifier identifier;
-
-        /**
-         * Substance name for each non-natural or radioisotope.
-         */
-        @Child(name = "name", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Substance name for each non-natural or radioisotope", formalDefinition="Substance name for each non-natural or radioisotope." )
-        protected CodeableConcept name;
-
-        /**
-         * The type of isotopic substitution present in a single substance.
-         */
-        @Child(name = "substitution", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The type of isotopic substitution present in a single substance", formalDefinition="The type of isotopic substitution present in a single substance." )
-        protected CodeableConcept substitution;
-
-        /**
-         * Half life - for a non-natural nuclide.
-         */
-        @Child(name = "halfLife", type = {Quantity.class}, order=4, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Half life - for a non-natural nuclide", formalDefinition="Half life - for a non-natural nuclide." )
-        protected Quantity halfLife;
-
-        /**
-         * The molecular weight or weight range (for proteins, polymers or nucleic acids).
-         */
-        @Child(name = "molecularWeight", type = {}, order=5, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The molecular weight or weight range (for proteins, polymers or nucleic acids)", formalDefinition="The molecular weight or weight range (for proteins, polymers or nucleic acids)." )
-        protected SubstanceDefinitionStructureIsotopeMolecularWeightComponent molecularWeight;
-
-        private static final long serialVersionUID = 1897382758L;
-
-    /**
-     * Constructor
-     */
-      public SubstanceDefinitionStructureIsotopeComponent() {
-        super();
-      }
-
-        /**
-         * @return {@link #identifier} (Substance identifier for each non-natural or radioisotope.)
-         */
-        public Identifier getIdentifier() { 
-          if (this.identifier == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstanceDefinitionStructureIsotopeComponent.identifier");
-            else if (Configuration.doAutoCreate())
-              this.identifier = new Identifier(); // cc
-          return this.identifier;
-        }
-
-        public boolean hasIdentifier() { 
-          return this.identifier != null && !this.identifier.isEmpty();
-        }
-
-        /**
-         * @param value {@link #identifier} (Substance identifier for each non-natural or radioisotope.)
-         */
-        public SubstanceDefinitionStructureIsotopeComponent setIdentifier(Identifier value) { 
-          this.identifier = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #name} (Substance name for each non-natural or radioisotope.)
-         */
-        public CodeableConcept getName() { 
-          if (this.name == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstanceDefinitionStructureIsotopeComponent.name");
-            else if (Configuration.doAutoCreate())
-              this.name = new CodeableConcept(); // cc
-          return this.name;
-        }
-
-        public boolean hasName() { 
-          return this.name != null && !this.name.isEmpty();
-        }
-
-        /**
-         * @param value {@link #name} (Substance name for each non-natural or radioisotope.)
-         */
-        public SubstanceDefinitionStructureIsotopeComponent setName(CodeableConcept value) { 
-          this.name = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #substitution} (The type of isotopic substitution present in a single substance.)
-         */
-        public CodeableConcept getSubstitution() { 
-          if (this.substitution == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstanceDefinitionStructureIsotopeComponent.substitution");
-            else if (Configuration.doAutoCreate())
-              this.substitution = new CodeableConcept(); // cc
-          return this.substitution;
-        }
-
-        public boolean hasSubstitution() { 
-          return this.substitution != null && !this.substitution.isEmpty();
-        }
-
-        /**
-         * @param value {@link #substitution} (The type of isotopic substitution present in a single substance.)
-         */
-        public SubstanceDefinitionStructureIsotopeComponent setSubstitution(CodeableConcept value) { 
-          this.substitution = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #halfLife} (Half life - for a non-natural nuclide.)
-         */
-        public Quantity getHalfLife() { 
-          if (this.halfLife == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstanceDefinitionStructureIsotopeComponent.halfLife");
-            else if (Configuration.doAutoCreate())
-              this.halfLife = new Quantity(); // cc
-          return this.halfLife;
-        }
-
-        public boolean hasHalfLife() { 
-          return this.halfLife != null && !this.halfLife.isEmpty();
-        }
-
-        /**
-         * @param value {@link #halfLife} (Half life - for a non-natural nuclide.)
-         */
-        public SubstanceDefinitionStructureIsotopeComponent setHalfLife(Quantity value) { 
-          this.halfLife = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #molecularWeight} (The molecular weight or weight range (for proteins, polymers or nucleic acids).)
-         */
-        public SubstanceDefinitionStructureIsotopeMolecularWeightComponent getMolecularWeight() { 
-          if (this.molecularWeight == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstanceDefinitionStructureIsotopeComponent.molecularWeight");
-            else if (Configuration.doAutoCreate())
-              this.molecularWeight = new SubstanceDefinitionStructureIsotopeMolecularWeightComponent(); // cc
-          return this.molecularWeight;
-        }
-
-        public boolean hasMolecularWeight() { 
-          return this.molecularWeight != null && !this.molecularWeight.isEmpty();
-        }
-
-        /**
-         * @param value {@link #molecularWeight} (The molecular weight or weight range (for proteins, polymers or nucleic acids).)
-         */
-        public SubstanceDefinitionStructureIsotopeComponent setMolecularWeight(SubstanceDefinitionStructureIsotopeMolecularWeightComponent value) { 
-          this.molecularWeight = value;
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("identifier", "Identifier", "Substance identifier for each non-natural or radioisotope.", 0, 1, identifier));
-          children.add(new Property("name", "CodeableConcept", "Substance name for each non-natural or radioisotope.", 0, 1, name));
-          children.add(new Property("substitution", "CodeableConcept", "The type of isotopic substitution present in a single substance.", 0, 1, substitution));
-          children.add(new Property("halfLife", "Quantity", "Half life - for a non-natural nuclide.", 0, 1, halfLife));
-          children.add(new Property("molecularWeight", "", "The molecular weight or weight range (for proteins, polymers or nucleic acids).", 0, 1, molecularWeight));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Substance identifier for each non-natural or radioisotope.", 0, 1, identifier);
-          case 3373707: /*name*/  return new Property("name", "CodeableConcept", "Substance name for each non-natural or radioisotope.", 0, 1, name);
-          case 826147581: /*substitution*/  return new Property("substitution", "CodeableConcept", "The type of isotopic substitution present in a single substance.", 0, 1, substitution);
-          case -54292017: /*halfLife*/  return new Property("halfLife", "Quantity", "Half life - for a non-natural nuclide.", 0, 1, halfLife);
-          case 635625672: /*molecularWeight*/  return new Property("molecularWeight", "", "The molecular weight or weight range (for proteins, polymers or nucleic acids).", 0, 1, molecularWeight);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : new Base[] {this.identifier}; // Identifier
-        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // CodeableConcept
-        case 826147581: /*substitution*/ return this.substitution == null ? new Base[0] : new Base[] {this.substitution}; // CodeableConcept
-        case -54292017: /*halfLife*/ return this.halfLife == null ? new Base[0] : new Base[] {this.halfLife}; // Quantity
-        case 635625672: /*molecularWeight*/ return this.molecularWeight == null ? new Base[0] : new Base[] {this.molecularWeight}; // SubstanceDefinitionStructureIsotopeMolecularWeightComponent
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case -1618432855: // identifier
-          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
-          return value;
-        case 3373707: // name
-          this.name = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case 826147581: // substitution
-          this.substitution = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case -54292017: // halfLife
-          this.halfLife = TypeConvertor.castToQuantity(value); // Quantity
-          return value;
-        case 635625672: // molecularWeight
-          this.molecularWeight = (SubstanceDefinitionStructureIsotopeMolecularWeightComponent) value; // SubstanceDefinitionStructureIsotopeMolecularWeightComponent
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("identifier")) {
-          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
-        } else if (name.equals("name")) {
-          this.name = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("substitution")) {
-          this.substitution = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("halfLife")) {
-          this.halfLife = TypeConvertor.castToQuantity(value); // Quantity
-        } else if (name.equals("molecularWeight")) {
-          this.molecularWeight = (SubstanceDefinitionStructureIsotopeMolecularWeightComponent) value; // SubstanceDefinitionStructureIsotopeMolecularWeightComponent
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1618432855:  return getIdentifier();
-        case 3373707:  return getName();
-        case 826147581:  return getSubstitution();
-        case -54292017:  return getHalfLife();
-        case 635625672:  return getMolecularWeight();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1618432855: /*identifier*/ return new String[] {"Identifier"};
-        case 3373707: /*name*/ return new String[] {"CodeableConcept"};
-        case 826147581: /*substitution*/ return new String[] {"CodeableConcept"};
-        case -54292017: /*halfLife*/ return new String[] {"Quantity"};
-        case 635625672: /*molecularWeight*/ return new String[] {};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("identifier")) {
-          this.identifier = new Identifier();
-          return this.identifier;
-        }
-        else if (name.equals("name")) {
-          this.name = new CodeableConcept();
-          return this.name;
-        }
-        else if (name.equals("substitution")) {
-          this.substitution = new CodeableConcept();
-          return this.substitution;
-        }
-        else if (name.equals("halfLife")) {
-          this.halfLife = new Quantity();
-          return this.halfLife;
-        }
-        else if (name.equals("molecularWeight")) {
-          this.molecularWeight = new SubstanceDefinitionStructureIsotopeMolecularWeightComponent();
-          return this.molecularWeight;
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public SubstanceDefinitionStructureIsotopeComponent copy() {
-        SubstanceDefinitionStructureIsotopeComponent dst = new SubstanceDefinitionStructureIsotopeComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(SubstanceDefinitionStructureIsotopeComponent dst) {
-        super.copyValues(dst);
-        dst.identifier = identifier == null ? null : identifier.copy();
-        dst.name = name == null ? null : name.copy();
-        dst.substitution = substitution == null ? null : substitution.copy();
-        dst.halfLife = halfLife == null ? null : halfLife.copy();
-        dst.molecularWeight = molecularWeight == null ? null : molecularWeight.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof SubstanceDefinitionStructureIsotopeComponent))
-          return false;
-        SubstanceDefinitionStructureIsotopeComponent o = (SubstanceDefinitionStructureIsotopeComponent) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(name, o.name, true) && compareDeep(substitution, o.substitution, true)
-           && compareDeep(halfLife, o.halfLife, true) && compareDeep(molecularWeight, o.molecularWeight, true)
-          ;
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof SubstanceDefinitionStructureIsotopeComponent))
-          return false;
-        SubstanceDefinitionStructureIsotopeComponent o = (SubstanceDefinitionStructureIsotopeComponent) other_;
-        return true;
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, name, substitution
-          , halfLife, molecularWeight);
-      }
-
-  public String fhirType() {
-    return "SubstanceDefinition.structure.isotope";
-
-  }
-
-  }
-
-    @Block()
-    public static class SubstanceDefinitionStructureIsotopeMolecularWeightComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * The method by which the molecular weight was determined.
-         */
-        @Child(name = "method", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The method by which the molecular weight was determined", formalDefinition="The method by which the molecular weight was determined." )
-        protected CodeableConcept method;
-
-        /**
-         * Type of molecular weight such as exact, average (also known as. number average), weight average.
-         */
-        @Child(name = "type", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Type of molecular weight such as exact, average (also known as. number average), weight average", formalDefinition="Type of molecular weight such as exact, average (also known as. number average), weight average." )
-        protected CodeableConcept type;
-
-        /**
-         * Used to capture quantitative values for a variety of elements. If only limits are given, the arithmetic mean would be the average. If only a single definite value for a given element is given, it would be captured in this field.
-         */
-        @Child(name = "amount", type = {Quantity.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Used to capture quantitative values for a variety of elements. If only limits are given, the arithmetic mean would be the average. If only a single definite value for a given element is given, it would be captured in this field", formalDefinition="Used to capture quantitative values for a variety of elements. If only limits are given, the arithmetic mean would be the average. If only a single definite value for a given element is given, it would be captured in this field." )
-        protected Quantity amount;
-
-        private static final long serialVersionUID = 805939780L;
-
-    /**
-     * Constructor
-     */
-      public SubstanceDefinitionStructureIsotopeMolecularWeightComponent() {
-        super();
-      }
-
-        /**
-         * @return {@link #method} (The method by which the molecular weight was determined.)
-         */
-        public CodeableConcept getMethod() { 
-          if (this.method == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstanceDefinitionStructureIsotopeMolecularWeightComponent.method");
-            else if (Configuration.doAutoCreate())
-              this.method = new CodeableConcept(); // cc
-          return this.method;
-        }
-
-        public boolean hasMethod() { 
-          return this.method != null && !this.method.isEmpty();
-        }
-
-        /**
-         * @param value {@link #method} (The method by which the molecular weight was determined.)
-         */
-        public SubstanceDefinitionStructureIsotopeMolecularWeightComponent setMethod(CodeableConcept value) { 
-          this.method = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #type} (Type of molecular weight such as exact, average (also known as. number average), weight average.)
-         */
-        public CodeableConcept getType() { 
-          if (this.type == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstanceDefinitionStructureIsotopeMolecularWeightComponent.type");
-            else if (Configuration.doAutoCreate())
-              this.type = new CodeableConcept(); // cc
-          return this.type;
-        }
-
-        public boolean hasType() { 
-          return this.type != null && !this.type.isEmpty();
-        }
-
-        /**
-         * @param value {@link #type} (Type of molecular weight such as exact, average (also known as. number average), weight average.)
-         */
-        public SubstanceDefinitionStructureIsotopeMolecularWeightComponent setType(CodeableConcept value) { 
-          this.type = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #amount} (Used to capture quantitative values for a variety of elements. If only limits are given, the arithmetic mean would be the average. If only a single definite value for a given element is given, it would be captured in this field.)
-         */
-        public Quantity getAmount() { 
-          if (this.amount == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstanceDefinitionStructureIsotopeMolecularWeightComponent.amount");
-            else if (Configuration.doAutoCreate())
-              this.amount = new Quantity(); // cc
-          return this.amount;
-        }
-
-        public boolean hasAmount() { 
-          return this.amount != null && !this.amount.isEmpty();
-        }
-
-        /**
-         * @param value {@link #amount} (Used to capture quantitative values for a variety of elements. If only limits are given, the arithmetic mean would be the average. If only a single definite value for a given element is given, it would be captured in this field.)
-         */
-        public SubstanceDefinitionStructureIsotopeMolecularWeightComponent setAmount(Quantity value) { 
-          this.amount = value;
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("method", "CodeableConcept", "The method by which the molecular weight was determined.", 0, 1, method));
-          children.add(new Property("type", "CodeableConcept", "Type of molecular weight such as exact, average (also known as. number average), weight average.", 0, 1, type));
-          children.add(new Property("amount", "Quantity", "Used to capture quantitative values for a variety of elements. If only limits are given, the arithmetic mean would be the average. If only a single definite value for a given element is given, it would be captured in this field.", 0, 1, amount));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case -1077554975: /*method*/  return new Property("method", "CodeableConcept", "The method by which the molecular weight was determined.", 0, 1, method);
-          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Type of molecular weight such as exact, average (also known as. number average), weight average.", 0, 1, type);
-          case -1413853096: /*amount*/  return new Property("amount", "Quantity", "Used to capture quantitative values for a variety of elements. If only limits are given, the arithmetic mean would be the average. If only a single definite value for a given element is given, it would be captured in this field.", 0, 1, amount);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case -1077554975: /*method*/ return this.method == null ? new Base[0] : new Base[] {this.method}; // CodeableConcept
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
-        case -1413853096: /*amount*/ return this.amount == null ? new Base[0] : new Base[] {this.amount}; // Quantity
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case -1077554975: // method
-          this.method = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case 3575610: // type
-          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case -1413853096: // amount
-          this.amount = TypeConvertor.castToQuantity(value); // Quantity
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("method")) {
-          this.method = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("type")) {
-          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("amount")) {
-          this.amount = TypeConvertor.castToQuantity(value); // Quantity
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1077554975:  return getMethod();
-        case 3575610:  return getType();
-        case -1413853096:  return getAmount();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1077554975: /*method*/ return new String[] {"CodeableConcept"};
-        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case -1413853096: /*amount*/ return new String[] {"Quantity"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("method")) {
-          this.method = new CodeableConcept();
-          return this.method;
-        }
-        else if (name.equals("type")) {
-          this.type = new CodeableConcept();
-          return this.type;
-        }
-        else if (name.equals("amount")) {
-          this.amount = new Quantity();
-          return this.amount;
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public SubstanceDefinitionStructureIsotopeMolecularWeightComponent copy() {
-        SubstanceDefinitionStructureIsotopeMolecularWeightComponent dst = new SubstanceDefinitionStructureIsotopeMolecularWeightComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(SubstanceDefinitionStructureIsotopeMolecularWeightComponent dst) {
-        super.copyValues(dst);
-        dst.method = method == null ? null : method.copy();
-        dst.type = type == null ? null : type.copy();
-        dst.amount = amount == null ? null : amount.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof SubstanceDefinitionStructureIsotopeMolecularWeightComponent))
-          return false;
-        SubstanceDefinitionStructureIsotopeMolecularWeightComponent o = (SubstanceDefinitionStructureIsotopeMolecularWeightComponent) other_;
-        return compareDeep(method, o.method, true) && compareDeep(type, o.type, true) && compareDeep(amount, o.amount, true)
-          ;
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof SubstanceDefinitionStructureIsotopeMolecularWeightComponent))
-          return false;
-        SubstanceDefinitionStructureIsotopeMolecularWeightComponent o = (SubstanceDefinitionStructureIsotopeMolecularWeightComponent) other_;
-        return true;
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(method, type, amount);
-      }
-
-  public String fhirType() {
-    return "SubstanceDefinition.structure.isotope.molecularWeight";
-
-  }
-
-  }
-
-    @Block()
     public static class SubstanceDefinitionStructureRepresentationComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The kind of structural representation (e.g. full, partial) or the technique used to derive the analytical characterization of the substance (e.g. x-ray, HPLC, NMR, peptide mapping, ligand binding assay, etc.).
+         * The kind of structural representation (e.g. full, partial).
          */
         @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The kind of structural representation (e.g. full, partial) or the technique used to derive the analytical characterization of the substance (e.g. x-ray, HPLC, NMR, peptide mapping, ligand binding assay, etc.)", formalDefinition="The kind of structural representation (e.g. full, partial) or the technique used to derive the analytical characterization of the substance (e.g. x-ray, HPLC, NMR, peptide mapping, ligand binding assay, etc.)." )
+        @Description(shortDefinition="The kind of structural representation (e.g. full, partial)", formalDefinition="The kind of structural representation (e.g. full, partial)." )
         protected CodeableConcept type;
 
         /**
@@ -2479,7 +1846,7 @@ public class SubstanceDefinition extends DomainResource {
       }
 
         /**
-         * @return {@link #type} (The kind of structural representation (e.g. full, partial) or the technique used to derive the analytical characterization of the substance (e.g. x-ray, HPLC, NMR, peptide mapping, ligand binding assay, etc.).)
+         * @return {@link #type} (The kind of structural representation (e.g. full, partial).)
          */
         public CodeableConcept getType() { 
           if (this.type == null)
@@ -2495,7 +1862,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #type} (The kind of structural representation (e.g. full, partial) or the technique used to derive the analytical characterization of the substance (e.g. x-ray, HPLC, NMR, peptide mapping, ligand binding assay, etc.).)
+         * @param value {@link #type} (The kind of structural representation (e.g. full, partial).)
          */
         public SubstanceDefinitionStructureRepresentationComponent setType(CodeableConcept value) { 
           this.type = value;
@@ -2601,7 +1968,7 @@ public class SubstanceDefinition extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("type", "CodeableConcept", "The kind of structural representation (e.g. full, partial) or the technique used to derive the analytical characterization of the substance (e.g. x-ray, HPLC, NMR, peptide mapping, ligand binding assay, etc.).", 0, 1, type));
+          children.add(new Property("type", "CodeableConcept", "The kind of structural representation (e.g. full, partial).", 0, 1, type));
           children.add(new Property("representation", "string", "The structural representation or characterization as a text string in a standard format.", 0, 1, representation));
           children.add(new Property("format", "CodeableConcept", "The format of the representation e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF. The logical content type rather than the physical file format of a document.", 0, 1, format));
           children.add(new Property("document", "Reference(DocumentReference)", "An attached file with the structural representation or characterization e.g. a molecular structure graphic of the substance, a JCAMP or AnIML file.", 0, 1, document));
@@ -2610,7 +1977,7 @@ public class SubstanceDefinition extends DomainResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The kind of structural representation (e.g. full, partial) or the technique used to derive the analytical characterization of the substance (e.g. x-ray, HPLC, NMR, peptide mapping, ligand binding assay, etc.).", 0, 1, type);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The kind of structural representation (e.g. full, partial).", 0, 1, type);
           case -671065907: /*representation*/  return new Property("representation", "string", "The structural representation or characterization as a text string in a standard format.", 0, 1, representation);
           case -1268779017: /*format*/  return new Property("format", "CodeableConcept", "The format of the representation e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF. The logical content type rather than the physical file format of a document.", 0, 1, format);
           case 861720859: /*document*/  return new Property("document", "Reference(DocumentReference)", "An attached file with the structural representation or characterization e.g. a molecular structure graphic of the substance, a JCAMP or AnIML file.", 0, 1, document);
@@ -4363,7 +3730,7 @@ public class SubstanceDefinition extends DomainResource {
         /**
          * For example "salt to parent", "active moiety", "starting material", "polymorph", "impurity of".
          */
-        @Child(name = "type", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "type", type = {CodeableConcept.class}, order=2, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="For example \"salt to parent\", \"active moiety\", \"starting material\", \"polymorph\", \"impurity of\"", formalDefinition="For example \"salt to parent\", \"active moiety\", \"starting material\", \"polymorph\", \"impurity of\"." )
         protected CodeableConcept type;
 
@@ -4377,7 +3744,7 @@ public class SubstanceDefinition extends DomainResource {
         /**
          * A numeric factor for the relationship, for instance to express that the salt of a substance has some percentage of the active substance in relation to some other.
          */
-        @Child(name = "amount", type = {Quantity.class, Range.class, Ratio.class, StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "amount", type = {Quantity.class, Ratio.class, StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="A numeric factor for the relationship, for instance to express that the salt of a substance has some percentage of the active substance in relation to some other", formalDefinition="A numeric factor for the relationship, for instance to express that the salt of a substance has some percentage of the active substance in relation to some other." )
         protected DataType amount;
 
@@ -4409,6 +3776,14 @@ public class SubstanceDefinition extends DomainResource {
      */
       public SubstanceDefinitionRelationshipComponent() {
         super();
+      }
+
+    /**
+     * Constructor
+     */
+      public SubstanceDefinitionRelationshipComponent(CodeableConcept type) {
+        super();
+        this.setType(type);
       }
 
         /**
@@ -4556,21 +3931,6 @@ public class SubstanceDefinition extends DomainResource {
         /**
          * @return {@link #amount} (A numeric factor for the relationship, for instance to express that the salt of a substance has some percentage of the active substance in relation to some other.)
          */
-        public Range getAmountRange() throws FHIRException { 
-          if (this.amount == null)
-            this.amount = new Range();
-          if (!(this.amount instanceof Range))
-            throw new FHIRException("Type mismatch: the type Range was expected, but "+this.amount.getClass().getName()+" was encountered");
-          return (Range) this.amount;
-        }
-
-        public boolean hasAmountRange() { 
-          return this != null && this.amount instanceof Range;
-        }
-
-        /**
-         * @return {@link #amount} (A numeric factor for the relationship, for instance to express that the salt of a substance has some percentage of the active substance in relation to some other.)
-         */
         public Ratio getAmountRatio() throws FHIRException { 
           if (this.amount == null)
             this.amount = new Ratio();
@@ -4606,7 +3966,7 @@ public class SubstanceDefinition extends DomainResource {
          * @param value {@link #amount} (A numeric factor for the relationship, for instance to express that the salt of a substance has some percentage of the active substance in relation to some other.)
          */
         public SubstanceDefinitionRelationshipComponent setAmount(DataType value) { 
-          if (value != null && !(value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof StringType))
+          if (value != null && !(value instanceof Quantity || value instanceof Ratio || value instanceof StringType))
             throw new Error("Not the right type for SubstanceDefinition.relationship.amount[x]: "+value.fhirType());
           this.amount = value;
           return this;
@@ -4718,7 +4078,7 @@ public class SubstanceDefinition extends DomainResource {
           children.add(new Property("substanceDefinition[x]", "Reference(SubstanceDefinition)|CodeableConcept", "A pointer to another substance, as a resource or just a representational code.", 0, 1, substanceDefinition));
           children.add(new Property("type", "CodeableConcept", "For example \"salt to parent\", \"active moiety\", \"starting material\", \"polymorph\", \"impurity of\".", 0, 1, type));
           children.add(new Property("isDefining", "boolean", "For example where an enzyme strongly bonds with a particular substance, this is a defining relationship for that enzyme, out of several possible substance relationships.", 0, 1, isDefining));
-          children.add(new Property("amount[x]", "Quantity|Range|Ratio|string", "A numeric factor for the relationship, for instance to express that the salt of a substance has some percentage of the active substance in relation to some other.", 0, 1, amount));
+          children.add(new Property("amount[x]", "Quantity|Ratio|string", "A numeric factor for the relationship, for instance to express that the salt of a substance has some percentage of the active substance in relation to some other.", 0, 1, amount));
           children.add(new Property("amountRatioHighLimit", "Ratio", "For use when the numeric has an uncertain range.", 0, 1, amountRatioHighLimit));
           children.add(new Property("amountType", "CodeableConcept", "An operator for the amount, for example \"average\", \"approximately\", \"less than\".", 0, 1, amountType));
           children.add(new Property("source", "Reference(DocumentReference)", "Supporting literature.", 0, java.lang.Integer.MAX_VALUE, source));
@@ -4733,10 +4093,9 @@ public class SubstanceDefinition extends DomainResource {
           case -132490690: /*substanceDefinitionCodeableConcept*/  return new Property("substanceDefinition[x]", "CodeableConcept", "A pointer to another substance, as a resource or just a representational code.", 0, 1, substanceDefinition);
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "For example \"salt to parent\", \"active moiety\", \"starting material\", \"polymorph\", \"impurity of\".", 0, 1, type);
           case -141812990: /*isDefining*/  return new Property("isDefining", "boolean", "For example where an enzyme strongly bonds with a particular substance, this is a defining relationship for that enzyme, out of several possible substance relationships.", 0, 1, isDefining);
-          case 646780200: /*amount[x]*/  return new Property("amount[x]", "Quantity|Range|Ratio|string", "A numeric factor for the relationship, for instance to express that the salt of a substance has some percentage of the active substance in relation to some other.", 0, 1, amount);
-          case -1413853096: /*amount*/  return new Property("amount[x]", "Quantity|Range|Ratio|string", "A numeric factor for the relationship, for instance to express that the salt of a substance has some percentage of the active substance in relation to some other.", 0, 1, amount);
+          case 646780200: /*amount[x]*/  return new Property("amount[x]", "Quantity|Ratio|string", "A numeric factor for the relationship, for instance to express that the salt of a substance has some percentage of the active substance in relation to some other.", 0, 1, amount);
+          case -1413853096: /*amount*/  return new Property("amount[x]", "Quantity|Ratio|string", "A numeric factor for the relationship, for instance to express that the salt of a substance has some percentage of the active substance in relation to some other.", 0, 1, amount);
           case 1664303363: /*amountQuantity*/  return new Property("amount[x]", "Quantity", "A numeric factor for the relationship, for instance to express that the salt of a substance has some percentage of the active substance in relation to some other.", 0, 1, amount);
-          case -1223462971: /*amountRange*/  return new Property("amount[x]", "Range", "A numeric factor for the relationship, for instance to express that the salt of a substance has some percentage of the active substance in relation to some other.", 0, 1, amount);
           case -1223457133: /*amountRatio*/  return new Property("amount[x]", "Ratio", "A numeric factor for the relationship, for instance to express that the salt of a substance has some percentage of the active substance in relation to some other.", 0, 1, amount);
           case 773651081: /*amountString*/  return new Property("amount[x]", "string", "A numeric factor for the relationship, for instance to express that the salt of a substance has some percentage of the active substance in relation to some other.", 0, 1, amount);
           case -1832648218: /*amountRatioHighLimit*/  return new Property("amountRatioHighLimit", "Ratio", "For use when the numeric has an uncertain range.", 0, 1, amountRatioHighLimit);
@@ -4835,7 +4194,7 @@ public class SubstanceDefinition extends DomainResource {
         case 718195427: /*substanceDefinition*/ return new String[] {"Reference", "CodeableConcept"};
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case -141812990: /*isDefining*/ return new String[] {"boolean"};
-        case -1413853096: /*amount*/ return new String[] {"Quantity", "Range", "Ratio", "string"};
+        case -1413853096: /*amount*/ return new String[] {"Quantity", "Ratio", "string"};
         case -1832648218: /*amountRatioHighLimit*/ return new String[] {"Ratio"};
         case -1424857166: /*amountType*/ return new String[] {"CodeableConcept"};
         case -896505829: /*source*/ return new String[] {"Reference"};
@@ -4863,10 +4222,6 @@ public class SubstanceDefinition extends DomainResource {
         }
         else if (name.equals("amountQuantity")) {
           this.amount = new Quantity();
-          return this.amount;
-        }
-        else if (name.equals("amountRange")) {
-          this.amount = new Range();
           return this.amount;
         }
         else if (name.equals("amountRatio")) {
@@ -5323,9 +4678,9 @@ public class SubstanceDefinition extends DomainResource {
     /**
      * Identifier by which this substance is known.
      */
-    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Identifier by which this substance is known", formalDefinition="Identifier by which this substance is known." )
-    protected Identifier identifier;
+    protected List<Identifier> identifier;
 
     /**
      * A business level identifier of the substance.
@@ -5342,88 +4697,88 @@ public class SubstanceDefinition extends DomainResource {
     protected CodeableConcept status;
 
     /**
-     * High level categorization, e.g. polymer or nucleic acid, or food, chemical, biological.
+     * A high level categorization, e.g. polymer or nucleic acid, or food, chemical, biological, or a lower level such as the general types of polymer (linear or branch chain) or type of impurity (process related or contaminant).
      */
-    @Child(name = "category", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="High level categorization, e.g. polymer or nucleic acid, or food, chemical, biological", formalDefinition="High level categorization, e.g. polymer or nucleic acid, or food, chemical, biological." )
-    protected CodeableConcept category;
-
-    /**
-     * A lower level classification than category, such as the general types of polymer (linear or branch chain) or type of impurity (process related or contaminant).
-     */
-    @Child(name = "classification", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="A lower level classification than category, such as the general types of polymer (linear or branch chain) or type of impurity (process related or contaminant)", formalDefinition="A lower level classification than category, such as the general types of polymer (linear or branch chain) or type of impurity (process related or contaminant)." )
+    @Child(name = "classification", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="A high level categorization, e.g. polymer or nucleic acid, or food, chemical, biological, or a lower level such as the general types of polymer (linear or branch chain) or type of impurity (process related or contaminant)", formalDefinition="A high level categorization, e.g. polymer or nucleic acid, or food, chemical, biological, or a lower level such as the general types of polymer (linear or branch chain) or type of impurity (process related or contaminant)." )
     protected List<CodeableConcept> classification;
 
     /**
      * If the substance applies to only human or veterinary use.
      */
-    @Child(name = "domain", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "domain", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="If the substance applies to only human or veterinary use", formalDefinition="If the substance applies to only human or veterinary use." )
     protected CodeableConcept domain;
 
     /**
      * The quality standard, established benchmark, to which substance complies (e.g. USP/NF, Ph. Eur, JP, BP, Company Standard).
      */
-    @Child(name = "grade", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "grade", type = {CodeableConcept.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The quality standard, established benchmark, to which substance complies (e.g. USP/NF, Ph. Eur, JP, BP, Company Standard)", formalDefinition="The quality standard, established benchmark, to which substance complies (e.g. USP/NF, Ph. Eur, JP, BP, Company Standard)." )
     protected List<CodeableConcept> grade;
 
     /**
      * Textual description of the substance.
      */
-    @Child(name = "description", type = {MarkdownType.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "description", type = {MarkdownType.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Textual description of the substance", formalDefinition="Textual description of the substance." )
     protected MarkdownType description;
 
     /**
      * Supporting literature.
      */
-    @Child(name = "source", type = {DocumentReference.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "informationSource", type = {Citation.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Supporting literature", formalDefinition="Supporting literature." )
-    protected List<Reference> source;
+    protected List<Reference> informationSource;
 
     /**
      * Textual comment about the substance's catalogue or registry record.
      */
-    @Child(name = "note", type = {Annotation.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "note", type = {Annotation.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Textual comment about the substance's catalogue or registry record", formalDefinition="Textual comment about the substance's catalogue or registry record." )
     protected List<Annotation> note;
 
     /**
      * A company that makes this substance.
      */
-    @Child(name = "manufacturer", type = {Organization.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "manufacturer", type = {Organization.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A company that makes this substance", formalDefinition="A company that makes this substance." )
     protected List<Reference> manufacturer;
 
     /**
      * A company that supplies this substance.
      */
-    @Child(name = "supplier", type = {Organization.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "supplier", type = {Organization.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A company that supplies this substance", formalDefinition="A company that supplies this substance." )
     protected List<Reference> supplier;
 
     /**
      * Moiety, for structural modifications.
      */
-    @Child(name = "moiety", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "moiety", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Moiety, for structural modifications", formalDefinition="Moiety, for structural modifications." )
     protected List<SubstanceDefinitionMoietyComponent> moiety;
 
     /**
-     * General specifications for this substance, including how it is related to other substances.
+     * General specifications for this substance.
      */
-    @Child(name = "property", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="General specifications for this substance, including how it is related to other substances", formalDefinition="General specifications for this substance, including how it is related to other substances." )
+    @Child(name = "property", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="General specifications for this substance", formalDefinition="General specifications for this substance." )
     protected List<SubstanceDefinitionPropertyComponent> property;
 
     /**
      * General information detailing this substance.
      */
-    @Child(name = "referenceInformation", type = {SubstanceReferenceInformation.class}, order=14, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "referenceInformation", type = {SubstanceReferenceInformation.class}, order=13, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="General information detailing this substance", formalDefinition="General information detailing this substance." )
     protected Reference referenceInformation;
+
+    /**
+     * The molecular weight or weight range (for proteins, polymers or nucleic acids).
+     */
+    @Child(name = "molecularWeight", type = {}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="The molecular weight or weight range (for proteins, polymers or nucleic acids)", formalDefinition="The molecular weight or weight range (for proteins, polymers or nucleic acids)." )
+    protected List<SubstanceDefinitionMolecularWeightComponent> molecularWeight;
 
     /**
      * Structural information.
@@ -5447,48 +4802,41 @@ public class SubstanceDefinition extends DomainResource {
     protected List<SubstanceDefinitionNameComponent> name;
 
     /**
-     * The molecular weight or weight range (for proteins, polymers or nucleic acids).
-     */
-    @Child(name = "molecularWeight", type = {SubstanceDefinitionStructureIsotopeMolecularWeightComponent.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The molecular weight or weight range (for proteins, polymers or nucleic acids)", formalDefinition="The molecular weight or weight range (for proteins, polymers or nucleic acids)." )
-    protected List<SubstanceDefinitionStructureIsotopeMolecularWeightComponent> molecularWeight;
-
-    /**
      * A link between this substance and another, with details of the relationship.
      */
-    @Child(name = "relationship", type = {}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "relationship", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A link between this substance and another, with details of the relationship", formalDefinition="A link between this substance and another, with details of the relationship." )
     protected List<SubstanceDefinitionRelationshipComponent> relationship;
 
     /**
      * Data items specific to nucleic acids.
      */
-    @Child(name = "nucleicAcid", type = {SubstanceNucleicAcid.class}, order=20, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "nucleicAcid", type = {SubstanceNucleicAcid.class}, order=19, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Data items specific to nucleic acids", formalDefinition="Data items specific to nucleic acids." )
     protected Reference nucleicAcid;
 
     /**
      * Data items specific to polymers.
      */
-    @Child(name = "polymer", type = {SubstancePolymer.class}, order=21, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "polymer", type = {SubstancePolymer.class}, order=20, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Data items specific to polymers", formalDefinition="Data items specific to polymers." )
     protected Reference polymer;
 
     /**
      * Data items specific to proteins.
      */
-    @Child(name = "protein", type = {SubstanceProtein.class}, order=22, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "protein", type = {SubstanceProtein.class}, order=21, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Data items specific to proteins", formalDefinition="Data items specific to proteins." )
     protected Reference protein;
 
     /**
      * Material or taxonomic/anatomical source for the substance.
      */
-    @Child(name = "sourceMaterial", type = {}, order=23, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "sourceMaterial", type = {}, order=22, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Material or taxonomic/anatomical source for the substance", formalDefinition="Material or taxonomic/anatomical source for the substance." )
     protected SubstanceDefinitionSourceMaterialComponent sourceMaterial;
 
-    private static final long serialVersionUID = 1189421044L;
+    private static final long serialVersionUID = 23576785L;
 
   /**
    * Constructor
@@ -5500,25 +4848,54 @@ public class SubstanceDefinition extends DomainResource {
     /**
      * @return {@link #identifier} (Identifier by which this substance is known.)
      */
-    public Identifier getIdentifier() { 
+    public List<Identifier> getIdentifier() { 
       if (this.identifier == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create SubstanceDefinition.identifier");
-        else if (Configuration.doAutoCreate())
-          this.identifier = new Identifier(); // cc
+        this.identifier = new ArrayList<Identifier>();
       return this.identifier;
     }
 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public SubstanceDefinition setIdentifier(List<Identifier> theIdentifier) { 
+      this.identifier = theIdentifier;
+      return this;
+    }
+
     public boolean hasIdentifier() { 
-      return this.identifier != null && !this.identifier.isEmpty();
+      if (this.identifier == null)
+        return false;
+      for (Identifier item : this.identifier)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Identifier addIdentifier() { //3
+      Identifier t = new Identifier();
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return t;
+    }
+
+    public SubstanceDefinition addIdentifier(Identifier t) { //3
+      if (t == null)
+        return this;
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return this;
     }
 
     /**
-     * @param value {@link #identifier} (Identifier by which this substance is known.)
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
-    public SubstanceDefinition setIdentifier(Identifier value) { 
-      this.identifier = value;
-      return this;
+    public Identifier getIdentifierFirstRep() { 
+      if (getIdentifier().isEmpty()) {
+        addIdentifier();
+      }
+      return getIdentifier().get(0);
     }
 
     /**
@@ -5595,31 +4972,7 @@ public class SubstanceDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #category} (High level categorization, e.g. polymer or nucleic acid, or food, chemical, biological.)
-     */
-    public CodeableConcept getCategory() { 
-      if (this.category == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create SubstanceDefinition.category");
-        else if (Configuration.doAutoCreate())
-          this.category = new CodeableConcept(); // cc
-      return this.category;
-    }
-
-    public boolean hasCategory() { 
-      return this.category != null && !this.category.isEmpty();
-    }
-
-    /**
-     * @param value {@link #category} (High level categorization, e.g. polymer or nucleic acid, or food, chemical, biological.)
-     */
-    public SubstanceDefinition setCategory(CodeableConcept value) { 
-      this.category = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #classification} (A lower level classification than category, such as the general types of polymer (linear or branch chain) or type of impurity (process related or contaminant).)
+     * @return {@link #classification} (A high level categorization, e.g. polymer or nucleic acid, or food, chemical, biological, or a lower level such as the general types of polymer (linear or branch chain) or type of impurity (process related or contaminant).)
      */
     public List<CodeableConcept> getClassification() { 
       if (this.classification == null)
@@ -5798,56 +5151,56 @@ public class SubstanceDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #source} (Supporting literature.)
+     * @return {@link #informationSource} (Supporting literature.)
      */
-    public List<Reference> getSource() { 
-      if (this.source == null)
-        this.source = new ArrayList<Reference>();
-      return this.source;
+    public List<Reference> getInformationSource() { 
+      if (this.informationSource == null)
+        this.informationSource = new ArrayList<Reference>();
+      return this.informationSource;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public SubstanceDefinition setSource(List<Reference> theSource) { 
-      this.source = theSource;
+    public SubstanceDefinition setInformationSource(List<Reference> theInformationSource) { 
+      this.informationSource = theInformationSource;
       return this;
     }
 
-    public boolean hasSource() { 
-      if (this.source == null)
+    public boolean hasInformationSource() { 
+      if (this.informationSource == null)
         return false;
-      for (Reference item : this.source)
+      for (Reference item : this.informationSource)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public Reference addSource() { //3
+    public Reference addInformationSource() { //3
       Reference t = new Reference();
-      if (this.source == null)
-        this.source = new ArrayList<Reference>();
-      this.source.add(t);
+      if (this.informationSource == null)
+        this.informationSource = new ArrayList<Reference>();
+      this.informationSource.add(t);
       return t;
     }
 
-    public SubstanceDefinition addSource(Reference t) { //3
+    public SubstanceDefinition addInformationSource(Reference t) { //3
       if (t == null)
         return this;
-      if (this.source == null)
-        this.source = new ArrayList<Reference>();
-      this.source.add(t);
+      if (this.informationSource == null)
+        this.informationSource = new ArrayList<Reference>();
+      this.informationSource.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #source}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #informationSource}, creating it if it does not already exist {3}
      */
-    public Reference getSourceFirstRep() { 
-      if (getSource().isEmpty()) {
-        addSource();
+    public Reference getInformationSourceFirstRep() { 
+      if (getInformationSource().isEmpty()) {
+        addInformationSource();
       }
-      return getSource().get(0);
+      return getInformationSource().get(0);
     }
 
     /**
@@ -6063,7 +5416,7 @@ public class SubstanceDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #property} (General specifications for this substance, including how it is related to other substances.)
+     * @return {@link #property} (General specifications for this substance.)
      */
     public List<SubstanceDefinitionPropertyComponent> getProperty() { 
       if (this.property == null)
@@ -6137,6 +5490,59 @@ public class SubstanceDefinition extends DomainResource {
     public SubstanceDefinition setReferenceInformation(Reference value) { 
       this.referenceInformation = value;
       return this;
+    }
+
+    /**
+     * @return {@link #molecularWeight} (The molecular weight or weight range (for proteins, polymers or nucleic acids).)
+     */
+    public List<SubstanceDefinitionMolecularWeightComponent> getMolecularWeight() { 
+      if (this.molecularWeight == null)
+        this.molecularWeight = new ArrayList<SubstanceDefinitionMolecularWeightComponent>();
+      return this.molecularWeight;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public SubstanceDefinition setMolecularWeight(List<SubstanceDefinitionMolecularWeightComponent> theMolecularWeight) { 
+      this.molecularWeight = theMolecularWeight;
+      return this;
+    }
+
+    public boolean hasMolecularWeight() { 
+      if (this.molecularWeight == null)
+        return false;
+      for (SubstanceDefinitionMolecularWeightComponent item : this.molecularWeight)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public SubstanceDefinitionMolecularWeightComponent addMolecularWeight() { //3
+      SubstanceDefinitionMolecularWeightComponent t = new SubstanceDefinitionMolecularWeightComponent();
+      if (this.molecularWeight == null)
+        this.molecularWeight = new ArrayList<SubstanceDefinitionMolecularWeightComponent>();
+      this.molecularWeight.add(t);
+      return t;
+    }
+
+    public SubstanceDefinition addMolecularWeight(SubstanceDefinitionMolecularWeightComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.molecularWeight == null)
+        this.molecularWeight = new ArrayList<SubstanceDefinitionMolecularWeightComponent>();
+      this.molecularWeight.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #molecularWeight}, creating it if it does not already exist {3}
+     */
+    public SubstanceDefinitionMolecularWeightComponent getMolecularWeightFirstRep() { 
+      if (getMolecularWeight().isEmpty()) {
+        addMolecularWeight();
+      }
+      return getMolecularWeight().get(0);
     }
 
     /**
@@ -6267,59 +5673,6 @@ public class SubstanceDefinition extends DomainResource {
         addName();
       }
       return getName().get(0);
-    }
-
-    /**
-     * @return {@link #molecularWeight} (The molecular weight or weight range (for proteins, polymers or nucleic acids).)
-     */
-    public List<SubstanceDefinitionStructureIsotopeMolecularWeightComponent> getMolecularWeight() { 
-      if (this.molecularWeight == null)
-        this.molecularWeight = new ArrayList<SubstanceDefinitionStructureIsotopeMolecularWeightComponent>();
-      return this.molecularWeight;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public SubstanceDefinition setMolecularWeight(List<SubstanceDefinitionStructureIsotopeMolecularWeightComponent> theMolecularWeight) { 
-      this.molecularWeight = theMolecularWeight;
-      return this;
-    }
-
-    public boolean hasMolecularWeight() { 
-      if (this.molecularWeight == null)
-        return false;
-      for (SubstanceDefinitionStructureIsotopeMolecularWeightComponent item : this.molecularWeight)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public SubstanceDefinitionStructureIsotopeMolecularWeightComponent addMolecularWeight() { //3
-      SubstanceDefinitionStructureIsotopeMolecularWeightComponent t = new SubstanceDefinitionStructureIsotopeMolecularWeightComponent();
-      if (this.molecularWeight == null)
-        this.molecularWeight = new ArrayList<SubstanceDefinitionStructureIsotopeMolecularWeightComponent>();
-      this.molecularWeight.add(t);
-      return t;
-    }
-
-    public SubstanceDefinition addMolecularWeight(SubstanceDefinitionStructureIsotopeMolecularWeightComponent t) { //3
-      if (t == null)
-        return this;
-      if (this.molecularWeight == null)
-        this.molecularWeight = new ArrayList<SubstanceDefinitionStructureIsotopeMolecularWeightComponent>();
-      this.molecularWeight.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #molecularWeight}, creating it if it does not already exist {3}
-     */
-    public SubstanceDefinitionStructureIsotopeMolecularWeightComponent getMolecularWeightFirstRep() { 
-      if (getMolecularWeight().isEmpty()) {
-        addMolecularWeight();
-      }
-      return getMolecularWeight().get(0);
     }
 
     /**
@@ -6473,25 +5826,24 @@ public class SubstanceDefinition extends DomainResource {
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("identifier", "Identifier", "Identifier by which this substance is known.", 0, 1, identifier));
+        children.add(new Property("identifier", "Identifier", "Identifier by which this substance is known.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("version", "string", "A business level identifier of the substance.", 0, 1, version));
         children.add(new Property("status", "CodeableConcept", "Status of substance within the catalogue e.g. approved.", 0, 1, status));
-        children.add(new Property("category", "CodeableConcept", "High level categorization, e.g. polymer or nucleic acid, or food, chemical, biological.", 0, 1, category));
-        children.add(new Property("classification", "CodeableConcept", "A lower level classification than category, such as the general types of polymer (linear or branch chain) or type of impurity (process related or contaminant).", 0, java.lang.Integer.MAX_VALUE, classification));
+        children.add(new Property("classification", "CodeableConcept", "A high level categorization, e.g. polymer or nucleic acid, or food, chemical, biological, or a lower level such as the general types of polymer (linear or branch chain) or type of impurity (process related or contaminant).", 0, java.lang.Integer.MAX_VALUE, classification));
         children.add(new Property("domain", "CodeableConcept", "If the substance applies to only human or veterinary use.", 0, 1, domain));
         children.add(new Property("grade", "CodeableConcept", "The quality standard, established benchmark, to which substance complies (e.g. USP/NF, Ph. Eur, JP, BP, Company Standard).", 0, java.lang.Integer.MAX_VALUE, grade));
         children.add(new Property("description", "markdown", "Textual description of the substance.", 0, 1, description));
-        children.add(new Property("source", "Reference(DocumentReference)", "Supporting literature.", 0, java.lang.Integer.MAX_VALUE, source));
+        children.add(new Property("informationSource", "Reference(Citation)", "Supporting literature.", 0, java.lang.Integer.MAX_VALUE, informationSource));
         children.add(new Property("note", "Annotation", "Textual comment about the substance's catalogue or registry record.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("manufacturer", "Reference(Organization)", "A company that makes this substance.", 0, java.lang.Integer.MAX_VALUE, manufacturer));
         children.add(new Property("supplier", "Reference(Organization)", "A company that supplies this substance.", 0, java.lang.Integer.MAX_VALUE, supplier));
         children.add(new Property("moiety", "", "Moiety, for structural modifications.", 0, java.lang.Integer.MAX_VALUE, moiety));
-        children.add(new Property("property", "", "General specifications for this substance, including how it is related to other substances.", 0, java.lang.Integer.MAX_VALUE, property));
+        children.add(new Property("property", "", "General specifications for this substance.", 0, java.lang.Integer.MAX_VALUE, property));
         children.add(new Property("referenceInformation", "Reference(SubstanceReferenceInformation)", "General information detailing this substance.", 0, 1, referenceInformation));
+        children.add(new Property("molecularWeight", "", "The molecular weight or weight range (for proteins, polymers or nucleic acids).", 0, java.lang.Integer.MAX_VALUE, molecularWeight));
         children.add(new Property("structure", "", "Structural information.", 0, 1, structure));
         children.add(new Property("code", "", "Codes associated with the substance.", 0, java.lang.Integer.MAX_VALUE, code));
         children.add(new Property("name", "", "Names applicable to this substance.", 0, java.lang.Integer.MAX_VALUE, name));
-        children.add(new Property("molecularWeight", "@SubstanceDefinition.structure.isotope.molecularWeight", "The molecular weight or weight range (for proteins, polymers or nucleic acids).", 0, java.lang.Integer.MAX_VALUE, molecularWeight));
         children.add(new Property("relationship", "", "A link between this substance and another, with details of the relationship.", 0, java.lang.Integer.MAX_VALUE, relationship));
         children.add(new Property("nucleicAcid", "Reference(SubstanceNucleicAcid)", "Data items specific to nucleic acids.", 0, 1, nucleicAcid));
         children.add(new Property("polymer", "Reference(SubstancePolymer)", "Data items specific to polymers.", 0, 1, polymer));
@@ -6502,25 +5854,24 @@ public class SubstanceDefinition extends DomainResource {
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifier by which this substance is known.", 0, 1, identifier);
+        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifier by which this substance is known.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 351608024: /*version*/  return new Property("version", "string", "A business level identifier of the substance.", 0, 1, version);
         case -892481550: /*status*/  return new Property("status", "CodeableConcept", "Status of substance within the catalogue e.g. approved.", 0, 1, status);
-        case 50511102: /*category*/  return new Property("category", "CodeableConcept", "High level categorization, e.g. polymer or nucleic acid, or food, chemical, biological.", 0, 1, category);
-        case 382350310: /*classification*/  return new Property("classification", "CodeableConcept", "A lower level classification than category, such as the general types of polymer (linear or branch chain) or type of impurity (process related or contaminant).", 0, java.lang.Integer.MAX_VALUE, classification);
+        case 382350310: /*classification*/  return new Property("classification", "CodeableConcept", "A high level categorization, e.g. polymer or nucleic acid, or food, chemical, biological, or a lower level such as the general types of polymer (linear or branch chain) or type of impurity (process related or contaminant).", 0, java.lang.Integer.MAX_VALUE, classification);
         case -1326197564: /*domain*/  return new Property("domain", "CodeableConcept", "If the substance applies to only human or veterinary use.", 0, 1, domain);
         case 98615255: /*grade*/  return new Property("grade", "CodeableConcept", "The quality standard, established benchmark, to which substance complies (e.g. USP/NF, Ph. Eur, JP, BP, Company Standard).", 0, java.lang.Integer.MAX_VALUE, grade);
         case -1724546052: /*description*/  return new Property("description", "markdown", "Textual description of the substance.", 0, 1, description);
-        case -896505829: /*source*/  return new Property("source", "Reference(DocumentReference)", "Supporting literature.", 0, java.lang.Integer.MAX_VALUE, source);
+        case -2123220889: /*informationSource*/  return new Property("informationSource", "Reference(Citation)", "Supporting literature.", 0, java.lang.Integer.MAX_VALUE, informationSource);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Textual comment about the substance's catalogue or registry record.", 0, java.lang.Integer.MAX_VALUE, note);
         case -1969347631: /*manufacturer*/  return new Property("manufacturer", "Reference(Organization)", "A company that makes this substance.", 0, java.lang.Integer.MAX_VALUE, manufacturer);
         case -1663305268: /*supplier*/  return new Property("supplier", "Reference(Organization)", "A company that supplies this substance.", 0, java.lang.Integer.MAX_VALUE, supplier);
         case -1068650173: /*moiety*/  return new Property("moiety", "", "Moiety, for structural modifications.", 0, java.lang.Integer.MAX_VALUE, moiety);
-        case -993141291: /*property*/  return new Property("property", "", "General specifications for this substance, including how it is related to other substances.", 0, java.lang.Integer.MAX_VALUE, property);
+        case -993141291: /*property*/  return new Property("property", "", "General specifications for this substance.", 0, java.lang.Integer.MAX_VALUE, property);
         case -2117930783: /*referenceInformation*/  return new Property("referenceInformation", "Reference(SubstanceReferenceInformation)", "General information detailing this substance.", 0, 1, referenceInformation);
+        case 635625672: /*molecularWeight*/  return new Property("molecularWeight", "", "The molecular weight or weight range (for proteins, polymers or nucleic acids).", 0, java.lang.Integer.MAX_VALUE, molecularWeight);
         case 144518515: /*structure*/  return new Property("structure", "", "Structural information.", 0, 1, structure);
         case 3059181: /*code*/  return new Property("code", "", "Codes associated with the substance.", 0, java.lang.Integer.MAX_VALUE, code);
         case 3373707: /*name*/  return new Property("name", "", "Names applicable to this substance.", 0, java.lang.Integer.MAX_VALUE, name);
-        case 635625672: /*molecularWeight*/  return new Property("molecularWeight", "@SubstanceDefinition.structure.isotope.molecularWeight", "The molecular weight or weight range (for proteins, polymers or nucleic acids).", 0, java.lang.Integer.MAX_VALUE, molecularWeight);
         case -261851592: /*relationship*/  return new Property("relationship", "", "A link between this substance and another, with details of the relationship.", 0, java.lang.Integer.MAX_VALUE, relationship);
         case 1625275180: /*nucleicAcid*/  return new Property("nucleicAcid", "Reference(SubstanceNucleicAcid)", "Data items specific to nucleic acids.", 0, 1, nucleicAcid);
         case -397514098: /*polymer*/  return new Property("polymer", "Reference(SubstancePolymer)", "Data items specific to polymers.", 0, 1, polymer);
@@ -6534,25 +5885,24 @@ public class SubstanceDefinition extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : new Base[] {this.identifier}; // Identifier
+        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // CodeableConcept
-        case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // CodeableConcept
         case 382350310: /*classification*/ return this.classification == null ? new Base[0] : this.classification.toArray(new Base[this.classification.size()]); // CodeableConcept
         case -1326197564: /*domain*/ return this.domain == null ? new Base[0] : new Base[] {this.domain}; // CodeableConcept
         case 98615255: /*grade*/ return this.grade == null ? new Base[0] : this.grade.toArray(new Base[this.grade.size()]); // CodeableConcept
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
-        case -896505829: /*source*/ return this.source == null ? new Base[0] : this.source.toArray(new Base[this.source.size()]); // Reference
+        case -2123220889: /*informationSource*/ return this.informationSource == null ? new Base[0] : this.informationSource.toArray(new Base[this.informationSource.size()]); // Reference
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         case -1969347631: /*manufacturer*/ return this.manufacturer == null ? new Base[0] : this.manufacturer.toArray(new Base[this.manufacturer.size()]); // Reference
         case -1663305268: /*supplier*/ return this.supplier == null ? new Base[0] : this.supplier.toArray(new Base[this.supplier.size()]); // Reference
         case -1068650173: /*moiety*/ return this.moiety == null ? new Base[0] : this.moiety.toArray(new Base[this.moiety.size()]); // SubstanceDefinitionMoietyComponent
         case -993141291: /*property*/ return this.property == null ? new Base[0] : this.property.toArray(new Base[this.property.size()]); // SubstanceDefinitionPropertyComponent
         case -2117930783: /*referenceInformation*/ return this.referenceInformation == null ? new Base[0] : new Base[] {this.referenceInformation}; // Reference
+        case 635625672: /*molecularWeight*/ return this.molecularWeight == null ? new Base[0] : this.molecularWeight.toArray(new Base[this.molecularWeight.size()]); // SubstanceDefinitionMolecularWeightComponent
         case 144518515: /*structure*/ return this.structure == null ? new Base[0] : new Base[] {this.structure}; // SubstanceDefinitionStructureComponent
         case 3059181: /*code*/ return this.code == null ? new Base[0] : this.code.toArray(new Base[this.code.size()]); // SubstanceDefinitionCodeComponent
         case 3373707: /*name*/ return this.name == null ? new Base[0] : this.name.toArray(new Base[this.name.size()]); // SubstanceDefinitionNameComponent
-        case 635625672: /*molecularWeight*/ return this.molecularWeight == null ? new Base[0] : this.molecularWeight.toArray(new Base[this.molecularWeight.size()]); // SubstanceDefinitionStructureIsotopeMolecularWeightComponent
         case -261851592: /*relationship*/ return this.relationship == null ? new Base[0] : this.relationship.toArray(new Base[this.relationship.size()]); // SubstanceDefinitionRelationshipComponent
         case 1625275180: /*nucleicAcid*/ return this.nucleicAcid == null ? new Base[0] : new Base[] {this.nucleicAcid}; // Reference
         case -397514098: /*polymer*/ return this.polymer == null ? new Base[0] : new Base[] {this.polymer}; // Reference
@@ -6567,16 +5917,13 @@ public class SubstanceDefinition extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case 351608024: // version
           this.version = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
           this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case 50511102: // category
-          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 382350310: // classification
           this.getClassification().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -6590,8 +5937,8 @@ public class SubstanceDefinition extends DomainResource {
         case -1724546052: // description
           this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
-        case -896505829: // source
-          this.getSource().add(TypeConvertor.castToReference(value)); // Reference
+        case -2123220889: // informationSource
+          this.getInformationSource().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 3387378: // note
           this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
@@ -6611,6 +5958,9 @@ public class SubstanceDefinition extends DomainResource {
         case -2117930783: // referenceInformation
           this.referenceInformation = TypeConvertor.castToReference(value); // Reference
           return value;
+        case 635625672: // molecularWeight
+          this.getMolecularWeight().add((SubstanceDefinitionMolecularWeightComponent) value); // SubstanceDefinitionMolecularWeightComponent
+          return value;
         case 144518515: // structure
           this.structure = (SubstanceDefinitionStructureComponent) value; // SubstanceDefinitionStructureComponent
           return value;
@@ -6619,9 +5969,6 @@ public class SubstanceDefinition extends DomainResource {
           return value;
         case 3373707: // name
           this.getName().add((SubstanceDefinitionNameComponent) value); // SubstanceDefinitionNameComponent
-          return value;
-        case 635625672: // molecularWeight
-          this.getMolecularWeight().add((SubstanceDefinitionStructureIsotopeMolecularWeightComponent) value); // SubstanceDefinitionStructureIsotopeMolecularWeightComponent
           return value;
         case -261851592: // relationship
           this.getRelationship().add((SubstanceDefinitionRelationshipComponent) value); // SubstanceDefinitionRelationshipComponent
@@ -6646,13 +5993,11 @@ public class SubstanceDefinition extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("version")) {
           this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
           this.status = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("category")) {
-          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("classification")) {
           this.getClassification().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("domain")) {
@@ -6661,8 +6006,8 @@ public class SubstanceDefinition extends DomainResource {
           this.getGrade().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("description")) {
           this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
-        } else if (name.equals("source")) {
-          this.getSource().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("informationSource")) {
+          this.getInformationSource().add(TypeConvertor.castToReference(value));
         } else if (name.equals("note")) {
           this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("manufacturer")) {
@@ -6675,14 +6020,14 @@ public class SubstanceDefinition extends DomainResource {
           this.getProperty().add((SubstanceDefinitionPropertyComponent) value);
         } else if (name.equals("referenceInformation")) {
           this.referenceInformation = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("molecularWeight")) {
+          this.getMolecularWeight().add((SubstanceDefinitionMolecularWeightComponent) value);
         } else if (name.equals("structure")) {
           this.structure = (SubstanceDefinitionStructureComponent) value; // SubstanceDefinitionStructureComponent
         } else if (name.equals("code")) {
           this.getCode().add((SubstanceDefinitionCodeComponent) value);
         } else if (name.equals("name")) {
           this.getName().add((SubstanceDefinitionNameComponent) value);
-        } else if (name.equals("molecularWeight")) {
-          this.getMolecularWeight().add((SubstanceDefinitionStructureIsotopeMolecularWeightComponent) value);
         } else if (name.equals("relationship")) {
           this.getRelationship().add((SubstanceDefinitionRelationshipComponent) value);
         } else if (name.equals("nucleicAcid")) {
@@ -6701,25 +6046,24 @@ public class SubstanceDefinition extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1618432855:  return getIdentifier();
+        case -1618432855:  return addIdentifier(); 
         case 351608024:  return getVersionElement();
         case -892481550:  return getStatus();
-        case 50511102:  return getCategory();
         case 382350310:  return addClassification(); 
         case -1326197564:  return getDomain();
         case 98615255:  return addGrade(); 
         case -1724546052:  return getDescriptionElement();
-        case -896505829:  return addSource(); 
+        case -2123220889:  return addInformationSource(); 
         case 3387378:  return addNote(); 
         case -1969347631:  return addManufacturer(); 
         case -1663305268:  return addSupplier(); 
         case -1068650173:  return addMoiety(); 
         case -993141291:  return addProperty(); 
         case -2117930783:  return getReferenceInformation();
+        case 635625672:  return addMolecularWeight(); 
         case 144518515:  return getStructure();
         case 3059181:  return addCode(); 
         case 3373707:  return addName(); 
-        case 635625672:  return addMolecularWeight(); 
         case -261851592:  return addRelationship(); 
         case 1625275180:  return getNucleicAcid();
         case -397514098:  return getPolymer();
@@ -6736,22 +6080,21 @@ public class SubstanceDefinition extends DomainResource {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case 351608024: /*version*/ return new String[] {"string"};
         case -892481550: /*status*/ return new String[] {"CodeableConcept"};
-        case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case 382350310: /*classification*/ return new String[] {"CodeableConcept"};
         case -1326197564: /*domain*/ return new String[] {"CodeableConcept"};
         case 98615255: /*grade*/ return new String[] {"CodeableConcept"};
         case -1724546052: /*description*/ return new String[] {"markdown"};
-        case -896505829: /*source*/ return new String[] {"Reference"};
+        case -2123220889: /*informationSource*/ return new String[] {"Reference"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         case -1969347631: /*manufacturer*/ return new String[] {"Reference"};
         case -1663305268: /*supplier*/ return new String[] {"Reference"};
         case -1068650173: /*moiety*/ return new String[] {};
         case -993141291: /*property*/ return new String[] {};
         case -2117930783: /*referenceInformation*/ return new String[] {"Reference"};
+        case 635625672: /*molecularWeight*/ return new String[] {};
         case 144518515: /*structure*/ return new String[] {};
         case 3059181: /*code*/ return new String[] {};
         case 3373707: /*name*/ return new String[] {};
-        case 635625672: /*molecularWeight*/ return new String[] {"@SubstanceDefinition.structure.isotope.molecularWeight"};
         case -261851592: /*relationship*/ return new String[] {};
         case 1625275180: /*nucleicAcid*/ return new String[] {"Reference"};
         case -397514098: /*polymer*/ return new String[] {"Reference"};
@@ -6765,8 +6108,7 @@ public class SubstanceDefinition extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("identifier")) {
-          this.identifier = new Identifier();
-          return this.identifier;
+          return addIdentifier();
         }
         else if (name.equals("version")) {
           throw new FHIRException("Cannot call addChild on a primitive type SubstanceDefinition.version");
@@ -6774,10 +6116,6 @@ public class SubstanceDefinition extends DomainResource {
         else if (name.equals("status")) {
           this.status = new CodeableConcept();
           return this.status;
-        }
-        else if (name.equals("category")) {
-          this.category = new CodeableConcept();
-          return this.category;
         }
         else if (name.equals("classification")) {
           return addClassification();
@@ -6792,8 +6130,8 @@ public class SubstanceDefinition extends DomainResource {
         else if (name.equals("description")) {
           throw new FHIRException("Cannot call addChild on a primitive type SubstanceDefinition.description");
         }
-        else if (name.equals("source")) {
-          return addSource();
+        else if (name.equals("informationSource")) {
+          return addInformationSource();
         }
         else if (name.equals("note")) {
           return addNote();
@@ -6814,6 +6152,9 @@ public class SubstanceDefinition extends DomainResource {
           this.referenceInformation = new Reference();
           return this.referenceInformation;
         }
+        else if (name.equals("molecularWeight")) {
+          return addMolecularWeight();
+        }
         else if (name.equals("structure")) {
           this.structure = new SubstanceDefinitionStructureComponent();
           return this.structure;
@@ -6823,9 +6164,6 @@ public class SubstanceDefinition extends DomainResource {
         }
         else if (name.equals("name")) {
           return addName();
-        }
-        else if (name.equals("molecularWeight")) {
-          return addMolecularWeight();
         }
         else if (name.equals("relationship")) {
           return addRelationship();
@@ -6863,10 +6201,13 @@ public class SubstanceDefinition extends DomainResource {
 
       public void copyValues(SubstanceDefinition dst) {
         super.copyValues(dst);
-        dst.identifier = identifier == null ? null : identifier.copy();
+        if (identifier != null) {
+          dst.identifier = new ArrayList<Identifier>();
+          for (Identifier i : identifier)
+            dst.identifier.add(i.copy());
+        };
         dst.version = version == null ? null : version.copy();
         dst.status = status == null ? null : status.copy();
-        dst.category = category == null ? null : category.copy();
         if (classification != null) {
           dst.classification = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : classification)
@@ -6879,10 +6220,10 @@ public class SubstanceDefinition extends DomainResource {
             dst.grade.add(i.copy());
         };
         dst.description = description == null ? null : description.copy();
-        if (source != null) {
-          dst.source = new ArrayList<Reference>();
-          for (Reference i : source)
-            dst.source.add(i.copy());
+        if (informationSource != null) {
+          dst.informationSource = new ArrayList<Reference>();
+          for (Reference i : informationSource)
+            dst.informationSource.add(i.copy());
         };
         if (note != null) {
           dst.note = new ArrayList<Annotation>();
@@ -6910,6 +6251,11 @@ public class SubstanceDefinition extends DomainResource {
             dst.property.add(i.copy());
         };
         dst.referenceInformation = referenceInformation == null ? null : referenceInformation.copy();
+        if (molecularWeight != null) {
+          dst.molecularWeight = new ArrayList<SubstanceDefinitionMolecularWeightComponent>();
+          for (SubstanceDefinitionMolecularWeightComponent i : molecularWeight)
+            dst.molecularWeight.add(i.copy());
+        };
         dst.structure = structure == null ? null : structure.copy();
         if (code != null) {
           dst.code = new ArrayList<SubstanceDefinitionCodeComponent>();
@@ -6920,11 +6266,6 @@ public class SubstanceDefinition extends DomainResource {
           dst.name = new ArrayList<SubstanceDefinitionNameComponent>();
           for (SubstanceDefinitionNameComponent i : name)
             dst.name.add(i.copy());
-        };
-        if (molecularWeight != null) {
-          dst.molecularWeight = new ArrayList<SubstanceDefinitionStructureIsotopeMolecularWeightComponent>();
-          for (SubstanceDefinitionStructureIsotopeMolecularWeightComponent i : molecularWeight)
-            dst.molecularWeight.add(i.copy());
         };
         if (relationship != null) {
           dst.relationship = new ArrayList<SubstanceDefinitionRelationshipComponent>();
@@ -6949,15 +6290,14 @@ public class SubstanceDefinition extends DomainResource {
           return false;
         SubstanceDefinition o = (SubstanceDefinition) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true) && compareDeep(status, o.status, true)
-           && compareDeep(category, o.category, true) && compareDeep(classification, o.classification, true)
-           && compareDeep(domain, o.domain, true) && compareDeep(grade, o.grade, true) && compareDeep(description, o.description, true)
-           && compareDeep(source, o.source, true) && compareDeep(note, o.note, true) && compareDeep(manufacturer, o.manufacturer, true)
-           && compareDeep(supplier, o.supplier, true) && compareDeep(moiety, o.moiety, true) && compareDeep(property, o.property, true)
-           && compareDeep(referenceInformation, o.referenceInformation, true) && compareDeep(structure, o.structure, true)
-           && compareDeep(code, o.code, true) && compareDeep(name, o.name, true) && compareDeep(molecularWeight, o.molecularWeight, true)
-           && compareDeep(relationship, o.relationship, true) && compareDeep(nucleicAcid, o.nucleicAcid, true)
-           && compareDeep(polymer, o.polymer, true) && compareDeep(protein, o.protein, true) && compareDeep(sourceMaterial, o.sourceMaterial, true)
-          ;
+           && compareDeep(classification, o.classification, true) && compareDeep(domain, o.domain, true) && compareDeep(grade, o.grade, true)
+           && compareDeep(description, o.description, true) && compareDeep(informationSource, o.informationSource, true)
+           && compareDeep(note, o.note, true) && compareDeep(manufacturer, o.manufacturer, true) && compareDeep(supplier, o.supplier, true)
+           && compareDeep(moiety, o.moiety, true) && compareDeep(property, o.property, true) && compareDeep(referenceInformation, o.referenceInformation, true)
+           && compareDeep(molecularWeight, o.molecularWeight, true) && compareDeep(structure, o.structure, true)
+           && compareDeep(code, o.code, true) && compareDeep(name, o.name, true) && compareDeep(relationship, o.relationship, true)
+           && compareDeep(nucleicAcid, o.nucleicAcid, true) && compareDeep(polymer, o.polymer, true) && compareDeep(protein, o.protein, true)
+           && compareDeep(sourceMaterial, o.sourceMaterial, true);
       }
 
       @Override
@@ -6972,9 +6312,9 @@ public class SubstanceDefinition extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, version, status
-          , category, classification, domain, grade, description, source, note, manufacturer
-          , supplier, moiety, property, referenceInformation, structure, code, name, molecularWeight
-          , relationship, nucleicAcid, polymer, protein, sourceMaterial);
+          , classification, domain, grade, description, informationSource, note, manufacturer
+          , supplier, moiety, property, referenceInformation, molecularWeight, structure, code
+          , name, relationship, nucleicAcid, polymer, protein, sourceMaterial);
       }
 
   @Override
@@ -6983,24 +6323,24 @@ public class SubstanceDefinition extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>category</b>
+   * Search parameter: <b>classification</b>
    * <p>
-   * Description: <b>High level categorization, e.g. polymer or nucleic acid, or food, chemical, biological</b><br>
+   * Description: <b>High or low level categorization, e.g. polymer vs. nucleic acid or linear vs. branch chain</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>SubstanceDefinition.category</b><br>
+   * Path: <b>SubstanceDefinition.classification</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="category", path="SubstanceDefinition.category", description="High level categorization, e.g. polymer or nucleic acid, or food, chemical, biological", type="token" )
-  public static final String SP_CATEGORY = "category";
+  @SearchParamDefinition(name="classification", path="SubstanceDefinition.classification", description="High or low level categorization, e.g. polymer vs. nucleic acid or linear vs. branch chain", type="token" )
+  public static final String SP_CLASSIFICATION = "classification";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>category</b>
+   * <b>Fluent Client</b> search parameter constant for <b>classification</b>
    * <p>
-   * Description: <b>High level categorization, e.g. polymer or nucleic acid, or food, chemical, biological</b><br>
+   * Description: <b>High or low level categorization, e.g. polymer vs. nucleic acid or linear vs. branch chain</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>SubstanceDefinition.category</b><br>
+   * Path: <b>SubstanceDefinition.classification</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CATEGORY);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CLASSIFICATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CLASSIFICATION);
 
  /**
    * Search parameter: <b>code</b>

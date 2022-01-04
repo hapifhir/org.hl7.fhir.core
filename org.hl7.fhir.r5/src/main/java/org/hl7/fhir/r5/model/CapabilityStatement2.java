@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -6773,26 +6773,6 @@ public class CapabilityStatement2 extends CanonicalResource {
    }
 
  /**
-   * Search parameter: <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the capability statement2</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(CapabilityStatement2.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context", path="(CapabilityStatement2.useContext.value as CodeableConcept)", description="A use context assigned to the capability statement2", type="token" )
-  public static final String SP_CONTEXT = "context";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the capability statement2</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(CapabilityStatement2.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
-
- /**
    * Search parameter: <b>context-quantity</b>
    * <p>
    * Description: <b>A quantity- or range-valued use context assigned to the capability statement2</b><br>
@@ -6813,6 +6793,46 @@ public class CapabilityStatement2 extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
 
  /**
+   * Search parameter: <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the capability statement2</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>CapabilityStatement2.useContext</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type-quantity", path="CapabilityStatement2.useContext", description="A use context type and quantity- or range-based value assigned to the capability statement2", type="composite", compositeOf={"context-type", "context-quantity"} )
+  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the capability statement2</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>CapabilityStatement2.useContext</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
+
+ /**
+   * Search parameter: <b>context-type-value</b>
+   * <p>
+   * Description: <b>A use context type and value assigned to the capability statement2</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>CapabilityStatement2.useContext</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type-value", path="CapabilityStatement2.useContext", description="A use context type and value assigned to the capability statement2", type="composite", compositeOf={"context-type", "context"} )
+  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
+   * <p>
+   * Description: <b>A use context type and value assigned to the capability statement2</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>CapabilityStatement2.useContext</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
+
+ /**
    * Search parameter: <b>context-type</b>
    * <p>
    * Description: <b>A type of use context assigned to the capability statement2</b><br>
@@ -6831,6 +6851,26 @@ public class CapabilityStatement2 extends CanonicalResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
+
+ /**
+   * Search parameter: <b>context</b>
+   * <p>
+   * Description: <b>A use context assigned to the capability statement2</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(CapabilityStatement2.useContext.value as CodeableConcept)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context", path="(CapabilityStatement2.useContext.value as CodeableConcept)", description="A use context assigned to the capability statement2", type="token" )
+  public static final String SP_CONTEXT = "context";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context</b>
+   * <p>
+   * Description: <b>A use context assigned to the capability statement2</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(CapabilityStatement2.useContext.value as CodeableConcept)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
 
  /**
    * Search parameter: <b>date</b>
@@ -7019,26 +7059,6 @@ public class CapabilityStatement2 extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam PUBLISHER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PUBLISHER);
 
  /**
-   * Search parameter: <b>resource</b>
-   * <p>
-   * Description: <b>Name of a resource mentioned in a capability statement</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement2.rest.resource.type</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="resource", path="CapabilityStatement2.rest.resource.type", description="Name of a resource mentioned in a capability statement", type="token" )
-  public static final String SP_RESOURCE = "resource";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>resource</b>
-   * <p>
-   * Description: <b>Name of a resource mentioned in a capability statement</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement2.rest.resource.type</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam RESOURCE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_RESOURCE);
-
- /**
    * Search parameter: <b>resource-profile</b>
    * <p>
    * Description: <b>A profile id invoked in a capability statement</b><br>
@@ -7063,6 +7083,26 @@ public class CapabilityStatement2 extends CanonicalResource {
    * the path value of "<b>CapabilityStatement2:resource-profile</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_RESOURCE_PROFILE = new ca.uhn.fhir.model.api.Include("CapabilityStatement2:resource-profile").toLocked();
+
+ /**
+   * Search parameter: <b>resource</b>
+   * <p>
+   * Description: <b>Name of a resource mentioned in a capability statement</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CapabilityStatement2.rest.resource.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="resource", path="CapabilityStatement2.rest.resource.type", description="Name of a resource mentioned in a capability statement", type="token" )
+  public static final String SP_RESOURCE = "resource";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>resource</b>
+   * <p>
+   * Description: <b>Name of a resource mentioned in a capability statement</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CapabilityStatement2.rest.resource.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam RESOURCE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_RESOURCE);
 
  /**
    * Search parameter: <b>software</b>
@@ -7189,46 +7229,6 @@ public class CapabilityStatement2 extends CanonicalResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
-
- /**
-   * Search parameter: <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the capability statement2</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>CapabilityStatement2.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-quantity", path="CapabilityStatement2.useContext", description="A use context type and quantity- or range-based value assigned to the capability statement2", type="composite", compositeOf={"context-type", "context-quantity"} )
-  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the capability statement2</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>CapabilityStatement2.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
-
- /**
-   * Search parameter: <b>context-type-value</b>
-   * <p>
-   * Description: <b>A use context type and value assigned to the capability statement2</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>CapabilityStatement2.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-value", path="CapabilityStatement2.useContext", description="A use context type and value assigned to the capability statement2", type="composite", compositeOf={"context-type", "context"} )
-  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
-   * <p>
-   * Description: <b>A use context type and value assigned to the capability statement2</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>CapabilityStatement2.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
 
 
 }

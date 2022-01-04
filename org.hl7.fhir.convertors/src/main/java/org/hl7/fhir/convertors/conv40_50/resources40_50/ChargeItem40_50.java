@@ -83,8 +83,10 @@ public class ChargeItem40_50 {
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReason())
       tgt.addReason(CodeableConcept40_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getService()) tgt.addService(Reference40_50.convertReference(t));
-    if (src.hasProduct())
-      tgt.setProduct(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getProduct()));
+    if (src.hasProductCodeableConcept())
+      tgt.addProduct().setConcept(CodeableConcept40_50.convertCodeableConcept(src.getProductCodeableConcept()));
+    else if (src.hasProductReference())
+      tgt.addProduct().setReference(Reference40_50.convertReference(src.getProductReference()));
     for (org.hl7.fhir.r4.model.Reference t : src.getAccount()) tgt.addAccount(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInformation())
@@ -138,8 +140,10 @@ public class ChargeItem40_50 {
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReason())
       tgt.addReason(CodeableConcept40_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getService()) tgt.addService(Reference40_50.convertReference(t));
-    if (src.hasProduct())
-      tgt.setProduct(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getProduct()));
+    if (src.getProductFirstRep().hasConcept())
+      tgt.setProduct(CodeableConcept40_50.convertCodeableConcept(src.getProductFirstRep().getConcept()));
+    if (src.getProductFirstRep().hasReference())
+      tgt.setProduct(Reference40_50.convertReference(src.getProductFirstRep().getReference()));
     for (org.hl7.fhir.r5.model.Reference t : src.getAccount()) tgt.addAccount(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInformation())

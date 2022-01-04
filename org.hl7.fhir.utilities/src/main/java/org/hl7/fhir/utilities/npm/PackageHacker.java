@@ -27,7 +27,7 @@ public class PackageHacker {
   private static boolean useSecureReferences = false;
   
   public static void main(String[] args) throws FileNotFoundException, IOException {
-    new PackageHacker().edit("M:\\web\\hl7.org\\fhir\\2021Mar\\hl7.fhir.r4b.expansions.tgz");
+    new PackageHacker().edit("M:\\web\\hl7.org\\fhir\\5.0.0-snapshot1\\hl7.fhir.r5.examples.tgz");
   }
 
   private void edit(String name) throws FileNotFoundException, IOException {

@@ -6,7 +6,10 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.UsageContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.*;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent;
 
 import java.util.stream.Collectors;
 
@@ -218,7 +221,7 @@ public class StructureMap30_50 {
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasName())
       tgt.setNameElement(Id30_50.convertId(src.getNameElement()));
-    for (org.hl7.fhir.dstu3.model.StringType t : src.getVariable()) tgt.addVariable(t.getValue());
+    for (org.hl7.fhir.dstu3.model.StringType t : src.getVariable()) tgt.addParameter().setValue(String30_50.convertString(t));
     return tgt;
   }
 
@@ -229,7 +232,7 @@ public class StructureMap30_50 {
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasName())
       tgt.setNameElement(Id30_50.convertId(src.getNameElement()));
-    for (org.hl7.fhir.r5.model.StringType t : src.getVariable()) tgt.addVariable(t.getValue());
+    for (StructureMapGroupRuleTargetParameterComponent t : src.getParameter()) tgt.addVariable(t.getValue().primitiveValue());
     return tgt;
   }
 
@@ -247,7 +250,7 @@ public class StructureMap30_50 {
     if (src.hasType())
       tgt.setTypeElement(String30_50.convertString(src.getTypeElement()));
     if (src.hasDefaultValue())
-      tgt.setDefaultValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getDefaultValue()));
+      tgt.setDefaultValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getDefaultValueElement()));
     if (src.hasElement())
       tgt.setElementElement(String30_50.convertString(src.getElementElement()));
     if (src.hasListMode())
@@ -275,7 +278,7 @@ public class StructureMap30_50 {
     if (src.hasType())
       tgt.setTypeElement(String30_50.convertString(src.getTypeElement()));
     if (src.hasDefaultValue())
-      tgt.setDefaultValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getDefaultValue()));
+      tgt.setDefaultValueElement((StringType) ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getDefaultValue()));
     if (src.hasElement())
       tgt.setElementElement(String30_50.convertString(src.getElementElement()));
     if (src.hasListMode())

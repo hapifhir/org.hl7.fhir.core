@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.formats;
+package org.hl7.fhir.{{jid}}.formats;
 
 // generated
 
@@ -6,8 +6,8 @@ package org.hl7.fhir.r5.formats;
 
 {{startMark}}
 
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
+import org.hl7.fhir.{{jid}}.model.*;
+import org.hl7.fhir.{{jid}}.model.Enumerations.FHIRVersion;
 import org.xmlpull.v1.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.exceptions.FHIRFormatError;

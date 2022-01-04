@@ -130,15 +130,15 @@ public class VersionUtilities {
     if (version.contains("-")) {
       version = version.substring(0, version.indexOf("-"));
     }
-    return Utilities.existsInList(version, "1.0.2", "1.4.0", "3.0.2", "4.0.1", "4.1.0", "4.3.0",CURRENT_FULL_VERSION);
+    return Utilities.existsInList(version, "1.0.2", "1.4.0", "3.0.2", "4.0.1", "4.1.0", "4.3.0", "5.0.0", CURRENT_FULL_VERSION);
   }
 
   public static String listSupportedVersions() {
-    return "1.0.2, 1.4.0, 3.0.2, 4.0.1, 4.1.0, 4.3.0, "+CURRENT_FULL_VERSION;
+    return "1.0.2, 1.4.0, 3.0.2, 4.0.1, 4.1.0, 4.3.0, 5.0, "+CURRENT_FULL_VERSION;
   }
 
   public static boolean isR5Ver(String ver) {
-    return ver != null && (ver.startsWith(CURRENT_VERSION) || ver.equals("current"));
+    return ver != null && (ver.startsWith("5.0") || ver.startsWith(CURRENT_VERSION) || ver.equals("current"));
   }
 
   public static boolean isR4BVer(String ver) {

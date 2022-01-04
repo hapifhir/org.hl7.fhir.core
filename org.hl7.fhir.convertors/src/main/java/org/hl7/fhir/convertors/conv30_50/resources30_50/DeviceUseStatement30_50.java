@@ -20,8 +20,8 @@ public class DeviceUseStatement30_50 {
       tgt.addIdentifier(Identifier30_50.convertIdentifier(t));
     if (src.hasStatus())
       tgt.setStatusElement(convertDeviceUseStatementStatus(src.getStatusElement()));
-    if (src.hasSubject())
-      tgt.setSubject(Reference30_50.convertReference(src.getSubject()));
+    if (src.hasPatient())
+      tgt.setSubject(Reference30_50.convertReference(src.getPatient()));
     if (src.hasTiming())
       tgt.setTiming(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getTiming()));
     if (src.hasDateAsserted())
@@ -49,7 +49,7 @@ public class DeviceUseStatement30_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertDeviceUseStatementStatus(src.getStatusElement()));
     if (src.hasSubject())
-      tgt.setSubject(Reference30_50.convertReference(src.getSubject()));
+      tgt.setPatient(Reference30_50.convertReference(src.getSubject()));
     if (src.hasTiming())
       tgt.setTiming(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getTiming()));
     if (src.hasRecordedOn())

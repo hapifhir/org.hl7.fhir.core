@@ -613,8 +613,10 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     if (valueset.hasExpansion()) {
       return checkExpansion(new Coding(system, code, null));
     } else if (valueset.hasCompose()) {
+      int i = 0;
       for (ConceptSetComponent vsi : valueset.getCompose().getInclude()) {
-        Boolean ok = inComponent(vsi, system, code, valueset.getCompose().getInclude().size() == 1, warnings);
+        Boolean ok = inComponent(vsi, i, system, code, valueset.getCompose().getInclude().size() == 1, warnings);
+        i++;
         if (ok == null && result == false) {
           result = null;
         } else if (ok) {
@@ -623,7 +625,8 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         }
       }
       for (ConceptSetComponent vsi : valueset.getCompose().getExclude()) {
-        Boolean nok = inComponent(vsi, system, code, valueset.getCompose().getInclude().size() == 1, warnings);
+        Boolean nok = inComponent(vsi, i, system, code, valueset.getCompose().getInclude().size() == 1, warnings);
+        i++;
         if (nok == null && result == false) {
           result = null;
         } else if (nok != null && nok) {
@@ -635,7 +638,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     return result;
   }
 
-  private Boolean inComponent(ConceptSetComponent vsi, String system, String code, boolean only, List<String> warnings) throws FHIRException {
+  private Boolean inComponent(ConceptSetComponent vsi, int vsiIndex, String system, String code, boolean only, List<String> warnings) throws FHIRException {
     for (UriType uri : vsi.getValueSet()) {
       if (inImport(uri.getValue(), system, code)) {
         return true;
@@ -662,7 +665,8 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       // make up a transient value set with
       ValueSet vs = new ValueSet();
       vs.setStatus(PublicationStatus.ACTIVE);
-      vs.setUrl(Utilities.makeUuidUrn());
+      vs.setUrl(valueset.getUrl()+"--"+vsiIndex);
+      vs.setVersion(valueset.getVersion());
       vs.getCompose().addInclude(vsi);
       ValidationResult res = context.validateCode(options.noClient(), new Coding(system, code, null), vs);
       if (res.getErrorClass() == TerminologyServiceErrorClass.UNKNOWN || res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNSUPPORTED) {

@@ -6,6 +6,7 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Period40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Instant40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.MarkDown40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.PositiveInt40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
@@ -55,7 +56,7 @@ public class Appointment40_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertAppointmentStatus(src.getStatusElement()));
     if (src.hasCancelationReason())
-      tgt.setCancelationReason(CodeableConcept40_50.convertCodeableConcept(src.getCancelationReason()));
+      tgt.setCancellationReason(CodeableConcept40_50.convertCodeableConcept(src.getCancelationReason()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceCategory())
       tgt.addServiceCategory(CodeableConcept40_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceType())
@@ -84,9 +85,9 @@ public class Appointment40_50 {
     if (src.hasCreated())
       tgt.setCreatedElement(DateTime40_50.convertDateTime(src.getCreatedElement()));
     if (src.hasComment())
-      tgt.setCommentElement(String40_50.convertString(src.getCommentElement()));
-    if (src.hasPatientInstruction())
-      tgt.setPatientInstructionElement(String40_50.convertString(src.getPatientInstructionElement()));
+      tgt.getNoteFirstRep().setTextElement(MarkDown40_50.convertStringToMarkdown(src.getCommentElement()));
+//    if (src.hasPatientInstruction())
+//      tgt.setPatientInstructionElement(String40_50.convertString(src.getPatientInstructionElement()));
     for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r4.model.Appointment.AppointmentParticipantComponent t : src.getParticipant())
       tgt.addParticipant(convertAppointmentParticipantComponent(t));
@@ -104,8 +105,8 @@ public class Appointment40_50 {
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     if (src.hasStatus())
       tgt.setStatusElement(convertAppointmentStatus(src.getStatusElement()));
-    if (src.hasCancelationReason())
-      tgt.setCancelationReason(CodeableConcept40_50.convertCodeableConcept(src.getCancelationReason()));
+    if (src.hasCancellationReason())
+      tgt.setCancelationReason(CodeableConcept40_50.convertCodeableConcept(src.getCancellationReason()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceCategory())
       tgt.addServiceCategory(CodeableConcept40_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceType())
@@ -135,10 +136,10 @@ public class Appointment40_50 {
     for (org.hl7.fhir.r5.model.Reference t : src.getSlot()) tgt.addSlot(Reference40_50.convertReference(t));
     if (src.hasCreated())
       tgt.setCreatedElement(DateTime40_50.convertDateTime(src.getCreatedElement()));
-    if (src.hasComment())
-      tgt.setCommentElement(String40_50.convertString(src.getCommentElement()));
-    if (src.hasPatientInstruction())
-      tgt.setPatientInstructionElement(String40_50.convertString(src.getPatientInstructionElement()));
+    if (src.hasNote())
+      tgt.setCommentElement(String40_50.convertString(src.getNoteFirstRep().getTextElement()));
+//    if (src.hasPatientInstruction())
+//      tgt.setPatientInstructionElement(String40_50.convertString(src.getPatientInstructionElement()));
     for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Appointment.AppointmentParticipantComponent t : src.getParticipant())
       tgt.addParticipant(convertAppointmentParticipantComponent(t));
@@ -290,46 +291,36 @@ public class Appointment40_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Appointment.ParticipantRequired> convertParticipantRequired(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Appointment.ParticipantRequired> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.BooleanType convertParticipantRequired(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Appointment.ParticipantRequired> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Appointment.ParticipantRequired> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Appointment.ParticipantRequiredEnumFactory());
+    org.hl7.fhir.r5.model.BooleanType tgt = new org.hl7.fhir.r5.model.BooleanType();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case REQUIRED:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.ParticipantRequired.REQUIRED);
+        tgt.setValue(true);
         break;
       case OPTIONAL:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.ParticipantRequired.OPTIONAL);
+        tgt.setValue(false);
         break;
       case INFORMATIONONLY:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.ParticipantRequired.INFORMATIONONLY);
+        tgt.setValue(false);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.Appointment.ParticipantRequired.NULL);
         break;
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Appointment.ParticipantRequired> convertParticipantRequired(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Appointment.ParticipantRequired> src) throws FHIRException {
+  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Appointment.ParticipantRequired> convertParticipantRequired(org.hl7.fhir.r5.model.BooleanType src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Appointment.ParticipantRequired> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Appointment.ParticipantRequiredEnumFactory());
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case REQUIRED:
-        tgt.setValue(org.hl7.fhir.r4.model.Appointment.ParticipantRequired.REQUIRED);
-        break;
-      case OPTIONAL:
-        tgt.setValue(org.hl7.fhir.r4.model.Appointment.ParticipantRequired.OPTIONAL);
-        break;
-      case INFORMATIONONLY:
-        tgt.setValue(org.hl7.fhir.r4.model.Appointment.ParticipantRequired.INFORMATIONONLY);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.Appointment.ParticipantRequired.NULL);
-        break;
+    if (src.getValue()) { // case REQUIRED:
+      tgt.setValue(org.hl7.fhir.r4.model.Appointment.ParticipantRequired.REQUIRED);
+    } else { // case OPTIONAL + others:
+      tgt.setValue(org.hl7.fhir.r4.model.Appointment.ParticipantRequired.OPTIONAL);
     }
     return tgt;
   }
