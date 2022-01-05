@@ -1,6 +1,6 @@
 # Resource Conversion
 
-##IMPORTANT
+## IMPORTANT
 
 _The conversion code in this module is maintained as part of the development of the standard, but always under 
 considerable time pressure. Only part of the code is rigorously tested [as detailed here](#reliable-conversion-code) 
