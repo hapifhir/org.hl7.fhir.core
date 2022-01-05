@@ -1,6 +1,14 @@
 # Resource Conversion
 
-##### Let's talk about converting resources between the various versions of FHIR...
+##IMPORTANT
+
+_The conversion code in this module is maintained as part of the development of the standard, but always under 
+considerable time pressure. Only part of the code is rigorously tested [as detailed here](#reliable-conversion-code) 
+Implementers should regard this code as a 'scaffold' for actual reliable conversions._
+
+**Always test any conversion routines before using them in production**
+
+_Ideally, this should be via unit tests in your code, or better yet [unit tests in this module](#test-cases)._
 
 ### A note regarding syntax
 
@@ -193,3 +201,29 @@ Once you've created your new advisor, they can be provided as an argument when c
 `public static (V1 Resource) convertResource((V2 Resource) src, <T extends BaseAdvisor> advisor)`
 
 `public static (V2 Resource) convertResource((V1 Resource) src, <T extends BaseAdvisor> advisor)`
+
+## Development notes
+
+### Reliable conversion code
+
+The FHIR project maintains and tests conversions on the following resources, from old versions to R5:
+
+- CodeSystem
+- ValueSet
+- ConceptMap
+- StructureDefinition
+- StructureMap
+- ImplementationGuide
+- CapabilityStatement
+- OperationDefinition
+- NamingSystem
+
+These can be relied on and are subject to extensive testing.
+
+### Test cases
+
+Some conversions have test cases for particular resources and particular version combinations. Where test cases exist, 
+they will continue to be maintained and expected to pass.
+
+Contributing test cases is encouraged! To contribute, create a PRs to the core library, or even better, to the FHIR 
+test cases library.
