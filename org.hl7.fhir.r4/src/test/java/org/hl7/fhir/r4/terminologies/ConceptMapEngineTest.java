@@ -4,10 +4,10 @@ import org.hl7.fhir.r4.context.SimpleWorkerContext;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.ConceptMap;
 import org.hl7.fhir.r4.model.Enumerations;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.Collections;
 
@@ -30,7 +30,7 @@ class ConceptMapEngineTest {
     assertEquals(TARGET_CODE_STRING, actual.getCode());
   }
 
-  @NotNull
+  @Nonnull
   private ConceptMapEngine getConceptMapEngine() throws IOException {
     ConceptMap conceptMap = getConceptMap();
 
@@ -40,7 +40,7 @@ class ConceptMapEngineTest {
     return new ConceptMapEngine(simpleWorkerContext);
   }
 
-  @NotNull
+  @Nonnull
   private ConceptMap getConceptMap() {
     ConceptMap.TargetElementComponent targetElementComponent = new ConceptMap.TargetElementComponent();
     targetElementComponent.setCode(TARGET_CODE_STRING);
