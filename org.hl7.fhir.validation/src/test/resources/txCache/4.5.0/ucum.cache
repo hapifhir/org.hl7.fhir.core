@@ -1,0 +1,96 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unitsofmeasure.org",
+  "code" : "mm[Hg]"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "mm[Hg]",
+  "code" : "mm[Hg]",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unitsofmeasure.org",
+  "code" : "mm[Hg]"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://unitsofmeasure.org",
+      "concept" : [{
+        "code" : "%",
+        "display" : "percent"
+      },
+      {
+        "code" : "cm",
+        "display" : "centimeter"
+      },
+      {
+        "code" : "[in_i]",
+        "display" : "inch (international)"
+      },
+      {
+        "code" : "kg",
+        "display" : "kilogram"
+      },
+      {
+        "code" : "g",
+        "display" : "gram"
+      },
+      {
+        "code" : "[lb_av]",
+        "display" : "pound (US and British)"
+      },
+      {
+        "code" : "Cel",
+        "display" : "degree Celsius"
+      },
+      {
+        "code" : "[degF]",
+        "display" : "degree Fahrenheit"
+      },
+      {
+        "code" : "mm[Hg]",
+        "display" : "millimeter of mercury"
+      },
+      {
+        "code" : "/min",
+        "display" : "per minute"
+      },
+      {
+        "code" : "kg/m2",
+        "display" : "kilogram / (meter ^ 2)"
+      },
+      {
+        "code" : "m2",
+        "display" : "square meter"
+      }]
+    }]
+  }
+}, "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "millimeter of mercury",
+  "code" : "mm[Hg]",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unitsofmeasure.org",
+  "code" : "/min"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "/min",
+  "code" : "/min",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unitsofmeasure.org",
+  "code" : "mmol/L"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "mmol/L",
+  "code" : "mmol/L",
+  "system" : "http://unitsofmeasure.org"
+}
+-------------------------------------------------------------------------------------
