@@ -40,6 +40,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
@@ -121,12 +122,15 @@ public class TerminologyCache {
   private Object lock;
   private String folder;
   private Map<String, NamedCache> caches = new HashMap<String, NamedCache>();
+  @Getter @Setter
   private static boolean noCaching;
+
+  @Getter @Setter
   private static boolean cacheErrors;
 
   static {
     String cacheErrorsProperty = System.getProperty("fhir.txcache.cacheErrors");
-    cacheErrors = cacheErrorsProperty != null && "TRUE".equals(cacheErrorsProperty.toUpperCase(Locale.ROOT));
+    setCacheErrors(cacheErrorsProperty != null && "TRUE".equals(cacheErrorsProperty.toUpperCase(Locale.ROOT)));
   }
 
   // use lock from the context
@@ -551,14 +555,6 @@ public class TerminologyCache {
     b.append(code.getText());
     b.append("\"");
     return b.toString();
-  }
-
-  public static boolean isNoCaching() {
-    return noCaching;
-  }
-
-  public static void setNoCaching(boolean noCaching) {
-    TerminologyCache.noCaching = noCaching;
   }
 
   public void removeCS(String url) {
