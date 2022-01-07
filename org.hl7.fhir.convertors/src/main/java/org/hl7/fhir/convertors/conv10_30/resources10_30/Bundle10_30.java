@@ -60,8 +60,8 @@ public class Bundle10_30 {
       tgt.addLink(convertBundleLinkComponent(t));
     if (src.hasFullUrlElement())
       tgt.setFullUrlElement(Uri10_30.convertUri(src.getFullUrlElement()));
-    org.hl7.fhir.dstu2.model.Resource res = ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertResource(src.getResource());
-    tgt.setResource(res);
+    if (src.hasResource())
+      tgt.setResource(ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertResource(src.getResource()));
     if (src.hasSearch())
       tgt.setSearch(convertBundleEntrySearchComponent(src.getSearch()));
     if (src.hasRequest())
