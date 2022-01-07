@@ -23,6 +23,7 @@
         <junit_jupiter_version>5.7.1</junit_jupiter_version>
         <junit_platform_launcher_version>1.7.1</junit_platform_launcher_version>
         <maven_surefire_version>3.0.0-M5</maven_surefire_version>
+        <maven_clean_version>3.1.0</maven_clean_version>
         <jacoco_version>0.8.7</jacoco_version>
         <info_cqframework_version>1.5.1</info_cqframework_version>
         <lombok_version>1.18.22</lombok_version>
@@ -372,9 +373,6 @@
                             <excludes>
                                 <exclude>org/hl7/fhir/validation/cli/**</exclude>
                             </excludes>
-                            <systemPropertyVariables>
-                                <fhir.txcache.cacheErrors>TRUE</fhir.txcache.cacheErrors>
-                            </systemPropertyVariables>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -407,9 +405,6 @@
                             <excludes>
                                 <exclude>org/hl7/fhir/validation/cli/**</exclude>
                             </excludes>
-                            <systemPropertyVariables>
-                                <fhir.txcache.cacheErrors>TRUE</fhir.txcache.cacheErrors>
-                            </systemPropertyVariables>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -512,6 +507,35 @@
                                 </configuration>
                             </execution>
                         </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>cleanTxCache</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>fhir.txcache.clean</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <version>${maven_clean_version}</version>
+                        <configuration>
+                            <filesets>
+                                <fileset>
+                                    <directory>src/test/resources/txCache</directory>
+                                    <includes>
+                                        <include>**/*</include>
+                                    </includes>
+                                    <followSymlinks>false</followSymlinks>
+                                </fileset>
+                            </filesets>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
