@@ -373,7 +373,7 @@
                                 <exclude>org/hl7/fhir/validation/cli/**</exclude>
                             </excludes>
                             <systemPropertyVariables>
-                                <cacheErrors>TRUE</cacheErrors>
+                                <fhir.txcache.cacheErrors>TRUE</fhir.txcache.cacheErrors>
                             </systemPropertyVariables>
                         </configuration>
                     </plugin>
@@ -405,7 +405,7 @@
                                 <exclude>org/hl7/fhir/validation/cli/**</exclude>
                             </excludes>
                             <systemPropertyVariables>
-                                <cacheErrors>TRUE</cacheErrors>
+                                <fhir.txcache.cacheErrors>TRUE</fhir.txcache.cacheErrors>
                             </systemPropertyVariables>
                         </configuration>
                     </plugin>
