@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.tests.utilities;
 
+import org.hl7.fhir.r5.context.TerminologyCache;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.validation.ValidationEngine;
 
@@ -16,6 +17,7 @@ public class TestUtilities {
     txLog = TestConstants.TX_CACHE_LOG;
     final ValidationEngine validationEngine = new ValidationEngine(src, txsrvr, txLog, version, canRunWithoutTerminologyServer, vString, userAgent);
     validationEngine.getContext().initTS(Paths.get(TestConstants.TX_CACHE, vString).toString());
+    TerminologyCache.setCacheErrors(true);
     validationEngine.getContext().setUserAgent("fhir/test-cases");
     return validationEngine;
   }
@@ -24,6 +26,7 @@ public class TestUtilities {
     txLog = TestConstants.TX_CACHE_LOG;
     final ValidationEngine validationEngine = new ValidationEngine(src, txsrvr, txLog, version, vString, userAgent);
     validationEngine.getContext().initTS(Paths.get(TestConstants.TX_CACHE, vString).toString());
+    TerminologyCache.setCacheErrors(true);
     validationEngine.getContext().setUserAgent("fhir/test-cases");
     return validationEngine;
   }

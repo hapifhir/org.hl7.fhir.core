@@ -128,11 +128,6 @@ public class TerminologyCache {
   @Getter @Setter
   private static boolean cacheErrors;
 
-  static {
-    String cacheErrorsProperty = System.getProperty("fhir.txcache.cacheErrors");
-    setCacheErrors(cacheErrorsProperty != null && "TRUE".equals(cacheErrorsProperty.toUpperCase(Locale.ROOT)));
-  }
-
   // use lock from the context
   public TerminologyCache(Object lock, String folder) throws FileNotFoundException, IOException, FHIRException {
     super();
