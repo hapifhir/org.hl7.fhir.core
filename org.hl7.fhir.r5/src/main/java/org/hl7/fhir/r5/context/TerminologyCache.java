@@ -125,10 +125,10 @@ public class TerminologyCache {
   private static boolean cacheErrors;
 
   static {
-    String cacheErrorsProperty = System.getProperty("cacheErrors");
-    cacheErrors = cacheErrorsProperty != null ? "TRUE".equals(cacheErrorsProperty.toUpperCase(Locale.ROOT)) : false;
+    String cacheErrorsProperty = System.getProperty("fhir.txcache.cacheErrors");
+    cacheErrors = cacheErrorsProperty != null && "TRUE".equals(cacheErrorsProperty.toUpperCase(Locale.ROOT));
   }
-  
+
   // use lock from the context
   public TerminologyCache(Object lock, String folder) throws FileNotFoundException, IOException, FHIRException {
     super();
@@ -137,10 +137,12 @@ public class TerminologyCache {
     requestCount = 0;
     hitCount = 0;
     networkCount = 0;
-    if (folder != null)
+
+    if (folder != null) {
       load();
+    }
   }
-  
+
   public void clear() {
     caches.clear();
   }
