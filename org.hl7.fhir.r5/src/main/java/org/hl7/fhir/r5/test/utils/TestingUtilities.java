@@ -17,6 +17,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.fhir.ucum.UcumEssenceService;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.context.TerminologyCache;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.TextFile;
@@ -105,8 +106,8 @@ public class TestingUtilities extends BaseTestingUtilities {
 
   public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage) throws Exception {
     SimpleWorkerContext swc = SimpleWorkerContext.fromPackage(npmPackage);
-
     swc.initTS(TestConstants.TX_CACHE);
+    TerminologyCache.setCacheErrors(true);
     swc.setUserAgent("fhir/r5-test-cases");
     return swc;
   }
@@ -114,6 +115,7 @@ public class TestingUtilities extends BaseTestingUtilities {
   public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage, IWorkerContext.IContextResourceLoader loader) throws Exception {
     SimpleWorkerContext swc = SimpleWorkerContext.fromPackage(npmPackage, loader);
     swc.initTS(TestConstants.TX_CACHE);
+    TerminologyCache.setCacheErrors(true);
     swc.setUserAgent("fhir/r5-test-cases");
     return swc;
   }
