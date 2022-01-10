@@ -4656,7 +4656,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           timeTracker.sd(t);
           trackUsage(profile, hostContext, element);
           if (rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
-            profile != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOPROFILE_TYPE, special.toHuman(), resourceName)) {
+            profile != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOPROFILE_TYPE, special == null ? "??" : special.toHuman(), resourceName)) {
             validateResource(hc, errors, resource, element, profile, idstatus, stack);
           }
         } else {
