@@ -498,7 +498,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
     // nup, don't have it locally (or it's expired)
     FilesystemPackageCacheManager.InputStreamWithSrc source;
-    if ("current".equals(version) || version.startsWith("current$")) {
+    if ("current".equals(version) || (version!= null && version.startsWith("current$"))) {
       // special case - fetch from ci-build server
       source = loadFromCIBuild(id, version.startsWith("current$") ? version.substring(8) : null);
     } else {

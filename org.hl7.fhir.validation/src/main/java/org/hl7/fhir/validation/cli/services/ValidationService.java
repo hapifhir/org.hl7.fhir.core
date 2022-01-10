@@ -256,10 +256,10 @@ public class ValidationService {
   public void compile(CliContext cliContext, ValidationEngine validator) throws Exception {
     if (cliContext.getSources().size() > 0)
       throw new Exception("Cannot specify sources when compling transform (found " + cliContext.getSources() + ")");
-//    if (cliContext.getTxServer() == null)
-//      throw new Exception("Must provide a terminology server when compiling a transform");
     if (cliContext.getMap() == null)
       throw new Exception("Must provide a map when compiling a transform");
+    if (cliContext.getOutput() == null)
+      throw new Exception("Must provide an output name when compiling a transform");
     try {
       List<StructureDefinition> structures = validator.getContext().allStructures();
       for (StructureDefinition sd : structures) {
@@ -272,12 +272,11 @@ public class ValidationService {
         }
       }
       validator.setMapLog(cliContext.getMapLog());
-      cliContext.getMap();
       StructureMap map = validator.compile(cliContext.getMap());
+      if (map == null)
+        throw new Exception("Unable to locate map " + cliContext.getMap());
+      validator.handleOutput(map, cliContext.getOutput(), validator.getVersion());
       System.out.println(" ...success");
-      if (cliContext.getOutput() != null) {
-        validator.handleOutput(map, cliContext.getOutput(), validator.getVersion());
-      }
     } catch (Exception e) {
       System.out.println(" ...Failure: " + e.getMessage());
       e.printStackTrace();
