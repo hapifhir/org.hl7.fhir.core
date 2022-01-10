@@ -1181,7 +1181,7 @@ public class DataRenderer extends Renderer {
     String high = displayQuantity(q.getHigh());
     if (high.isEmpty())
       high = "?";
-    b.append(low).append("\u00A0 to \u00A0").append(high);
+    b.append(low).append("\u00A0to\u00A0").append(high);
     return b.toString();
   }
 
