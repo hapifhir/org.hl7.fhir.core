@@ -173,7 +173,8 @@ public class ElementWrappers {
             s = s + " " + family.getValues().get(0).primitiveValue().toUpperCase();
           return s;
         } else {
-          throw new Error("Now what? ("+b.fhirType()+")");
+          // well, we couldn't get a name from that
+          return null;
         }
       }
       return null;
