@@ -1160,8 +1160,13 @@ public class DataRenderer extends Renderer {
     }
     if (q.hasUnit())
       x.tx(" "+q.getUnit());
-    else if (q.hasCode())
-      x.tx(" "+q.getCode());
+    else if (q.hasCode() && q.hasSystem()) {
+      // if there's a code there *shall* be a system, so if we've got one and not the other, things are invalid and we won't bother trying to render
+      if (q.hasSystem() && q.getSystem().equals("http://unitsofmeasure.org"))
+        x.tx(" "+q.getCode());
+      else
+        x.tx("(unit "+q.getCode()+" from "+q.getSystem()+")");
+    }
     if (showCodeDetails && q.hasCode()) {
       x.span("background: LightGoldenRodYellow", null).tx(" (Details: "+TerminologyRenderer.describeSystem(q.getSystem())+" code "+q.getCode()+" = '"+lookupCode(q.getSystem(), null, q.getCode())+"')");
     }
