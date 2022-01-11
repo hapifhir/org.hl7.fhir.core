@@ -1139,9 +1139,11 @@ public class DataRenderer extends Renderer {
   protected String displayQuantity(Quantity q) {
     StringBuilder s = new StringBuilder();
 
-    s.append("(system = '").append(TerminologyRenderer.describeSystem(q.getSystem()))
-    .append("' code ").append(q.getCode())
-    .append(" = '").append(lookupCode(q.getSystem(), null, q.getCode())).append("')");
+    s.append(q.hasValue() ? q.getValue() : "?");
+    if (q.hasUnit())
+      s.append(" ").append(q.getUnit());
+    else if (q.hasCode())
+      s.append(" ").append(q.getCode());
 
     return s.toString();
   }  
@@ -1158,26 +1160,33 @@ public class DataRenderer extends Renderer {
     }
     if (q.hasUnit())
       x.tx(" "+q.getUnit());
-    else if (q.hasCode())
-      x.tx(" "+q.getCode());
+    else if (q.hasCode() && q.hasSystem()) {
+      // if there's a code there *shall* be a system, so if we've got one and not the other, things are invalid and we won't bother trying to render
+      if (q.hasSystem() && q.getSystem().equals("http://unitsofmeasure.org"))
+        x.tx(" "+q.getCode());
+      else
+        x.tx("(unit "+q.getCode()+" from "+q.getSystem()+")");
+    }
     if (showCodeDetails && q.hasCode()) {
       x.span("background: LightGoldenRodYellow", null).tx(" (Details: "+TerminologyRenderer.describeSystem(q.getSystem())+" code "+q.getCode()+" = '"+lookupCode(q.getSystem(), null, q.getCode())+"')");
     }
   }
 
   public String displayRange(Range q) {
+    if (!q.hasLow() && !q.hasHigh())
+      return "?";
+
     StringBuilder b = new StringBuilder();
-    if (q.hasLow())
-      b.append(q.getLow().getValue().toString());
-    else
-      b.append("?");
-    b.append("-");
-    if (q.hasHigh())
-      b.append(q.getHigh().getValue().toString());
-    else
-      b.append("?");
-    if (q.getLow().hasUnit())
-      b.append(" "+q.getLow().getUnit());
+
+    boolean sameUnits = (q.getLow().hasUnit() && q.getHigh().hasUnit() && q.getLow().getUnit().equals(q.getHigh().getUnit())) 
+        || (q.getLow().hasCode() && q.getHigh().hasCode() && q.getLow().getCode().equals(q.getHigh().getCode()));
+    String low = "?";
+    if (q.hasLow() && q.getLow().hasValue())
+      low = sameUnits ? q.getLow().getValue().toString() : displayQuantity(q.getLow());
+    String high = displayQuantity(q.getHigh());
+    if (high.isEmpty())
+      high = "?";
+    b.append(low).append("\u00A0to\u00A0").append(high);
     return b.toString();
   }
 
