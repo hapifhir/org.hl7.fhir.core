@@ -36,6 +36,9 @@ import java.io.FileReader;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -3504,7 +3507,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     List<TypeRefComponent> types = e.getType();
     if (!e.hasType()) {
       if (root) { // we'll use base instead of types then
-        StructureDefinition bsd = context.fetchResource(StructureDefinition.class, profile.getBaseDefinition());
+        StructureDefinition bsd = profile == null ? null : context.fetchResource(StructureDefinition.class, profile.getBaseDefinition());
         if (bsd != null) {
           if (bsd.hasUserData("path")) {
             c.getPieces().add(gen.new Piece(Utilities.isAbsoluteUrl(bsd.getUserString("path")) ? bsd.getUserString("path") : imagePath +bsd.getUserString("path"), bsd.getName(), null));
@@ -3586,7 +3589,7 @@ public class ProfileUtilities extends TranslatingUtilities {
                 c.addPiece(checkForNoChange(tl, gen.new Piece(null,", ", null)));
               }          
 
-              ref = pkp.getLinkForProfile(profile, p.getValue());
+              ref = pkp == null ? null : pkp.getLinkForProfile(profile, p.getValue());
               if (ref != null) {
                 String[] parts = ref.split("\\|");
                 if (parts[0].startsWith("http:") || parts[0].startsWith("https:")) {
@@ -3685,7 +3688,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
 
   private String checkPrepend(String corePath, String path) {
-    if (pkp.prependLinks() && !(path.startsWith("http:") || path.startsWith("https:")))
+    if (pkp != null && pkp.prependLinks() && !(path.startsWith("http:") || path.startsWith("https:")))
       return corePath+path;
     else 
       return path;
@@ -4566,7 +4569,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
       }
       if (root) {
-        if (profile.getAbstract()) {
+        if (profile != null && profile.getAbstract()) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
           c.addPiece(gen.new Piece(null, "This is an abstract profile", null));          
         }
@@ -4661,7 +4664,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (binding!=null && !binding.isEmpty()) {
             if (!c.getPieces().isEmpty()) 
               c.addPiece(gen.new Piece("br"));
-            BindingResolution br = pkp.resolveBinding(profile, binding, definition.getPath());
+            BindingResolution br = pkp == null ? makeNullBr(binding) : pkp.resolveBinding(profile, binding, definition.getPath());
             c.getPieces().add(checkForNoChange(binding, gen.new Piece(null, translate("sd.table", "Binding")+": ", null).addStyle("font-weight:bold")));
               c.getPieces().add(checkForNoChange(binding.getValueSetElement(), gen.new Piece(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !pkp.prependLinks() ? br.url : corePath+br.url, br.display, null)));
             if (binding.hasStrength()) {
@@ -4670,7 +4673,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               c.getPieces().add(checkForNoChange(binding.getStrengthElement(), gen.new Piece(null, ")", null)));
             }
             if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET)) {
-              br = pkp.resolveBinding(profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), definition.getPath());
+              br = pkp == null ? makeNullBr(binding) : pkp.resolveBinding(profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), definition.getPath());
               c.addPiece(gen.new Piece("br"));
               c.getPieces().add(checkForNoChange(binding, gen.new Piece(corePath+"extension-elementdefinition-maxvalueset.html", translate("sd.table", "Max Binding")+": ", "Max Value Set Extension").addStyle("font-weight:bold")));             
               c.getPieces().add(checkForNoChange(binding, gen.new Piece(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !pkp.prependLinks() ? br.url : corePath+br.url, br.display, null)));
@@ -4762,6 +4765,13 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
     }
     return c;
+  }
+
+  private BindingResolution makeNullBr(ElementDefinitionBindingComponent binding) {
+    BindingResolution br = new BindingResolution();
+    br.url = "http://none.none/none";
+    br.display = "todo";
+    return br;
   }
 
   private ElementDefinitionBindingComponent makeUnifiedBinding(ElementDefinitionBindingComponent binding, ElementDefinition element) {
