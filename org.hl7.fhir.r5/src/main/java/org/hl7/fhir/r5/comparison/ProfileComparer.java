@@ -204,7 +204,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     subset.setExample(left.current().hasExample() ? left.current().getExample() : right.current().getExample());
 
     if (left.current().getMustSupport() != right.current().getMustSupport()) {
-      vm(IssueSeverity.WARNING, "Elements differ in definition for mustSupport:\r\n  \""+left.current().getMustSupport()+"\"\r\n  \""+right.current().getMustSupport()+"\"", path, comp.getMessages(), res.getMessages());
+      vm(IssueSeverity.WARNING, "Elements differ in definition for mustSupport: '"+left.current().getMustSupport()+"' vs '"+right.current().getMustSupport()+"'", path, comp.getMessages(), res.getMessages());
 
     }
     subset.setMustSupport(left.current().getMustSupport() || right.current().getMustSupport());
@@ -225,7 +225,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
 
     superset.getType().addAll(unionTypes(comp, res, path, left.current().getType(), right.current().getType()));
     subset.getType().addAll(intersectTypes(comp, res, subset, path, left.current().getType(), right.current().getType()));
-    rule(comp, res, !subset.getType().isEmpty() || (!left.current().hasType() && !right.current().hasType()), path, "Type Mismatch:\r\n  "+typeCode(left)+"\r\n  "+typeCode(right));
+    rule(comp, res, !subset.getType().isEmpty() || (!left.current().hasType() && !right.current().hasType()), path, "Type Mismatch: "+typeCode(left)+" vs "+typeCode(right));
     //    <fixed[x]><!-- ?? 0..1 * Value must be exactly this --></fixed[x]>
     //    <pattern[x]><!-- ?? 0..1 * Value must have at least these property values --></pattern[x]>
     superset.setMaxLengthElement(unionMaxLength(left.current().getMaxLength(), right.current().getMaxLength()));
@@ -358,7 +358,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
 
   private String toString(DataType val, boolean left) throws IOException {
     if (val instanceof PrimitiveType) 
-      return "\"" + ((PrimitiveType) val).getValueAsString()+"\"";
+      return "'" + ((PrimitiveType) val).getValueAsString()+"'";
     
     IParser jp = left ? session.getContextLeft().newJsonParser() : session.getContextRight().newJsonParser();
     return jp.composeString(val, "value");
@@ -395,7 +395,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     if (left.equalsIgnoreCase(right))
       return left;
     if (path != null) {
-      vm(isError ? IssueSeverity.ERROR : IssueSeverity.WARNING, "Elements differ in "+name+":\r\n  \""+left+"\"\r\n  \""+right+"\"", path, comp.getMessages(), res.getMessages());
+      vm(isError ? IssueSeverity.ERROR : IssueSeverity.WARNING, "Elements differ in "+name+": '"+left+"' vs '"+right+"'", path, comp.getMessages(), res.getMessages());
     }
     return "left: "+left+"; right: "+right;
   }
@@ -452,30 +452,30 @@ public class ProfileComparer extends CanonicalResourceComparer {
   private void checkMinMax(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, String path, int leftMin, int rightMin, int leftMax, int rightMax) {
     if (leftMin != rightMin) {
       if (leftMin == 0) {
-        vm(IssueSeverity.INFORMATION, "Element minimum cardinalities differ:\r\n  \""+leftMin+"\"\r\n vs \""+rightMin+"\"", path, comp.getMessages(), res.getMessages());
+        vm(IssueSeverity.INFORMATION, "Element minimum cardinalities differ:  '"+leftMin+"' vs '"+rightMin+"'", path, comp.getMessages(), res.getMessages());
       } else if (rightMin == 0) { 
-        vm(IssueSeverity.INFORMATION, "Element minimum cardinalities differ:\r\n  \""+leftMin+"\"\r\n vs \""+rightMin+"\"", path, comp.getMessages(), res.getMessages());
+        vm(IssueSeverity.INFORMATION, "Element minimum cardinalities differ:  '"+leftMin+"' vs '"+rightMin+"'", path, comp.getMessages(), res.getMessages());
       } else {
-        vm(IssueSeverity.INFORMATION, "Element minimum cardinalities differ:\r\n  \""+leftMin+"\"\r\n vs \""+rightMin+"\"", path, comp.getMessages(), res.getMessages());
+        vm(IssueSeverity.INFORMATION, "Element minimum cardinalities differ:  '"+leftMin+"' vs '"+rightMin+"'", path, comp.getMessages(), res.getMessages());
       }
     }    
     if (leftMax != rightMax) {
       if (leftMax == Integer.MAX_VALUE) {
-        vm(IssueSeverity.INFORMATION, "Element maximum cardinalities differ:\r\n  \""+leftMax+"\"\r\n vs \""+rightMax+"\"", path, comp.getMessages(), res.getMessages());
+        vm(IssueSeverity.INFORMATION, "Element maximum cardinalities differ:  '"+leftMax+"' vs '"+rightMax+"'", path, comp.getMessages(), res.getMessages());
       } else if (rightMax == Integer.MAX_VALUE) { 
-        vm(IssueSeverity.INFORMATION, "Element maximum cardinalities differ:\r\n  \""+leftMax+"\"\r\n vs \""+rightMax+"\"", path, comp.getMessages(), res.getMessages());
+        vm(IssueSeverity.INFORMATION, "Element maximum cardinalities differ:  '"+leftMax+"' vs '"+rightMax+"'", path, comp.getMessages(), res.getMessages());
       } else {
-        vm(IssueSeverity.INFORMATION, "Element maximum cardinalities differ:\r\n  \""+leftMax+"\"\r\n vs \""+rightMax+"\"", path, comp.getMessages(), res.getMessages());
+        vm(IssueSeverity.INFORMATION, "Element maximum cardinalities differ:  '"+leftMax+"' vs '"+rightMax+"'", path, comp.getMessages(), res.getMessages());
       }
     }    
 //    rule(comp, res, subset.getMax().equals("*") || Integer.parseInt(subset.getMax()) >= subset.getMin(), path, "Cardinality Mismatch: "+card(left)+"/"+card(right));
 
     // cross comparison - if max > min in either direction, there can be no instances that are valid against both
     if (leftMax < rightMin) {
-      vm(IssueSeverity.ERROR, "Element minimum cardinalities conflict:\r\n  \""+leftMin+".."+leftMax+"\"\r\n vs \""+rightMin+".."+rightMax+"\": No instances can be valid against both profiles", path, comp.getMessages(), res.getMessages());      
+      vm(IssueSeverity.ERROR, "Element minimum cardinalities conflict:  '"+leftMin+".."+leftMax+"' vs '"+rightMin+".."+rightMax+"': No instances can be valid against both profiles", path, comp.getMessages(), res.getMessages());      
     }
     if (rightMax < leftMin) {
-      vm(IssueSeverity.ERROR, "Element minimum cardinalities conflict:\r\n  \""+leftMin+".."+leftMax+"\"\r\n vs \""+rightMin+".."+rightMax+"\": No instances can be valid against both profiles", path, comp.getMessages(), res.getMessages());            
+      vm(IssueSeverity.ERROR, "Element minimum cardinalities conflict:  '"+leftMin+".."+leftMax+"' vs '"+rightMin+".."+rightMax+"': No instances can be valid against both profiles", path, comp.getMessages(), res.getMessages());            
     }
   }
   
