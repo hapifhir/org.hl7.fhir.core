@@ -519,5 +519,8 @@ public class FHIRLexer {
   public int getCurrentStart() {
     return currentStart;
   }
+  public String getSource() {
+    return source;
+  }
 
 }
