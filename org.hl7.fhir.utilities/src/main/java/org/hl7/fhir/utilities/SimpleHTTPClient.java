@@ -110,7 +110,7 @@ public class SimpleHTTPClient {
   
   public HTTPResult get(String url, String accept) throws IOException {
     URL u = new URL(url);
-    boolean isSSL = url.startsWith("https://");
+//    boolean isSSL = url.startsWith("https://");
     
     // handling redirects - setInstanceFollowRedirects(true) doesn't handle crossing http to https
 
