@@ -158,9 +158,8 @@ public abstract class ResourceRenderer extends DataRenderer {
         if (target.hasUserData("path")) {
           x.ah(target.getUserString("path")).tx(cr.present());
         } else {
-          url = url.substring(0, url.indexOf("|"));
           x.code().tx(url);
-          x.tx(": "+cr.present());          
+          x.tx(" ("+cr.present()+")");          
         }
       }
     }
