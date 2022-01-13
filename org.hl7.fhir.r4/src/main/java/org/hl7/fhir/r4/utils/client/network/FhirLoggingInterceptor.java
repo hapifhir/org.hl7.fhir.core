@@ -1,6 +1,8 @@
 package org.hl7.fhir.r4.utils.client.network;
 
 import okhttp3.*;
+import okio.Buffer;
+
 import org.hl7.fhir.utilities.ToolingClientLogger;
 
 import javax.annotation.Nonnull;
