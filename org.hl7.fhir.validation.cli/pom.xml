@@ -54,6 +54,10 @@
             <artifactId>okhttp</artifactId>
             <version>4.9.0</version>
       </dependency>
+        <dependency>
+            <groupId>com.atlassian.commonmark</groupId>
+            <artifactId>commonmark</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
