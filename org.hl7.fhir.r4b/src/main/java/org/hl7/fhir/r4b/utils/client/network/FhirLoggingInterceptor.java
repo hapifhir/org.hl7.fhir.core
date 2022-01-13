@@ -26,8 +26,17 @@ public class FhirLoggingInterceptor implements Interceptor {
   public Response intercept(@Nonnull Interceptor.Chain chain) throws IOException {
     // Log Request
     Request request = chain.request();
-    logger.logRequest(request.method(), request.url().toString(), new ArrayList<>(request.headers().names()),
-      request.body() != null ? request.body().toString().getBytes() : null);
+    List<String> hdrs = new ArrayList<>();
+    for (String s : request.headers().toString().split("\\n")) {
+      hdrs.add(s.trim());
+    }
+    byte[] cnt = null;
+    if (request.body() != null) {
+      Buffer buf = new Buffer();
+      request.body().writeTo(buf);
+      cnt = buf.readByteArray();
+    }
+    logger.logRequest(request.method(), request.url().toString(), hdrs, cnt);
 
     // Log Response
     Response response = null;
