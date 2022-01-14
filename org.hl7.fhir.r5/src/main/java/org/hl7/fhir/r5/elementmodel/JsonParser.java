@@ -70,8 +70,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import org.slf4j.LoggerFactory;
 
 public class JsonParser extends ParserBase {
+
+  static {
+    // Helpful for troubleshooting why this class is being loaded
+    LoggerFactory.getLogger(JsonParser.class).debug("Loading JsonParser class");
+  }
 
   private JsonCreator json;
   private Map<JsonElement, LocationData> map;
