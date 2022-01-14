@@ -1142,7 +1142,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
     CodeSystem cs = fetchResource(CodeSystem.class, inc.getSystem());
-    if (cs != null) {
+    if (cs != null && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
       pin.addParameter().setName("tx-resource").setResource(cs);
       if (isTxCaching && cacheId == null || !cached.contains(cs.getVUrl())) {
         cached.add(cs.getVUrl());
