@@ -628,6 +628,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
           break;
         }
       }
+      i = valueset.getCompose().getInclude().size();
       for (ConceptSetComponent vsi : valueset.getCompose().getExclude()) {
         Boolean nok = inComponent(vsi, i, system, code, valueset.getCompose().getInclude().size() == 1, warnings);
         i++;
