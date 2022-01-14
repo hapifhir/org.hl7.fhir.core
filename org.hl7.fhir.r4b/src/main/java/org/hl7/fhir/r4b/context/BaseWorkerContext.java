@@ -385,7 +385,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
         map.put(r.getId(), new ResourceProxy(r));
       } else {
-        System.out.println("Ingore "+r.fhirType()+"/"+r.getId()+" from package "+packageInfo.toString());
+        System.out.println("Ignore "+r.fhirType()+"/"+r.getId()+" from package "+packageInfo.toString());
       }
 
       if (r instanceof CodeSystem || r instanceof NamingSystem) {

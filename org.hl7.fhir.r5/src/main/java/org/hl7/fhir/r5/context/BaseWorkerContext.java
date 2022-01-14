@@ -385,7 +385,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
         map.put(r.getId(), new ResourceProxy(r));
       } else {
-        System.out.println("Ingore "+r.fhirType()+"/"+r.getId()+" from package "+packageInfo.toString());
+        System.out.println("Ignore "+r.fhirType()+"/"+r.getId()+" from package "+packageInfo.toString());
       }
 
       if (r instanceof CodeSystem || r instanceof NamingSystem) {
@@ -1142,7 +1142,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
     CodeSystem cs = fetchResource(CodeSystem.class, inc.getSystem());
-    if (cs != null) {
+    if (cs != null && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
       pin.addParameter().setName("tx-resource").setResource(cs);
       if (isTxCaching && cacheId == null || !cached.contains(cs.getVUrl())) {
         cached.add(cs.getVUrl());

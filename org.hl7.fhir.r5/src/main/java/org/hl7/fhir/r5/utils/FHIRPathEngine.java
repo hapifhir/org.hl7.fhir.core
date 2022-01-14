@@ -1000,7 +1000,9 @@ public class FHIRPathEngine {
       wrapper.setProximal(proximal);
     }
 
-    if (lexer.isConstant()) {
+    if (lexer.getCurrent() == null) {
+      throw lexer.error("Expression terminated unexpectedly");
+    } else if (lexer.isConstant()) {
       boolean isString = lexer.isStringConstant();
       if (!isString && (lexer.getCurrent().startsWith("-") || lexer.getCurrent().startsWith("+"))) {
         // the grammar says that this is a unary operation; it affects the correct processing order of the inner operations
