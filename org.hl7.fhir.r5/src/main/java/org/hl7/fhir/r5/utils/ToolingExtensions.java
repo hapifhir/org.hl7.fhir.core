@@ -511,7 +511,7 @@ public class ToolingExtensions {
    * @return The extension, if on this element, else null
    */
   public static Extension getExtension(DomainResource resource, String name) {
-    if (name == null)
+    if (resource == null || name == null)
       return null;
     if (!resource.hasExtension())
       return null;
