@@ -631,7 +631,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       else
         throw new FHIRException("Unsupported format for " + fn);
     } else
-      throw new FHIRException("Encounted unsupported configured version " + version + " loading " + fn);
+      throw new FHIRException("Encountered unsupported configured version " + version + " loading " + fn);
 
     s.close();
   }
