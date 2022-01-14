@@ -37,15 +37,19 @@ public class Display {
   final static String CURLY_START = "\\{\\{";
   final static String CURLY_END = "\\}\\}";
 
+  final static String getMoustacheString(final String string) {
+    return CURLY_START + string + CURLY_END;
+  }
+
   final static String[][] PLACEHOLDERS = {
-    { CURLY_START + "XML_AND_JSON_FHIR_VERSIONS" + CURLY_END, "1.0, 1.4, 3.0, 4.0," + Constants.VERSION_MM },
-    { CURLY_START + "TURTLE_FHIR_VERSIONS" + CURLY_END, "3.0, 4.0, " + Constants.VERSION_MM },
-    { CURLY_START + "FHIR_MAJOR_VERSIONS" + CURLY_END, "1.0|1.4|3.0|" + VersionUtilities.CURRENT_VERSION},
-    { CURLY_START + "FHIR_MINOR_VERSIONS" + CURLY_END, "1.0.2|1.4.0|3.0.2|4.0.1|" + VersionUtilities.CURRENT_FULL_VERSION },
-    { CURLY_START + "FHIR_CURRENT_VERSION" + CURLY_END, VersionUtilities.CURRENT_VERSION},
+    { getMoustacheString("XML_AND_JSON_FHIR_VERSIONS"), "1.0, 1.4, 3.0, 4.0," + Constants.VERSION_MM },
+    { getMoustacheString("TURTLE_FHIR_VERSIONS"), "3.0, 4.0, " + Constants.VERSION_MM },
+    { getMoustacheString("FHIR_MAJOR_VERSIONS"), "1.0|1.4|3.0|" + VersionUtilities.CURRENT_VERSION},
+    { getMoustacheString("FHIR_MINOR_VERSIONS"), "1.0.2|1.4.0|3.0.2|4.0.1|" + VersionUtilities.CURRENT_FULL_VERSION },
+    { getMoustacheString("FHIR_CURRENT_VERSION"), VersionUtilities.CURRENT_VERSION},
   };
 
-  final static String replacePlaceholders(String input, String[][] placeholders) {
+  final static String replacePlaceholders(final String input, final String[][] placeholders) {
     String output = input;
     for (String[] placeholder : placeholders) {
       output = output.replaceAll(placeholder[0], placeholder[1]);
