@@ -142,6 +142,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         }
       }
     }
+    Coding foundCoding = null;
     if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
       Boolean result = false;
       for (Coding c : code.getCoding()) {
@@ -150,6 +151,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
           result = null;
         } else if (ok) {
           result = true;
+          foundCoding = c;
         }
       }
       if (result == null) {
@@ -162,8 +164,10 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       return new ValidationResult(IssueSeverity.ERROR, errors.toString());
     } else if (warnings.size() > 0) {
       return new ValidationResult(IssueSeverity.WARNING, warnings.toString());
-    } else { 
-      return new ValidationResult(IssueSeverity.INFORMATION, null);
+    } else {
+      ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
+      cd.setDisplay(foundCoding.getDisplay());
+      return new ValidationResult(foundCoding.getSystem(), cd);
     }
   }
 
@@ -624,6 +628,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
           break;
         }
       }
+      i = valueset.getCompose().getInclude().size();
       for (ConceptSetComponent vsi : valueset.getCompose().getExclude()) {
         Boolean nok = inComponent(vsi, i, system, code, valueset.getCompose().getInclude().size() == 1, warnings);
         i++;
