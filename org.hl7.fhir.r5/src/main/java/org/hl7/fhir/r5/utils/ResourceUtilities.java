@@ -147,7 +147,10 @@ public class ResourceUtilities {
     if (cc.hasCoding("http://unstats.un.org/unsd/methods/m49/m49.htm", "001")) {
       return new Locale("en-US");
     }
-    String c = cc.getCode("urn:iso:std:iso:3166:-2");
+    String c = cc.getCode("urn:iso:std:iso:3166");
+    if (c == null) {
+      return null;
+    }
     String l = jl.get(c);
     if (l == null) {
       return null;

@@ -5490,7 +5490,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       try {
         n = fpe.parse(fixExpr(inv.getExpression(), inv.getKey()));
       } catch (FHIRLexerException e) {
-        throw new FHIRException(context.formatMessage(I18nConstants.PROBLEM_PROCESSING_EXPRESSION__IN_PROFILE__PATH__, inv.getExpression(), profile.getUrl(), path, e.getMessage()));
+        rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, false, I18nConstants.PROBLEM_PROCESSING_EXPRESSION__IN_PROFILE__PATH__, inv.getExpression(), profile.getUrl(), path, e.getMessage());
+        return;
       }
       timeTracker.fpe(t);
       inv.setUserData("validator.expression.cache", n);

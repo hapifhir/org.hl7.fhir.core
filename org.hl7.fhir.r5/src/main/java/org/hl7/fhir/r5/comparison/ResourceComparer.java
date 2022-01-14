@@ -301,11 +301,11 @@ public class ResourceComparer {
   private String halfColorForLevel(IssueSeverity level) {
     switch (level) {
     case ERROR:
-      return "#ffeeee";
+      return "#ffdddd";
     case FATAL:
       return "#ffcccc";
     case WARNING:
-      return "#fff4ee";
+      return "#fff6ee";
     default: // INFORMATION:
       return "#fffff2";
     }
@@ -319,6 +319,9 @@ public class ResourceComparer {
       XhtmlNode li = new XhtmlNode(NodeType.Element, "li");
       piece.getChildren().add(li);
       li.style("background-color: "+halfColorForLevel(msg.getLevel()));
+      if (msg.getLevel() == IssueSeverity.ERROR) {
+        li.style("font-weight: bold");
+      }
       li.tx(msg.getMessage());
     }
     return cell;
