@@ -2,12 +2,16 @@ package org.hl7.fhir.validation.cli.utils;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.hl7.fhir.r5.model.Constants;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Map;
 
 /**
  * Class for displaying output to the cli user.
@@ -15,6 +19,7 @@ import java.io.InputStream;
  * TODO - Clean this up for localization
  */
 public class Display {
+
 
   private static String toMB(long maxMemory) {
     return Long.toString(maxMemory / (1024 * 1024));
@@ -29,6 +34,25 @@ public class Display {
     System.out.println();
   }
 
+  final static String CURLY_START = "\\{\\{";
+  final static String CURLY_END = "\\}\\}";
+
+  final static String[][] PLACEHOLDERS = {
+    { CURLY_START + "XML_AND_JSON_FHIR_VERSIONS" + CURLY_END, "1.0, 1.4, 3.0, 4.0," + Constants.VERSION_MM },
+    { CURLY_START + "TURTLE_FHIR_VERSIONS" + CURLY_END, "3.0, 4.0, " + Constants.VERSION_MM },
+    { CURLY_START + "FHIR_MAJOR_VERSIONS" + CURLY_END, "1.0|1.4|3.0|" + VersionUtilities.CURRENT_VERSION},
+    { CURLY_START + "FHIR_MINOR_VERSIONS" + CURLY_END, "1.0.2|1.4.0|3.0.2|4.0.1|" + VersionUtilities.CURRENT_FULL_VERSION },
+    { CURLY_START + "FHIR_CURRENT_VERSION" + CURLY_END, VersionUtilities.CURRENT_VERSION},
+  };
+
+  final static String replacePlaceholders(String input, String[][] placeholders) {
+    String output = input;
+    for (String[] placeholder : placeholders) {
+      output = output.replaceAll(placeholder[0], placeholder[1]);
+    }
+    return output;
+  }
+
   /**
    * Loads the help details from resources/help.txt, and displays them on the command line to the user.
    */
@@ -37,11 +61,14 @@ public class Display {
     InputStream help = classLoader.getResourceAsStream("help.txt");
     try {
       String data = IOUtils.toString(help, "UTF-8");
-      System.out.println(data);
+
+      System.out.println(replacePlaceholders(data, PLACEHOLDERS));
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
+
+
 
   /**
    * Prints out system info to the command line.
