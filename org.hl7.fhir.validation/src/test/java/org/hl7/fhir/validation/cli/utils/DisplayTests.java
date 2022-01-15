@@ -1,5 +1,7 @@
 package org.hl7.fhir.validation.cli.utils;
 
+import org.hl7.fhir.validation.cli.utils.Display;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -10,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DisplayTests {
 
   @Test
+  @DisplayName("Check for placeholder replacement in help output")
   public void displayHelpDetails() {
     final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
@@ -37,6 +40,7 @@ public class DisplayTests {
   }
 
   @Test
+  @DisplayName("Test replacePlaceholder base case")
   public void testReplacePlaceholdersBaseCase() {
 
     final String myTestString = "The {{DUMMY_A}} jumps over the {{DUMMY_B}}.";
