@@ -53,6 +53,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
+import org.hl7.fhir.r5.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.DateTimeType;
@@ -80,7 +81,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
 public class XmlParser extends ParserBase {
-
   private boolean allowXsiLocation;
   private String version;
 
