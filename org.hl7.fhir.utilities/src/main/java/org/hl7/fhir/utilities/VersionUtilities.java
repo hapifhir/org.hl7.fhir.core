@@ -134,7 +134,7 @@ public class VersionUtilities {
   }
 
   public static String listSupportedVersions() {
-    return "1.0.2, 1.4.0, 3.0.2, 4.0.1, 4.1.0, 4.3.0, 5.0, "+CURRENT_FULL_VERSION;
+    return "1.0.2, 1.4.0, 3.0.2, 4.0.1, 4.1.0, 4.3.0, 5.0, " + CURRENT_FULL_VERSION;
   }
 
   public static boolean isR5Ver(String ver) {
