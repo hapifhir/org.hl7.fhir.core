@@ -649,7 +649,7 @@ public class Utilities {
     StringBuilder s = new StringBuilder();
     boolean d = false;
     for (String arg : args) {
-      if (args != null) {
+      if (arg != null) {
         if (!d)
           d = !noString(arg);
         else if (s.toString() != null && !s.toString().endsWith("/") && !arg.startsWith("/"))
@@ -659,14 +659,6 @@ public class Utilities {
     }
     return s.toString();
   }
-
-
-//  public static void checkCase(String filename) {
-//    File f = new CSFile(filename);
-//    if (!f.getName().equals(filename))
-//      throw new FHIRException("Filename  ")
-//    
-//  }
 
   public static String nmtokenize(String cs) {
     if (cs == null)

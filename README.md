@@ -170,6 +170,7 @@ compile group: 'ca.uhn.hapi.fhir', name: 'hapi-fhir-structures-r4', version: '(l
 compile group: 'ca.uhn.hapi.fhir', name: 'hapi-fhir-structures-r5', version: '(latest version)'
 ```
 
+Note that the built binary validator is released through GitHub releases.
 ### Maintenance
 This project is maintained by [Grahame Grieve][Link-grahameGithub], [James Agnew][Link-jamesGithub] and [Mark Iantorno][Link-markGithub] on behalf of the FHIR community.
 
