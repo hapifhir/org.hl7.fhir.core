@@ -119,6 +119,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public BaseWorkerContext() throws FileNotFoundException, IOException, FHIRException {
     super();
+    //CACHE
     txCache = new TerminologyCache(lock, null);
   }
 
@@ -129,6 +130,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.maps = maps;
     this.structures = profiles;
     this.guides = guides;
+    //CACHE
     txCache = new TerminologyCache(lock, null);
   }
 
