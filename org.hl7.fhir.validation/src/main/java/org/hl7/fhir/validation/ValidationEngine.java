@@ -194,19 +194,19 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     igLoader = new IgLoader(getPcm(), getContext(), getVersion(), isDebug());
   }
 
-  public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, boolean canRunWithoutTerminologyServer, String vString, String userAgent) throws FHIRException, IOException, URISyntaxException {
+  public ValidationEngine(String src, String txsrvr, String txLog, String txCachePath, FhirPublication version, boolean canRunWithoutTerminologyServer, String vString, String userAgent) throws FHIRException, IOException, URISyntaxException {
     loadCoreDefinitions(src, false, null);
     getContext().setUserAgent(userAgent);
     getContext().setCanRunWithoutTerminology(canRunWithoutTerminologyServer);
-    setTerminologyServer(txsrvr, txLog, version);
+    setTerminologyServer(txsrvr, txLog, txCachePath, version);
     setVersion(vString);
     igLoader = new IgLoader(getPcm(), getContext(), getVersion(), isDebug());
   }
 
-  public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, String vString, String userAgent) throws FHIRException, IOException, URISyntaxException {
+  public ValidationEngine(String src, String txsrvr, String txLog, String txCachePath, FhirPublication version, String vString, String userAgent) throws FHIRException, IOException, URISyntaxException {
     loadCoreDefinitions(src, false, null);
     getContext().setUserAgent(userAgent);
-    setTerminologyServer(txsrvr, txLog, version);
+    setTerminologyServer(txsrvr, txLog, txCachePath, version);
     setVersion(vString);
     igLoader = new IgLoader(getPcm(), getContext(), getVersion(), isDebug());
   }
@@ -280,7 +280,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return ep;
   }
 
-  public String connectToTSServer(String url, String log, FhirPublication version) throws URISyntaxException, FHIRException {
+  public String connectToTSServer(String url, String log, FhirPublication version) throws URISyntaxException, IOException, FHIRException {
+    return connectToTSServer(url, log, null, version);
+  }
+
+  public String connectToTSServer(String url, String log, String txCachePath, FhirPublication version) throws URISyntaxException, IOException, FHIRException {
     context.setTlogging(false);
     if (url == null) {
       context.setCanRunWithoutTerminology(true);
@@ -288,6 +292,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       return "n/a: No Terminology Server";
     } else {
       try {
+        //FIXME this can fail for a different reason than connectToTSServer
+        if (txCachePath != null) {
+          context.initTS(txCachePath);
+        }
         return context.connectToTSServer(TerminologyClientFactory.makeClient(url, context.getUserAgent(), version), log);
       } catch (Exception e) {
         if (context.isCanRunWithoutTerminology()) {
@@ -689,8 +697,12 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     throw new FHIRException("Source/Target version not supported: " + version + " -> " + targetVer);
   }
 
-  public String setTerminologyServer(String src, String log, FhirPublication version) throws FHIRException, URISyntaxException {
-    return connectToTSServer(src, log, version);
+  public String setTerminologyServer(String src, String log, FhirPublication version) throws FHIRException, IOException, URISyntaxException {
+    return setTerminologyServer(src, log, null, version);
+  }
+
+  public String setTerminologyServer(String src, String log, String txCachePath, FhirPublication version) throws FHIRException, IOException, URISyntaxException {
+    return connectToTSServer(src, log, txCachePath, version);
   }
 
   public ValidationEngine setMapLog(String mapLog) throws FileNotFoundException {

@@ -1216,7 +1216,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   // --------------------------------------------------------------------------------------------------------------------------------------------------------
   
-  public void initTS(String cachePath) throws Exception {
+  public void initTS(String cachePath) throws IOException {
     if (!new File(cachePath).exists()) {
       Utilities.createDirectory(cachePath);
     }
