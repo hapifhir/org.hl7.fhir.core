@@ -63,6 +63,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.net.URI;
 
@@ -117,25 +118,31 @@ public abstract class FormatUtilities {
   }
 
   public static ParserBase makeParser(FhirFormat format) {
-    switch (format) {
-    case XML : return new XmlParser();
-    case JSON : return new JsonParser();
-    case TURTLE : throw new Error("unsupported Format "+format.toString()); // return new TurtleParser();
-    case VBAR : throw new Error("unsupported Format "+format.toString()); // 
-    case TEXT : throw new Error("unsupported Format "+format.toString()); // 
-    }
-    throw new Error("unsupported Format "+format.toString());
+    return makeParser(format.name());
   }
   
   public static ParserBase makeParser(String format) {
-    if ("XML".equalsIgnoreCase(format)) return new XmlParser();
-    if ("JSON".equalsIgnoreCase(format)) return new JsonParser();
-    if ("TURTLE".equalsIgnoreCase(format)) throw new Error("unsupported Format "+format.toString()); // return new TurtleParser();
-    if ("JSONLD".equalsIgnoreCase(format)) throw new Error("unsupported Format "+format.toString()); // return new JsonLdParser();
-    if ("VBAR".equalsIgnoreCase(format)) throw new Error("unsupported Format "+format.toString()); // 
-    if ("TEXT".equalsIgnoreCase(format)) throw new Error("unsupported Format "+format.toString()); // 
-    throw new Error("unsupported Format "+format);
-  }  
+    /*
+     * Note: Use fully qualified references to the parsers here in order to avoid adding
+     * a class-level import statement for them. This is because the
+     * XmlParser and JsonParser are huuuuuge classes and classloading them is quite expensive
+     * in cases where they won't actually ever be instantiated (such as when using the
+     * validator in HAPI FHIR).
+     *
+     * See https://github.com/hapifhir/hapi-fhir/issues/3268
+     */
+    if ("XML".equalsIgnoreCase(format))
+      return new org.hl7.fhir.r5.formats.XmlParser();
+    if ("JSON".equalsIgnoreCase(format))
+      return new org.hl7.fhir.r5.formats.JsonParser();
+    if ("TURTLE".equalsIgnoreCase(format))
+      throw new Error("unsupported Format " + format.toString()); // return new TurtleParser();
+    if ("JSONLD".equalsIgnoreCase(format))
+      throw new Error("unsupported Format " + format.toString()); // return new JsonLdParser();
+    if ("VBAR".equalsIgnoreCase(format)) throw new Error("unsupported Format " + format.toString()); //
+    if ("TEXT".equalsIgnoreCase(format)) throw new Error("unsupported Format " + format.toString()); //
+    throw new Error("unsupported Format " + format);
+  }
 
   public static FhirFormat determineFormat(byte[] source) throws FHIRException {
     return determineFormat(source, MAX_SCAN_LENGTH);

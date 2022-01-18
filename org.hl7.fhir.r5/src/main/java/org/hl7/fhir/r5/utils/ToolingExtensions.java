@@ -198,6 +198,8 @@ public class ToolingExtensions {
   public static final String EXT_TARGET_ID = "http://hl7.org/fhir/StructureDefinition/targetElement";
   public static final String EXT_TARGET_PATH = "http://hl7.org/fhir/StructureDefinition/targetPath";
   public static final String EXT_VALUESET_SYSTEM = "http://hl7.org/fhir/StructureDefinition/valueset-system";
+  public static final String EXT_EXPAND_RULES = "http://hl7.org/fhir/StructureDefinition/valueset-expand-rules";
+  public static final String EXT_EXPAND_GROUP = "http://hl7.org/fhir/StructureDefinition/valueset-expand-group";
   
   // specific extension helpers
 
@@ -511,7 +513,7 @@ public class ToolingExtensions {
    * @return The extension, if on this element, else null
    */
   public static Extension getExtension(DomainResource resource, String name) {
-    if (name == null)
+    if (resource == null || name == null)
       return null;
     if (!resource.hasExtension())
       return null;
