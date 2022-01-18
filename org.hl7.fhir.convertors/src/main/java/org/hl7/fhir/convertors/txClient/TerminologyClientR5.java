@@ -37,21 +37,27 @@ import org.hl7.fhir.r5.utils.client.FHIRToolingClient;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URISyntaxException;
 import java.util.Map;
 
 public class TerminologyClientR5 implements TerminologyClient {
 
+  private final Logger logger = LoggerFactory.getLogger(TerminologyClientR5.class);
+
   private final FHIRToolingClient client;
   private ClientHeaders clientHeaders;
 
   public TerminologyClientR5(String address, String userAgent) throws URISyntaxException {
+    logger.info("TerminologyClientR5(String address, String userAgent)");
     this.client = new FHIRToolingClient(address, userAgent);
     setClientHeaders(new ClientHeaders());
   }
 
   public TerminologyClientR5(String address, String userAgent, ClientHeaders clientHeaders) throws URISyntaxException {
+    logger.info("TerminologyClientR5(String address, String userAgent, ClientHeaders clientHeaders)");
     this.client = new FHIRToolingClient(address, userAgent);
     setClientHeaders(clientHeaders);
   }

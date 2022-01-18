@@ -41,6 +41,8 @@ import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.r5.utils.client.network.ResourceRequest;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -75,6 +77,8 @@ import java.util.*;
  */
 public class FHIRToolingClient {
 
+  private final Logger logger = LoggerFactory.getLogger(FHIRToolingClient.class);
+
   public static final String DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssK";
   public static final String DATE_FORMAT = "yyyy-MM-dd";
   public static final String hostKey = "http.proxyHost";
@@ -108,7 +112,6 @@ public class FHIRToolingClient {
     base = baseServiceUrl;
     resourceAddress = new ResourceAddress(baseServiceUrl);
     this.maxResultSetSize = -1;
-    checkCapabilities();
   }
 
   public Client getClient() {
@@ -117,13 +120,6 @@ public class FHIRToolingClient {
 
   public void setClient(Client client) {
     this.client = client;
-  }
-
-  private void checkCapabilities() {
-    try {
-      capabilities = getCapabilitiesStatementQuick();
-    } catch (Throwable e) {
-    }
   }
 
   public String getPreferredResourceFormat() {
@@ -157,27 +153,33 @@ public class FHIRToolingClient {
   }
 
   public CapabilityStatement getCapabilitiesStatement() {
-    CapabilityStatement conformance = null;
+    logger.info("FHIRToolingClient.getCapabilitiesStatement");
+    CapabilityStatement capabilityStatement = null;
     try {
-      conformance = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(false),
+      capabilityStatement = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(false),
         getPreferredResourceFormat(),
         generateHeaders(),
         "CapabilitiesStatement",
         TIMEOUT_NORMAL).getReference();
+      logger.info("FHIRToolingClient.getCapabilitiesStatement - fetched capabilities from server: " + (capabilities != null ? capabilities.getVersion() : "no version"));
+
     } catch (Exception e) {
       throw new FHIRException("Error fetching the server's conformance statement", e);
     }
-    return conformance;
+    return capabilityStatement;
   }
 
   public CapabilityStatement getCapabilitiesStatementQuick() throws EFhirClientException {
+    logger.info("FHIRToolingClient.getCapabilitiesStatementQuick");
     if (capabilities != null) return capabilities;
     try {
-      capabilities = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(true),
+       capabilities = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(true),
         getPreferredResourceFormat(),
         generateHeaders(),
         "CapabilitiesStatement-Quick",
         TIMEOUT_NORMAL).getReference();
+      logger.info("FHIRToolingClient.getCapabilitiesStatementQuick - fetched capabilities from server: " + capabilities.getVersion());
+
     } catch (Exception e) {
       throw new FHIRException("Error fetching the server's capability statement: "+e.getMessage(), e);
     }
@@ -583,6 +585,13 @@ public class FHIRToolingClient {
   }
 
   public String getServerVersion() {
+    if (capabilities == null) {
+      try {
+        getCapabilitiesStatementQuick();
+      } catch (Throwable e) {
+        //FIXME This is creepy. Shouldn't we report this at some level?
+      }
+    }
     return capabilities == null ? null : capabilities.getSoftware().getVersion();
   }
   
