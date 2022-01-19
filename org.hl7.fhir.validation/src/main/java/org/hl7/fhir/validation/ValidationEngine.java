@@ -194,6 +194,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     igLoader = new IgLoader(getPcm(), getContext(), getVersion(), isDebug());
   }
 
+  public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, boolean canRunWithoutTerminologyServer, String vString, String userAgent) throws FHIRException, IOException, URISyntaxException {
+    this(src, txsrvr, txLog, null, version, canRunWithoutTerminologyServer, vString, userAgent);
+  }
+
   public ValidationEngine(String src, String txsrvr, String txLog, String txCachePath, FhirPublication version, boolean canRunWithoutTerminologyServer, String vString, String userAgent) throws FHIRException, IOException, URISyntaxException {
     loadCoreDefinitions(src, false, null);
     getContext().setUserAgent(userAgent);
@@ -201,6 +205,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     setTerminologyServer(txsrvr, txLog, txCachePath, version);
     setVersion(vString);
     igLoader = new IgLoader(getPcm(), getContext(), getVersion(), isDebug());
+  }
+
+  public ValidationEngine(String src, String txsrvr, String txLog,  FhirPublication version, String vString, String userAgent) throws FHIRException, IOException, URISyntaxException {
+      this(src, txsrvr, txLog, null, version, vString, userAgent);
   }
 
   public ValidationEngine(String src, String txsrvr, String txLog, String txCachePath, FhirPublication version, String vString, String userAgent) throws FHIRException, IOException, URISyntaxException {
@@ -212,6 +220,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public ValidationEngine(String src, String vString, TimeTracker tt, String userAgent) throws FHIRException, IOException, URISyntaxException {
+      this(src,  vString,null,  tt, userAgent);
+    }
+
+  public ValidationEngine(String src, String vString, String txCachePath, TimeTracker tt, String userAgent) throws FHIRException, IOException, URISyntaxException {
     loadCoreDefinitions(src, false, tt);
     getContext().setUserAgent(userAgent);
     setVersion(vString);

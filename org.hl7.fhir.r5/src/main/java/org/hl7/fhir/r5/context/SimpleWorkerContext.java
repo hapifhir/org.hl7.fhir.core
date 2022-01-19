@@ -83,8 +83,6 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
 import ca.uhn.fhir.parser.DataFormatException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /*
  * This is a stand alone implementation of worker context for use inside a tool.
@@ -93,8 +91,6 @@ import org.slf4j.LoggerFactory;
  */
 
 public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerContext, ProfileKnowledgeProvider {
-
-  private final Logger dlogger = LoggerFactory.getLogger(SimpleWorkerContext.class);
 
   public static class PackageResourceLoader extends CanonicalResourceProxy {
 
@@ -289,9 +285,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       }
       txClient.setLogger(txLog);
       txClient.setUserAgent(userAgent);
-      //CACHE
-      dlogger.info("SimpleWorkerContext.connectToTSServer");
-
 
       final CapabilityStatement capabilitiesStatementQuick = txCache.hasCapabilityStatement() ? txCache.getCapabilityStatement() : txClient.getCapabilitiesStatementQuick();
       txCache.cacheCapabilityStatement(capabilitiesStatementQuick);
