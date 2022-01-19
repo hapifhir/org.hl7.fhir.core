@@ -37,15 +37,11 @@ import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.utils.client.network.ByteUtils;
 import org.hl7.fhir.r5.utils.client.network.Client;
-import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.r5.utils.client.network.ResourceRequest;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
@@ -76,8 +72,6 @@ import java.util.*;
  * @author Claude Nanjo
  */
 public class FHIRToolingClient {
-
-  private final Logger logger = LoggerFactory.getLogger(FHIRToolingClient.class);
 
   public static final String DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssK";
   public static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -153,7 +147,6 @@ public class FHIRToolingClient {
   }
 
   public CapabilityStatement getCapabilitiesStatement() {
-    logger.info("FHIRToolingClient.getCapabilitiesStatement");
     CapabilityStatement capabilityStatement = null;
     try {
       capabilityStatement = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(false),
@@ -161,8 +154,6 @@ public class FHIRToolingClient {
         generateHeaders(),
         "CapabilitiesStatement",
         TIMEOUT_NORMAL).getReference();
-      logger.info("FHIRToolingClient.getCapabilitiesStatement - fetched capabilities from server: " + (capabilities != null ? capabilities.getVersion() : "no version"));
-
     } catch (Exception e) {
       throw new FHIRException("Error fetching the server's conformance statement", e);
     }
@@ -170,7 +161,6 @@ public class FHIRToolingClient {
   }
 
   public CapabilityStatement getCapabilitiesStatementQuick() throws EFhirClientException {
-    logger.info("FHIRToolingClient.getCapabilitiesStatementQuick");
     if (capabilities != null) return capabilities;
     try {
        capabilities = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(true),
@@ -178,8 +168,6 @@ public class FHIRToolingClient {
         generateHeaders(),
         "CapabilitiesStatement-Quick",
         TIMEOUT_NORMAL).getReference();
-      logger.info("FHIRToolingClient.getCapabilitiesStatementQuick - fetched capabilities from server: " + capabilities.getVersion());
-
     } catch (Exception e) {
       throw new FHIRException("Error fetching the server's capability statement: "+e.getMessage(), e);
     }

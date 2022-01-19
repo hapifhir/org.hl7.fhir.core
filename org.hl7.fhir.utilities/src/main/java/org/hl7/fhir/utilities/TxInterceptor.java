@@ -4,12 +4,13 @@ import okhttp3.Interceptor;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
- * An {@link Interceptor} for {@link okhttp3.OkHttpClient} that controls the number of times we retry a to execute a
- * given request, before reporting a failure. This includes unsuccessful return codes and timeouts.
+ * An {@link Interceptor} for {@link okhttp3.OkHttpClient} that tracks visits to specific urls
  */
 public class TxInterceptor implements Interceptor {
 
@@ -26,10 +27,10 @@ public class TxInterceptor implements Interceptor {
     return instance;
   }
 
-  final Set<String> queriedUrls;
+  final Map<String, Integer> queriedUrls;
 
   private TxInterceptor() {
-    queriedUrls = new HashSet<>();
+    queriedUrls = new HashMap<>();
   }
 
   @Override
@@ -37,10 +38,10 @@ public class TxInterceptor implements Interceptor {
     Response response = chain.proceed(chain.request());
 
     final String key = getKey(response.request().method(), response.request().url().toString());
-    if (!queriedUrls.contains(key)) {
-      queriedUrls.add(key);
-      System.out.print("");
-    }
+    final int count = queriedUrls.containsKey(key) ? queriedUrls.get(key) : 1;
+
+    queriedUrls.put(key, count+1);
+    System.out.print("");
 
     return response;
   }

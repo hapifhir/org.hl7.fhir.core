@@ -330,6 +330,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       }
       checkOutcomes(errorsLogical, logical, "logical", name);
     }
+
+    vCurr.getContext().getTxCache().getHitCount();
   }
 
   private FhirFormat determineFormat(JsonObject config, byte[] cnt) throws IOException {
