@@ -195,6 +195,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected String version; // although the internal resources are all R5, the version of FHIR they describe may not be 
   private String cacheId;
   private boolean isTxCaching;
+  @Getter
+  private int serverQueryCount = 0;
   private Set<String> cached = new HashSet<>();
   
   private Map<String, Map<String, ResourceProxy>> allResourcesById = new HashMap<String, Map<String, ResourceProxy>>();
@@ -598,7 +600,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (txcaps == null) {
           try {
             log("Terminology server: Check for supported code systems for "+system);
-            setTxCaps(txClient.getTerminologyCapabilities());
+            final TerminologyCapabilities capabilityStatement = txCache.hasTerminologyCapabilities() ? txCache.getTerminologyCapabilities() : txClient.getTerminologyCapabilities();
+            txCache.cacheTerminologyCapabilities(capabilityStatement);
+            setTxCaps(capabilityStatement);
           } catch (Exception e) {
             if (canRunWithoutTerminology) {
               noTerminologyServer = true;
