@@ -15,6 +15,8 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
+import org.hl7.fhir.utilities.*;
+import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
@@ -54,11 +56,7 @@ import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
-import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JSONUtil;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -79,6 +77,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RunWith(Parameterized.class)
 public class ValidationTests implements IEvaluationContext, IValidatorResourceFetcher, IValidationPolicyAdvisor {
@@ -113,6 +113,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   private String name;
 
   private static Map<String, ValidationEngine> ve = new HashMap<>();
+
+
   private static ValidationEngine vCurr;
   private static IgLoader igLoader;
 
@@ -124,6 +126,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   @SuppressWarnings("deprecation")
   @Test
   public void test() throws Exception {
+    CacheVerificationLogger logger = new CacheVerificationLogger();
     long setup = System.nanoTime();
 
     this.name = name;
@@ -157,6 +160,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
         throw new Exception("unknown version " + version);
     }
     vCurr = ve.get(version);
+    vCurr.getContext().getTxClient().setLogger(logger);
     igLoader = new IgLoader(vCurr.getPcm(), vCurr.getContext(), vCurr.getVersion(), true);
     if (TestingUtilities.fcontexts == null) {
       TestingUtilities.fcontexts = new HashMap<>();
@@ -330,9 +334,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       }
       checkOutcomes(errorsLogical, logical, "logical", name);
     }
-
-    vCurr.getContext().getTxCache().getHitCount();
+    assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
   }
+
 
   private FhirFormat determineFormat(JsonObject config, byte[] cnt) throws IOException {
     String name = JSONUtil.str(config, "file");
