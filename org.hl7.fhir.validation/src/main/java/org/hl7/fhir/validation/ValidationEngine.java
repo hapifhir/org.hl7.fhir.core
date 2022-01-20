@@ -220,10 +220,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public ValidationEngine(String src, String vString, TimeTracker tt, String userAgent) throws FHIRException, IOException, URISyntaxException {
-      this(src,  vString,null,  tt, userAgent);
-    }
-
-  public ValidationEngine(String src, String vString, String txCachePath, TimeTracker tt, String userAgent) throws FHIRException, IOException, URISyntaxException {
     loadCoreDefinitions(src, false, tt);
     getContext().setUserAgent(userAgent);
     setVersion(vString);
