@@ -665,7 +665,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     return expandVS(vs, cacheOk, heirarchical);
   }
-  
+
+
   @Override
   public ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical) throws TerminologyServiceException {
     ValueSet vs = new ValueSet();
@@ -713,6 +714,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return res;
   }
 
+  //TESTME
   @Override
   public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean heirarchical) {
     if (expParameters == null)
@@ -721,6 +723,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return expandVS(vs, cacheOk, heirarchical, false, p);
   }
 
+  //TESTME
   @Override
   public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean heirarchical, boolean incompleteOk) {
     if (expParameters == null)
@@ -729,6 +732,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return expandVS(vs, cacheOk, heirarchical, incompleteOk, p);
   }
 
+  //TESTME
   public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean heirarchical, boolean incompleteOk, Parameters p)  {
     if (p == null) {
       throw new Error(formatMessage(I18nConstants.NO_PARAMETERS_PROVIDED_TO_EXPANDVS));
@@ -947,12 +951,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return code.hasVersion() ? code.getSystem()+"|"+code.getVersion() : code.getSystem();
   }
 
+  //TESTME
   @Override
-  public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs, ValidationContextCarrier ctxt) {
-    if (options == null) {
-      options = ValidationOptions.defaults();
-    }
-    
+  public ValidationResult validateCode(final ValidationOptions optionsArg, final Coding code, final ValueSet vs, final ValidationContextCarrier ctxt) {
+
+    ValidationOptions options = optionsArg != null ? optionsArg : ValidationOptions.defaults();
+
     if (code.hasSystem()) {
       codeSystemsUsed.add(code.getSystem());
     }
@@ -1036,6 +1040,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
+  //TESTME
   @Override
   public ValidationResult validateCode(ValidationOptions options, CodeableConcept code, ValueSet vs) {
     CacheToken cacheToken = txCache.generateValidationToken(options, code, vs);
@@ -1084,7 +1089,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return res;
   }
 
-  private ValidationResult validateOnServer(ValueSet vs, Parameters pin, ValidationOptions options) throws FHIRException {
+  protected ValidationResult validateOnServer(ValueSet vs, Parameters pin, ValidationOptions options) throws FHIRException {
     boolean cache = false;
     if (vs != null) {
       for (ConceptSetComponent inc : vs.getCompose().getInclude()) {

@@ -1,0 +1,14 @@
+{
+  "code": {
+    "code": "dummyCode"
+  },
+  "valueSet": {
+    "resourceType": "ValueSet"
+  },
+  "lang": "null",
+  "useServer": "true",
+  "useClient": "true",
+  "guessSystem": "true",
+  "valueSetMode": "ALL_CHECKS",
+  "versionFlexible": "false"
+}
