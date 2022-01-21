@@ -287,7 +287,7 @@ public class ValidationService {
         System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
       }
       System.out.print("  Load FHIR v" + cliContext.getSv() + " from " + definitions);
-      ValidationEngine validator = new ValidationEngine(definitions, cliContext.getSv(), cliContext.getTxCache(), tt, "fhir/validator");
+      ValidationEngine validator = new ValidationEngine(definitions, cliContext.getSv(), tt, "fhir/validator");
       sessionId = sessionCache.cacheSession(validator);
 
       FhirPublication ver = FhirPublication.fromCode(cliContext.getSv());

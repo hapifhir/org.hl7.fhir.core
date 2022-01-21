@@ -94,6 +94,7 @@ public class TerminologyCache {
   public class CacheToken {
     private String name;
     private String key;
+    @Getter
     private String request;
     private boolean hasVersion;
 
@@ -123,7 +124,6 @@ public class TerminologyCache {
   private String folder;
 
   private CapabilityStatement capabilityStatementCache = null;
-
 
   public boolean hasCapabilityStatement() {
     return capabilityStatementCache != null;
@@ -183,6 +183,7 @@ public class TerminologyCache {
   public void clear() {
     caches.clear();
   }
+
   public CacheToken generateValidationToken(ValidationOptions options, Coding code, ValueSet vs) {
     CacheToken ct = new CacheToken();
     if (code.hasSystem())
@@ -198,7 +199,7 @@ public class TerminologyCache {
     } catch (IOException e) {
       throw new Error(e);
     }
-    ct.key = String.valueOf(hashNWS(ct.request));
+    ct.key = String.valueOf(hashJson(ct.request));
     return ct;
   }
 
@@ -227,7 +228,7 @@ public class TerminologyCache {
     } catch (IOException e) {
       throw new Error(e);
     }
-    ct.key = String.valueOf(hashNWS(ct.request));
+    ct.key = String.valueOf(hashJson(ct.request));
     return ct;
   }
   
@@ -268,7 +269,7 @@ public class TerminologyCache {
     } catch (IOException e) {
       throw new Error(e);
     }
-    ct.key = String.valueOf(hashNWS(ct.request));
+    ct.key = String.valueOf(hashJson(ct.request));
     return ct;
   }
 
@@ -500,6 +501,35 @@ public class TerminologyCache {
     }
   }
 
+
+
+  private CacheEntry getCacheEntry(String request, String resultString) throws IOException {
+    CacheEntry ce = new CacheEntry();
+    ce.persistent = true;
+    ce.request = request;
+    boolean e = resultString.charAt(0) == 'e';
+    resultString = resultString.substring(3);
+    JsonObject o = (JsonObject) new com.google.gson.JsonParser().parse(resultString);
+    String error = loadJS(o.get("error"));
+    if (e) {
+      if (o.has("valueSet"))
+        ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser().parse(o.getAsJsonObject("valueSet")), error, TerminologyServiceErrorClass.UNKNOWN);
+      else
+        ce.e = new ValueSetExpansionOutcome(error, TerminologyServiceErrorClass.UNKNOWN);
+    } else {
+      String t = loadJS(o.get("severity"));
+      IssueSeverity severity = t == null ? null : IssueSeverity.fromCode(t);
+      String display = loadJS(o.get("display"));
+      String code = loadJS(o.get("code"));
+      String system = loadJS(o.get("system"));
+      String definition = loadJS(o.get("definition"));
+      t = loadJS(o.get("class"));
+      TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t);
+      ce.v = new ValidationResult(severity, error, system, new ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code)).setErrorClass(errorClass);
+    }
+    return ce;
+  }
+
   private void loadNamedCache(String fn) {
     int c = 0;
     try {
@@ -508,7 +538,7 @@ public class TerminologyCache {
 
       NamedCache nc = new NamedCache();
       nc.name = title;
-      caches.put(title, nc);
+
       if (src.startsWith("?"))
         src = src.substring(1);
       int i = src.indexOf(ENTRY_MARKER);
@@ -519,34 +549,15 @@ public class TerminologyCache {
         i = src.indexOf(ENTRY_MARKER);
         if (!Utilities.noString(s)) {
           int j = s.indexOf(BREAK);
-          String q = s.substring(0, j);
+          String request = s.substring(0, j);
           String p = s.substring(j + BREAK.length() + 1).trim();
-          CacheEntry ce = new CacheEntry();
-          ce.persistent = true;
-          ce.request = q;
-          boolean e = p.charAt(0) == 'e';
-          p = p.substring(3);
-          JsonObject o = (JsonObject) new com.google.gson.JsonParser().parse(p);
-          String error = loadJS(o.get("error"));
-          if (e) {
-            if (o.has("valueSet"))
-              ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser().parse(o.getAsJsonObject("valueSet")), error, TerminologyServiceErrorClass.UNKNOWN);
-            else
-              ce.e = new ValueSetExpansionOutcome(error, TerminologyServiceErrorClass.UNKNOWN);
-          } else {
-            String t = loadJS(o.get("severity"));
-            IssueSeverity severity = t == null ? null : IssueSeverity.fromCode(t);
-            String display = loadJS(o.get("display"));
-            String code = loadJS(o.get("code"));
-            String system = loadJS(o.get("system"));
-            String definition = loadJS(o.get("definition"));
-            t = loadJS(o.get("class"));
-            TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t);
-            ce.v = new ValidationResult(severity, error, system, new ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code)).setErrorClass(errorClass);
-          }
-          nc.map.put(String.valueOf(hashNWS(ce.request)), ce);
-          nc.list.add(ce);
+
+          CacheEntry cacheEntry = getCacheEntry(request, p);
+
+          nc.map.put(String.valueOf(hashJson(cacheEntry.request)), cacheEntry);
+          nc.list.add(cacheEntry);
         }
+        caches.put(nc.name, nc);
       }
     } catch (Exception e) {
       throw new FHIRException("Error loading " + fn + ": " + e.getMessage() + " entry " + c, e);
@@ -580,7 +591,7 @@ public class TerminologyCache {
     return s;
   }
 
-  private String hashNWS(String s) {
+  private String hashJson(String s) {
     s = StringUtils.remove(s, ' ');
     s = StringUtils.remove(s, '\n');
     s = StringUtils.remove(s, '\r');
