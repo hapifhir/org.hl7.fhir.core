@@ -75,6 +75,7 @@ import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.test.utils.ClassesLoadedFlags;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
@@ -86,6 +87,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import org.slf4j.LoggerFactory;
+
 /**
  * General parser for JSON content. You instantiate an JsonParser of these, but you 
  * actually use parse or parseGeneral defined on this class
@@ -93,7 +96,12 @@ import com.google.gson.JsonSyntaxException;
  * The two classes are separated to keep generated and manually maintained code apart.
  */
 public abstract class JsonParserBase extends ParserBase implements IParser {
-	
+
+  static {
+    LoggerFactory.getLogger("org.hl7.fhir.r5.formats.XmlParserBase").debug("XML Parser is being loaded");
+    ClassesLoadedFlags.ourJsonParserBaseLoaded = true;
+  }
+
   @Override
   public ParserType getType() {
 	  return ParserType.JSON;

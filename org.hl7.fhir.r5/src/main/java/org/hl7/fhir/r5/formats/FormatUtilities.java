@@ -131,17 +131,21 @@ public abstract class FormatUtilities {
      *
      * See https://github.com/hapifhir/hapi-fhir/issues/3268
      */
-    if ("XML".equalsIgnoreCase(format))
-      return new org.hl7.fhir.r5.formats.XmlParser();
-    if ("JSON".equalsIgnoreCase(format))
-      return new org.hl7.fhir.r5.formats.JsonParser();
-    if ("TURTLE".equalsIgnoreCase(format))
-      throw new Error("unsupported Format " + format.toString()); // return new TurtleParser();
-    if ("JSONLD".equalsIgnoreCase(format))
-      throw new Error("unsupported Format " + format.toString()); // return new JsonLdParser();
-    if ("VBAR".equalsIgnoreCase(format)) throw new Error("unsupported Format " + format.toString()); //
-    if ("TEXT".equalsIgnoreCase(format)) throw new Error("unsupported Format " + format.toString()); //
-    throw new Error("unsupported Format " + format);
+    try {
+      if ("XML".equalsIgnoreCase(format))
+         return (ParserBase) Class.forName("org.hl7.fhir.r5.formats.XmlParser").getConstructor().newInstance();
+      if ("JSON".equalsIgnoreCase(format))
+        return (ParserBase) Class.forName("org.hl7.fhir.r5.formats.JsonParser").getConstructor().newInstance();
+      if ("TURTLE".equalsIgnoreCase(format))
+        throw new Error("unsupported Format " + format.toString()); // return new TurtleParser();
+      if ("JSONLD".equalsIgnoreCase(format))
+        throw new Error("unsupported Format " + format.toString()); // return new JsonLdParser();
+      if ("VBAR".equalsIgnoreCase(format)) throw new Error("unsupported Format " + format.toString()); //
+      if ("TEXT".equalsIgnoreCase(format)) throw new Error("unsupported Format " + format.toString()); //
+      throw new Error("unsupported Format " + format);
+    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
+      throw new Error("Could not instantiate", e);
+    }
   }
 
   public static FhirFormat determineFormat(byte[] source) throws FHIRException {
