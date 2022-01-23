@@ -402,7 +402,7 @@ public class TerminologyCache {
     
   }
 
-  private <K extends Resource> void  save(K resource, String title) {
+  private <K extends Resource> void save(K resource, String title) {
     if (folder == null)
       return;
 
@@ -591,7 +591,7 @@ public class TerminologyCache {
     return s;
   }
 
-  private String hashJson(String s) {
+  protected String hashJson(String s) {
     s = StringUtils.remove(s, ' ');
     s = StringUtils.remove(s, '\n');
     s = StringUtils.remove(s, '\r');
