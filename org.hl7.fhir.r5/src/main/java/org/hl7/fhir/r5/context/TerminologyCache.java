@@ -186,11 +186,13 @@ public class TerminologyCache {
 
   public CacheToken generateValidationToken(ValidationOptions options, Coding code, ValueSet vs) {
     CacheToken ct = new CacheToken();
-    if (code.hasSystem())
+    if (code.hasSystem()) {
       ct.name = getNameForSystem(code.getSystem());
+      ct.hasVersion = code.hasVersion();
+    }
     else
       ct.name = NAME_FOR_NO_SYSTEM;
-    ct.hasVersion = code.hasVersion();
+
     JsonParser json = new JsonParser();
     json.setOutputStyle(OutputStyle.PRETTY);
     ValueSet vsc = getVSEssense(vs);
@@ -216,9 +218,10 @@ public class TerminologyCache {
   public CacheToken generateValidationToken(ValidationOptions options, CodeableConcept code, ValueSet vs) {
     CacheToken ct = new CacheToken();
     for (Coding c : code.getCoding()) {
-      if (c.hasSystem())
+      if (c.hasSystem()) {
         ct.setName(getNameForSystem(c.getSystem()));
         ct.hasVersion = c.hasVersion();
+      }
     }
     JsonParser json = new JsonParser();
     json.setOutputStyle(OutputStyle.PRETTY);
