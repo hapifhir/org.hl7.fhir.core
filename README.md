@@ -50,12 +50,23 @@ To skip unit tests:
 mvn -Dmaven.test.skip install
 ```
 
-To clean terminology server caches.
+To clean and rebuild the terminology server caches.
+
+_clean_
 ```
 mvn clean -Dfhir.txcache.clean=true   
 ```
+
+_rebuild_
+```
+mvn test -Dfhir.txcache.rebuild=true
+```
+
 _The source contains cached terminology server responses for testing. If the expected responses have changed in any way, 
-this cache should be cleaned with the above so that subsequent `mvn test` calls will rebuild the cache._
+this cache should be cleaned and rebuilt with the above so that subsequent `mvn test` calls will have the most current 
+responses cached._
+
+
 
 ### Publishing Binaries
 
