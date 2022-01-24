@@ -724,10 +724,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   //TESTME
-  public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean heirarchical, boolean incompleteOk, Parameters p)  {
-    if (p == null) {
+  public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean hierarchical, boolean incompleteOk, Parameters pIn)  {
+    if (pIn == null) {
       throw new Error(formatMessage(I18nConstants.NO_PARAMETERS_PROVIDED_TO_EXPANDVS));
     }
+
+    Parameters p = pIn.copy();
+
     if (vs.hasExpansion()) {
       return new ValueSetExpansionOutcome(vs.copy());
     }
@@ -741,7 +744,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       codeSystemsUsed.add(inc.getSystem());
     }
 
-    CacheToken cacheToken = txCache.generateExpandToken(vs, heirarchical);
+    CacheToken cacheToken = txCache.generateExpandToken(vs, hierarchical);
     ValueSetExpansionOutcome res;
     if (cacheOk) {
       res = txCache.getExpansion(cacheToken);
@@ -750,7 +753,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
     p.setParameter("includeDefinition", false);
-    p.setParameter("excludeNested", !heirarchical);
+    p.setParameter("excludeNested", !hierarchical);
     if (incompleteOk) {
       p.setParameter("incomplete-ok", true);      
     }
@@ -758,7 +761,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     List<String> allErrors = new ArrayList<>();
     
     // ok, first we try to expand locally
-    ValueSetExpanderSimple vse = new ValueSetExpanderSimple(this);
+    ValueSetExpanderSimple vse = constructValueSetExpanderSimple();
     try {
       res = vse.expand(vs, p);
       allErrors.addAll(vse.getAllErrors());
@@ -998,6 +1001,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       txCache.cacheValidation(cacheToken, res, TerminologyCache.PERMANENT);
     }
     return res;
+  }
+
+  protected ValueSetExpanderSimple constructValueSetExpanderSimple() {
+    return new ValueSetExpanderSimple(this);
   }
 
   protected ValueSetCheckerSimple constructValueSetCheckerSimple( ValidationOptions options,  ValueSet vs,  ValidationContextCarrier ctxt) {
