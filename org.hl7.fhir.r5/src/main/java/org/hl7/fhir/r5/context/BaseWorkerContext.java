@@ -679,14 +679,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (res != null) {
       return res;
     }
-    Parameters p = expParameters.copy(); 
-    p.setParameter("includeDefinition", false);
-    p.setParameter("excludeNested", !hierarchical);
-        
-    boolean cached = addDependentResources(p, vs);
-    if (cached) {
-      p.addParameter().setName("cache-id").setValue(new StringType(cacheId));              
-    }
+    Parameters p = constructParameters(vs, hierarchical);
     for (ConceptSetComponent incl : vs.getCompose().getInclude()) {
       codeSystemsUsed.add(incl.getSystem());
     }
@@ -714,7 +707,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return res;
   }
 
-  //TESTME
   @Override
   public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean heirarchical) {
     if (expParameters == null)
@@ -723,7 +715,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return expandVS(vs, cacheOk, heirarchical, false, p);
   }
 
-  //TESTME
   @Override
   public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean heirarchical, boolean incompleteOk) {
     if (expParameters == null)
@@ -859,7 +850,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       for (CodingValidationRequest t : codes) {
         if (!t.hasResult()) {
           try {
-            ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, this); 
+            ValueSetCheckerSimple vsc = constructValueSetCheckerSimple(options, vs);
             ValidationResult res = vsc.validateCode(t.getCoding());
             if (txCache != null) {
               txCache.cacheValidation(t.getCacheToken(), res, TerminologyCache.TRANSIENT);
@@ -890,24 +881,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Bundle batch = new Bundle();
     batch.setType(BundleType.BATCH);
     Set<String> systems = new HashSet<>();
-    for (CodingValidationRequest t : codes) {
-      if (!t.hasResult()) {
-        Parameters pIn = new Parameters();
-        pIn.addParameter().setName("coding").setValue(t.getCoding());
-        if (options.isGuessSystem()) {
-          pIn.addParameter().setName("implySystem").setValue(new BooleanType(true));
-        }
-        if (vs != null) {
-          pIn.addParameter().setName("valueSet").setResource(vs);
-        }
-        pIn.addParameter().setName("profile").setResource(expParameters);
+    for (CodingValidationRequest codingValidationRequest : codes) {
+      if (!codingValidationRequest.hasResult()) {
+        Parameters pIn = constructParameters(options, codingValidationRequest, vs);
         setTerminologyOptions(options, pIn);
         BundleEntryComponent be = batch.addEntry();
         be.setResource(pIn);
         be.getRequest().setMethod(HTTPVerb.POST);
         be.getRequest().setUrl("CodeSystem/$validate-code");
-        be.setUserData("source", t);
-        systems.add(t.getCoding().getSystem());
+        be.setUserData("source", codingValidationRequest);
+        systems.add(codingValidationRequest.getCoding().getSystem());
       }
     }
     if (batch.getEntry().size() > 0) {
@@ -974,7 +957,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (options.isUseClient()) {
       // ok, first we try to validate locally
       try {
-        ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, this, ctxt);
+        ValueSetCheckerSimple vsc = constructValueSetCheckerSimple(options, vs, ctxt);
         if (!vsc.isServerSide(code.getSystem())) {
           res = vsc.validateCode(code);
           if (txCache != null) {
@@ -1005,12 +988,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       tlog("$validate "+csumm+" before cache exists");
     }
     try {
-      Parameters pIn = new Parameters();
-      pIn.addParameter().setName("coding").setValue(code);
-      if (options.isGuessSystem()) {
-        pIn.addParameter().setName("implySystem").setValue(new BooleanType(true));
-      }
-      setTerminologyOptions(options, pIn);
+      Parameters pIn = constructParameters(options, code);
       res = validateOnServer(vs, pIn, options);
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog == null ? null : txLog.getLastId()).setErrorClass(TerminologyServiceErrorClass.SERVER_ERROR);
@@ -1020,6 +998,56 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       txCache.cacheValidation(cacheToken, res, TerminologyCache.PERMANENT);
     }
     return res;
+  }
+
+  protected ValueSetCheckerSimple constructValueSetCheckerSimple( ValidationOptions options,  ValueSet vs,  ValidationContextCarrier ctxt) {
+    return new ValueSetCheckerSimple(options, vs, this, ctxt);
+  }
+
+  protected ValueSetCheckerSimple constructValueSetCheckerSimple( ValidationOptions options,  ValueSet vs) {
+    return new ValueSetCheckerSimple(options, vs, this);
+  }
+
+  protected Parameters constructParameters(ValueSet vs, boolean hierarchical) {
+    Parameters p = expParameters.copy();
+    p.setParameter("includeDefinition", false);
+    p.setParameter("excludeNested", !hierarchical);
+
+    boolean cached = addDependentResources(p, vs);
+    if (cached) {
+      p.addParameter().setName("cache-id").setValue(new StringType(cacheId));
+    }
+    return p;
+  }
+
+  protected Parameters constructParameters(ValidationOptions options, Coding coding) {
+    Parameters pIn = new Parameters();
+    pIn.addParameter().setName("coding").setValue(coding);
+    if (options.isGuessSystem()) {
+      pIn.addParameter().setName("implySystem").setValue(new BooleanType(true));
+    }
+    setTerminologyOptions(options, pIn);
+    return pIn;
+  }
+
+  protected Parameters constructParameters(ValidationOptions options, CodeableConcept codeableConcept) {
+    Parameters pIn = new Parameters();
+    pIn.addParameter().setName("codeableConcept").setValue(codeableConcept);
+    setTerminologyOptions(options, pIn);
+    return pIn;
+  }
+
+  protected Parameters constructParameters(ValidationOptions options, CodingValidationRequest codingValidationRequest, ValueSet valueSet) {
+    Parameters pIn = new Parameters();
+    pIn.addParameter().setName("coding").setValue(codingValidationRequest.getCoding());
+    if (options.isGuessSystem()) {
+      pIn.addParameter().setName("implySystem").setValue(new BooleanType(true));
+    }
+    if (valueSet != null) {
+      pIn.addParameter().setName("valueSet").setResource(valueSet);
+    }
+    pIn.addParameter().setName("profile").setResource(expParameters);
+    return pIn;
   }
 
   private void updateUnsupportedCodeSystems(ValidationResult res, Coding code, String codeKey) {
@@ -1057,7 +1085,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (options.isUseClient()) {
       // ok, first we try to validate locally
       try {
-        ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, this); 
+        ValueSetCheckerSimple vsc = constructValueSetCheckerSimple(options, vs);
         res = vsc.validateCode(code);
         txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
         return res;
@@ -1078,9 +1106,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     tlog("$validate "+txCache.summary(code)+" for "+ txCache.summary(vs));
     try {
-      Parameters pIn = new Parameters();
-      pIn.addParameter().setName("codeableConcept").setValue(code);
-      setTerminologyOptions(options, pIn);
+      Parameters pIn = constructParameters(options, code);
       res = validateOnServer(vs, pIn, options);
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog.getLastId());
