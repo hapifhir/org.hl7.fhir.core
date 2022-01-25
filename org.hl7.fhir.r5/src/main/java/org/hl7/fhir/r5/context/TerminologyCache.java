@@ -38,8 +38,10 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.*;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
@@ -92,10 +94,13 @@ public class TerminologyCache {
   private int networkCount;
 
   public class CacheToken {
+    @Getter
     private String name;
     private String key;
     @Getter
     private String request;
+    @Accessors(fluent = true)
+    @Getter
     private boolean hasVersion;
 
     public void setName(String n) {
@@ -247,7 +252,7 @@ public class TerminologyCache {
     return vsc;
   }
 
-  public CacheToken generateExpandToken(ValueSet vs, boolean heirarchical) {
+  public CacheToken generateExpandToken(ValueSet vs, boolean hierarchical) {
     CacheToken ct = new CacheToken();
     ValueSet vsc = getVSEssense(vs);
     for (ConceptSetComponent inc : vs.getCompose().getInclude())
@@ -268,7 +273,7 @@ public class TerminologyCache {
     JsonParser json = new JsonParser();
     json.setOutputStyle(OutputStyle.PRETTY);
     try {
-      ct.request = "{\"hierarchical\" : "+(heirarchical ? "true" : "false")+", \"valueSet\" :"+extracted(json, vsc)+"}\r\n";
+      ct.request = "{\"hierarchical\" : "+(hierarchical ? "true" : "false")+", \"valueSet\" :"+extracted(json, vsc)+"}\r\n";
     } catch (IOException e) {
       throw new Error(e);
     }
