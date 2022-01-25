@@ -3,6 +3,7 @@ package org.hl7.fhir.utilities.tests;
 import lombok.Getter;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class CacheVerificationLogger implements ToolingClientLogger {
@@ -14,6 +15,15 @@ public class CacheVerificationLogger implements ToolingClientLogger {
 
   @Override
   public void logRequest(String method, String url, List<String> headers, byte[] body) {
+    System.err.println("Unexpected request to server");
+    System.err.println(method);
+    System.err.println(url);
+    for (String header : headers) {
+      System.err.println("Header: " + header);
+    }
+    System.err.println("Body");
+    System.err.println("----");
+    System.err.println(new String(body, StandardCharsets.UTF_8));
     requests++;
   }
 
