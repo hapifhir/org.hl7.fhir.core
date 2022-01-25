@@ -334,7 +334,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       }
       checkOutcomes(errorsLogical, logical, "logical", name);
     }
-    assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
+    logger.verifyHasNoRequests();
   }
 
 
