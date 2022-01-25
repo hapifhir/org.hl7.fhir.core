@@ -19,13 +19,13 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class SimpleWorkerContextTests {
@@ -63,6 +63,15 @@ public class SimpleWorkerContextTests {
 
   @Mock
   Parameters expParameters;
+
+  public static final TerminologyCapabilities terminologyCapabilities = new TerminologyCapabilities();
+  static {  terminologyCapabilities.getExpansion().setParameter(Arrays.asList());}
+
+  public static final CapabilityStatement.CapabilityStatementSoftwareComponent software = new CapabilityStatement.CapabilityStatementSoftwareComponent();
+  static { software.setVersion("dummyVersion"); }
+
+  public static final CapabilityStatement capabilitiesStatement = new CapabilityStatement();
+  static { capabilitiesStatement.setSoftware(software);}
 
   @BeforeEach
   public void beforeEach() {
@@ -357,4 +366,50 @@ public class SimpleWorkerContextTests {
     Mockito.verify(terminologyCache).getExpansion(cacheToken);
     Mockito.verify(terminologyCache).cacheExpansion(cacheToken, actualExpansionResult, true);
   }
+
+
+  @Test
+  public void testInitializationWithCache() {
+
+    Mockito.doReturn(true).when(terminologyCache).hasTerminologyCapabilities();
+    Mockito.doReturn(true).when(terminologyCache).hasCapabilityStatement();
+
+    Mockito.doReturn(terminologyCapabilities).when(terminologyCache).getTerminologyCapabilities();
+    Mockito.doReturn(capabilitiesStatement).when(terminologyCache).getCapabilityStatement();
+
+    String actual = context.connectToTSServer(terminologyClient, null);
+
+    assertEquals("dummyVersion", actual);
+
+    Mockito.verify(terminologyCache).getTerminologyCapabilities();
+    Mockito.verify(terminologyCache).getCapabilityStatement();
+
+    Mockito.verify(terminologyClient, times(0)).getTerminologyCapabilities();
+    Mockito.verify(terminologyClient, times(0)).getCapabilitiesStatementQuick();
+
+    Mockito.verify(context).setTxCaps(terminologyCapabilities);
+  }
+
+  @Test
+  public void testInitializationWithClient() {
+
+    Mockito.doReturn(false).when(terminologyCache).hasTerminologyCapabilities();
+    Mockito.doReturn(false).when(terminologyCache).hasCapabilityStatement();
+
+    Mockito.doReturn(terminologyCapabilities).when(terminologyClient).getTerminologyCapabilities();
+    Mockito.doReturn(capabilitiesStatement).when(terminologyClient).getCapabilitiesStatementQuick();
+
+    String actual = context.connectToTSServer(terminologyClient, null);
+
+    assertEquals("dummyVersion", actual);
+
+    Mockito.verify(terminologyCache, times(0)).getTerminologyCapabilities();
+    Mockito.verify(terminologyCache, times(0)).getCapabilityStatement();
+
+    Mockito.verify(terminologyClient).getTerminologyCapabilities();
+    Mockito.verify(terminologyClient).getCapabilitiesStatementQuick();
+
+    Mockito.verify(context).setTxCaps(terminologyCapabilities);
+  }
+
 }
