@@ -32,6 +32,24 @@ import static org.mockito.Mockito.mock;
 
 public class TerminologyCacheTests {
 
+  static final ValueSet.ConceptSetComponent include = new ValueSet.ConceptSetComponent();
+  static {
+    include.setSystem("dummyIncludeSystem");
+    include.setVersion("dummyIncludeVersion");
+  }
+
+  static final ValueSet.ConceptSetComponent exclude = new ValueSet.ConceptSetComponent();
+  static {
+    exclude.setSystem("dummyExcludeSystem");
+    exclude.setVersion("dummyExcludeVersion");
+  }
+
+  static final ValueSet.ValueSetExpansionContainsComponent containsComponent = new ValueSet.ValueSetExpansionContainsComponent();
+  static {
+    containsComponent.setSystem("dummyContainsSystem");
+    containsComponent.setVersion("dummyContainsVersion");
+  }
+
   private JsonParser jsonParser = new JsonParser();
 
   private JsonElement getJsonFromFile(String filename) throws URISyntaxException, IOException {
@@ -69,13 +87,23 @@ public class TerminologyCacheTests {
     Coding coding = new Coding();
     coding.setCode("dummyCode");
 
+    CodeableConcept concept = new CodeableConcept();
+    concept.addCoding(new Coding().setCode("dummyCode"));
+    ValueSet ccvalueSet = new ValueSet();
+
+
     // Add dummy results to the cache
     TerminologyCache terminologyCacheA = new TerminologyCache(lock, tempCacheDirectory.toString());
 
-    IWorkerContext.ValidationResult validationResultA = new IWorkerContext.ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo");
+    IWorkerContext.ValidationResult codingResultA = new IWorkerContext.ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo");
     TerminologyCache.CacheToken codingTokenA = terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions,
       coding, valueSet);
-    terminologyCacheA.cacheValidation(codingTokenA, validationResultA, true);
+    terminologyCacheA.cacheValidation(codingTokenA, codingResultA, true);
+
+    IWorkerContext.ValidationResult codeableConceptResultA = new IWorkerContext.ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo");
+    TerminologyCache.CacheToken codeableConceptTokenA = terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions,
+      concept, valueSet);
+    terminologyCacheA.cacheValidation(codeableConceptTokenA, codeableConceptResultA, true);
 
     TerminologyCache.CacheToken expansionTokenA = terminologyCacheA.generateExpandToken(valueSet, true);
     ValueSetExpander.ValueSetExpansionOutcome expansionOutcomeA = new ValueSetExpander.ValueSetExpansionOutcome(valueSet);
@@ -83,7 +111,8 @@ public class TerminologyCacheTests {
     terminologyCacheA.cacheExpansion(expansionTokenA, expansionOutcomeA, true);
     // Check that the in-memory cache is returning what we put in
     {
-      assertValidationResultEquals(validationResultA, terminologyCacheA.getValidation(codingTokenA));
+      assertValidationResultEquals(codingResultA, terminologyCacheA.getValidation(codingTokenA));
+      assertValidationResultEquals(codeableConceptResultA, terminologyCacheA.getValidation(codeableConceptTokenA));
       assertExpansionOutcomeEquals(expansionOutcomeA,terminologyCacheA.getExpansion(expansionTokenA));
     }
 
@@ -91,8 +120,10 @@ public class TerminologyCacheTests {
     {
     TerminologyCache terminologyCacheB = new TerminologyCache(lock, tempCacheDirectory.toString());
 
-      assertValidationResultEquals(validationResultA, terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions,
+      assertValidationResultEquals(codingResultA, terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions,
         coding, valueSet)));
+      assertValidationResultEquals(codeableConceptResultA, terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions,
+        concept, valueSet)));
       assertExpansionOutcomeEquals(expansionOutcomeA,terminologyCacheB.getExpansion(terminologyCacheA.generateExpandToken(valueSet, true)));
     }
     deleteTempCacheDirectory(tempCacheDirectory);
@@ -126,6 +157,57 @@ public class TerminologyCacheTests {
   }
 
   @Test
+  public void testCodingWithSystemCacheTokenGeneration() throws IOException, URISyntaxException {
+
+    TerminologyCache terminologyCache = createTerminologyCache();
+    ValueSet valueSet = new ValueSet();
+
+    Coding coding = new Coding();
+    coding.setCode("dummyCode");
+    coding.setSystem("dummySystem");
+    coding.setVersion("dummyVersion");
+    TerminologyCache.CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
+      coding, valueSet );
+
+    JsonElement actual = jsonParser.parse(cacheToken.getRequest());
+    JsonElement expected = getJsonFromFile("codingEmptyValueSetSystem.json");
+
+    assertEquals(expected, actual);
+    assertEquals(terminologyCache.hashJson(expected.toString()), terminologyCache.hashJson(actual.toString()));
+  }
+
+  @Test
+  public void testCodingWithSystemCacheTokenGenerationNoSystem() throws IOException, URISyntaxException {
+
+    TerminologyCache terminologyCache = createTerminologyCache();
+    ValueSet valueSet = new ValueSet();
+
+    Coding coding = new Coding();
+    coding.setCode("dummyCode");
+
+    TerminologyCache.CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
+      coding, valueSet);
+    assertEquals("all-systems", cacheToken.getName());
+    assertFalse(cacheToken.hasVersion());
+  }
+
+  @Test
+  public void testCodingWithSystemCacheTokenGenerationWithSystem() throws IOException, URISyntaxException {
+
+    TerminologyCache terminologyCache = createTerminologyCache();
+    ValueSet valueSet = new ValueSet();
+
+    Coding coding = new Coding();
+    coding.setCode("dummyCode");
+    coding.setSystem("dummySystem");
+    coding.setVersion("dummyVersion");
+    TerminologyCache.CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
+      coding, valueSet);
+    assertEquals("dummySystem", cacheToken.getName());
+    assertTrue(cacheToken.hasVersion());
+  }
+
+  @Test
   public void testCodableConceptCacheTokenGeneration() throws IOException, URISyntaxException {
 
     TerminologyCache terminologyCache = createTerminologyCache();
@@ -135,6 +217,9 @@ public class TerminologyCacheTests {
     TerminologyCache.CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
       concept, valueSet );
 
+    assertNull(cacheToken.getName());
+    assertEquals(false, cacheToken.hasVersion());
+
     JsonElement actual = jsonParser.parse(cacheToken.getRequest());
     JsonElement expected = getJsonFromFile("codableConceptEmptyValueSet.json");
 
@@ -143,9 +228,97 @@ public class TerminologyCacheTests {
   }
 
   @Test
+  public void testCodableConceptCacheTokenGenerationWithSystem() throws IOException, URISyntaxException {
+
+    TerminologyCache terminologyCache = createTerminologyCache();
+    CodeableConcept concept = new CodeableConcept();
+    Coding coding = new Coding().setCode("dummyCode");
+    coding.setSystem("dummySystem");
+    coding.setVersion("dummyVersion");
+    concept.addCoding(coding);
+
+    ValueSet valueSet = new ValueSet();
+    TerminologyCache.CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
+      concept, valueSet);
+
+    assertEquals("dummySystem", cacheToken.getName());
+    assertEquals(true, cacheToken.hasVersion());
+
+    JsonElement actual = jsonParser.parse(cacheToken.getRequest());
+    JsonElement expected = getJsonFromFile("codableConceptEmptyValueSetSystem.json");
+
+    assertEquals(expected, actual);
+    assertEquals(terminologyCache.hashJson(expected.toString()), terminologyCache.hashJson(actual.toString()));
+
+  }
+
+  @Test
+  public void testCodableConceptCacheTokenGenerationNoSystem() throws IOException, URISyntaxException {
+
+    TerminologyCache terminologyCache = createTerminologyCache();
+    CodeableConcept concept = new CodeableConcept();
+    Coding coding = new Coding().setCode("dummyCode");
+
+    concept.addCoding(coding);
+
+    ValueSet valueSet = new ValueSet();
+    TerminologyCache.CacheToken cacheToken = terminologyCache.generateValidationToken(CacheTestUtils.validationOptions,
+      concept, valueSet);
+
+    assertNull(cacheToken.getName());
+    assertFalse(cacheToken.hasVersion());
+  }
+
+  private static Stream<Arguments> getExpansionTokenParams() {
+    ValueSet baseValueSet = new ValueSet();
+    baseValueSet.setUrl("dummyUrl");
+
+    ValueSet withInclude = baseValueSet.copy();
+    withInclude.getCompose().setInclude(Arrays.asList(include));
+
+    ValueSet withExclude = baseValueSet.copy();
+    withExclude.getCompose().setExclude(Arrays.asList(exclude));
+
+    ValueSet withExpansion = baseValueSet.copy();
+    withExpansion.getExpansion().setContains(Arrays.asList(containsComponent));
+
+    ValueSet allSystem = baseValueSet.copy();
+    allSystem.getCompose().setExclude(Arrays.asList(exclude));
+    allSystem.getExpansion().setContains(Arrays.asList(containsComponent));
+
+    return Stream.of(
+      Arguments.of(baseValueSet, null, false),
+      Arguments.of(withInclude, "dummyIncludeSystem", true),
+      Arguments.of(withExclude, "dummyExcludeSystem", true),
+      Arguments.of(withExpansion, "dummyContainsSystem", true),
+      // Essentially, if more than one system is used, we're switching to 'all-systems'
+      Arguments.of(allSystem, "all-systems", true)
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("getExpansionTokenParams")
+  public void testExpansionTokenInclude(ValueSet valueSet, String expectedName, boolean expectedHasVersion) throws IOException, URISyntaxException {
+    TerminologyCache terminologyCache = createTerminologyCache();
+
+    TerminologyCache.CacheToken expansionToken = terminologyCache.generateExpandToken(valueSet, false);
+    TerminologyCache.CacheToken expansionTokenHierarchical = terminologyCache.generateExpandToken(valueSet, true);
+
+    assertEquals(expectedName, expansionToken.getName());
+    assertEquals(expectedName, expansionTokenHierarchical.getName());
+    assertEquals(expectedHasVersion, expansionToken.hasVersion());
+    assertEquals(expectedHasVersion, expansionTokenHierarchical.hasVersion());
+  }
+
+  @Test
   public void testExpansionToken() throws IOException, URISyntaxException {
     TerminologyCache terminologyCache = createTerminologyCache();
     ValueSet valueSet = new ValueSet();
+    valueSet.setUrl("dummyUrl");
+
+    valueSet.getCompose().setInclude(Arrays.asList(include));
+    valueSet.getCompose().setExclude(Arrays.asList(exclude));
+    valueSet.getExpansion().setContains(Arrays.asList(containsComponent));
 
     TerminologyCache.CacheToken expansionToken = terminologyCache.generateExpandToken(valueSet, false);
     TerminologyCache.CacheToken expansionTokenHierarchical = terminologyCache.generateExpandToken(valueSet, true);
@@ -159,6 +332,7 @@ public class TerminologyCacheTests {
     JsonElement expectedExpansionHierarchical = getJsonFromFile("expansionHierarchical.json");
 
     assertEquals(expectedExpansionHierarchical, actualExpansionHierarchical);
+
     assertEquals(terminologyCache.hashJson(expectedExpansion.toString()),
       terminologyCache.hashJson(actualExpansion.toString()));
     assertEquals(terminologyCache.hashJson(expectedExpansionHierarchical.toString()),
@@ -199,7 +373,7 @@ public class TerminologyCacheTests {
   }
 
   private static Stream<Arguments> over1000IntParams() {
-    return getIntParams(1000, 1100);
+    return getIntParams(1001, 1100);
   }
 
   private static Stream<Arguments> getIntParams(int min, int max) {
@@ -245,16 +419,5 @@ public class TerminologyCacheTests {
     String extracted = cache.extracted(json, vs);
 
     assertEquals("http://dummy.org", extracted);
-  }
-
-  @Test
-  public void testDummyCache() throws IOException {
-    Object lock = new Object();
-    Path path =  Paths.get("src","test","resources", "context", "dummyCache");
-    TerminologyCache cache = new TerminologyCache(lock, path.toString());
-
-    assertTrue(cache.hasTerminologyCapabilities());
-    assertTrue(cache.hasCapabilityStatement());
-
   }
 }
