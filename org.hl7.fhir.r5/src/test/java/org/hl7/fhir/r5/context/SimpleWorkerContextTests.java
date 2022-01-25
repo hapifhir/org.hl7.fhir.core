@@ -19,6 +19,8 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
@@ -70,6 +72,19 @@ public class SimpleWorkerContextTests {
     context.txLog = txLog;
   }
 
+  private final static Map<String, String> params = new HashMap<>();
+  static {
+    params.put("_limit", Integer.toString(1000));
+    params.put("_incomplete", "true");
+  }
+
+  private final static Parameters pInWithDependentResources = new Parameters();
+  static {
+    pInWithDependentResources.addParameter("includeDefinition", false);
+    pInWithDependentResources.addParameter("excludeNester", false);
+    pInWithDependentResources.addParameter("incomplete-ok", true);
+  }
+
   public class ValueSetMatcher implements ArgumentMatcher<ValueSet> {
 
     private ValueSet left;
@@ -86,7 +101,7 @@ public class SimpleWorkerContextTests {
   }
 
   public class ParametersMatcher implements ArgumentMatcher<Parameters> {
-    private Parameters left;
+    final private Parameters left;
 
     ParametersMatcher(Parameters left) {
       this.left = left;
@@ -94,7 +109,7 @@ public class SimpleWorkerContextTests {
 
     @Override
     public boolean matches(Parameters right) {
-      return true;
+      return left.equalsShallow(right);
     }
   }
 
@@ -257,7 +272,9 @@ public class SimpleWorkerContextTests {
 
     ValueSet expectedValueSet = new ValueSet();
 
-    Mockito.doReturn(expectedValueSet).when(terminologyClient).expandValueset(argThat(new ValueSetMatcher(vs)), any(), any());
+
+    Mockito.doReturn(expectedValueSet).when(terminologyClient).expandValueset(argThat(new ValueSetMatcher(vs)),
+      argThat(new ParametersMatcher(pInWithDependentResources)), eq(params));
 
     ValueSetExpander.ValueSetExpansionOutcome actualExpansionResult = context.expandVS(inc, true);
 
@@ -269,8 +286,6 @@ public class SimpleWorkerContextTests {
 
   @Test
   public void testExpandValueSet4ArgsWithCache() throws IOException {
-
-    ValueSet.ConceptSetComponent inc = new ValueSet.ConceptSetComponent();
 
     ValueSet vs = new ValueSet();
     vs.setUrl(DUMMY_URL);
@@ -292,8 +307,6 @@ public class SimpleWorkerContextTests {
   @Test
   public void testExpandValueSet4ArgsWithValueSetExpanderSimple() throws IOException {
 
-    ValueSet.ConceptSetComponent inc = new ValueSet.ConceptSetComponent();
-
     ValueSet vs = new ValueSet();
     vs.setUrl(DUMMY_URL);
 
@@ -303,7 +316,8 @@ public class SimpleWorkerContextTests {
 
     Mockito.doReturn(vs).when(expectedExpansionResult).getValueset();
 
-    Mockito.doReturn(expectedExpansionResult).when(valueSetExpanderSimple).expand(eq(vs), argThat(new ParametersMatcher(pIn)));
+    Mockito.doReturn(expectedExpansionResult).when(valueSetExpanderSimple).expand(eq(vs),
+      argThat(new ParametersMatcher(pInWithDependentResources)));
 
     Mockito.doReturn(valueSetExpanderSimple).when(context).constructValueSetExpanderSimple();
 
@@ -312,7 +326,35 @@ public class SimpleWorkerContextTests {
     assertEquals(expectedExpansionResult, actualExpansionResult);
 
     Mockito.verify(terminologyCache).getExpansion(cacheToken);
-    Mockito.verify(terminologyCache, times(0)).cacheExpansion(any(), any(), anyBoolean());
+    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, actualExpansionResult, false);
     Mockito.verify(terminologyClient, times(0)).expandValueset(any(), any(), any());
+  }
+
+  @Test
+  public void testExpandValueSet4ArgsWithClient() throws IOException {
+
+    ValueSet vs = new ValueSet();
+    vs.setUrl(DUMMY_URL);
+
+    Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(vs,true);
+
+    Parameters pIn = new Parameters();
+
+    ValueSet expectedValueSet = new ValueSet();
+    expectedValueSet.setUrl("dummyUrl2");
+
+    Mockito.doReturn(expectedExpansionResult).when(valueSetExpanderSimple).expand(eq(vs),
+      argThat(new ParametersMatcher(pInWithDependentResources)));
+
+    Mockito.doReturn(valueSetExpanderSimple).when(context).constructValueSetExpanderSimple();
+
+    Mockito.doReturn(expectedValueSet).when(terminologyClient).expandValueset(eq(vs), argThat(new ParametersMatcher(pInWithDependentResources)), eq(params));
+
+    ValueSetExpander.ValueSetExpansionOutcome actualExpansionResult = context.expandVS(vs, true,  true, true, pIn);
+
+    assertEquals(expectedValueSet, actualExpansionResult.getValueset());
+
+    Mockito.verify(terminologyCache).getExpansion(cacheToken);
+    Mockito.verify(terminologyCache).cacheExpansion(cacheToken, actualExpansionResult, true);
   }
 }
