@@ -3,9 +3,7 @@ package org.hl7.fhir.r5.context;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import org.hl7.fhir.r5.formats.IParser;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.junit.jupiter.api.Test;
@@ -84,6 +82,15 @@ public class TerminologyCacheTests {
     ValueSet valueSet = new ValueSet();
     valueSet.setUrl("dummyValueSetURL");
 
+    TerminologyCapabilities terminologyCapabilities = new TerminologyCapabilities();
+    terminologyCapabilities.getExpansion().setParameter(Arrays.asList());
+
+    CapabilityStatement.CapabilityStatementSoftwareComponent software = new CapabilityStatement.CapabilityStatementSoftwareComponent();
+    software.setVersion("dummyVersion");
+
+    CapabilityStatement capabilityStatement = new CapabilityStatement();
+    capabilityStatement.setSoftware(software);
+
     Coding coding = new Coding();
     coding.setCode("dummyCode");
 
@@ -94,6 +101,9 @@ public class TerminologyCacheTests {
 
     // Add dummy results to the cache
     TerminologyCache terminologyCacheA = new TerminologyCache(lock, tempCacheDirectory.toString());
+
+    terminologyCacheA.cacheTerminologyCapabilities(terminologyCapabilities);
+    terminologyCacheA.cacheCapabilityStatement(capabilityStatement);
 
     IWorkerContext.ValidationResult codingResultA = new IWorkerContext.ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo");
     TerminologyCache.CacheToken codingTokenA = terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions,
@@ -111,6 +121,9 @@ public class TerminologyCacheTests {
     terminologyCacheA.cacheExpansion(expansionTokenA, expansionOutcomeA, true);
     // Check that the in-memory cache is returning what we put in
     {
+      assertEquals(terminologyCapabilities, terminologyCacheA.getTerminologyCapabilities());
+      assertEquals(capabilityStatement, terminologyCacheA.getCapabilityStatement());
+
       assertValidationResultEquals(codingResultA, terminologyCacheA.getValidation(codingTokenA));
       assertValidationResultEquals(codeableConceptResultA, terminologyCacheA.getValidation(codeableConceptTokenA));
       assertExpansionOutcomeEquals(expansionOutcomeA,terminologyCacheA.getExpansion(expansionTokenA));
@@ -120,6 +133,9 @@ public class TerminologyCacheTests {
     {
     TerminologyCache terminologyCacheB = new TerminologyCache(lock, tempCacheDirectory.toString());
 
+      assertCanonicalResourceEquals(terminologyCapabilities, terminologyCacheB.getTerminologyCapabilities());
+      assertCanonicalResourceEquals(capabilityStatement, terminologyCacheB.getCapabilityStatement());
+
       assertValidationResultEquals(codingResultA, terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions,
         coding, valueSet)));
       assertValidationResultEquals(codeableConceptResultA, terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions,
@@ -127,6 +143,10 @@ public class TerminologyCacheTests {
       assertExpansionOutcomeEquals(expansionOutcomeA,terminologyCacheB.getExpansion(terminologyCacheA.generateExpandToken(valueSet, true)));
     }
     deleteTempCacheDirectory(tempCacheDirectory);
+  }
+
+  private void assertCanonicalResourceEquals(CanonicalResource a, CanonicalResource b) {
+    assertTrue(a.equalsDeep(b));
   }
 
   private void assertValidationResultEquals(IWorkerContext.ValidationResult a, IWorkerContext.ValidationResult b) {
