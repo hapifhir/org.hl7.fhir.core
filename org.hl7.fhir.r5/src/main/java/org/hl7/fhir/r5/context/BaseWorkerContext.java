@@ -723,7 +723,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return expandVS(vs, cacheOk, heirarchical, incompleteOk, p);
   }
 
-  //TESTME
   public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean hierarchical, boolean incompleteOk, Parameters pIn)  {
     if (pIn == null) {
       throw new Error(formatMessage(I18nConstants.NO_PARAMETERS_PROVIDED_TO_EXPANDVS));
@@ -937,7 +936,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return code.hasVersion() ? code.getSystem()+"|"+code.getVersion() : code.getSystem();
   }
 
-  //TESTME
   @Override
   public ValidationResult validateCode(final ValidationOptions optionsArg, final Coding code, final ValueSet vs, final ValidationContextCarrier ctxt) {
 
@@ -1075,7 +1073,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  //TESTME
   @Override
   public ValidationResult validateCode(ValidationOptions options, CodeableConcept code, ValueSet vs) {
     CacheToken cacheToken = txCache.generateValidationToken(options, code, vs);
