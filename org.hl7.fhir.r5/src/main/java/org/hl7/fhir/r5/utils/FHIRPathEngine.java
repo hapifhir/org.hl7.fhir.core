@@ -2367,7 +2367,7 @@ public class FHIRPathEngine {
 	  if (vs != null) {
 	    for (Base l : left) {
 	      if (Utilities.existsInList(l.fhirType(), "code", "string", "uri")) {
-          if (worker.validateCode(terminologyServiceOptions , TypeConvertor.castToCoding(l), vs).isOk()) {
+          if (worker.validateCode(terminologyServiceOptions.guessSystem(), TypeConvertor.castToCoding(l), vs).isOk()) {
             ans = true;
           }
 	      } else if (l.fhirType().equals("Coding")) {
