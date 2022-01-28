@@ -133,13 +133,23 @@ public class TerminologyCache {
       ct.name = getNameForSystem(code.getSystem());
     else
       ct.name = NAME_FOR_NO_SYSTEM;
+    nameCacheToken(vs, ct);
     JsonParser json = new JsonParser();
     json.setOutputStyle(OutputStyle.PRETTY);
-    ValueSet vsc = getVSEssense(vs);
-    try {
-      ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsc == null ? "null" : extracted(json, vsc))+(options == null ? "" : ", "+options.toJson())+"}";
-    } catch (IOException e) {
-      throw new Error(e);
+    if (vs != null && vs.hasUrl() && vs.hasVersion()) {
+      try {
+        ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())
+            +"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\""+(options == null ? "" : ", "+options.toJson())+"}\r\n";      
+      } catch (IOException e) {
+        throw new Error(e);
+      }
+    } else {
+      ValueSet vsc = getVSEssense(vs);
+      try {
+        ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsc == null ? "null" : extracted(json, vsc))+(options == null ? "" : ", "+options.toJson())+"}";
+      } catch (IOException e) {
+        throw new Error(e);
+      }
     }
     ct.key = String.valueOf(hashNWS(ct.request));
     return ct;
@@ -161,13 +171,23 @@ public class TerminologyCache {
       if (c.hasSystem())
         ct.setName(getNameForSystem(c.getSystem()));
     }
+    nameCacheToken(vs, ct);
     JsonParser json = new JsonParser();
     json.setOutputStyle(OutputStyle.PRETTY);
-    ValueSet vsc = getVSEssense(vs);
-    try {
-      ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"valueSet\" :"+extracted(json, vsc)+(options == null ? "" : ", "+options.toJson())+"}";
-    } catch (IOException e) {
-      throw new Error(e);
+    if (vs != null && vs.hasUrl() && vs.hasVersion()) {
+      try {
+       ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+
+           "\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\""+(options == null ? "" : ", "+options.toJson())+"+}\r\n";      
+      } catch (IOException e) {
+        throw new Error(e);
+      }
+    } else {
+      ValueSet vsc = getVSEssense(vs);
+      try {
+        ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"valueSet\" :"+extracted(json, vsc)+(options == null ? "" : ", "+options.toJson())+"}";
+      } catch (IOException e) {
+        throw new Error(e);
+      }
     }
     ct.key = String.valueOf(hashNWS(ct.request));
     return ct;
@@ -187,25 +207,35 @@ public class TerminologyCache {
 
   public CacheToken generateExpandToken(ValueSet vs, boolean heirarchical) {
     CacheToken ct = new CacheToken();
-    ValueSet vsc = getVSEssense(vs);
-    for (ConceptSetComponent inc : vs.getCompose().getInclude())
-      if (inc.hasSystem())
-        ct.setName(getNameForSystem(inc.getSystem()));
-    for (ConceptSetComponent inc : vs.getCompose().getExclude())
-      if (inc.hasSystem())
-        ct.setName(getNameForSystem(inc.getSystem()));
-    for (ValueSetExpansionContainsComponent inc : vs.getExpansion().getContains())
-      if (inc.hasSystem())
-        ct.setName(getNameForSystem(inc.getSystem()));
-    JsonParser json = new JsonParser();
-    json.setOutputStyle(OutputStyle.PRETTY);
-    try {
-      ct.request = "{\"hierarchical\" : "+(heirarchical ? "true" : "false")+", \"valueSet\" :"+extracted(json, vsc)+"}\r\n";
-    } catch (IOException e) {
-      throw new Error(e);
+    nameCacheToken(vs, ct);
+    if (vs.hasUrl() && vs.hasVersion()) {
+      ct.request = "{\"hierarchical\" : "+(heirarchical ? "true" : "false")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\"}\r\n";      
+    } else {
+      ValueSet vsc = getVSEssense(vs);
+      JsonParser json = new JsonParser();
+      json.setOutputStyle(OutputStyle.PRETTY);
+      try {
+        ct.request = "{\"hierarchical\" : "+(heirarchical ? "true" : "false")+", \"valueSet\" :"+extracted(json, vsc)+"}\r\n";
+      } catch (IOException e) {
+        throw new Error(e);
+      }
     }
     ct.key = String.valueOf(hashNWS(ct.request));
     return ct;
+  }
+
+  public void nameCacheToken(ValueSet vs, CacheToken ct) {
+    if (vs != null) {
+      for (ConceptSetComponent inc : vs.getCompose().getInclude())
+        if (inc.hasSystem())
+          ct.setName(getNameForSystem(inc.getSystem()));
+      for (ConceptSetComponent inc : vs.getCompose().getExclude())
+        if (inc.hasSystem())
+          ct.setName(getNameForSystem(inc.getSystem()));
+      for (ValueSetExpansionContainsComponent inc : vs.getExpansion().getContains())
+        if (inc.hasSystem())
+          ct.setName(getNameForSystem(inc.getSystem()));
+    }
   }
 
   private String getNameForSystem(String system) {
