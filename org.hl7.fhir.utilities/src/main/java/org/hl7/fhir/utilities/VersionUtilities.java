@@ -75,6 +75,10 @@ public class VersionUtilities {
     if (isR4BVer(v)) {
       return "hl7.fhir.r4b.core";
     }
+
+    if (isR5Ver(v)) {
+      return "hl7.fhir.r5.core";
+    }
     
     if ("current".equals(v)) {
       return "hl7.fhir.r5.core";
@@ -100,6 +104,9 @@ public class VersionUtilities {
     }
     if (isR4Ver(v)) {
       return "4.0.1";
+    }
+    if (isR5Ver(v)) {
+      return "5.0.0";
     }
     if (v != null && v.startsWith(CURRENT_VERSION)) {
       return "current";
