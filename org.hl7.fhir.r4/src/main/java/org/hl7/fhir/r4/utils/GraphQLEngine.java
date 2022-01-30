@@ -190,7 +190,7 @@ public class GraphQLEngine implements IGraphQLEngine {
       return obj.primitiveValue() != "";
   }
 
-  private List<Base> filter(Resource context, Property prop, List<Argument> arguments, List<Base> values, boolean extensionMode) throws FHIRException, EGraphQLException {
+  private List<Base> filter(Resource context, Property prop, String fieldName, List<Argument> arguments, List<Base> values, boolean extensionMode) throws FHIRException, EGraphQLException {
     List<Base> result = new ArrayList<Base>();
     if (values.size() > 0) {
       int count = Integer.MAX_VALUE;
@@ -215,10 +215,28 @@ public class GraphQLEngine implements IGraphQLEngine {
           fp.append(" and " + arg.getName() + " = '" + vl.get(0).toString() + "'");
         }
       }
+
+      // Account for situations where the GraphQL expression selected e.g.
+      // effectiveDateTime but the field contains effectivePeriod
+      String propName = prop.getName();
+      List<Base> newValues = new ArrayList<>(values.size());
+      for (Base value : values) {
+        if (propName.endsWith("[x]")) {
+          String propNameShortened = propName.substring(0, propName.length() - 3);
+          if (fieldName.startsWith(propNameShortened) && fieldName.length() > propNameShortened.length()) {
+            if (!value.fhirType().equalsIgnoreCase(fieldName.substring(propNameShortened.length()))) {
+              continue;
+            }
+          }
+        }
+        newValues.add(value);
+      }
+
       int i = 0;
       int t = 0;
       if (fp.length() == 0)
-        for (Base v : values) {
+        for (Base v : newValues) {
+
           if ((i >= offset) && passesExtensionMode(v, extensionMode)) {
             result.add(v);
             t++;
@@ -228,8 +246,8 @@ public class GraphQLEngine implements IGraphQLEngine {
           i++;
         }
       else {
-        ExpressionNode node = fpe.parse(fp.toString().substring(5));
-        for (Base v : values) {
+        ExpressionNode node = fpe.parse(fp.substring(5));
+        for (Base v : newValues) {
           if ((i >= offset) && passesExtensionMode(v, extensionMode) && fpe.evaluateToBoolean(null, context, v, node)) {
             result.add(v);
             t++;
@@ -389,7 +407,7 @@ public class GraphQLEngine implements IGraphQLEngine {
             if (!isPrimitive(prop.getTypeCode()) && sel.getField().getName().startsWith("_"))
               throw new EGraphQLException("Unknown property " + sel.getField().getName() + " on " + source.fhirType());
 
-            List<Base> vl = filter(context, prop, sel.getField().getArguments(), prop.getValues(), sel.getField().getName().startsWith("_"));
+            List<Base> vl = filter(context, prop, sel.getField().getName(), sel.getField().getArguments(), prop.getValues(), sel.getField().getName().startsWith("_"));
             if (!vl.isEmpty())
               processValues(context, sel, prop, target, vl, sel.getField().getName().startsWith("_"), inheritedList, suffix);
           }
