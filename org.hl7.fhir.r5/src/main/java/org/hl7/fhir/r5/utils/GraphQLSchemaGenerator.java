@@ -72,6 +72,7 @@ public class GraphQLSchemaGenerator {
   private final ProfileUtilities profileUtilities;
   private final String version;
   IWorkerContext context;
+
   public GraphQLSchemaGenerator(IWorkerContext context, String version) {
     super();
     this.context = context;
@@ -87,6 +88,11 @@ public class GraphQLSchemaGenerator {
   }
 
   public void generateTypes(Writer writer) throws IOException {
+    EnumSet<FHIROperationType> operations = EnumSet.allOf(FHIROperationType.class);
+    generateTypes(writer, operations);
+  }
+
+  public void generateTypes(Writer writer, EnumSet<FHIROperationType> operations) throws IOException {
     Map<String, StructureDefinition> pl = new HashMap<>();
     Map<String, StructureDefinition> tl = new HashMap<>();
     Map<String, String> existingTypeNames = new HashMap<>();
@@ -113,9 +119,10 @@ public class GraphQLSchemaGenerator {
         generateSearchParamType(writer, dir.toCode());
     }
     writer.write("\r\n");
-    generateElementBase(writer);
-    for (String n : sorted(tl.keySet()))
-      generateType(existingTypeNames, writer, tl.get(n));
+    generateElementBase(writer, operations);
+    for (String n : sorted(tl.keySet())) {
+      generateType(existingTypeNames, writer, tl.get(n), operations);
+    }
   }
 
   public void generateResource(OutputStream stream, StructureDefinition sd, List<SearchParameter> parameters, EnumSet<FHIROperationType> operations) throws IOException, FHIRException {
@@ -130,7 +137,8 @@ public class GraphQLSchemaGenerator {
 
     writer.write("# FHIR GraphQL Schema. Version " + version + "\r\n\r\n");
     writer.write("# import * from 'types.graphql'\r\n\r\n");
-    generateType(existingTypeNames, writer, sd);
+
+    generateType(existingTypeNames, writer, sd, operations);
     if (operations.contains(FHIROperationType.READ))
       generateIdAccess(writer, sd.getName());
     if (operations.contains(FHIROperationType.SEARCH)) {
@@ -263,50 +271,64 @@ public class GraphQLSchemaGenerator {
     writer.write("\r\n");
   }
 
-  private void generateElementBase(Writer writer) throws IOException {
-    writer.write("type ElementBase {\r\n");
-    writer.write("  id: ID\r\n");
-    writer.write("  extension: [Extension]\r\n");
-    writer.write("}\r\n");
-    writer.write("\r\n");
+  private void generateElementBase(Writer writer, EnumSet<FHIROperationType> operations) throws IOException {
+    if (operations.contains(FHIROperationType.READ) || operations.contains(FHIROperationType.SEARCH)) {
+      writer.write("type ElementBase {\r\n");
+      writer.write("  id: ID\r\n");
+      writer.write("  extension: [Extension]\r\n");
+      writer.write("}\r\n");
+      writer.write("\r\n");
+    }
 
-    writer.write("input ElementBaseInput {\r\n");
-    writer.write("  id : ID\r\n");
-    writer.write("  extension: [ExtensionInput]\r\n");
-    writer.write("}\r\n");
-    writer.write("\r\n");
+    if (operations.contains(FHIROperationType.CREATE) || operations.contains(FHIROperationType.UPDATE)) {
+      writer.write("input ElementBaseInput {\r\n");
+      writer.write("  id : ID\r\n");
+      writer.write("  extension: [ExtensionInput]\r\n");
+      writer.write("}\r\n");
+      writer.write("\r\n");
+    }
   }
 
-  private void generateType(Map<String, String> existingTypeNames, Writer writer, StructureDefinition sd) throws IOException {
-    if (sd.getAbstract())
+  private void generateType(Map<String, String> existingTypeNames, Writer writer, StructureDefinition sd, EnumSet<FHIROperationType> operations) throws IOException {
+    if (sd.getAbstract()) {
       return;
+    }
 
-    List<StringBuilder> list = new ArrayList<>();
-    StringBuilder b = new StringBuilder();
-    list.add(b);
-    b.append("type ");
-    b.append(sd.getName());
-    b.append(" {\r\n");
-    ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
-    generateProperties(existingTypeNames, list, b, sd.getName(), sd, ed, "type", "");
-    b.append("}");
-    b.append("\r\n");
-    b.append("\r\n");
-    for (StringBuilder bs : list)
-      writer.write(bs.toString());
-    list.clear();
-    b = new StringBuilder();
-    list.add(b);
-    b.append("input ");
-    b.append(sd.getName());
-    b.append("Input {\r\n");
-    ed = sd.getSnapshot().getElementFirstRep();
-    generateProperties(existingTypeNames, list, b, sd.getName(), sd, ed, "input", "Input");
-    b.append("}");
-    b.append("\r\n");
-    b.append("\r\n");
-    for (StringBuilder bs : list)
-      writer.write(bs.toString());
+    if (operations.contains(FHIROperationType.READ) || operations.contains(FHIROperationType.SEARCH)) {
+      List<StringBuilder> list = new ArrayList<>();
+      StringBuilder b = new StringBuilder();
+      list.add(b);
+      b.append("type ");
+      b.append(sd.getName());
+      b.append(" {\r\n");
+      ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
+      generateProperties(existingTypeNames, list, b, sd.getName(), sd, ed, "type", "");
+      b.append("}");
+      b.append("\r\n");
+      b.append("\r\n");
+      for (StringBuilder bs : list) {
+        writer.write(bs.toString());
+      }
+      list.clear();
+    }
+
+    if (operations.contains(FHIROperationType.CREATE) || operations.contains(FHIROperationType.UPDATE)) {
+      List<StringBuilder> list = new ArrayList<>();
+      StringBuilder b = new StringBuilder();
+      list.add(b);
+      b.append("input ");
+      b.append(sd.getName());
+      b.append("Input {\r\n");
+      ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
+      generateProperties(existingTypeNames, list, b, sd.getName(), sd, ed, "input", "Input");
+      b.append("}");
+      b.append("\r\n");
+      b.append("\r\n");
+      for (StringBuilder bs : list) {
+        writer.write(bs.toString());
+      }
+    }
+
   }
 
   private void generateProperties(Map<String, String> existingTypeNames, List<StringBuilder> list, StringBuilder b, String typeName, StructureDefinition sd, ElementDefinition ed, String mode, String suffix) throws IOException {
