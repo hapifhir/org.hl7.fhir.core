@@ -3,6 +3,8 @@ package org.hl7.fhir.validation.tests;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
+import org.hl7.fhir.validation.tests.utilities.TestConstants;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.OperationOutcome;
@@ -15,6 +17,8 @@ import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class ValidationEngineTests {
 
   public static final String DEF_TX = "http://tx.fhir.org";
@@ -26,7 +30,9 @@ public class ValidationEngineTests {
   public void testCurrentXml() throws Exception {
     if (!TestUtilities.silent)
       System.out.println("TestCurrentXml: Validate patient-example.xml in Current version");
-    ValidationEngine ve = new ValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, null, FhirPublication.R4, "4.0.1", "fhir/test-cases");
+    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, null, FhirPublication.R4, "4.0.1", "fhir/test-cases");
+    CacheVerificationLogger logger = new CacheVerificationLogger();
+    ve.getContext().getTxClient().setLogger(logger);
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "patient-example.xml"), null);
     int e = errors(op);
     int w = warnings(op);
@@ -40,13 +46,16 @@ public class ValidationEngineTests {
     Assertions.assertEquals(0, e);
     Assertions.assertEquals(0, w);
     Assertions.assertEquals(1, h);
+    assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
   }
 
   @Test
   public void testCurrentJson() throws Exception {
     if (!TestUtilities.silent)
       System.out.println("TestCurrentJson: Validate patient-example.json in Current version");
-    ValidationEngine ve = new ValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, null, FhirPublication.R4, "4.0.1", "fhir/test-cases");
+    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, null, FhirPublication.R4, "4.0.1", "fhir/test-cases");
+    CacheVerificationLogger logger = new CacheVerificationLogger();
+    ve.getContext().getTxClient().setLogger(logger);
     OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "patient-example.json"), null);
     int e = errors(op);
     int w = warnings(op);
@@ -54,6 +63,7 @@ public class ValidationEngineTests {
     Assertions.assertEquals(0, e);
     Assertions.assertEquals(0, w);
     Assertions.assertEquals(1, h);
+    assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
     if (!TestUtilities.silent)
       System.out.println("  .. done: " + Integer.toString(e) + " errors, " + Integer.toString(w) + " warnings, " + Integer.toString(h) + " information messages");
   }
@@ -66,8 +76,9 @@ public class ValidationEngineTests {
     }
     if (!TestUtilities.silent)
       System.out.println("Test140: Validate patient-example.xml in v1.4.0 version");
-    ValidationEngine ve = new ValidationEngine("hl7.fhir.r2b.core#1.4.0", DEF_TX, null, FhirPublication.DSTU2016May, "1.4.0", "fhir/test-cases");
-    ve.getContext().setUserAgent("fhir/test-cases");
+    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r2b.core#1.4.0", DEF_TX, null, FhirPublication.DSTU2016May, "1.4.0", "fhir/test-cases");
+    CacheVerificationLogger logger = new CacheVerificationLogger();
+    ve.getContext().getTxClient().setLogger(logger);
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "patient140.xml"), null);
     if (!TestUtilities.silent)
       for (OperationOutcomeIssueComponent iss : op.getIssue()) {
@@ -79,6 +90,7 @@ public class ValidationEngineTests {
     Assertions.assertEquals(1, e);
     Assertions.assertEquals(0, w);
     Assertions.assertEquals(0, h);
+    assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
     if (!TestUtilities.silent)
       System.out.println("  .. done: " + Integer.toString(e) + " errors, " + Integer.toString(w) + " warnings, " + Integer.toString(h) + " information messages");
   }
@@ -91,8 +103,10 @@ public class ValidationEngineTests {
     }
     if (!org.hl7.fhir.validation.tests.utilities.TestUtilities.silent)
       System.out.println("Test102: Validate patient-example.xml in v1.0.2 version");
-    ValidationEngine ve = new ValidationEngine("hl7.fhir.r2.core#1.0.2", DEF_TX, null, FhirPublication.DSTU2, "1.0.2", "fhir/test-cases");
+    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r2.core#1.0.2", DEF_TX, null, FhirPublication.DSTU2, "1.0.2", "fhir/test-cases");
     ve.setNoInvariantChecks(true);
+    CacheVerificationLogger logger = new CacheVerificationLogger();
+    ve.getContext().getTxClient().setLogger(logger);
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "patient102.xml"), null);
     if (!TestUtilities.silent)
       for (OperationOutcomeIssueComponent iss : op.getIssue()) {
@@ -104,6 +118,7 @@ public class ValidationEngineTests {
     Assertions.assertEquals(1, e);
     Assertions.assertEquals(0, w);
     Assertions.assertEquals(0, h);
+    assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
     if (!TestUtilities.silent)
       System.out.println("  .. done: " + Integer.toString(e) + " errors, " + Integer.toString(w) + " warnings, " + Integer.toString(h) + " information messages");
   }
@@ -116,8 +131,10 @@ public class ValidationEngineTests {
     }
     if (!TestUtilities.silent)
       System.out.println("TestObs102: Validate patient-example.xml in v1.0.2 version");
-    ValidationEngine ve = new ValidationEngine("hl7.fhir.r2.core#1.0.2", DEF_TX, null, FhirPublication.DSTU2, "1.0.2", "fhir/test-cases");
+    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r2.core#1.0.2", DEF_TX, null, FhirPublication.DSTU2, "1.0.2", "fhir/test-cases");
     ve.setNoInvariantChecks(true);
+    CacheVerificationLogger logger = new CacheVerificationLogger();
+    ve.getContext().getTxClient().setLogger(logger);
     OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "observation102.json"), null);
     if (!TestUtilities.silent)
       for (OperationOutcomeIssueComponent iss : op.getIssue()) {
@@ -129,6 +146,7 @@ public class ValidationEngineTests {
     Assertions.assertEquals(1, e);
     Assertions.assertEquals(0, w);
     Assertions.assertEquals(1, h);
+    assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
     if (!TestUtilities.silent)
       System.out.println("  .. done: " + Integer.toString(e) + " errors, " + Integer.toString(w) + " warnings, " + Integer.toString(h) + " information messages");
   }
@@ -138,7 +156,9 @@ public class ValidationEngineTests {
   public void test301() throws Exception {
     if (!TestUtilities.silent)
       System.out.println("Test301: Validate observation301.xml against Core");
-    ValidationEngine ve = new ValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, null, FhirPublication.STU3, "3.0.2", "fhir/test-cases");
+    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, null, FhirPublication.STU3, "3.0.2", "fhir/test-cases");
+    CacheVerificationLogger logger = new CacheVerificationLogger();
+    ve.getContext().getTxClient().setLogger(logger);
     if (!TestUtilities.silent)
       System.out.println("  .. load USCore");
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "observation301.xml"), null);
@@ -149,6 +169,7 @@ public class ValidationEngineTests {
     int w = warnings(op);
     int h = hints(op);
     Assertions.assertEquals(0, e);
+    assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
     if (!TestUtilities.silent)
       System.out.println("  .. done: " + Integer.toString(e) + " errors, " + Integer.toString(w) + " warnings, " + Integer.toString(h) + " information messages");
   }
@@ -157,7 +178,9 @@ public class ValidationEngineTests {
   public void test301USCore() throws Exception {
     if (!TestUtilities.silent)
       System.out.println("Test301USCore: Validate patient300.xml against US-Core");
-    ValidationEngine ve = new ValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, null, FhirPublication.STU3, "3.0.2", "fhir/test-cases");
+    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, null, FhirPublication.STU3, "3.0.2", "fhir/test-cases");
+    CacheVerificationLogger logger = new CacheVerificationLogger();
+    ve.getContext().getTxClient().setLogger(logger);
     IgLoader igLoader = new IgLoader(ve.getPcm(), ve.getContext(), ve.getVersion(), true);
     if (!TestUtilities.silent)
       System.out.println("  .. load USCore");
@@ -174,6 +197,7 @@ public class ValidationEngineTests {
     Assertions.assertEquals(1, e);
     Assertions.assertEquals(0, w);
     Assertions.assertEquals(0, h);
+    assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
     if (!TestUtilities.silent)
       System.out.println("  .. done: " + Integer.toString(e) + " errors, " + Integer.toString(w) + " warnings, " + Integer.toString(h) + " information messages");
   }

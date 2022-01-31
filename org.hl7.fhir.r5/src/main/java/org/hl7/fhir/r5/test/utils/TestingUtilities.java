@@ -17,12 +17,14 @@ import org.apache.commons.codec.binary.Base64;
 import org.fhir.ucum.UcumEssenceService;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.context.TerminologyCache;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
 import org.w3c.dom.Document;
@@ -89,7 +91,7 @@ public class TestingUtilities extends BaseTestingUtilities {
       FilesystemPackageCacheManager pcm;
       try {
         pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-        IWorkerContext fcontext = SimpleWorkerContext.fromPackage(pcm.loadPackage(VersionUtilities.packageForVersion(version), version));
+        IWorkerContext fcontext = getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(version), version));
         fcontext.setUcumService(new UcumEssenceService(TestingUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
         fcontext.setExpansionProfile(new Parameters());
 //        ((SimpleWorkerContext) fcontext).connectToTSServer(new TerminologyClientR5("http://tx.fhir.org/r4"), null);
@@ -100,6 +102,22 @@ public class TestingUtilities extends BaseTestingUtilities {
       }
     }
     return fcontexts.get(v);
+  }
+
+  public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage) throws Exception {
+    SimpleWorkerContext swc = SimpleWorkerContext.fromPackage(npmPackage);
+    swc.initTS(TestConstants.TX_CACHE);
+    TerminologyCache.setCacheErrors(true);
+    swc.setUserAgent("fhir/r5-test-cases");
+    return swc;
+  }
+
+  public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage, IWorkerContext.IContextResourceLoader loader) throws Exception {
+    SimpleWorkerContext swc = SimpleWorkerContext.fromPackage(npmPackage, loader);
+    swc.initTS(TestConstants.TX_CACHE);
+    TerminologyCache.setCacheErrors(true);
+    swc.setUserAgent("fhir/r5-test-cases");
+    return swc;
   }
 
   static public String fixedpath;

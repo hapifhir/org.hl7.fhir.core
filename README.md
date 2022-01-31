@@ -43,12 +43,31 @@ This project uses [Apache Maven](http://maven.apache.org) to build. To build:
 ```
 mvn install
 ```
-Note that unit tests will run, but are currently not set to fail the build as they do not all pass. This is being worked on.
+_Note that unit tests will run, but are currently not set to fail the build as they do not all pass. This is being worked on._
 
 To skip unit tests:
 ```
 mvn -Dmaven.test.skip install
 ```
+
+To clean and rebuild the terminology server caches.
+
+_clean_
+```
+mvn clean -Dfhir.txcache.clean=true   
+```
+
+_rebuild_
+```
+mvn test -Dfhir.txcache.rebuild=true
+```
+
+_The source contains cached terminology server responses for testing. If the expected responses have changed in any way, 
+this cache should be cleaned and rebuilt with the above so that subsequent `mvn test` calls will have the most current 
+responses cached._
+
+
+
 ### Publishing Binaries
 
 An brief overview of our publishing process is [here][Link-Publishing].

@@ -58,6 +58,8 @@ public class CliContext {
   private String sv = null;
   @JsonProperty("txLog")
   private String txLog = null;
+  @JsonProperty("txCache")
+  private String txCache = null;
   @JsonProperty("mapLog")
   private String mapLog = null;
   @JsonProperty("lang")
@@ -369,6 +371,17 @@ public class CliContext {
   @JsonProperty("txLog")
   public CliContext setTxLog(String txLog) {
     this.txLog = txLog;
+    return this;
+  }
+
+  @JsonProperty("txCache")
+  public String getTxCache() {
+    return txCache;
+  }
+
+  @JsonProperty("txLog")
+  public CliContext setTxCache(String txCache) {
+    this.txCache = txCache;
     return this;
   }
 

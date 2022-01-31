@@ -164,6 +164,16 @@ public class NativeHostServices {
   }
 
   /**
+   * Set up the validator with a terminology service
+   *
+   * @param txServer - the URL of the terminology service (http://tx.fhir.org/r4 default)
+   * @throws Exception
+   */
+  public void connectToTxSvc(String txServer, String log, String txCache) throws Exception {
+    validator.connectToTSServer(txServer, log, txCache, FhirPublication.R5);
+  }
+
+  /**
    * get back a JSON object with information about the process.
    * @return
    */

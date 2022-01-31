@@ -1,5 +1,7 @@
 ## Validator Changes
 
-## Other code Changes
+* no changes
 
-* Change date/time rendering to allow provision of string format
+## Other code changes
+
+* Use cached terminology server responses for unit and integration tests.
