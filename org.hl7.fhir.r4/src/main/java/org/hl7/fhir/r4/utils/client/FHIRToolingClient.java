@@ -76,7 +76,6 @@ public class FHIRToolingClient {
     base = baseServiceUrl;
     resourceAddress = new ResourceAddress(baseServiceUrl);
     this.maxResultSetSize = -1;
-    checkCapabilities();
   }
 
   public Client getClient() {
@@ -549,6 +548,7 @@ public class FHIRToolingClient {
   }
 
   public String getServerVersion() {
+    checkCapabilities();
     return capabilities == null ? null : capabilities.getSoftware().getVersion();
   }
 }

@@ -1,0 +1,89 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://varnomen.hgvs.org",
+  "code" : "NC_000019.8:g.1171707G>A"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "NC_000019.8:g.1171707G>A",
+  "code" : "NC_000019.8:g.1171707G>A",
+  "system" : "http://varnomen.hgvs.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://varnomen.hgvs.org",
+  "code" : "NC_000019.8:g.1171707G>A"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://varnomen.hgvs.org"
+    }]
+  }
+}, "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "NC_000019.8:g.1171707G>A",
+  "code" : "NC_000019.8:g.1171707G>A",
+  "system" : "http://varnomen.hgvs.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://varnomen.hgvs.org",
+  "code" : "NC_000019.8:g.1171707G>A"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://varnomen.hgvs.org"
+    }]
+  }
+}, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "NC_000019.8:g.1171707G>A",
+  "code" : "NC_000019.8:g.1171707G>A",
+  "system" : "http://varnomen.hgvs.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://varnomen.hgvs.org",
+  "code" : "NC_000019.8:g.1171707G>A"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "display" : "NC_000019.8:g.1171707G>A",
+  "code" : "NC_000019.8:g.1171707G>A",
+  "system" : "http://varnomen.hgvs.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://varnomen.hgvs.org",
+  "code" : "NC_000019.8:g.1171707G>AXXX"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "Expected end of text (at char 24), (line:1, col:25); The code \"NC_000019.8:g.1171707G>AXXX\" is not valid in the system http://varnomen.hgvs.org; The code provided (http://varnomen.hgvs.org#NC_000019.8:g.1171707G>AXXX) is not valid in the value set 'All codes known to the system' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://varnomen.hgvs.org",
+  "code" : "NC_000019.8:g.1171707G>AXXX"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://varnomen.hgvs.org"
+    }]
+  }
+}, "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "Expected end of text (at char 24), (line:1, col:25); The code \"NC_000019.8:g.1171707G>AXXX\" is not valid in the system http://varnomen.hgvs.org; The code provided (http://varnomen.hgvs.org#NC_000019.8:g.1171707G>AXXX) is not valid (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://varnomen.hgvs.org",
+  "code" : "NC_000019.8:g.1171707G>AXXX"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "severity" : "error",
+  "error" : "Expected end of text (at char 24), (line:1, col:25); The code \"NC_000019.8:g.1171707G>AXXX\" is not valid in the system http://varnomen.hgvs.org; The code provided (http://varnomen.hgvs.org#NC_000019.8:g.1171707G>AXXX) is not valid in the value set 'All codes known to the system' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------

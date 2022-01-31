@@ -55,6 +55,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.Parameters;
+import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -86,7 +87,7 @@ public class UtilitiesXTests {
 	    FilesystemPackageCacheManager pcm;
 	    try {
 	      pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-	      IWorkerContext fcontext = SimpleWorkerContext.fromPackage(pcm.loadPackage(VersionUtilities.packageForVersion(version), version), loaderForVersion(version));
+	      IWorkerContext fcontext = TestingUtilities.getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(version), version), loaderForVersion(version));
 	      fcontext.setUcumService(new UcumEssenceService(UtilitiesXTests.loadTestResourceStream("ucum", "ucum-essence.xml")));
 	      fcontext.setExpansionProfile(new Parameters());
 	      fcontexts.put(version, fcontext);

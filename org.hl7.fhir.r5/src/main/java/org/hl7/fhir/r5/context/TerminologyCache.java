@@ -36,21 +36,19 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
@@ -63,16 +61,15 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 /**
  * This implements a two level cache. 
- *  - a temporary cache for remmbering previous local operations
- *  - a persistent cache for rembering tx server operations
+ *  - a temporary cache for remembering previous local operations
+ *  - a persistent cache for remembering tx server operations
  *  
- * the cache is a series of pairs: a map, and a list. the map is the loaded cache, the list is the persiistent cache, carefully maintained in order for version control consistency
+ * the cache is a series of pairs: a map, and a list. the map is the loaded cache, the list is the persistent cache, carefully maintained in order for version control consistency
  * 
  * @author graha
  *
@@ -84,10 +81,28 @@ public class TerminologyCache {
   private static final String ENTRY_MARKER = "-------------------------------------------------------------------------------------";
   private static final String BREAK = "####";
 
+  private static final String CACHE_FILE_EXTENSION = ".cache";
+
+  private static final String CAPABILITY_STATEMENT_TITLE = ".capabilityStatement";
+  private static final String TERMINOLOGY_CAPABILITIES_TITLE = ".terminologyCapabilities";
+
+  @Getter
+  private int requestCount;
+  @Getter
+  private int hitCount;
+  @Getter
+  private int networkCount;
+
   public class CacheToken {
+    @Getter
     private String name;
     private String key;
+    @Getter
     private String request;
+    @Accessors(fluent = true)
+    @Getter
+    private boolean hasVersion;
+
     public void setName(String n) {
       if (name == null)
         name = n;
@@ -112,27 +127,77 @@ public class TerminologyCache {
 
   private Object lock;
   private String folder;
+
+  private CapabilityStatement capabilityStatementCache = null;
+
+  public boolean hasCapabilityStatement() {
+    return capabilityStatementCache != null;
+  }
+
+  public CapabilityStatement getCapabilityStatement() {
+    return capabilityStatementCache;
+  }
+
+  public void cacheCapabilityStatement(CapabilityStatement capabilityStatement) {
+    if (noCaching) {
+      return;
+    }
+    this.capabilityStatementCache = capabilityStatement;
+    save(capabilityStatementCache, CAPABILITY_STATEMENT_TITLE);
+  }
+
+  private TerminologyCapabilities terminologyCapabilitiesCache = null;
+
+  public boolean hasTerminologyCapabilities() {
+    return terminologyCapabilitiesCache != null;
+  }
+
+  public TerminologyCapabilities getTerminologyCapabilities() {
+    return terminologyCapabilitiesCache;
+  }
+
+  public void cacheTerminologyCapabilities(TerminologyCapabilities terminologyCapabilities) {
+    if (noCaching) {
+      return;
+    }
+    this.terminologyCapabilitiesCache = terminologyCapabilities;
+    save(terminologyCapabilitiesCache, TERMINOLOGY_CAPABILITIES_TITLE);
+  }
+
   private Map<String, NamedCache> caches = new HashMap<String, NamedCache>();
+  @Getter @Setter
   private static boolean noCaching;
-  
+
+  @Getter @Setter
+  private static boolean cacheErrors;
+
   // use lock from the context
   public TerminologyCache(Object lock, String folder) throws FileNotFoundException, IOException, FHIRException {
     super();
     this.lock = lock;
     this.folder = folder;
-    if (folder != null)
+    requestCount = 0;
+    hitCount = 0;
+    networkCount = 0;
+
+    if (folder != null) {
       load();
+    }
   }
-  
+
   public void clear() {
     caches.clear();
   }
+
   public CacheToken generateValidationToken(ValidationOptions options, Coding code, ValueSet vs) {
     CacheToken ct = new CacheToken();
-    if (code.hasSystem())
+    if (code.hasSystem()) {
       ct.name = getNameForSystem(code.getSystem());
+      ct.hasVersion = code.hasVersion();
+    }
     else
       ct.name = NAME_FOR_NO_SYSTEM;
+
     JsonParser json = new JsonParser();
     json.setOutputStyle(OutputStyle.PRETTY);
     ValueSet vsc = getVSEssense(vs);
@@ -141,14 +206,14 @@ public class TerminologyCache {
     } catch (IOException e) {
       throw new Error(e);
     }
-    ct.key = String.valueOf(hashNWS(ct.request));
+    ct.key = String.valueOf(hashJson(ct.request));
     return ct;
   }
 
   public String extracted(JsonParser json, ValueSet vsc) throws IOException {
     String s = null;
-    if (vsc.getExpansion().getContains().size() > 1000 || vsc.getCompose().getIncludeFirstRep().getConcept().size() > 1000) {      
-      s = Integer.toString(vsc.hashCode()); // turn caching off - hack efficiency optimisation
+    if (vsc.getExpansion().getContains().size() > 1000 || vsc.getCompose().getIncludeFirstRep().getConcept().size() > 1000) {
+      s =  vsc.getUrl();
     } else {
       s = json.composeString(vsc);
     }
@@ -158,8 +223,10 @@ public class TerminologyCache {
   public CacheToken generateValidationToken(ValidationOptions options, CodeableConcept code, ValueSet vs) {
     CacheToken ct = new CacheToken();
     for (Coding c : code.getCoding()) {
-      if (c.hasSystem())
+      if (c.hasSystem()) {
         ct.setName(getNameForSystem(c.getSystem()));
+        ct.hasVersion = c.hasVersion();
+      }
     }
     JsonParser json = new JsonParser();
     json.setOutputStyle(OutputStyle.PRETTY);
@@ -169,7 +236,7 @@ public class TerminologyCache {
     } catch (IOException e) {
       throw new Error(e);
     }
-    ct.key = String.valueOf(hashNWS(ct.request));
+    ct.key = String.valueOf(hashJson(ct.request));
     return ct;
   }
   
@@ -185,26 +252,32 @@ public class TerminologyCache {
     return vsc;
   }
 
-  public CacheToken generateExpandToken(ValueSet vs, boolean heirarchical) {
+  public CacheToken generateExpandToken(ValueSet vs, boolean hierarchical) {
     CacheToken ct = new CacheToken();
     ValueSet vsc = getVSEssense(vs);
     for (ConceptSetComponent inc : vs.getCompose().getInclude())
-      if (inc.hasSystem())
+      if (inc.hasSystem()) {
         ct.setName(getNameForSystem(inc.getSystem()));
+        ct.hasVersion = inc.hasVersion();
+      }
     for (ConceptSetComponent inc : vs.getCompose().getExclude())
-      if (inc.hasSystem())
+      if (inc.hasSystem()) {
         ct.setName(getNameForSystem(inc.getSystem()));
+        ct.hasVersion = inc.hasVersion();
+      }
     for (ValueSetExpansionContainsComponent inc : vs.getExpansion().getContains())
-      if (inc.hasSystem())
+      if (inc.hasSystem()) {
         ct.setName(getNameForSystem(inc.getSystem()));
+        ct.hasVersion = inc.hasVersion();
+      }
     JsonParser json = new JsonParser();
     json.setOutputStyle(OutputStyle.PRETTY);
     try {
-      ct.request = "{\"hierarchical\" : "+(heirarchical ? "true" : "false")+", \"valueSet\" :"+extracted(json, vsc)+"}\r\n";
+      ct.request = "{\"hierarchical\" : "+(hierarchical ? "true" : "false")+", \"valueSet\" :"+extracted(json, vsc)+"}\r\n";
     } catch (IOException e) {
       throw new Error(e);
     }
-    ct.key = String.valueOf(hashNWS(ct.request));
+    ct.key = String.valueOf(hashJson(ct.request));
     return ct;
   }
 
@@ -237,10 +310,14 @@ public class TerminologyCache {
   }
 
   public NamedCache getNamedCache(CacheToken cacheToken) {
-    NamedCache nc = caches.get(cacheToken.name);
+
+    final String cacheName = cacheToken.name == null ? "null" : cacheToken.name;
+
+    NamedCache nc = caches.get(cacheName);
+
     if (nc == null) {
       nc = new NamedCache();
-      nc.name = cacheToken.name;
+      nc.name = cacheName;
       caches.put(nc.name, nc);
     }
     return nc;
@@ -272,6 +349,14 @@ public class TerminologyCache {
     if (noCaching) {
       return;
     }
+
+    if ( !cacheErrors &&
+      ( e.v!= null
+        && e.v.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED
+        && !cacheToken.hasVersion)) {
+      return;
+    }
+
     boolean n = nc.map.containsKey(cacheToken.key);
     nc.map.put(cacheToken.key, e);
     if (persistent) {
@@ -292,12 +377,16 @@ public class TerminologyCache {
       return null;
     }
     synchronized (lock) {
+      requestCount++;
       NamedCache nc = getNamedCache(cacheToken);
       CacheEntry e = nc.map.get(cacheToken.key);
-      if (e == null)
+      if (e == null) {
+        networkCount++;
         return null;
-      else
+      } else {
+        hitCount++;
         return e.v;
+      }
     }
   }
 
@@ -320,13 +409,30 @@ public class TerminologyCache {
   public void save() {
     
   }
-  
+
+  private <K extends Resource> void save(K resource, String title) {
+    if (folder == null)
+      return;
+
+    try {
+      OutputStreamWriter sw = new OutputStreamWriter(new FileOutputStream(Utilities.path(folder, title + CACHE_FILE_EXTENSION)), "UTF-8");
+
+      JsonParser json = new JsonParser();
+      json.setOutputStyle(OutputStyle.PRETTY);
+
+      sw.write(json.composeString(resource).trim());
+      sw.close();
+    } catch (Exception e) {
+      System.out.println("error saving capability statement "+e.getMessage());
+    }
+  }
+
   private void save(NamedCache nc) {
     if (folder == null)
       return;
     
     try {
-      OutputStreamWriter sw = new OutputStreamWriter(new FileOutputStream(Utilities.path(folder, nc.name+".cache")), "UTF-8");
+      OutputStreamWriter sw = new OutputStreamWriter(new FileOutputStream(Utilities.path(folder, nc.name+CACHE_FILE_EXTENSION)), "UTF-8");
       sw.write(ENTRY_MARKER+"\r\n");
       JsonParser json = new JsonParser();
       json.setOutputStyle(OutputStyle.PRETTY);
@@ -379,57 +485,104 @@ public class TerminologyCache {
     }
   }
 
+  private boolean isCapabilityCache(String fn) {
+    if (fn == null) {
+      return false;
+    }
+    return fn.startsWith(CAPABILITY_STATEMENT_TITLE) || fn.startsWith(TERMINOLOGY_CAPABILITIES_TITLE);
+  }
+
+  private void loadCapabilityCache(String fn) {
+    try {
+      String src = TextFile.fileToString(Utilities.path(folder, fn));
+
+      JsonObject o = (JsonObject) new com.google.gson.JsonParser().parse(src);
+      Resource resource = new JsonParser().parse(o);
+
+      if (fn.startsWith(CAPABILITY_STATEMENT_TITLE)) {
+        this.capabilityStatementCache = (CapabilityStatement) resource;
+      } else if (fn.startsWith(TERMINOLOGY_CAPABILITIES_TITLE)) {
+        this.terminologyCapabilitiesCache = (TerminologyCapabilities) resource;
+      }
+    } catch (Exception e) {
+      throw new FHIRException("Error loading " + fn + ": " + e.getMessage(), e);
+    }
+  }
+
+
+
+  private CacheEntry getCacheEntry(String request, String resultString) throws IOException {
+    CacheEntry ce = new CacheEntry();
+    ce.persistent = true;
+    ce.request = request;
+    boolean e = resultString.charAt(0) == 'e';
+    resultString = resultString.substring(3);
+    JsonObject o = (JsonObject) new com.google.gson.JsonParser().parse(resultString);
+    String error = loadJS(o.get("error"));
+    if (e) {
+      if (o.has("valueSet"))
+        ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser().parse(o.getAsJsonObject("valueSet")), error, TerminologyServiceErrorClass.UNKNOWN);
+      else
+        ce.e = new ValueSetExpansionOutcome(error, TerminologyServiceErrorClass.UNKNOWN);
+    } else {
+      String t = loadJS(o.get("severity"));
+      IssueSeverity severity = t == null ? null : IssueSeverity.fromCode(t);
+      String display = loadJS(o.get("display"));
+      String code = loadJS(o.get("code"));
+      String system = loadJS(o.get("system"));
+      String definition = loadJS(o.get("definition"));
+      t = loadJS(o.get("class"));
+      TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t);
+      ce.v = new ValidationResult(severity, error, system, new ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code)).setErrorClass(errorClass);
+    }
+    return ce;
+  }
+
+  private void loadNamedCache(String fn) {
+    int c = 0;
+    try {
+      String src = TextFile.fileToString(Utilities.path(folder, fn));
+      String title = fn.substring(0, fn.lastIndexOf("."));
+
+      NamedCache nc = new NamedCache();
+      nc.name = title;
+
+      if (src.startsWith("?"))
+        src = src.substring(1);
+      int i = src.indexOf(ENTRY_MARKER);
+      while (i > -1) {
+        c++;
+        String s = src.substring(0, i);
+        src = src.substring(i + ENTRY_MARKER.length() + 1);
+        i = src.indexOf(ENTRY_MARKER);
+        if (!Utilities.noString(s)) {
+          int j = s.indexOf(BREAK);
+          String request = s.substring(0, j);
+          String p = s.substring(j + BREAK.length() + 1).trim();
+
+          CacheEntry cacheEntry = getCacheEntry(request, p);
+
+          nc.map.put(String.valueOf(hashJson(cacheEntry.request)), cacheEntry);
+          nc.list.add(cacheEntry);
+        }
+        caches.put(nc.name, nc);
+      }
+    } catch (Exception e) {
+      throw new FHIRException("Error loading " + fn + ": " + e.getMessage() + " entry " + c, e);
+    }
+  }
+
   private void load() throws FHIRException {
     for (String fn : new File(folder).list()) {
-      if (fn.endsWith(".cache") && !fn.equals("validation.cache")) {
-        int c = 0;
+      if (fn.endsWith(CACHE_FILE_EXTENSION) && !fn.equals("validation" + CACHE_FILE_EXTENSION)) {
         try {
-          String title = fn.substring(0, fn.lastIndexOf("."));
-          NamedCache nc = new NamedCache();
-          nc.name = title;
-          caches.put(title, nc);
-          String src = TextFile.fileToString(Utilities.path(folder, fn));
-          if (src.startsWith("?"))
-            src = src.substring(1);
-          int i = src.indexOf(ENTRY_MARKER); 
-          while (i > -1) {
-            c++;
-            String s = src.substring(0, i);
-            src = src.substring(i+ENTRY_MARKER.length()+1);
-            i = src.indexOf(ENTRY_MARKER);
-            if (!Utilities.noString(s)) {
-              int j = s.indexOf(BREAK);
-              String q = s.substring(0, j);
-              String p = s.substring(j+BREAK.length()+1).trim();
-              CacheEntry ce = new CacheEntry();
-              ce.persistent = true;
-              ce.request = q;
-              boolean e = p.charAt(0) == 'e';
-              p = p.substring(3);
-              JsonObject o = (JsonObject) new com.google.gson.JsonParser().parse(p);
-              String error = loadJS(o.get("error"));
-              if (e) {
-                if (o.has("valueSet"))
-                  ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser().parse(o.getAsJsonObject("valueSet")), error, TerminologyServiceErrorClass.UNKNOWN);
-                else
-                  ce.e = new ValueSetExpansionOutcome(error, TerminologyServiceErrorClass.UNKNOWN);
-              } else {
-                String t = loadJS(o.get("severity"));
-                IssueSeverity severity = t == null ? null :  IssueSeverity.fromCode(t);
-                String display = loadJS(o.get("display"));
-                String code = loadJS(o.get("code"));
-                String system = loadJS(o.get("system"));
-                String definition = loadJS(o.get("definition"));
-                t = loadJS(o.get("class"));
-                TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t) ;
-                ce.v = new ValidationResult(severity, error, system, new ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code)).setErrorClass(errorClass);
-              }
-              nc.map.put(String.valueOf(hashNWS(ce.request)), ce);
-              nc.list.add(ce);
-            }
-          }        
-        } catch (Exception e) {
-          throw new FHIRException("Error loading "+fn+": "+e.getMessage()+" entry "+c, e);
+          if (isCapabilityCache(fn)) {
+            loadCapabilityCache(fn);
+          } else {
+            loadNamedCache(fn);
+          }
+        } catch (FHIRException e) {
+          throw e;
         }
       }
     }
@@ -446,7 +599,7 @@ public class TerminologyCache {
     return s;
   }
 
-  private String hashNWS(String s) {
+  protected String hashJson(String s) {
     s = StringUtils.remove(s, ' ');
     s = StringUtils.remove(s, '\n');
     s = StringUtils.remove(s, '\r');
@@ -508,14 +661,6 @@ public class TerminologyCache {
     b.append(code.getText());
     b.append("\"");
     return b.toString();
-  }
-
-  public static boolean isNoCaching() {
-    return noCaching;
-  }
-
-  public static void setNoCaching(boolean noCaching) {
-    TerminologyCache.noCaching = noCaching;
   }
 
   public void removeCS(String url) {
