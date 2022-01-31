@@ -1,51 +1,38 @@
 package org.hl7.fhir.r4b.test;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r4b.context.IWorkerContext;
 import org.hl7.fhir.r4b.elementmodel.Manager;
 import org.hl7.fhir.r4b.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r4b.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4b.formats.JsonParser;
 import org.hl7.fhir.r4b.formats.XmlParser;
 import org.hl7.fhir.r4b.model.Base;
-import org.hl7.fhir.r4b.model.DomainResource;
-import org.hl7.fhir.r4b.model.Questionnaire;
 import org.hl7.fhir.r4b.model.Resource;
 import org.hl7.fhir.r4b.renderers.RendererFactory;
-import org.hl7.fhir.r4b.renderers.ResourceRenderer;
+
 import org.hl7.fhir.r4b.renderers.utils.ElementWrappers;
 import org.hl7.fhir.r4b.renderers.utils.RenderingContext;
 import org.hl7.fhir.r4b.renderers.utils.RenderingContext.ITypeParser;
-import org.hl7.fhir.r4b.renderers.utils.RenderingContext.QuestionnaireRendererMode;
 import org.hl7.fhir.r4b.renderers.utils.RenderingContext.ResourceRendererMode;
-import org.hl7.fhir.r4b.test.NarrativeGenerationTests.TestTypeParser;
 import org.hl7.fhir.r4b.test.utils.TestingUtilities;
+
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
-import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -143,8 +130,10 @@ public class NarrativeGenerationTests {
     // getting timezones correct (well, at least consistent, so tests pass on any computer)
     rc.setLocale(new java.util.Locale("en", "AU"));
     rc.setTimeZoneId(ZoneId.of("Australia/Sydney"));
-    rc.setDateTimeFormat(null); 
-    rc.setDateFormat(null); 
+
+    rc.setDateTimeFormatString("yyyy-MM-dd'T'HH:mm:ssZZZZZ");
+    rc.setDateFormatString("yyyy-MM-dd");
+
     rc.setMode(test.technical ? ResourceRendererMode.TECHNICAL : ResourceRendererMode.END_USER);
         
     
