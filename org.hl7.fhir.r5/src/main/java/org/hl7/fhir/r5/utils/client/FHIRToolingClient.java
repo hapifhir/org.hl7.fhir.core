@@ -37,13 +37,11 @@ import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.utils.client.network.ByteUtils;
 import org.hl7.fhir.r5.utils.client.network.Client;
-import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.r5.utils.client.network.ResourceRequest;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
@@ -108,7 +106,6 @@ public class FHIRToolingClient {
     base = baseServiceUrl;
     resourceAddress = new ResourceAddress(baseServiceUrl);
     this.maxResultSetSize = -1;
-    checkCapabilities();
   }
 
   public Client getClient() {
@@ -117,13 +114,6 @@ public class FHIRToolingClient {
 
   public void setClient(Client client) {
     this.client = client;
-  }
-
-  private void checkCapabilities() {
-    try {
-      capabilities = getCapabilitiesStatementQuick();
-    } catch (Throwable e) {
-    }
   }
 
   public String getPreferredResourceFormat() {
@@ -157,9 +147,9 @@ public class FHIRToolingClient {
   }
 
   public CapabilityStatement getCapabilitiesStatement() {
-    CapabilityStatement conformance = null;
+    CapabilityStatement capabilityStatement = null;
     try {
-      conformance = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(false),
+      capabilityStatement = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(false),
         getPreferredResourceFormat(),
         generateHeaders(),
         "CapabilitiesStatement",
@@ -167,13 +157,13 @@ public class FHIRToolingClient {
     } catch (Exception e) {
       throw new FHIRException("Error fetching the server's conformance statement", e);
     }
-    return conformance;
+    return capabilityStatement;
   }
 
   public CapabilityStatement getCapabilitiesStatementQuick() throws EFhirClientException {
     if (capabilities != null) return capabilities;
     try {
-      capabilities = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(true),
+       capabilities = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(true),
         getPreferredResourceFormat(),
         generateHeaders(),
         "CapabilitiesStatement-Quick",
@@ -583,6 +573,13 @@ public class FHIRToolingClient {
   }
 
   public String getServerVersion() {
+    if (capabilities == null) {
+      try {
+        getCapabilitiesStatementQuick();
+      } catch (Throwable e) {
+        //FIXME This is creepy. Shouldn't we report this at some level?
+      }
+    }
     return capabilities == null ? null : capabilities.getSoftware().getVersion();
   }
   

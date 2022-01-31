@@ -1,0 +1,39 @@
+{
+  "resourceType" : "CapabilityStatement",
+  "id" : "FhirServer",
+  "meta" : {
+    "tag" : [{
+      "system" : "http://hl7.org/fhir/v3/ObservationValue",
+      "code" : "SUBSETTED",
+      "display" : "Subsetted"
+    }]
+  },
+  "extension" : [{
+    "url" : "http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown",
+    "valueCode" : "both"
+  }],
+  "url" : "http://fhir.healthintersections.com.au/open/metadata",
+  "version" : "1.0.2-2.0.12-SNAPSHOT",
+  "name" : "FHIR Reference Server Conformance Statement",
+  "status" : "active",
+  "date" : "2022-01-06T15:44:28.286Z",
+  "contact" : [{
+    "telecom" : [{
+      "system" : "other",
+      "value" : "http://healthintersections.com.au/"
+    }]
+  }],
+  "description" : "Standard Conformance Statement for the open source Reference FHIR Server provided by Health Intersections",
+  "kind" : "instance",
+  "software" : {
+    "name" : "Reference Server",
+    "version" : "2.0.12-SNAPSHOT",
+    "releaseDate" : "2021-12-20T02:28:03.769Z"
+  },
+  "fhirVersion" : "1.0.2",
+  "format" : ["application/xml+fhir",
+  "application/json+fhir"],
+  "rest" : [{
+    "mode" : "server"
+  }]
+}
