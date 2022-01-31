@@ -138,10 +138,10 @@ public class NarrativeGenerationTests {
         
     
     Resource source;
-    if (TestingUtilities.findTestResource("r5", "narrative", test.getId() + ".json")) {
-      source = (Resource) new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".json"));
+    if (TestingUtilities.findTestResource("r4b", "narrative", test.getId() + ".json")) {
+      source = (Resource) new JsonParser().parse(TestingUtilities.loadTestResourceStream("r4b", "narrative", test.getId() + ".json"));
     } else {
-      source = (Resource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"));      
+      source = (Resource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r4b", "narrative", test.getId() + ".xml"));      
     }
     
     XhtmlNode x = RendererFactory.factory(source, rc).build(source);
@@ -158,7 +158,7 @@ public class NarrativeGenerationTests {
       org.hl7.fhir.r4b.elementmodel.Element e = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"), FhirFormat.XML); 
       x = RendererFactory.factory(source, rc).render(new ElementWrappers.ResourceWrapperMetaElement(rc, e));
 
-      target = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-meta.html"));
+      target = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r4b", "narrative", test.getId() + "-meta.html"));
       output = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
       ofn = TestingUtilities.tempFile("narrative", test.getId() + "-meta.output.html");
       TextFile.stringToFile(output, ofn);
