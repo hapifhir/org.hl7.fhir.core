@@ -492,6 +492,10 @@ public class RenderingContext {
     this.dateTimeFormat = dateTimeFormat;
   }
 
+  public void setDateTimeFormatString(String dateTimeFormat) {
+    this.dateTimeFormat = DateTimeFormatter.ofPattern(dateTimeFormat);
+  }
+
   /**
    * In the absence of a specified format, the renderers will default to 
    * the FormatStyle.MEDIUM for the current locale.
@@ -504,6 +508,10 @@ public class RenderingContext {
 
   public void setDateFormat(DateTimeFormatter dateFormat) {
     this.dateFormat = dateFormat;
+  }
+
+  public void setDateFormatString(String dateFormat) {
+    this.dateFormat = DateTimeFormatter.ofPattern(dateFormat);
   }
 
   public ResourceRendererMode getMode() {
