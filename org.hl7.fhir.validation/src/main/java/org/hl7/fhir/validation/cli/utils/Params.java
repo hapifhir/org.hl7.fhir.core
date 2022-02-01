@@ -31,6 +31,7 @@ public class Params {
   public static final String TO_VERSION = "-to-version";
   public static final String DO_NATIVE = "-do-native";
   public static final String NO_NATIVE = "-no-native";
+  public static final String COMPILE = "-compile";
   public static final String TRANSFORM = "-transform";
   public static final String NARRATIVE = "-narrative";
   public static final String SNAPSHOT = "-snapshot";
@@ -192,6 +193,9 @@ public class Params {
       } else if (args[i].equals(TRANSFORM)) {
         cliContext.setMap(args[++i]);
         cliContext.setMode(EngineMode.TRANSFORM);
+      } else if (args[i].equals(COMPILE)) {
+        cliContext.setMap(args[++i]);
+        cliContext.setMode(EngineMode.COMPILE);
       } else if (args[i].equals(NARRATIVE)) {
         cliContext.setMode(EngineMode.NARRATIVE);
       } else if (args[i].equals(SPREADSHEET)) {
