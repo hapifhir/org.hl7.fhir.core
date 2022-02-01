@@ -167,7 +167,7 @@ public class TerminologyCache {
   private Map<String, NamedCache> caches = new HashMap<String, NamedCache>();
   @Getter @Setter
   private static boolean noCaching;
-
+  
   @Getter @Setter
   private static boolean cacheErrors;
 
@@ -182,9 +182,9 @@ public class TerminologyCache {
 
     if (folder != null) {
       load();
-    }
   }
-
+  }
+  
   public void clear() {
     caches.clear();
   }
@@ -197,14 +197,23 @@ public class TerminologyCache {
     }
     else
       ct.name = NAME_FOR_NO_SYSTEM;
-
+    nameCacheToken(vs, ct);
     JsonParser json = new JsonParser();
     json.setOutputStyle(OutputStyle.PRETTY);
-    ValueSet vsc = getVSEssense(vs);
-    try {
-      ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsc == null ? "null" : extracted(json, vsc))+(options == null ? "" : ", "+options.toJson())+"}";
-    } catch (IOException e) {
-      throw new Error(e);
+    if (vs != null && vs.hasUrl() && vs.hasVersion()) {
+      try {
+        ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())
+            +"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\""+(options == null ? "" : ", "+options.toJson())+"}\r\n";      
+      } catch (IOException e) {
+        throw new Error(e);
+      }
+    } else {
+      ValueSet vsc = getVSEssense(vs);
+      try {
+        ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsc == null ? "null" : extracted(json, vsc))+(options == null ? "" : ", "+options.toJson())+"}";
+      } catch (IOException e) {
+        throw new Error(e);
+      }
     }
     ct.key = String.valueOf(hashJson(ct.request));
     return ct;
@@ -212,7 +221,7 @@ public class TerminologyCache {
 
   public String extracted(JsonParser json, ValueSet vsc) throws IOException {
     String s = null;
-    if (vsc.getExpansion().getContains().size() > 1000 || vsc.getCompose().getIncludeFirstRep().getConcept().size() > 1000) {
+    if (vsc.getExpansion().getContains().size() > 1000 || vsc.getCompose().getIncludeFirstRep().getConcept().size() > 1000) {      
       s =  vsc.getUrl();
     } else {
       s = json.composeString(vsc);
@@ -228,13 +237,23 @@ public class TerminologyCache {
         ct.hasVersion = c.hasVersion();
       }
     }
+    nameCacheToken(vs, ct);
     JsonParser json = new JsonParser();
     json.setOutputStyle(OutputStyle.PRETTY);
-    ValueSet vsc = getVSEssense(vs);
-    try {
-      ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"valueSet\" :"+extracted(json, vsc)+(options == null ? "" : ", "+options.toJson())+"}";
-    } catch (IOException e) {
-      throw new Error(e);
+    if (vs != null && vs.hasUrl() && vs.hasVersion()) {
+      try {
+       ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+
+           "\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\""+(options == null ? "" : ", "+options.toJson())+"+}\r\n";      
+      } catch (IOException e) {
+        throw new Error(e);
+      }
+    } else {
+      ValueSet vsc = getVSEssense(vs);
+      try {
+        ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"valueSet\" :"+extracted(json, vsc)+(options == null ? "" : ", "+options.toJson())+"}";
+      } catch (IOException e) {
+        throw new Error(e);
+      }
     }
     ct.key = String.valueOf(hashJson(ct.request));
     return ct;
@@ -254,31 +273,44 @@ public class TerminologyCache {
 
   public CacheToken generateExpandToken(ValueSet vs, boolean hierarchical) {
     CacheToken ct = new CacheToken();
-    ValueSet vsc = getVSEssense(vs);
-    for (ConceptSetComponent inc : vs.getCompose().getInclude())
-      if (inc.hasSystem()) {
-        ct.setName(getNameForSystem(inc.getSystem()));
-        ct.hasVersion = inc.hasVersion();
-      }
-    for (ConceptSetComponent inc : vs.getCompose().getExclude())
-      if (inc.hasSystem()) {
-        ct.setName(getNameForSystem(inc.getSystem()));
-        ct.hasVersion = inc.hasVersion();
-      }
-    for (ValueSetExpansionContainsComponent inc : vs.getExpansion().getContains())
-      if (inc.hasSystem()) {
-        ct.setName(getNameForSystem(inc.getSystem()));
-        ct.hasVersion = inc.hasVersion();
-      }
-    JsonParser json = new JsonParser();
-    json.setOutputStyle(OutputStyle.PRETTY);
-    try {
+    nameCacheToken(vs, ct);
+    if (vs.hasUrl() && vs.hasVersion()) {
+      ct.request = "{\"hierarchical\" : "+(hierarchical ? "true" : "false")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\"}\r\n";      
+    } else {
+      ValueSet vsc = getVSEssense(vs);
+      JsonParser json = new JsonParser();
+      json.setOutputStyle(OutputStyle.PRETTY);
+      try {
       ct.request = "{\"hierarchical\" : "+(hierarchical ? "true" : "false")+", \"valueSet\" :"+extracted(json, vsc)+"}\r\n";
-    } catch (IOException e) {
-      throw new Error(e);
+      } catch (IOException e) {
+        throw new Error(e);
+      }
     }
     ct.key = String.valueOf(hashJson(ct.request));
     return ct;
+  }
+
+  public void nameCacheToken(ValueSet vs, CacheToken ct) {
+    if (vs != null) {
+      for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
+        if (inc.hasSystem()) {
+          ct.setName(getNameForSystem(inc.getSystem()));
+          ct.hasVersion = inc.hasVersion();
+        }
+      }
+      for (ConceptSetComponent inc : vs.getCompose().getExclude()) {
+        if (inc.hasSystem()) {
+          ct.setName(getNameForSystem(inc.getSystem()));
+          ct.hasVersion = inc.hasVersion();
+        }
+      }
+      for (ValueSetExpansionContainsComponent inc : vs.getExpansion().getContains()) {
+        if (inc.hasSystem()) {
+          ct.setName(getNameForSystem(inc.getSystem()));
+          ct.hasVersion = inc.hasVersion();
+        }
+      }
+    }
   }
 
   private String getNameForSystem(String system) {
@@ -386,8 +418,8 @@ public class TerminologyCache {
       } else {
         hitCount++;
         return e.v;
-      }
     }
+  }
   }
 
   public void cacheValidation(CacheToken cacheToken, ValidationResult res, boolean persistent) {
@@ -409,7 +441,7 @@ public class TerminologyCache {
   public void save() {
     
   }
-
+  
   private <K extends Resource> void save(K resource, String title) {
     if (folder == null)
       return;
@@ -493,8 +525,8 @@ public class TerminologyCache {
   }
 
   private void loadCapabilityCache(String fn) {
-    try {
-      String src = TextFile.fileToString(Utilities.path(folder, fn));
+        try {
+          String src = TextFile.fileToString(Utilities.path(folder, fn));
 
       JsonObject o = (JsonObject) new com.google.gson.JsonParser().parse(src);
       Resource resource = new JsonParser().parse(o);
@@ -512,29 +544,29 @@ public class TerminologyCache {
 
 
   private CacheEntry getCacheEntry(String request, String resultString) throws IOException {
-    CacheEntry ce = new CacheEntry();
-    ce.persistent = true;
+              CacheEntry ce = new CacheEntry();
+              ce.persistent = true;
     ce.request = request;
     boolean e = resultString.charAt(0) == 'e';
     resultString = resultString.substring(3);
     JsonObject o = (JsonObject) new com.google.gson.JsonParser().parse(resultString);
-    String error = loadJS(o.get("error"));
-    if (e) {
-      if (o.has("valueSet"))
-        ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser().parse(o.getAsJsonObject("valueSet")), error, TerminologyServiceErrorClass.UNKNOWN);
-      else
-        ce.e = new ValueSetExpansionOutcome(error, TerminologyServiceErrorClass.UNKNOWN);
-    } else {
-      String t = loadJS(o.get("severity"));
-      IssueSeverity severity = t == null ? null : IssueSeverity.fromCode(t);
-      String display = loadJS(o.get("display"));
-      String code = loadJS(o.get("code"));
-      String system = loadJS(o.get("system"));
-      String definition = loadJS(o.get("definition"));
-      t = loadJS(o.get("class"));
-      TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t);
-      ce.v = new ValidationResult(severity, error, system, new ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code)).setErrorClass(errorClass);
-    }
+              String error = loadJS(o.get("error"));
+              if (e) {
+                if (o.has("valueSet"))
+                  ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser().parse(o.getAsJsonObject("valueSet")), error, TerminologyServiceErrorClass.UNKNOWN);
+                else
+                  ce.e = new ValueSetExpansionOutcome(error, TerminologyServiceErrorClass.UNKNOWN);
+              } else {
+                String t = loadJS(o.get("severity"));
+                IssueSeverity severity = t == null ? null :  IssueSeverity.fromCode(t);
+                String display = loadJS(o.get("display"));
+                String code = loadJS(o.get("code"));
+                String system = loadJS(o.get("system"));
+                String definition = loadJS(o.get("definition"));
+                t = loadJS(o.get("class"));
+                TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t) ;
+                ce.v = new ValidationResult(severity, error, system, new ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code)).setErrorClass(errorClass);
+              }
     return ce;
   }
 
@@ -564,13 +596,13 @@ public class TerminologyCache {
 
           nc.map.put(String.valueOf(hashJson(cacheEntry.request)), cacheEntry);
           nc.list.add(cacheEntry);
-        }
+            }
         caches.put(nc.name, nc);
+          }        
+        } catch (Exception e) {
+          throw new FHIRException("Error loading "+fn+": "+e.getMessage()+" entry "+c, e);
+        }
       }
-    } catch (Exception e) {
-      throw new FHIRException("Error loading " + fn + ": " + e.getMessage() + " entry " + c, e);
-    }
-  }
 
   private void load() throws FHIRException {
     for (String fn : new File(folder).list()) {

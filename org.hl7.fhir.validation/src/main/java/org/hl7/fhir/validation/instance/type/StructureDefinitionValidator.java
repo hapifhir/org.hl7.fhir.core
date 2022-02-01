@@ -211,6 +211,8 @@ public class StructureDefinitionValidator extends BaseValidator {
 
   private void validateBinding(List<ValidationMessage> errors, Element binding, NodeStack stack, Set<String> typeCodes, boolean snapshot, String path) {
     rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || bindableType(typeCodes) != null, I18nConstants.SD_ED_BIND_NO_BINDABLE, path, typeCodes.toString());
+    hint(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), typeCodes.size() <= 1, I18nConstants.SD_ED_BIND_MULTIPLE_TYPES, path, typeCodes.toString());
+    
     if (binding.hasChild("valueSet")) {
       Element valueSet = binding.getNamedChild("valueSet");
       String ref = valueSet.hasPrimitiveValue() ? valueSet.primitiveValue() : valueSet.getNamedChildValue("reference");
