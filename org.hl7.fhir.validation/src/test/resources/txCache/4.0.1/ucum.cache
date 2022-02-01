@@ -12,30 +12,7 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "cm"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://unitsofmeasure.org",
-      "concept" : [{
-        "code" : "a",
-        "display" : "years"
-      },
-      {
-        "code" : "mo",
-        "display" : "months"
-      },
-      {
-        "code" : "wk",
-        "display" : "weeks"
-      },
-      {
-        "code" : "d",
-        "display" : "days"
-      }]
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "https://bb/ValueSet/BBDemographicAgeUnit--0", "version": "20190731", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
   "error" : "The code provided (http://unitsofmeasure.org#cm) is not valid (from http://tx.fhir.org/r4)"
@@ -124,38 +101,7 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "m"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://unitsofmeasure.org",
-      "concept" : [{
-        "code" : "min",
-        "display" : "minutes"
-      },
-      {
-        "code" : "h",
-        "display" : "hours"
-      },
-      {
-        "code" : "d",
-        "display" : "days"
-      },
-      {
-        "code" : "wk",
-        "display" : "weeks"
-      },
-      {
-        "code" : "mo",
-        "display" : "months"
-      },
-      {
-        "code" : "a",
-        "display" : "years"
-      }]
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/age-units--0", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
   "error" : "The code provided (http://unitsofmeasure.org#m) is not valid (from http://tx.fhir.org/r4)"

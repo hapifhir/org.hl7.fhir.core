@@ -119,7 +119,7 @@ public class NodeStack {
     }
     res.logicalPaths = new ArrayList<String>();
     if (type != null) {
-      // type will be bull if we on a stitching point of a contained resource, or if....
+      // type will be null if we on a stitching point of a contained resource, or if....
       res.type = type;
       String tn = res.type.getPath();
       String t = tail(definition.getPath());
@@ -128,8 +128,10 @@ public class NodeStack {
       }
       for (String lp : getLogicalPaths()) {
         res.logicalPaths.add(lp + "." + t);
-        if (t.endsWith("[x]"))
+        if (t.endsWith("[x]")) {
+          res.logicalPaths.add(lp + "." + t.substring(0, t.length() - 3) + ".ofType("+type.getPath()+")");
           res.logicalPaths.add(lp + "." + t.substring(0, t.length() - 3) + type.getPath());
+        }
       }
       res.logicalPaths.add(tn);
     } else if (definition != null) {

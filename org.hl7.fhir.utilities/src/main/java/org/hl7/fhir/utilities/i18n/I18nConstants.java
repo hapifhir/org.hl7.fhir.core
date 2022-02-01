@@ -373,6 +373,7 @@ public class I18nConstants {
   public static final String SD_ED_BIND_UNKNOWN_VS = "SD_ED_BIND_UNKNOWN_VS";
   public static final String SD_ED_BIND_NOT_VS = "SD_ED_BIND_NOT_VS";
   public static final String SD_ED_BIND_NO_BINDABLE = "SD_ED_BIND_NO_BINDABLE";
+  public static final String SD_ED_BIND_MULTIPLE_TYPES = "SD_ED_BIND_MULTIPLE_TYPES";
   public static final String SD_VALUE_TYPE_IILEGAL = "SD_VALUE_TYPE_IILEGAL";
   public static final String SD_NO_TYPES_OR_CONTENTREF = "SD_NO_TYPES_OR_CONTENTREF";
   public static final String SEARCHPARAMETER_BASE_WRONG = "SEARCHPARAMETER_BASE_WRONG";

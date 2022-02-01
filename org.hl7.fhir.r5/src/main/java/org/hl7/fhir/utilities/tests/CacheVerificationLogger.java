@@ -21,8 +21,10 @@ public class CacheVerificationLogger implements ToolingClientLogger {
       System.err.println("Unexpected request to server");
       System.err.println(method);
       System.err.println(url);
-      for (String header : headers) {
-        System.err.println("Header: " + header);
+      if (headers != null) {
+        for (String header : headers) {
+          System.err.println("Header: " + header);
+        }
       }
       System.err.println("Body");
       System.err.println("----");

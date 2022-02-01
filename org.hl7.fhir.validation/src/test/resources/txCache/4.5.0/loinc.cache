@@ -35,53 +35,7 @@ v: {
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "85354-9"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://loinc.org",
-      "concept" : [{
-        "code" : "85353-1"
-      },
-      {
-        "code" : "9279-1"
-      },
-      {
-        "code" : "8867-4"
-      },
-      {
-        "code" : "2708-6"
-      },
-      {
-        "code" : "8310-5"
-      },
-      {
-        "code" : "8302-2"
-      },
-      {
-        "code" : "9843-4"
-      },
-      {
-        "code" : "29463-7"
-      },
-      {
-        "code" : "39156-5"
-      },
-      {
-        "code" : "85354-9"
-      },
-      {
-        "code" : "8480-6"
-      },
-      {
-        "code" : "8462-4"
-      },
-      {
-        "code" : "8478-0"
-      }]
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.5.0", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Blood pressure panel with all children optional",
   "code" : "85354-9",
@@ -92,53 +46,7 @@ v: {
   "system" : "http://loinc.org",
   "code" : "85354-9",
   "display" : "Blood pressure panel with all children optional"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://loinc.org",
-      "concept" : [{
-        "code" : "85353-1"
-      },
-      {
-        "code" : "9279-1"
-      },
-      {
-        "code" : "8867-4"
-      },
-      {
-        "code" : "2708-6"
-      },
-      {
-        "code" : "8310-5"
-      },
-      {
-        "code" : "8302-2"
-      },
-      {
-        "code" : "9843-4"
-      },
-      {
-        "code" : "29463-7"
-      },
-      {
-        "code" : "39156-5"
-      },
-      {
-        "code" : "85354-9"
-      },
-      {
-        "code" : "8480-6"
-      },
-      {
-        "code" : "8462-4"
-      },
-      {
-        "code" : "8478-0"
-      }]
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "4.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "Blood pressure panel with all children optional",
   "code" : "85354-9",
@@ -158,53 +66,7 @@ v: {
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "8480-6"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://loinc.org",
-      "concept" : [{
-        "code" : "85353-1"
-      },
-      {
-        "code" : "9279-1"
-      },
-      {
-        "code" : "8867-4"
-      },
-      {
-        "code" : "2708-6"
-      },
-      {
-        "code" : "8310-5"
-      },
-      {
-        "code" : "8302-2"
-      },
-      {
-        "code" : "9843-4"
-      },
-      {
-        "code" : "29463-7"
-      },
-      {
-        "code" : "39156-5"
-      },
-      {
-        "code" : "85354-9"
-      },
-      {
-        "code" : "8480-6"
-      },
-      {
-        "code" : "8462-4"
-      },
-      {
-        "code" : "8478-0"
-      }]
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.5.0", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Systolic blood pressure",
   "code" : "8480-6",
@@ -215,53 +77,7 @@ v: {
   "system" : "http://loinc.org",
   "code" : "8480-6",
   "display" : "Systolic blood pressure"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://loinc.org",
-      "concept" : [{
-        "code" : "85353-1"
-      },
-      {
-        "code" : "9279-1"
-      },
-      {
-        "code" : "8867-4"
-      },
-      {
-        "code" : "2708-6"
-      },
-      {
-        "code" : "8310-5"
-      },
-      {
-        "code" : "8302-2"
-      },
-      {
-        "code" : "9843-4"
-      },
-      {
-        "code" : "29463-7"
-      },
-      {
-        "code" : "39156-5"
-      },
-      {
-        "code" : "85354-9"
-      },
-      {
-        "code" : "8480-6"
-      },
-      {
-        "code" : "8462-4"
-      },
-      {
-        "code" : "8478-0"
-      }]
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "4.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "Systolic blood pressure",
   "code" : "8480-6",
@@ -281,53 +97,7 @@ v: {
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "8462-4"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://loinc.org",
-      "concept" : [{
-        "code" : "85353-1"
-      },
-      {
-        "code" : "9279-1"
-      },
-      {
-        "code" : "8867-4"
-      },
-      {
-        "code" : "2708-6"
-      },
-      {
-        "code" : "8310-5"
-      },
-      {
-        "code" : "8302-2"
-      },
-      {
-        "code" : "9843-4"
-      },
-      {
-        "code" : "29463-7"
-      },
-      {
-        "code" : "39156-5"
-      },
-      {
-        "code" : "85354-9"
-      },
-      {
-        "code" : "8480-6"
-      },
-      {
-        "code" : "8462-4"
-      },
-      {
-        "code" : "8478-0"
-      }]
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0", "version": "4.5.0", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Diastolic blood pressure",
   "code" : "8462-4",
@@ -338,53 +108,7 @@ v: {
   "system" : "http://loinc.org",
   "code" : "8462-4",
   "display" : "Diastolic blood pressure"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://loinc.org",
-      "concept" : [{
-        "code" : "85353-1"
-      },
-      {
-        "code" : "9279-1"
-      },
-      {
-        "code" : "8867-4"
-      },
-      {
-        "code" : "2708-6"
-      },
-      {
-        "code" : "8310-5"
-      },
-      {
-        "code" : "8302-2"
-      },
-      {
-        "code" : "9843-4"
-      },
-      {
-        "code" : "29463-7"
-      },
-      {
-        "code" : "39156-5"
-      },
-      {
-        "code" : "85354-9"
-      },
-      {
-        "code" : "8480-6"
-      },
-      {
-        "code" : "8462-4"
-      },
-      {
-        "code" : "8478-0"
-      }]
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "4.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "Diastolic blood pressure",
   "code" : "8462-4",
@@ -404,19 +128,7 @@ v: {
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "56445-0"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://loinc.org",
-      "filter" : [{
-        "property" : "SCALE_TYP",
-        "op" : "=",
-        "value" : "Doc"
-      }]
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "4.5.0", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Medication summary Document",
   "code" : "56445-0",
@@ -428,19 +140,7 @@ v: {
   "version" : "current",
   "code" : "56445-0",
   "display" : "Medication summary Doc"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://loinc.org",
-      "filter" : [{
-        "property" : "SCALE_TYP",
-        "op" : "=",
-        "value" : "Doc"
-      }]
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "4.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
   "error" : "Version 'current' of the code system 'http://loinc.org' is not known (encountered paired with code = '56445-0'). ValidVersions = [2.71]; The code provided (http://loinc.org#56445-0) is not valid in the value set 'FHIRDocumentTypeCodes' (from http://tx.fhir.org/r4)",
@@ -475,19 +175,7 @@ v: {
   "version" : "2.71",
   "code" : "56445-0",
   "display" : "Medication summary Doc"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://loinc.org",
-      "filter" : [{
-        "property" : "SCALE_TYP",
-        "op" : "=",
-        "value" : "Doc"
-      }]
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "4.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "Medication summary Document",
   "code" : "56445-0",
@@ -522,19 +210,7 @@ v: {
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "56445-0"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://loinc.org",
-      "filter" : [{
-        "property" : "SCALE_TYP",
-        "op" : "=",
-        "value" : "Doc"
-      }]
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "4.5.0", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
 v: {
   "display" : "Medication summary Document",
   "code" : "56445-0",
@@ -546,19 +222,7 @@ v: {
   "version" : "current",
   "code" : "56445-0",
   "display" : "Medication summary Doc"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://loinc.org",
-      "filter" : [{
-        "property" : "SCALE_TYP",
-        "op" : "=",
-        "value" : "Doc"
-      }]
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"true"}####
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "4.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"true"}####
 v: {
   "display" : "Medication summary Document",
   "code" : "56445-0",
@@ -593,19 +257,7 @@ v: {
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "18842-5"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://loinc.org",
-      "filter" : [{
-        "property" : "SCALE_TYP",
-        "op" : "=",
-        "value" : "Doc"
-      }]
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "4.5.0", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "display" : "Discharge summary",
   "code" : "18842-5",
@@ -616,19 +268,7 @@ v: {
   "system" : "http://loinc.org",
   "code" : "18842-5",
   "display" : "Discharge Summary"
-}, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "include" : [{
-      "system" : "http://loinc.org",
-      "filter" : [{
-        "property" : "SCALE_TYP",
-        "op" : "=",
-        "value" : "Doc"
-      }]
-    }]
-  }
-}, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "4.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
 v: {
   "display" : "Discharge summary",
   "code" : "18842-5",
