@@ -3,6 +3,7 @@
  <test name="filter-fhirpath" source="filter-fhirpath.gql" output="filter-fhirpath.json" context="Patient/example/$graphql"/>
  <test name="using wrong field" source="wrong-field.gql" output="$error" context="Patient/example/$graphql"/>
  <test name="polymorphic" source="polymorphic.gql" output="polymorphic.json" context="Observation/example/$graphql"/>
+ <test name="polymorphic-difftype" source="polymorphic-difftype.gql" output="polymorphic-difftype.json" context="Observation/example/$graphql"/>
  <test name="reference" source="reference.gql" output="reference.json" context="Observation/example/$graphql"/>
  <test name="reference-type-in" source="reference-type-in.gql" output="reference-type-in.json" context="Observation/example/$graphql"/>
  <test name="reference-type-out" source="reference-type-out.gql" output="reference-type-out.json" context="Observation/example/$graphql"/>
