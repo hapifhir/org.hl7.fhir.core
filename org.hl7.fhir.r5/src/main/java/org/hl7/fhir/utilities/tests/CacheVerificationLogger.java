@@ -58,7 +58,7 @@ public class CacheVerificationLogger implements ToolingClientLogger {
       return true;
     } else {
       if (requests != 0) {
-        System.err.println("Unexpected TX server request during test. If a new test has been added, you may need to " +
+        System.err.println(requests + " unexpected TX server requests logged. If a new test has been added, you may need to " +
           "rebuild the TX Cache for the test using the 'mvn test -D" + FHIR_TXCACHE_REBUILD + "=true' option");
         return false;
       } else {
