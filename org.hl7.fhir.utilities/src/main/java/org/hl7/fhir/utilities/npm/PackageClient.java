@@ -91,7 +91,7 @@ public class PackageClient {
             address));
         }
       }
-    } catch (FileNotFoundException e) {
+    } catch (Exception e) {
     }
     return res;    
   }
