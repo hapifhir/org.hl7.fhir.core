@@ -426,6 +426,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return transform(cnt.focus, cnt.cntType, map);
   }
 
+  public StructureMap compile(String mapUri) throws FHIRException, IOException {
+    StructureMap map = context.getTransform(mapUri);
+    return map;
+  }
+
   public org.hl7.fhir.r5.elementmodel.Element transform(byte[] source, FhirFormat cntType, String mapUri) throws FHIRException, IOException {
     List<Base> outputs = new ArrayList<>();
     StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs, mapLog, context));
@@ -642,7 +647,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       else
         throw new FHIRException("Unsupported format for " + fn);
     } else
-      throw new FHIRException("Encounted unsupported configured version " + version + " loading " + fn);
+      throw new FHIRException("Encountered unsupported configured version " + version + " loading " + fn);
 
     s.close();
   }

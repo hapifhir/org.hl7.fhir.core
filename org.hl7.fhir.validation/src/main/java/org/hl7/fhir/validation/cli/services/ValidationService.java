@@ -253,6 +253,36 @@ public class ValidationService {
     }
   }
 
+  public void compile(CliContext cliContext, ValidationEngine validator) throws Exception {
+    if (cliContext.getSources().size() > 0)
+      throw new Exception("Cannot specify sources when compling transform (found " + cliContext.getSources() + ")");
+    if (cliContext.getMap() == null)
+      throw new Exception("Must provide a map when compiling a transform");
+    if (cliContext.getOutput() == null)
+      throw new Exception("Must provide an output name when compiling a transform");
+    try {
+      List<StructureDefinition> structures = validator.getContext().allStructures();
+      for (StructureDefinition sd : structures) {
+        if (!sd.hasSnapshot()) {
+          if (sd.getKind() != null && sd.getKind() == StructureDefinitionKind.LOGICAL) {
+            validator.getContext().generateSnapshot(sd, true);
+          } else {
+            validator.getContext().generateSnapshot(sd, false);
+          }
+        }
+      }
+      validator.setMapLog(cliContext.getMapLog());
+      StructureMap map = validator.compile(cliContext.getMap());
+      if (map == null)
+        throw new Exception("Unable to locate map " + cliContext.getMap());
+      validator.handleOutput(map, cliContext.getOutput(), validator.getVersion());
+      System.out.println(" ...success");
+    } catch (Exception e) {
+      System.out.println(" ...Failure: " + e.getMessage());
+      e.printStackTrace();
+    }
+  }
+
   public void transformVersion(CliContext cliContext, ValidationEngine validator) throws Exception {
     if (cliContext.getSources().size() > 1) {
       throw new Exception("Can only have one source when converting versions (found " + cliContext.getSources() + ")");
