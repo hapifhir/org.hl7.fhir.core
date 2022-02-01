@@ -56,7 +56,7 @@ public class FHIRMappingLanguageTests {
 
   @BeforeAll
   public static void setUp() throws Exception {
-    validationEngine = new ValidationEngine("hl7.fhir.r4.core#4.0.1");
+    validationEngine = new ValidationEngine.ValidationEngineBuilder().fromSource("hl7.fhir.r4.core#4.0.1");
     context = validationEngine.getContext();
     context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "any.xml"), "any.xml", null);
     context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "ii.xml"), "ii.xml", null);

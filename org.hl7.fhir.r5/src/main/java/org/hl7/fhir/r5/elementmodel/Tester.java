@@ -52,7 +52,7 @@ import com.google.gson.JsonObject;
 public class Tester {
 
 	public static void main(String[] args) throws Exception {
-		IWorkerContext context = SimpleWorkerContext.fromPack(Utilities.path("C:\\work\\org.hl7.fhir\\build\\publish", "validation-min.xml.zip"));
+		IWorkerContext context = new SimpleWorkerContext.SimpleWorkerContextBuilder().fromPack(Utilities.path("C:\\work\\org.hl7.fhir\\build\\publish", "validation-min.xml.zip"));
 		int t = 0;
 		int ok = 0;
 		for (String f : new File("C:\\work\\org.hl7.fhir\\build\\publish").list()) {

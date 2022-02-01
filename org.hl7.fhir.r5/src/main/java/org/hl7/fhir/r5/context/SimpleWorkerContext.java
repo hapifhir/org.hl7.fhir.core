@@ -47,6 +47,10 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import com.google.errorprone.annotations.CompatibleWith;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.With;
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -142,20 +146,20 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private boolean canNoTS;
   private XVerExtensionManager xverManager;
 
-  public SimpleWorkerContext() throws FileNotFoundException, IOException, FHIRException {
+  private SimpleWorkerContext() throws FileNotFoundException, IOException, FHIRException {
     super();
   }
 
-  public SimpleWorkerContext(Locale locale) throws FileNotFoundException, IOException, FHIRException {
+  private SimpleWorkerContext(Locale locale) throws FileNotFoundException, IOException, FHIRException {
     super(locale);
   }
-  
-  public SimpleWorkerContext(SimpleWorkerContext other) throws FileNotFoundException, IOException, FHIRException {
+
+  private SimpleWorkerContext(SimpleWorkerContext other) throws FileNotFoundException, IOException, FHIRException {
     super();
     copy(other);
   }
 
-  public SimpleWorkerContext(SimpleWorkerContext other, Locale locale) throws FileNotFoundException, IOException, FHIRException {
+  private SimpleWorkerContext(SimpleWorkerContext other, Locale locale) throws FileNotFoundException, IOException, FHIRException {
     super(locale);
     copy(other);
   }
@@ -176,91 +180,98 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   // -- Initializations
-	/**
-	 * Load the working context from the validation pack
-	 * 
-	 * @param path
-	 *           filename of the validation pack
-	 * @return
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
-	 * @throws FHIRException 
-	 * @throws Exception
-	 */
-  public static SimpleWorkerContext fromPack(String path) throws FileNotFoundException, IOException, FHIRException {
-    SimpleWorkerContext res = new SimpleWorkerContext();
-    res.loadFromPack(path, null);
-    return res;
-  }
+  @AllArgsConstructor(access = AccessLevel.PRIVATE)
+  public static class SimpleWorkerContextBuilder {
 
-  public static SimpleWorkerContext fromPackage(NpmPackage pi, boolean allowDuplicates) throws FileNotFoundException, IOException, FHIRException {
-    SimpleWorkerContext res = new SimpleWorkerContext();
-    res.setAllowLoadingDuplicates(allowDuplicates);
-    res.loadFromPackage(pi, null);
-    return res;
-  }
+    final SimpleWorkerContext context;
+    @With
+    private String terminologyCachePath;
+    @With
+    private boolean cacheTerminologyClientErrors;
+    @With
+    private boolean alwaysUseTerminologyServer;
+    @With
+    private boolean readOnlyCache;
 
-  public static SimpleWorkerContext fromPackage(NpmPackage pi) throws FileNotFoundException, IOException, FHIRException {
-    SimpleWorkerContext res = new SimpleWorkerContext();
-    res.loadFromPackage(pi, null);
-    return res;
-  }
+    @With
+    private String userAgent;
 
-  public static SimpleWorkerContext fromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException {
-    SimpleWorkerContext res = new SimpleWorkerContext();
-    res.setAllowLoadingDuplicates(true);
-    res.version = pi.getNpm().get("version").getAsString();
-    res.loadFromPackage(pi, loader);
-    res.finishLoading();
-    return res;
-  }
+    @With
+    boolean allowDuplicates;
 
-  public static SimpleWorkerContext fromPack(String path, boolean allowDuplicates) throws FileNotFoundException, IOException, FHIRException {
-    SimpleWorkerContext res = new SimpleWorkerContext();
-    res.setAllowLoadingDuplicates(allowDuplicates);
-    res.loadFromPack(path, null);
-    return res;
-  }
-
-  public static SimpleWorkerContext fromPack(String path, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException {
-    SimpleWorkerContext res = new SimpleWorkerContext();
-    res.loadFromPack(path, loader);
-    return res;
-  }
-
-	public static SimpleWorkerContext fromClassPath() throws IOException, FHIRException {
-		SimpleWorkerContext res = new SimpleWorkerContext();
-		res.loadFromStream(SimpleWorkerContext.class.getResourceAsStream("validation.json.zip"), null);
-		return res;
-	}
-
-	 public static SimpleWorkerContext fromClassPath(String name) throws IOException, FHIRException {
-	    return fromClassPath(name, false);
-	  }
-	 public static SimpleWorkerContext fromClassPath(String name, boolean allowDuplicates) throws IOException, FHIRException {
-	   InputStream s = SimpleWorkerContext.class.getResourceAsStream("/" + name);
-     SimpleWorkerContext res = new SimpleWorkerContext();
-     res.setAllowLoadingDuplicates(allowDuplicates);
-	   res.loadFromStream(s, null);
-     return res;
-	  }
-
-  public static SimpleWorkerContext fromDefinitions(Map<String, byte[]> source, IContextResourceLoader loader, PackageVersion pi) throws FileNotFoundException, IOException, FHIRException  {
-    SimpleWorkerContext res = new SimpleWorkerContext();
-    for (String name : source.keySet()) { 
-      try {
-        res.loadDefinitionItem(name, new ByteArrayInputStream(source.get(name)), loader, null, pi);
-      } catch (Exception e) {
-        System.out.println("Error loading "+name+": "+e.getMessage());
-        throw new FHIRException("Error loading "+name+": "+e.getMessage(), e);
-      }
+    public SimpleWorkerContextBuilder() throws IOException {
+      context = new SimpleWorkerContext();
+      terminologyCachePath = null;
     }
-    return res;
-  }
 
-  public static SimpleWorkerContext fromNothing() throws FileNotFoundException, FHIRException, IOException  {
-    SimpleWorkerContext res = new SimpleWorkerContext();
-    return res;
+    public SimpleWorkerContext build() throws IOException {
+      context.initTS(terminologyCachePath);
+      context.setUserAgent(userAgent);
+      return context;
+    }
+
+    public SimpleWorkerContext fromPackage(NpmPackage pi) throws IOException, FHIRException {
+      context.setAllowLoadingDuplicates(allowDuplicates);
+      context.loadFromPackage(pi, null);
+      return build();
+    }
+
+    public SimpleWorkerContext fromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException {
+      context.setAllowLoadingDuplicates(true);
+      context.version = pi.getNpm().get("version").getAsString();
+      context.loadFromPackage(pi, loader);
+      context.finishLoading();
+      return build();
+    }
+
+    /**
+     * Load the working context from the validation pack
+     *
+     * @param path
+     *           filename of the validation pack
+     * @return
+     * @throws IOException
+     * @throws FileNotFoundException
+     * @throws FHIRException
+     * @throws Exception
+     */
+    public  SimpleWorkerContext fromPack(String path) throws IOException, FHIRException {
+      context.setAllowLoadingDuplicates(allowDuplicates);
+      context.loadFromPack(path, null);
+      return build();
+    }
+
+    public SimpleWorkerContext fromPack(String path, IContextResourceLoader loader) throws IOException, FHIRException {
+      context.loadFromPack(path, loader);
+      return build();
+    }
+
+    public SimpleWorkerContext fromClassPath() throws IOException, FHIRException {
+      context.loadFromStream(SimpleWorkerContext.class.getResourceAsStream("validation.json.zip"), null);
+      return build();
+    }
+
+    public SimpleWorkerContext fromClassPath(String name) throws IOException, FHIRException {
+      InputStream s = SimpleWorkerContext.class.getResourceAsStream("/" + name);
+      context.setAllowLoadingDuplicates(allowDuplicates);
+      context.loadFromStream(s, null);
+      return build();
+    }
+
+    public SimpleWorkerContext fromDefinitions(Map<String, byte[]> source, IContextResourceLoader loader, PackageVersion pi) throws FileNotFoundException, IOException, FHIRException  {
+      for (String name : source.keySet()) {
+        try {
+          context.loadDefinitionItem(name, new ByteArrayInputStream(source.get(name)), loader, null, pi);
+        } catch (Exception e) {
+          System.out.println("Error loading "+name+": "+e.getMessage());
+          throw new FHIRException("Error loading "+name+": "+e.getMessage(), e);
+        }
+      }
+      return build();
+    }
+    public SimpleWorkerContext fromNothing() throws FileNotFoundException, FHIRException, IOException  {
+      return build();
+    }
   }
 
   private void loadDefinitionItem(String name, InputStream stream, IContextResourceLoader loader, ILoadFilter filter, PackageVersion pi) throws IOException, FHIRException {
