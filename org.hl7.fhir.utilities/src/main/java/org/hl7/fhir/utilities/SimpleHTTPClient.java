@@ -147,7 +147,7 @@ public class SimpleHTTPClient {
       }
     }
     
-    return new HTTPResult(url, c.getResponseCode(),  c.getRequestProperty("Content-Type"), TextFile.streamToBytes(c.getInputStream()));
+    return new HTTPResult(url, c.getResponseCode(),  c.getRequestProperty("Content-Type"), TextFile.streamToBytes(c.getResponseCode() >= 400 ? c.getErrorStream() : c.getInputStream()));
   }
 
   private void setHeaders(HttpURLConnection c) {
@@ -177,7 +177,7 @@ public class SimpleHTTPClient {
     setHeaders(c);
     c.getOutputStream().write(content);
     c.getOutputStream().close();    
-    return new HTTPResult(url, c.getResponseCode(),  c.getRequestProperty("Content-Type"), TextFile.streamToBytes(c.getInputStream()));
+    return new HTTPResult(url, c.getResponseCode(),  c.getRequestProperty("Content-Type"), TextFile.streamToBytes(c.getResponseCode() >= 400 ? c.getErrorStream() : c.getInputStream()));
   }
 
  
@@ -194,7 +194,7 @@ public class SimpleHTTPClient {
     setHeaders(c);
     c.getOutputStream().write(content);
     c.getOutputStream().close();    
-    return new HTTPResult(url, c.getResponseCode(),  c.getRequestProperty("Content-Type"), TextFile.streamToBytes(c.getInputStream()));
+    return new HTTPResult(url, c.getResponseCode(),  c.getRequestProperty("Content-Type"), TextFile.streamToBytes(c.getResponseCode() >= 400 ? c.getErrorStream() : c.getInputStream()));
   }
 
 
