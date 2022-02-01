@@ -21,7 +21,7 @@ public class LoadIgTests {
       final String fhirSpecVersion = "4.0";
       final String definitions = VersionUtilities.packageForVersion(fhirSpecVersion) + "#" + VersionUtilities.getCurrentVersion(fhirSpecVersion);
 
-      ValidationEngine hl7Validator = new ValidationEngine(definitions);
+      ValidationEngine hl7Validator = new ValidationEngine.ValidationEngineBuilder().fromSource(definitions);
       hl7Validator.setDoNative(false);
       hl7Validator.setAnyExtensionsAllowed(true);
       hl7Validator.prepare();
@@ -52,7 +52,7 @@ public class LoadIgTests {
       final String fhirSpecVersion = "4.0";
       final String definitions = VersionUtilities.packageForVersion(fhirSpecVersion) + "#" + VersionUtilities.getCurrentVersion(fhirSpecVersion);
 
-      ValidationEngine hl7Validator = new ValidationEngine(definitions);
+      ValidationEngine hl7Validator = new ValidationEngine.ValidationEngineBuilder().fromSource(definitions);
       hl7Validator.setDoNative(false);
       hl7Validator.setAnyExtensionsAllowed(true);
       hl7Validator.prepare();
