@@ -1821,3 +1821,23 @@ v: {
   "error" : "Unable to find code 2 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20210731); The code \"2\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#2) is not valid in the value set 'All codes known to the system' (from http://tx.fhir.org/r4)"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "10821000202101",
+  "display" : "Narkose eller dyp sedasjon med anestesistÃ¸tte"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "Unable to find code 10821000202101 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20210731); The code \"10821000202101\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#10821000202101) is not valid in the value set 'All codes known to the system' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "8901000202102",
+  "display" : "Boston bowel preparation skala hÃ¸yre kolon"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "Unable to find code 8901000202102 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20210731); The code \"8901000202102\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#8901000202102) is not valid in the value set 'All codes known to the system' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
