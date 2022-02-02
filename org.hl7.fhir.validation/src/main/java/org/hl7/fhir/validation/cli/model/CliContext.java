@@ -379,7 +379,7 @@ public class CliContext {
     return txCache;
   }
 
-  @JsonProperty("txLog")
+  @JsonProperty("txCache")
   public CliContext setTxCache(String txCache) {
     this.txCache = txCache;
     return this;
