@@ -1533,3 +1533,61 @@ v: {
   "system" : "urn:iso:std:iso:3166"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "10821000202101",
+  "display" : "Narkose eller dyp sedasjon med anestesistÃ¸tte"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://snomed.info/sct",
+      "concept" : [{
+        "code" : "10821000202101",
+        "display" : "Narkose eller dyp sedasjon med anestesistøtte",
+        "designation" : [{
+          "language" : "no",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Narkose eller dyp sedasjon med anestesistøtte"
+        }]
+      }]
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
+      "concept" : [{
+        "code" : "nil-known",
+        "display" : "Ingen",
+        "designation" : [{
+          "language" : "en",
+          "use" : {
+            "system" : "http://snomed.info/sct",
+            "code" : "900000000000003001",
+            "display" : "Fully specified name"
+          },
+          "value" : "Nil Known"
+        }]
+      }]
+    }]
+  },
+  "expansion" : {
+    "contains" : [{
+      "system" : "http://snomed.info/sct",
+      "code" : "10821000202101",
+      "display" : "Narkose eller dyp sedasjon med anestesistøtte"
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/special-values",
+      "code" : "nil-known",
+      "display" : "Ingen"
+    }]
+  }
+}, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "Unable to find code 10821000202101 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20210731); The code \"10821000202101\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#10821000202101) is not valid in the value set 'no-colonoscopy-sedation-level' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
