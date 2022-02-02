@@ -87,8 +87,6 @@ public class Common {
 
   public static ValidationEngine getValidationEngine(String version, String txServer, String definitions, String txLog, TimeTracker tt) throws Exception {
     System.out.println("Loading (v = " + version + ", tx server -> " + txServer + ")");
-    //DIRTY
-    //ValidationEngine ve = new ValidationEngine(definitions, version, tt, "fhir/validator");
     ValidationEngine ve = new ValidationEngine.ValidationEngineBuilder().withVersion(version).withTimeTracker(tt).withUserAgent("fhir/validator").fromSource(definitions);
     ve.connectToTSServer(txServer, txLog, FhirPublication.fromCode(version));
     return ve;
