@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* Fix package location for CacheVerificationLogger
+* no changes
