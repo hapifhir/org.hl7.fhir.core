@@ -379,7 +379,7 @@ public class CliContext {
     return txCache;
   }
 
-  @JsonProperty("txLog")
+  @JsonProperty("txCache")
   public CliContext setTxCache(String txCache) {
     this.txCache = txCache;
     return this;
@@ -588,6 +588,7 @@ public class CliContext {
       Objects.equals(txServer, that.txServer) &&
       Objects.equals(sv, that.sv) &&
       Objects.equals(txLog, that.txLog) &&
+      Objects.equals(txCache, that.txCache) &&
       Objects.equals(mapLog, that.mapLog) &&
       Objects.equals(lang, that.lang) &&
       Objects.equals(fhirpath, that.fhirpath) &&
@@ -610,7 +611,7 @@ public class CliContext {
   @Override
   public int hashCode() {
     return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, 
-            noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, htmlOutput, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, 
+            noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, fhirpath, snomedCT,
             targetVer, igs, questionnaireMode, level, profiles, sources, mode, locale, locations, crumbTrails, showTimes, allowExampleUrls, outputStyle, noUnicodeBiDiControlChars);
   }
 
@@ -635,6 +636,7 @@ public class CliContext {
       ", txServer='" + txServer + '\'' +
       ", sv='" + sv + '\'' +
       ", txLog='" + txLog + '\'' +
+      ", txCache='" + txCache + '\'' +
       ", mapLog='" + mapLog + '\'' +
       ", lang='" + lang + '\'' +
       ", fhirpath='" + fhirpath + '\'' +
