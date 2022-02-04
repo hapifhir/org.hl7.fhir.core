@@ -12,12 +12,12 @@ variables:
 steps:
   # Checks if the release notes file is populated. Exits if it is not.
   - bash: |
-      if [ -s RELEASE_NOTES.md ]
+      if [ -n "$(cmp RELEASE_NOTES.md RELEASE_NOTES.template.md)" ]
       then
-            echo "RELEASE_NOTES.md has data, proceeding to next step."
+          echo "RELEASE_NOTES.md has changed, proceeding to next step"
       else
-            echo "Your RELEASE_NOTES.md file is empty. Please provide release notes before creating a release."
-            exit 1
+          echo "Your RELEASE_NOTES.md file is unchanged. Please provide release notes before creating a release."
+          exit 1
       fi
 
   # This task pulls the <version> value from the org.hl7.fhir.r5 project pom.xml file. All modules are released as 
