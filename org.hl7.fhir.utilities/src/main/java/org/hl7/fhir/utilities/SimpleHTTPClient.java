@@ -35,6 +35,7 @@ public class SimpleHTTPClient {
   }
 
   private static final int MAX_REDIRECTS = 5;
+  private static int counter = 1;
 
   public class HTTPResult {
     private int code;
@@ -69,7 +70,9 @@ public class SimpleHTTPClient {
 
     public void checkThrowException() throws IOException {
       if (code >= 300) {
-        throw new IOException("Invalid HTTP response "+code+" from "+source+" ("+message+")");
+        String filename = Utilities.path("[tmp]", "fhir-http-"+(++counter)+".log");
+        TextFile.bytesToFile(content, filename);
+        throw new IOException("Invalid HTTP response "+code+" from "+source+" ("+message+") (content in "+filename+")");
       }      
     }    
   }
