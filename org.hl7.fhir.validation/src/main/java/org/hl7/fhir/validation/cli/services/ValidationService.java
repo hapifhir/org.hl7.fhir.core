@@ -91,7 +91,7 @@ public class ValidationService {
     VersionSourceInformation versions = new VersionSourceInformation();
     IgLoader igLoader = new IgLoader(
       new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION),
-      SimpleWorkerContext.fromNothing(),
+      new SimpleWorkerContext.SimpleWorkerContextBuilder().fromNothing(),
       null);
     for (String src : cliContext.getIgs()) {
       igLoader.scanForIgVersion(src, cliContext.isRecursive(), versions);
@@ -317,7 +317,8 @@ public class ValidationService {
         System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
       }
       System.out.print("  Load FHIR v" + cliContext.getSv() + " from " + definitions);
-      ValidationEngine validator = new ValidationEngine(definitions, cliContext.getSv(), tt, "fhir/validator");
+      ValidationEngine validator = new ValidationEngine.ValidationEngineBuilder().withVersion(cliContext.getSv()).withTimeTracker(tt).withUserAgent("fhir/validator").fromSource(definitions);
+
       sessionId = sessionCache.cacheSession(validator);
 
       FhirPublication ver = FhirPublication.fromCode(cliContext.getSv());
@@ -325,7 +326,7 @@ public class ValidationService {
       System.out.println(" - " + validator.getContext().countAllCaches() + " resources (" + tt.milestone() + ")");
       igLoader.loadIg(validator.getIgs(), validator.getBinaries(), "hl7.terminology", false);
       System.out.print("  Terminology server " + cliContext.getTxServer());
-      String txver = validator.setTerminologyServer(cliContext.getTxServer(), cliContext.getTxLog(), cliContext.getTxCache(), ver);
+      String txver = validator.setTerminologyServer(cliContext.getTxServer(), cliContext.getTxLog(), ver);
       System.out.println(" - Version " + txver + " (" + tt.milestone() + ")");
       validator.setDebug(cliContext.isDoDebug());
       for (String src : cliContext.getIgs()) {

@@ -137,7 +137,7 @@ public class NativeHostServices {
    * @throws Exception
    */
   public void init(String pack) throws Exception {
-    validator = new ValidationEngine(pack);
+    validator = new ValidationEngine.ValidationEngineBuilder().fromSource(pack);
     validator.getContext().setAllowLoadingDuplicates(true);
     igLoader = new IgLoader(validator.getPcm(), validator.getContext(), validator.getVersion(), validator.isDebug());
   }

@@ -163,7 +163,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public class MetadataResourceVersionComparator<T extends CanonicalResource> implements Comparator<T> {
 
-    private List<T> list;
+    final private List<T> list;
 
     public MetadataResourceVersionComparator(List<T> list) {
       this.list = list;
@@ -197,26 +197,26 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private boolean isTxCaching;
   @Getter
   private int serverQueryCount = 0;
-  private Set<String> cached = new HashSet<>();
+  private final Set<String> cached = new HashSet<>();
   
   private Map<String, Map<String, ResourceProxy>> allResourcesById = new HashMap<String, Map<String, ResourceProxy>>();
   // all maps are to the full URI
   private CanonicalResourceManager<CodeSystem> codeSystems = new CanonicalResourceManager<CodeSystem>(false);
-  private Set<String> supportedCodeSystems = new HashSet<String>();
-  private Set<String> unsupportedCodeSystems = new HashSet<String>(); // know that the terminology server doesn't support them
+  private final Set<String> supportedCodeSystems = new HashSet<String>();
+  private final Set<String> unsupportedCodeSystems = new HashSet<String>(); // know that the terminology server doesn't support them
   private CanonicalResourceManager<ValueSet> valueSets = new CanonicalResourceManager<ValueSet>(false);
   private CanonicalResourceManager<ConceptMap> maps = new CanonicalResourceManager<ConceptMap>(false);
   protected CanonicalResourceManager<StructureMap> transforms = new CanonicalResourceManager<StructureMap>(false);
   private CanonicalResourceManager<StructureDefinition> structures = new CanonicalResourceManager<StructureDefinition>(false);
-  private CanonicalResourceManager<Measure> measures = new CanonicalResourceManager<Measure>(false);
-  private CanonicalResourceManager<Library> libraries = new CanonicalResourceManager<Library>(false);
+  private final CanonicalResourceManager<Measure> measures = new CanonicalResourceManager<Measure>(false);
+  private final CanonicalResourceManager<Library> libraries = new CanonicalResourceManager<Library>(false);
   private CanonicalResourceManager<ImplementationGuide> guides = new CanonicalResourceManager<ImplementationGuide>(false);
-  private CanonicalResourceManager<CapabilityStatement> capstmts = new CanonicalResourceManager<CapabilityStatement>(false);
-  private CanonicalResourceManager<SearchParameter> searchParameters = new CanonicalResourceManager<SearchParameter>(false);
-  private CanonicalResourceManager<Questionnaire> questionnaires = new CanonicalResourceManager<Questionnaire>(false);
-  private CanonicalResourceManager<OperationDefinition> operations = new CanonicalResourceManager<OperationDefinition>(false);
-  private CanonicalResourceManager<PlanDefinition> plans = new CanonicalResourceManager<PlanDefinition>(false);
-  private CanonicalResourceManager<NamingSystem> systems = new CanonicalResourceManager<NamingSystem>(false);
+  private final CanonicalResourceManager<CapabilityStatement> capstmts = new CanonicalResourceManager<CapabilityStatement>(false);
+  private final CanonicalResourceManager<SearchParameter> searchParameters = new CanonicalResourceManager<SearchParameter>(false);
+  private final CanonicalResourceManager<Questionnaire> questionnaires = new CanonicalResourceManager<Questionnaire>(false);
+  private final CanonicalResourceManager<OperationDefinition> operations = new CanonicalResourceManager<OperationDefinition>(false);
+  private final CanonicalResourceManager<PlanDefinition> plans = new CanonicalResourceManager<PlanDefinition>(false);
+  private final CanonicalResourceManager<NamingSystem> systems = new CanonicalResourceManager<NamingSystem>(false);
   
   private UcumService ucumService;
   protected Map<String, byte[]> binaries = new HashMap<String, byte[]>();
@@ -228,7 +228,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private boolean allowLoadingDuplicates;
 
   protected TerminologyClient txClient;
-  private Set<String> codeSystemsUsed = new HashSet<>();
+  private final Set<String> codeSystemsUsed = new HashSet<>();
   protected ToolingClientLogger txLog;
   private TerminologyCapabilities txcaps;
   private boolean canRunWithoutTerminology;
@@ -245,19 +245,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private ICanonicalResourceLocator locator;
   protected String userAgent;
   
-  public BaseWorkerContext() throws FileNotFoundException, IOException, FHIRException {
-    txCache = new TerminologyCache(lock, null);
+  protected BaseWorkerContext() throws FileNotFoundException, IOException, FHIRException {
     setValidationMessageLanguage(getLocale());
     clock = new TimeTracker();
   }
 
-  public BaseWorkerContext(Locale locale) throws FileNotFoundException, IOException, FHIRException {
-    txCache = new TerminologyCache(lock, null);
+  protected BaseWorkerContext(Locale locale) throws FileNotFoundException, IOException, FHIRException {
     setValidationMessageLanguage(locale);
     clock = new TimeTracker();
   }
 
-  public BaseWorkerContext(CanonicalResourceManager<CodeSystem> codeSystems, CanonicalResourceManager<ValueSet> valueSets, CanonicalResourceManager<ConceptMap> maps, CanonicalResourceManager<StructureDefinition> profiles,
+  protected BaseWorkerContext(CanonicalResourceManager<CodeSystem> codeSystems, CanonicalResourceManager<ValueSet> valueSets, CanonicalResourceManager<ConceptMap> maps, CanonicalResourceManager<StructureDefinition> profiles,
       CanonicalResourceManager<ImplementationGuide> guides) throws FileNotFoundException, IOException, FHIRException {
     this();
     this.codeSystems = codeSystems;
@@ -1255,8 +1253,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   // --------------------------------------------------------------------------------------------------------------------------------------------------------
   
-  public void initTS(String cachePath) throws IOException {
-    if (!new File(cachePath).exists()) {
+  protected void initTS(String cachePath) throws IOException {
+    if (cachePath != null && !new File(cachePath).exists()) {
       Utilities.createDirectory(cachePath);
     }
     txCache = new TerminologyCache(lock, cachePath);
@@ -2245,7 +2243,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return userAgent;
   }
 
-  public void setUserAgent(String userAgent) {
+  protected void setUserAgent(String userAgent) {
     this.userAgent = userAgent;
     if (txClient != null)
       txClient.setUserAgent(userAgent);
