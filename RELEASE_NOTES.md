@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Use builders for SimpleWorkerContext and ValidationEngine to enforce initialization order for caches and capabilities
