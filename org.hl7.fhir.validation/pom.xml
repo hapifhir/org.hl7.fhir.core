@@ -218,6 +218,13 @@
             <scope>test</scope>
         </dependency>
 
+<dependency>
+    <groupId>net.bytebuddy</groupId>
+    <artifactId>byte-buddy</artifactId>
+    <version>1.10.21</version>
+	<scope>test</scope>
+</dependency>
+
         <!-- End to end -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
