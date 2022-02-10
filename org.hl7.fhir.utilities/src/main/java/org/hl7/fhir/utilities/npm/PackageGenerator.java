@@ -56,10 +56,10 @@ public class PackageGenerator {
 
     public String getCode() {
       switch (this) {
-      case CORE: return "fhir.core";
-      case IG: return "fhir.ig";
-      case TOOL: return "fhir.tool";
-      case TEMPLATE: return "fhir.template";
+      case CORE: return "Core";
+      case IG: return "IG";
+      case TOOL: return "Tool";
+      case TEMPLATE: return "IG-Template";
       case SUBSET: return "fhir.subset";  
       }
       throw new Error("Unknown Type");
