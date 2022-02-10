@@ -76,7 +76,7 @@
                             <goal>unpack-dependencies</goal>
                         </goals>
                         <configuration>
-                            <excludes>**/module-info.class</excludes>
+                            <excludes>**/module-info.class,META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA</excludes>
                             <outputDirectory>${project.build.directory}/classes</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>true</overWriteSnapshots>
@@ -121,7 +121,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.2.1</version>
+                <version>1.6.0</version>
                 <executions>
                     <execution>
                         <id>default-cli</id>
@@ -134,7 +134,7 @@
                             <workingDirectory>/tmp</workingDirectory>
                             <arguments>
                                 <argument>-jar</argument>
-                                <argument>${basedir}/target/org.hl7.fhir.validation.cli-${project.version}.jar</argument>
+                                <argument>${project.basedir}/target/org.hl7.fhir.validation.cli-${project.version}.jar</argument>
                             </arguments>
                         </configuration>
                     </execution>
