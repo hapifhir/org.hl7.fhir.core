@@ -231,6 +231,9 @@ public class VersionUtilities {
       return false;
     }
     String[] p = version.split("\\.");
+    if (p[2].contains("-")) {
+      p[2] = p[2].substring(0, p[2].indexOf("-"));
+    }
     return Utilities.isInteger(p[0]) && Utilities.isInteger(p[1]) && Utilities.isInteger(p[2]);
   }
 
