@@ -2109,7 +2109,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isValidUUID(url.substring(9)), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_UUID_VALID);
       }
       if (url != null && url.startsWith("urn:oid:")) {
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isOid(url.substring(8)), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_VALID);
+        String cc = url.substring(8);
+        // OIDs shorter than 5 chars are almost never valid for namespaces, except for the special OID 1.3.88
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isOid(cc) && (cc.lastIndexOf('.') >= 5 || "1.3.88".equals(cc)), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_VALID, cc);
       }
 
       if (isCanonicalURLElement(e)) {
