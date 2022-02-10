@@ -211,7 +211,10 @@ public class StructureDefinitionValidator extends BaseValidator {
 
   private void validateBinding(List<ValidationMessage> errors, Element binding, NodeStack stack, Set<String> typeCodes, boolean snapshot, String path) {
     rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || bindableType(typeCodes) != null, I18nConstants.SD_ED_BIND_NO_BINDABLE, path, typeCodes.toString());
-    hint(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), typeCodes.size() <= 1, I18nConstants.SD_ED_BIND_MULTIPLE_TYPES, path, typeCodes.toString());
+    if (!snapshot) {
+      Set<String> bindables = getListofBindableTypes(typeCodes);    
+      hint(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), bindables.size() <= 1, I18nConstants.SD_ED_BIND_MULTIPLE_TYPES, path, typeCodes.toString());
+    }
     
     if (binding.hasChild("valueSet")) {
       Element valueSet = binding.getNamedChild("valueSet");
@@ -228,6 +231,16 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
       }
     } 
+  }
+
+  private Set<String> getListofBindableTypes(Set<String> types) {
+    Set<String> res = new HashSet<>();
+    for (String s : types) {
+      if (Utilities.existsInList(s, "code", "string", "url", "uri", "Coding", "CodeableConcept", "Quantity", "CodeableReference")) {
+        res.add(s);
+      }
+    }
+    return res;
   }
 
   private boolean serverSupportsValueSet(String ref) {
