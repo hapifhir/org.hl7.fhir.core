@@ -995,7 +995,6 @@ public class Utilities {
     return s.substring(0, 1).toLowerCase() + s.substring(1);
   }
 
-
   public static int charCount(String s, char c) {
     int res = 0;
     for (char ch : s.toCharArray())
@@ -1004,11 +1003,9 @@ public class Utilities {
     return res;
   }
 
-
   public static boolean isOid(String cc) {
-    return cc.matches(OID_REGEX) && cc.lastIndexOf('.') >= 5;
+    return cc.matches(OID_REGEX);
   }
-
 
   public static boolean equals(String one, String two) {
     if (one == null && two == null)
