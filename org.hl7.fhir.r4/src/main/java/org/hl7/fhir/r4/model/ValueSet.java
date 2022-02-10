@@ -6501,7 +6501,8 @@ public class ValueSet extends MetadataResource {
    * Path: <b>ValueSet.compose.include.system</b><br>
    * </p>
    */
-  @SearchParamDefinition(name = "reference", path = "ValueSet.compose.include.system", description = "A code system included or excluded in the value set or an imported value set", type = "uri")
+ // FUT1-6371 path changed to make reference work with valueset dependencies (https://github.com/hapifhir/org.hl7.fhir.core/issues/736)
+  @SearchParamDefinition(name="reference", path="ValueSet.compose.include.system | ValueSet.compose.include.valueSet", description="A code system included or excluded in the value set or an imported value set", type="uri" )
   public static final String SP_REFERENCE = "reference";
   /**
    * <b>Fluent Client</b> search parameter constant for <b>reference</b>
