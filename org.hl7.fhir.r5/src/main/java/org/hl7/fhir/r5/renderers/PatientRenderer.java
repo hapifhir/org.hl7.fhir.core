@@ -178,7 +178,7 @@ public class PatientRenderer extends ResourceRenderer {
     b.append(display(name));
     b.append(" ");
     if (dob == null) {
-      b.append("??");
+      b.append("(no stated gender)");
     } else {
       b.append(gender);
     }
