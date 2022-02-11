@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import org.apache.poi.hssf.record.chart.DatRecord;
+import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.DateType;
 import org.hl7.fhir.r5.model.DomainResource;
@@ -219,5 +221,7 @@ public class PatientRenderer extends ResourceRenderer {
     }
   }
 
-
+//  @Override
+////  public boolean render(XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
+//  }
 }
