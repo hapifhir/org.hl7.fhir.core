@@ -1512,9 +1512,11 @@ public final class IniFile
     }
 
     public boolean hasSection(String sectionName) {
-      for (String s : getAllSectionNames()) {
-        if (s.equalsIgnoreCase(sectionName)) {
-          return true;
+      if (getAllSectionNames() != null) {
+        for (String s : getAllSectionNames()) {
+          if (s.equalsIgnoreCase(sectionName)) {
+            return true;
+          }
         }
       }
       return false;
