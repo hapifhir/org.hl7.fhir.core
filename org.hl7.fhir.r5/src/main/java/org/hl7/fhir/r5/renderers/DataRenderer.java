@@ -1,5 +1,9 @@
 package org.hl7.fhir.r5.renderers;
 
+import static java.time.temporal.ChronoField.DAY_OF_MONTH;
+import static java.time.temporal.ChronoField.MONTH_OF_YEAR;
+import static java.time.temporal.ChronoField.YEAR;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -9,8 +13,12 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
+import java.time.format.ResolverStyle;
+import java.time.format.SignStyle;
 import java.util.Currency;
 import java.util.List;
 import java.util.TimeZone;
@@ -39,6 +47,7 @@ import org.hl7.fhir.r5.model.DataRequirement.SortDirection;
 import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
+import org.hl7.fhir.r5.model.DateType;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Expression;
 import org.hl7.fhir.r5.model.Extension;
@@ -413,15 +422,8 @@ public class DataRenderer extends Renderer {
     //   mode - if rendering mode is technical, format defaults to XML format
     //   locale - otherwise, format defaults to SHORT for the Locale (which defaults to default Locale)  
     if (isOnlyDate(type.getPrecision())) {
-      DateTimeFormatter fmt = context.getDateFormat();
-      if (fmt == null) {
-        if (context.isTechnicalMode()) {
-          fmt = DateTimeFormatter.ISO_DATE;
-        } else {
-          fmt = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(context.getLocale());
-        }
-      }
-
+      
+      DateTimeFormatter fmt = getDateFormatForPrecision(type);      
       LocalDate date = LocalDate.of(type.getYear(), type.getMonth()+1, type.getDay());
       return fmt.format(date);
     }
@@ -440,6 +442,43 @@ public class DataRenderer extends Renderer {
       zdt = zdt.withZoneSameInstant(zone);
     }
     return fmt.format(zdt);
+  }
+
+  private DateTimeFormatter getDateFormatForPrecision(BaseDateTimeType type) {
+    DateTimeFormatter fmt = getContextDateFormat(type);
+    if (fmt != null) {
+      return fmt;
+    }
+    if (context.isTechnicalMode()) {
+      switch (type.getPrecision()) {
+      case YEAR:
+        return new DateTimeFormatterBuilder().appendValue(YEAR, 4, 10, SignStyle.EXCEEDS_PAD).toFormatter();
+      case MONTH:
+        return  new DateTimeFormatterBuilder().appendValue(YEAR, 4, 10, SignStyle.EXCEEDS_PAD).appendLiteral('-').appendValue(MONTH_OF_YEAR, 2).toFormatter();
+      default:
+        return DateTimeFormatter.ISO_DATE;
+      }
+    } else {
+      switch (type.getPrecision()) {
+      case YEAR:
+        return DateTimeFormatter.ofPattern("uuuu");
+      case MONTH:
+        return DateTimeFormatter.ofPattern("MMM uuuu");
+      default:
+        return DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(context.getLocale());
+      }
+    }
+  }
+
+  private DateTimeFormatter getContextDateFormat(BaseDateTimeType type) {
+    switch (type.getPrecision()) {
+    case YEAR:
+      return context.getDateYearFormat();
+    case MONTH:
+      return context.getDateYearMonthFormat();
+    default:
+      return context.getDateFormat();
+    }
   }   
   
   private boolean isOnlyDate(TemporalPrecisionEnum temporalPrecisionEnum) {
@@ -530,6 +569,12 @@ public class DataRenderer extends Renderer {
   public void renderDateTime(XhtmlNode x, Base e) {
     if (e.hasPrimitiveValue()) {
       x.addText(displayDateTime((DateTimeType) e));
+    }
+  }
+
+  public void renderDate(XhtmlNode x, Base e) {
+    if (e.hasPrimitiveValue()) {
+      x.addText(displayDateTime((DateType) e));
     }
   }
 
