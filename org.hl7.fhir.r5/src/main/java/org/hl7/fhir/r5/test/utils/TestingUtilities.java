@@ -21,6 +21,7 @@ import org.hl7.fhir.r5.context.TerminologyCache;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.ToolGlobalSettings;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
@@ -164,14 +165,10 @@ public class TestingUtilities extends BaseTestingUtilities {
   public static String checkXMLIsSame(String f1, String f2) throws Exception {
     String result = compareXml(f1, f2);
     if (result != null && SHOW_DIFF) {
-      String diff = Utilities.path(System.getenv("ProgramFiles"), "WinMerge", "WinMergeU.exe");
-      if (new File(diff).exists()) {
+      String diff = ToolGlobalSettings.hasComparePath() ? ToolGlobalSettings.getComparePath() : Utilities.path(System.getenv("ProgramFiles"), "WinMerge", "WinMergeU.exe");
+      if (new File(diff).exists() || Utilities.isToken(diff)) {
         List<String> command = new ArrayList<String>();
-        command.add("\"" + diff + "\" \"" + f1 + "\" \"" + f2 + "\"");
-
-        ProcessBuilder builder = new ProcessBuilder(command);
-        builder.directory(new CSFile("c:\\temp"));
-        builder.start();
+        Process p = Runtime.getRuntime().exec(new String[]{diff, f1, f2});
       }
     }
     return result;
@@ -490,6 +487,8 @@ public class TestingUtilities extends BaseTestingUtilities {
       String path = Utilities.path("C:\\temp", name);
       Utilities.createDirectory(path);
       return path;
+    } else if (ToolGlobalSettings.hasTempPath()) {
+      return ToolGlobalSettings.getTempPath();
     } else if (new File("/tmp").exists()) {
       String path = Utilities.path("/tmp", name);
       Utilities.createDirectory(path);
