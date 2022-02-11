@@ -217,7 +217,12 @@
             <version>${junit_jupiter_version}</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <optional>true</optional>
+            <scope>test</scope>
+        </dependency>
         <!-- End to end -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
@@ -245,11 +250,6 @@
                 <goals>
                     <goal>test</goal>
                 </goals>
-                <configuration>
-                    <excludes combine.children="override">
-                        <exclude>org/hl7/fhir/validation/cli/services/ValidationServiceTest.java</exclude>
-                    </excludes>
-                </configuration>
                 </execution>
                 </executions>
             </plugin>
