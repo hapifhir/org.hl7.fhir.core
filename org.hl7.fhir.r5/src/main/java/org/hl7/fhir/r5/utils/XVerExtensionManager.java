@@ -68,6 +68,9 @@ public class XVerExtensionManager {
     JsonObject root = lists.get(v);
     JsonObject path = root.getAsJsonObject(e);
     if (path == null) {
+      path = root.getAsJsonObject(e+"[x]");      
+    }
+    if (path == null) {
       return XVerExtensionStatus.Unknown;
     }
     if (path.has("elements") || path.has("types")) {
@@ -90,6 +93,9 @@ public class XVerExtensionManager {
     String e = url.substring(54);
     JsonObject root = lists.get(verSource);
     JsonObject path = root.getAsJsonObject(e);
+    if (path == null) {
+      path = root.getAsJsonObject(e+"[x]");
+    }
     
     StructureDefinition sd = new StructureDefinition();
     sd.setUserData(XVER_EXT_MARKER, "true");
