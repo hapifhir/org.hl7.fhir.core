@@ -1874,9 +1874,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if ("http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type".equals(extUrl)) {
       list.get(0).setExpression("ElementDefinition.type");
     }
-    if ("http://hl7.org/fhir/StructureDefinition/regex".equals(extUrl)) {
-      list.get(1).setExpression("ElementDefinition.type");
-    }
+    // the history of this is a mess - see https://jira.hl7.org/browse/FHIR-13328
+    // we in practice we will support it in either place, but the specification says on ElementDefinition, not on ElementDefinition.type
+//    if ("http://hl7.org/fhir/StructureDefinition/regex".equals(extUrl)) {
+//      list.get(1).setExpression("ElementDefinition.type");
+//    }
     if ("http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version".equals(extUrl)) {
       list.get(0).setExpression("Element"); // well, it can't be used anywhere but the list of places it can be used is quite long
     }
@@ -2070,6 +2072,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     String regex = context.getExtensionString(ToolingExtensions.EXT_REGEX);
+    // there's a messy history here - this extension snhould only be on the element definition itself, but for historical reasons 
+    //( see task 13328) it might also be found on one the types
+    if (regex != null) {
+      for (TypeRefComponent tr : context.getType()) {
+        if (tr.hasExtension(ToolingExtensions.EXT_REGEX)) {
+          regex = tr.getExtensionString(ToolingExtensions.EXT_REGEX);
+          break;
+        }
+      }      
+    }
     if (regex != null) {
       rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().matches(regex), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX, e.primitiveValue(), regex);
     }
