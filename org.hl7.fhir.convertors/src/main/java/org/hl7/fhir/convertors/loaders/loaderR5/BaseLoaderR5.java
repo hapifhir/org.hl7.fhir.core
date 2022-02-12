@@ -38,6 +38,11 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
 
   public void setPath(Resource r) {
     String path = lkp.getResourcePath(r);
+    if (lkp.getWebRoot() != null) { 
+      r.setUserData("webroot", lkp.getWebRoot());
+    } else {
+      r.setUserData("webroot", "");      
+    }
     if (path != null) {
       r.setUserData("path", path);
     }

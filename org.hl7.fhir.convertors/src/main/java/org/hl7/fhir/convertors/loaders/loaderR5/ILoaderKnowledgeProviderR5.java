@@ -16,4 +16,6 @@ public interface ILoaderKnowledgeProviderR5 {
   String getResourcePath(Resource resource);
 
   ILoaderKnowledgeProviderR5 forNewPackage(NpmPackage npm) throws JsonSyntaxException, IOException;
+
+  String getWebRoot();
 }

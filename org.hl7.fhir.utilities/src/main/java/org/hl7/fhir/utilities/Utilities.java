@@ -596,6 +596,8 @@ public class Utilities {
         if ("[tmp]".equals(a)) {
           if (hasCTempDir()) {
             a = "c:\\temp";
+          } else if (ToolGlobalSettings.hasTempPath()) {            
+            a = ToolGlobalSettings.getTempPath();
           } else {
             a = System.getProperty("java.io.tmpdir");
           }
