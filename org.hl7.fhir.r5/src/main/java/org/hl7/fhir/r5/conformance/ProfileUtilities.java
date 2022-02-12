@@ -104,6 +104,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingCompo
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
@@ -2480,19 +2481,19 @@ public class ProfileUtilities extends TranslatingUtilities {
       if (webUrl != null) {
         // also, must touch up the markdown
         if (element.hasDefinition())
-          element.setDefinition(processRelativeUrls(element.getDefinition(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames));
+          element.setDefinition(processRelativeUrls(element.getDefinition(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, true));
         if (element.hasComment())
-          element.setComment(processRelativeUrls(element.getComment(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames));
+          element.setComment(processRelativeUrls(element.getComment(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, true));
         if (element.hasRequirements())
-          element.setRequirements(processRelativeUrls(element.getRequirements(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames));
+          element.setRequirements(processRelativeUrls(element.getRequirements(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, true));
         if (element.hasMeaningWhenMissing())
-          element.setMeaningWhenMissing(processRelativeUrls(element.getMeaningWhenMissing(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames));
+          element.setMeaningWhenMissing(processRelativeUrls(element.getMeaningWhenMissing(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, true));
       }
     }
     return element;
   }
 
-  public static String processRelativeUrls(String markdown, String webUrl, String basePath, List<String> resourceNames, Set<String> filenames) {
+  public static String processRelativeUrls(String markdown, String webUrl, String basePath, List<String> resourceNames, Set<String> filenames, boolean processRelatives) {
     StringBuilder b = new StringBuilder();
     int i = 0;
     while (i < markdown.length()) {
@@ -2520,7 +2521,13 @@ public class ProfileUtilities extends TranslatingUtilities {
             } else {
               b.append("](");
               // disabled 7-Dec 2021 GDG - we don't want to fool with relative URLs at all? 
-              // b.append(webUrl);
+              // re-enabled 11-Feb 2022 GDG - we do want to do this. At least, $assemble in davinci-dtr, where the markdown comes from the SDC IG, and an SDC local reference must be changed to point to SDC. in this case, it's called when generating snapshots
+              // added processRelatives parameter to deal with this (well, to try)
+              if (processRelatives) {
+                b.append(webUrl);
+              } else {
+                System.out.println("Not making "+url+" relative to '"+webUrl+"'");
+              }
               i = i + 1;
             }
           } else
@@ -2778,7 +2785,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       profile = source.getType().size() == 1 && source.getTypeFirstRep().hasProfile() ? context.fetchResource(StructureDefinition.class, source.getTypeFirstRep().getProfile().get(0).getValue()) : null;
     if (profile != null) {
       ElementDefinition e = profile.getSnapshot().getElement().get(0);
-      base.setDefinition(e.getDefinition());
+      String webroot = profile.getUserString("webroot");
+
+      base.setDefinition(processRelativeUrls(e.getDefinition(), webroot, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, true));
       base.setShort(e.getShort());
       if (e.hasCommentElement())
         base.setCommentElement(e.getCommentElement());
@@ -4688,6 +4697,13 @@ public class ProfileUtilities extends TranslatingUtilities {
               c.getPieces().add(gen.new Piece(null, ": ", null));
               c.addMarkdownNoPara(PublicationHacker.fixBindingDescriptions(context, binding.getDescriptionElement()).asStringValue(), checkForNoChange(PublicationHacker.fixBindingDescriptions(context, binding.getDescriptionElement())));
             } 
+            if (binding.hasExtension(ToolingExtensions.EXT_BINDING_ADDITIONAL)) {
+              c.addPiece(gen.new Piece("br"));
+              c.getPieces().add(checkForNoChange(binding, gen.new Piece(null, translate("sd.table", "Additional Bindings")+": ", null).addStyle("font-weight:bold")));
+              for (Extension ext : binding.getExtensionsByUrl(ToolingExtensions.EXT_BINDING_ADDITIONAL)) {
+                 renderAdditionalBinding(gen, c, ext); 
+              }              
+            }
           }
           for (ElementDefinitionConstraintComponent inv : definition.getConstraint()) {
             if (!inv.hasSource() || profile == null || inv.getSource().equals(profile.getUrl()) || allInvariants) {
@@ -4765,6 +4781,23 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
     }
     return c;
+  }
+
+  private void renderAdditionalBinding(HierarchicalTableGenerator gen, Cell c, Extension ext) {
+    // <nsbp>2 <sp> purpose <sp> value-set-link ([context]) {documentation}
+//    String purpose = ext.getExtensionString("purpose");
+//    String valueSet = ext.getExtensionString("valueSet");
+//    String doco = ext.getExtensionString("documentation");
+//    UsageContext usage = (ext.hasExtension("usage")) ? ext.getExtensionByUrl("usage").getValueUsageContext() : null;
+//    
+//    purpose: code - defines how the binding is used
+//    usage : UsageContext - defines the contexts in which this binding is used for it's purpose
+//    valueSet : canonical(ValueSet)
+//    documentation : markdown
+//    !!
+//    c.getPieces().add(checkForNoChange(inv, gen.new Piece(null, inv.getKey()+": ", null).addStyle("font-weight:bold")));
+//    c.getPieces().add(checkForNoChange(inv, gen.new Piece(null, gt(inv.getHumanElement()), null)));
+
   }
 
   private BindingResolution makeNullBr(ElementDefinitionBindingComponent binding) {

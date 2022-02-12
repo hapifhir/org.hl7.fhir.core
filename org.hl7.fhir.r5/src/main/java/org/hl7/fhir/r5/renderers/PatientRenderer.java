@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import org.apache.poi.hssf.record.chart.DatRecord;
+import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.DateType;
 import org.hl7.fhir.r5.model.DomainResource;
@@ -176,7 +178,7 @@ public class PatientRenderer extends ResourceRenderer {
     b.append(display(name));
     b.append(" ");
     if (dob == null) {
-      b.append("??");
+      b.append("(no stated gender)");
     } else {
       b.append(gender);
     }
@@ -196,13 +198,13 @@ public class PatientRenderer extends ResourceRenderer {
   
   public void describe(XhtmlNode x, HumanName name, String gender, DateType dob, Identifier id) throws UnsupportedEncodingException, IOException {
     if (name == null) {
-      x.b().tx("Unnamed Patient"); // todo: is this appropriate?  
+      x.b().tx("Anonymous Patient"); // todo: is this appropriate?  
     } else {
       render(x.b(), name);
     }
     x.tx(" ");
     if (gender == null) {
-      x.tx("??");
+      x.tx("(no stated gender)");
     } else {
       x.tx(gender);
     }
@@ -219,5 +221,9 @@ public class PatientRenderer extends ResourceRenderer {
     }
   }
 
-
+  @Override
+  public boolean render(XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
+    describe(x, r);
+    return false;
+  }
 }

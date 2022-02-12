@@ -111,15 +111,7 @@ public class NarrativeGenerationTests {
     List<Arguments> objects = new ArrayList<>();
     while (test != null && test.getNodeName().equals("test")) {
       TestDetails t = new TestDetails(test);
-      if (t.getId().equals("sdc")) {
-        if (SystemUtils.OS_NAME.contains(WINDOWS)) {
-          objects.add(Arguments.of(t.getId(), t));
-        } else {
-          System.out.println("sdc test not being adding because the current OS will not pass the test...");
-        }
-      } else {
-        objects.add(Arguments.of(t.getId(), t));
-      }
+      objects.add(Arguments.of(t.getId(), t));
       test = XMLUtil.getNextSibling(test);
     }
     return objects.stream();

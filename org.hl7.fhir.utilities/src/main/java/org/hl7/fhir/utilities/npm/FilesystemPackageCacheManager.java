@@ -626,12 +626,12 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       JsonObject json = JsonTrackingParser.fetchJson(Utilities.pathURL(url, "package.manifest.json"));
       String currDate = JSONUtil.str(json, "date");
       String packDate = p.date();
-      if (!currDate.equals(packDate))
+      if (!currDate.equals(packDate)) {
         return null; // nup, we need a new copy
-      return p;
+      }
     } catch (Exception e) {
-      return p;
     }
+    return p;
   }
 
   private boolean checkBuildLoaded() {
