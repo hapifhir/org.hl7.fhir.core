@@ -2143,7 +2143,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (type.equalsIgnoreCase("string") && e.hasPrimitiveValue()) {
       if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue() == null || e.primitiveValue().length() > 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_NOTEMPTY)) {
-        warning(errors, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue() == null || e.primitiveValue().trim().equals(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_STRING_WS);
+        warning(errors, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue() == null || e.primitiveValue().trim().equals(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_STRING_WS, prepWSPresentation(e.primitiveValue()));
         if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().length() <= 1048576, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_STRING_LENGTH)) {
           rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength());
         }
@@ -2294,6 +2294,30 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     // for nothing to check
+  }
+
+  private Object prepWSPresentation(String s) {
+    if (Utilities.noString(s)) {
+      return "";
+    }
+    if (!StringUtils.containsWhitespace(s.trim())) {
+      return s;
+    }
+    int b = 0;
+    while (Character.isWhitespace(s.charAt(b))) {
+      b++;
+    }
+    while (!Character.isWhitespace(s.charAt(b))) {
+      b++;
+    }
+    int e = s.length() - 1;
+    while (Character.isWhitespace(s.charAt(e))) {
+      e--;
+    }
+    while (!Character.isWhitespace(s.charAt(e))) {
+      e--;
+    }
+    return s.substring(0, b)+"..."+s.substring(e+1);
   }
 
   public void validateReference(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, String type, ElementDefinition context, Element e, String url) {
