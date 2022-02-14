@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Fix NPE error in Patient renderer

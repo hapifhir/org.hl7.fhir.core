@@ -11,6 +11,7 @@ public class ToolGlobalSettings {
   private static String testsPath;
   private static String comparePath;
   private static String tempPath;
+  private static String testIgsPath;
   
   public static String getNpmPath() {
     init();
@@ -29,6 +30,7 @@ public class ToolGlobalSettings {
     init();
     return npmPath != null;
   }
+  
   public static boolean hasRubyPath() {
     init();
     return rubyPath != null;
@@ -39,17 +41,32 @@ public class ToolGlobalSettings {
   }
   
   public static String getComparePath() {
+    init();
     return comparePath;
   }
   public static boolean hasComparePath() {
+    init();
     return comparePath != null;
   }
+  
   public static String getTempPath() {
+    init();
     return tempPath;
   }
   public static boolean hasTempPath() {
+    init();
     return tempPath != null;
   }
+  
+  public static String getTestIgsPath() {
+    init();
+    return testIgsPath;
+  }
+  public static boolean hasTestIgsPath() {
+    init();
+    return testIgsPath != null;
+  }
+  
   private static void init() {
     if (!inited) {
       inited = true;
@@ -62,6 +79,7 @@ public class ToolGlobalSettings {
           testsPath = ini.getStringProperty("paths", "tests");
           comparePath = ini.getStringProperty("paths", "compare");
           tempPath = ini.getStringProperty("paths", "temp");
+          testIgsPath = ini.getStringProperty("paths", "test-igs");
         }
       } catch (IOException e) {
       }
