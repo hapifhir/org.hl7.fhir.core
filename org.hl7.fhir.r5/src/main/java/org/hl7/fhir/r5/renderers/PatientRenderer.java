@@ -43,7 +43,7 @@ public class PatientRenderer extends ResourceRenderer {
     for (HumanName t : pat.getName()) {
       n = chooseName(n, t);
     }
-    return display(n, pat.getGender().getDisplay(), pat.getBirthDateElement(), id);
+    return display(n, pat.hasGender() ? pat.getGender().getDisplay() : null, pat.getBirthDateElement(), id);
   }
 
   private Identifier chooseId(Identifier oldId, Identifier newId) {
