@@ -92,7 +92,7 @@ public class TerminologyClientFactory {
       return url;
     if (url.startsWith("http://tx.fhir.org"))
       return Utilities.pathURL(url, term);
-    if (url.equals("http://local.fhir.org:960"))
+    if (url.equals("http://local.fhir.org:8080"))
       return Utilities.pathURL(url, term);
     return url;
   }
