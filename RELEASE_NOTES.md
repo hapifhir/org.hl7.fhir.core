@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Ignore META-INF contents from other dependencies while building Validator jar
