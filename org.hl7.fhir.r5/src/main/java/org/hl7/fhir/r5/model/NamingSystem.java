@@ -3044,6 +3044,10 @@ public class NamingSystem extends CanonicalResource {
     return false;
   }
 
+  public boolean supportsExperimental() {
+    return false;
+  }
+  
 // end addition
 
 }
