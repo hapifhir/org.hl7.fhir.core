@@ -255,7 +255,11 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
             res = new ValidationResult((IssueSeverity) null, null);
           }
           if (!inExpansion && !inInclude) {
-            res.setMessage("Not in value set "+valueset.getUrl()).setSeverity(IssueSeverity.ERROR);
+            if (warnings != null) {
+              res.setMessage("Not in value set "+valueset.getUrl()+" ("+warnings+")").setSeverity(IssueSeverity.ERROR);              
+            } else {
+              res.setMessage("Not in value set "+valueset.getUrl()).setSeverity(IssueSeverity.ERROR);
+            }
           } else if (warningMessage!=null) {
             res = new ValidationResult(IssueSeverity.WARNING, context.formatMessage(I18nConstants.CODE_FOUND_IN_EXPANSION_HOWEVER_, warningMessage));
           } else if (inExpansion) {
