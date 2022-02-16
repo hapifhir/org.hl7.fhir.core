@@ -2523,7 +2523,8 @@ public class ProfileUtilities extends TranslatingUtilities {
               // disabled 7-Dec 2021 GDG - we don't want to fool with relative URLs at all? 
               // re-enabled 11-Feb 2022 GDG - we do want to do this. At least, $assemble in davinci-dtr, where the markdown comes from the SDC IG, and an SDC local reference must be changed to point to SDC. in this case, it's called when generating snapshots
               // added processRelatives parameter to deal with this (well, to try)
-              if (processRelatives) {
+              if (processRelatives && webUrl != null) {
+                System.out.println("Making "+url+" relative to '"+webUrl+"'");
                 b.append(webUrl);
               } else {
                 System.out.println("Not making "+url+" relative to '"+webUrl+"'");
@@ -4785,10 +4786,10 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private void renderAdditionalBinding(HierarchicalTableGenerator gen, Cell c, Extension ext) {
     // <nsbp>2 <sp> purpose <sp> value-set-link ([context]) {documentation}
-//    String purpose = ext.getExtensionString("purpose");
-//    String valueSet = ext.getExtensionString("valueSet");
-//    String doco = ext.getExtensionString("documentation");
-//    UsageContext usage = (ext.hasExtension("usage")) ? ext.getExtensionByUrl("usage").getValueUsageContext() : null;
+    String purpose = ext.getExtensionString("purpose");
+    String valueSet = ext.getExtensionString("valueSet");
+    String doco = ext.getExtensionString("documentation");
+    UsageContext usage = (ext.hasExtension("usage")) ? ext.getExtensionByUrl("usage").getValueUsageContext() : null;
 //    
 //    purpose: code - defines how the binding is used
 //    usage : UsageContext - defines the contexts in which this binding is used for it's purpose

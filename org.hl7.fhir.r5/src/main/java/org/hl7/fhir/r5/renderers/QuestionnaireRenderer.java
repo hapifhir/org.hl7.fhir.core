@@ -202,13 +202,13 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
 
     r.setIcon("icon_q_root.gif", "QuestionnaireRoot");
     r.getCells().add(gen.new Cell(null, null, q.getName(), null, null));
-    r.getCells().add(gen.new Cell(null, null, "", null, null));
+    r.getCells().add(gen.new Cell(null, null, q.getDescription(), null, null));
     r.getCells().add(gen.new Cell(null, null, "", null, null));
     r.getCells().add(gen.new Cell(null, null, "Questionnaire", null, null));
     if (hasFlags) {
       r.getCells().add(gen.new Cell(null, null, "", null, null));
     }
-    r.getCells().add(gen.new Cell(null, null, q.getDescription(), null, null));
+    r.getCells().add(gen.new Cell(null, null, q.hasUrl() ? q.hasVersion() ? q.getUrl()+"#"+q.getVersion() : q.getUrl() : "", null, null));
     return r;    
   }
   
@@ -226,7 +226,9 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     boolean hasExt = false;
 
     r.setIcon("icon-q-"+i.getType().toCode().toLowerCase()+".png", i.getType().getDisplay());
-    r.getCells().add(gen.new Cell(null, context.getDefinitionsTarget() == null ? "" : context.getDefinitionsTarget()+"#item."+i.getLinkId(), i.getLinkId(), null, null));
+    Cell c1 = gen.new Cell(null, context.getDefinitionsTarget() == null ? "" : context.getDefinitionsTarget()+"#item."+i.getLinkId(), i.getLinkId(), null, null);
+    c1.setId("item."+i.getLinkId());
+    r.getCells().add(c1);
     String txt = (i.hasPrefix() ? i.getPrefix() + ". " : "") + i.getText();
     r.getCells().add(gen.new Cell(null, null, txt, null, null));
     r.getCells().add(gen.new Cell(null, null, (i.getRequired() ? "1" : "0")+".."+(i.getRepeats() ? "*" : "1"), null, null));
@@ -282,7 +284,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       if (!defn.getPieces().isEmpty()) defn.addPiece(gen.new Piece("br"));
       Piece p = gen.new Piece(null, "Enable When: ", null);
       defn.getPieces().add(p);
-      if (i.getEnableWhen().size() == 0) {
+      if (i.getEnableWhen().size() == 1) {
         XhtmlNode x = new XhtmlNode(NodeType.Element, "span");
         p.getChildren().add(x);
         renderEnableWhen(x, i.getEnableWhenFirstRep());        
