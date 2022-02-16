@@ -77,7 +77,7 @@ public class StructureDefinitionValidator extends BaseValidator {
             List<ValidationMessage> msgs = new ArrayList<>();
             ProfileUtilities pu = new ProfileUtilities(context, msgs, null);
             pu.setXver(xverManager);
-            pu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir", sd.getName());
+            pu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir/R4/", sd.getName());
             if (msgs.size() > 0) {
               for (ValidationMessage msg : msgs) {
                 // we need to set the location for the context 

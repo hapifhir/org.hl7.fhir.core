@@ -202,13 +202,13 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
 
     r.setIcon("icon_q_root.gif", "QuestionnaireRoot");
     r.getCells().add(gen.new Cell(null, null, q.getName(), null, null));
-    r.getCells().add(gen.new Cell(null, null, "", null, null));
+    r.getCells().add(gen.new Cell(null, null, q.getDescription(), null, null));
     r.getCells().add(gen.new Cell(null, null, "", null, null));
     r.getCells().add(gen.new Cell(null, null, "Questionnaire", null, null));
     if (hasFlags) {
       r.getCells().add(gen.new Cell(null, null, "", null, null));
     }
-    r.getCells().add(gen.new Cell(null, null, q.getDescription(), null, null));
+    r.getCells().add(gen.new Cell(null, null, q.hasUrl() ? q.hasVersion() ? q.getUrl()+"#"+q.getVersion() : q.getUrl() : "", null, null));
     return r;    
   }
   
