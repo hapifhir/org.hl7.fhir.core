@@ -2524,10 +2524,10 @@ public class ProfileUtilities extends TranslatingUtilities {
               // re-enabled 11-Feb 2022 GDG - we do want to do this. At least, $assemble in davinci-dtr, where the markdown comes from the SDC IG, and an SDC local reference must be changed to point to SDC. in this case, it's called when generating snapshots
               // added processRelatives parameter to deal with this (well, to try)
               if (processRelatives && webUrl != null) {
-                System.out.println("Making "+url+" relative to '"+webUrl+"'");
+//                System.out.println("Making "+url+" relative to '"+webUrl+"'");
                 b.append(webUrl);
               } else {
-                System.out.println("Not making "+url+" relative to '"+webUrl+"'");
+//                System.out.println("Not making "+url+" relative to '"+webUrl+"'");
               }
               i = i + 1;
             }
