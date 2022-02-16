@@ -221,7 +221,8 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     private String cellStyle;
     protected int span = 1;
     private TextAlignment alignment = TextAlignment.LEFT;
-
+    private String id;
+ 
     public Cell() {
       
     }
@@ -241,6 +242,8 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       return this;
     }
 
+
+    
     public Cell addMarkdown(String md) {
       if (!Utilities.noString(md)) {
         try {
@@ -428,7 +431,13 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       return this;
     }
     
-    
+    public String getId() {
+      return id;
+    }
+    public void setId(String id) {
+      this.id = id;
+    }
+
   }
 
   public class Title extends Cell {
@@ -725,6 +734,10 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     if (c.span > 1) {
       tc.colspan(Integer.toString(c.span));
     }
+    if (c.getId() != null) {
+      tc.setAttribute("id", c.getId());
+    }
+
     if (indents != null) {
       tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_spacer.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
       tc.setAttribute("style", "vertical-align: top; text-align : left; "+(c.cellStyle != null  && c.cellStyle.contains("background-color") ? "" : "background-color: "+color+"; ")+"border: "+ border +"px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url("+imagePath+checkExists(indents, hasChildren, lineColor, outputTracker)+")"+(c.cellStyle != null ? ";"+c.cellStyle : ""));

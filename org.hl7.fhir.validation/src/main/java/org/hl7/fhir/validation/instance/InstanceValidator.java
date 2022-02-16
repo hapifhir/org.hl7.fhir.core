@@ -1876,9 +1876,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     // the history of this is a mess - see https://jira.hl7.org/browse/FHIR-13328
     // we in practice we will support it in either place, but the specification says on ElementDefinition, not on ElementDefinition.type
-//    if ("http://hl7.org/fhir/StructureDefinition/regex".equals(extUrl)) {
-//      list.get(1).setExpression("ElementDefinition.type");
-//    }
+    // but this creates validation errors people can't fix all over the place if we don't do this.
+    if ("http://hl7.org/fhir/StructureDefinition/regex".equals(extUrl)) {
+      StructureDefinitionContextComponent e = new StructureDefinitionContextComponent();
+      e.setExpression("ElementDefinition.type");
+      e.setType(ExtensionContextType.ELEMENT);
+      list.add(e);
+    }
     if ("http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version".equals(extUrl)) {
       list.get(0).setExpression("Element"); // well, it can't be used anywhere but the list of places it can be used is quite long
     }
