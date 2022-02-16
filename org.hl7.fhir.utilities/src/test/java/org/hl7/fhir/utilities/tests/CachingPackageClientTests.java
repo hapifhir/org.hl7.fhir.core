@@ -13,7 +13,7 @@ public class CachingPackageClientTests {
 
   private static final String SERVER1 = "http://packages.fhir.org";
   private static final String SERVER2 = "https://packages2.fhir.org/packages";
-//  private static final String SERVER2 = "http://local.fhir.org:960/packages";
+//  private static final String SERVER2 = "http://local.fhir.org:8080/packages";
 
   @Test
   public void testExists() throws IOException {

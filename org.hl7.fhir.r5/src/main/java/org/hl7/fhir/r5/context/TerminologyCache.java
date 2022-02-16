@@ -600,7 +600,8 @@ public class TerminologyCache {
         caches.put(nc.name, nc);
           }        
         } catch (Exception e) {
-          throw new FHIRException("Error loading "+fn+": "+e.getMessage()+" entry "+c, e);
+          System.out.println("Error loading "+fn+": "+e.getMessage()+" entry "+c+" - ignoring it");
+          e.printStackTrace();
         }
       }
 
