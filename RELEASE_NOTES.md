@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* fix various rendering issues from core spec
