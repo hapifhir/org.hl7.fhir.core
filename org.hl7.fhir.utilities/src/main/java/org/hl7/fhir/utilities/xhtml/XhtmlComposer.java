@@ -314,6 +314,9 @@ public class XhtmlComposer {
     else if (node.getNodeType() == NodeType.Element) {
       Element child = e.getOwnerDocument().createElementNS(XHTML_NS, node.getName());
       e.appendChild(child);
+      for (String n : node.getAttributes().keySet()) {
+        child.setAttribute(n,  node.getAttribute(n));
+      }
       for (XhtmlNode c : node.getChildNodes()) {
         appendChild(child, c);
       }

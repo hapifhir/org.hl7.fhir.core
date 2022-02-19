@@ -104,7 +104,7 @@ public class BundleRenderer extends ResourceRenderer {
               xn.para().b().tx("Exception generating narrative: "+e.getMessage());
             }
           }
-          root.blockquote().addChildren(xn);
+          root.blockquote().para().addChildren(xn);
         }
       }
     }
@@ -156,7 +156,7 @@ public class BundleRenderer extends ResourceRenderer {
         List<BaseWrapper> sections = section.children("section");
         for (BaseWrapper child : sections) {
           if (nested) {
-            addSection(x.blockquote(), child, level+1, true);
+            addSection(x.blockquote().para(), child, level+1, true);
           } else {
             addSection(x, child, level+1, true);
           }
@@ -241,7 +241,7 @@ public class BundleRenderer extends ResourceRenderer {
         List<SectionComponent> sections = section.getSection();
         for (SectionComponent child : sections) {
           if (nested) {
-            addSection(x.blockquote(), child, level+1, true);
+            addSection(x.blockquote().para(), child, level+1, true);
           } else {
             addSection(x, child, level+1, true);            
           }
@@ -300,7 +300,7 @@ public class BundleRenderer extends ResourceRenderer {
                 xn = makeExceptionXhtml(e, "generating narrative");
               }
             }
-            root.blockquote().getChildNodes().addAll(checkInternalLinks(b, xn.getChildNodes()));
+            root.blockquote().para().getChildNodes().addAll(checkInternalLinks(b, xn.getChildNodes()));
           }
         }
       }

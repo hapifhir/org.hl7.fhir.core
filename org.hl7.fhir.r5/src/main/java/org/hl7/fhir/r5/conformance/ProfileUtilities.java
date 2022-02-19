@@ -553,7 +553,17 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
   public List<ElementDefinition> getChildList(StructureDefinition structure, ElementDefinition element) {
-    return getChildList(structure, element.getPath(), element.getId(), false);
+    if (element.hasContentReference()) {
+      ElementDefinition target = element;
+      for (ElementDefinition t : structure.getSnapshot().getElement()) {
+        if (t.getId().equals(element.getContentReference().substring(1))) {
+          target = t;
+        }
+      }      
+      return getChildList(structure, target.getPath(), target.getId(), false);
+    } else {
+      return getChildList(structure, element.getPath(), element.getId(), false);
+    }
 	}
 
   public void updateMaps(StructureDefinition base, StructureDefinition derived) throws DefinitionException {
@@ -2524,10 +2534,10 @@ public class ProfileUtilities extends TranslatingUtilities {
               // re-enabled 11-Feb 2022 GDG - we do want to do this. At least, $assemble in davinci-dtr, where the markdown comes from the SDC IG, and an SDC local reference must be changed to point to SDC. in this case, it's called when generating snapshots
               // added processRelatives parameter to deal with this (well, to try)
               if (processRelatives && webUrl != null) {
-                System.out.println("Making "+url+" relative to '"+webUrl+"'");
+//                System.out.println("Making "+url+" relative to '"+webUrl+"'");
                 b.append(webUrl);
               } else {
-                System.out.println("Not making "+url+" relative to '"+webUrl+"'");
+//                System.out.println("Not making "+url+" relative to '"+webUrl+"'");
               }
               i = i + 1;
             }
@@ -3680,7 +3690,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private String codeForAggregation(AggregationMode a) {
+  public static String codeForAggregation(AggregationMode a) {
     switch (a) {
     case BUNDLED : return "b";
     case CONTAINED : return "c";
@@ -3689,7 +3699,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
   }
 
-  private String hintForAggregation(AggregationMode a) {
+  public static  String hintForAggregation(AggregationMode a) {
     if (a != null)
       return a.getDefinition();
     else 

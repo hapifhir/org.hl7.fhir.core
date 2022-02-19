@@ -51,7 +51,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       h.addText(cs.hasTitle() ? cs.getTitle() : cs.getName());
       addMarkdown(x, cs.getDescription());
       if (cs.hasCopyright())
-        generateCopyright(x, cs);
+        generateCopyright(x, cs );
     }
 
     generateProperties(x, cs);
@@ -245,7 +245,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       if (cs == null) {
         return false;
       }
-      return CodeSystemUtilities.hasCode(cs, code);
+      return code == null ? false : CodeSystemUtilities.hasCode(cs, code);
     }
     return false;
   }

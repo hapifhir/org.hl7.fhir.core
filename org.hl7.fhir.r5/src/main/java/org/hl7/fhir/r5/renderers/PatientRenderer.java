@@ -223,7 +223,7 @@ public class PatientRenderer extends ResourceRenderer {
 
   @Override
   public boolean render(XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
-    describe(x, r);
+    describe(x.para(), r);
     return false;
   }
 }
