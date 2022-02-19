@@ -553,7 +553,17 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
   public List<ElementDefinition> getChildList(StructureDefinition structure, ElementDefinition element) {
-    return getChildList(structure, element.getPath(), element.getId(), false);
+    if (element.hasContentReference()) {
+      ElementDefinition target = element;
+      for (ElementDefinition t : structure.getSnapshot().getElement()) {
+        if (t.getId().equals(element.getContentReference().substring(1))) {
+          target = t;
+        }
+      }      
+      return getChildList(structure, target.getPath(), target.getId(), false);
+    } else {
+      return getChildList(structure, element.getPath(), element.getId(), false);
+    }
 	}
 
   public void updateMaps(StructureDefinition base, StructureDefinition derived) throws DefinitionException {
@@ -3680,7 +3690,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private String codeForAggregation(AggregationMode a) {
+  public static String codeForAggregation(AggregationMode a) {
     switch (a) {
     case BUNDLED : return "b";
     case CONTAINED : return "c";
@@ -3689,7 +3699,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
   }
 
-  private String hintForAggregation(AggregationMode a) {
+  public static  String hintForAggregation(AggregationMode a) {
     if (a != null)
       return a.getDefinition();
     else 
