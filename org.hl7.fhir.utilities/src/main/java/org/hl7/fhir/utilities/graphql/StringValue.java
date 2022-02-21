@@ -56,8 +56,8 @@ public class StringValue extends Value {
   public void write(StringBuilder b, int indent) {
     b.append("\"");
     for (char ch : value.toCharArray()) {
-      if (ch == '"') b.append("\"");
-      else if (ch == '\\') b.append("\\");
+      if (ch == '"') b.append("\\\"");
+      else if (ch == '\\') b.append("\\\\");
       else if (ch == '\r') b.append("\\r");
       else if (ch == '\n') b.append("\\n");
       else if (ch == '\t') b.append("\\t");

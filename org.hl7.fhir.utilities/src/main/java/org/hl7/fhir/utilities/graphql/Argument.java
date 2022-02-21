@@ -102,8 +102,8 @@ public class Argument {
   public void write(StringBuilder b, int indent) throws EGraphQLException, EGraphEngine {
     b.append("\"");
     for (char ch : name.toCharArray()) {
-      if (ch == '"') b.append("\"");
-      else if (ch == '\\') b.append("\\");
+      if (ch == '"') b.append("\\\"");
+      else if (ch == '\\') b.append("\\\\");
       else if (ch == '\r') b.append("\\r");
       else if (ch == '\n') b.append("\\n");
       else if (ch == '\t') b.append("\\t");

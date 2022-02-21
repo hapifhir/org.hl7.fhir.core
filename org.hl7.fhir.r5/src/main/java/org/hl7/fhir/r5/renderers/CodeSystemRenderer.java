@@ -51,7 +51,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       h.addText(cs.hasTitle() ? cs.getTitle() : cs.getName());
       addMarkdown(x, cs.getDescription());
       if (cs.hasCopyright())
-        generateCopyright(x, cs);
+        generateCopyright(x, cs );
     }
 
     generateProperties(x, cs);
@@ -175,7 +175,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     hierarchy = hierarchy || csNav.isRestructure();
     
     List<String> langs = new ArrayList<>();
-    addMapHeaders(addTableHeaderRowStandard(t, hierarchy, display, definitions, commentS, version, deprecated, properties, null, false), maps);
+    addMapHeaders(addTableHeaderRowStandard(t, hierarchy, display, definitions, commentS, version, deprecated, properties, null, null, false), maps);
     for (ConceptDefinitionComponent c : csNav.getConcepts(null)) {
       hasExtensions = addDefineRowToTable(t, c, 0, hierarchy, display, definitions, commentS, version, deprecated, maps, cs.getUrl(), cs, properties, csNav, langs, isSupplement) || hasExtensions;
     }
@@ -245,7 +245,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       if (cs == null) {
         return false;
       }
-      return CodeSystemUtilities.hasCode(cs, code);
+      return code == null ? false : CodeSystemUtilities.hasCode(cs, code);
     }
     return false;
   }

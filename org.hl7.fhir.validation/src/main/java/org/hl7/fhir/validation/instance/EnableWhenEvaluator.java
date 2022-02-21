@@ -156,10 +156,10 @@ public class EnableWhenEvaluator {
       return true;
     }
 
-    List<EnableWhenResult> evaluationResults = qitem.getEnableWhen()
-      .stream()
-      .map(enableCondition -> evaluateCondition(enableCondition, qitem, qstack))
-      .collect(Collectors.toList());
+    List<EnableWhenResult> evaluationResults = new ArrayList<>();
+    for (QuestionnaireItemEnableWhenComponent enableCondition : qitem.getEnableWhen()) {
+      evaluationResults.add(evaluateCondition(enableCondition, qitem, qstack));
+    }
     return checkConditionResults(evaluationResults, qitem);
   }
 
@@ -206,9 +206,10 @@ public class EnableWhenEvaluator {
       }
       return new EnableWhenResult(((BooleanType) answer).booleanValue() != answerItems.isEmpty(), enableCondition);
     }
-    boolean result = answerItems
-      .stream()
-      .anyMatch(answer -> evaluateAnswer(answer, enableCondition.getAnswer(), enableCondition.getOperator()));
+    boolean result = false;
+    for (Element answer : answerItems) {
+      result = result || evaluateAnswer(answer, enableCondition.getAnswer(), enableCondition.getOperator());
+    }
     return new EnableWhenResult(result, enableCondition);
   }
 
@@ -338,6 +339,11 @@ public class EnableWhenEvaluator {
         retVal.addAll(answers);
       }
       retVal.addAll(findOnItem(item, question));
+    }
+    // didn't find it? look inside the items on the answers too
+    List<Element> answerChildren = focus.getChildren(ANSWER_ELEMENT);
+    for (Element answer : answerChildren) {
+      retVal.addAll(findOnItem(answer, question));
     }
 
     // In case the question with the enableWhen is a direct child of the question with

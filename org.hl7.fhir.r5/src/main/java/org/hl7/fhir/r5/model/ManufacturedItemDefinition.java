@@ -29,11 +29,12 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -364,41 +365,49 @@ public class ManufacturedItemDefinition extends DomainResource {
     protected List<Identifier> identifier;
 
     /**
+     * The status of this item. Enables tracking the life-cycle of the content.
+     */
+    @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this item. Enables tracking the life-cycle of the content." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
+    protected Enumeration<PublicationStatus> status;
+
+    /**
      * Dose form as manufactured and before any transformation into the pharmaceutical product.
      */
-    @Child(name = "manufacturedDoseForm", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "manufacturedDoseForm", type = {CodeableConcept.class}, order=2, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Dose form as manufactured and before any transformation into the pharmaceutical product", formalDefinition="Dose form as manufactured and before any transformation into the pharmaceutical product." )
     protected CodeableConcept manufacturedDoseForm;
 
     /**
      * The “real world” units in which the quantity of the manufactured item is described.
      */
-    @Child(name = "unitOfPresentation", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "unitOfPresentation", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The “real world” units in which the quantity of the manufactured item is described", formalDefinition="The “real world” units in which the quantity of the manufactured item is described." )
     protected CodeableConcept unitOfPresentation;
 
     /**
      * Manufacturer of the item (Note that this should be named "manufacturer" but it currently causes technical issues).
      */
-    @Child(name = "manufacturer", type = {Organization.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "manufacturer", type = {Organization.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Manufacturer of the item (Note that this should be named \"manufacturer\" but it currently causes technical issues)", formalDefinition="Manufacturer of the item (Note that this should be named \"manufacturer\" but it currently causes technical issues)." )
     protected List<Reference> manufacturer;
 
     /**
-     * The ingredients that make up this manufactured item.
+     * The ingredients of this manufactured item. This is only needed if the ingredients are not specified by incoming references from the Ingredient resource.
      */
-    @Child(name = "ingredient", type = {CodeableReference.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The ingredients that make up this manufactured item", formalDefinition="The ingredients that make up this manufactured item." )
-    protected List<CodeableReference> ingredient;
+    @Child(name = "ingredient", type = {CodeableConcept.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="The ingredients of this manufactured item. This is only needed if the ingredients are not specified by incoming references from the Ingredient resource", formalDefinition="The ingredients of this manufactured item. This is only needed if the ingredients are not specified by incoming references from the Ingredient resource." )
+    protected List<CodeableConcept> ingredient;
 
     /**
      * General characteristics of this item.
      */
-    @Child(name = "property", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "property", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="General characteristics of this item", formalDefinition="General characteristics of this item." )
     protected List<ManufacturedItemDefinitionPropertyComponent> property;
 
-    private static final long serialVersionUID = -863803904L;
+    private static final long serialVersionUID = 1578434864L;
 
   /**
    * Constructor
@@ -410,8 +419,9 @@ public class ManufacturedItemDefinition extends DomainResource {
   /**
    * Constructor
    */
-    public ManufacturedItemDefinition(CodeableConcept manufacturedDoseForm) {
+    public ManufacturedItemDefinition(PublicationStatus status, CodeableConcept manufacturedDoseForm) {
       super();
+      this.setStatus(status);
       this.setManufacturedDoseForm(manufacturedDoseForm);
     }
 
@@ -466,6 +476,51 @@ public class ManufacturedItemDefinition extends DomainResource {
         addIdentifier();
       }
       return getIdentifier().get(0);
+    }
+
+    /**
+     * @return {@link #status} (The status of this item. Enables tracking the life-cycle of the content.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     */
+    public Enumeration<PublicationStatus> getStatusElement() { 
+      if (this.status == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create ManufacturedItemDefinition.status");
+        else if (Configuration.doAutoCreate())
+          this.status = new Enumeration<PublicationStatus>(new PublicationStatusEnumFactory()); // bb
+      return this.status;
+    }
+
+    public boolean hasStatusElement() { 
+      return this.status != null && !this.status.isEmpty();
+    }
+
+    public boolean hasStatus() { 
+      return this.status != null && !this.status.isEmpty();
+    }
+
+    /**
+     * @param value {@link #status} (The status of this item. Enables tracking the life-cycle of the content.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     */
+    public ManufacturedItemDefinition setStatusElement(Enumeration<PublicationStatus> value) { 
+      this.status = value;
+      return this;
+    }
+
+    /**
+     * @return The status of this item. Enables tracking the life-cycle of the content.
+     */
+    public PublicationStatus getStatus() { 
+      return this.status == null ? null : this.status.getValue();
+    }
+
+    /**
+     * @param value The status of this item. Enables tracking the life-cycle of the content.
+     */
+    public ManufacturedItemDefinition setStatus(PublicationStatus value) { 
+        if (this.status == null)
+          this.status = new Enumeration<PublicationStatus>(new PublicationStatusEnumFactory());
+        this.status.setValue(value);
+      return this;
     }
 
     /**
@@ -570,18 +625,18 @@ public class ManufacturedItemDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #ingredient} (The ingredients that make up this manufactured item.)
+     * @return {@link #ingredient} (The ingredients of this manufactured item. This is only needed if the ingredients are not specified by incoming references from the Ingredient resource.)
      */
-    public List<CodeableReference> getIngredient() { 
+    public List<CodeableConcept> getIngredient() { 
       if (this.ingredient == null)
-        this.ingredient = new ArrayList<CodeableReference>();
+        this.ingredient = new ArrayList<CodeableConcept>();
       return this.ingredient;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public ManufacturedItemDefinition setIngredient(List<CodeableReference> theIngredient) { 
+    public ManufacturedItemDefinition setIngredient(List<CodeableConcept> theIngredient) { 
       this.ingredient = theIngredient;
       return this;
     }
@@ -589,25 +644,25 @@ public class ManufacturedItemDefinition extends DomainResource {
     public boolean hasIngredient() { 
       if (this.ingredient == null)
         return false;
-      for (CodeableReference item : this.ingredient)
+      for (CodeableConcept item : this.ingredient)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public CodeableReference addIngredient() { //3
-      CodeableReference t = new CodeableReference();
+    public CodeableConcept addIngredient() { //3
+      CodeableConcept t = new CodeableConcept();
       if (this.ingredient == null)
-        this.ingredient = new ArrayList<CodeableReference>();
+        this.ingredient = new ArrayList<CodeableConcept>();
       this.ingredient.add(t);
       return t;
     }
 
-    public ManufacturedItemDefinition addIngredient(CodeableReference t) { //3
+    public ManufacturedItemDefinition addIngredient(CodeableConcept t) { //3
       if (t == null)
         return this;
       if (this.ingredient == null)
-        this.ingredient = new ArrayList<CodeableReference>();
+        this.ingredient = new ArrayList<CodeableConcept>();
       this.ingredient.add(t);
       return this;
     }
@@ -615,7 +670,7 @@ public class ManufacturedItemDefinition extends DomainResource {
     /**
      * @return The first repetition of repeating field {@link #ingredient}, creating it if it does not already exist {3}
      */
-    public CodeableReference getIngredientFirstRep() { 
+    public CodeableConcept getIngredientFirstRep() { 
       if (getIngredient().isEmpty()) {
         addIngredient();
       }
@@ -678,10 +733,11 @@ public class ManufacturedItemDefinition extends DomainResource {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Unique identifier.", 0, java.lang.Integer.MAX_VALUE, identifier));
+        children.add(new Property("status", "code", "The status of this item. Enables tracking the life-cycle of the content.", 0, 1, status));
         children.add(new Property("manufacturedDoseForm", "CodeableConcept", "Dose form as manufactured and before any transformation into the pharmaceutical product.", 0, 1, manufacturedDoseForm));
         children.add(new Property("unitOfPresentation", "CodeableConcept", "The “real world” units in which the quantity of the manufactured item is described.", 0, 1, unitOfPresentation));
         children.add(new Property("manufacturer", "Reference(Organization)", "Manufacturer of the item (Note that this should be named \"manufacturer\" but it currently causes technical issues).", 0, java.lang.Integer.MAX_VALUE, manufacturer));
-        children.add(new Property("ingredient", "CodeableReference(Ingredient)", "The ingredients that make up this manufactured item.", 0, java.lang.Integer.MAX_VALUE, ingredient));
+        children.add(new Property("ingredient", "CodeableConcept", "The ingredients of this manufactured item. This is only needed if the ingredients are not specified by incoming references from the Ingredient resource.", 0, java.lang.Integer.MAX_VALUE, ingredient));
         children.add(new Property("property", "", "General characteristics of this item.", 0, java.lang.Integer.MAX_VALUE, property));
       }
 
@@ -689,10 +745,11 @@ public class ManufacturedItemDefinition extends DomainResource {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Unique identifier.", 0, java.lang.Integer.MAX_VALUE, identifier);
+        case -892481550: /*status*/  return new Property("status", "code", "The status of this item. Enables tracking the life-cycle of the content.", 0, 1, status);
         case -1451400348: /*manufacturedDoseForm*/  return new Property("manufacturedDoseForm", "CodeableConcept", "Dose form as manufactured and before any transformation into the pharmaceutical product.", 0, 1, manufacturedDoseForm);
         case -1427765963: /*unitOfPresentation*/  return new Property("unitOfPresentation", "CodeableConcept", "The “real world” units in which the quantity of the manufactured item is described.", 0, 1, unitOfPresentation);
         case -1969347631: /*manufacturer*/  return new Property("manufacturer", "Reference(Organization)", "Manufacturer of the item (Note that this should be named \"manufacturer\" but it currently causes technical issues).", 0, java.lang.Integer.MAX_VALUE, manufacturer);
-        case -206409263: /*ingredient*/  return new Property("ingredient", "CodeableReference(Ingredient)", "The ingredients that make up this manufactured item.", 0, java.lang.Integer.MAX_VALUE, ingredient);
+        case -206409263: /*ingredient*/  return new Property("ingredient", "CodeableConcept", "The ingredients of this manufactured item. This is only needed if the ingredients are not specified by incoming references from the Ingredient resource.", 0, java.lang.Integer.MAX_VALUE, ingredient);
         case -993141291: /*property*/  return new Property("property", "", "General characteristics of this item.", 0, java.lang.Integer.MAX_VALUE, property);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -703,10 +760,11 @@ public class ManufacturedItemDefinition extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
         case -1451400348: /*manufacturedDoseForm*/ return this.manufacturedDoseForm == null ? new Base[0] : new Base[] {this.manufacturedDoseForm}; // CodeableConcept
         case -1427765963: /*unitOfPresentation*/ return this.unitOfPresentation == null ? new Base[0] : new Base[] {this.unitOfPresentation}; // CodeableConcept
         case -1969347631: /*manufacturer*/ return this.manufacturer == null ? new Base[0] : this.manufacturer.toArray(new Base[this.manufacturer.size()]); // Reference
-        case -206409263: /*ingredient*/ return this.ingredient == null ? new Base[0] : this.ingredient.toArray(new Base[this.ingredient.size()]); // CodeableReference
+        case -206409263: /*ingredient*/ return this.ingredient == null ? new Base[0] : this.ingredient.toArray(new Base[this.ingredient.size()]); // CodeableConcept
         case -993141291: /*property*/ return this.property == null ? new Base[0] : this.property.toArray(new Base[this.property.size()]); // ManufacturedItemDefinitionPropertyComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -719,6 +777,10 @@ public class ManufacturedItemDefinition extends DomainResource {
         case -1618432855: // identifier
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
+        case -892481550: // status
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+          return value;
         case -1451400348: // manufacturedDoseForm
           this.manufacturedDoseForm = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
@@ -729,7 +791,7 @@ public class ManufacturedItemDefinition extends DomainResource {
           this.getManufacturer().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -206409263: // ingredient
-          this.getIngredient().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
+          this.getIngredient().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -993141291: // property
           this.getProperty().add((ManufacturedItemDefinitionPropertyComponent) value); // ManufacturedItemDefinitionPropertyComponent
@@ -743,6 +805,9 @@ public class ManufacturedItemDefinition extends DomainResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
+        } else if (name.equals("status")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("manufacturedDoseForm")) {
           this.manufacturedDoseForm = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("unitOfPresentation")) {
@@ -750,7 +815,7 @@ public class ManufacturedItemDefinition extends DomainResource {
         } else if (name.equals("manufacturer")) {
           this.getManufacturer().add(TypeConvertor.castToReference(value));
         } else if (name.equals("ingredient")) {
-          this.getIngredient().add(TypeConvertor.castToCodeableReference(value));
+          this.getIngredient().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("property")) {
           this.getProperty().add((ManufacturedItemDefinitionPropertyComponent) value);
         } else
@@ -762,6 +827,7 @@ public class ManufacturedItemDefinition extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
+        case -892481550:  return getStatusElement();
         case -1451400348:  return getManufacturedDoseForm();
         case -1427765963:  return getUnitOfPresentation();
         case -1969347631:  return addManufacturer(); 
@@ -776,10 +842,11 @@ public class ManufacturedItemDefinition extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
+        case -892481550: /*status*/ return new String[] {"code"};
         case -1451400348: /*manufacturedDoseForm*/ return new String[] {"CodeableConcept"};
         case -1427765963: /*unitOfPresentation*/ return new String[] {"CodeableConcept"};
         case -1969347631: /*manufacturer*/ return new String[] {"Reference"};
-        case -206409263: /*ingredient*/ return new String[] {"CodeableReference"};
+        case -206409263: /*ingredient*/ return new String[] {"CodeableConcept"};
         case -993141291: /*property*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -790,6 +857,9 @@ public class ManufacturedItemDefinition extends DomainResource {
       public Base addChild(String name) throws FHIRException {
         if (name.equals("identifier")) {
           return addIdentifier();
+        }
+        else if (name.equals("status")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ManufacturedItemDefinition.status");
         }
         else if (name.equals("manufacturedDoseForm")) {
           this.manufacturedDoseForm = new CodeableConcept();
@@ -830,6 +900,7 @@ public class ManufacturedItemDefinition extends DomainResource {
           for (Identifier i : identifier)
             dst.identifier.add(i.copy());
         };
+        dst.status = status == null ? null : status.copy();
         dst.manufacturedDoseForm = manufacturedDoseForm == null ? null : manufacturedDoseForm.copy();
         dst.unitOfPresentation = unitOfPresentation == null ? null : unitOfPresentation.copy();
         if (manufacturer != null) {
@@ -838,8 +909,8 @@ public class ManufacturedItemDefinition extends DomainResource {
             dst.manufacturer.add(i.copy());
         };
         if (ingredient != null) {
-          dst.ingredient = new ArrayList<CodeableReference>();
-          for (CodeableReference i : ingredient)
+          dst.ingredient = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : ingredient)
             dst.ingredient.add(i.copy());
         };
         if (property != null) {
@@ -860,7 +931,7 @@ public class ManufacturedItemDefinition extends DomainResource {
         if (!(other_ instanceof ManufacturedItemDefinition))
           return false;
         ManufacturedItemDefinition o = (ManufacturedItemDefinition) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(manufacturedDoseForm, o.manufacturedDoseForm, true)
+        return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(manufacturedDoseForm, o.manufacturedDoseForm, true)
            && compareDeep(unitOfPresentation, o.unitOfPresentation, true) && compareDeep(manufacturer, o.manufacturer, true)
            && compareDeep(ingredient, o.ingredient, true) && compareDeep(property, o.property, true);
       }
@@ -872,11 +943,11 @@ public class ManufacturedItemDefinition extends DomainResource {
         if (!(other_ instanceof ManufacturedItemDefinition))
           return false;
         ManufacturedItemDefinition o = (ManufacturedItemDefinition) other_;
-        return true;
+        return compareValues(status, o.status, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, manufacturedDoseForm
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, manufacturedDoseForm
           , unitOfPresentation, manufacturer, ingredient, property);
       }
 
@@ -928,48 +999,22 @@ public class ManufacturedItemDefinition extends DomainResource {
  /**
    * Search parameter: <b>ingredient</b>
    * <p>
-   * Description: <b>Reference to a resource (by instance)</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ManufacturedItemDefinition.ingredient.reference</b><br>
+   * Description: <b>An ingredient of this item</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ManufacturedItemDefinition.ingredient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="ingredient", path="ManufacturedItemDefinition.ingredient.reference", description="Reference to a resource (by instance)", type="reference" )
+  @SearchParamDefinition(name="ingredient", path="ManufacturedItemDefinition.ingredient", description="An ingredient of this item", type="token" )
   public static final String SP_INGREDIENT = "ingredient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>ingredient</b>
    * <p>
-   * Description: <b>Reference to a resource (by instance)</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ManufacturedItemDefinition.ingredient.reference</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INGREDIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INGREDIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ManufacturedItemDefinition:ingredient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_INGREDIENT = new ca.uhn.fhir.model.api.Include("ManufacturedItemDefinition:ingredient").toLocked();
-
- /**
-   * Search parameter: <b>ingredient-code</b>
-   * <p>
-   * Description: <b>Reference to a concept (by class)</b><br>
+   * Description: <b>An ingredient of this item</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>ManufacturedItemDefinition.ingredient.concept</b><br>
+   * Path: <b>ManufacturedItemDefinition.ingredient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="ingredient-code", path="ManufacturedItemDefinition.ingredient.concept", description="Reference to a concept (by class)", type="token" )
-  public static final String SP_INGREDIENT_CODE = "ingredient-code";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>ingredient-code</b>
-   * <p>
-   * Description: <b>Reference to a concept (by class)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ManufacturedItemDefinition.ingredient.concept</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INGREDIENT_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INGREDIENT_CODE);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INGREDIENT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INGREDIENT);
 
 
 }

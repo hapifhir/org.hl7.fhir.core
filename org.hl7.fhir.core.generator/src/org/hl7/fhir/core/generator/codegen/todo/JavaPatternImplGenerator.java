@@ -58,9 +58,9 @@ changes for James
 */
 public class JavaPatternImplGenerator extends JavaBaseGenerator {
 
-  public JavaPatternImplGenerator(OutputStream arg0, Definitions definitions, Configuration config, String version, Date genDate)
+  public JavaPatternImplGenerator(OutputStream arg0, Definitions definitions, Configuration config, String version, Date genDate, String jid)
       throws UnsupportedEncodingException {
-    super(arg0, definitions, config, version, genDate);
+    super(arg0, definitions, config, version, genDate, jid);
     // TODO Auto-generated constructor stub
   }
 //

@@ -25,27 +25,27 @@ public class DefaultRenderer extends ValidationOutputRenderer {
     }
 
     if (moreThanOne) {
-      System.out.print("-- ");
-      System.out.print(file);
-      System.out.print(" --");
-      System.out.println(Utilities.padLeft("", '-', Integer.max(38, file.length() + 6)));
+      dst.print("-- ");
+      dst.print(file);
+      dst.print(" --");
+      dst.println(Utilities.padLeft("", '-', Integer.max(38, file.length() + 6)));
     }
-    System.out.println((error == 0 ? "Success" : "*FAILURE*") + ": " + Integer.toString(error) + " errors, " + Integer.toString(warn) + " warnings, " + Integer.toString(info) + " notes");
+    dst.println((error == 0 ? "Success" : "*FAILURE*") + ": " + Integer.toString(error) + " errors, " + Integer.toString(warn) + " warnings, " + Integer.toString(info) + " notes");
     for (OperationOutcome.OperationOutcomeIssueComponent issue : oo.getIssue()) {
-      System.out.println(getIssueSummary(issue));
+      dst.println(getIssueSummary(issue));
       ValidationMessage vm = (ValidationMessage) issue.getUserData("source.msg");
       if (vm != null && vm.sliceText != null && (crumbTrails || vm.isCriticalSignpost())) {
         for (String s : vm.sliceText) {
-          System.out.println("    slice info: "+s);          
+          dst.println("    slice info: "+s);          
         }
       }
     }
     if (moreThanOne) {
-      System.out.print("---");
-      System.out.print(Utilities.padLeft("", '-', file.length()));
-      System.out.print("---");
-      System.out.println(Utilities.padLeft("", '-', Integer.max(38, file.length() + 6)));
-      System.out.println();
+      dst.print("---");
+      dst.print(Utilities.padLeft("", '-', file.length()));
+      dst.print("---");
+      dst.println(Utilities.padLeft("", '-', Integer.max(38, file.length() + 6)));
+      dst.println();
     }
   }
 

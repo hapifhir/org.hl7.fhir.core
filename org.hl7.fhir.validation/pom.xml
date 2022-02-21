@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>5.6.16-SNAPSHOT</version>
+        <version>5.6.36-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -168,6 +168,13 @@
         </dependency>
 
         <dependency>
+            <groupId>com.atlassian.commonmark</groupId>
+            <artifactId>commonmark</artifactId>
+            <optional>true</optional>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>io.javalin</groupId>
             <artifactId>javalin</artifactId>
             <version>3.8.0</version>
@@ -210,7 +217,12 @@
             <version>${junit_jupiter_version}</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <optional>true</optional>
+            <scope>test</scope>
+        </dependency>
         <!-- End to end -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
@@ -228,6 +240,19 @@
 
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven_surefire_version}</version>
+                <executions>
+                <execution>
+                <id>default-test</id>
+                <phase>test</phase>
+                <goals>
+                    <goal>test</goal>
+                </goals>
+                </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.basepom.maven</groupId>
                 <artifactId>duplicate-finder-maven-plugin</artifactId>

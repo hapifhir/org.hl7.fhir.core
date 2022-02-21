@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2329,6 +2329,26 @@ public class Invoice extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_ISSUER = new ca.uhn.fhir.model.api.Include("Invoice:issuer").toLocked();
 
  /**
+   * Search parameter: <b>participant-role</b>
+   * <p>
+   * Description: <b>Type of involvement in creation of this Invoice</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Invoice.participant.role</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="participant-role", path="Invoice.participant.role", description="Type of involvement in creation of this Invoice", type="token" )
+  public static final String SP_PARTICIPANT_ROLE = "participant-role";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>participant-role</b>
+   * <p>
+   * Description: <b>Type of involvement in creation of this Invoice</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Invoice.participant.role</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PARTICIPANT_ROLE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PARTICIPANT_ROLE);
+
+ /**
    * Search parameter: <b>participant</b>
    * <p>
    * Description: <b>Individual who was involved</b><br>
@@ -2353,26 +2373,6 @@ public class Invoice extends DomainResource {
    * the path value of "<b>Invoice:participant</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PARTICIPANT = new ca.uhn.fhir.model.api.Include("Invoice:participant").toLocked();
-
- /**
-   * Search parameter: <b>participant-role</b>
-   * <p>
-   * Description: <b>Type of involvement in creation of this Invoice</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Invoice.participant.role</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="participant-role", path="Invoice.participant.role", description="Type of involvement in creation of this Invoice", type="token" )
-  public static final String SP_PARTICIPANT_ROLE = "participant-role";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>participant-role</b>
-   * <p>
-   * Description: <b>Type of involvement in creation of this Invoice</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Invoice.participant.role</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PARTICIPANT_ROLE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PARTICIPANT_ROLE);
 
  /**
    * Search parameter: <b>patient</b>

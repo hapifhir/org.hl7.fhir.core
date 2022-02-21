@@ -137,7 +137,7 @@ public class NativeHostServices {
    * @throws Exception
    */
   public void init(String pack) throws Exception {
-    validator = new ValidationEngine(pack);
+    validator = new ValidationEngine.ValidationEngineBuilder().fromSource(pack);
     validator.getContext().setAllowLoadingDuplicates(true);
     igLoader = new IgLoader(validator.getPcm(), validator.getContext(), validator.getVersion(), validator.isDebug());
   }
@@ -161,6 +161,16 @@ public class NativeHostServices {
    */
   public void connectToTxSvc(String txServer, String log) throws Exception {
     validator.connectToTSServer(txServer, log, FhirPublication.R5);
+  }
+
+  /**
+   * Set up the validator with a terminology service
+   *
+   * @param txServer - the URL of the terminology service (http://tx.fhir.org/r4 default)
+   * @throws Exception
+   */
+  public void connectToTxSvc(String txServer, String log, String txCache) throws Exception {
+    validator.connectToTSServer(txServer, log, txCache, FhirPublication.R5);
   }
 
   /**

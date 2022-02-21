@@ -271,8 +271,8 @@ public class MappingSheetParser {
         tgt.setTransform(StructureMapTransform.CREATE);
         StructureMapGroupRuleDependentComponent dep = rule.addDependent();
         dep.setName(row.getDtMapping());
-        dep.addVariable("s");
-        dep.addVariable("t");
+        dep.addParameter().setValue(new IdType("s"));
+        dep.addParameter().setValue(new IdType("t"));
       } else if (row.getVocabMapping() != null) {
         tgt.setTransform(StructureMapTransform.TRANSLATE);
         tgt.addParameter().setValue(new StringType(row.getVocabMapping()));

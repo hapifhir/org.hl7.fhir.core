@@ -10832,7 +10832,9 @@ public class JsonParser extends JsonParserBase {
     if (json.has("include")) {
       JsonArray array = json.getAsJsonArray("include");
       for (int i = 0; i < array.size(); i++) {
-        res.getInclude().add(parseValueSetConceptSetComponent(array.get(i).getAsJsonObject(), owner));
+        if (!array.get(i).isJsonNull()) {
+          res.getInclude().add(parseValueSetConceptSetComponent(array.get(i).getAsJsonObject(), owner));
+        }
       }
     };
     if (json.has("exclude")) {

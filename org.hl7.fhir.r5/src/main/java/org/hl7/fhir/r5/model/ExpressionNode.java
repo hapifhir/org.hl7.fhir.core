@@ -614,6 +614,9 @@ public class ExpressionNode {
 
 	public String check() {
 
+	  if (kind == null) {
+	    return "Error in expression - node has no kind";
+	  }
 		switch (kind) {
 		case Name:
 			if (Utilities.noString(name)) 

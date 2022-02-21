@@ -12,6 +12,7 @@ public class Params {
 
   public static final String VERSION = "-version";
   public static final String OUTPUT = "-output";
+  public static final String LEVEL = "-level";
   public static final String HTML_OUTPUT = "-html-output";
   public static final String PROXY = "-proxy";
   public static final String PROXY_AUTH = "-auth";
@@ -30,12 +31,14 @@ public class Params {
   public static final String TO_VERSION = "-to-version";
   public static final String DO_NATIVE = "-do-native";
   public static final String NO_NATIVE = "-no-native";
+  public static final String COMPILE = "-compile";
   public static final String TRANSFORM = "-transform";
   public static final String NARRATIVE = "-narrative";
   public static final String SNAPSHOT = "-snapshot";
   public static final String SCAN = "-scan";
   public static final String TERMINOLOGY = "-tx";
   public static final String TERMINOLOGY_LOG = "-txLog";
+  public static final String TERMINOLOGY_CACHE = "-txCache";
   public static final String LOG = "-log";
   public static final String LANGUAGE = "-language";
   public static final String IMPLEMENTATION_GUIDE = "-ig";
@@ -141,6 +144,13 @@ public class Params {
           String q = args[++i];
           cliContext.setQuestionnaireMode(QuestionnaireMode.fromCode(q));
         }
+      } else if (args[i].equals(LEVEL)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -level without indicating level mode");
+        else {
+          String q = args[++i];
+          cliContext.setLevel(ValidationLevel.fromCode(q));
+        }
       } else if (args[i].equals(NATIVE)) {
         cliContext.setDoNative(true);
       } else if (args[i].equals(ASSUME_VALID_REST_REF)) {
@@ -183,6 +193,9 @@ public class Params {
       } else if (args[i].equals(TRANSFORM)) {
         cliContext.setMap(args[++i]);
         cliContext.setMode(EngineMode.TRANSFORM);
+      } else if (args[i].equals(COMPILE)) {
+        cliContext.setMap(args[++i]);
+        cliContext.setMode(EngineMode.COMPILE);
       } else if (args[i].equals(NARRATIVE)) {
         cliContext.setMode(EngineMode.NARRATIVE);
       } else if (args[i].equals(SPREADSHEET)) {
@@ -220,7 +233,13 @@ public class Params {
           throw new Error("Specified -txLog without indicating file");
         else
           cliContext.setTxLog(args[++i]);
-      } else if (args[i].equals(LOG)) {
+      } else if (args[i].equals(TERMINOLOGY_CACHE)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -txCache without indicating file");
+        else
+          cliContext.setTxCache(args[++i]);
+      }
+      else if (args[i].equals(LOG)) {
         if (i + 1 == args.length)
           throw new Error("Specified -log without indicating file");
         else

@@ -75,6 +75,10 @@ public class VersionUtilities {
     if (isR4BVer(v)) {
       return "hl7.fhir.r4b.core";
     }
+
+    if (isR5Ver(v)) {
+      return "hl7.fhir.r5.core";
+    }
     
     if ("current".equals(v)) {
       return "hl7.fhir.r5.core";
@@ -100,6 +104,9 @@ public class VersionUtilities {
     }
     if (isR4Ver(v)) {
       return "4.0.1";
+    }
+    if (isR5Ver(v)) {
+      return "5.0.0";
     }
     if (v != null && v.startsWith(CURRENT_VERSION)) {
       return "current";
@@ -130,15 +137,15 @@ public class VersionUtilities {
     if (version.contains("-")) {
       version = version.substring(0, version.indexOf("-"));
     }
-    return Utilities.existsInList(version, "1.0.2", "1.4.0", "3.0.2", "4.0.1", "4.1.0", "4.3.0",CURRENT_FULL_VERSION);
+    return Utilities.existsInList(version, "1.0.2", "1.4.0", "3.0.2", "4.0.1", "4.1.0", "4.3.0", "5.0.0", CURRENT_FULL_VERSION);
   }
 
   public static String listSupportedVersions() {
-    return "1.0.2, 1.4.0, 3.0.2, 4.0.1, 4.1.0, 4.3.0, "+CURRENT_FULL_VERSION;
+    return "1.0.2, 1.4.0, 3.0.2, 4.0.1, 4.1.0, 4.3.0, 5.0, " + CURRENT_FULL_VERSION;
   }
 
   public static boolean isR5Ver(String ver) {
-    return ver != null && (ver.startsWith(CURRENT_VERSION) || ver.equals("current"));
+    return ver != null && (ver.startsWith("5.0") || ver.startsWith(CURRENT_VERSION) || ver.equals("current"));
   }
 
   public static boolean isR4BVer(String ver) {
@@ -224,6 +231,9 @@ public class VersionUtilities {
       return false;
     }
     String[] p = version.split("\\.");
+    if (p[2].contains("-")) {
+      p[2] = p[2].substring(0, p[2].indexOf("-"));
+    }
     return Utilities.isInteger(p[0]) && Utilities.isInteger(p[1]) && Utilities.isInteger(p[2]);
   }
 

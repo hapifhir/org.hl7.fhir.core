@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2275,26 +2275,6 @@ public class Location extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>address</b>
-   * <p>
-   * Description: <b>A (part of the) address of the location</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Location.address</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address", path="Location.address", description="A (part of the) address of the location", type="string" )
-  public static final String SP_ADDRESS = "address";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address</b>
-   * <p>
-   * Description: <b>A (part of the) address of the location</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Location.address</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS);
-
- /**
    * Search parameter: <b>address-city</b>
    * <p>
    * Description: <b>A city specified in an address</b><br>
@@ -2395,6 +2375,26 @@ public class Location extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam ADDRESS_USE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ADDRESS_USE);
 
  /**
+   * Search parameter: <b>address</b>
+   * <p>
+   * Description: <b>A (part of the) address of the location</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Location.address</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="address", path="Location.address", description="A (part of the) address of the location", type="string" )
+  public static final String SP_ADDRESS = "address";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>address</b>
+   * <p>
+   * Description: <b>A (part of the) address of the location</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Location.address</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS);
+
+ /**
    * Search parameter: <b>endpoint</b>
    * <p>
    * Description: <b>Technical endpoints providing access to services operated for the location</b><br>
@@ -2466,14 +2466,12 @@ public class Location extends DomainResource {
    * Description: <b>Search for locations where the location.position is near to, or within a specified distance of, the provided coordinates expressed as [latitude]|[longitude]|[distance]|[units] (using the WGS84 datum, see notes).
 If the units are omitted, then kms should be assumed. If the distance is omitted, then the server can use its own discretion as to what distances should be considered near (and units are irrelevant)
 
-Servers may search using various techniques that might have differing accuracies, depending on implementation efficiency.
-
-Requires the near-distance parameter to be provided also</b><br>
+Servers may search using various techniques that might have differing accuracies, depending on implementation efficiency.</b><br>
    * Type: <b>special</b><br>
    * Path: <b>Location.position</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="near", path="Location.position", description="Search for locations where the location.position is near to, or within a specified distance of, the provided coordinates expressed as [latitude]|[longitude]|[distance]|[units] (using the WGS84 datum, see notes).\nIf the units are omitted, then kms should be assumed. If the distance is omitted, then the server can use its own discretion as to what distances should be considered near (and units are irrelevant)\n\nServers may search using various techniques that might have differing accuracies, depending on implementation efficiency.\n\nRequires the near-distance parameter to be provided also", type="special" )
+  @SearchParamDefinition(name="near", path="Location.position", description="Search for locations where the location.position is near to, or within a specified distance of, the provided coordinates expressed as [latitude]|[longitude]|[distance]|[units] (using the WGS84 datum, see notes).\nIf the units are omitted, then kms should be assumed. If the distance is omitted, then the server can use its own discretion as to what distances should be considered near (and units are irrelevant)\n\nServers may search using various techniques that might have differing accuracies, depending on implementation efficiency.", type="special" )
   public static final String SP_NEAR = "near";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>near</b>
@@ -2481,9 +2479,7 @@ Requires the near-distance parameter to be provided also</b><br>
    * Description: <b>Search for locations where the location.position is near to, or within a specified distance of, the provided coordinates expressed as [latitude]|[longitude]|[distance]|[units] (using the WGS84 datum, see notes).
 If the units are omitted, then kms should be assumed. If the distance is omitted, then the server can use its own discretion as to what distances should be considered near (and units are irrelevant)
 
-Servers may search using various techniques that might have differing accuracies, depending on implementation efficiency.
-
-Requires the near-distance parameter to be provided also</b><br>
+Servers may search using various techniques that might have differing accuracies, depending on implementation efficiency.</b><br>
    * Type: <b>special</b><br>
    * Path: <b>Location.position</b><br>
    * </p>

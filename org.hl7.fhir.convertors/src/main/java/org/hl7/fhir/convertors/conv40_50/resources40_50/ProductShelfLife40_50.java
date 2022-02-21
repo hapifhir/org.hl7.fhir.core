@@ -22,7 +22,7 @@ public class ProductShelfLife40_50 {
     org.hl7.fhir.r4.model.ProductShelfLife tgt = new org.hl7.fhir.r4.model.ProductShelfLife();
     BackboneElement40_50.copyBackboneElement(src, tgt);
     if (src.hasType()) tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
-    if (src.hasPeriodQuantity()) tgt.setPeriod(Quantity40_50.convertQuantity(src.getPeriodQuantity()));
+    if (src.hasPeriodDuration()) tgt.setPeriod(Quantity40_50.convertQuantity(src.getPeriodDuration()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSpecialPrecautionsForStorage())
       tgt.addSpecialPrecautionsForStorage(CodeableConcept40_50.convertCodeableConcept(t));
     return tgt;

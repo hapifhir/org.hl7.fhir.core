@@ -111,15 +111,7 @@ public class NarrativeGenerationTests {
     List<Arguments> objects = new ArrayList<>();
     while (test != null && test.getNodeName().equals("test")) {
       TestDetails t = new TestDetails(test);
-      if (t.getId().equals("sdc")) {
-        if (SystemUtils.OS_NAME.contains(WINDOWS)) {
-          objects.add(Arguments.of(t.getId(), t));
-        } else {
-          System.out.println("sdc test not being adding because the current OS will not pass the test...");
-        }
-      } else {
-        objects.add(Arguments.of(t.getId(), t));
-      }
+      objects.add(Arguments.of(t.getId(), t));
       test = XMLUtil.getNextSibling(test);
     }
     return objects.stream();
@@ -143,8 +135,8 @@ public class NarrativeGenerationTests {
     // getting timezones correct (well, at least consistent, so tests pass on any computer)
     rc.setLocale(new java.util.Locale("en", "AU"));
     rc.setTimeZoneId(ZoneId.of("Australia/Sydney"));
-    rc.setDateTimeFormat(null); 
-    rc.setDateFormat(null); 
+    rc.setDateTimeFormatString("yyyy-MM-dd'T'HH:mm:ssZZZZZ"); 
+    rc.setDateFormatString("yyyy-MM-dd"); 
     rc.setMode(test.technical ? ResourceRendererMode.TECHNICAL : ResourceRendererMode.END_USER);
         
     

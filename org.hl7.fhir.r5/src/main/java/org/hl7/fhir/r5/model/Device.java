@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * A type of a manufactured item that is used in the provision of healthcare without being substantially changed through that activity. The device may be a medical or non-medical device.
+ * This resource describes the properties (regulated, has real time clock, etc.), adminstrative (manufacturer name, model number, serial number, firmware, etc), and type (knee replacement, blood pressure cuff, MRI, etc.) of a physical unit (these values do not change much within a given module, for example the serail number, manufacturer name, and model number). An actual unit may consist of several modules in a distinct hierarchy and these are represented by multiple Device resources and bound through the 'parent' element.
  */
 @ResourceDef(name="Device", profile="http://hl7.org/fhir/StructureDefinition/Device")
 public class Device extends DomainResource {
@@ -67,10 +67,6 @@ public class Device extends DomainResource {
          */
         ENTEREDINERROR, 
         /**
-         * The status of the device has not been determined.
-         */
-        UNKNOWN, 
-        /**
          * added to help the parsers with the generic types
          */
         NULL;
@@ -83,8 +79,6 @@ public class Device extends DomainResource {
           return INACTIVE;
         if ("entered-in-error".equals(codeString))
           return ENTEREDINERROR;
-        if ("unknown".equals(codeString))
-          return UNKNOWN;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
@@ -95,7 +89,6 @@ public class Device extends DomainResource {
             case ACTIVE: return "active";
             case INACTIVE: return "inactive";
             case ENTEREDINERROR: return "entered-in-error";
-            case UNKNOWN: return "unknown";
             default: return "?";
           }
         }
@@ -104,7 +97,6 @@ public class Device extends DomainResource {
             case ACTIVE: return "http://hl7.org/fhir/device-status";
             case INACTIVE: return "http://hl7.org/fhir/device-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/device-status";
-            case UNKNOWN: return "http://hl7.org/fhir/device-status";
             default: return "?";
           }
         }
@@ -113,7 +105,6 @@ public class Device extends DomainResource {
             case ACTIVE: return "The device is available for use.  Note: For *implanted devices*  this means that the device is implanted in the patient.";
             case INACTIVE: return "The device is no longer available for use (e.g. lost, expired, damaged).  Note: For *implanted devices*  this means that the device has been removed from the patient.";
             case ENTEREDINERROR: return "The device was entered in error and voided.";
-            case UNKNOWN: return "The status of the device has not been determined.";
             default: return "?";
           }
         }
@@ -122,7 +113,6 @@ public class Device extends DomainResource {
             case ACTIVE: return "Active";
             case INACTIVE: return "Inactive";
             case ENTEREDINERROR: return "Entered in Error";
-            case UNKNOWN: return "Unknown";
             default: return "?";
           }
         }
@@ -139,8 +129,6 @@ public class Device extends DomainResource {
           return FHIRDeviceStatus.INACTIVE;
         if ("entered-in-error".equals(codeString))
           return FHIRDeviceStatus.ENTEREDINERROR;
-        if ("unknown".equals(codeString))
-          return FHIRDeviceStatus.UNKNOWN;
         throw new IllegalArgumentException("Unknown FHIRDeviceStatus code '"+codeString+"'");
         }
         public Enumeration<FHIRDeviceStatus> fromType(Base code) throws FHIRException {
@@ -157,8 +145,6 @@ public class Device extends DomainResource {
           return new Enumeration<FHIRDeviceStatus>(this, FHIRDeviceStatus.INACTIVE);
         if ("entered-in-error".equals(codeString))
           return new Enumeration<FHIRDeviceStatus>(this, FHIRDeviceStatus.ENTEREDINERROR);
-        if ("unknown".equals(codeString))
-          return new Enumeration<FHIRDeviceStatus>(this, FHIRDeviceStatus.UNKNOWN);
         throw new FHIRException("Unknown FHIRDeviceStatus code '"+codeString+"'");
         }
     public String toCode(FHIRDeviceStatus code) {
@@ -168,8 +154,6 @@ public class Device extends DomainResource {
         return "inactive";
       if (code == FHIRDeviceStatus.ENTEREDINERROR)
         return "entered-in-error";
-      if (code == FHIRDeviceStatus.UNKNOWN)
-        return "unknown";
       return "?";
       }
     public String toSystem(FHIRDeviceStatus code) {
@@ -354,30 +338,26 @@ public class Device extends DomainResource {
         /**
          * The device identifier (DI) is a mandatory, fixed portion of a UDI that identifies the labeler and the specific version or model of a device.
          */
-        @Child(name = "deviceIdentifier", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "deviceIdentifier", type = {StringType.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Mandatory fixed portion of UDI", formalDefinition="The device identifier (DI) is a mandatory, fixed portion of a UDI that identifies the labeler and the specific version or model of a device." )
         protected StringType deviceIdentifier;
 
         /**
-         * Organization that is charged with issuing UDIs for devices.  For example, the US FDA issuers include :
-1) GS1: 
-http://hl7.org/fhir/NamingSystem/gs1-di, 
-2) HIBCC:
-http://hl7.org/fhir/NamingSystem/hibcc-dI, 
-3) ICCBBA for blood containers:
-http://hl7.org/fhir/NamingSystem/iccbba-blood-di, 
-4) ICCBA for other devices:
-http://hl7.org/fhir/NamingSystem/iccbba-other-di.
+         * Organization that is charged with issuing UDIs for devices. For example, the US FDA issuers include: 
+1) GS1: http://hl7.org/fhir/NamingSystem/gs1-di, 
+2) HIBCC: http://hl7.org/fhir/NamingSystem/hibcc-diI, 
+3) ICCBBA for blood containers: http://hl7.org/fhir/NamingSystem/iccbba-blood-di, 
+4) ICCBA for other devices: http://hl7.org/fhir/NamingSystem/iccbba-other-di # Informationsstelle für Arzneispezialitäten (IFA GmbH) (EU only): http://hl7.org/fhir/NamingSystem/ifa-gmbh-di.
          */
         @Child(name = "issuer", type = {UriType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="UDI Issuing Organization", formalDefinition="Organization that is charged with issuing UDIs for devices.  For example, the US FDA issuers include :\n1) GS1: \nhttp://hl7.org/fhir/NamingSystem/gs1-di, \n2) HIBCC:\nhttp://hl7.org/fhir/NamingSystem/hibcc-dI, \n3) ICCBBA for blood containers:\nhttp://hl7.org/fhir/NamingSystem/iccbba-blood-di, \n4) ICCBA for other devices:\nhttp://hl7.org/fhir/NamingSystem/iccbba-other-di." )
+        @Description(shortDefinition="UDI Issuing Organization", formalDefinition="Organization that is charged with issuing UDIs for devices. For example, the US FDA issuers include: \n1) GS1: http://hl7.org/fhir/NamingSystem/gs1-di, \n2) HIBCC: http://hl7.org/fhir/NamingSystem/hibcc-diI, \n3) ICCBBA for blood containers: http://hl7.org/fhir/NamingSystem/iccbba-blood-di, \n4) ICCBA for other devices: http://hl7.org/fhir/NamingSystem/iccbba-other-di # Informationsstelle für Arzneispezialitäten (IFA GmbH) (EU only): http://hl7.org/fhir/NamingSystem/ifa-gmbh-di." )
         protected UriType issuer;
 
         /**
-         * The identity of the authoritative source for UDI generation within a  jurisdiction.  All UDIs are globally unique within a single namespace with the appropriate repository uri as the system.  For example,  UDIs of devices managed in the U.S. by the FDA, the value is  http://hl7.org/fhir/NamingSystem/fda-udi.
+         * The identity of the authoritative source for UDI generation within a jurisdiction. All UDIs are globally unique within a single namespace with the appropriate repository uri as the system. For example, UDIs of devices managed in the U.S. by the FDA, the value is http://hl7.org/fhir/NamingSystem/us-fda-udi or in the European Union by the European Commission http://hl7.org/fhir/NamingSystem/eu-ec-udi.
          */
         @Child(name = "jurisdiction", type = {UriType.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Regional UDI authority", formalDefinition="The identity of the authoritative source for UDI generation within a  jurisdiction.  All UDIs are globally unique within a single namespace with the appropriate repository uri as the system.  For example,  UDIs of devices managed in the U.S. by the FDA, the value is  http://hl7.org/fhir/NamingSystem/fda-udi." )
+        @Description(shortDefinition="Regional UDI authority", formalDefinition="The identity of the authoritative source for UDI generation within a jurisdiction. All UDIs are globally unique within a single namespace with the appropriate repository uri as the system. For example, UDIs of devices managed in the U.S. by the FDA, the value is http://hl7.org/fhir/NamingSystem/us-fda-udi or in the European Union by the European Commission http://hl7.org/fhir/NamingSystem/eu-ec-udi." )
         protected UriType jurisdiction;
 
         /**
@@ -409,6 +389,14 @@ http://hl7.org/fhir/NamingSystem/iccbba-other-di.
      */
       public DeviceUdiCarrierComponent() {
         super();
+      }
+
+    /**
+     * Constructor
+     */
+      public DeviceUdiCarrierComponent(String deviceIdentifier) {
+        super();
+        this.setDeviceIdentifier(deviceIdentifier);
       }
 
         /**
@@ -450,26 +438,18 @@ http://hl7.org/fhir/NamingSystem/iccbba-other-di.
          * @param value The device identifier (DI) is a mandatory, fixed portion of a UDI that identifies the labeler and the specific version or model of a device.
          */
         public DeviceUdiCarrierComponent setDeviceIdentifier(String value) { 
-          if (Utilities.noString(value))
-            this.deviceIdentifier = null;
-          else {
             if (this.deviceIdentifier == null)
               this.deviceIdentifier = new StringType();
             this.deviceIdentifier.setValue(value);
-          }
           return this;
         }
 
         /**
-         * @return {@link #issuer} (Organization that is charged with issuing UDIs for devices.  For example, the US FDA issuers include :
-1) GS1: 
-http://hl7.org/fhir/NamingSystem/gs1-di, 
-2) HIBCC:
-http://hl7.org/fhir/NamingSystem/hibcc-dI, 
-3) ICCBBA for blood containers:
-http://hl7.org/fhir/NamingSystem/iccbba-blood-di, 
-4) ICCBA for other devices:
-http://hl7.org/fhir/NamingSystem/iccbba-other-di.). This is the underlying object with id, value and extensions. The accessor "getIssuer" gives direct access to the value
+         * @return {@link #issuer} (Organization that is charged with issuing UDIs for devices. For example, the US FDA issuers include: 
+1) GS1: http://hl7.org/fhir/NamingSystem/gs1-di, 
+2) HIBCC: http://hl7.org/fhir/NamingSystem/hibcc-diI, 
+3) ICCBBA for blood containers: http://hl7.org/fhir/NamingSystem/iccbba-blood-di, 
+4) ICCBA for other devices: http://hl7.org/fhir/NamingSystem/iccbba-other-di # Informationsstelle für Arzneispezialitäten (IFA GmbH) (EU only): http://hl7.org/fhir/NamingSystem/ifa-gmbh-di.). This is the underlying object with id, value and extensions. The accessor "getIssuer" gives direct access to the value
          */
         public UriType getIssuerElement() { 
           if (this.issuer == null)
@@ -489,15 +469,11 @@ http://hl7.org/fhir/NamingSystem/iccbba-other-di.). This is the underlying objec
         }
 
         /**
-         * @param value {@link #issuer} (Organization that is charged with issuing UDIs for devices.  For example, the US FDA issuers include :
-1) GS1: 
-http://hl7.org/fhir/NamingSystem/gs1-di, 
-2) HIBCC:
-http://hl7.org/fhir/NamingSystem/hibcc-dI, 
-3) ICCBBA for blood containers:
-http://hl7.org/fhir/NamingSystem/iccbba-blood-di, 
-4) ICCBA for other devices:
-http://hl7.org/fhir/NamingSystem/iccbba-other-di.). This is the underlying object with id, value and extensions. The accessor "getIssuer" gives direct access to the value
+         * @param value {@link #issuer} (Organization that is charged with issuing UDIs for devices. For example, the US FDA issuers include: 
+1) GS1: http://hl7.org/fhir/NamingSystem/gs1-di, 
+2) HIBCC: http://hl7.org/fhir/NamingSystem/hibcc-diI, 
+3) ICCBBA for blood containers: http://hl7.org/fhir/NamingSystem/iccbba-blood-di, 
+4) ICCBA for other devices: http://hl7.org/fhir/NamingSystem/iccbba-other-di # Informationsstelle für Arzneispezialitäten (IFA GmbH) (EU only): http://hl7.org/fhir/NamingSystem/ifa-gmbh-di.). This is the underlying object with id, value and extensions. The accessor "getIssuer" gives direct access to the value
          */
         public DeviceUdiCarrierComponent setIssuerElement(UriType value) { 
           this.issuer = value;
@@ -505,30 +481,22 @@ http://hl7.org/fhir/NamingSystem/iccbba-other-di.). This is the underlying objec
         }
 
         /**
-         * @return Organization that is charged with issuing UDIs for devices.  For example, the US FDA issuers include :
-1) GS1: 
-http://hl7.org/fhir/NamingSystem/gs1-di, 
-2) HIBCC:
-http://hl7.org/fhir/NamingSystem/hibcc-dI, 
-3) ICCBBA for blood containers:
-http://hl7.org/fhir/NamingSystem/iccbba-blood-di, 
-4) ICCBA for other devices:
-http://hl7.org/fhir/NamingSystem/iccbba-other-di.
+         * @return Organization that is charged with issuing UDIs for devices. For example, the US FDA issuers include: 
+1) GS1: http://hl7.org/fhir/NamingSystem/gs1-di, 
+2) HIBCC: http://hl7.org/fhir/NamingSystem/hibcc-diI, 
+3) ICCBBA for blood containers: http://hl7.org/fhir/NamingSystem/iccbba-blood-di, 
+4) ICCBA for other devices: http://hl7.org/fhir/NamingSystem/iccbba-other-di # Informationsstelle für Arzneispezialitäten (IFA GmbH) (EU only): http://hl7.org/fhir/NamingSystem/ifa-gmbh-di.
          */
         public String getIssuer() { 
           return this.issuer == null ? null : this.issuer.getValue();
         }
 
         /**
-         * @param value Organization that is charged with issuing UDIs for devices.  For example, the US FDA issuers include :
-1) GS1: 
-http://hl7.org/fhir/NamingSystem/gs1-di, 
-2) HIBCC:
-http://hl7.org/fhir/NamingSystem/hibcc-dI, 
-3) ICCBBA for blood containers:
-http://hl7.org/fhir/NamingSystem/iccbba-blood-di, 
-4) ICCBA for other devices:
-http://hl7.org/fhir/NamingSystem/iccbba-other-di.
+         * @param value Organization that is charged with issuing UDIs for devices. For example, the US FDA issuers include: 
+1) GS1: http://hl7.org/fhir/NamingSystem/gs1-di, 
+2) HIBCC: http://hl7.org/fhir/NamingSystem/hibcc-diI, 
+3) ICCBBA for blood containers: http://hl7.org/fhir/NamingSystem/iccbba-blood-di, 
+4) ICCBA for other devices: http://hl7.org/fhir/NamingSystem/iccbba-other-di # Informationsstelle für Arzneispezialitäten (IFA GmbH) (EU only): http://hl7.org/fhir/NamingSystem/ifa-gmbh-di.
          */
         public DeviceUdiCarrierComponent setIssuer(String value) { 
           if (Utilities.noString(value))
@@ -542,7 +510,7 @@ http://hl7.org/fhir/NamingSystem/iccbba-other-di.
         }
 
         /**
-         * @return {@link #jurisdiction} (The identity of the authoritative source for UDI generation within a  jurisdiction.  All UDIs are globally unique within a single namespace with the appropriate repository uri as the system.  For example,  UDIs of devices managed in the U.S. by the FDA, the value is  http://hl7.org/fhir/NamingSystem/fda-udi.). This is the underlying object with id, value and extensions. The accessor "getJurisdiction" gives direct access to the value
+         * @return {@link #jurisdiction} (The identity of the authoritative source for UDI generation within a jurisdiction. All UDIs are globally unique within a single namespace with the appropriate repository uri as the system. For example, UDIs of devices managed in the U.S. by the FDA, the value is http://hl7.org/fhir/NamingSystem/us-fda-udi or in the European Union by the European Commission http://hl7.org/fhir/NamingSystem/eu-ec-udi.). This is the underlying object with id, value and extensions. The accessor "getJurisdiction" gives direct access to the value
          */
         public UriType getJurisdictionElement() { 
           if (this.jurisdiction == null)
@@ -562,7 +530,7 @@ http://hl7.org/fhir/NamingSystem/iccbba-other-di.
         }
 
         /**
-         * @param value {@link #jurisdiction} (The identity of the authoritative source for UDI generation within a  jurisdiction.  All UDIs are globally unique within a single namespace with the appropriate repository uri as the system.  For example,  UDIs of devices managed in the U.S. by the FDA, the value is  http://hl7.org/fhir/NamingSystem/fda-udi.). This is the underlying object with id, value and extensions. The accessor "getJurisdiction" gives direct access to the value
+         * @param value {@link #jurisdiction} (The identity of the authoritative source for UDI generation within a jurisdiction. All UDIs are globally unique within a single namespace with the appropriate repository uri as the system. For example, UDIs of devices managed in the U.S. by the FDA, the value is http://hl7.org/fhir/NamingSystem/us-fda-udi or in the European Union by the European Commission http://hl7.org/fhir/NamingSystem/eu-ec-udi.). This is the underlying object with id, value and extensions. The accessor "getJurisdiction" gives direct access to the value
          */
         public DeviceUdiCarrierComponent setJurisdictionElement(UriType value) { 
           this.jurisdiction = value;
@@ -570,14 +538,14 @@ http://hl7.org/fhir/NamingSystem/iccbba-other-di.
         }
 
         /**
-         * @return The identity of the authoritative source for UDI generation within a  jurisdiction.  All UDIs are globally unique within a single namespace with the appropriate repository uri as the system.  For example,  UDIs of devices managed in the U.S. by the FDA, the value is  http://hl7.org/fhir/NamingSystem/fda-udi.
+         * @return The identity of the authoritative source for UDI generation within a jurisdiction. All UDIs are globally unique within a single namespace with the appropriate repository uri as the system. For example, UDIs of devices managed in the U.S. by the FDA, the value is http://hl7.org/fhir/NamingSystem/us-fda-udi or in the European Union by the European Commission http://hl7.org/fhir/NamingSystem/eu-ec-udi.
          */
         public String getJurisdiction() { 
           return this.jurisdiction == null ? null : this.jurisdiction.getValue();
         }
 
         /**
-         * @param value The identity of the authoritative source for UDI generation within a  jurisdiction.  All UDIs are globally unique within a single namespace with the appropriate repository uri as the system.  For example,  UDIs of devices managed in the U.S. by the FDA, the value is  http://hl7.org/fhir/NamingSystem/fda-udi.
+         * @param value The identity of the authoritative source for UDI generation within a jurisdiction. All UDIs are globally unique within a single namespace with the appropriate repository uri as the system. For example, UDIs of devices managed in the U.S. by the FDA, the value is http://hl7.org/fhir/NamingSystem/us-fda-udi or in the European Union by the European Commission http://hl7.org/fhir/NamingSystem/eu-ec-udi.
          */
         public DeviceUdiCarrierComponent setJurisdiction(String value) { 
           if (Utilities.noString(value))
@@ -740,8 +708,8 @@ http://hl7.org/fhir/NamingSystem/iccbba-other-di.
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("deviceIdentifier", "string", "The device identifier (DI) is a mandatory, fixed portion of a UDI that identifies the labeler and the specific version or model of a device.", 0, 1, deviceIdentifier));
-          children.add(new Property("issuer", "uri", "Organization that is charged with issuing UDIs for devices.  For example, the US FDA issuers include :\n1) GS1: \nhttp://hl7.org/fhir/NamingSystem/gs1-di, \n2) HIBCC:\nhttp://hl7.org/fhir/NamingSystem/hibcc-dI, \n3) ICCBBA for blood containers:\nhttp://hl7.org/fhir/NamingSystem/iccbba-blood-di, \n4) ICCBA for other devices:\nhttp://hl7.org/fhir/NamingSystem/iccbba-other-di.", 0, 1, issuer));
-          children.add(new Property("jurisdiction", "uri", "The identity of the authoritative source for UDI generation within a  jurisdiction.  All UDIs are globally unique within a single namespace with the appropriate repository uri as the system.  For example,  UDIs of devices managed in the U.S. by the FDA, the value is  http://hl7.org/fhir/NamingSystem/fda-udi.", 0, 1, jurisdiction));
+          children.add(new Property("issuer", "uri", "Organization that is charged with issuing UDIs for devices. For example, the US FDA issuers include: \n1) GS1: http://hl7.org/fhir/NamingSystem/gs1-di, \n2) HIBCC: http://hl7.org/fhir/NamingSystem/hibcc-diI, \n3) ICCBBA for blood containers: http://hl7.org/fhir/NamingSystem/iccbba-blood-di, \n4) ICCBA for other devices: http://hl7.org/fhir/NamingSystem/iccbba-other-di # Informationsstelle für Arzneispezialitäten (IFA GmbH) (EU only): http://hl7.org/fhir/NamingSystem/ifa-gmbh-di.", 0, 1, issuer));
+          children.add(new Property("jurisdiction", "uri", "The identity of the authoritative source for UDI generation within a jurisdiction. All UDIs are globally unique within a single namespace with the appropriate repository uri as the system. For example, UDIs of devices managed in the U.S. by the FDA, the value is http://hl7.org/fhir/NamingSystem/us-fda-udi or in the European Union by the European Commission http://hl7.org/fhir/NamingSystem/eu-ec-udi.", 0, 1, jurisdiction));
           children.add(new Property("carrierAIDC", "base64Binary", "The full UDI carrier of the Automatic Identification and Data Capture (AIDC) technology representation of the barcode string as printed on the packaging of the device - e.g., a barcode or RFID.   Because of limitations on character sets in XML and the need to round-trip JSON data through XML, AIDC Formats *SHALL* be base64 encoded.", 0, 1, carrierAIDC));
           children.add(new Property("carrierHRF", "string", "The full UDI carrier as the human readable form (HRF) representation of the barcode string as printed on the packaging of the device.", 0, 1, carrierHRF));
           children.add(new Property("entryType", "code", "A coded entry to indicate how the data was entered.", 0, 1, entryType));
@@ -751,8 +719,8 @@ http://hl7.org/fhir/NamingSystem/iccbba-other-di.
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 1322005407: /*deviceIdentifier*/  return new Property("deviceIdentifier", "string", "The device identifier (DI) is a mandatory, fixed portion of a UDI that identifies the labeler and the specific version or model of a device.", 0, 1, deviceIdentifier);
-          case -1179159879: /*issuer*/  return new Property("issuer", "uri", "Organization that is charged with issuing UDIs for devices.  For example, the US FDA issuers include :\n1) GS1: \nhttp://hl7.org/fhir/NamingSystem/gs1-di, \n2) HIBCC:\nhttp://hl7.org/fhir/NamingSystem/hibcc-dI, \n3) ICCBBA for blood containers:\nhttp://hl7.org/fhir/NamingSystem/iccbba-blood-di, \n4) ICCBA for other devices:\nhttp://hl7.org/fhir/NamingSystem/iccbba-other-di.", 0, 1, issuer);
-          case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "uri", "The identity of the authoritative source for UDI generation within a  jurisdiction.  All UDIs are globally unique within a single namespace with the appropriate repository uri as the system.  For example,  UDIs of devices managed in the U.S. by the FDA, the value is  http://hl7.org/fhir/NamingSystem/fda-udi.", 0, 1, jurisdiction);
+          case -1179159879: /*issuer*/  return new Property("issuer", "uri", "Organization that is charged with issuing UDIs for devices. For example, the US FDA issuers include: \n1) GS1: http://hl7.org/fhir/NamingSystem/gs1-di, \n2) HIBCC: http://hl7.org/fhir/NamingSystem/hibcc-diI, \n3) ICCBBA for blood containers: http://hl7.org/fhir/NamingSystem/iccbba-blood-di, \n4) ICCBA for other devices: http://hl7.org/fhir/NamingSystem/iccbba-other-di # Informationsstelle für Arzneispezialitäten (IFA GmbH) (EU only): http://hl7.org/fhir/NamingSystem/ifa-gmbh-di.", 0, 1, issuer);
+          case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "uri", "The identity of the authoritative source for UDI generation within a jurisdiction. All UDIs are globally unique within a single namespace with the appropriate repository uri as the system. For example, UDIs of devices managed in the U.S. by the FDA, the value is http://hl7.org/fhir/NamingSystem/us-fda-udi or in the European Union by the European Commission http://hl7.org/fhir/NamingSystem/eu-ec-udi.", 0, 1, jurisdiction);
           case -768521825: /*carrierAIDC*/  return new Property("carrierAIDC", "base64Binary", "The full UDI carrier of the Automatic Identification and Data Capture (AIDC) technology representation of the barcode string as printed on the packaging of the device - e.g., a barcode or RFID.   Because of limitations on character sets in XML and the need to round-trip JSON data through XML, AIDC Formats *SHALL* be base64 encoded.", 0, 1, carrierAIDC);
           case 806499972: /*carrierHRF*/  return new Property("carrierHRF", "string", "The full UDI carrier as the human readable form (HRF) representation of the barcode string as printed on the packaging of the device.", 0, 1, carrierHRF);
           case -479362356: /*entryType*/  return new Property("entryType", "code", "A coded entry to indicate how the data was entered.", 0, 1, entryType);
@@ -937,10 +905,10 @@ http://hl7.org/fhir/NamingSystem/iccbba-other-di.
 
         /**
          * The type of deviceName. Note that ManufactureDeviceName means that the name is the name as given by the manufacturer, not the name of the manufacturer.
-UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | ModelName.
+RegisteredName | UserFriendlyName | PatientReportedName.
          */
         @Child(name = "type", type = {CodeType.class}, order=2, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="udi-label-name | user-friendly-name | patient-reported-name | manufacturer-name | model-name | other", formalDefinition="The type of deviceName. Note that ManufactureDeviceName means that the name is the name as given by the manufacturer, not the name of the manufacturer.\nUDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | ModelName." )
+        @Description(shortDefinition="registered-name | user-friendly-name | patient-reported-name", formalDefinition="The type of deviceName. Note that ManufactureDeviceName means that the name is the name as given by the manufacturer, not the name of the manufacturer.\nRegisteredName | UserFriendlyName | PatientReportedName." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-nametype")
         protected Enumeration<DeviceNameType> type;
 
@@ -1009,7 +977,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
 
         /**
          * @return {@link #type} (The type of deviceName. Note that ManufactureDeviceName means that the name is the name as given by the manufacturer, not the name of the manufacturer.
-UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | ModelName.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+RegisteredName | UserFriendlyName | PatientReportedName.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
          */
         public Enumeration<DeviceNameType> getTypeElement() { 
           if (this.type == null)
@@ -1030,7 +998,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
 
         /**
          * @param value {@link #type} (The type of deviceName. Note that ManufactureDeviceName means that the name is the name as given by the manufacturer, not the name of the manufacturer.
-UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | ModelName.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+RegisteredName | UserFriendlyName | PatientReportedName.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
          */
         public DeviceDeviceNameComponent setTypeElement(Enumeration<DeviceNameType> value) { 
           this.type = value;
@@ -1039,7 +1007,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
 
         /**
          * @return The type of deviceName. Note that ManufactureDeviceName means that the name is the name as given by the manufacturer, not the name of the manufacturer.
-UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | ModelName.
+RegisteredName | UserFriendlyName | PatientReportedName.
          */
         public DeviceNameType getType() { 
           return this.type == null ? null : this.type.getValue();
@@ -1047,7 +1015,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
 
         /**
          * @param value The type of deviceName. Note that ManufactureDeviceName means that the name is the name as given by the manufacturer, not the name of the manufacturer.
-UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | ModelName.
+RegisteredName | UserFriendlyName | PatientReportedName.
          */
         public DeviceDeviceNameComponent setType(DeviceNameType value) { 
             if (this.type == null)
@@ -1059,14 +1027,14 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("name", "string", "The name that identifies the device.", 0, 1, name));
-          children.add(new Property("type", "code", "The type of deviceName. Note that ManufactureDeviceName means that the name is the name as given by the manufacturer, not the name of the manufacturer.\nUDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | ModelName.", 0, 1, type));
+          children.add(new Property("type", "code", "The type of deviceName. Note that ManufactureDeviceName means that the name is the name as given by the manufacturer, not the name of the manufacturer.\nRegisteredName | UserFriendlyName | PatientReportedName.", 0, 1, type));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3373707: /*name*/  return new Property("name", "string", "The name that identifies the device.", 0, 1, name);
-          case 3575610: /*type*/  return new Property("type", "code", "The type of deviceName. Note that ManufactureDeviceName means that the name is the name as given by the manufacturer, not the name of the manufacturer.\nUDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | ModelName.", 0, 1, type);
+          case 3575610: /*type*/  return new Property("type", "code", "The type of deviceName. Note that ManufactureDeviceName means that the name is the name as given by the manufacturer, not the name of the manufacturer.\nRegisteredName | UserFriendlyName | PatientReportedName.", 0, 1, type);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1179,239 +1147,6 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
 
   public String fhirType() {
     return "Device.deviceName";
-
-  }
-
-  }
-
-    @Block()
-    public static class DeviceSpecializationComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * The standard that is used to operate and communicate.
-         */
-        @Child(name = "systemType", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The standard that is used to operate and communicate", formalDefinition="The standard that is used to operate and communicate." )
-        protected CodeableConcept systemType;
-
-        /**
-         * The version of the standard that is used to operate and communicate.
-         */
-        @Child(name = "version", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The version of the standard that is used to operate and communicate", formalDefinition="The version of the standard that is used to operate and communicate." )
-        protected StringType version;
-
-        private static final long serialVersionUID = 1557342629L;
-
-    /**
-     * Constructor
-     */
-      public DeviceSpecializationComponent() {
-        super();
-      }
-
-    /**
-     * Constructor
-     */
-      public DeviceSpecializationComponent(CodeableConcept systemType) {
-        super();
-        this.setSystemType(systemType);
-      }
-
-        /**
-         * @return {@link #systemType} (The standard that is used to operate and communicate.)
-         */
-        public CodeableConcept getSystemType() { 
-          if (this.systemType == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create DeviceSpecializationComponent.systemType");
-            else if (Configuration.doAutoCreate())
-              this.systemType = new CodeableConcept(); // cc
-          return this.systemType;
-        }
-
-        public boolean hasSystemType() { 
-          return this.systemType != null && !this.systemType.isEmpty();
-        }
-
-        /**
-         * @param value {@link #systemType} (The standard that is used to operate and communicate.)
-         */
-        public DeviceSpecializationComponent setSystemType(CodeableConcept value) { 
-          this.systemType = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #version} (The version of the standard that is used to operate and communicate.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
-         */
-        public StringType getVersionElement() { 
-          if (this.version == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create DeviceSpecializationComponent.version");
-            else if (Configuration.doAutoCreate())
-              this.version = new StringType(); // bb
-          return this.version;
-        }
-
-        public boolean hasVersionElement() { 
-          return this.version != null && !this.version.isEmpty();
-        }
-
-        public boolean hasVersion() { 
-          return this.version != null && !this.version.isEmpty();
-        }
-
-        /**
-         * @param value {@link #version} (The version of the standard that is used to operate and communicate.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
-         */
-        public DeviceSpecializationComponent setVersionElement(StringType value) { 
-          this.version = value;
-          return this;
-        }
-
-        /**
-         * @return The version of the standard that is used to operate and communicate.
-         */
-        public String getVersion() { 
-          return this.version == null ? null : this.version.getValue();
-        }
-
-        /**
-         * @param value The version of the standard that is used to operate and communicate.
-         */
-        public DeviceSpecializationComponent setVersion(String value) { 
-          if (Utilities.noString(value))
-            this.version = null;
-          else {
-            if (this.version == null)
-              this.version = new StringType();
-            this.version.setValue(value);
-          }
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("systemType", "CodeableConcept", "The standard that is used to operate and communicate.", 0, 1, systemType));
-          children.add(new Property("version", "string", "The version of the standard that is used to operate and communicate.", 0, 1, version));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case 642893321: /*systemType*/  return new Property("systemType", "CodeableConcept", "The standard that is used to operate and communicate.", 0, 1, systemType);
-          case 351608024: /*version*/  return new Property("version", "string", "The version of the standard that is used to operate and communicate.", 0, 1, version);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case 642893321: /*systemType*/ return this.systemType == null ? new Base[0] : new Base[] {this.systemType}; // CodeableConcept
-        case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case 642893321: // systemType
-          this.systemType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case 351608024: // version
-          this.version = TypeConvertor.castToString(value); // StringType
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("systemType")) {
-          this.systemType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("version")) {
-          this.version = TypeConvertor.castToString(value); // StringType
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 642893321:  return getSystemType();
-        case 351608024:  return getVersionElement();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 642893321: /*systemType*/ return new String[] {"CodeableConcept"};
-        case 351608024: /*version*/ return new String[] {"string"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("systemType")) {
-          this.systemType = new CodeableConcept();
-          return this.systemType;
-        }
-        else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Device.specialization.version");
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public DeviceSpecializationComponent copy() {
-        DeviceSpecializationComponent dst = new DeviceSpecializationComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(DeviceSpecializationComponent dst) {
-        super.copyValues(dst);
-        dst.systemType = systemType == null ? null : systemType.copy();
-        dst.version = version == null ? null : version.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof DeviceSpecializationComponent))
-          return false;
-        DeviceSpecializationComponent o = (DeviceSpecializationComponent) other_;
-        return compareDeep(systemType, o.systemType, true) && compareDeep(version, o.version, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof DeviceSpecializationComponent))
-          return false;
-        DeviceSpecializationComponent o = (DeviceSpecializationComponent) other_;
-        return compareValues(version, o.version, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(systemType, version);
-      }
-
-  public String fhirType() {
-    return "Device.specialization";
 
   }
 
@@ -1703,10 +1438,10 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         protected CodeableConcept type;
 
         /**
-         * Property value - can be a code or quantity.
+         * Property value - can be a code, quantity, boolean, string or attachment.
          */
-        @Child(name = "value", type = {Quantity.class, CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Property value - as a code or quantity", formalDefinition="Property value - can be a code or quantity." )
+        @Child(name = "value", type = {Quantity.class, CodeableConcept.class, StringType.class, BooleanType.class, IntegerType.class, Range.class, Attachment.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Property value - as a code, quantity, boolean, string or attachmment", formalDefinition="Property value - can be a code, quantity, boolean, string or attachment." )
         protected DataType value;
 
         private static final long serialVersionUID = -1659186716L;
@@ -1751,14 +1486,14 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         }
 
         /**
-         * @return {@link #value} (Property value - can be a code or quantity.)
+         * @return {@link #value} (Property value - can be a code, quantity, boolean, string or attachment.)
          */
         public DataType getValue() { 
           return this.value;
         }
 
         /**
-         * @return {@link #value} (Property value - can be a code or quantity.)
+         * @return {@link #value} (Property value - can be a code, quantity, boolean, string or attachment.)
          */
         public Quantity getValueQuantity() throws FHIRException { 
           if (this.value == null)
@@ -1773,7 +1508,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         }
 
         /**
-         * @return {@link #value} (Property value - can be a code or quantity.)
+         * @return {@link #value} (Property value - can be a code, quantity, boolean, string or attachment.)
          */
         public CodeableConcept getValueCodeableConcept() throws FHIRException { 
           if (this.value == null)
@@ -1787,15 +1522,90 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
           return this != null && this.value instanceof CodeableConcept;
         }
 
+        /**
+         * @return {@link #value} (Property value - can be a code, quantity, boolean, string or attachment.)
+         */
+        public StringType getValueStringType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new StringType();
+          if (!(this.value instanceof StringType))
+            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (StringType) this.value;
+        }
+
+        public boolean hasValueStringType() { 
+          return this != null && this.value instanceof StringType;
+        }
+
+        /**
+         * @return {@link #value} (Property value - can be a code, quantity, boolean, string or attachment.)
+         */
+        public BooleanType getValueBooleanType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new BooleanType();
+          if (!(this.value instanceof BooleanType))
+            throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (BooleanType) this.value;
+        }
+
+        public boolean hasValueBooleanType() { 
+          return this != null && this.value instanceof BooleanType;
+        }
+
+        /**
+         * @return {@link #value} (Property value - can be a code, quantity, boolean, string or attachment.)
+         */
+        public IntegerType getValueIntegerType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new IntegerType();
+          if (!(this.value instanceof IntegerType))
+            throw new FHIRException("Type mismatch: the type IntegerType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (IntegerType) this.value;
+        }
+
+        public boolean hasValueIntegerType() { 
+          return this != null && this.value instanceof IntegerType;
+        }
+
+        /**
+         * @return {@link #value} (Property value - can be a code, quantity, boolean, string or attachment.)
+         */
+        public Range getValueRange() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Range();
+          if (!(this.value instanceof Range))
+            throw new FHIRException("Type mismatch: the type Range was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Range) this.value;
+        }
+
+        public boolean hasValueRange() { 
+          return this != null && this.value instanceof Range;
+        }
+
+        /**
+         * @return {@link #value} (Property value - can be a code, quantity, boolean, string or attachment.)
+         */
+        public Attachment getValueAttachment() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Attachment();
+          if (!(this.value instanceof Attachment))
+            throw new FHIRException("Type mismatch: the type Attachment was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Attachment) this.value;
+        }
+
+        public boolean hasValueAttachment() { 
+          return this != null && this.value instanceof Attachment;
+        }
+
         public boolean hasValue() { 
           return this.value != null && !this.value.isEmpty();
         }
 
         /**
-         * @param value {@link #value} (Property value - can be a code or quantity.)
+         * @param value {@link #value} (Property value - can be a code, quantity, boolean, string or attachment.)
          */
         public DevicePropertyComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof Quantity || value instanceof CodeableConcept))
+          if (value != null && !(value instanceof Quantity || value instanceof CodeableConcept || value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof Range || value instanceof Attachment))
             throw new Error("Not the right type for Device.property.value[x]: "+value.fhirType());
           this.value = value;
           return this;
@@ -1804,17 +1614,22 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "Code that specifies the property being represented. No codes are specified but the MDC codes are an example: https://build.fhir.org/mdc.html.", 0, 1, type));
-          children.add(new Property("value[x]", "Quantity|CodeableConcept", "Property value - can be a code or quantity.", 0, 1, value));
+          children.add(new Property("value[x]", "Quantity|CodeableConcept|string|boolean|integer|Range|Attachment", "Property value - can be a code, quantity, boolean, string or attachment.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Code that specifies the property being represented. No codes are specified but the MDC codes are an example: https://build.fhir.org/mdc.html.", 0, 1, type);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "Quantity|CodeableConcept", "Property value - can be a code or quantity.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "Quantity|CodeableConcept", "Property value - can be a code or quantity.", 0, 1, value);
-          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "Property value - can be a code or quantity.", 0, 1, value);
-          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "Property value - can be a code or quantity.", 0, 1, value);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "Quantity|CodeableConcept|string|boolean|integer|Range|Attachment", "Property value - can be a code, quantity, boolean, string or attachment.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "Quantity|CodeableConcept|string|boolean|integer|Range|Attachment", "Property value - can be a code, quantity, boolean, string or attachment.", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "Property value - can be a code, quantity, boolean, string or attachment.", 0, 1, value);
+          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "Property value - can be a code, quantity, boolean, string or attachment.", 0, 1, value);
+          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "Property value - can be a code, quantity, boolean, string or attachment.", 0, 1, value);
+          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "Property value - can be a code, quantity, boolean, string or attachment.", 0, 1, value);
+          case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "Property value - can be a code, quantity, boolean, string or attachment.", 0, 1, value);
+          case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "Property value - can be a code, quantity, boolean, string or attachment.", 0, 1, value);
+          case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "Property value - can be a code, quantity, boolean, string or attachment.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1870,7 +1685,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case 111972721: /*value*/ return new String[] {"Quantity", "CodeableConcept"};
+        case 111972721: /*value*/ return new String[] {"Quantity", "CodeableConcept", "string", "boolean", "integer", "Range", "Attachment"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1888,6 +1703,26 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         }
         else if (name.equals("valueCodeableConcept")) {
           this.value = new CodeableConcept();
+          return this.value;
+        }
+        else if (name.equals("valueString")) {
+          this.value = new StringType();
+          return this.value;
+        }
+        else if (name.equals("valueBoolean")) {
+          this.value = new BooleanType();
+          return this.value;
+        }
+        else if (name.equals("valueInteger")) {
+          this.value = new IntegerType();
+          return this.value;
+        }
+        else if (name.equals("valueRange")) {
+          this.value = new Range();
+          return this.value;
+        }
+        else if (name.equals("valueAttachment")) {
+          this.value = new Attachment();
           return this.value;
         }
         else
@@ -1942,7 +1777,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         /**
          * on |off | standby.
          */
-        @Child(name = "value", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "value", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="on |off | standby", formalDefinition="on |off | standby." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-operationalstatus")
         protected CodeableConcept value;
@@ -1961,6 +1796,14 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
      */
       public DeviceOperationalStatusComponent() {
         super();
+      }
+
+    /**
+     * Constructor
+     */
+      public DeviceOperationalStatusComponent(CodeableConcept value) {
+        super();
+        this.setValue(value);
       }
 
         /**
@@ -2176,7 +2019,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         /**
          * implanted|explanted|attached.
          */
-        @Child(name = "value", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "value", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="implanted|explanted|attached", formalDefinition="implanted|explanted|attached." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-associationstatus")
         protected CodeableConcept value;
@@ -2195,6 +2038,14 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
      */
       public DeviceAssociationStatusComponent() {
         super();
+      }
+
+    /**
+     * Constructor
+     */
+      public DeviceAssociationStatusComponent(CodeableConcept value) {
+        super();
+        this.setValue(value);
       }
 
         /**
@@ -2405,6 +2256,218 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
 
   }
 
+    @Block()
+    public static class DeviceLinkComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * The type indicates the relationship of the related device to the device instance.
+         */
+        @Child(name = "relation", type = {Coding.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The type indicates the relationship of the related device to the device instance", formalDefinition="The type indicates the relationship of the related device to the device instance." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-relationtype")
+        protected Coding relation;
+
+        /**
+         * A reference to the linked device.
+         */
+        @Child(name = "relatedDevice", type = {CodeableReference.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="A reference to the linked device", formalDefinition="A reference to the linked device." )
+        protected CodeableReference relatedDevice;
+
+        private static final long serialVersionUID = 627614461L;
+
+    /**
+     * Constructor
+     */
+      public DeviceLinkComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public DeviceLinkComponent(Coding relation, CodeableReference relatedDevice) {
+        super();
+        this.setRelation(relation);
+        this.setRelatedDevice(relatedDevice);
+      }
+
+        /**
+         * @return {@link #relation} (The type indicates the relationship of the related device to the device instance.)
+         */
+        public Coding getRelation() { 
+          if (this.relation == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create DeviceLinkComponent.relation");
+            else if (Configuration.doAutoCreate())
+              this.relation = new Coding(); // cc
+          return this.relation;
+        }
+
+        public boolean hasRelation() { 
+          return this.relation != null && !this.relation.isEmpty();
+        }
+
+        /**
+         * @param value {@link #relation} (The type indicates the relationship of the related device to the device instance.)
+         */
+        public DeviceLinkComponent setRelation(Coding value) { 
+          this.relation = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #relatedDevice} (A reference to the linked device.)
+         */
+        public CodeableReference getRelatedDevice() { 
+          if (this.relatedDevice == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create DeviceLinkComponent.relatedDevice");
+            else if (Configuration.doAutoCreate())
+              this.relatedDevice = new CodeableReference(); // cc
+          return this.relatedDevice;
+        }
+
+        public boolean hasRelatedDevice() { 
+          return this.relatedDevice != null && !this.relatedDevice.isEmpty();
+        }
+
+        /**
+         * @param value {@link #relatedDevice} (A reference to the linked device.)
+         */
+        public DeviceLinkComponent setRelatedDevice(CodeableReference value) { 
+          this.relatedDevice = value;
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("relation", "Coding", "The type indicates the relationship of the related device to the device instance.", 0, 1, relation));
+          children.add(new Property("relatedDevice", "CodeableReference(Device)", "A reference to the linked device.", 0, 1, relatedDevice));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case -554436100: /*relation*/  return new Property("relation", "Coding", "The type indicates the relationship of the related device to the device instance.", 0, 1, relation);
+          case -296314271: /*relatedDevice*/  return new Property("relatedDevice", "CodeableReference(Device)", "A reference to the linked device.", 0, 1, relatedDevice);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case -554436100: /*relation*/ return this.relation == null ? new Base[0] : new Base[] {this.relation}; // Coding
+        case -296314271: /*relatedDevice*/ return this.relatedDevice == null ? new Base[0] : new Base[] {this.relatedDevice}; // CodeableReference
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case -554436100: // relation
+          this.relation = TypeConvertor.castToCoding(value); // Coding
+          return value;
+        case -296314271: // relatedDevice
+          this.relatedDevice = TypeConvertor.castToCodeableReference(value); // CodeableReference
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("relation")) {
+          this.relation = TypeConvertor.castToCoding(value); // Coding
+        } else if (name.equals("relatedDevice")) {
+          this.relatedDevice = TypeConvertor.castToCodeableReference(value); // CodeableReference
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -554436100:  return getRelation();
+        case -296314271:  return getRelatedDevice();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -554436100: /*relation*/ return new String[] {"Coding"};
+        case -296314271: /*relatedDevice*/ return new String[] {"CodeableReference"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("relation")) {
+          this.relation = new Coding();
+          return this.relation;
+        }
+        else if (name.equals("relatedDevice")) {
+          this.relatedDevice = new CodeableReference();
+          return this.relatedDevice;
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public DeviceLinkComponent copy() {
+        DeviceLinkComponent dst = new DeviceLinkComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceLinkComponent dst) {
+        super.copyValues(dst);
+        dst.relation = relation == null ? null : relation.copy();
+        dst.relatedDevice = relatedDevice == null ? null : relatedDevice.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof DeviceLinkComponent))
+          return false;
+        DeviceLinkComponent o = (DeviceLinkComponent) other_;
+        return compareDeep(relation, o.relation, true) && compareDeep(relatedDevice, o.relatedDevice, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof DeviceLinkComponent))
+          return false;
+        DeviceLinkComponent o = (DeviceLinkComponent) other_;
+        return true;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(relation, relatedDevice);
+      }
+
+  public String fhirType() {
+    return "Device.link";
+
+  }
+
+  }
+
     /**
      * Unique instance identifiers assigned to a device by manufacturers other organizations or owners.
      */
@@ -2422,9 +2485,9 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     /**
      * The reference to the definition for the device.
      */
-    @Child(name = "definition", type = {DeviceDefinition.class}, order=2, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "definition", type = {CodeableReference.class}, order=2, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The reference to the definition for the device", formalDefinition="The reference to the definition for the device." )
-    protected Reference definition;
+    protected CodeableReference definition;
 
     /**
      * Unique device identifier (UDI) assigned to device label or package.  Note that the Device may include multiple udiCarriers as it either may include just the udiCarrier for the jurisdiction it is sold, or for multiple jurisdictions it could have been sold.
@@ -2450,11 +2513,11 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     protected List<CodeableConcept> statusReason;
 
     /**
-     * The distinct identification string as required by regulation for a human cell, tissue, or cellular and tissue-based product.
+     * An identifier that supports traceability to the biological entity that is the source of biological material in the product.
      */
-    @Child(name = "distinctIdentifier", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="The distinct identification string", formalDefinition="The distinct identification string as required by regulation for a human cell, tissue, or cellular and tissue-based product." )
-    protected StringType distinctIdentifier;
+    @Child(name = "biologicalSource", type = {Identifier.class}, order=6, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="An identifier that supports traceability to the biological entity that is the source of biological material in the product", formalDefinition="An identifier that supports traceability to the biological entity that is the source of biological material in the product." )
+    protected Identifier biologicalSource;
 
     /**
      * A name of the manufacturer or entity legally responsible for the device.
@@ -2521,98 +2584,104 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     protected List<CodeableConcept> type;
 
     /**
-     * The device function, including in some cases whether or not the functionality conforms to some standard. For example, a PHD blood pressure specialization indicates that the device conforms to the IEEE 11073-10407 Blood Pressure Specialization. This is NOT an alternate name or an additional descriptive name given by the manufacturer. That would be found in the deviceName element.
-In the PHD case, there are 11073 10101 nomenclature codes that define the specialization standards and that will be used, for example, in the PHD case for the specialization.systemType element. The specialization.version would be the version of the standard if the systemType referred to a standard.
-     */
-    @Child(name = "specialization", type = {}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="The capabilities supported on a  device, the standards to which the device conforms for a particular purpose, and used for the communication", formalDefinition="The device function, including in some cases whether or not the functionality conforms to some standard. For example, a PHD blood pressure specialization indicates that the device conforms to the IEEE 11073-10407 Blood Pressure Specialization. This is NOT an alternate name or an additional descriptive name given by the manufacturer. That would be found in the deviceName element.\nIn the PHD case, there are 11073 10101 nomenclature codes that define the specialization standards and that will be used, for example, in the PHD case for the specialization.systemType element. The specialization.version would be the version of the standard if the systemType referred to a standard." )
-    protected List<DeviceSpecializationComponent> specialization;
-
-    /**
      * The actual design of the device or software version running on the device.
      */
-    @Child(name = "version", type = {}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "version", type = {}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The actual design of the device or software version running on the device", formalDefinition="The actual design of the device or software version running on the device." )
     protected List<DeviceVersionComponent> version;
 
     /**
      * The actual configuration settings of a device as it actually operates, e.g., regulation status, time properties.
      */
-    @Child(name = "property", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "property", type = {}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The actual configuration settings of a device as it actually operates, e.g., regulation status, time properties", formalDefinition="The actual configuration settings of a device as it actually operates, e.g., regulation status, time properties." )
     protected List<DevicePropertyComponent> property;
 
     /**
      * Patient information, if the device is affixed to, or associated to a patient for their specific use, irrespective of the procedure, use, observation, or other activity that the device is involved in.
      */
-    @Child(name = "patient", type = {Patient.class}, order=19, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "subject", type = {Patient.class, Practitioner.class, Person.class}, order=18, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Patient to whom Device is affixed", formalDefinition="Patient information, if the device is affixed to, or associated to a patient for their specific use, irrespective of the procedure, use, observation, or other activity that the device is involved in." )
-    protected Reference patient;
+    protected Reference subject;
 
     /**
      * The status of the device itself - whether it is switched on, or activated, etc.
      */
-    @Child(name = "operationalStatus", type = {}, order=20, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "operationalStatus", type = {}, order=19, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The status of the device itself - whether it is switched on, or activated, etc", formalDefinition="The status of the device itself - whether it is switched on, or activated, etc." )
     protected DeviceOperationalStatusComponent operationalStatus;
 
     /**
      * The state of the usage or application of the device - whether the device is implanted, or explanted, or attached to the patient.
      */
-    @Child(name = "associationStatus", type = {}, order=21, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "associationStatus", type = {}, order=20, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The state of the usage or application of the device", formalDefinition="The state of the usage or application of the device - whether the device is implanted, or explanted, or attached to the patient." )
     protected DeviceAssociationStatusComponent associationStatus;
 
     /**
      * An organization that is responsible for the provision and ongoing maintenance of the device.
      */
-    @Child(name = "owner", type = {Organization.class}, order=22, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "owner", type = {Organization.class}, order=21, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Organization responsible for device", formalDefinition="An organization that is responsible for the provision and ongoing maintenance of the device." )
     protected Reference owner;
 
     /**
      * Contact details for an organization or a particular human that is responsible for the device.
      */
-    @Child(name = "contact", type = {ContactPoint.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "contact", type = {ContactPoint.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Details for human/organization for support", formalDefinition="Contact details for an organization or a particular human that is responsible for the device." )
     protected List<ContactPoint> contact;
 
     /**
      * The place where the device can be found.
      */
-    @Child(name = "location", type = {Location.class}, order=24, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "location", type = {Location.class}, order=23, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Where the device is found", formalDefinition="The place where the device can be found." )
     protected Reference location;
 
     /**
      * A network address on which the device may be contacted directly.
      */
-    @Child(name = "url", type = {UriType.class}, order=25, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "url", type = {UriType.class}, order=24, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Network address to contact device", formalDefinition="A network address on which the device may be contacted directly." )
     protected UriType url;
 
     /**
+     * Technical endpoints providing access to services provided by the device defined at this resource.
+     */
+    @Child(name = "endpoint", type = {Endpoint.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Technical endpoints providing access to electronic services provided by the device", formalDefinition="Technical endpoints providing access to services provided by the device defined at this resource." )
+    protected List<Reference> endpoint;
+
+    /**
+     * An associated device, attached to, used with, communicating with or linking a previous or new device model to the focal device.
+     */
+    @Child(name = "link", type = {}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="An associated device, attached to, used with, communicating with or linking a previous or new device model to the focal device", formalDefinition="An associated device, attached to, used with, communicating with or linking a previous or new device model to the focal device." )
+    protected List<DeviceLinkComponent> link;
+
+    /**
      * Descriptive information, usage information or implantation information that is not captured in an existing element.
      */
-    @Child(name = "note", type = {Annotation.class}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Device notes and comments", formalDefinition="Descriptive information, usage information or implantation information that is not captured in an existing element." )
     protected List<Annotation> note;
 
     /**
      * Provides additional safety characteristics about a medical device.  For example devices containing latex.
      */
-    @Child(name = "safety", type = {CodeableConcept.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "safety", type = {CodeableConcept.class}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Safety Characteristics of Device", formalDefinition="Provides additional safety characteristics about a medical device.  For example devices containing latex." )
     protected List<CodeableConcept> safety;
 
     /**
      * The device that this device is attached to or is part of.
      */
-    @Child(name = "parent", type = {Device.class}, order=28, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "parent", type = {Device.class}, order=29, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The device that this device is attached to or is part of", formalDefinition="The device that this device is attached to or is part of." )
     protected Reference parent;
 
-    private static final long serialVersionUID = -588615188L;
+    private static final long serialVersionUID = 1453107483L;
 
   /**
    * Constructor
@@ -2726,12 +2795,12 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
     /**
      * @return {@link #definition} (The reference to the definition for the device.)
      */
-    public Reference getDefinition() { 
+    public CodeableReference getDefinition() { 
       if (this.definition == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Device.definition");
         else if (Configuration.doAutoCreate())
-          this.definition = new Reference(); // cc
+          this.definition = new CodeableReference(); // cc
       return this.definition;
     }
 
@@ -2742,7 +2811,7 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
     /**
      * @param value {@link #definition} (The reference to the definition for the device.)
      */
-    public Device setDefinition(Reference value) { 
+    public Device setDefinition(CodeableReference value) { 
       this.definition = value;
       return this;
     }
@@ -2903,51 +2972,26 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
     }
 
     /**
-     * @return {@link #distinctIdentifier} (The distinct identification string as required by regulation for a human cell, tissue, or cellular and tissue-based product.). This is the underlying object with id, value and extensions. The accessor "getDistinctIdentifier" gives direct access to the value
+     * @return {@link #biologicalSource} (An identifier that supports traceability to the biological entity that is the source of biological material in the product.)
      */
-    public StringType getDistinctIdentifierElement() { 
-      if (this.distinctIdentifier == null)
+    public Identifier getBiologicalSource() { 
+      if (this.biologicalSource == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Device.distinctIdentifier");
+          throw new Error("Attempt to auto-create Device.biologicalSource");
         else if (Configuration.doAutoCreate())
-          this.distinctIdentifier = new StringType(); // bb
-      return this.distinctIdentifier;
+          this.biologicalSource = new Identifier(); // cc
+      return this.biologicalSource;
     }
 
-    public boolean hasDistinctIdentifierElement() { 
-      return this.distinctIdentifier != null && !this.distinctIdentifier.isEmpty();
-    }
-
-    public boolean hasDistinctIdentifier() { 
-      return this.distinctIdentifier != null && !this.distinctIdentifier.isEmpty();
+    public boolean hasBiologicalSource() { 
+      return this.biologicalSource != null && !this.biologicalSource.isEmpty();
     }
 
     /**
-     * @param value {@link #distinctIdentifier} (The distinct identification string as required by regulation for a human cell, tissue, or cellular and tissue-based product.). This is the underlying object with id, value and extensions. The accessor "getDistinctIdentifier" gives direct access to the value
+     * @param value {@link #biologicalSource} (An identifier that supports traceability to the biological entity that is the source of biological material in the product.)
      */
-    public Device setDistinctIdentifierElement(StringType value) { 
-      this.distinctIdentifier = value;
-      return this;
-    }
-
-    /**
-     * @return The distinct identification string as required by regulation for a human cell, tissue, or cellular and tissue-based product.
-     */
-    public String getDistinctIdentifier() { 
-      return this.distinctIdentifier == null ? null : this.distinctIdentifier.getValue();
-    }
-
-    /**
-     * @param value The distinct identification string as required by regulation for a human cell, tissue, or cellular and tissue-based product.
-     */
-    public Device setDistinctIdentifier(String value) { 
-      if (Utilities.noString(value))
-        this.distinctIdentifier = null;
-      else {
-        if (this.distinctIdentifier == null)
-          this.distinctIdentifier = new StringType();
-        this.distinctIdentifier.setValue(value);
-      }
+    public Device setBiologicalSource(Identifier value) { 
+      this.biologicalSource = value;
       return this;
     }
 
@@ -3401,60 +3445,6 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
     }
 
     /**
-     * @return {@link #specialization} (The device function, including in some cases whether or not the functionality conforms to some standard. For example, a PHD blood pressure specialization indicates that the device conforms to the IEEE 11073-10407 Blood Pressure Specialization. This is NOT an alternate name or an additional descriptive name given by the manufacturer. That would be found in the deviceName element.
-In the PHD case, there are 11073 10101 nomenclature codes that define the specialization standards and that will be used, for example, in the PHD case for the specialization.systemType element. The specialization.version would be the version of the standard if the systemType referred to a standard.)
-     */
-    public List<DeviceSpecializationComponent> getSpecialization() { 
-      if (this.specialization == null)
-        this.specialization = new ArrayList<DeviceSpecializationComponent>();
-      return this.specialization;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public Device setSpecialization(List<DeviceSpecializationComponent> theSpecialization) { 
-      this.specialization = theSpecialization;
-      return this;
-    }
-
-    public boolean hasSpecialization() { 
-      if (this.specialization == null)
-        return false;
-      for (DeviceSpecializationComponent item : this.specialization)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public DeviceSpecializationComponent addSpecialization() { //3
-      DeviceSpecializationComponent t = new DeviceSpecializationComponent();
-      if (this.specialization == null)
-        this.specialization = new ArrayList<DeviceSpecializationComponent>();
-      this.specialization.add(t);
-      return t;
-    }
-
-    public Device addSpecialization(DeviceSpecializationComponent t) { //3
-      if (t == null)
-        return this;
-      if (this.specialization == null)
-        this.specialization = new ArrayList<DeviceSpecializationComponent>();
-      this.specialization.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #specialization}, creating it if it does not already exist {3}
-     */
-    public DeviceSpecializationComponent getSpecializationFirstRep() { 
-      if (getSpecialization().isEmpty()) {
-        addSpecialization();
-      }
-      return getSpecialization().get(0);
-    }
-
-    /**
      * @return {@link #version} (The actual design of the device or software version running on the device.)
      */
     public List<DeviceVersionComponent> getVersion() { 
@@ -3561,26 +3551,26 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
     }
 
     /**
-     * @return {@link #patient} (Patient information, if the device is affixed to, or associated to a patient for their specific use, irrespective of the procedure, use, observation, or other activity that the device is involved in.)
+     * @return {@link #subject} (Patient information, if the device is affixed to, or associated to a patient for their specific use, irrespective of the procedure, use, observation, or other activity that the device is involved in.)
      */
-    public Reference getPatient() { 
-      if (this.patient == null)
+    public Reference getSubject() { 
+      if (this.subject == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Device.patient");
+          throw new Error("Attempt to auto-create Device.subject");
         else if (Configuration.doAutoCreate())
-          this.patient = new Reference(); // cc
-      return this.patient;
+          this.subject = new Reference(); // cc
+      return this.subject;
     }
 
-    public boolean hasPatient() { 
-      return this.patient != null && !this.patient.isEmpty();
+    public boolean hasSubject() { 
+      return this.subject != null && !this.subject.isEmpty();
     }
 
     /**
-     * @param value {@link #patient} (Patient information, if the device is affixed to, or associated to a patient for their specific use, irrespective of the procedure, use, observation, or other activity that the device is involved in.)
+     * @param value {@link #subject} (Patient information, if the device is affixed to, or associated to a patient for their specific use, irrespective of the procedure, use, observation, or other activity that the device is involved in.)
      */
-    public Device setPatient(Reference value) { 
-      this.patient = value;
+    public Device setSubject(Reference value) { 
+      this.subject = value;
       return this;
     }
 
@@ -3783,6 +3773,112 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
     }
 
     /**
+     * @return {@link #endpoint} (Technical endpoints providing access to services provided by the device defined at this resource.)
+     */
+    public List<Reference> getEndpoint() { 
+      if (this.endpoint == null)
+        this.endpoint = new ArrayList<Reference>();
+      return this.endpoint;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Device setEndpoint(List<Reference> theEndpoint) { 
+      this.endpoint = theEndpoint;
+      return this;
+    }
+
+    public boolean hasEndpoint() { 
+      if (this.endpoint == null)
+        return false;
+      for (Reference item : this.endpoint)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Reference addEndpoint() { //3
+      Reference t = new Reference();
+      if (this.endpoint == null)
+        this.endpoint = new ArrayList<Reference>();
+      this.endpoint.add(t);
+      return t;
+    }
+
+    public Device addEndpoint(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.endpoint == null)
+        this.endpoint = new ArrayList<Reference>();
+      this.endpoint.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #endpoint}, creating it if it does not already exist {3}
+     */
+    public Reference getEndpointFirstRep() { 
+      if (getEndpoint().isEmpty()) {
+        addEndpoint();
+      }
+      return getEndpoint().get(0);
+    }
+
+    /**
+     * @return {@link #link} (An associated device, attached to, used with, communicating with or linking a previous or new device model to the focal device.)
+     */
+    public List<DeviceLinkComponent> getLink() { 
+      if (this.link == null)
+        this.link = new ArrayList<DeviceLinkComponent>();
+      return this.link;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Device setLink(List<DeviceLinkComponent> theLink) { 
+      this.link = theLink;
+      return this;
+    }
+
+    public boolean hasLink() { 
+      if (this.link == null)
+        return false;
+      for (DeviceLinkComponent item : this.link)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public DeviceLinkComponent addLink() { //3
+      DeviceLinkComponent t = new DeviceLinkComponent();
+      if (this.link == null)
+        this.link = new ArrayList<DeviceLinkComponent>();
+      this.link.add(t);
+      return t;
+    }
+
+    public Device addLink(DeviceLinkComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.link == null)
+        this.link = new ArrayList<DeviceLinkComponent>();
+      this.link.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #link}, creating it if it does not already exist {3}
+     */
+    public DeviceLinkComponent getLinkFirstRep() { 
+      if (getLink().isEmpty()) {
+        addLink();
+      }
+      return getLink().get(0);
+    }
+
+    /**
      * @return {@link #note} (Descriptive information, usage information or implantation information that is not captured in an existing element.)
      */
     public List<Annotation> getNote() { 
@@ -3916,11 +4012,11 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Unique instance identifiers assigned to a device by manufacturers other organizations or owners.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("displayName", "string", "The name used to display by default when the device is referenced. Based on intent of use by the resource creator, this may reflect one of the names in Device.deviceName, or may be another simple name.", 0, 1, displayName));
-        children.add(new Property("definition", "Reference(DeviceDefinition)", "The reference to the definition for the device.", 0, 1, definition));
+        children.add(new Property("definition", "CodeableReference(DeviceDefinition)", "The reference to the definition for the device.", 0, 1, definition));
         children.add(new Property("udiCarrier", "", "Unique device identifier (UDI) assigned to device label or package.  Note that the Device may include multiple udiCarriers as it either may include just the udiCarrier for the jurisdiction it is sold, or for multiple jurisdictions it could have been sold.", 0, java.lang.Integer.MAX_VALUE, udiCarrier));
         children.add(new Property("status", "code", "Status of the Device record. This is not the status of the device like availability.", 0, 1, status));
         children.add(new Property("statusReason", "CodeableConcept", "Reason for the status of the Device record. For example, why is the record not active.", 0, java.lang.Integer.MAX_VALUE, statusReason));
-        children.add(new Property("distinctIdentifier", "string", "The distinct identification string as required by regulation for a human cell, tissue, or cellular and tissue-based product.", 0, 1, distinctIdentifier));
+        children.add(new Property("biologicalSource", "Identifier", "An identifier that supports traceability to the biological entity that is the source of biological material in the product.", 0, 1, biologicalSource));
         children.add(new Property("manufacturer", "string", "A name of the manufacturer or entity legally responsible for the device.", 0, 1, manufacturer));
         children.add(new Property("manufactureDate", "dateTime", "The date and time when the device was manufactured.", 0, 1, manufactureDate));
         children.add(new Property("expirationDate", "dateTime", "The date and time beyond which this device is no longer valid or should not be used (if applicable).", 0, 1, expirationDate));
@@ -3930,16 +4026,17 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
         children.add(new Property("modelNumber", "string", "The manufacturer's model number for the device.", 0, 1, modelNumber));
         children.add(new Property("partNumber", "string", "The part number or catalog number of the device.", 0, 1, partNumber));
         children.add(new Property("type", "CodeableConcept", "The kind or type of device. A device instance may have more than one type - in which case those are the types that apply to the specific instance of the device.", 0, java.lang.Integer.MAX_VALUE, type));
-        children.add(new Property("specialization", "", "The device function, including in some cases whether or not the functionality conforms to some standard. For example, a PHD blood pressure specialization indicates that the device conforms to the IEEE 11073-10407 Blood Pressure Specialization. This is NOT an alternate name or an additional descriptive name given by the manufacturer. That would be found in the deviceName element.\nIn the PHD case, there are 11073 10101 nomenclature codes that define the specialization standards and that will be used, for example, in the PHD case for the specialization.systemType element. The specialization.version would be the version of the standard if the systemType referred to a standard.", 0, java.lang.Integer.MAX_VALUE, specialization));
         children.add(new Property("version", "", "The actual design of the device or software version running on the device.", 0, java.lang.Integer.MAX_VALUE, version));
         children.add(new Property("property", "", "The actual configuration settings of a device as it actually operates, e.g., regulation status, time properties.", 0, java.lang.Integer.MAX_VALUE, property));
-        children.add(new Property("patient", "Reference(Patient)", "Patient information, if the device is affixed to, or associated to a patient for their specific use, irrespective of the procedure, use, observation, or other activity that the device is involved in.", 0, 1, patient));
+        children.add(new Property("subject", "Reference(Patient|Practitioner|Person)", "Patient information, if the device is affixed to, or associated to a patient for their specific use, irrespective of the procedure, use, observation, or other activity that the device is involved in.", 0, 1, subject));
         children.add(new Property("operationalStatus", "", "The status of the device itself - whether it is switched on, or activated, etc.", 0, 1, operationalStatus));
         children.add(new Property("associationStatus", "", "The state of the usage or application of the device - whether the device is implanted, or explanted, or attached to the patient.", 0, 1, associationStatus));
         children.add(new Property("owner", "Reference(Organization)", "An organization that is responsible for the provision and ongoing maintenance of the device.", 0, 1, owner));
         children.add(new Property("contact", "ContactPoint", "Contact details for an organization or a particular human that is responsible for the device.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("location", "Reference(Location)", "The place where the device can be found.", 0, 1, location));
         children.add(new Property("url", "uri", "A network address on which the device may be contacted directly.", 0, 1, url));
+        children.add(new Property("endpoint", "Reference(Endpoint)", "Technical endpoints providing access to services provided by the device defined at this resource.", 0, java.lang.Integer.MAX_VALUE, endpoint));
+        children.add(new Property("link", "", "An associated device, attached to, used with, communicating with or linking a previous or new device model to the focal device.", 0, java.lang.Integer.MAX_VALUE, link));
         children.add(new Property("note", "Annotation", "Descriptive information, usage information or implantation information that is not captured in an existing element.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("safety", "CodeableConcept", "Provides additional safety characteristics about a medical device.  For example devices containing latex.", 0, java.lang.Integer.MAX_VALUE, safety));
         children.add(new Property("parent", "Reference(Device)", "The device that this device is attached to or is part of.", 0, 1, parent));
@@ -3950,11 +4047,11 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Unique instance identifiers assigned to a device by manufacturers other organizations or owners.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 1714148973: /*displayName*/  return new Property("displayName", "string", "The name used to display by default when the device is referenced. Based on intent of use by the resource creator, this may reflect one of the names in Device.deviceName, or may be another simple name.", 0, 1, displayName);
-        case -1014418093: /*definition*/  return new Property("definition", "Reference(DeviceDefinition)", "The reference to the definition for the device.", 0, 1, definition);
+        case -1014418093: /*definition*/  return new Property("definition", "CodeableReference(DeviceDefinition)", "The reference to the definition for the device.", 0, 1, definition);
         case -1343558178: /*udiCarrier*/  return new Property("udiCarrier", "", "Unique device identifier (UDI) assigned to device label or package.  Note that the Device may include multiple udiCarriers as it either may include just the udiCarrier for the jurisdiction it is sold, or for multiple jurisdictions it could have been sold.", 0, java.lang.Integer.MAX_VALUE, udiCarrier);
         case -892481550: /*status*/  return new Property("status", "code", "Status of the Device record. This is not the status of the device like availability.", 0, 1, status);
         case 2051346646: /*statusReason*/  return new Property("statusReason", "CodeableConcept", "Reason for the status of the Device record. For example, why is the record not active.", 0, java.lang.Integer.MAX_VALUE, statusReason);
-        case -1836176187: /*distinctIdentifier*/  return new Property("distinctIdentifier", "string", "The distinct identification string as required by regulation for a human cell, tissue, or cellular and tissue-based product.", 0, 1, distinctIdentifier);
+        case -883952260: /*biologicalSource*/  return new Property("biologicalSource", "Identifier", "An identifier that supports traceability to the biological entity that is the source of biological material in the product.", 0, 1, biologicalSource);
         case -1969347631: /*manufacturer*/  return new Property("manufacturer", "string", "A name of the manufacturer or entity legally responsible for the device.", 0, 1, manufacturer);
         case 416714767: /*manufactureDate*/  return new Property("manufactureDate", "dateTime", "The date and time when the device was manufactured.", 0, 1, manufactureDate);
         case -668811523: /*expirationDate*/  return new Property("expirationDate", "dateTime", "The date and time beyond which this device is no longer valid or should not be used (if applicable).", 0, 1, expirationDate);
@@ -3964,16 +4061,17 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
         case 346619858: /*modelNumber*/  return new Property("modelNumber", "string", "The manufacturer's model number for the device.", 0, 1, modelNumber);
         case -731502308: /*partNumber*/  return new Property("partNumber", "string", "The part number or catalog number of the device.", 0, 1, partNumber);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The kind or type of device. A device instance may have more than one type - in which case those are the types that apply to the specific instance of the device.", 0, java.lang.Integer.MAX_VALUE, type);
-        case 682815883: /*specialization*/  return new Property("specialization", "", "The device function, including in some cases whether or not the functionality conforms to some standard. For example, a PHD blood pressure specialization indicates that the device conforms to the IEEE 11073-10407 Blood Pressure Specialization. This is NOT an alternate name or an additional descriptive name given by the manufacturer. That would be found in the deviceName element.\nIn the PHD case, there are 11073 10101 nomenclature codes that define the specialization standards and that will be used, for example, in the PHD case for the specialization.systemType element. The specialization.version would be the version of the standard if the systemType referred to a standard.", 0, java.lang.Integer.MAX_VALUE, specialization);
         case 351608024: /*version*/  return new Property("version", "", "The actual design of the device or software version running on the device.", 0, java.lang.Integer.MAX_VALUE, version);
         case -993141291: /*property*/  return new Property("property", "", "The actual configuration settings of a device as it actually operates, e.g., regulation status, time properties.", 0, java.lang.Integer.MAX_VALUE, property);
-        case -791418107: /*patient*/  return new Property("patient", "Reference(Patient)", "Patient information, if the device is affixed to, or associated to a patient for their specific use, irrespective of the procedure, use, observation, or other activity that the device is involved in.", 0, 1, patient);
+        case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Practitioner|Person)", "Patient information, if the device is affixed to, or associated to a patient for their specific use, irrespective of the procedure, use, observation, or other activity that the device is involved in.", 0, 1, subject);
         case -2103166364: /*operationalStatus*/  return new Property("operationalStatus", "", "The status of the device itself - whether it is switched on, or activated, etc.", 0, 1, operationalStatus);
         case -605391917: /*associationStatus*/  return new Property("associationStatus", "", "The state of the usage or application of the device - whether the device is implanted, or explanted, or attached to the patient.", 0, 1, associationStatus);
         case 106164915: /*owner*/  return new Property("owner", "Reference(Organization)", "An organization that is responsible for the provision and ongoing maintenance of the device.", 0, 1, owner);
         case 951526432: /*contact*/  return new Property("contact", "ContactPoint", "Contact details for an organization or a particular human that is responsible for the device.", 0, java.lang.Integer.MAX_VALUE, contact);
         case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "The place where the device can be found.", 0, 1, location);
         case 116079: /*url*/  return new Property("url", "uri", "A network address on which the device may be contacted directly.", 0, 1, url);
+        case 1741102485: /*endpoint*/  return new Property("endpoint", "Reference(Endpoint)", "Technical endpoints providing access to services provided by the device defined at this resource.", 0, java.lang.Integer.MAX_VALUE, endpoint);
+        case 3321850: /*link*/  return new Property("link", "", "An associated device, attached to, used with, communicating with or linking a previous or new device model to the focal device.", 0, java.lang.Integer.MAX_VALUE, link);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Descriptive information, usage information or implantation information that is not captured in an existing element.", 0, java.lang.Integer.MAX_VALUE, note);
         case -909893934: /*safety*/  return new Property("safety", "CodeableConcept", "Provides additional safety characteristics about a medical device.  For example devices containing latex.", 0, java.lang.Integer.MAX_VALUE, safety);
         case -995424086: /*parent*/  return new Property("parent", "Reference(Device)", "The device that this device is attached to or is part of.", 0, 1, parent);
@@ -3987,11 +4085,11 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case 1714148973: /*displayName*/ return this.displayName == null ? new Base[0] : new Base[] {this.displayName}; // StringType
-        case -1014418093: /*definition*/ return this.definition == null ? new Base[0] : new Base[] {this.definition}; // Reference
+        case -1014418093: /*definition*/ return this.definition == null ? new Base[0] : new Base[] {this.definition}; // CodeableReference
         case -1343558178: /*udiCarrier*/ return this.udiCarrier == null ? new Base[0] : this.udiCarrier.toArray(new Base[this.udiCarrier.size()]); // DeviceUdiCarrierComponent
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<FHIRDeviceStatus>
         case 2051346646: /*statusReason*/ return this.statusReason == null ? new Base[0] : this.statusReason.toArray(new Base[this.statusReason.size()]); // CodeableConcept
-        case -1836176187: /*distinctIdentifier*/ return this.distinctIdentifier == null ? new Base[0] : new Base[] {this.distinctIdentifier}; // StringType
+        case -883952260: /*biologicalSource*/ return this.biologicalSource == null ? new Base[0] : new Base[] {this.biologicalSource}; // Identifier
         case -1969347631: /*manufacturer*/ return this.manufacturer == null ? new Base[0] : new Base[] {this.manufacturer}; // StringType
         case 416714767: /*manufactureDate*/ return this.manufactureDate == null ? new Base[0] : new Base[] {this.manufactureDate}; // DateTimeType
         case -668811523: /*expirationDate*/ return this.expirationDate == null ? new Base[0] : new Base[] {this.expirationDate}; // DateTimeType
@@ -4001,16 +4099,17 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
         case 346619858: /*modelNumber*/ return this.modelNumber == null ? new Base[0] : new Base[] {this.modelNumber}; // StringType
         case -731502308: /*partNumber*/ return this.partNumber == null ? new Base[0] : new Base[] {this.partNumber}; // StringType
         case 3575610: /*type*/ return this.type == null ? new Base[0] : this.type.toArray(new Base[this.type.size()]); // CodeableConcept
-        case 682815883: /*specialization*/ return this.specialization == null ? new Base[0] : this.specialization.toArray(new Base[this.specialization.size()]); // DeviceSpecializationComponent
         case 351608024: /*version*/ return this.version == null ? new Base[0] : this.version.toArray(new Base[this.version.size()]); // DeviceVersionComponent
         case -993141291: /*property*/ return this.property == null ? new Base[0] : this.property.toArray(new Base[this.property.size()]); // DevicePropertyComponent
-        case -791418107: /*patient*/ return this.patient == null ? new Base[0] : new Base[] {this.patient}; // Reference
+        case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
         case -2103166364: /*operationalStatus*/ return this.operationalStatus == null ? new Base[0] : new Base[] {this.operationalStatus}; // DeviceOperationalStatusComponent
         case -605391917: /*associationStatus*/ return this.associationStatus == null ? new Base[0] : new Base[] {this.associationStatus}; // DeviceAssociationStatusComponent
         case 106164915: /*owner*/ return this.owner == null ? new Base[0] : new Base[] {this.owner}; // Reference
         case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ContactPoint
         case 1901043637: /*location*/ return this.location == null ? new Base[0] : new Base[] {this.location}; // Reference
         case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
+        case 1741102485: /*endpoint*/ return this.endpoint == null ? new Base[0] : this.endpoint.toArray(new Base[this.endpoint.size()]); // Reference
+        case 3321850: /*link*/ return this.link == null ? new Base[0] : this.link.toArray(new Base[this.link.size()]); // DeviceLinkComponent
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         case -909893934: /*safety*/ return this.safety == null ? new Base[0] : this.safety.toArray(new Base[this.safety.size()]); // CodeableConcept
         case -995424086: /*parent*/ return this.parent == null ? new Base[0] : new Base[] {this.parent}; // Reference
@@ -4029,7 +4128,7 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
           this.displayName = TypeConvertor.castToString(value); // StringType
           return value;
         case -1014418093: // definition
-          this.definition = TypeConvertor.castToReference(value); // Reference
+          this.definition = TypeConvertor.castToCodeableReference(value); // CodeableReference
           return value;
         case -1343558178: // udiCarrier
           this.getUdiCarrier().add((DeviceUdiCarrierComponent) value); // DeviceUdiCarrierComponent
@@ -4041,8 +4140,8 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
         case 2051346646: // statusReason
           this.getStatusReason().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
-        case -1836176187: // distinctIdentifier
-          this.distinctIdentifier = TypeConvertor.castToString(value); // StringType
+        case -883952260: // biologicalSource
+          this.biologicalSource = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         case -1969347631: // manufacturer
           this.manufacturer = TypeConvertor.castToString(value); // StringType
@@ -4071,17 +4170,14 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
         case 3575610: // type
           this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
-        case 682815883: // specialization
-          this.getSpecialization().add((DeviceSpecializationComponent) value); // DeviceSpecializationComponent
-          return value;
         case 351608024: // version
           this.getVersion().add((DeviceVersionComponent) value); // DeviceVersionComponent
           return value;
         case -993141291: // property
           this.getProperty().add((DevicePropertyComponent) value); // DevicePropertyComponent
           return value;
-        case -791418107: // patient
-          this.patient = TypeConvertor.castToReference(value); // Reference
+        case -1867885268: // subject
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case -2103166364: // operationalStatus
           this.operationalStatus = (DeviceOperationalStatusComponent) value; // DeviceOperationalStatusComponent
@@ -4100,6 +4196,12 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
           return value;
         case 116079: // url
           this.url = TypeConvertor.castToUri(value); // UriType
+          return value;
+        case 1741102485: // endpoint
+          this.getEndpoint().add(TypeConvertor.castToReference(value)); // Reference
+          return value;
+        case 3321850: // link
+          this.getLink().add((DeviceLinkComponent) value); // DeviceLinkComponent
           return value;
         case 3387378: // note
           this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
@@ -4122,7 +4224,7 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
         } else if (name.equals("displayName")) {
           this.displayName = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("definition")) {
-          this.definition = TypeConvertor.castToReference(value); // Reference
+          this.definition = TypeConvertor.castToCodeableReference(value); // CodeableReference
         } else if (name.equals("udiCarrier")) {
           this.getUdiCarrier().add((DeviceUdiCarrierComponent) value);
         } else if (name.equals("status")) {
@@ -4130,8 +4232,8 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
           this.status = (Enumeration) value; // Enumeration<FHIRDeviceStatus>
         } else if (name.equals("statusReason")) {
           this.getStatusReason().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("distinctIdentifier")) {
-          this.distinctIdentifier = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("biologicalSource")) {
+          this.biologicalSource = TypeConvertor.castToIdentifier(value); // Identifier
         } else if (name.equals("manufacturer")) {
           this.manufacturer = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("manufactureDate")) {
@@ -4150,14 +4252,12 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
           this.partNumber = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("type")) {
           this.getType().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("specialization")) {
-          this.getSpecialization().add((DeviceSpecializationComponent) value);
         } else if (name.equals("version")) {
           this.getVersion().add((DeviceVersionComponent) value);
         } else if (name.equals("property")) {
           this.getProperty().add((DevicePropertyComponent) value);
-        } else if (name.equals("patient")) {
-          this.patient = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("subject")) {
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("operationalStatus")) {
           this.operationalStatus = (DeviceOperationalStatusComponent) value; // DeviceOperationalStatusComponent
         } else if (name.equals("associationStatus")) {
@@ -4170,6 +4270,10 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
           this.location = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("url")) {
           this.url = TypeConvertor.castToUri(value); // UriType
+        } else if (name.equals("endpoint")) {
+          this.getEndpoint().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("link")) {
+          this.getLink().add((DeviceLinkComponent) value);
         } else if (name.equals("note")) {
           this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("safety")) {
@@ -4190,7 +4294,7 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
         case -1343558178:  return addUdiCarrier(); 
         case -892481550:  return getStatusElement();
         case 2051346646:  return addStatusReason(); 
-        case -1836176187:  return getDistinctIdentifierElement();
+        case -883952260:  return getBiologicalSource();
         case -1969347631:  return getManufacturerElement();
         case 416714767:  return getManufactureDateElement();
         case -668811523:  return getExpirationDateElement();
@@ -4200,16 +4304,17 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
         case 346619858:  return getModelNumberElement();
         case -731502308:  return getPartNumberElement();
         case 3575610:  return addType(); 
-        case 682815883:  return addSpecialization(); 
         case 351608024:  return addVersion(); 
         case -993141291:  return addProperty(); 
-        case -791418107:  return getPatient();
+        case -1867885268:  return getSubject();
         case -2103166364:  return getOperationalStatus();
         case -605391917:  return getAssociationStatus();
         case 106164915:  return getOwner();
         case 951526432:  return addContact(); 
         case 1901043637:  return getLocation();
         case 116079:  return getUrlElement();
+        case 1741102485:  return addEndpoint(); 
+        case 3321850:  return addLink(); 
         case 3387378:  return addNote(); 
         case -909893934:  return addSafety(); 
         case -995424086:  return getParent();
@@ -4223,11 +4328,11 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
         switch (hash) {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case 1714148973: /*displayName*/ return new String[] {"string"};
-        case -1014418093: /*definition*/ return new String[] {"Reference"};
+        case -1014418093: /*definition*/ return new String[] {"CodeableReference"};
         case -1343558178: /*udiCarrier*/ return new String[] {};
         case -892481550: /*status*/ return new String[] {"code"};
         case 2051346646: /*statusReason*/ return new String[] {"CodeableConcept"};
-        case -1836176187: /*distinctIdentifier*/ return new String[] {"string"};
+        case -883952260: /*biologicalSource*/ return new String[] {"Identifier"};
         case -1969347631: /*manufacturer*/ return new String[] {"string"};
         case 416714767: /*manufactureDate*/ return new String[] {"dateTime"};
         case -668811523: /*expirationDate*/ return new String[] {"dateTime"};
@@ -4237,16 +4342,17 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
         case 346619858: /*modelNumber*/ return new String[] {"string"};
         case -731502308: /*partNumber*/ return new String[] {"string"};
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case 682815883: /*specialization*/ return new String[] {};
         case 351608024: /*version*/ return new String[] {};
         case -993141291: /*property*/ return new String[] {};
-        case -791418107: /*patient*/ return new String[] {"Reference"};
+        case -1867885268: /*subject*/ return new String[] {"Reference"};
         case -2103166364: /*operationalStatus*/ return new String[] {};
         case -605391917: /*associationStatus*/ return new String[] {};
         case 106164915: /*owner*/ return new String[] {"Reference"};
         case 951526432: /*contact*/ return new String[] {"ContactPoint"};
         case 1901043637: /*location*/ return new String[] {"Reference"};
         case 116079: /*url*/ return new String[] {"uri"};
+        case 1741102485: /*endpoint*/ return new String[] {"Reference"};
+        case 3321850: /*link*/ return new String[] {};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         case -909893934: /*safety*/ return new String[] {"CodeableConcept"};
         case -995424086: /*parent*/ return new String[] {"Reference"};
@@ -4264,7 +4370,7 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
           throw new FHIRException("Cannot call addChild on a primitive type Device.displayName");
         }
         else if (name.equals("definition")) {
-          this.definition = new Reference();
+          this.definition = new CodeableReference();
           return this.definition;
         }
         else if (name.equals("udiCarrier")) {
@@ -4276,8 +4382,9 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
         else if (name.equals("statusReason")) {
           return addStatusReason();
         }
-        else if (name.equals("distinctIdentifier")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Device.distinctIdentifier");
+        else if (name.equals("biologicalSource")) {
+          this.biologicalSource = new Identifier();
+          return this.biologicalSource;
         }
         else if (name.equals("manufacturer")) {
           throw new FHIRException("Cannot call addChild on a primitive type Device.manufacturer");
@@ -4306,18 +4413,15 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
         else if (name.equals("type")) {
           return addType();
         }
-        else if (name.equals("specialization")) {
-          return addSpecialization();
-        }
         else if (name.equals("version")) {
           return addVersion();
         }
         else if (name.equals("property")) {
           return addProperty();
         }
-        else if (name.equals("patient")) {
-          this.patient = new Reference();
-          return this.patient;
+        else if (name.equals("subject")) {
+          this.subject = new Reference();
+          return this.subject;
         }
         else if (name.equals("operationalStatus")) {
           this.operationalStatus = new DeviceOperationalStatusComponent();
@@ -4340,6 +4444,12 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
         }
         else if (name.equals("url")) {
           throw new FHIRException("Cannot call addChild on a primitive type Device.url");
+        }
+        else if (name.equals("endpoint")) {
+          return addEndpoint();
+        }
+        else if (name.equals("link")) {
+          return addLink();
         }
         else if (name.equals("note")) {
           return addNote();
@@ -4386,7 +4496,7 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
           for (CodeableConcept i : statusReason)
             dst.statusReason.add(i.copy());
         };
-        dst.distinctIdentifier = distinctIdentifier == null ? null : distinctIdentifier.copy();
+        dst.biologicalSource = biologicalSource == null ? null : biologicalSource.copy();
         dst.manufacturer = manufacturer == null ? null : manufacturer.copy();
         dst.manufactureDate = manufactureDate == null ? null : manufactureDate.copy();
         dst.expirationDate = expirationDate == null ? null : expirationDate.copy();
@@ -4404,11 +4514,6 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
           for (CodeableConcept i : type)
             dst.type.add(i.copy());
         };
-        if (specialization != null) {
-          dst.specialization = new ArrayList<DeviceSpecializationComponent>();
-          for (DeviceSpecializationComponent i : specialization)
-            dst.specialization.add(i.copy());
-        };
         if (version != null) {
           dst.version = new ArrayList<DeviceVersionComponent>();
           for (DeviceVersionComponent i : version)
@@ -4419,7 +4524,7 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
           for (DevicePropertyComponent i : property)
             dst.property.add(i.copy());
         };
-        dst.patient = patient == null ? null : patient.copy();
+        dst.subject = subject == null ? null : subject.copy();
         dst.operationalStatus = operationalStatus == null ? null : operationalStatus.copy();
         dst.associationStatus = associationStatus == null ? null : associationStatus.copy();
         dst.owner = owner == null ? null : owner.copy();
@@ -4430,6 +4535,16 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
         };
         dst.location = location == null ? null : location.copy();
         dst.url = url == null ? null : url.copy();
+        if (endpoint != null) {
+          dst.endpoint = new ArrayList<Reference>();
+          for (Reference i : endpoint)
+            dst.endpoint.add(i.copy());
+        };
+        if (link != null) {
+          dst.link = new ArrayList<DeviceLinkComponent>();
+          for (DeviceLinkComponent i : link)
+            dst.link.add(i.copy());
+        };
         if (note != null) {
           dst.note = new ArrayList<Annotation>();
           for (Annotation i : note)
@@ -4456,17 +4571,17 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
         Device o = (Device) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(displayName, o.displayName, true)
            && compareDeep(definition, o.definition, true) && compareDeep(udiCarrier, o.udiCarrier, true) && compareDeep(status, o.status, true)
-           && compareDeep(statusReason, o.statusReason, true) && compareDeep(distinctIdentifier, o.distinctIdentifier, true)
+           && compareDeep(statusReason, o.statusReason, true) && compareDeep(biologicalSource, o.biologicalSource, true)
            && compareDeep(manufacturer, o.manufacturer, true) && compareDeep(manufactureDate, o.manufactureDate, true)
            && compareDeep(expirationDate, o.expirationDate, true) && compareDeep(lotNumber, o.lotNumber, true)
            && compareDeep(serialNumber, o.serialNumber, true) && compareDeep(deviceName, o.deviceName, true)
            && compareDeep(modelNumber, o.modelNumber, true) && compareDeep(partNumber, o.partNumber, true)
-           && compareDeep(type, o.type, true) && compareDeep(specialization, o.specialization, true) && compareDeep(version, o.version, true)
-           && compareDeep(property, o.property, true) && compareDeep(patient, o.patient, true) && compareDeep(operationalStatus, o.operationalStatus, true)
+           && compareDeep(type, o.type, true) && compareDeep(version, o.version, true) && compareDeep(property, o.property, true)
+           && compareDeep(subject, o.subject, true) && compareDeep(operationalStatus, o.operationalStatus, true)
            && compareDeep(associationStatus, o.associationStatus, true) && compareDeep(owner, o.owner, true)
            && compareDeep(contact, o.contact, true) && compareDeep(location, o.location, true) && compareDeep(url, o.url, true)
-           && compareDeep(note, o.note, true) && compareDeep(safety, o.safety, true) && compareDeep(parent, o.parent, true)
-          ;
+           && compareDeep(endpoint, o.endpoint, true) && compareDeep(link, o.link, true) && compareDeep(note, o.note, true)
+           && compareDeep(safety, o.safety, true) && compareDeep(parent, o.parent, true);
       }
 
       @Override
@@ -4476,19 +4591,19 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
         if (!(other_ instanceof Device))
           return false;
         Device o = (Device) other_;
-        return compareValues(displayName, o.displayName, true) && compareValues(status, o.status, true) && compareValues(distinctIdentifier, o.distinctIdentifier, true)
-           && compareValues(manufacturer, o.manufacturer, true) && compareValues(manufactureDate, o.manufactureDate, true)
-           && compareValues(expirationDate, o.expirationDate, true) && compareValues(lotNumber, o.lotNumber, true)
-           && compareValues(serialNumber, o.serialNumber, true) && compareValues(modelNumber, o.modelNumber, true)
-           && compareValues(partNumber, o.partNumber, true) && compareValues(url, o.url, true);
+        return compareValues(displayName, o.displayName, true) && compareValues(status, o.status, true) && compareValues(manufacturer, o.manufacturer, true)
+           && compareValues(manufactureDate, o.manufactureDate, true) && compareValues(expirationDate, o.expirationDate, true)
+           && compareValues(lotNumber, o.lotNumber, true) && compareValues(serialNumber, o.serialNumber, true)
+           && compareValues(modelNumber, o.modelNumber, true) && compareValues(partNumber, o.partNumber, true)
+           && compareValues(url, o.url, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, displayName, definition
-          , udiCarrier, status, statusReason, distinctIdentifier, manufacturer, manufactureDate
+          , udiCarrier, status, statusReason, biologicalSource, manufacturer, manufactureDate
           , expirationDate, lotNumber, serialNumber, deviceName, modelNumber, partNumber, type
-          , specialization, version, property, patient, operationalStatus, associationStatus
-          , owner, contact, location, url, note, safety, parent);
+          , version, property, subject, operationalStatus, associationStatus, owner, contact
+          , location, url, endpoint, link, note, safety, parent);
       }
 
   @Override
@@ -4497,41 +4612,41 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
    }
 
  /**
-   * Search parameter: <b>din</b>
+   * Search parameter: <b>biological-source</b>
    * <p>
-   * Description: <b>The donation identification number (DIN)</b><br>
+   * Description: <b>The biological source for the device</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Device.extension('http://hl7.org/fhir/SearchParameter/device-extensions-Device-din')</b><br>
+   * Path: <b>Device.biologicalSource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="din", path="Device.extension('http://hl7.org/fhir/SearchParameter/device-extensions-Device-din')", description="The donation identification number (DIN)", type="token" )
-  public static final String SP_DIN = "din";
+  @SearchParamDefinition(name="biological-source", path="Device.biologicalSource", description="The biological source for the device", type="token" )
+  public static final String SP_BIOLOGICAL_SOURCE = "biological-source";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>din</b>
+   * <b>Fluent Client</b> search parameter constant for <b>biological-source</b>
    * <p>
-   * Description: <b>The donation identification number (DIN)</b><br>
+   * Description: <b>The biological source for the device</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Device.extension('http://hl7.org/fhir/SearchParameter/device-extensions-Device-din')</b><br>
+   * Path: <b>Device.biologicalSource</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam DIN = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_DIN);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam BIOLOGICAL_SOURCE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_BIOLOGICAL_SOURCE);
 
  /**
    * Search parameter: <b>definition</b>
    * <p>
    * Description: <b>The definition / type of the device</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Device.definition</b><br>
+   * Path: <b>Device.definition.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="definition", path="Device.definition", description="The definition / type of the device", type="reference", target={DeviceDefinition.class } )
+  @SearchParamDefinition(name="definition", path="Device.definition.reference", description="The definition / type of the device", type="reference" )
   public static final String SP_DEFINITION = "definition";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>definition</b>
    * <p>
    * Description: <b>The definition / type of the device</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Device.definition</b><br>
+   * Path: <b>Device.definition.reference</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DEFINITION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DEFINITION);
@@ -4765,17 +4880,17 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
    * <p>
    * Description: <b>Patient information, if the resource is affixed to a person</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Device.patient</b><br>
+   * Path: <b>Device.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="Device.patient", description="Patient information, if the resource is affixed to a person", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="Device.subject.where(resolve() is Patient)", description="Patient information, if the resource is affixed to a person", type="reference", target={Patient.class, Person.class, Practitioner.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
    * <p>
    * Description: <b>Patient information, if the resource is affixed to a person</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Device.patient</b><br>
+   * Path: <b>Device.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
@@ -4825,6 +4940,32 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>Subject information, to which the device is associated of affixed</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Device.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="Device.subject", description="Subject information, to which the device is associated of affixed", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class, Person.class, Practitioner.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>Subject information, to which the device is associated of affixed</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Device.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Device:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("Device:subject").toLocked();
 
  /**
    * Search parameter: <b>type</b>
@@ -4925,6 +5066,26 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam VERSION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_VERSION);
+
+ /**
+   * Search parameter: <b>din</b>
+   * <p>
+   * Description: <b>The donation identification number (DIN)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Device.extension('http://hl7.org/fhir/SearchParameter/device-extensions-Device-din')</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="din", path="Device.extension('http://hl7.org/fhir/SearchParameter/device-extensions-Device-din')", description="The donation identification number (DIN)", type="token" )
+  public static final String SP_DIN = "din";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>din</b>
+   * <p>
+   * Description: <b>The donation identification number (DIN)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Device.extension('http://hl7.org/fhir/SearchParameter/device-extensions-Device-din')</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam DIN = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_DIN);
 
 
 }

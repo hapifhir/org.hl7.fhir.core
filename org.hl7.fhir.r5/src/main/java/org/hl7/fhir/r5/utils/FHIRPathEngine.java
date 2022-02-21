@@ -208,6 +208,34 @@ public class FHIRPathEngine {
     }
   }
 
+  public static class TypedElementDefinition {
+    private ElementDefinition element;
+    private String type;
+    public TypedElementDefinition(ElementDefinition element, String type) {
+      super();
+      this.element = element;
+      this.type = type;
+    }
+    public TypedElementDefinition(ElementDefinition element) {
+      super();
+      this.element = element;
+    }
+    public ElementDefinition getElement() {
+      return element;
+    }
+    public String getType() {
+      return type;
+    }
+    public List<TypeRefComponent> getTypes() {
+      List<TypeRefComponent> res = new ArrayList<ElementDefinition.TypeRefComponent>();
+      for (TypeRefComponent tr : element.getType()) {
+        if (type == null || type.equals(tr.getCode())) {
+          res.add(tr);
+        }
+      }
+      return res;
+    }
+  }
   private IWorkerContext worker;
   private IEvaluationContext hostServices;
   private StringBuilder log = new StringBuilder();
@@ -972,7 +1000,9 @@ public class FHIRPathEngine {
       wrapper.setProximal(proximal);
     }
 
-    if (lexer.isConstant()) {
+    if (lexer.getCurrent() == null) {
+      throw lexer.error("Expression terminated unexpectedly");
+    } else if (lexer.isConstant()) {
       boolean isString = lexer.isStringConstant();
       if (!isString && (lexer.getCurrent().startsWith("-") || lexer.getCurrent().startsWith("+"))) {
         // the grammar says that this is a unary operation; it affects the correct processing order of the inner operations
@@ -2337,7 +2367,7 @@ public class FHIRPathEngine {
 	  if (vs != null) {
 	    for (Base l : left) {
 	      if (Utilities.existsInList(l.fhirType(), "code", "string", "uri")) {
-          if (worker.validateCode(terminologyServiceOptions , TypeConvertor.castToCoding(l), vs).isOk()) {
+          if (worker.validateCode(terminologyServiceOptions.guessSystem() , TypeConvertor.castToCoding(l), vs).isOk()) {
             ans = true;
           }
 	      } else if (l.fhirType().equals("Coding")) {
@@ -5442,63 +5472,63 @@ public class FHIRPathEngine {
    * @throws PathEngineException 
    * @throws DefinitionException 
    */
-  public ElementDefinition evaluateDefinition(ExpressionNode expr, StructureDefinition profile, ElementDefinition element, StructureDefinition source) throws DefinitionException {
+  public TypedElementDefinition evaluateDefinition(ExpressionNode expr, StructureDefinition profile, TypedElementDefinition element, StructureDefinition source) throws DefinitionException {
     StructureDefinition sd = profile;
-    ElementDefinition focus = null;
+    TypedElementDefinition focus = null;
     boolean okToNotResolve = false;
 
     if (expr.getKind() == Kind.Name) {
-      if (element.hasSlicing()) {
-        ElementDefinition slice = pickMandatorySlice(sd, element);
+      if (element.getElement().hasSlicing()) {
+        ElementDefinition slice = pickMandatorySlice(sd, element.getElement());
         if (slice == null) {
-          throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_NAME_ALREADY_SLICED, element.getId());
+          throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_NAME_ALREADY_SLICED, element.getElement().getId());
         }
-        element = slice;
+        element = new TypedElementDefinition(slice);
       }
 
       if (expr.getName().equals("$this")) {
         focus = element;
       } else { 
         List<ElementDefinition> childDefinitions;
-        childDefinitions = profileUtilities.getChildMap(sd, element);
+        childDefinitions = profileUtilities.getChildMap(sd, element.getElement());
         // if that's empty, get the children of the type
         if (childDefinitions.isEmpty()) {
 
           sd = fetchStructureByType(element, expr);
           if (sd == null) {
-            throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_THIS_CANNOT_FIND, element.getType().get(0).getProfile(), element.getId());
+            throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_THIS_CANNOT_FIND, element.getElement().getType().get(0).getProfile(), element.getElement().getId());
           }
           childDefinitions = profileUtilities.getChildMap(sd, sd.getSnapshot().getElementFirstRep());
         }
         for (ElementDefinition t : childDefinitions) {
           if (tailMatches(t, expr.getName()) && !t.hasSlicing()) { // GG: slicing is a problem here. This is for an exetnsion with a fixed value (type slicing) 
-            focus = t;
+            focus = new TypedElementDefinition(t);
             break;
           }
         }
       }
     } else if (expr.getKind() == Kind.Function) {
       if ("resolve".equals(expr.getName())) {
-        if (!element.hasType()) {
-          throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_RESOLVE_NO_TYPE, element.getId());
+        if (element.getTypes().size() == 0) {
+          throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_RESOLVE_NO_TYPE, element.getElement().getId());
         }
-        if (element.getType().size() > 1) {
-          throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES, element.getId());
+        if (element.getTypes().size() > 1) {
+          throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES, element.getElement().getId());
         }
-        if (!element.getType().get(0).hasTarget()) {
-          throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE, element.getId(), element.getType().get(0).getCode()+")");
+        if (!element.getTypes().get(0).hasTarget()) {
+          throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE, element.getElement().getId(), element.getElement().getType().get(0).getCode()+")");
         }
-        if (element.getType().get(0).getTargetProfile().size() > 1) {
-          throw makeException(expr, I18nConstants.FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET, element.getId());
+        if (element.getTypes().get(0).getTargetProfile().size() > 1) {
+          throw makeException(expr, I18nConstants.FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET, element.getElement().getId());
         }
-        sd = worker.fetchResource(StructureDefinition.class, element.getType().get(0).getTargetProfile().get(0).getValue());
+        sd = worker.fetchResource(StructureDefinition.class, element.getTypes().get(0).getTargetProfile().get(0).getValue());
         if (sd == null) {
-          throw makeException(expr, I18nConstants.FHIRPATH_RESOLVE_DISCRIMINATOR_CANT_FIND, element.getType().get(0).getTargetProfile(), element.getId());
+          throw makeException(expr, I18nConstants.FHIRPATH_RESOLVE_DISCRIMINATOR_CANT_FIND, element.getTypes().get(0).getTargetProfile(), element.getElement().getId());
         }
-        focus = sd.getSnapshot().getElementFirstRep();
+        focus = new TypedElementDefinition(sd.getSnapshot().getElementFirstRep());
       } else if ("extension".equals(expr.getName())) {
         String targetUrl = expr.getParameters().get(0).getConstant().primitiveValue();
-        List<ElementDefinition> childDefinitions = profileUtilities.getChildMap(sd, element);
+        List<ElementDefinition> childDefinitions = profileUtilities.getChildMap(sd, element.getElement());
         for (ElementDefinition t : childDefinitions) {
           if (t.getPath().endsWith(".extension") && t.hasSliceName()) {
             System.out.println("t: "+t.getId());
@@ -5511,29 +5541,33 @@ public class FHIRPathEngine {
               if (profileUtilities.getChildMap(sd, t).isEmpty()) {
                 sd = exsd;
               }
-              focus = t;
+              focus = new TypedElementDefinition(t);
               break;
             }
           }
         }
         if (focus == null) { 
-          throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_CANT_FIND_EXTENSION, expr.toString(), targetUrl, element.getId(), sd.getUrl());
+          throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_CANT_FIND_EXTENSION, expr.toString(), targetUrl, element.getElement().getId(), sd.getUrl());
         }
       } else if ("ofType".equals(expr.getName())) {
-        if (!element.hasType()) {
-          throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_TYPE_NONE, element.getId());
+        if (!element.getElement().hasType()) {
+          throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_TYPE_NONE, element.getElement().getId());
         }
-        if (element.getType().size() > 1) {
-          throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_TYPE_MULTIPLE, element.getId());
+        List<String> atn = new ArrayList<>();
+        for (TypeRefComponent tr : element.getTypes()) {
+          if (!tr.hasCode()) {
+            throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_NO_CODE, element.getElement().getId());
+          }
+          atn.add(tr.getCode());
         }
-        if (!element.getType().get(0).hasCode()) {
-          throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_NO_CODE, element.getId());
-        }
-        String atn = element.getType().get(0).getCode();
         String stn = expr.getParameters().get(0).getName();  
         okToNotResolve = true;
-        if ((atn.equals(stn))) {
-          focus = element;
+        if ((atn.contains(stn))) {
+          if (element.getTypes().size() > 1) {
+            focus = new TypedElementDefinition(element.getElement(), stn);
+          } else {
+            focus = element;
+          }
         }
       } else {
         throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_BAD_NAME, expr.getName());
@@ -5548,7 +5582,7 @@ public class FHIRPathEngine {
       if (okToNotResolve) {
         return null;
       } else {
-        throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_CANT_FIND, expr.toString(), source.getUrl(), element.getId(), profile.getUrl());
+        throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_CANT_FIND, expr.toString(), source.getUrl(), element.getElement().getId(), profile.getUrl());
       }
     } else if (expr.getInner() == null) {
       return focus;
@@ -5568,20 +5602,20 @@ public class FHIRPathEngine {
   }
 
 
-  private StructureDefinition fetchStructureByType(ElementDefinition ed, ExpressionNode expr) throws DefinitionException {
-    if (ed.getType().size() == 0) {
-      throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_NOTYPE, ed.getId());
+  private StructureDefinition fetchStructureByType(TypedElementDefinition ed, ExpressionNode expr) throws DefinitionException {
+    if (ed.getTypes().size() == 0) {
+      throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_NOTYPE, ed.getElement().getId());
     }
-    if (ed.getType().size() > 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES, ed.getId());
+    if (ed.getTypes().size() > 1) {
+      throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES, ed.getElement().getId());
     }
-    if (ed.getType().get(0).getProfile().size() > 1) {
-      throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES, ed.getId());
+    if (ed.getTypes().get(0).getProfile().size() > 1) {
+      throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES, ed.getElement().getId());
     }
-    if (ed.getType().get(0).hasProfile()) { 
-      return worker.fetchResource(StructureDefinition.class, ed.getType().get(0).getProfile().get(0).getValue());
+    if (ed.getTypes().get(0).hasProfile()) { 
+      return worker.fetchResource(StructureDefinition.class, ed.getTypes().get(0).getProfile().get(0).getValue());
     } else {
-      return worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(ed.getType().get(0).getCode(), worker.getOverrideVersionNs()));
+      return worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(ed.getTypes().get(0).getCode(), worker.getOverrideVersionNs()));
     }
   }
 
