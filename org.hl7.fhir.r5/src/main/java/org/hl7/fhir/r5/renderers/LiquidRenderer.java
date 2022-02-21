@@ -32,12 +32,26 @@ public class LiquidRenderer extends ResourceRenderer {
     this.rcontext = rcontext;
     this.liquidTemplate = liquidTemplate;
   }
+
+  private class LiquidRendererIncludeResolver implements LiquidEngine.ILiquidEngineIncludeResolver {
+    public LiquidRendererIncludeResolver(RenderingContext context) {
+      this.context = context;
+    }
+
+    private RenderingContext context;
+
+    @Override
+    public String fetchInclude(LiquidEngine engine, String name) {
+      return context.getTemplateProvider().findTemplate(name);
+    }
+  }
   
   @Override
   public boolean render(XhtmlNode x, Resource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     LiquidEngine engine = new LiquidEngine(context.getWorker(), context.getServices());
     XhtmlNode xn;
     try {
+      engine.setIncludeResolver(new LiquidRendererIncludeResolver(context.getTemplateProvider()));
       LiquidDocument doc = engine.parse(liquidTemplate, "template");
       String html = engine.evaluate(doc, r, rcontext);
       xn = new XhtmlParser().parseFragment(html);
