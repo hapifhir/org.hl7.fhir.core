@@ -17,7 +17,7 @@ public class RelatedArtifact40_50 {
     if (src.hasLabel()) tgt.setLabelElement(String40_50.convertString(src.getLabelElement()));
     if (src.hasDisplay()) tgt.setDisplayElement(String40_50.convertString(src.getDisplayElement()));
     if (src.hasCitation()) tgt.setCitationElement(MarkDown40_50.convertMarkdown(src.getCitationElement()));
-    if (src.hasUrl()) tgt.setUrlElement(Url40_50.convertUrl(src.getUrlElement()));
+    if (src.hasUrl()) tgt.getDocument().setUrlElement(Url40_50.convertUrl(src.getUrlElement()));
     if (src.hasDocument()) tgt.setDocument(Attachment40_50.convertAttachment(src.getDocument()));
     if (src.hasResource()) tgt.setResourceElement(Canonical40_50.convertCanonical(src.getResourceElement()));
     return tgt;
@@ -31,7 +31,7 @@ public class RelatedArtifact40_50 {
     if (src.hasLabel()) tgt.setLabelElement(String40_50.convertString(src.getLabelElement()));
     if (src.hasDisplay()) tgt.setDisplayElement(String40_50.convertString(src.getDisplayElement()));
     if (src.hasCitation()) tgt.setCitationElement(MarkDown40_50.convertMarkdown(src.getCitationElement()));
-    if (src.hasUrl()) tgt.setUrlElement(Url40_50.convertUrl(src.getUrlElement()));
+    if (src.getDocument().hasUrl()) tgt.setUrlElement(Url40_50.convertUrl(src.getDocument().getUrlElement()));
     if (src.hasDocument()) tgt.setDocument(Attachment40_50.convertAttachment(src.getDocument()));
     if (src.hasResource()) tgt.setResourceElement(Canonical40_50.convertCanonical(src.getResourceElement()));
     return tgt;

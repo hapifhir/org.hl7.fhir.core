@@ -12,7 +12,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.UnsignedI
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
-import org.hl7.fhir.r5.model.ImagingStudy.ImagingStudyProcedureComponent;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -72,9 +71,9 @@ public class ImagingStudy40_50 {
     if (src.hasNumberOfInstances())
       tgt.setNumberOfInstancesElement(UnsignedInt40_50.convertUnsignedInt(src.getNumberOfInstancesElement()));
     if (src.hasProcedureReference())
-      tgt.addProcedure().setValue(Reference40_50.convertReference(src.getProcedureReference()));
+      tgt.addProcedure().setReference(Reference40_50.convertReference(src.getProcedureReference()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProcedureCode())
-      tgt.addProcedure().setValue(CodeableConcept40_50.convertCodeableConcept(t));
+      tgt.addProcedure().setConcept(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasLocation())
       tgt.setLocation(Reference40_50.convertReference(src.getLocation()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
@@ -115,11 +114,11 @@ public class ImagingStudy40_50 {
       tgt.setNumberOfSeriesElement(UnsignedInt40_50.convertUnsignedInt(src.getNumberOfSeriesElement()));
     if (src.hasNumberOfInstances())
       tgt.setNumberOfInstancesElement(UnsignedInt40_50.convertUnsignedInt(src.getNumberOfInstancesElement()));
-    for (ImagingStudyProcedureComponent t : src.getProcedure()) {
-      if (t.hasValueCodeableConcept())
-        tgt.addProcedureCode(CodeableConcept40_50.convertCodeableConcept(t.getValueCodeableConcept()));
-      if (t.hasValueReference()) {
-        tgt.setProcedureReference(Reference40_50.convertReference(t.getValueReference()));
+    for (CodeableReference t : src.getProcedure()) {
+      if (t.hasConcept())
+        tgt.addProcedureCode(CodeableConcept40_50.convertCodeableConcept(t.getConcept()));
+      if (t.hasReference()) {
+        tgt.setProcedureReference(Reference40_50.convertReference(t.getReference()));
       }
     }
     if (src.hasLocation())

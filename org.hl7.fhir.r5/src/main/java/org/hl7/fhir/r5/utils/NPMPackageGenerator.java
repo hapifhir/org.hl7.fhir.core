@@ -80,14 +80,14 @@ public class NPMPackageGenerator {
     private String getDirectory() {
       switch (this) {
       case RESOURCE: return "package/";
-      case EXAMPLE: return "example/";
-      case OPENAPI: return "openapi/";
-      case SCHEMATRON: return "xml/";
-      case RDF: return "rdf/";      
-      case OTHER: return "other/";      
-      case TEMPLATE: return "other/";      
-      case JEKYLL: return "jekyll/";      
-      case TOOL: return "bin/";      
+      case EXAMPLE: return "package/example/";
+      case OPENAPI: return "package/openapi/";
+      case SCHEMATRON: return "package/xml/";
+      case RDF: return "package/rdf/";      
+      case OTHER: return "package/other/";      
+      case TEMPLATE: return "package/other/";      
+      case JEKYLL: return "package/jekyll/";      
+      case TOOL: return "package/bin/";      
       }
       return "/";
     }
@@ -120,7 +120,7 @@ public class NPMPackageGenerator {
     p.remove("name");
     p.addProperty("name", id);
     p.remove("type");
-    p.addProperty("type", PackageType.SUBSET.getCode());    
+    p.addProperty("type", PackageType.CONFORMANCE.getCode());    
     p.remove("title");
     p.addProperty("title", name);
     if (notForPublication) {
@@ -323,7 +323,7 @@ public class NPMPackageGenerator {
   public void addFile(Category cat, String name, byte[] content) throws IOException {
     String path = cat.getDirectory()+name;
     if (path.length() > 100) {
-      name = name.substring(0, name.indexOf("-"))+"-"+UUID.randomUUID().toString();
+      name = name.substring(0, name.indexOf("-"))+"-"+UUID.randomUUID().toString()+".json";
       path = cat.getDirectory()+name;      
     }
       

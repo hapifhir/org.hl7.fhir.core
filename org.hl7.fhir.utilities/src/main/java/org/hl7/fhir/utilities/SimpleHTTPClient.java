@@ -35,20 +35,23 @@ public class SimpleHTTPClient {
   }
 
   private static final int MAX_REDIRECTS = 5;
+  private static int counter = 1;
 
   public class HTTPResult {
     private int code;
     private String contentType;
     private byte[] content;
     private String source;
+    private String message;
     
     
-    public HTTPResult(String source, int code, String contentType, byte[] content) {
+    public HTTPResult(String source, int code, String message, String contentType, byte[] content) {
       super();
       this.source = source;
       this.code = code;
       this.contentType = contentType;
       this.content = content;
+      this.message = message;
     }
     
     public int getCode() {
@@ -67,7 +70,9 @@ public class SimpleHTTPClient {
 
     public void checkThrowException() throws IOException {
       if (code >= 300) {
-        throw new IOException("Invalid HTTP response "+code+" from "+source);
+        String filename = Utilities.path("[tmp]", "fhir-http-"+(++counter)+".log");
+        TextFile.bytesToFile(content, filename);
+        throw new IOException("Invalid HTTP response "+code+" from "+source+" ("+message+") (content in "+filename+")");
       }      
     }    
   }
@@ -110,7 +115,7 @@ public class SimpleHTTPClient {
   
   public HTTPResult get(String url, String accept) throws IOException {
     URL u = new URL(url);
-    boolean isSSL = url.startsWith("https://");
+//    boolean isSSL = url.startsWith("https://");
     
     // handling redirects - setInstanceFollowRedirects(true) doesn't handle crossing http to https
 
@@ -147,7 +152,7 @@ public class SimpleHTTPClient {
       }
     }
     
-    return new HTTPResult(url, c.getResponseCode(),  c.getRequestProperty("Content-Type"), TextFile.streamToBytes(c.getInputStream()));
+    return new HTTPResult(url, c.getResponseCode(), c.getResponseMessage(),  c.getRequestProperty("Content-Type"), TextFile.streamToBytes(c.getResponseCode() >= 400 ? c.getErrorStream() : c.getInputStream()));
   }
 
   private void setHeaders(HttpURLConnection c) {
@@ -177,7 +182,7 @@ public class SimpleHTTPClient {
     setHeaders(c);
     c.getOutputStream().write(content);
     c.getOutputStream().close();    
-    return new HTTPResult(url, c.getResponseCode(),  c.getRequestProperty("Content-Type"), TextFile.streamToBytes(c.getInputStream()));
+    return new HTTPResult(url, c.getResponseCode(), c.getResponseMessage(), c.getRequestProperty("Content-Type"), TextFile.streamToBytes(c.getResponseCode() >= 400 ? c.getErrorStream() : c.getInputStream()));
   }
 
  
@@ -194,7 +199,7 @@ public class SimpleHTTPClient {
     setHeaders(c);
     c.getOutputStream().write(content);
     c.getOutputStream().close();    
-    return new HTTPResult(url, c.getResponseCode(),  c.getRequestProperty("Content-Type"), TextFile.streamToBytes(c.getInputStream()));
+    return new HTTPResult(url, c.getResponseCode(), c.getResponseMessage(), c.getRequestProperty("Content-Type"), TextFile.streamToBytes(c.getResponseCode() >= 400 ? c.getErrorStream() : c.getInputStream()));
   }
 
 

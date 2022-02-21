@@ -13,8 +13,8 @@ import org.hl7.fhir.utilities.VersionUtilities;
 public class JavaConstantsGenerator extends JavaBaseGenerator {
 
 
-  public JavaConstantsGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version) throws UnsupportedEncodingException {
-    super(out, definitions, configuration, version, genDate);
+  public JavaConstantsGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version, String jid) throws UnsupportedEncodingException {
+    super(out, definitions, configuration, version, genDate, jid);
   }
   
   public void generate() throws Exception {   
@@ -29,6 +29,7 @@ public class JavaConstantsGenerator extends JavaBaseGenerator {
     }
     
     String template = config.getAdornments().get("Constants");
+    template = template.replace("{{jid}}", jid);
     template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
 

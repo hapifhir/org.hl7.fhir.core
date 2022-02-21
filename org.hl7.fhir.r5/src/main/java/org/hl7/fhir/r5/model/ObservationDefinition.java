@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2161,9 +2161,9 @@ public class ObservationDefinition extends DomainResource {
     /**
      * A code that describes the intended kind of subject of Observation instances conforming to this ObservationDefinition.
      */
-    @Child(name = "subject", type = {CodeableConcept.class}, order=20, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "subject", type = {CodeableConcept.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Type of subject for the defined observation", formalDefinition="A code that describes the intended kind of subject of Observation instances conforming to this ObservationDefinition." )
-    protected CodeableConcept subject;
+    protected List<CodeableConcept> subject;
 
     /**
      * The type of individual/organization/device that is expected to act upon instances of this definition.
@@ -2268,7 +2268,7 @@ public class ObservationDefinition extends DomainResource {
     @Description(shortDefinition="Component results", formalDefinition="Some observations have multiple component observations, expressed as separate code value pairs." )
     protected List<ObservationDefinitionComponentComponent> component;
 
-    private static final long serialVersionUID = 1353043135L;
+    private static final long serialVersionUID = 1085308569L;
 
   /**
    * Constructor
@@ -3222,25 +3222,54 @@ public class ObservationDefinition extends DomainResource {
     /**
      * @return {@link #subject} (A code that describes the intended kind of subject of Observation instances conforming to this ObservationDefinition.)
      */
-    public CodeableConcept getSubject() { 
+    public List<CodeableConcept> getSubject() { 
       if (this.subject == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ObservationDefinition.subject");
-        else if (Configuration.doAutoCreate())
-          this.subject = new CodeableConcept(); // cc
+        this.subject = new ArrayList<CodeableConcept>();
       return this.subject;
     }
 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ObservationDefinition setSubject(List<CodeableConcept> theSubject) { 
+      this.subject = theSubject;
+      return this;
+    }
+
     public boolean hasSubject() { 
-      return this.subject != null && !this.subject.isEmpty();
+      if (this.subject == null)
+        return false;
+      for (CodeableConcept item : this.subject)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableConcept addSubject() { //3
+      CodeableConcept t = new CodeableConcept();
+      if (this.subject == null)
+        this.subject = new ArrayList<CodeableConcept>();
+      this.subject.add(t);
+      return t;
+    }
+
+    public ObservationDefinition addSubject(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.subject == null)
+        this.subject = new ArrayList<CodeableConcept>();
+      this.subject.add(t);
+      return this;
     }
 
     /**
-     * @param value {@link #subject} (A code that describes the intended kind of subject of Observation instances conforming to this ObservationDefinition.)
+     * @return The first repetition of repeating field {@link #subject}, creating it if it does not already exist {3}
      */
-    public ObservationDefinition setSubject(CodeableConcept value) { 
-      this.subject = value;
-      return this;
+    public CodeableConcept getSubjectFirstRep() { 
+      if (getSubject().isEmpty()) {
+        addSubject();
+      }
+      return getSubject().get(0);
     }
 
     /**
@@ -3858,7 +3887,7 @@ public class ObservationDefinition extends DomainResource {
         children.add(new Property("effectivePeriod", "Period", "The period during which the ObservationDefinition content was or is planned to be effective.", 0, 1, effectivePeriod));
         children.add(new Property("derivedFromCanonical", "canonical(ObservationDefinition)", "The canonical URL pointing to another FHIR-defined ObservationDefinition that is adhered to in whole or in part by this definition.", 0, java.lang.Integer.MAX_VALUE, derivedFromCanonical));
         children.add(new Property("derivedFromUri", "uri", "The URL pointing to an externally-defined observation definition, guideline or other definition that is adhered to in whole or in part by this definition.", 0, java.lang.Integer.MAX_VALUE, derivedFromUri));
-        children.add(new Property("subject", "CodeableConcept", "A code that describes the intended kind of subject of Observation instances conforming to this ObservationDefinition.", 0, 1, subject));
+        children.add(new Property("subject", "CodeableConcept", "A code that describes the intended kind of subject of Observation instances conforming to this ObservationDefinition.", 0, java.lang.Integer.MAX_VALUE, subject));
         children.add(new Property("performerType", "CodeableConcept", "The type of individual/organization/device that is expected to act upon instances of this definition.", 0, 1, performerType));
         children.add(new Property("category", "CodeableConcept", "A code that classifies the general type of observation.", 0, java.lang.Integer.MAX_VALUE, category));
         children.add(new Property("code", "CodeableConcept", "Describes what will be observed. Sometimes this is called the observation \"name\".", 0, 1, code));
@@ -3898,7 +3927,7 @@ public class ObservationDefinition extends DomainResource {
         case -403934648: /*effectivePeriod*/  return new Property("effectivePeriod", "Period", "The period during which the ObservationDefinition content was or is planned to be effective.", 0, 1, effectivePeriod);
         case -978133683: /*derivedFromCanonical*/  return new Property("derivedFromCanonical", "canonical(ObservationDefinition)", "The canonical URL pointing to another FHIR-defined ObservationDefinition that is adhered to in whole or in part by this definition.", 0, java.lang.Integer.MAX_VALUE, derivedFromCanonical);
         case -1076333435: /*derivedFromUri*/  return new Property("derivedFromUri", "uri", "The URL pointing to an externally-defined observation definition, guideline or other definition that is adhered to in whole or in part by this definition.", 0, java.lang.Integer.MAX_VALUE, derivedFromUri);
-        case -1867885268: /*subject*/  return new Property("subject", "CodeableConcept", "A code that describes the intended kind of subject of Observation instances conforming to this ObservationDefinition.", 0, 1, subject);
+        case -1867885268: /*subject*/  return new Property("subject", "CodeableConcept", "A code that describes the intended kind of subject of Observation instances conforming to this ObservationDefinition.", 0, java.lang.Integer.MAX_VALUE, subject);
         case -901444568: /*performerType*/  return new Property("performerType", "CodeableConcept", "The type of individual/organization/device that is expected to act upon instances of this definition.", 0, 1, performerType);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "A code that classifies the general type of observation.", 0, java.lang.Integer.MAX_VALUE, category);
         case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Describes what will be observed. Sometimes this is called the observation \"name\".", 0, 1, code);
@@ -3941,7 +3970,7 @@ public class ObservationDefinition extends DomainResource {
         case -403934648: /*effectivePeriod*/ return this.effectivePeriod == null ? new Base[0] : new Base[] {this.effectivePeriod}; // Period
         case -978133683: /*derivedFromCanonical*/ return this.derivedFromCanonical == null ? new Base[0] : this.derivedFromCanonical.toArray(new Base[this.derivedFromCanonical.size()]); // CanonicalType
         case -1076333435: /*derivedFromUri*/ return this.derivedFromUri == null ? new Base[0] : this.derivedFromUri.toArray(new Base[this.derivedFromUri.size()]); // UriType
-        case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // CodeableConcept
+        case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : this.subject.toArray(new Base[this.subject.size()]); // CodeableConcept
         case -901444568: /*performerType*/ return this.performerType == null ? new Base[0] : new Base[] {this.performerType}; // CodeableConcept
         case 50511102: /*category*/ return this.category == null ? new Base[0] : this.category.toArray(new Base[this.category.size()]); // CodeableConcept
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
@@ -4026,7 +4055,7 @@ public class ObservationDefinition extends DomainResource {
           this.getDerivedFromUri().add(TypeConvertor.castToUri(value)); // UriType
           return value;
         case -1867885268: // subject
-          this.subject = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.getSubject().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -901444568: // performerType
           this.performerType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -4120,7 +4149,7 @@ public class ObservationDefinition extends DomainResource {
         } else if (name.equals("derivedFromUri")) {
           this.getDerivedFromUri().add(TypeConvertor.castToUri(value));
         } else if (name.equals("subject")) {
-          this.subject = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.getSubject().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("performerType")) {
           this.performerType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("category")) {
@@ -4178,7 +4207,7 @@ public class ObservationDefinition extends DomainResource {
         case -403934648:  return getEffectivePeriod();
         case -978133683:  return addDerivedFromCanonicalElement();
         case -1076333435:  return addDerivedFromUriElement();
-        case -1867885268:  return getSubject();
+        case -1867885268:  return addSubject(); 
         case -901444568:  return getPerformerType();
         case 50511102:  return addCategory(); 
         case 3059181:  return getCode();
@@ -4307,8 +4336,7 @@ public class ObservationDefinition extends DomainResource {
           throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.derivedFromUri");
         }
         else if (name.equals("subject")) {
-          this.subject = new CodeableConcept();
-          return this.subject;
+          return addSubject();
         }
         else if (name.equals("performerType")) {
           this.performerType = new CodeableConcept();
@@ -4414,7 +4442,11 @@ public class ObservationDefinition extends DomainResource {
           for (UriType i : derivedFromUri)
             dst.derivedFromUri.add(i.copy());
         };
-        dst.subject = subject == null ? null : subject.copy();
+        if (subject != null) {
+          dst.subject = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : subject)
+            dst.subject.add(i.copy());
+        };
         dst.performerType = performerType == null ? null : performerType.copy();
         if (category != null) {
           dst.category = new ArrayList<CodeableConcept>();

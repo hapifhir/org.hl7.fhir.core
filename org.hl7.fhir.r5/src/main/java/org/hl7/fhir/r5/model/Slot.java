@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -227,10 +227,10 @@ public class Slot extends DomainResource {
     /**
      * The style of appointment or patient that may be booked in the slot (not service type).
      */
-    @Child(name = "appointmentType", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "appointmentType", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The style of appointment or patient that may be booked in the slot (not service type)", formalDefinition="The style of appointment or patient that may be booked in the slot (not service type)." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v2-0276")
-    protected CodeableConcept appointmentType;
+    protected List<CodeableConcept> appointmentType;
 
     /**
      * The schedule resource that this slot defines an interval of status information.
@@ -275,7 +275,7 @@ public class Slot extends DomainResource {
     @Description(shortDefinition="Comments on the slot to describe any extended information. Such as custom constraints on the slot", formalDefinition="Comments on the slot to describe any extended information. Such as custom constraints on the slot." )
     protected StringType comment;
 
-    private static final long serialVersionUID = -426965191L;
+    private static final long serialVersionUID = 1338658975L;
 
   /**
    * Constructor
@@ -510,25 +510,54 @@ public class Slot extends DomainResource {
     /**
      * @return {@link #appointmentType} (The style of appointment or patient that may be booked in the slot (not service type).)
      */
-    public CodeableConcept getAppointmentType() { 
+    public List<CodeableConcept> getAppointmentType() { 
       if (this.appointmentType == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Slot.appointmentType");
-        else if (Configuration.doAutoCreate())
-          this.appointmentType = new CodeableConcept(); // cc
+        this.appointmentType = new ArrayList<CodeableConcept>();
       return this.appointmentType;
     }
 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Slot setAppointmentType(List<CodeableConcept> theAppointmentType) { 
+      this.appointmentType = theAppointmentType;
+      return this;
+    }
+
     public boolean hasAppointmentType() { 
-      return this.appointmentType != null && !this.appointmentType.isEmpty();
+      if (this.appointmentType == null)
+        return false;
+      for (CodeableConcept item : this.appointmentType)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableConcept addAppointmentType() { //3
+      CodeableConcept t = new CodeableConcept();
+      if (this.appointmentType == null)
+        this.appointmentType = new ArrayList<CodeableConcept>();
+      this.appointmentType.add(t);
+      return t;
+    }
+
+    public Slot addAppointmentType(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.appointmentType == null)
+        this.appointmentType = new ArrayList<CodeableConcept>();
+      this.appointmentType.add(t);
+      return this;
     }
 
     /**
-     * @param value {@link #appointmentType} (The style of appointment or patient that may be booked in the slot (not service type).)
+     * @return The first repetition of repeating field {@link #appointmentType}, creating it if it does not already exist {3}
      */
-    public Slot setAppointmentType(CodeableConcept value) { 
-      this.appointmentType = value;
-      return this;
+    public CodeableConcept getAppointmentTypeFirstRep() { 
+      if (getAppointmentType().isEmpty()) {
+        addAppointmentType();
+      }
+      return getAppointmentType().get(0);
     }
 
     /**
@@ -790,7 +819,7 @@ public class Slot extends DomainResource {
         children.add(new Property("serviceCategory", "CodeableConcept", "A broad categorization of the service that is to be performed during this appointment.", 0, java.lang.Integer.MAX_VALUE, serviceCategory));
         children.add(new Property("serviceType", "CodeableConcept", "The type of appointments that can be booked into this slot (ideally this would be an identifiable service - which is at a location, rather than the location itself). If provided then this overrides the value provided on the availability resource.", 0, java.lang.Integer.MAX_VALUE, serviceType));
         children.add(new Property("specialty", "CodeableConcept", "The specialty of a practitioner that would be required to perform the service requested in this appointment.", 0, java.lang.Integer.MAX_VALUE, specialty));
-        children.add(new Property("appointmentType", "CodeableConcept", "The style of appointment or patient that may be booked in the slot (not service type).", 0, 1, appointmentType));
+        children.add(new Property("appointmentType", "CodeableConcept", "The style of appointment or patient that may be booked in the slot (not service type).", 0, java.lang.Integer.MAX_VALUE, appointmentType));
         children.add(new Property("schedule", "Reference(Schedule)", "The schedule resource that this slot defines an interval of status information.", 0, 1, schedule));
         children.add(new Property("status", "code", "busy | free | busy-unavailable | busy-tentative | entered-in-error.", 0, 1, status));
         children.add(new Property("start", "instant", "Date/Time that the slot is to begin.", 0, 1, start));
@@ -806,7 +835,7 @@ public class Slot extends DomainResource {
         case 1281188563: /*serviceCategory*/  return new Property("serviceCategory", "CodeableConcept", "A broad categorization of the service that is to be performed during this appointment.", 0, java.lang.Integer.MAX_VALUE, serviceCategory);
         case -1928370289: /*serviceType*/  return new Property("serviceType", "CodeableConcept", "The type of appointments that can be booked into this slot (ideally this would be an identifiable service - which is at a location, rather than the location itself). If provided then this overrides the value provided on the availability resource.", 0, java.lang.Integer.MAX_VALUE, serviceType);
         case -1694759682: /*specialty*/  return new Property("specialty", "CodeableConcept", "The specialty of a practitioner that would be required to perform the service requested in this appointment.", 0, java.lang.Integer.MAX_VALUE, specialty);
-        case -1596426375: /*appointmentType*/  return new Property("appointmentType", "CodeableConcept", "The style of appointment or patient that may be booked in the slot (not service type).", 0, 1, appointmentType);
+        case -1596426375: /*appointmentType*/  return new Property("appointmentType", "CodeableConcept", "The style of appointment or patient that may be booked in the slot (not service type).", 0, java.lang.Integer.MAX_VALUE, appointmentType);
         case -697920873: /*schedule*/  return new Property("schedule", "Reference(Schedule)", "The schedule resource that this slot defines an interval of status information.", 0, 1, schedule);
         case -892481550: /*status*/  return new Property("status", "code", "busy | free | busy-unavailable | busy-tentative | entered-in-error.", 0, 1, status);
         case 109757538: /*start*/  return new Property("start", "instant", "Date/Time that the slot is to begin.", 0, 1, start);
@@ -825,7 +854,7 @@ public class Slot extends DomainResource {
         case 1281188563: /*serviceCategory*/ return this.serviceCategory == null ? new Base[0] : this.serviceCategory.toArray(new Base[this.serviceCategory.size()]); // CodeableConcept
         case -1928370289: /*serviceType*/ return this.serviceType == null ? new Base[0] : this.serviceType.toArray(new Base[this.serviceType.size()]); // CodeableConcept
         case -1694759682: /*specialty*/ return this.specialty == null ? new Base[0] : this.specialty.toArray(new Base[this.specialty.size()]); // CodeableConcept
-        case -1596426375: /*appointmentType*/ return this.appointmentType == null ? new Base[0] : new Base[] {this.appointmentType}; // CodeableConcept
+        case -1596426375: /*appointmentType*/ return this.appointmentType == null ? new Base[0] : this.appointmentType.toArray(new Base[this.appointmentType.size()]); // CodeableConcept
         case -697920873: /*schedule*/ return this.schedule == null ? new Base[0] : new Base[] {this.schedule}; // Reference
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<SlotStatus>
         case 109757538: /*start*/ return this.start == null ? new Base[0] : new Base[] {this.start}; // InstantType
@@ -853,7 +882,7 @@ public class Slot extends DomainResource {
           this.getSpecialty().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1596426375: // appointmentType
-          this.appointmentType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.getAppointmentType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -697920873: // schedule
           this.schedule = TypeConvertor.castToReference(value); // Reference
@@ -890,7 +919,7 @@ public class Slot extends DomainResource {
         } else if (name.equals("specialty")) {
           this.getSpecialty().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("appointmentType")) {
-          this.appointmentType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.getAppointmentType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("schedule")) {
           this.schedule = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("status")) {
@@ -916,7 +945,7 @@ public class Slot extends DomainResource {
         case 1281188563:  return addServiceCategory(); 
         case -1928370289:  return addServiceType(); 
         case -1694759682:  return addSpecialty(); 
-        case -1596426375:  return getAppointmentType();
+        case -1596426375:  return addAppointmentType(); 
         case -697920873:  return getSchedule();
         case -892481550:  return getStatusElement();
         case 109757538:  return getStartElement();
@@ -962,8 +991,7 @@ public class Slot extends DomainResource {
           return addSpecialty();
         }
         else if (name.equals("appointmentType")) {
-          this.appointmentType = new CodeableConcept();
-          return this.appointmentType;
+          return addAppointmentType();
         }
         else if (name.equals("schedule")) {
           this.schedule = new Reference();
@@ -1021,7 +1049,11 @@ public class Slot extends DomainResource {
           for (CodeableConcept i : specialty)
             dst.specialty.add(i.copy());
         };
-        dst.appointmentType = appointmentType == null ? null : appointmentType.copy();
+        if (appointmentType != null) {
+          dst.appointmentType = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : appointmentType)
+            dst.appointmentType.add(i.copy());
+        };
         dst.schedule = schedule == null ? null : schedule.copy();
         dst.status = status == null ? null : status.copy();
         dst.start = start == null ? null : start.copy();

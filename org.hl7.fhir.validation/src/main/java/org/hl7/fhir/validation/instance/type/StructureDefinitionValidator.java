@@ -77,7 +77,7 @@ public class StructureDefinitionValidator extends BaseValidator {
             List<ValidationMessage> msgs = new ArrayList<>();
             ProfileUtilities pu = new ProfileUtilities(context, msgs, null);
             pu.setXver(xverManager);
-            pu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir", sd.getName());
+            pu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir/R4/", sd.getName());
             if (msgs.size() > 0) {
               for (ValidationMessage msg : msgs) {
                 // we need to set the location for the context 
@@ -96,6 +96,10 @@ public class StructureDefinitionValidator extends BaseValidator {
               rule(errors, IssueType.NOTFOUND, stack.getLiteralPath(), was == is, I18nConstants.SNAPSHOT_EXISTING_PROBLEM, was, is);
             }
           }
+        }
+        if ("constraint".equals(src.getChildValue("derivation"))) {
+          rule(errors, IssueType.NOTFOUND, stack.getLiteralPath(), base.getKindElement().primitiveValue().equals(src.getChildValue("kind")), 
+              I18nConstants.SD_DERIVATION_KIND_MISMATCH, base.getKindElement().primitiveValue(), src.getChildValue("kind"));
         }
       }
     } catch (FHIRException | IOException e) {
@@ -207,6 +211,11 @@ public class StructureDefinitionValidator extends BaseValidator {
 
   private void validateBinding(List<ValidationMessage> errors, Element binding, NodeStack stack, Set<String> typeCodes, boolean snapshot, String path) {
     rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || bindableType(typeCodes) != null, I18nConstants.SD_ED_BIND_NO_BINDABLE, path, typeCodes.toString());
+    if (!snapshot) {
+      Set<String> bindables = getListofBindableTypes(typeCodes);    
+      hint(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), bindables.size() <= 1, I18nConstants.SD_ED_BIND_MULTIPLE_TYPES, path, typeCodes.toString());
+    }
+    
     if (binding.hasChild("valueSet")) {
       Element valueSet = binding.getNamedChild("valueSet");
       String ref = valueSet.hasPrimitiveValue() ? valueSet.primitiveValue() : valueSet.getNamedChildValue("reference");
@@ -222,6 +231,16 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
       }
     } 
+  }
+
+  private Set<String> getListofBindableTypes(Set<String> types) {
+    Set<String> res = new HashSet<>();
+    for (String s : types) {
+      if (Utilities.existsInList(s, "code", "string", "url", "uri", "Coding", "CodeableConcept", "Quantity", "CodeableReference")) {
+        res.add(s);
+      }
+    }
+    return res;
   }
 
   private boolean serverSupportsValueSet(String ref) {

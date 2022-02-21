@@ -76,6 +76,7 @@ import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.test.utils.ClassesLoadedFlags;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -83,6 +84,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 import org.hl7.fhir.utilities.xml.IXMLWriter;
 import org.hl7.fhir.utilities.xml.XMLWriter;
+import org.slf4j.LoggerFactory;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -94,6 +96,11 @@ import org.xmlpull.v1.XmlPullParserFactory;
  * The two classes are separated to keep generated and manually maintained code apart.
  */
 public abstract class XmlParserBase extends ParserBase implements IParser {
+
+  static {
+    LoggerFactory.getLogger("org.hl7.fhir.r5.formats.XmlParserBase").debug("XML Parser is being loaded");
+    ClassesLoadedFlags.ourXmlParserBaseLoaded = true;
+  }
 
 	@Override
 	public ParserType getType() {

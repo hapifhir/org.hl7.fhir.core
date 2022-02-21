@@ -769,7 +769,7 @@ public class NpmPackage {
   }
 
   public boolean isType(PackageType template) {
-    return template.getCode().equals(type());
+    return template.getCode().equals(type()) || template.getOldCode().equals(type()) ;
   }
 
   public String type() {

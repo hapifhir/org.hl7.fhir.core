@@ -142,6 +142,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         }
       }
     }
+    Coding foundCoding = null;
     if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
       Boolean result = false;
       for (Coding c : code.getCoding()) {
@@ -150,6 +151,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
           result = null;
         } else if (ok) {
           result = true;
+          foundCoding = c;
         }
       }
       if (result == null) {
@@ -162,8 +164,10 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       return new ValidationResult(IssueSeverity.ERROR, errors.toString());
     } else if (warnings.size() > 0) {
       return new ValidationResult(IssueSeverity.WARNING, warnings.toString());
-    } else { 
-      return new ValidationResult(IssueSeverity.INFORMATION, null);
+    } else {
+      ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
+      cd.setDisplay(foundCoding.getDisplay());
+      return new ValidationResult(foundCoding.getSystem(), cd);
     }
   }
 
@@ -251,7 +255,11 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
             res = new ValidationResult((IssueSeverity) null, null);
           }
           if (!inExpansion && !inInclude) {
-            res.setMessage("Not in value set "+valueset.getUrl()).setSeverity(IssueSeverity.ERROR);
+            if (warnings != null) {
+              res.setMessage("Not in value set "+valueset.getUrl()+" ("+warnings+")").setSeverity(IssueSeverity.ERROR);              
+            } else {
+              res.setMessage("Not in value set "+valueset.getUrl()).setSeverity(IssueSeverity.ERROR);
+            }
           } else if (warningMessage!=null) {
             res = new ValidationResult(IssueSeverity.WARNING, context.formatMessage(I18nConstants.CODE_FOUND_IN_EXPANSION_HOWEVER_, warningMessage));
           } else if (inExpansion) {
@@ -613,8 +621,10 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     if (valueset.hasExpansion()) {
       return checkExpansion(new Coding(system, code, null));
     } else if (valueset.hasCompose()) {
+      int i = 0;
       for (ConceptSetComponent vsi : valueset.getCompose().getInclude()) {
-        Boolean ok = inComponent(vsi, system, code, valueset.getCompose().getInclude().size() == 1, warnings);
+        Boolean ok = inComponent(vsi, i, system, code, valueset.getCompose().getInclude().size() == 1, warnings);
+        i++;
         if (ok == null && result == false) {
           result = null;
         } else if (ok) {
@@ -622,8 +632,10 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
           break;
         }
       }
+      i = valueset.getCompose().getInclude().size();
       for (ConceptSetComponent vsi : valueset.getCompose().getExclude()) {
-        Boolean nok = inComponent(vsi, system, code, valueset.getCompose().getInclude().size() == 1, warnings);
+        Boolean nok = inComponent(vsi, i, system, code, valueset.getCompose().getInclude().size() == 1, warnings);
+        i++;
         if (nok == null && result == false) {
           result = null;
         } else if (nok != null && nok) {
@@ -635,7 +647,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     return result;
   }
 
-  private Boolean inComponent(ConceptSetComponent vsi, String system, String code, boolean only, List<String> warnings) throws FHIRException {
+  private Boolean inComponent(ConceptSetComponent vsi, int vsiIndex, String system, String code, boolean only, List<String> warnings) throws FHIRException {
     for (UriType uri : vsi.getValueSet()) {
       if (inImport(uri.getValue(), system, code)) {
         return true;
@@ -662,7 +674,8 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       // make up a transient value set with
       ValueSet vs = new ValueSet();
       vs.setStatus(PublicationStatus.ACTIVE);
-      vs.setUrl(Utilities.makeUuidUrn());
+      vs.setUrl(valueset.getUrl()+"--"+vsiIndex);
+      vs.setVersion(valueset.getVersion());
       vs.getCompose().addInclude(vsi);
       ValidationResult res = context.validateCode(options.noClient(), new Coding(system, code, null), vs);
       if (res.getErrorClass() == TerminologyServiceErrorClass.UNKNOWN || res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNSUPPORTED) {

@@ -83,7 +83,7 @@ import java.util.Map.Entry;
  */
 public class FilesystemPackageCacheManager extends BasePackageCacheManager implements IPackageCacheManager {
 
-  //  private static final String SECONDARY_SERVER = "http://local.fhir.org:960/packages";
+  //  private static final String SECONDARY_SERVER = "http://local.fhir.org:8080/packages";
   public static final String PACKAGE_REGEX = "^[a-zA-Z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+$";
   public static final String PACKAGE_VERSION_REGEX = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+\\#[A-Za-z0-9\\-\\_\\$]+(\\.[A-Za-z0-9\\-\\_\\$]+)*$";
   public static final String PACKAGE_VERSION_REGEX_OPT = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+(\\#[A-Za-z0-9\\-\\_]+(\\.[A-Za-z0-9\\-\\_]+)*)?$";
@@ -498,7 +498,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
     // nup, don't have it locally (or it's expired)
     FilesystemPackageCacheManager.InputStreamWithSrc source;
-    if ("current".equals(version) || version.startsWith("current$")) {
+    if ("current".equals(version) || (version!= null && version.startsWith("current$"))) {
       // special case - fetch from ci-build server
       source = loadFromCIBuild(id, version.startsWith("current$") ? version.substring(8) : null);
     } else {
@@ -626,12 +626,12 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       JsonObject json = JsonTrackingParser.fetchJson(Utilities.pathURL(url, "package.manifest.json"));
       String currDate = JSONUtil.str(json, "date");
       String packDate = p.date();
-      if (!currDate.equals(packDate))
+      if (!currDate.equals(packDate)) {
         return null; // nup, we need a new copy
-      return p;
+      }
     } catch (Exception e) {
-      return p;
     }
+    return p;
   }
 
   private boolean checkBuildLoaded() {

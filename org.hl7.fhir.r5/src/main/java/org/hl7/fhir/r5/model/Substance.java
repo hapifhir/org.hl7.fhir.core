@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1162,26 +1162,6 @@ public class Substance extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CATEGORY);
 
  /**
-   * Search parameter: <b>code</b>
-   * <p>
-   * Description: <b>The code of the substance or ingredient</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Substance.code.concept | (Substance.ingredient.substance as CodeableConcept)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="code", path="Substance.code.concept | (Substance.ingredient.substance as CodeableConcept)", description="The code of the substance or ingredient", type="token" )
-  public static final String SP_CODE = "code";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>code</b>
-   * <p>
-   * Description: <b>The code of the substance or ingredient</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Substance.code.concept | (Substance.ingredient.substance as CodeableConcept)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
-
- /**
    * Search parameter: <b>code-reference</b>
    * <p>
    * Description: <b>A reference to the defining substance</b><br>
@@ -1206,6 +1186,26 @@ public class Substance extends DomainResource {
    * the path value of "<b>Substance:code-reference</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_CODE_REFERENCE = new ca.uhn.fhir.model.api.Include("Substance:code-reference").toLocked();
+
+ /**
+   * Search parameter: <b>code</b>
+   * <p>
+   * Description: <b>The code of the substance or ingredient</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Substance.code.concept | (Substance.ingredient.substance as CodeableConcept)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="code", path="Substance.code.concept | (Substance.ingredient.substance as CodeableConcept)", description="The code of the substance or ingredient", type="token" )
+  public static final String SP_CODE = "code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>code</b>
+   * <p>
+   * Description: <b>The code of the substance or ingredient</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Substance.code.concept | (Substance.ingredient.substance as CodeableConcept)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
 
  /**
    * Search parameter: <b>expiry</b>

@@ -127,6 +127,8 @@ public class RenderingContext {
   private ZoneId timeZoneId;
   private DateTimeFormatter dateTimeFormat;
   private DateTimeFormatter dateFormat;
+  private DateTimeFormatter dateYearFormat;
+  private DateTimeFormatter dateYearMonthFormat;
   
   /**
    * 
@@ -359,7 +361,16 @@ public class RenderingContext {
     res.definitionsTarget = definitionsTarget;
     res.destDir = destDir;
     res.addGeneratedNarrativeHeader = addGeneratedNarrativeHeader;
-    
+    res.questionnaireMode = questionnaireMode;
+    res.header = header;
+    res.selfLink = selfLink;
+    res.inlineGraphics = inlineGraphics;
+    res.timeZoneId = timeZoneId;
+    res.dateTimeFormat = dateTimeFormat;
+    res.dateFormat = dateFormat;
+    res.dateYearFormat = dateYearFormat;
+    res.dateYearMonthFormat = dateYearMonthFormat;
+
     return res;
   }
 
@@ -492,6 +503,10 @@ public class RenderingContext {
     this.dateTimeFormat = dateTimeFormat;
   }
 
+  public void setDateTimeFormatString(String dateTimeFormat) {
+    this.dateTimeFormat = DateTimeFormatter.ofPattern(dateTimeFormat);
+  }
+
   /**
    * In the absence of a specified format, the renderers will default to 
    * the FormatStyle.MEDIUM for the current locale.
@@ -504,6 +519,34 @@ public class RenderingContext {
 
   public void setDateFormat(DateTimeFormatter dateFormat) {
     this.dateFormat = dateFormat;
+  }
+
+  public void setDateFormatString(String dateFormat) {
+    this.dateFormat = DateTimeFormatter.ofPattern(dateFormat);
+  }
+
+  public DateTimeFormatter getDateYearFormat() {
+    return dateYearFormat;
+  }
+
+  public void setDateYearFormat(DateTimeFormatter dateYearFormat) {
+    this.dateYearFormat = dateYearFormat;
+  }
+
+  public void setDateYearFormatString(String dateYearFormat) {
+    this.dateYearFormat = DateTimeFormatter.ofPattern(dateYearFormat);
+  }
+
+  public DateTimeFormatter getDateYearMonthFormat() {
+    return dateYearMonthFormat;
+  }
+
+  public void setDateYearMonthFormat(DateTimeFormatter dateYearMonthFormat) {
+    this.dateYearMonthFormat = dateYearMonthFormat;
+  }
+
+  public void setDateYearMonthFormatString(String dateYearMonthFormat) {
+    this.dateYearMonthFormat = DateTimeFormatter.ofPattern(dateYearMonthFormat);
   }
 
   public ResourceRendererMode getMode() {

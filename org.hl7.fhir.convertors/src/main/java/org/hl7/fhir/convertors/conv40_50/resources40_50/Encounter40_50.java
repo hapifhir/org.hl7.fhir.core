@@ -69,7 +69,7 @@ public class Encounter40_50 {
     for (org.hl7.fhir.r4.model.Reference t : src.getAppointment())
       tgt.addAppointment(Reference40_50.convertReference(t));
     if (src.hasPeriod())
-      tgt.setPeriod(Period40_50.convertPeriod(src.getPeriod()));
+      tgt.setActualPeriod(Period40_50.convertPeriod(src.getPeriod()));
     if (src.hasLength())
       tgt.setLength(Duration40_50.convertDuration(src.getLength()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
@@ -120,8 +120,8 @@ public class Encounter40_50 {
       tgt.addParticipant(convertEncounterParticipantComponent(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getAppointment())
       tgt.addAppointment(Reference40_50.convertReference(t));
-    if (src.hasPeriod())
-      tgt.setPeriod(Period40_50.convertPeriod(src.getPeriod()));
+    if (src.hasActualPeriod())
+      tgt.setPeriod(Period40_50.convertPeriod(src.getActualPeriod()));
     if (src.hasLength())
       tgt.setLength(Duration40_50.convertDuration(src.getLength()));
     for (CodeableReference t : src.getReason())
@@ -273,7 +273,7 @@ public class Encounter40_50 {
     if (src.hasPeriod())
       tgt.setPeriod(Period40_50.convertPeriod(src.getPeriod()));
     if (src.hasIndividual())
-      tgt.setIndividual(Reference40_50.convertReference(src.getIndividual()));
+      tgt.setActor(Reference40_50.convertReference(src.getIndividual()));
     return tgt;
   }
 
@@ -286,8 +286,8 @@ public class Encounter40_50 {
       tgt.addType(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasPeriod())
       tgt.setPeriod(Period40_50.convertPeriod(src.getPeriod()));
-    if (src.hasIndividual())
-      tgt.setIndividual(Reference40_50.convertReference(src.getIndividual()));
+    if (src.hasActor())
+      tgt.setIndividual(Reference40_50.convertReference(src.getActor()));
     return tgt;
   }
 
