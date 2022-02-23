@@ -14,7 +14,7 @@ plugins {
 }
 
 group = 'com.onerecord.api'
-version = '5.3.8'
+version = '5.6.36'
 description = 'org.hl7.fhir.convertors'
 java.sourceCompatibility = JavaVersion.VERSION_11
 
