@@ -1,45 +1,45 @@
 package org.hl7.fhir.convertors.conv40_50;
 
 
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
-  
-  Redistribution and use in source and binary forms, with or without modification, 
+
+  Redistribution and use in source and binary forms, with or without modification,
   are permitted provided that the following conditions are met:
-  
-   * Redistributions of source code must retain the above copyright notice, this 
+
+   * Redistributions of source code must retain the above copyright notice, this
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice,
+     this list of conditions and the following disclaimer in the documentation
      and/or other materials provided with the distribution.
-   * Neither the name of HL7 nor the names of its contributors may be used to 
-     endorse or promote products derived from this software without specific 
+   * Neither the name of HL7 nor the names of its contributors may be used to
+     endorse or promote products derived from this software without specific
      prior written permission.
-  
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE.
-  
+
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-public class Enumerations40_50 extends VersionConvertor_40_50 {
+public class Enumerations40_50 {
 
     static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.BindingStrength> convertBindingStrength(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.BindingStrength> src) throws FHIRException {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.BindingStrength> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.BindingStrengthEnumFactory());
-        VersionConvertor_40_50.copyElement(src, tgt);
+        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case REQUIRED:
                 tgt.setValue(org.hl7.fhir.r5.model.Enumerations.BindingStrength.REQUIRED);
@@ -64,7 +64,7 @@ public class Enumerations40_50 extends VersionConvertor_40_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.BindingStrength> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.BindingStrengthEnumFactory());
-        VersionConvertor_40_50.copyElement(src, tgt);
+        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case REQUIRED:
                 tgt.setValue(org.hl7.fhir.r4.model.Enumerations.BindingStrength.REQUIRED);
@@ -89,7 +89,7 @@ public class Enumerations40_50 extends VersionConvertor_40_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.PublicationStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory());
-        VersionConvertor_40_50.copyElement(src, tgt);
+        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case DRAFT:
                 tgt.setValue(org.hl7.fhir.r5.model.Enumerations.PublicationStatus.DRAFT);
@@ -114,7 +114,7 @@ public class Enumerations40_50 extends VersionConvertor_40_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.PublicationStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.PublicationStatusEnumFactory());
-        VersionConvertor_40_50.copyElement(src, tgt);
+        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case DRAFT:
                 tgt.setValue(org.hl7.fhir.r4.model.Enumerations.PublicationStatus.DRAFT);
@@ -139,7 +139,7 @@ public class Enumerations40_50 extends VersionConvertor_40_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FHIRVersion> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.FHIRVersionEnumFactory());
-        VersionConvertor_40_50.copyElement(src, tgt);
+        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case _0_01:
                 tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._0_01);
@@ -224,7 +224,7 @@ public class Enumerations40_50 extends VersionConvertor_40_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.FHIRVersion> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.FHIRVersionEnumFactory());
-        VersionConvertor_40_50.copyElement(src, tgt);
+        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case _0_01:
                 tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._0_01);
@@ -309,7 +309,7 @@ public class Enumerations40_50 extends VersionConvertor_40_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.SearchParamType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.SearchParamTypeEnumFactory());
-        VersionConvertor_40_50.copyElement(src, tgt);
+        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case NUMBER:
                 tgt.setValue(org.hl7.fhir.r5.model.Enumerations.SearchParamType.NUMBER);
@@ -349,7 +349,7 @@ public class Enumerations40_50 extends VersionConvertor_40_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.SearchParamType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.SearchParamTypeEnumFactory());
-        VersionConvertor_40_50.copyElement(src, tgt);
+        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case NUMBER:
                 tgt.setValue(org.hl7.fhir.r4.model.Enumerations.SearchParamType.NUMBER);
@@ -389,7 +389,7 @@ public class Enumerations40_50 extends VersionConvertor_40_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.NoteType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.NoteTypeEnumFactory());
-        VersionConvertor_40_50.copyElement(src, tgt);
+        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case DISPLAY:
                 tgt.setValue(org.hl7.fhir.r5.model.Enumerations.NoteType.DISPLAY);
@@ -411,7 +411,7 @@ public class Enumerations40_50 extends VersionConvertor_40_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.NoteType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.NoteTypeEnumFactory());
-        VersionConvertor_40_50.copyElement(src, tgt);
+        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case DISPLAY:
                 tgt.setValue(org.hl7.fhir.r4.model.Enumerations.NoteType.DISPLAY);
@@ -433,7 +433,7 @@ public class Enumerations40_50 extends VersionConvertor_40_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationshipEnumFactory());
-        VersionConvertor_40_50.copyElement(src, tgt);
+        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case RELATEDTO:
                 tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.RELATEDTO);
@@ -476,7 +476,7 @@ public class Enumerations40_50 extends VersionConvertor_40_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalenceEnumFactory());
-        VersionConvertor_40_50.copyElement(src, tgt);
+        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case RELATEDTO:
                 tgt.setValue(org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.RELATEDTO);
@@ -504,7 +504,7 @@ public class Enumerations40_50 extends VersionConvertor_40_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatusEnumFactory());
-        VersionConvertor_40_50.copyElement(src, tgt);
+        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case CURRENT:
                 tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DocumentReferenceStatus.CURRENT);
@@ -526,7 +526,7 @@ public class Enumerations40_50 extends VersionConvertor_40_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatusEnumFactory());
-        VersionConvertor_40_50.copyElement(src, tgt);
+        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case CURRENT:
                 tgt.setValue(org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus.CURRENT);
@@ -548,7 +548,7 @@ public class Enumerations40_50 extends VersionConvertor_40_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.AdministrativeGender> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.AdministrativeGenderEnumFactory());
-        VersionConvertor_40_50.copyElement(src, tgt);
+        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case MALE:
                 tgt.setValue(org.hl7.fhir.r5.model.Enumerations.AdministrativeGender.MALE);
@@ -573,7 +573,7 @@ public class Enumerations40_50 extends VersionConvertor_40_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.AdministrativeGender> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.AdministrativeGenderEnumFactory());
-        VersionConvertor_40_50.copyElement(src, tgt);
+        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case MALE:
                 tgt.setValue(org.hl7.fhir.r4.model.Enumerations.AdministrativeGender.MALE);
