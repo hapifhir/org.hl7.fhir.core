@@ -64,8 +64,6 @@ public class Type10_40 {
       return Identifier10_40.convertIdentifier((org.hl7.fhir.dstu2.model.Identifier) src);
     if (src instanceof org.hl7.fhir.dstu2.model.Period)
       return Period10_40.convertPeriod((org.hl7.fhir.dstu2.model.Period) src);
-    if (src instanceof org.hl7.fhir.dstu2.model.Quantity)
-      return Quantity10_40.convertQuantity((org.hl7.fhir.dstu2.model.Quantity) src);
     if (src instanceof org.hl7.fhir.dstu2.model.Range)
       return Range10_40.convertRange((org.hl7.fhir.dstu2.model.Range) src);
     if (src instanceof org.hl7.fhir.dstu2.model.Ratio)
@@ -96,6 +94,8 @@ public class Type10_40 {
       return Money10_40.convertMoney((org.hl7.fhir.dstu2.model.Money) src);
     if (src instanceof org.hl7.fhir.dstu2.model.SimpleQuantity)
       return SimpleQuantity10_40.convertSimpleQuantity((org.hl7.fhir.dstu2.model.SimpleQuantity) src);
+    if (src instanceof org.hl7.fhir.dstu2.model.Quantity)
+      return Quantity10_40.convertQuantity((org.hl7.fhir.dstu2.model.Quantity) src);
     if (advisor.failFastOnNullOrUnknownEntry()) {
       throw new FHIRException("Unknown type " + src.fhirType());
     } else {

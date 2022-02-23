@@ -31,8 +31,21 @@ public class Timing10_40 {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r4.model.Timing.TimingRepeatComponent tgt = new org.hl7.fhir.r4.model.Timing.TimingRepeatComponent();
     ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
-    if (src.hasBounds())
-      tgt.setBounds(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getBounds()));
+    if (src.hasBounds()) {
+      if(src.getBounds() instanceof org.hl7.fhir.dstu2.model.Quantity) {
+        // There's an issue with DSTU2 boundQuantity, needs to be duration
+        org.hl7.fhir.dstu2.model.Quantity quantity = (org.hl7.fhir.dstu2.model.Quantity) src.getBounds();
+        org.hl7.fhir.dstu2.model.Duration duration = new org.hl7.fhir.dstu2.model.Duration();
+        duration.setValueElement(quantity.getValueElement());
+        duration.setCodeElement(quantity.getCodeElement());
+        duration.setId(quantity.getId());
+        duration.setUnitElement(quantity.getUnitElement());
+        duration.setSystemElement(quantity.getSystemElement());
+        tgt.setBounds(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(duration));
+      } else {
+        tgt.setBounds(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getBounds()));
+      }
+    }
     if (src.hasCount()) tgt.setCount(src.getCount());
     if (src.hasDurationElement()) tgt.setDurationElement(Decimal10_40.convertDecimal(src.getDurationElement()));
     if (src.hasDurationMaxElement())
