@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,7 +71,7 @@ public class QuestionnaireResponse extends DomainResource {
          */
         ENTEREDINERROR, 
         /**
-         * This QuestionnaireResponse has been partially filled out with answers but has been abandoned. It is unknown whether changes or additions are expected to be made to it.
+         * This QuestionnaireResponse has been partially filled out with answers but has been abandoned. No subsequent changes can be made.
          */
         STOPPED, 
         /**
@@ -103,7 +103,6 @@ public class QuestionnaireResponse extends DomainResource {
             case AMENDED: return "amended";
             case ENTEREDINERROR: return "entered-in-error";
             case STOPPED: return "stopped";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,7 +113,6 @@ public class QuestionnaireResponse extends DomainResource {
             case AMENDED: return "http://hl7.org/fhir/questionnaire-answers-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/questionnaire-answers-status";
             case STOPPED: return "http://hl7.org/fhir/questionnaire-answers-status";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -124,8 +122,7 @@ public class QuestionnaireResponse extends DomainResource {
             case COMPLETED: return "This QuestionnaireResponse has been filled out with answers and the current content is regarded as definitive.";
             case AMENDED: return "This QuestionnaireResponse has been filled out with answers, then marked as complete, yet changes or additions have been made to it afterwards.";
             case ENTEREDINERROR: return "This QuestionnaireResponse was entered in error and voided.";
-            case STOPPED: return "This QuestionnaireResponse has been partially filled out with answers but has been abandoned. It is unknown whether changes or additions are expected to be made to it.";
-            case NULL: return null;
+            case STOPPED: return "This QuestionnaireResponse has been partially filled out with answers but has been abandoned. No subsequent changes can be made.";
             default: return "?";
           }
         }
@@ -136,7 +133,6 @@ public class QuestionnaireResponse extends DomainResource {
             case AMENDED: return "Amended";
             case ENTEREDINERROR: return "Entered in Error";
             case STOPPED: return "Stopped";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -228,10 +224,10 @@ public class QuestionnaireResponse extends DomainResource {
         protected List<QuestionnaireResponseItemAnswerComponent> answer;
 
         /**
-         * Questions or sub-groups nested beneath a question or group.
+         * Sub-questions, sub-groups or display items nested beneath a group.
          */
         @Child(name = "item", type = {QuestionnaireResponseItemComponent.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Nested questionnaire response items", formalDefinition="Questions or sub-groups nested beneath a question or group." )
+        @Description(shortDefinition="Child items of group item", formalDefinition="Sub-questions, sub-groups or display items nested beneath a group." )
         protected List<QuestionnaireResponseItemComponent> item;
 
         private static final long serialVersionUID = -1395483402L;
@@ -448,7 +444,7 @@ public class QuestionnaireResponse extends DomainResource {
         }
 
         /**
-         * @return {@link #item} (Questions or sub-groups nested beneath a question or group.)
+         * @return {@link #item} (Sub-questions, sub-groups or display items nested beneath a group.)
          */
         public List<QuestionnaireResponseItemComponent> getItem() { 
           if (this.item == null)
@@ -506,7 +502,7 @@ public class QuestionnaireResponse extends DomainResource {
           children.add(new Property("definition", "uri", "A reference to an [ElementDefinition](elementdefinition.html) that provides the details for the item.", 0, 1, definition));
           children.add(new Property("text", "string", "Text that is displayed above the contents of the group or as the text of the question being answered.", 0, 1, text));
           children.add(new Property("answer", "", "The respondent's answer(s) to the question.", 0, java.lang.Integer.MAX_VALUE, answer));
-          children.add(new Property("item", "@QuestionnaireResponse.item", "Questions or sub-groups nested beneath a question or group.", 0, java.lang.Integer.MAX_VALUE, item));
+          children.add(new Property("item", "@QuestionnaireResponse.item", "Sub-questions, sub-groups or display items nested beneath a group.", 0, java.lang.Integer.MAX_VALUE, item));
         }
 
         @Override
@@ -516,7 +512,7 @@ public class QuestionnaireResponse extends DomainResource {
           case -1014418093: /*definition*/  return new Property("definition", "uri", "A reference to an [ElementDefinition](elementdefinition.html) that provides the details for the item.", 0, 1, definition);
           case 3556653: /*text*/  return new Property("text", "string", "Text that is displayed above the contents of the group or as the text of the question being answered.", 0, 1, text);
           case -1412808770: /*answer*/  return new Property("answer", "", "The respondent's answer(s) to the question.", 0, java.lang.Integer.MAX_VALUE, answer);
-          case 3242771: /*item*/  return new Property("item", "@QuestionnaireResponse.item", "Questions or sub-groups nested beneath a question or group.", 0, java.lang.Integer.MAX_VALUE, item);
+          case 3242771: /*item*/  return new Property("item", "@QuestionnaireResponse.item", "Sub-questions, sub-groups or display items nested beneath a group.", 0, java.lang.Integer.MAX_VALUE, item);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -684,7 +680,7 @@ public class QuestionnaireResponse extends DomainResource {
         /**
          * The answer (or one of the answers) provided by the respondent to the question.
          */
-        @Child(name = "value", type = {BooleanType.class, DecimalType.class, IntegerType.class, DateType.class, DateTimeType.class, TimeType.class, StringType.class, UriType.class, Attachment.class, Coding.class, Quantity.class, Reference.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "value", type = {BooleanType.class, DecimalType.class, IntegerType.class, DateType.class, DateTimeType.class, TimeType.class, StringType.class, UriType.class, Attachment.class, Coding.class, Quantity.class, Reference.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Single-valued answer to the question", formalDefinition="The answer (or one of the answers) provided by the respondent to the question." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/questionnaire-answers")
         protected DataType value;
@@ -693,7 +689,7 @@ public class QuestionnaireResponse extends DomainResource {
          * Nested groups and/or questions found within this particular answer.
          */
         @Child(name = "item", type = {QuestionnaireResponseItemComponent.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Nested groups and questions", formalDefinition="Nested groups and/or questions found within this particular answer." )
+        @Description(shortDefinition="Child items of question", formalDefinition="Nested groups and/or questions found within this particular answer." )
         protected List<QuestionnaireResponseItemComponent> item;
 
         private static final long serialVersionUID = 1790747618L;
@@ -703,6 +699,14 @@ public class QuestionnaireResponse extends DomainResource {
      */
       public QuestionnaireResponseItemAnswerComponent() {
         super();
+      }
+
+    /**
+     * Constructor
+     */
+      public QuestionnaireResponseItemAnswerComponent(DataType value) {
+        super();
+        this.setValue(value);
       }
 
         /**
@@ -1151,9 +1155,9 @@ public class QuestionnaireResponse extends DomainResource {
     /**
      * A business identifier assigned to a particular completed (or partially completed) questionnaire.
      */
-    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Unique id for this set of answers", formalDefinition="A business identifier assigned to a particular completed (or partially completed) questionnaire." )
-    protected Identifier identifier;
+    protected List<Identifier> identifier;
 
     /**
      * The order, proposal or plan that is fulfilled in whole or in part by this QuestionnaireResponse.  For example, a ServiceRequest seeking an intake assessment or a decision support recommendation to assess for post-partum depression.
@@ -1199,24 +1203,24 @@ public class QuestionnaireResponse extends DomainResource {
     protected Reference encounter;
 
     /**
-     * The date and/or time that this set of answers were last changed.
+     * The date and/or time that this questionnaire response was last modified by the user - e.g. changing answers or revising status.
      */
     @Child(name = "authored", type = {DateTimeType.class}, order=7, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Date the answers were gathered", formalDefinition="The date and/or time that this set of answers were last changed." )
+    @Description(shortDefinition="Date the answers were gathered", formalDefinition="The date and/or time that this questionnaire response was last modified by the user - e.g. changing answers or revising status." )
     protected DateTimeType authored;
 
     /**
-     * Person who received the answers to the questions in the QuestionnaireResponse and recorded them in the system.
+     * The individual or device that received the answers to the questions in the QuestionnaireResponse and recorded them in the system.
      */
     @Child(name = "author", type = {Device.class, Practitioner.class, PractitionerRole.class, Patient.class, RelatedPerson.class, Organization.class}, order=8, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Person who received and recorded the answers", formalDefinition="Person who received the answers to the questions in the QuestionnaireResponse and recorded them in the system." )
+    @Description(shortDefinition="The individual or device that received and recorded the answers", formalDefinition="The individual or device that received the answers to the questions in the QuestionnaireResponse and recorded them in the system." )
     protected Reference author;
 
     /**
-     * The person who answered the questions about the subject.
+     * The individual or device that answered the questions about the subject.
      */
-    @Child(name = "source", type = {Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class}, order=9, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The person who answered the questions", formalDefinition="The person who answered the questions about the subject." )
+    @Child(name = "source", type = {Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="The individual or device that answered the questions", formalDefinition="The individual or device that answered the questions about the subject." )
     protected Reference source;
 
     /**
@@ -1226,7 +1230,7 @@ public class QuestionnaireResponse extends DomainResource {
     @Description(shortDefinition="Groups and questions", formalDefinition="A group or question item from the original questionnaire for which answers are provided." )
     protected List<QuestionnaireResponseItemComponent> item;
 
-    private static final long serialVersionUID = 764655391L;
+    private static final long serialVersionUID = 1660467089L;
 
   /**
    * Constructor
@@ -1246,25 +1250,54 @@ public class QuestionnaireResponse extends DomainResource {
     /**
      * @return {@link #identifier} (A business identifier assigned to a particular completed (or partially completed) questionnaire.)
      */
-    public Identifier getIdentifier() { 
+    public List<Identifier> getIdentifier() { 
       if (this.identifier == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create QuestionnaireResponse.identifier");
-        else if (Configuration.doAutoCreate())
-          this.identifier = new Identifier(); // cc
+        this.identifier = new ArrayList<Identifier>();
       return this.identifier;
     }
 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public QuestionnaireResponse setIdentifier(List<Identifier> theIdentifier) { 
+      this.identifier = theIdentifier;
+      return this;
+    }
+
     public boolean hasIdentifier() { 
-      return this.identifier != null && !this.identifier.isEmpty();
+      if (this.identifier == null)
+        return false;
+      for (Identifier item : this.identifier)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Identifier addIdentifier() { //3
+      Identifier t = new Identifier();
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return t;
+    }
+
+    public QuestionnaireResponse addIdentifier(Identifier t) { //3
+      if (t == null)
+        return this;
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
+      return this;
     }
 
     /**
-     * @param value {@link #identifier} (A business identifier assigned to a particular completed (or partially completed) questionnaire.)
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
-    public QuestionnaireResponse setIdentifier(Identifier value) { 
-      this.identifier = value;
-      return this;
+    public Identifier getIdentifierFirstRep() { 
+      if (getIdentifier().isEmpty()) {
+        addIdentifier();
+      }
+      return getIdentifier().get(0);
     }
 
     /**
@@ -1516,7 +1549,7 @@ public class QuestionnaireResponse extends DomainResource {
     }
 
     /**
-     * @return {@link #authored} (The date and/or time that this set of answers were last changed.). This is the underlying object with id, value and extensions. The accessor "getAuthored" gives direct access to the value
+     * @return {@link #authored} (The date and/or time that this questionnaire response was last modified by the user - e.g. changing answers or revising status.). This is the underlying object with id, value and extensions. The accessor "getAuthored" gives direct access to the value
      */
     public DateTimeType getAuthoredElement() { 
       if (this.authored == null)
@@ -1536,7 +1569,7 @@ public class QuestionnaireResponse extends DomainResource {
     }
 
     /**
-     * @param value {@link #authored} (The date and/or time that this set of answers were last changed.). This is the underlying object with id, value and extensions. The accessor "getAuthored" gives direct access to the value
+     * @param value {@link #authored} (The date and/or time that this questionnaire response was last modified by the user - e.g. changing answers or revising status.). This is the underlying object with id, value and extensions. The accessor "getAuthored" gives direct access to the value
      */
     public QuestionnaireResponse setAuthoredElement(DateTimeType value) { 
       this.authored = value;
@@ -1544,14 +1577,14 @@ public class QuestionnaireResponse extends DomainResource {
     }
 
     /**
-     * @return The date and/or time that this set of answers were last changed.
+     * @return The date and/or time that this questionnaire response was last modified by the user - e.g. changing answers or revising status.
      */
     public Date getAuthored() { 
       return this.authored == null ? null : this.authored.getValue();
     }
 
     /**
-     * @param value The date and/or time that this set of answers were last changed.
+     * @param value The date and/or time that this questionnaire response was last modified by the user - e.g. changing answers or revising status.
      */
     public QuestionnaireResponse setAuthored(Date value) { 
       if (value == null)
@@ -1565,7 +1598,7 @@ public class QuestionnaireResponse extends DomainResource {
     }
 
     /**
-     * @return {@link #author} (Person who received the answers to the questions in the QuestionnaireResponse and recorded them in the system.)
+     * @return {@link #author} (The individual or device that received the answers to the questions in the QuestionnaireResponse and recorded them in the system.)
      */
     public Reference getAuthor() { 
       if (this.author == null)
@@ -1581,7 +1614,7 @@ public class QuestionnaireResponse extends DomainResource {
     }
 
     /**
-     * @param value {@link #author} (Person who received the answers to the questions in the QuestionnaireResponse and recorded them in the system.)
+     * @param value {@link #author} (The individual or device that received the answers to the questions in the QuestionnaireResponse and recorded them in the system.)
      */
     public QuestionnaireResponse setAuthor(Reference value) { 
       this.author = value;
@@ -1589,7 +1622,7 @@ public class QuestionnaireResponse extends DomainResource {
     }
 
     /**
-     * @return {@link #source} (The person who answered the questions about the subject.)
+     * @return {@link #source} (The individual or device that answered the questions about the subject.)
      */
     public Reference getSource() { 
       if (this.source == null)
@@ -1605,7 +1638,7 @@ public class QuestionnaireResponse extends DomainResource {
     }
 
     /**
-     * @param value {@link #source} (The person who answered the questions about the subject.)
+     * @param value {@link #source} (The individual or device that answered the questions about the subject.)
      */
     public QuestionnaireResponse setSource(Reference value) { 
       this.source = value;
@@ -1667,32 +1700,32 @@ public class QuestionnaireResponse extends DomainResource {
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("identifier", "Identifier", "A business identifier assigned to a particular completed (or partially completed) questionnaire.", 0, 1, identifier));
+        children.add(new Property("identifier", "Identifier", "A business identifier assigned to a particular completed (or partially completed) questionnaire.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("basedOn", "Reference(CarePlan|ServiceRequest)", "The order, proposal or plan that is fulfilled in whole or in part by this QuestionnaireResponse.  For example, a ServiceRequest seeking an intake assessment or a decision support recommendation to assess for post-partum depression.", 0, java.lang.Integer.MAX_VALUE, basedOn));
         children.add(new Property("partOf", "Reference(Observation|Procedure)", "A procedure or observation that this questionnaire was performed as part of the execution of.  For example, the surgery a checklist was executed as part of.", 0, java.lang.Integer.MAX_VALUE, partOf));
         children.add(new Property("questionnaire", "canonical(Questionnaire)", "The Questionnaire that defines and organizes the questions for which answers are being provided.", 0, 1, questionnaire));
         children.add(new Property("status", "code", "The position of the questionnaire response within its overall lifecycle.", 0, 1, status));
         children.add(new Property("subject", "Reference(Any)", "The subject of the questionnaire response.  This could be a patient, organization, practitioner, device, etc.  This is who/what the answers apply to, but is not necessarily the source of information.", 0, 1, subject));
         children.add(new Property("encounter", "Reference(Encounter)", "The Encounter during which this questionnaire response was created or to which the creation of this record is tightly associated.", 0, 1, encounter));
-        children.add(new Property("authored", "dateTime", "The date and/or time that this set of answers were last changed.", 0, 1, authored));
-        children.add(new Property("author", "Reference(Device|Practitioner|PractitionerRole|Patient|RelatedPerson|Organization)", "Person who received the answers to the questions in the QuestionnaireResponse and recorded them in the system.", 0, 1, author));
-        children.add(new Property("source", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson)", "The person who answered the questions about the subject.", 0, 1, source));
+        children.add(new Property("authored", "dateTime", "The date and/or time that this questionnaire response was last modified by the user - e.g. changing answers or revising status.", 0, 1, authored));
+        children.add(new Property("author", "Reference(Device|Practitioner|PractitionerRole|Patient|RelatedPerson|Organization)", "The individual or device that received the answers to the questions in the QuestionnaireResponse and recorded them in the system.", 0, 1, author));
+        children.add(new Property("source", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The individual or device that answered the questions about the subject.", 0, 1, source));
         children.add(new Property("item", "", "A group or question item from the original questionnaire for which answers are provided.", 0, java.lang.Integer.MAX_VALUE, item));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A business identifier assigned to a particular completed (or partially completed) questionnaire.", 0, 1, identifier);
+        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A business identifier assigned to a particular completed (or partially completed) questionnaire.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case -332612366: /*basedOn*/  return new Property("basedOn", "Reference(CarePlan|ServiceRequest)", "The order, proposal or plan that is fulfilled in whole or in part by this QuestionnaireResponse.  For example, a ServiceRequest seeking an intake assessment or a decision support recommendation to assess for post-partum depression.", 0, java.lang.Integer.MAX_VALUE, basedOn);
         case -995410646: /*partOf*/  return new Property("partOf", "Reference(Observation|Procedure)", "A procedure or observation that this questionnaire was performed as part of the execution of.  For example, the surgery a checklist was executed as part of.", 0, java.lang.Integer.MAX_VALUE, partOf);
         case -1017049693: /*questionnaire*/  return new Property("questionnaire", "canonical(Questionnaire)", "The Questionnaire that defines and organizes the questions for which answers are being provided.", 0, 1, questionnaire);
         case -892481550: /*status*/  return new Property("status", "code", "The position of the questionnaire response within its overall lifecycle.", 0, 1, status);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Any)", "The subject of the questionnaire response.  This could be a patient, organization, practitioner, device, etc.  This is who/what the answers apply to, but is not necessarily the source of information.", 0, 1, subject);
         case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The Encounter during which this questionnaire response was created or to which the creation of this record is tightly associated.", 0, 1, encounter);
-        case 1433073514: /*authored*/  return new Property("authored", "dateTime", "The date and/or time that this set of answers were last changed.", 0, 1, authored);
-        case -1406328437: /*author*/  return new Property("author", "Reference(Device|Practitioner|PractitionerRole|Patient|RelatedPerson|Organization)", "Person who received the answers to the questions in the QuestionnaireResponse and recorded them in the system.", 0, 1, author);
-        case -896505829: /*source*/  return new Property("source", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson)", "The person who answered the questions about the subject.", 0, 1, source);
+        case 1433073514: /*authored*/  return new Property("authored", "dateTime", "The date and/or time that this questionnaire response was last modified by the user - e.g. changing answers or revising status.", 0, 1, authored);
+        case -1406328437: /*author*/  return new Property("author", "Reference(Device|Practitioner|PractitionerRole|Patient|RelatedPerson|Organization)", "The individual or device that received the answers to the questions in the QuestionnaireResponse and recorded them in the system.", 0, 1, author);
+        case -896505829: /*source*/  return new Property("source", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The individual or device that answered the questions about the subject.", 0, 1, source);
         case 3242771: /*item*/  return new Property("item", "", "A group or question item from the original questionnaire for which answers are provided.", 0, java.lang.Integer.MAX_VALUE, item);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -1702,7 +1735,7 @@ public class QuestionnaireResponse extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : new Base[] {this.identifier}; // Identifier
+        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case -332612366: /*basedOn*/ return this.basedOn == null ? new Base[0] : this.basedOn.toArray(new Base[this.basedOn.size()]); // Reference
         case -995410646: /*partOf*/ return this.partOf == null ? new Base[0] : this.partOf.toArray(new Base[this.partOf.size()]); // Reference
         case -1017049693: /*questionnaire*/ return this.questionnaire == null ? new Base[0] : new Base[] {this.questionnaire}; // CanonicalType
@@ -1722,7 +1755,7 @@ public class QuestionnaireResponse extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1618432855: // identifier
-          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -332612366: // basedOn
           this.getBasedOn().add(TypeConvertor.castToReference(value)); // Reference
@@ -1763,7 +1796,7 @@ public class QuestionnaireResponse extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
-          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("basedOn")) {
           this.getBasedOn().add(TypeConvertor.castToReference(value));
         } else if (name.equals("partOf")) {
@@ -1793,7 +1826,7 @@ public class QuestionnaireResponse extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1618432855:  return getIdentifier();
+        case -1618432855:  return addIdentifier(); 
         case -332612366:  return addBasedOn(); 
         case -995410646:  return addPartOf(); 
         case -1017049693:  return getQuestionnaireElement();
@@ -1831,8 +1864,7 @@ public class QuestionnaireResponse extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("identifier")) {
-          this.identifier = new Identifier();
-          return this.identifier;
+          return addIdentifier();
         }
         else if (name.equals("basedOn")) {
           return addBasedOn();
@@ -1885,7 +1917,11 @@ public class QuestionnaireResponse extends DomainResource {
 
       public void copyValues(QuestionnaireResponse dst) {
         super.copyValues(dst);
-        dst.identifier = identifier == null ? null : identifier.copy();
+        if (identifier != null) {
+          dst.identifier = new ArrayList<Identifier>();
+          for (Identifier i : identifier)
+            dst.identifier.add(i.copy());
+        };
         if (basedOn != null) {
           dst.basedOn = new ArrayList<Reference>();
           for (Reference i : basedOn)
@@ -2068,6 +2104,32 @@ public class QuestionnaireResponse extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
+   * Search parameter: <b>item-subject</b>
+   * <p>
+   * Description: <b>Allows searching for QuestionnaireResponses by item value where the item has isSubject=true</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>QuestionnaireResponse.item.where(extension('http://hl7.org/fhir/StructureDefinition/questionnaireresponse-isSubject').exists()).answer.value.ofType(Reference)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="item-subject", path="QuestionnaireResponse.item.where(extension('http://hl7.org/fhir/StructureDefinition/questionnaireresponse-isSubject').exists()).answer.value.ofType(Reference)", description="Allows searching for QuestionnaireResponses by item value where the item has isSubject=true", type="reference" )
+  public static final String SP_ITEM_SUBJECT = "item-subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>item-subject</b>
+   * <p>
+   * Description: <b>Allows searching for QuestionnaireResponses by item value where the item has isSubject=true</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>QuestionnaireResponse.item.where(extension('http://hl7.org/fhir/StructureDefinition/questionnaireresponse-isSubject').exists()).answer.value.ofType(Reference)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ITEM_SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ITEM_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>QuestionnaireResponse:item-subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ITEM_SUBJECT = new ca.uhn.fhir.model.api.Include("QuestionnaireResponse:item-subject").toLocked();
+
+ /**
    * Search parameter: <b>part-of</b>
    * <p>
    * Description: <b>Procedure or observation this questionnaire response was performed as a part of</b><br>
@@ -2101,7 +2163,7 @@ public class QuestionnaireResponse extends DomainResource {
    * Path: <b>QuestionnaireResponse.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="QuestionnaireResponse.subject.where(resolve() is Patient)", description="The patient that is the subject of the questionnaire response", type="reference", target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="QuestionnaireResponse.subject.where(resolve() is Patient)", description="The patient that is the subject of the questionnaire response", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -2153,7 +2215,7 @@ public class QuestionnaireResponse extends DomainResource {
    * Path: <b>QuestionnaireResponse.source</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="source", path="QuestionnaireResponse.source", description="The individual providing the information reflected in the questionnaire respose", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  @SearchParamDefinition(name="source", path="QuestionnaireResponse.source", description="The individual providing the information reflected in the questionnaire respose", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_SOURCE = "source";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>source</b>
@@ -2199,7 +2261,7 @@ public class QuestionnaireResponse extends DomainResource {
    * Path: <b>QuestionnaireResponse.subject</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="QuestionnaireResponse.subject", description="The subject of the questionnaire response", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="subject", path="QuestionnaireResponse.subject", description="The subject of the questionnaire response", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_SUBJECT = "subject";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>subject</b>
@@ -2216,32 +2278,6 @@ public class QuestionnaireResponse extends DomainResource {
    * the path value of "<b>QuestionnaireResponse:subject</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("QuestionnaireResponse:subject").toLocked();
-
- /**
-   * Search parameter: <b>item-subject</b>
-   * <p>
-   * Description: <b>Allows searching for QuestionnaireResponses by item value where the item has isSubject=true</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>QuestionnaireResponse.item.where(hasExtension('http://hl7.org/fhir/StructureDefinition/questionnaireresponse-isSubject')).answer.value.ofType(Reference)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="item-subject", path="QuestionnaireResponse.item.where(hasExtension('http://hl7.org/fhir/StructureDefinition/questionnaireresponse-isSubject')).answer.value.ofType(Reference)", description="Allows searching for QuestionnaireResponses by item value where the item has isSubject=true", type="reference" )
-  public static final String SP_ITEM_SUBJECT = "item-subject";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>item-subject</b>
-   * <p>
-   * Description: <b>Allows searching for QuestionnaireResponses by item value where the item has isSubject=true</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>QuestionnaireResponse.item.where(hasExtension('http://hl7.org/fhir/StructureDefinition/questionnaireresponse-isSubject')).answer.value.ofType(Reference)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ITEM_SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ITEM_SUBJECT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>QuestionnaireResponse:item-subject</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ITEM_SUBJECT = new ca.uhn.fhir.model.api.Include("QuestionnaireResponse:item-subject").toLocked();
 
 
 }

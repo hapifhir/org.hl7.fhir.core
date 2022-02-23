@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -104,7 +104,6 @@ public class Invoice extends DomainResource {
             case BALANCED: return "balanced";
             case CANCELLED: return "cancelled";
             case ENTEREDINERROR: return "entered-in-error";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -115,7 +114,6 @@ public class Invoice extends DomainResource {
             case BALANCED: return "http://hl7.org/fhir/invoice-status";
             case CANCELLED: return "http://hl7.org/fhir/invoice-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/invoice-status";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,7 +124,6 @@ public class Invoice extends DomainResource {
             case BALANCED: return "the invoice has been balaced / completely paid.";
             case CANCELLED: return "the invoice was cancelled.";
             case ENTEREDINERROR: return "the invoice was determined as entered in error before it was issued.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -137,7 +134,6 @@ public class Invoice extends DomainResource {
             case BALANCED: return "balanced";
             case CANCELLED: return "cancelled";
             case ENTEREDINERROR: return "entered in error";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -2386,7 +2382,7 @@ public class Invoice extends DomainResource {
    * Path: <b>Invoice.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="Invoice.subject.where(resolve() is Patient)", description="Recipient(s) of goods and services", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="Invoice.subject.where(resolve() is Patient)", description="Recipient(s) of goods and services", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Group.class, Patient.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>

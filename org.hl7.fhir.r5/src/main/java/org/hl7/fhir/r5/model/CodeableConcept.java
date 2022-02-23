@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -308,7 +308,7 @@ public class CodeableConcept extends DataType implements ICompositeType {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(coding, text);
       }
 
-// Manual code (from Configuration.txt)t:
+// Manual code (from Configuration.txt):
 public boolean hasCoding(String system, String code) {
     for (Coding c : getCoding()) {
       if (system.equals(c.getSystem()) && code.equals(c.getCode()))
@@ -400,12 +400,12 @@ public boolean hasCoding(String system, String code) {
     return res;
   }  
   
+    
   public void addCoding(String system, String code, String display) {
     getCoding().add(new Coding(system, code, display));
   }
   
 // end addition
-
 
 }
 

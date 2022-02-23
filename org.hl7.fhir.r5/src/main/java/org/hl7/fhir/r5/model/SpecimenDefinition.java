@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,7 +82,6 @@ public class SpecimenDefinition extends DomainResource {
           switch (this) {
             case PREFERRED: return "preferred";
             case ALTERNATE: return "alternate";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,7 +89,6 @@ public class SpecimenDefinition extends DomainResource {
           switch (this) {
             case PREFERRED: return "http://hl7.org/fhir/specimen-contained-preference";
             case ALTERNATE: return "http://hl7.org/fhir/specimen-contained-preference";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,7 +96,6 @@ public class SpecimenDefinition extends DomainResource {
           switch (this) {
             case PREFERRED: return "This type of contained specimen is preferred to collect this kind of specimen.";
             case ALTERNATE: return "This type of conditioned specimen is an alternate.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,7 +103,6 @@ public class SpecimenDefinition extends DomainResource {
           switch (this) {
             case PREFERRED: return "Preferred";
             case ALTERNATE: return "Alternate";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -1523,7 +1519,7 @@ public class SpecimenDefinition extends DomainResource {
         /**
          * Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.
          */
-        @Child(name = "additive", type = {CodeableConcept.class, Substance.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "additive", type = {CodeableConcept.class, SubstanceDefinition.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Additive associated with container", formalDefinition="Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v2-0371")
         protected DataType additive;
@@ -1598,16 +1594,16 @@ public class SpecimenDefinition extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("additive[x]", "CodeableConcept|Reference(Substance)", "Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.", 0, 1, additive));
+          children.add(new Property("additive[x]", "CodeableConcept|Reference(SubstanceDefinition)", "Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.", 0, 1, additive));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 261915956: /*additive[x]*/  return new Property("additive[x]", "CodeableConcept|Reference(Substance)", "Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.", 0, 1, additive);
-          case -1226589236: /*additive*/  return new Property("additive[x]", "CodeableConcept|Reference(Substance)", "Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.", 0, 1, additive);
+          case 261915956: /*additive[x]*/  return new Property("additive[x]", "CodeableConcept|Reference(SubstanceDefinition)", "Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.", 0, 1, additive);
+          case -1226589236: /*additive*/  return new Property("additive[x]", "CodeableConcept|Reference(SubstanceDefinition)", "Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.", 0, 1, additive);
           case 1330272821: /*additiveCodeableConcept*/  return new Property("additive[x]", "CodeableConcept", "Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.", 0, 1, additive);
-          case -386783009: /*additiveReference*/  return new Property("additive[x]", "Reference(Substance)", "Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.", 0, 1, additive);
+          case -386783009: /*additiveReference*/  return new Property("additive[x]", "Reference(SubstanceDefinition)", "Substance introduced in the kind of container to preserve, maintain or enhance the specimen. Examples: Formalin, Citrate, EDTA.", 0, 1, additive);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 

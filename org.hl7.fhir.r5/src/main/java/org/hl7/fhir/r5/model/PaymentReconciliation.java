@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,6 +52,130 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="PaymentReconciliation", profile="http://hl7.org/fhir/StructureDefinition/PaymentReconciliation")
 public class PaymentReconciliation extends DomainResource {
+
+    public enum PaymentOutcome {
+        /**
+         * The Claim/Pre-authorization/Pre-determination has been received but processing has not begun.
+         */
+        QUEUED, 
+        /**
+         * The processing has completed without errors
+         */
+        COMPLETE, 
+        /**
+         * One or more errors have been detected in the Claim
+         */
+        ERROR, 
+        /**
+         * No errors have been detected in the Claim and some of the adjudication has been performed.
+         */
+        PARTIAL, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static PaymentOutcome fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("queued".equals(codeString))
+          return QUEUED;
+        if ("complete".equals(codeString))
+          return COMPLETE;
+        if ("error".equals(codeString))
+          return ERROR;
+        if ("partial".equals(codeString))
+          return PARTIAL;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown PaymentOutcome code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case QUEUED: return "queued";
+            case COMPLETE: return "complete";
+            case ERROR: return "error";
+            case PARTIAL: return "partial";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case QUEUED: return "http://hl7.org/fhir/payment-outcome";
+            case COMPLETE: return "http://hl7.org/fhir/payment-outcome";
+            case ERROR: return "http://hl7.org/fhir/payment-outcome";
+            case PARTIAL: return "http://hl7.org/fhir/payment-outcome";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case QUEUED: return "The Claim/Pre-authorization/Pre-determination has been received but processing has not begun.";
+            case COMPLETE: return "The processing has completed without errors";
+            case ERROR: return "One or more errors have been detected in the Claim";
+            case PARTIAL: return "No errors have been detected in the Claim and some of the adjudication has been performed.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case QUEUED: return "Queued";
+            case COMPLETE: return "Processing Complete";
+            case ERROR: return "Error";
+            case PARTIAL: return "Partial Processing";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class PaymentOutcomeEnumFactory implements EnumFactory<PaymentOutcome> {
+    public PaymentOutcome fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("queued".equals(codeString))
+          return PaymentOutcome.QUEUED;
+        if ("complete".equals(codeString))
+          return PaymentOutcome.COMPLETE;
+        if ("error".equals(codeString))
+          return PaymentOutcome.ERROR;
+        if ("partial".equals(codeString))
+          return PaymentOutcome.PARTIAL;
+        throw new IllegalArgumentException("Unknown PaymentOutcome code '"+codeString+"'");
+        }
+        public Enumeration<PaymentOutcome> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<PaymentOutcome>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("queued".equals(codeString))
+          return new Enumeration<PaymentOutcome>(this, PaymentOutcome.QUEUED);
+        if ("complete".equals(codeString))
+          return new Enumeration<PaymentOutcome>(this, PaymentOutcome.COMPLETE);
+        if ("error".equals(codeString))
+          return new Enumeration<PaymentOutcome>(this, PaymentOutcome.ERROR);
+        if ("partial".equals(codeString))
+          return new Enumeration<PaymentOutcome>(this, PaymentOutcome.PARTIAL);
+        throw new FHIRException("Unknown PaymentOutcome code '"+codeString+"'");
+        }
+    public String toCode(PaymentOutcome code) {
+      if (code == PaymentOutcome.QUEUED)
+        return "queued";
+      if (code == PaymentOutcome.COMPLETE)
+        return "complete";
+      if (code == PaymentOutcome.ERROR)
+        return "error";
+      if (code == PaymentOutcome.PARTIAL)
+        return "partial";
+      return "?";
+      }
+    public String toSystem(PaymentOutcome code) {
+      return code.getSystem();
+      }
+    }
 
     @Block()
     public static class DetailsComponent extends BackboneElement implements IBaseBackboneElement {
@@ -966,8 +1090,8 @@ public class PaymentReconciliation extends DomainResource {
      */
     @Child(name = "outcome", type = {CodeType.class}, order=7, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="queued | complete | error | partial", formalDefinition="The outcome of a request for a reconciliation." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/remittance-outcome")
-    protected Enumeration<ClaimProcessingCodes> outcome;
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/payment-outcome")
+    protected Enumeration<PaymentOutcome> outcome;
 
     /**
      * A human readable description of the status of the request for the reconciliation.
@@ -1019,7 +1143,7 @@ public class PaymentReconciliation extends DomainResource {
     @Description(shortDefinition="Note concerning processing", formalDefinition="A note that describes or explains the processing in a human readable form." )
     protected List<NotesComponent> processNote;
 
-    private static final long serialVersionUID = -1613598933L;
+    private static final long serialVersionUID = 1540410902L;
 
   /**
    * Constructor
@@ -1281,12 +1405,12 @@ public class PaymentReconciliation extends DomainResource {
     /**
      * @return {@link #outcome} (The outcome of a request for a reconciliation.). This is the underlying object with id, value and extensions. The accessor "getOutcome" gives direct access to the value
      */
-    public Enumeration<ClaimProcessingCodes> getOutcomeElement() { 
+    public Enumeration<PaymentOutcome> getOutcomeElement() { 
       if (this.outcome == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create PaymentReconciliation.outcome");
         else if (Configuration.doAutoCreate())
-          this.outcome = new Enumeration<ClaimProcessingCodes>(new ClaimProcessingCodesEnumFactory()); // bb
+          this.outcome = new Enumeration<PaymentOutcome>(new PaymentOutcomeEnumFactory()); // bb
       return this.outcome;
     }
 
@@ -1301,7 +1425,7 @@ public class PaymentReconciliation extends DomainResource {
     /**
      * @param value {@link #outcome} (The outcome of a request for a reconciliation.). This is the underlying object with id, value and extensions. The accessor "getOutcome" gives direct access to the value
      */
-    public PaymentReconciliation setOutcomeElement(Enumeration<ClaimProcessingCodes> value) { 
+    public PaymentReconciliation setOutcomeElement(Enumeration<PaymentOutcome> value) { 
       this.outcome = value;
       return this;
     }
@@ -1309,19 +1433,19 @@ public class PaymentReconciliation extends DomainResource {
     /**
      * @return The outcome of a request for a reconciliation.
      */
-    public ClaimProcessingCodes getOutcome() { 
+    public PaymentOutcome getOutcome() { 
       return this.outcome == null ? null : this.outcome.getValue();
     }
 
     /**
      * @param value The outcome of a request for a reconciliation.
      */
-    public PaymentReconciliation setOutcome(ClaimProcessingCodes value) { 
+    public PaymentReconciliation setOutcome(PaymentOutcome value) { 
       if (value == null)
         this.outcome = null;
       else {
         if (this.outcome == null)
-          this.outcome = new Enumeration<ClaimProcessingCodes>(new ClaimProcessingCodesEnumFactory());
+          this.outcome = new Enumeration<PaymentOutcome>(new PaymentOutcomeEnumFactory());
         this.outcome.setValue(value);
       }
       return this;
@@ -1651,7 +1775,7 @@ public class PaymentReconciliation extends DomainResource {
         case 1144026207: /*paymentIssuer*/ return this.paymentIssuer == null ? new Base[0] : new Base[] {this.paymentIssuer}; // Reference
         case 1095692943: /*request*/ return this.request == null ? new Base[0] : new Base[] {this.request}; // Reference
         case 693934258: /*requestor*/ return this.requestor == null ? new Base[0] : new Base[] {this.requestor}; // Reference
-        case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : new Base[] {this.outcome}; // Enumeration<ClaimProcessingCodes>
+        case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : new Base[] {this.outcome}; // Enumeration<PaymentOutcome>
         case 583380919: /*disposition*/ return this.disposition == null ? new Base[0] : new Base[] {this.disposition}; // StringType
         case -1540873516: /*paymentDate*/ return this.paymentDate == null ? new Base[0] : new Base[] {this.paymentDate}; // DateType
         case 909332990: /*paymentAmount*/ return this.paymentAmount == null ? new Base[0] : new Base[] {this.paymentAmount}; // Money
@@ -1690,8 +1814,8 @@ public class PaymentReconciliation extends DomainResource {
           this.requestor = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1106507950: // outcome
-          value = new ClaimProcessingCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.outcome = (Enumeration) value; // Enumeration<ClaimProcessingCodes>
+          value = new PaymentOutcomeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.outcome = (Enumeration) value; // Enumeration<PaymentOutcome>
           return value;
         case 583380919: // disposition
           this.disposition = TypeConvertor.castToString(value); // StringType
@@ -1737,8 +1861,8 @@ public class PaymentReconciliation extends DomainResource {
         } else if (name.equals("requestor")) {
           this.requestor = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("outcome")) {
-          value = new ClaimProcessingCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.outcome = (Enumeration) value; // Enumeration<ClaimProcessingCodes>
+          value = new PaymentOutcomeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.outcome = (Enumeration) value; // Enumeration<PaymentOutcome>
         } else if (name.equals("disposition")) {
           this.disposition = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("paymentDate")) {

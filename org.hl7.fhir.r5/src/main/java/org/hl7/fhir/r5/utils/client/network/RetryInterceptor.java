@@ -3,7 +3,7 @@ package org.hl7.fhir.r5.utils.client.network;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.IOException;
 
@@ -27,7 +27,7 @@ public class RetryInterceptor implements Interceptor {
   }
 
   @Override
-  public @NotNull Response intercept(Interceptor.Chain chain) throws IOException {
+  public Response intercept(Interceptor.Chain chain) throws IOException {
     Request request = chain.request();
     Response response = null;
 
@@ -35,8 +35,8 @@ public class RetryInterceptor implements Interceptor {
       try {
         // If we are retrying a failed request that failed due to a bad response from the server, we must close it first
         if (response != null) {
-          System.out.println("Previous " + chain.request().method() + " attempt returned HTTP<" + (response.code())
-            + "> from url -> " + chain.request().url() + ".");
+//          System.out.println("Previous " + chain.request().method() + " attempt returned HTTP<" + (response.code())
+//            + "> from url -> " + chain.request().url() + ".");
           response.close();
         }
         // System.out.println(chain.request().method() + " attempt <" + (retryCounter + 1) + "> to url -> " + chain.request().url());

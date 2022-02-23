@@ -13,7 +13,7 @@ import java.security.cert.X509Certificate;
 public class SSLCertTruster {
 
   // always verify the host - dont check for certificate
-  final static HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
+  public final static HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
     public boolean verify(String hostname, SSLSession session) {
       return true;
     }

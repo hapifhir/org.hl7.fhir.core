@@ -8,17 +8,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_50;
-import org.hl7.fhir.convertors.VersionConvertor_14_50;
-import org.hl7.fhir.convertors.VersionConvertor_30_50;
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
+import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.factory.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.Resource;
@@ -35,6 +37,7 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.TimeTracker;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
@@ -74,7 +77,7 @@ public class StructureDefinitionValidator extends BaseValidator {
             List<ValidationMessage> msgs = new ArrayList<>();
             ProfileUtilities pu = new ProfileUtilities(context, msgs, null);
             pu.setXver(xverManager);
-            pu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir", sd.getName());
+            pu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir/R4/", sd.getName());
             if (msgs.size() > 0) {
               for (ValidationMessage msg : msgs) {
                 // we need to set the location for the context 
@@ -93,6 +96,10 @@ public class StructureDefinitionValidator extends BaseValidator {
               rule(errors, IssueType.NOTFOUND, stack.getLiteralPath(), was == is, I18nConstants.SNAPSHOT_EXISTING_PROBLEM, was, is);
             }
           }
+        }
+        if ("constraint".equals(src.getChildValue("derivation"))) {
+          rule(errors, IssueType.NOTFOUND, stack.getLiteralPath(), base.getKindElement().primitiveValue().equals(src.getChildValue("kind")), 
+              I18nConstants.SD_DERIVATION_KIND_MISMATCH, base.getKindElement().primitiveValue(), src.getChildValue("kind"));
         }
       }
     } catch (FHIRException | IOException e) {
@@ -156,7 +163,7 @@ public class StructureDefinitionValidator extends BaseValidator {
 //      hint(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || bt == null, I18nConstants.SD_ED_SHOULD_BIND, element.getNamedChildValue("path"), bt);              
     }
     // in a snapshot, we validate that fixedValue, pattern, and defaultValue, if present, are all of the right type
-    if (snapshot && element.getIdBase().contains(".")) {
+    if (snapshot && (element.getIdBase() != null) && (element.getIdBase().contains("."))) {
       if (rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), !typeCodes.isEmpty() || element.hasChild("contentReference"), I18nConstants.SD_NO_TYPES_OR_CONTENTREF, element.getIdBase())) {     
         Element v = element.getNamedChild("defaultValue");
         if (v != null) {
@@ -204,16 +211,41 @@ public class StructureDefinitionValidator extends BaseValidator {
 
   private void validateBinding(List<ValidationMessage> errors, Element binding, NodeStack stack, Set<String> typeCodes, boolean snapshot, String path) {
     rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || bindableType(typeCodes) != null, I18nConstants.SD_ED_BIND_NO_BINDABLE, path, typeCodes.toString());
+    if (!snapshot) {
+      Set<String> bindables = getListofBindableTypes(typeCodes);    
+      hint(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), bindables.size() <= 1, I18nConstants.SD_ED_BIND_MULTIPLE_TYPES, path, typeCodes.toString());
+    }
+    
     if (binding.hasChild("valueSet")) {
       Element valueSet = binding.getNamedChild("valueSet");
       String ref = valueSet.hasPrimitiveValue() ? valueSet.primitiveValue() : valueSet.getNamedChildValue("reference");
       if (warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || ref != null, I18nConstants.SD_ED_SHOULD_BIND_WITH_VS, path)) {
         Resource vs = context.fetchResource(Resource.class, ref);
-        if (warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs != null, I18nConstants.SD_ED_BIND_UNKNOWN_VS, path, ref)) {
-          rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs instanceof ValueSet, I18nConstants.SD_ED_BIND_NOT_VS, path, ref, vs.fhirType());
+        
+        // just because we can't resolve it directly doesn't mean that terminology server can't. Check with it
+        
+        if (warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs != null || serverSupportsValueSet(ref), I18nConstants.SD_ED_BIND_UNKNOWN_VS, path, ref)) {
+          if (vs != null) {
+            rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs instanceof ValueSet, I18nConstants.SD_ED_BIND_NOT_VS, path, ref, vs.fhirType());
+          }
         }
       }
     } 
+  }
+
+  private Set<String> getListofBindableTypes(Set<String> types) {
+    Set<String> res = new HashSet<>();
+    for (String s : types) {
+      if (Utilities.existsInList(s, "code", "string", "url", "uri", "Coding", "CodeableConcept", "Quantity", "CodeableReference")) {
+        res.add(s);
+      }
+    }
+    return res;
+  }
+
+  private boolean serverSupportsValueSet(String ref) {
+    ValidationResult vr = context.validateCode(new ValidationOptions().checkValueSetOnly().setVsAsUrl().noClient(), new Coding("http://loinc.org", "5792-7", null), new ValueSet().setUrl(ref));
+    return vr.getErrorClass() == null;
   }
 
   private void validateElementType(List<ValidationMessage> errors, Element type, NodeStack stack, StructureDefinition sd, String path) {
@@ -245,9 +277,9 @@ public class StructureDefinitionValidator extends BaseValidator {
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, p);
     if (code.equals("Reference")) {
       if (warning(errors, IssueType.EXCEPTION, stack.getLiteralPath(), sd != null, I18nConstants.SD_ED_TYPE_PROFILE_UNKNOWN, p)) {
-        String t = determineBaseType(sd);
+        StructureDefinition t = determineBaseType(sd);
         if (t == null) {
-          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), code.equals(t), I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
+          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
         } else {
           rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), sd.getKind() == StructureDefinitionKind.RESOURCE, I18nConstants.SD_ED_TYPE_PROFILE_WRONG, p, t, code, path);
         }
@@ -257,9 +289,9 @@ public class StructureDefinitionValidator extends BaseValidator {
         sd = getXverExt(errors, stack.getLiteralPath(), profile, p);
       }
       if (warning(errors, IssueType.EXCEPTION, stack.getLiteralPath(), sd != null, I18nConstants.SD_ED_TYPE_PROFILE_UNKNOWN, p)) {
-        String t = determineBaseType(sd);
+        StructureDefinition t = determineBaseType(sd);
         if (t == null) {
-          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), code.equals(t), I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
+          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
         } else {
           rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), isInstanceOf(t, code), I18nConstants.SD_ED_TYPE_PROFILE_WRONG, p, t, code, path);
         }
@@ -288,11 +320,11 @@ public class StructureDefinitionValidator extends BaseValidator {
       sd = getXverExt(errors, stack.getLiteralPath(), profile, p);
     }
     if (warning(errors, IssueType.EXCEPTION, stack.getLiteralPath(), sd != null, I18nConstants.SD_ED_TYPE_PROFILE_UNKNOWN, p)) {
-      String t = determineBaseType(sd);
+      StructureDefinition t = determineBaseType(sd);
       if (t == null) {
-        rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), code.equals(t), I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
-      } else {
-        rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), isInstanceOf(t, code), I18nConstants.SD_ED_TYPE_PROFILE_WRONG, p, t, code, path);
+        rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
+      } else if (!isInstanceOf(t, code)) {
+        rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_WRONG, p, t, code, path);
       }
     }
   }
@@ -302,22 +334,22 @@ public class StructureDefinitionValidator extends BaseValidator {
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, p);
     if (code.equals("Reference")) {
       if (warning(errors, IssueType.EXCEPTION, stack.getLiteralPath(), sd != null, I18nConstants.SD_ED_TYPE_PROFILE_UNKNOWN, p)) {
-        String t = determineBaseType(sd);
+        StructureDefinition t = determineBaseType(sd);
         if (t == null) {
-          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), code.equals(t), I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
+          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
         } else {
           rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), sd.getKind() == StructureDefinitionKind.RESOURCE, I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Resource");
         }
       }
     } else if (code.equals("canonical")) {
       if (warning(errors, IssueType.EXCEPTION, stack.getLiteralPath(), sd != null, I18nConstants.SD_ED_TYPE_PROFILE_UNKNOWN, p)) {
-        String t = determineBaseType(sd);
+        StructureDefinition t = determineBaseType(sd);
         if (t == null) {
-          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), code.equals(t), I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
+          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
         } else if (!VersionUtilities.isR5Ver(context.getVersion())) {
-          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(t) || "Resource".equals(t), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource");
+          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(t.getType()) || "Resource".equals(t.getType()), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource");
         } else {
-          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(t), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource");
+          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(t.getType()), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource");
         }  
       }
     } else {
@@ -325,14 +357,16 @@ public class StructureDefinitionValidator extends BaseValidator {
     }
   }
 
-  private boolean isInstanceOf(String t, String code) {
-    StructureDefinition sd = context.fetchTypeDefinition(t);
+  private boolean isInstanceOf(StructureDefinition sd, String code) {
     while (sd != null) {
       if (sd.getType().equals(code)) {
         return true;
       }
+      if (sd.getUrl().equals(code)) {
+        return true;
+      }
       sd = sd.hasBaseDefinition() ? context.fetchResource(StructureDefinition.class, sd.getBaseDefinition()) : null;
-      if (!(VersionUtilities.isR2Ver(context.getVersion()) || VersionUtilities.isR2BVer(context.getVersion())) && sd != null && !sd.getAbstract()) {
+      if (!(VersionUtilities.isR2Ver(context.getVersion()) || VersionUtilities.isR2BVer(context.getVersion())) && sd != null && !sd.getAbstract() && sd.getKind() != StructureDefinitionKind.LOGICAL) {
         sd = null;
       }
     }
@@ -340,11 +374,11 @@ public class StructureDefinitionValidator extends BaseValidator {
     return false;
   }
 
-  private String determineBaseType(StructureDefinition sd) {
-    while (sd != null && !sd.hasType() && sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
+  private StructureDefinition determineBaseType(StructureDefinition sd) {
+    while (sd != null && sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
       sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
     }
-    return sd == null ? null : sd.getType();
+    return sd;
   }
 
   private boolean hasMustSupportExtension(Element type) {
@@ -381,19 +415,19 @@ public class StructureDefinitionValidator extends BaseValidator {
     Manager.compose(context, src, bs, FhirFormat.JSON, OutputStyle.NORMAL, null);
     if (VersionUtilities.isR2Ver(context.getVersion())) {
       org.hl7.fhir.dstu2.model.Resource r2 = new org.hl7.fhir.dstu2.formats.JsonParser().parse(bs.toByteArray());
-      return (StructureDefinition) VersionConvertor_10_50.convertResource(r2);
+      return (StructureDefinition) VersionConvertorFactory_10_50.convertResource(r2);
     }
     if (VersionUtilities.isR2BVer(context.getVersion())) {
       org.hl7.fhir.dstu2016may.model.Resource r2b = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(bs.toByteArray());
-      return (StructureDefinition) VersionConvertor_14_50.convertResource(r2b);
+      return (StructureDefinition) VersionConvertorFactory_14_50.convertResource(r2b);
     }
     if (VersionUtilities.isR3Ver(context.getVersion())) {
       org.hl7.fhir.dstu3.model.Resource r3 = new org.hl7.fhir.dstu3.formats.JsonParser().parse(bs.toByteArray());
-      return (StructureDefinition) VersionConvertor_30_50.convertResource(r3, false);
+      return (StructureDefinition) VersionConvertorFactory_30_50.convertResource(r3);
     }
     if (VersionUtilities.isR4Ver(context.getVersion())) {
       org.hl7.fhir.r4.model.Resource r4 = new org.hl7.fhir.r4.formats.JsonParser().parse(bs.toByteArray());
-      return (StructureDefinition) VersionConvertor_40_50.convertResource(r4);
+      return (StructureDefinition) VersionConvertorFactory_40_50.convertResource(r4);
     }
     return (StructureDefinition) new org.hl7.fhir.r5.formats.JsonParser().parse(bs.toByteArray());
   }

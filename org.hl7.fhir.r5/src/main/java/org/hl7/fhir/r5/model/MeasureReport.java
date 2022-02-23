@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -89,7 +89,6 @@ public class MeasureReport extends DomainResource {
             case COMPLETE: return "complete";
             case PENDING: return "pending";
             case ERROR: return "error";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,7 +97,6 @@ public class MeasureReport extends DomainResource {
             case COMPLETE: return "http://hl7.org/fhir/measure-report-status";
             case PENDING: return "http://hl7.org/fhir/measure-report-status";
             case ERROR: return "http://hl7.org/fhir/measure-report-status";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -107,7 +105,6 @@ public class MeasureReport extends DomainResource {
             case COMPLETE: return "The report is complete and ready for use.";
             case PENDING: return "The report is currently being generated.";
             case ERROR: return "An error occurred attempting to generate the report.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -116,7 +113,6 @@ public class MeasureReport extends DomainResource {
             case COMPLETE: return "Complete";
             case PENDING: return "Pending";
             case ERROR: return "Error";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -208,7 +204,6 @@ public class MeasureReport extends DomainResource {
             case SUBJECTLIST: return "subject-list";
             case SUMMARY: return "summary";
             case DATACOLLECTION: return "data-collection";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -218,7 +213,6 @@ public class MeasureReport extends DomainResource {
             case SUBJECTLIST: return "http://hl7.org/fhir/measure-report-type";
             case SUMMARY: return "http://hl7.org/fhir/measure-report-type";
             case DATACOLLECTION: return "http://hl7.org/fhir/measure-report-type";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -228,7 +222,6 @@ public class MeasureReport extends DomainResource {
             case SUBJECTLIST: return "A subject list report that includes a listing of subjects that satisfied each population criteria in the measure.";
             case SUMMARY: return "A summary report that returns the number of members in each population criteria for the measure.";
             case DATACOLLECTION: return "A data collection report that contains data-of-interest for the measure.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -238,7 +231,6 @@ public class MeasureReport extends DomainResource {
             case SUBJECTLIST: return "Subject List";
             case SUMMARY: return "Summary";
             case DATACOLLECTION: return "Data Collection";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -293,6 +285,98 @@ public class MeasureReport extends DomainResource {
       }
     }
 
+    public enum SubmitDataUpdateType {
+        /**
+         * In contrast to the Snapshot Update, the FHIR Parameters resource used in a Submit Data or the Collect Data scenario contains only the new and updated DEQM and QI Core Profiles since the last transaction. If the Consumer supports incremental updates, the contents of the updated payload updates the previous payload data.
+         */
+        INCREMENTAL, 
+        /**
+         * In contrast to the Incremental Update, the FHIR Parameters resource used in a Submit Data or the Collect Data scenario contains all the DEQM and QI Core Profiles for each transaction.  If the Consumer supports snapshot updates, the contents of the updated payload entirely replaces the previous payload
+         */
+        SNAPSHOT, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static SubmitDataUpdateType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("incremental".equals(codeString))
+          return INCREMENTAL;
+        if ("snapshot".equals(codeString))
+          return SNAPSHOT;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown SubmitDataUpdateType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case INCREMENTAL: return "incremental";
+            case SNAPSHOT: return "snapshot";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case INCREMENTAL: return "http://hl7.org/fhir/CodeSystem/submit-data-update-type";
+            case SNAPSHOT: return "http://hl7.org/fhir/CodeSystem/submit-data-update-type";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case INCREMENTAL: return "In contrast to the Snapshot Update, the FHIR Parameters resource used in a Submit Data or the Collect Data scenario contains only the new and updated DEQM and QI Core Profiles since the last transaction. If the Consumer supports incremental updates, the contents of the updated payload updates the previous payload data.";
+            case SNAPSHOT: return "In contrast to the Incremental Update, the FHIR Parameters resource used in a Submit Data or the Collect Data scenario contains all the DEQM and QI Core Profiles for each transaction.  If the Consumer supports snapshot updates, the contents of the updated payload entirely replaces the previous payload";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case INCREMENTAL: return "Incremental";
+            case SNAPSHOT: return "Snapshot";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class SubmitDataUpdateTypeEnumFactory implements EnumFactory<SubmitDataUpdateType> {
+    public SubmitDataUpdateType fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("incremental".equals(codeString))
+          return SubmitDataUpdateType.INCREMENTAL;
+        if ("snapshot".equals(codeString))
+          return SubmitDataUpdateType.SNAPSHOT;
+        throw new IllegalArgumentException("Unknown SubmitDataUpdateType code '"+codeString+"'");
+        }
+        public Enumeration<SubmitDataUpdateType> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<SubmitDataUpdateType>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("incremental".equals(codeString))
+          return new Enumeration<SubmitDataUpdateType>(this, SubmitDataUpdateType.INCREMENTAL);
+        if ("snapshot".equals(codeString))
+          return new Enumeration<SubmitDataUpdateType>(this, SubmitDataUpdateType.SNAPSHOT);
+        throw new FHIRException("Unknown SubmitDataUpdateType code '"+codeString+"'");
+        }
+    public String toCode(SubmitDataUpdateType code) {
+      if (code == SubmitDataUpdateType.INCREMENTAL)
+        return "incremental";
+      if (code == SubmitDataUpdateType.SNAPSHOT)
+        return "snapshot";
+      return "?";
+      }
+    public String toSystem(SubmitDataUpdateType code) {
+      return code.getSystem();
+      }
+    }
+
     @Block()
     public static class MeasureReportGroupComponent extends BackboneElement implements IBaseBackboneElement {
         /**
@@ -300,6 +384,7 @@ public class MeasureReport extends DomainResource {
          */
         @Child(name = "code", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Meaning of the group", formalDefinition="The meaning of the population group as defined in the measure definition." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/measure-group-example")
         protected CodeableConcept code;
 
         /**
@@ -312,9 +397,9 @@ public class MeasureReport extends DomainResource {
         /**
          * The measure score for this population group, calculated as appropriate for the measure type and scoring method, and based on the contents of the populations defined in the group.
          */
-        @Child(name = "measureScore", type = {Quantity.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "measureScore", type = {Quantity.class, DateTimeType.class, CodeableConcept.class, Period.class, Range.class, Duration.class}, order=3, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="What score this group achieved", formalDefinition="The measure score for this population group, calculated as appropriate for the measure type and scoring method, and based on the contents of the populations defined in the group." )
-        protected Quantity measureScore;
+        protected DataType measureScore;
 
         /**
          * When a measure includes multiple stratifiers, there will be a stratifier group for each stratifier defined by the measure.
@@ -323,7 +408,7 @@ public class MeasureReport extends DomainResource {
         @Description(shortDefinition="Stratification results", formalDefinition="When a measure includes multiple stratifiers, there will be a stratifier group for each stratifier defined by the measure." )
         protected List<MeasureReportGroupStratifierComponent> stratifier;
 
-        private static final long serialVersionUID = 1744426009L;
+        private static final long serialVersionUID = -631288064L;
 
     /**
      * Constructor
@@ -412,13 +497,98 @@ public class MeasureReport extends DomainResource {
         /**
          * @return {@link #measureScore} (The measure score for this population group, calculated as appropriate for the measure type and scoring method, and based on the contents of the populations defined in the group.)
          */
-        public Quantity getMeasureScore() { 
-          if (this.measureScore == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MeasureReportGroupComponent.measureScore");
-            else if (Configuration.doAutoCreate())
-              this.measureScore = new Quantity(); // cc
+        public DataType getMeasureScore() { 
           return this.measureScore;
+        }
+
+        /**
+         * @return {@link #measureScore} (The measure score for this population group, calculated as appropriate for the measure type and scoring method, and based on the contents of the populations defined in the group.)
+         */
+        public Quantity getMeasureScoreQuantity() throws FHIRException { 
+          if (this.measureScore == null)
+            this.measureScore = new Quantity();
+          if (!(this.measureScore instanceof Quantity))
+            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.measureScore.getClass().getName()+" was encountered");
+          return (Quantity) this.measureScore;
+        }
+
+        public boolean hasMeasureScoreQuantity() { 
+          return this != null && this.measureScore instanceof Quantity;
+        }
+
+        /**
+         * @return {@link #measureScore} (The measure score for this population group, calculated as appropriate for the measure type and scoring method, and based on the contents of the populations defined in the group.)
+         */
+        public DateTimeType getMeasureScoreDateTimeType() throws FHIRException { 
+          if (this.measureScore == null)
+            this.measureScore = new DateTimeType();
+          if (!(this.measureScore instanceof DateTimeType))
+            throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.measureScore.getClass().getName()+" was encountered");
+          return (DateTimeType) this.measureScore;
+        }
+
+        public boolean hasMeasureScoreDateTimeType() { 
+          return this != null && this.measureScore instanceof DateTimeType;
+        }
+
+        /**
+         * @return {@link #measureScore} (The measure score for this population group, calculated as appropriate for the measure type and scoring method, and based on the contents of the populations defined in the group.)
+         */
+        public CodeableConcept getMeasureScoreCodeableConcept() throws FHIRException { 
+          if (this.measureScore == null)
+            this.measureScore = new CodeableConcept();
+          if (!(this.measureScore instanceof CodeableConcept))
+            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.measureScore.getClass().getName()+" was encountered");
+          return (CodeableConcept) this.measureScore;
+        }
+
+        public boolean hasMeasureScoreCodeableConcept() { 
+          return this != null && this.measureScore instanceof CodeableConcept;
+        }
+
+        /**
+         * @return {@link #measureScore} (The measure score for this population group, calculated as appropriate for the measure type and scoring method, and based on the contents of the populations defined in the group.)
+         */
+        public Period getMeasureScorePeriod() throws FHIRException { 
+          if (this.measureScore == null)
+            this.measureScore = new Period();
+          if (!(this.measureScore instanceof Period))
+            throw new FHIRException("Type mismatch: the type Period was expected, but "+this.measureScore.getClass().getName()+" was encountered");
+          return (Period) this.measureScore;
+        }
+
+        public boolean hasMeasureScorePeriod() { 
+          return this != null && this.measureScore instanceof Period;
+        }
+
+        /**
+         * @return {@link #measureScore} (The measure score for this population group, calculated as appropriate for the measure type and scoring method, and based on the contents of the populations defined in the group.)
+         */
+        public Range getMeasureScoreRange() throws FHIRException { 
+          if (this.measureScore == null)
+            this.measureScore = new Range();
+          if (!(this.measureScore instanceof Range))
+            throw new FHIRException("Type mismatch: the type Range was expected, but "+this.measureScore.getClass().getName()+" was encountered");
+          return (Range) this.measureScore;
+        }
+
+        public boolean hasMeasureScoreRange() { 
+          return this != null && this.measureScore instanceof Range;
+        }
+
+        /**
+         * @return {@link #measureScore} (The measure score for this population group, calculated as appropriate for the measure type and scoring method, and based on the contents of the populations defined in the group.)
+         */
+        public Duration getMeasureScoreDuration() throws FHIRException { 
+          if (this.measureScore == null)
+            this.measureScore = new Duration();
+          if (!(this.measureScore instanceof Duration))
+            throw new FHIRException("Type mismatch: the type Duration was expected, but "+this.measureScore.getClass().getName()+" was encountered");
+          return (Duration) this.measureScore;
+        }
+
+        public boolean hasMeasureScoreDuration() { 
+          return this != null && this.measureScore instanceof Duration;
         }
 
         public boolean hasMeasureScore() { 
@@ -428,7 +598,9 @@ public class MeasureReport extends DomainResource {
         /**
          * @param value {@link #measureScore} (The measure score for this population group, calculated as appropriate for the measure type and scoring method, and based on the contents of the populations defined in the group.)
          */
-        public MeasureReportGroupComponent setMeasureScore(Quantity value) { 
+        public MeasureReportGroupComponent setMeasureScore(DataType value) { 
+          if (value != null && !(value instanceof Quantity || value instanceof DateTimeType || value instanceof CodeableConcept || value instanceof Period || value instanceof Range || value instanceof Duration))
+            throw new Error("Not the right type for MeasureReport.group.measureScore[x]: "+value.fhirType());
           this.measureScore = value;
           return this;
         }
@@ -490,7 +662,7 @@ public class MeasureReport extends DomainResource {
           super.listChildren(children);
           children.add(new Property("code", "CodeableConcept", "The meaning of the population group as defined in the measure definition.", 0, 1, code));
           children.add(new Property("population", "", "The populations that make up the population group, one for each type of population appropriate for the measure.", 0, java.lang.Integer.MAX_VALUE, population));
-          children.add(new Property("measureScore", "Quantity", "The measure score for this population group, calculated as appropriate for the measure type and scoring method, and based on the contents of the populations defined in the group.", 0, 1, measureScore));
+          children.add(new Property("measureScore[x]", "Quantity|dateTime|CodeableConcept|Period|Range|Duration", "The measure score for this population group, calculated as appropriate for the measure type and scoring method, and based on the contents of the populations defined in the group.", 0, 1, measureScore));
           children.add(new Property("stratifier", "", "When a measure includes multiple stratifiers, there will be a stratifier group for each stratifier defined by the measure.", 0, java.lang.Integer.MAX_VALUE, stratifier));
         }
 
@@ -499,7 +671,14 @@ public class MeasureReport extends DomainResource {
           switch (_hash) {
           case 3059181: /*code*/  return new Property("code", "CodeableConcept", "The meaning of the population group as defined in the measure definition.", 0, 1, code);
           case -2023558323: /*population*/  return new Property("population", "", "The populations that make up the population group, one for each type of population appropriate for the measure.", 0, java.lang.Integer.MAX_VALUE, population);
-          case -386313260: /*measureScore*/  return new Property("measureScore", "Quantity", "The measure score for this population group, calculated as appropriate for the measure type and scoring method, and based on the contents of the populations defined in the group.", 0, 1, measureScore);
+          case 1854115884: /*measureScore[x]*/  return new Property("measureScore[x]", "Quantity|dateTime|CodeableConcept|Period|Range|Duration", "The measure score for this population group, calculated as appropriate for the measure type and scoring method, and based on the contents of the populations defined in the group.", 0, 1, measureScore);
+          case -386313260: /*measureScore*/  return new Property("measureScore[x]", "Quantity|dateTime|CodeableConcept|Period|Range|Duration", "The measure score for this population group, calculated as appropriate for the measure type and scoring method, and based on the contents of the populations defined in the group.", 0, 1, measureScore);
+          case -1880815489: /*measureScoreQuantity*/  return new Property("measureScore[x]", "Quantity", "The measure score for this population group, calculated as appropriate for the measure type and scoring method, and based on the contents of the populations defined in the group.", 0, 1, measureScore);
+          case 1196938127: /*measureScoreDateTime*/  return new Property("measureScore[x]", "dateTime", "The measure score for this population group, calculated as appropriate for the measure type and scoring method, and based on the contents of the populations defined in the group.", 0, 1, measureScore);
+          case -1193234131: /*measureScoreCodeableConcept*/  return new Property("measureScore[x]", "CodeableConcept", "The measure score for this population group, calculated as appropriate for the measure type and scoring method, and based on the contents of the populations defined in the group.", 0, 1, measureScore);
+          case -1939831115: /*measureScorePeriod*/  return new Property("measureScore[x]", "Period", "The measure score for this population group, calculated as appropriate for the measure type and scoring method, and based on the contents of the populations defined in the group.", 0, 1, measureScore);
+          case -615040567: /*measureScoreRange*/  return new Property("measureScore[x]", "Range", "The measure score for this population group, calculated as appropriate for the measure type and scoring method, and based on the contents of the populations defined in the group.", 0, 1, measureScore);
+          case 1707143560: /*measureScoreDuration*/  return new Property("measureScore[x]", "Duration", "The measure score for this population group, calculated as appropriate for the measure type and scoring method, and based on the contents of the populations defined in the group.", 0, 1, measureScore);
           case 90983669: /*stratifier*/  return new Property("stratifier", "", "When a measure includes multiple stratifiers, there will be a stratifier group for each stratifier defined by the measure.", 0, java.lang.Integer.MAX_VALUE, stratifier);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -511,7 +690,7 @@ public class MeasureReport extends DomainResource {
         switch (hash) {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case -2023558323: /*population*/ return this.population == null ? new Base[0] : this.population.toArray(new Base[this.population.size()]); // MeasureReportGroupPopulationComponent
-        case -386313260: /*measureScore*/ return this.measureScore == null ? new Base[0] : new Base[] {this.measureScore}; // Quantity
+        case -386313260: /*measureScore*/ return this.measureScore == null ? new Base[0] : new Base[] {this.measureScore}; // DataType
         case 90983669: /*stratifier*/ return this.stratifier == null ? new Base[0] : this.stratifier.toArray(new Base[this.stratifier.size()]); // MeasureReportGroupStratifierComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -528,7 +707,7 @@ public class MeasureReport extends DomainResource {
           this.getPopulation().add((MeasureReportGroupPopulationComponent) value); // MeasureReportGroupPopulationComponent
           return value;
         case -386313260: // measureScore
-          this.measureScore = TypeConvertor.castToQuantity(value); // Quantity
+          this.measureScore = TypeConvertor.castToType(value); // DataType
           return value;
         case 90983669: // stratifier
           this.getStratifier().add((MeasureReportGroupStratifierComponent) value); // MeasureReportGroupStratifierComponent
@@ -544,8 +723,8 @@ public class MeasureReport extends DomainResource {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("population")) {
           this.getPopulation().add((MeasureReportGroupPopulationComponent) value);
-        } else if (name.equals("measureScore")) {
-          this.measureScore = TypeConvertor.castToQuantity(value); // Quantity
+        } else if (name.equals("measureScore[x]")) {
+          this.measureScore = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("stratifier")) {
           this.getStratifier().add((MeasureReportGroupStratifierComponent) value);
         } else
@@ -558,6 +737,7 @@ public class MeasureReport extends DomainResource {
         switch (hash) {
         case 3059181:  return getCode();
         case -2023558323:  return addPopulation(); 
+        case 1854115884:  return getMeasureScore();
         case -386313260:  return getMeasureScore();
         case 90983669:  return addStratifier(); 
         default: return super.makeProperty(hash, name);
@@ -570,7 +750,7 @@ public class MeasureReport extends DomainResource {
         switch (hash) {
         case 3059181: /*code*/ return new String[] {"CodeableConcept"};
         case -2023558323: /*population*/ return new String[] {};
-        case -386313260: /*measureScore*/ return new String[] {"Quantity"};
+        case -386313260: /*measureScore*/ return new String[] {"Quantity", "dateTime", "CodeableConcept", "Period", "Range", "Duration"};
         case 90983669: /*stratifier*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -586,8 +766,28 @@ public class MeasureReport extends DomainResource {
         else if (name.equals("population")) {
           return addPopulation();
         }
-        else if (name.equals("measureScore")) {
+        else if (name.equals("measureScoreQuantity")) {
           this.measureScore = new Quantity();
+          return this.measureScore;
+        }
+        else if (name.equals("measureScoreDateTime")) {
+          this.measureScore = new DateTimeType();
+          return this.measureScore;
+        }
+        else if (name.equals("measureScoreCodeableConcept")) {
+          this.measureScore = new CodeableConcept();
+          return this.measureScore;
+        }
+        else if (name.equals("measureScorePeriod")) {
+          this.measureScore = new Period();
+          return this.measureScore;
+        }
+        else if (name.equals("measureScoreRange")) {
+          this.measureScore = new Range();
+          return this.measureScore;
+        }
+        else if (name.equals("measureScoreDuration")) {
+          this.measureScore = new Duration();
           return this.measureScore;
         }
         else if (name.equals("stratifier")) {
@@ -929,6 +1129,7 @@ public class MeasureReport extends DomainResource {
          */
         @Child(name = "code", type = {CodeableConcept.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="What stratifier of the group", formalDefinition="The meaning of this stratifier, as defined in the measure definition." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/measure-stratifier-example")
         protected List<CodeableConcept> code;
 
         /**
@@ -1192,9 +1393,10 @@ public class MeasureReport extends DomainResource {
         /**
          * The value for this stratum, expressed as a CodeableConcept. When defining stratifiers on complex values, the value must be rendered such that the value for each stratum within the stratifier is unique.
          */
-        @Child(name = "value", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "value", type = {CodeableConcept.class, BooleanType.class, Quantity.class, Range.class, Reference.class}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The stratum value, e.g. male", formalDefinition="The value for this stratum, expressed as a CodeableConcept. When defining stratifiers on complex values, the value must be rendered such that the value for each stratum within the stratifier is unique." )
-        protected CodeableConcept value;
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/measurereport-stratifier-value-example")
+        protected DataType value;
 
         /**
          * A stratifier component value.
@@ -1213,11 +1415,11 @@ public class MeasureReport extends DomainResource {
         /**
          * The measure score for this stratum, calculated as appropriate for the measure type and scoring method, and based on only the members of this stratum.
          */
-        @Child(name = "measureScore", type = {Quantity.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "measureScore", type = {Quantity.class, DateTimeType.class, CodeableConcept.class, Period.class, Range.class, Duration.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="What score this stratum achieved", formalDefinition="The measure score for this stratum, calculated as appropriate for the measure type and scoring method, and based on only the members of this stratum." )
-        protected Quantity measureScore;
+        protected DataType measureScore;
 
-        private static final long serialVersionUID = 892251179L;
+        private static final long serialVersionUID = -1713783491L;
 
     /**
      * Constructor
@@ -1229,13 +1431,83 @@ public class MeasureReport extends DomainResource {
         /**
          * @return {@link #value} (The value for this stratum, expressed as a CodeableConcept. When defining stratifiers on complex values, the value must be rendered such that the value for each stratum within the stratifier is unique.)
          */
-        public CodeableConcept getValue() { 
-          if (this.value == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StratifierGroupComponent.value");
-            else if (Configuration.doAutoCreate())
-              this.value = new CodeableConcept(); // cc
+        public DataType getValue() { 
           return this.value;
+        }
+
+        /**
+         * @return {@link #value} (The value for this stratum, expressed as a CodeableConcept. When defining stratifiers on complex values, the value must be rendered such that the value for each stratum within the stratifier is unique.)
+         */
+        public CodeableConcept getValueCodeableConcept() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CodeableConcept();
+          if (!(this.value instanceof CodeableConcept))
+            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CodeableConcept) this.value;
+        }
+
+        public boolean hasValueCodeableConcept() { 
+          return this != null && this.value instanceof CodeableConcept;
+        }
+
+        /**
+         * @return {@link #value} (The value for this stratum, expressed as a CodeableConcept. When defining stratifiers on complex values, the value must be rendered such that the value for each stratum within the stratifier is unique.)
+         */
+        public BooleanType getValueBooleanType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new BooleanType();
+          if (!(this.value instanceof BooleanType))
+            throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (BooleanType) this.value;
+        }
+
+        public boolean hasValueBooleanType() { 
+          return this != null && this.value instanceof BooleanType;
+        }
+
+        /**
+         * @return {@link #value} (The value for this stratum, expressed as a CodeableConcept. When defining stratifiers on complex values, the value must be rendered such that the value for each stratum within the stratifier is unique.)
+         */
+        public Quantity getValueQuantity() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Quantity();
+          if (!(this.value instanceof Quantity))
+            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Quantity) this.value;
+        }
+
+        public boolean hasValueQuantity() { 
+          return this != null && this.value instanceof Quantity;
+        }
+
+        /**
+         * @return {@link #value} (The value for this stratum, expressed as a CodeableConcept. When defining stratifiers on complex values, the value must be rendered such that the value for each stratum within the stratifier is unique.)
+         */
+        public Range getValueRange() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Range();
+          if (!(this.value instanceof Range))
+            throw new FHIRException("Type mismatch: the type Range was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Range) this.value;
+        }
+
+        public boolean hasValueRange() { 
+          return this != null && this.value instanceof Range;
+        }
+
+        /**
+         * @return {@link #value} (The value for this stratum, expressed as a CodeableConcept. When defining stratifiers on complex values, the value must be rendered such that the value for each stratum within the stratifier is unique.)
+         */
+        public Reference getValueReference() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Reference();
+          if (!(this.value instanceof Reference))
+            throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Reference) this.value;
+        }
+
+        public boolean hasValueReference() { 
+          return this != null && this.value instanceof Reference;
         }
 
         public boolean hasValue() { 
@@ -1245,7 +1517,9 @@ public class MeasureReport extends DomainResource {
         /**
          * @param value {@link #value} (The value for this stratum, expressed as a CodeableConcept. When defining stratifiers on complex values, the value must be rendered such that the value for each stratum within the stratifier is unique.)
          */
-        public StratifierGroupComponent setValue(CodeableConcept value) { 
+        public StratifierGroupComponent setValue(DataType value) { 
+          if (value != null && !(value instanceof CodeableConcept || value instanceof BooleanType || value instanceof Quantity || value instanceof Range || value instanceof Reference))
+            throw new Error("Not the right type for MeasureReport.group.stratifier.stratum.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -1359,13 +1633,98 @@ public class MeasureReport extends DomainResource {
         /**
          * @return {@link #measureScore} (The measure score for this stratum, calculated as appropriate for the measure type and scoring method, and based on only the members of this stratum.)
          */
-        public Quantity getMeasureScore() { 
-          if (this.measureScore == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StratifierGroupComponent.measureScore");
-            else if (Configuration.doAutoCreate())
-              this.measureScore = new Quantity(); // cc
+        public DataType getMeasureScore() { 
           return this.measureScore;
+        }
+
+        /**
+         * @return {@link #measureScore} (The measure score for this stratum, calculated as appropriate for the measure type and scoring method, and based on only the members of this stratum.)
+         */
+        public Quantity getMeasureScoreQuantity() throws FHIRException { 
+          if (this.measureScore == null)
+            this.measureScore = new Quantity();
+          if (!(this.measureScore instanceof Quantity))
+            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.measureScore.getClass().getName()+" was encountered");
+          return (Quantity) this.measureScore;
+        }
+
+        public boolean hasMeasureScoreQuantity() { 
+          return this != null && this.measureScore instanceof Quantity;
+        }
+
+        /**
+         * @return {@link #measureScore} (The measure score for this stratum, calculated as appropriate for the measure type and scoring method, and based on only the members of this stratum.)
+         */
+        public DateTimeType getMeasureScoreDateTimeType() throws FHIRException { 
+          if (this.measureScore == null)
+            this.measureScore = new DateTimeType();
+          if (!(this.measureScore instanceof DateTimeType))
+            throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.measureScore.getClass().getName()+" was encountered");
+          return (DateTimeType) this.measureScore;
+        }
+
+        public boolean hasMeasureScoreDateTimeType() { 
+          return this != null && this.measureScore instanceof DateTimeType;
+        }
+
+        /**
+         * @return {@link #measureScore} (The measure score for this stratum, calculated as appropriate for the measure type and scoring method, and based on only the members of this stratum.)
+         */
+        public CodeableConcept getMeasureScoreCodeableConcept() throws FHIRException { 
+          if (this.measureScore == null)
+            this.measureScore = new CodeableConcept();
+          if (!(this.measureScore instanceof CodeableConcept))
+            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.measureScore.getClass().getName()+" was encountered");
+          return (CodeableConcept) this.measureScore;
+        }
+
+        public boolean hasMeasureScoreCodeableConcept() { 
+          return this != null && this.measureScore instanceof CodeableConcept;
+        }
+
+        /**
+         * @return {@link #measureScore} (The measure score for this stratum, calculated as appropriate for the measure type and scoring method, and based on only the members of this stratum.)
+         */
+        public Period getMeasureScorePeriod() throws FHIRException { 
+          if (this.measureScore == null)
+            this.measureScore = new Period();
+          if (!(this.measureScore instanceof Period))
+            throw new FHIRException("Type mismatch: the type Period was expected, but "+this.measureScore.getClass().getName()+" was encountered");
+          return (Period) this.measureScore;
+        }
+
+        public boolean hasMeasureScorePeriod() { 
+          return this != null && this.measureScore instanceof Period;
+        }
+
+        /**
+         * @return {@link #measureScore} (The measure score for this stratum, calculated as appropriate for the measure type and scoring method, and based on only the members of this stratum.)
+         */
+        public Range getMeasureScoreRange() throws FHIRException { 
+          if (this.measureScore == null)
+            this.measureScore = new Range();
+          if (!(this.measureScore instanceof Range))
+            throw new FHIRException("Type mismatch: the type Range was expected, but "+this.measureScore.getClass().getName()+" was encountered");
+          return (Range) this.measureScore;
+        }
+
+        public boolean hasMeasureScoreRange() { 
+          return this != null && this.measureScore instanceof Range;
+        }
+
+        /**
+         * @return {@link #measureScore} (The measure score for this stratum, calculated as appropriate for the measure type and scoring method, and based on only the members of this stratum.)
+         */
+        public Duration getMeasureScoreDuration() throws FHIRException { 
+          if (this.measureScore == null)
+            this.measureScore = new Duration();
+          if (!(this.measureScore instanceof Duration))
+            throw new FHIRException("Type mismatch: the type Duration was expected, but "+this.measureScore.getClass().getName()+" was encountered");
+          return (Duration) this.measureScore;
+        }
+
+        public boolean hasMeasureScoreDuration() { 
+          return this != null && this.measureScore instanceof Duration;
         }
 
         public boolean hasMeasureScore() { 
@@ -1375,26 +1734,41 @@ public class MeasureReport extends DomainResource {
         /**
          * @param value {@link #measureScore} (The measure score for this stratum, calculated as appropriate for the measure type and scoring method, and based on only the members of this stratum.)
          */
-        public StratifierGroupComponent setMeasureScore(Quantity value) { 
+        public StratifierGroupComponent setMeasureScore(DataType value) { 
+          if (value != null && !(value instanceof Quantity || value instanceof DateTimeType || value instanceof CodeableConcept || value instanceof Period || value instanceof Range || value instanceof Duration))
+            throw new Error("Not the right type for MeasureReport.group.stratifier.stratum.measureScore[x]: "+value.fhirType());
           this.measureScore = value;
           return this;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("value", "CodeableConcept", "The value for this stratum, expressed as a CodeableConcept. When defining stratifiers on complex values, the value must be rendered such that the value for each stratum within the stratifier is unique.", 0, 1, value));
+          children.add(new Property("value[x]", "CodeableConcept|boolean|Quantity|Range|Reference", "The value for this stratum, expressed as a CodeableConcept. When defining stratifiers on complex values, the value must be rendered such that the value for each stratum within the stratifier is unique.", 0, 1, value));
           children.add(new Property("component", "", "A stratifier component value.", 0, java.lang.Integer.MAX_VALUE, component));
           children.add(new Property("population", "", "The populations that make up the stratum, one for each type of population appropriate to the measure.", 0, java.lang.Integer.MAX_VALUE, population));
-          children.add(new Property("measureScore", "Quantity", "The measure score for this stratum, calculated as appropriate for the measure type and scoring method, and based on only the members of this stratum.", 0, 1, measureScore));
+          children.add(new Property("measureScore[x]", "Quantity|dateTime|CodeableConcept|Period|Range|Duration", "The measure score for this stratum, calculated as appropriate for the measure type and scoring method, and based on only the members of this stratum.", 0, 1, measureScore));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 111972721: /*value*/  return new Property("value", "CodeableConcept", "The value for this stratum, expressed as a CodeableConcept. When defining stratifiers on complex values, the value must be rendered such that the value for each stratum within the stratifier is unique.", 0, 1, value);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "CodeableConcept|boolean|Quantity|Range|Reference", "The value for this stratum, expressed as a CodeableConcept. When defining stratifiers on complex values, the value must be rendered such that the value for each stratum within the stratifier is unique.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "CodeableConcept|boolean|Quantity|Range|Reference", "The value for this stratum, expressed as a CodeableConcept. When defining stratifiers on complex values, the value must be rendered such that the value for each stratum within the stratifier is unique.", 0, 1, value);
+          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "The value for this stratum, expressed as a CodeableConcept. When defining stratifiers on complex values, the value must be rendered such that the value for each stratum within the stratifier is unique.", 0, 1, value);
+          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "The value for this stratum, expressed as a CodeableConcept. When defining stratifiers on complex values, the value must be rendered such that the value for each stratum within the stratifier is unique.", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "The value for this stratum, expressed as a CodeableConcept. When defining stratifiers on complex values, the value must be rendered such that the value for each stratum within the stratifier is unique.", 0, 1, value);
+          case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "The value for this stratum, expressed as a CodeableConcept. When defining stratifiers on complex values, the value must be rendered such that the value for each stratum within the stratifier is unique.", 0, 1, value);
+          case 1755241690: /*valueReference*/  return new Property("value[x]", "Reference", "The value for this stratum, expressed as a CodeableConcept. When defining stratifiers on complex values, the value must be rendered such that the value for each stratum within the stratifier is unique.", 0, 1, value);
           case -1399907075: /*component*/  return new Property("component", "", "A stratifier component value.", 0, java.lang.Integer.MAX_VALUE, component);
           case -2023558323: /*population*/  return new Property("population", "", "The populations that make up the stratum, one for each type of population appropriate to the measure.", 0, java.lang.Integer.MAX_VALUE, population);
-          case -386313260: /*measureScore*/  return new Property("measureScore", "Quantity", "The measure score for this stratum, calculated as appropriate for the measure type and scoring method, and based on only the members of this stratum.", 0, 1, measureScore);
+          case 1854115884: /*measureScore[x]*/  return new Property("measureScore[x]", "Quantity|dateTime|CodeableConcept|Period|Range|Duration", "The measure score for this stratum, calculated as appropriate for the measure type and scoring method, and based on only the members of this stratum.", 0, 1, measureScore);
+          case -386313260: /*measureScore*/  return new Property("measureScore[x]", "Quantity|dateTime|CodeableConcept|Period|Range|Duration", "The measure score for this stratum, calculated as appropriate for the measure type and scoring method, and based on only the members of this stratum.", 0, 1, measureScore);
+          case -1880815489: /*measureScoreQuantity*/  return new Property("measureScore[x]", "Quantity", "The measure score for this stratum, calculated as appropriate for the measure type and scoring method, and based on only the members of this stratum.", 0, 1, measureScore);
+          case 1196938127: /*measureScoreDateTime*/  return new Property("measureScore[x]", "dateTime", "The measure score for this stratum, calculated as appropriate for the measure type and scoring method, and based on only the members of this stratum.", 0, 1, measureScore);
+          case -1193234131: /*measureScoreCodeableConcept*/  return new Property("measureScore[x]", "CodeableConcept", "The measure score for this stratum, calculated as appropriate for the measure type and scoring method, and based on only the members of this stratum.", 0, 1, measureScore);
+          case -1939831115: /*measureScorePeriod*/  return new Property("measureScore[x]", "Period", "The measure score for this stratum, calculated as appropriate for the measure type and scoring method, and based on only the members of this stratum.", 0, 1, measureScore);
+          case -615040567: /*measureScoreRange*/  return new Property("measureScore[x]", "Range", "The measure score for this stratum, calculated as appropriate for the measure type and scoring method, and based on only the members of this stratum.", 0, 1, measureScore);
+          case 1707143560: /*measureScoreDuration*/  return new Property("measureScore[x]", "Duration", "The measure score for this stratum, calculated as appropriate for the measure type and scoring method, and based on only the members of this stratum.", 0, 1, measureScore);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1403,10 +1777,10 @@ public class MeasureReport extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // CodeableConcept
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
         case -1399907075: /*component*/ return this.component == null ? new Base[0] : this.component.toArray(new Base[this.component.size()]); // StratifierGroupComponentComponent
         case -2023558323: /*population*/ return this.population == null ? new Base[0] : this.population.toArray(new Base[this.population.size()]); // StratifierGroupPopulationComponent
-        case -386313260: /*measureScore*/ return this.measureScore == null ? new Base[0] : new Base[] {this.measureScore}; // Quantity
+        case -386313260: /*measureScore*/ return this.measureScore == null ? new Base[0] : new Base[] {this.measureScore}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1416,7 +1790,7 @@ public class MeasureReport extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 111972721: // value
-          this.value = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.value = TypeConvertor.castToType(value); // DataType
           return value;
         case -1399907075: // component
           this.getComponent().add((StratifierGroupComponentComponent) value); // StratifierGroupComponentComponent
@@ -1425,7 +1799,7 @@ public class MeasureReport extends DomainResource {
           this.getPopulation().add((StratifierGroupPopulationComponent) value); // StratifierGroupPopulationComponent
           return value;
         case -386313260: // measureScore
-          this.measureScore = TypeConvertor.castToQuantity(value); // Quantity
+          this.measureScore = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1434,14 +1808,14 @@ public class MeasureReport extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("value")) {
-          this.value = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        if (name.equals("value[x]")) {
+          this.value = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("component")) {
           this.getComponent().add((StratifierGroupComponentComponent) value);
         } else if (name.equals("population")) {
           this.getPopulation().add((StratifierGroupPopulationComponent) value);
-        } else if (name.equals("measureScore")) {
-          this.measureScore = TypeConvertor.castToQuantity(value); // Quantity
+        } else if (name.equals("measureScore[x]")) {
+          this.measureScore = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1450,9 +1824,11 @@ public class MeasureReport extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
+        case -1410166417:  return getValue();
         case 111972721:  return getValue();
         case -1399907075:  return addComponent(); 
         case -2023558323:  return addPopulation(); 
+        case 1854115884:  return getMeasureScore();
         case -386313260:  return getMeasureScore();
         default: return super.makeProperty(hash, name);
         }
@@ -1462,10 +1838,10 @@ public class MeasureReport extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 111972721: /*value*/ return new String[] {"CodeableConcept"};
+        case 111972721: /*value*/ return new String[] {"CodeableConcept", "boolean", "Quantity", "Range", "Reference"};
         case -1399907075: /*component*/ return new String[] {};
         case -2023558323: /*population*/ return new String[] {};
-        case -386313260: /*measureScore*/ return new String[] {"Quantity"};
+        case -386313260: /*measureScore*/ return new String[] {"Quantity", "dateTime", "CodeableConcept", "Period", "Range", "Duration"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1473,8 +1849,24 @@ public class MeasureReport extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("value")) {
+        if (name.equals("valueCodeableConcept")) {
           this.value = new CodeableConcept();
+          return this.value;
+        }
+        else if (name.equals("valueBoolean")) {
+          this.value = new BooleanType();
+          return this.value;
+        }
+        else if (name.equals("valueQuantity")) {
+          this.value = new Quantity();
+          return this.value;
+        }
+        else if (name.equals("valueRange")) {
+          this.value = new Range();
+          return this.value;
+        }
+        else if (name.equals("valueReference")) {
+          this.value = new Reference();
           return this.value;
         }
         else if (name.equals("component")) {
@@ -1483,8 +1875,28 @@ public class MeasureReport extends DomainResource {
         else if (name.equals("population")) {
           return addPopulation();
         }
-        else if (name.equals("measureScore")) {
+        else if (name.equals("measureScoreQuantity")) {
           this.measureScore = new Quantity();
+          return this.measureScore;
+        }
+        else if (name.equals("measureScoreDateTime")) {
+          this.measureScore = new DateTimeType();
+          return this.measureScore;
+        }
+        else if (name.equals("measureScoreCodeableConcept")) {
+          this.measureScore = new CodeableConcept();
+          return this.measureScore;
+        }
+        else if (name.equals("measureScorePeriod")) {
+          this.measureScore = new Period();
+          return this.measureScore;
+        }
+        else if (name.equals("measureScoreRange")) {
+          this.measureScore = new Range();
+          return this.measureScore;
+        }
+        else if (name.equals("measureScoreDuration")) {
+          this.measureScore = new Duration();
           return this.measureScore;
         }
         else
@@ -1553,16 +1965,18 @@ public class MeasureReport extends DomainResource {
          */
         @Child(name = "code", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="What stratifier component of the group", formalDefinition="The code for the stratum component value." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/measure-stratifier-example")
         protected CodeableConcept code;
 
         /**
          * The stratum component value.
          */
-        @Child(name = "value", type = {CodeableConcept.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "value", type = {CodeableConcept.class, BooleanType.class, Quantity.class, Range.class, Reference.class}, order=2, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The stratum component value, e.g. male", formalDefinition="The stratum component value." )
-        protected CodeableConcept value;
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/measurereport-stratifier-value-example")
+        protected DataType value;
 
-        private static final long serialVersionUID = 1750253426L;
+        private static final long serialVersionUID = -1950789033L;
 
     /**
      * Constructor
@@ -1574,7 +1988,7 @@ public class MeasureReport extends DomainResource {
     /**
      * Constructor
      */
-      public StratifierGroupComponentComponent(CodeableConcept code, CodeableConcept value) {
+      public StratifierGroupComponentComponent(CodeableConcept code, DataType value) {
         super();
         this.setCode(code);
         this.setValue(value);
@@ -1607,13 +2021,83 @@ public class MeasureReport extends DomainResource {
         /**
          * @return {@link #value} (The stratum component value.)
          */
-        public CodeableConcept getValue() { 
-          if (this.value == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StratifierGroupComponentComponent.value");
-            else if (Configuration.doAutoCreate())
-              this.value = new CodeableConcept(); // cc
+        public DataType getValue() { 
           return this.value;
+        }
+
+        /**
+         * @return {@link #value} (The stratum component value.)
+         */
+        public CodeableConcept getValueCodeableConcept() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CodeableConcept();
+          if (!(this.value instanceof CodeableConcept))
+            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CodeableConcept) this.value;
+        }
+
+        public boolean hasValueCodeableConcept() { 
+          return this != null && this.value instanceof CodeableConcept;
+        }
+
+        /**
+         * @return {@link #value} (The stratum component value.)
+         */
+        public BooleanType getValueBooleanType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new BooleanType();
+          if (!(this.value instanceof BooleanType))
+            throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (BooleanType) this.value;
+        }
+
+        public boolean hasValueBooleanType() { 
+          return this != null && this.value instanceof BooleanType;
+        }
+
+        /**
+         * @return {@link #value} (The stratum component value.)
+         */
+        public Quantity getValueQuantity() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Quantity();
+          if (!(this.value instanceof Quantity))
+            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Quantity) this.value;
+        }
+
+        public boolean hasValueQuantity() { 
+          return this != null && this.value instanceof Quantity;
+        }
+
+        /**
+         * @return {@link #value} (The stratum component value.)
+         */
+        public Range getValueRange() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Range();
+          if (!(this.value instanceof Range))
+            throw new FHIRException("Type mismatch: the type Range was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Range) this.value;
+        }
+
+        public boolean hasValueRange() { 
+          return this != null && this.value instanceof Range;
+        }
+
+        /**
+         * @return {@link #value} (The stratum component value.)
+         */
+        public Reference getValueReference() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Reference();
+          if (!(this.value instanceof Reference))
+            throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Reference) this.value;
+        }
+
+        public boolean hasValueReference() { 
+          return this != null && this.value instanceof Reference;
         }
 
         public boolean hasValue() { 
@@ -1623,7 +2107,9 @@ public class MeasureReport extends DomainResource {
         /**
          * @param value {@link #value} (The stratum component value.)
          */
-        public StratifierGroupComponentComponent setValue(CodeableConcept value) { 
+        public StratifierGroupComponentComponent setValue(DataType value) { 
+          if (value != null && !(value instanceof CodeableConcept || value instanceof BooleanType || value instanceof Quantity || value instanceof Range || value instanceof Reference))
+            throw new Error("Not the right type for MeasureReport.group.stratifier.stratum.component.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -1631,14 +2117,20 @@ public class MeasureReport extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("code", "CodeableConcept", "The code for the stratum component value.", 0, 1, code));
-          children.add(new Property("value", "CodeableConcept", "The stratum component value.", 0, 1, value));
+          children.add(new Property("value[x]", "CodeableConcept|boolean|Quantity|Range|Reference", "The stratum component value.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3059181: /*code*/  return new Property("code", "CodeableConcept", "The code for the stratum component value.", 0, 1, code);
-          case 111972721: /*value*/  return new Property("value", "CodeableConcept", "The stratum component value.", 0, 1, value);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "CodeableConcept|boolean|Quantity|Range|Reference", "The stratum component value.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "CodeableConcept|boolean|Quantity|Range|Reference", "The stratum component value.", 0, 1, value);
+          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "The stratum component value.", 0, 1, value);
+          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "The stratum component value.", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "The stratum component value.", 0, 1, value);
+          case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "The stratum component value.", 0, 1, value);
+          case 1755241690: /*valueReference*/  return new Property("value[x]", "Reference", "The stratum component value.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1648,7 +2140,7 @@ public class MeasureReport extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
-        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // CodeableConcept
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1661,7 +2153,7 @@ public class MeasureReport extends DomainResource {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111972721: // value
-          this.value = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.value = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1672,8 +2164,8 @@ public class MeasureReport extends DomainResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("value")) {
-          this.value = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("value[x]")) {
+          this.value = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1683,6 +2175,7 @@ public class MeasureReport extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3059181:  return getCode();
+        case -1410166417:  return getValue();
         case 111972721:  return getValue();
         default: return super.makeProperty(hash, name);
         }
@@ -1693,7 +2186,7 @@ public class MeasureReport extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3059181: /*code*/ return new String[] {"CodeableConcept"};
-        case 111972721: /*value*/ return new String[] {"CodeableConcept"};
+        case 111972721: /*value*/ return new String[] {"CodeableConcept", "boolean", "Quantity", "Range", "Reference"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1705,8 +2198,24 @@ public class MeasureReport extends DomainResource {
           this.code = new CodeableConcept();
           return this.code;
         }
-        else if (name.equals("value")) {
+        else if (name.equals("valueCodeableConcept")) {
           this.value = new CodeableConcept();
+          return this.value;
+        }
+        else if (name.equals("valueBoolean")) {
+          this.value = new BooleanType();
+          return this.value;
+        }
+        else if (name.equals("valueQuantity")) {
+          this.value = new Quantity();
+          return this.value;
+        }
+        else if (name.equals("valueRange")) {
+          this.value = new Range();
+          return this.value;
+        }
+        else if (name.equals("valueReference")) {
+          this.value = new Reference();
           return this.value;
         }
         else
@@ -2050,44 +2559,67 @@ public class MeasureReport extends DomainResource {
     protected Enumeration<MeasureReportType> type;
 
     /**
+     * Indicates whether the data submitted in an data-exchange report represents a snapshot or incremental update. A snapshot update replaces all previously submitted data for the receiver, whereas an incremental update represents only updated and/or changed data and should be applied as a differential update to the existing submitted data for the receiver.
+     */
+    @Child(name = "dataUpdateType", type = {CodeType.class}, order=3, min=0, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="incremental | snapshot", formalDefinition="Indicates whether the data submitted in an data-exchange report represents a snapshot or incremental update. A snapshot update replaces all previously submitted data for the receiver, whereas an incremental update represents only updated and/or changed data and should be applied as a differential update to the existing submitted data for the receiver." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/submit-data-update-type")
+    protected Enumeration<SubmitDataUpdateType> dataUpdateType;
+
+    /**
      * A reference to the Measure that was calculated to produce this report.
      */
-    @Child(name = "measure", type = {CanonicalType.class}, order=3, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "measure", type = {CanonicalType.class}, order=4, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="What measure was calculated", formalDefinition="A reference to the Measure that was calculated to produce this report." )
     protected CanonicalType measure;
 
     /**
      * Optional subject identifying the individual or individuals the report is for.
      */
-    @Child(name = "subject", type = {Patient.class, Practitioner.class, PractitionerRole.class, Location.class, Device.class, RelatedPerson.class, Group.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "subject", type = {Patient.class, Practitioner.class, PractitionerRole.class, Location.class, Device.class, RelatedPerson.class, Group.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="What individual(s) the report is for", formalDefinition="Optional subject identifying the individual or individuals the report is for." )
     protected Reference subject;
 
     /**
      * The date this measure report was generated.
      */
-    @Child(name = "date", type = {DateTimeType.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "date", type = {DateTimeType.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When the report was generated", formalDefinition="The date this measure report was generated." )
     protected DateTimeType date;
 
     /**
      * The individual, location, or organization that is reporting the data.
      */
-    @Child(name = "reporter", type = {Practitioner.class, PractitionerRole.class, Location.class, Organization.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "reporter", type = {Practitioner.class, PractitionerRole.class, Location.class, Organization.class, Group.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who is reporting the data", formalDefinition="The individual, location, or organization that is reporting the data." )
     protected Reference reporter;
 
     /**
+     * A reference to the vendor who queried the data, calculated results and/or generated the report. The ‘reporting vendor’ is intended to represent the submitting entity when it is not the same as the reporting entity. This extension is used when the Receiver is interested in getting vendor information in the report.
+     */
+    @Child(name = "reportingVendor", type = {Organization.class}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="What vendor prepared the data", formalDefinition="A reference to the vendor who queried the data, calculated results and/or generated the report. The ‘reporting vendor’ is intended to represent the submitting entity when it is not the same as the reporting entity. This extension is used when the Receiver is interested in getting vendor information in the report." )
+    protected Reference reportingVendor;
+
+    /**
      * The reporting period for which the report was calculated.
      */
-    @Child(name = "period", type = {Period.class}, order=7, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "period", type = {Period.class}, order=9, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="What period the report covers", formalDefinition="The reporting period for which the report was calculated." )
     protected Period period;
 
     /**
+     * Indicates how the calculation is performed for the measure, including proportion, ratio, continuous-variable, and cohort. The value set is extensible, allowing additional measure scoring types to be represented. It is expected to be the same as the scoring element on the referenced Measure.
+     */
+    @Child(name = "scoring", type = {CodeableConcept.class}, order=10, min=0, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="What scoring method (e.g. proportion, ratio, continuous-variable)", formalDefinition="Indicates how the calculation is performed for the measure, including proportion, ratio, continuous-variable, and cohort. The value set is extensible, allowing additional measure scoring types to be represented. It is expected to be the same as the scoring element on the referenced Measure." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/measure-scoring")
+    protected CodeableConcept scoring;
+
+    /**
      * Whether improvement in the measure is noted by an increase or decrease in the measure score.
      */
-    @Child(name = "improvementNotation", type = {CodeableConcept.class}, order=8, min=0, max=1, modifier=true, summary=true)
+    @Child(name = "improvementNotation", type = {CodeableConcept.class}, order=11, min=0, max=1, modifier=true, summary=true)
     @Description(shortDefinition="increase | decrease", formalDefinition="Whether improvement in the measure is noted by an increase or decrease in the measure score." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/measure-improvement-notation")
     protected CodeableConcept improvementNotation;
@@ -2095,18 +2627,18 @@ public class MeasureReport extends DomainResource {
     /**
      * The results of the calculation, one for each population group in the measure.
      */
-    @Child(name = "group", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "group", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Measure results for each group", formalDefinition="The results of the calculation, one for each population group in the measure." )
     protected List<MeasureReportGroupComponent> group;
 
     /**
      * A reference to a Bundle containing the Resources that were used in the calculation of this measure.
      */
-    @Child(name = "evaluatedResource", type = {Reference.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "evaluatedResource", type = {Reference.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="What data was used to calculate the measure score", formalDefinition="A reference to a Bundle containing the Resources that were used in the calculation of this measure." )
     protected List<Reference> evaluatedResource;
 
-    private static final long serialVersionUID = 1801518514L;
+    private static final long serialVersionUID = 1493960612L;
 
   /**
    * Constructor
@@ -2270,6 +2802,55 @@ public class MeasureReport extends DomainResource {
     }
 
     /**
+     * @return {@link #dataUpdateType} (Indicates whether the data submitted in an data-exchange report represents a snapshot or incremental update. A snapshot update replaces all previously submitted data for the receiver, whereas an incremental update represents only updated and/or changed data and should be applied as a differential update to the existing submitted data for the receiver.). This is the underlying object with id, value and extensions. The accessor "getDataUpdateType" gives direct access to the value
+     */
+    public Enumeration<SubmitDataUpdateType> getDataUpdateTypeElement() { 
+      if (this.dataUpdateType == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create MeasureReport.dataUpdateType");
+        else if (Configuration.doAutoCreate())
+          this.dataUpdateType = new Enumeration<SubmitDataUpdateType>(new SubmitDataUpdateTypeEnumFactory()); // bb
+      return this.dataUpdateType;
+    }
+
+    public boolean hasDataUpdateTypeElement() { 
+      return this.dataUpdateType != null && !this.dataUpdateType.isEmpty();
+    }
+
+    public boolean hasDataUpdateType() { 
+      return this.dataUpdateType != null && !this.dataUpdateType.isEmpty();
+    }
+
+    /**
+     * @param value {@link #dataUpdateType} (Indicates whether the data submitted in an data-exchange report represents a snapshot or incremental update. A snapshot update replaces all previously submitted data for the receiver, whereas an incremental update represents only updated and/or changed data and should be applied as a differential update to the existing submitted data for the receiver.). This is the underlying object with id, value and extensions. The accessor "getDataUpdateType" gives direct access to the value
+     */
+    public MeasureReport setDataUpdateTypeElement(Enumeration<SubmitDataUpdateType> value) { 
+      this.dataUpdateType = value;
+      return this;
+    }
+
+    /**
+     * @return Indicates whether the data submitted in an data-exchange report represents a snapshot or incremental update. A snapshot update replaces all previously submitted data for the receiver, whereas an incremental update represents only updated and/or changed data and should be applied as a differential update to the existing submitted data for the receiver.
+     */
+    public SubmitDataUpdateType getDataUpdateType() { 
+      return this.dataUpdateType == null ? null : this.dataUpdateType.getValue();
+    }
+
+    /**
+     * @param value Indicates whether the data submitted in an data-exchange report represents a snapshot or incremental update. A snapshot update replaces all previously submitted data for the receiver, whereas an incremental update represents only updated and/or changed data and should be applied as a differential update to the existing submitted data for the receiver.
+     */
+    public MeasureReport setDataUpdateType(SubmitDataUpdateType value) { 
+      if (value == null)
+        this.dataUpdateType = null;
+      else {
+        if (this.dataUpdateType == null)
+          this.dataUpdateType = new Enumeration<SubmitDataUpdateType>(new SubmitDataUpdateTypeEnumFactory());
+        this.dataUpdateType.setValue(value);
+      }
+      return this;
+    }
+
+    /**
      * @return {@link #measure} (A reference to the Measure that was calculated to produce this report.). This is the underlying object with id, value and extensions. The accessor "getMeasure" gives direct access to the value
      */
     public CanonicalType getMeasureElement() { 
@@ -2412,6 +2993,30 @@ public class MeasureReport extends DomainResource {
     }
 
     /**
+     * @return {@link #reportingVendor} (A reference to the vendor who queried the data, calculated results and/or generated the report. The ‘reporting vendor’ is intended to represent the submitting entity when it is not the same as the reporting entity. This extension is used when the Receiver is interested in getting vendor information in the report.)
+     */
+    public Reference getReportingVendor() { 
+      if (this.reportingVendor == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create MeasureReport.reportingVendor");
+        else if (Configuration.doAutoCreate())
+          this.reportingVendor = new Reference(); // cc
+      return this.reportingVendor;
+    }
+
+    public boolean hasReportingVendor() { 
+      return this.reportingVendor != null && !this.reportingVendor.isEmpty();
+    }
+
+    /**
+     * @param value {@link #reportingVendor} (A reference to the vendor who queried the data, calculated results and/or generated the report. The ‘reporting vendor’ is intended to represent the submitting entity when it is not the same as the reporting entity. This extension is used when the Receiver is interested in getting vendor information in the report.)
+     */
+    public MeasureReport setReportingVendor(Reference value) { 
+      this.reportingVendor = value;
+      return this;
+    }
+
+    /**
      * @return {@link #period} (The reporting period for which the report was calculated.)
      */
     public Period getPeriod() { 
@@ -2432,6 +3037,30 @@ public class MeasureReport extends DomainResource {
      */
     public MeasureReport setPeriod(Period value) { 
       this.period = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #scoring} (Indicates how the calculation is performed for the measure, including proportion, ratio, continuous-variable, and cohort. The value set is extensible, allowing additional measure scoring types to be represented. It is expected to be the same as the scoring element on the referenced Measure.)
+     */
+    public CodeableConcept getScoring() { 
+      if (this.scoring == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create MeasureReport.scoring");
+        else if (Configuration.doAutoCreate())
+          this.scoring = new CodeableConcept(); // cc
+      return this.scoring;
+    }
+
+    public boolean hasScoring() { 
+      return this.scoring != null && !this.scoring.isEmpty();
+    }
+
+    /**
+     * @param value {@link #scoring} (Indicates how the calculation is performed for the measure, including proportion, ratio, continuous-variable, and cohort. The value set is extensible, allowing additional measure scoring types to be represented. It is expected to be the same as the scoring element on the referenced Measure.)
+     */
+    public MeasureReport setScoring(CodeableConcept value) { 
+      this.scoring = value;
       return this;
     }
 
@@ -2570,11 +3199,14 @@ public class MeasureReport extends DomainResource {
         children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this MeasureReport when it is represented in other formats or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("status", "code", "The MeasureReport status. No data will be available until the MeasureReport status is complete.", 0, 1, status));
         children.add(new Property("type", "code", "The type of measure report. This may be an individual report, which provides the score for the measure for an individual member of the population; a subject-listing, which returns the list of members that meet the various criteria in the measure; a summary report, which returns a population count for each of the criteria in the measure; or a data-collection, which enables the MeasureReport to be used to exchange the data-of-interest for a quality measure.", 0, 1, type));
+        children.add(new Property("dataUpdateType", "code", "Indicates whether the data submitted in an data-exchange report represents a snapshot or incremental update. A snapshot update replaces all previously submitted data for the receiver, whereas an incremental update represents only updated and/or changed data and should be applied as a differential update to the existing submitted data for the receiver.", 0, 1, dataUpdateType));
         children.add(new Property("measure", "canonical(Measure)", "A reference to the Measure that was calculated to produce this report.", 0, 1, measure));
         children.add(new Property("subject", "Reference(Patient|Practitioner|PractitionerRole|Location|Device|RelatedPerson|Group)", "Optional subject identifying the individual or individuals the report is for.", 0, 1, subject));
         children.add(new Property("date", "dateTime", "The date this measure report was generated.", 0, 1, date));
-        children.add(new Property("reporter", "Reference(Practitioner|PractitionerRole|Location|Organization)", "The individual, location, or organization that is reporting the data.", 0, 1, reporter));
+        children.add(new Property("reporter", "Reference(Practitioner|PractitionerRole|Location|Organization|Group)", "The individual, location, or organization that is reporting the data.", 0, 1, reporter));
+        children.add(new Property("reportingVendor", "Reference(Organization)", "A reference to the vendor who queried the data, calculated results and/or generated the report. The ‘reporting vendor’ is intended to represent the submitting entity when it is not the same as the reporting entity. This extension is used when the Receiver is interested in getting vendor information in the report.", 0, 1, reportingVendor));
         children.add(new Property("period", "Period", "The reporting period for which the report was calculated.", 0, 1, period));
+        children.add(new Property("scoring", "CodeableConcept", "Indicates how the calculation is performed for the measure, including proportion, ratio, continuous-variable, and cohort. The value set is extensible, allowing additional measure scoring types to be represented. It is expected to be the same as the scoring element on the referenced Measure.", 0, 1, scoring));
         children.add(new Property("improvementNotation", "CodeableConcept", "Whether improvement in the measure is noted by an increase or decrease in the measure score.", 0, 1, improvementNotation));
         children.add(new Property("group", "", "The results of the calculation, one for each population group in the measure.", 0, java.lang.Integer.MAX_VALUE, group));
         children.add(new Property("evaluatedResource", "Reference(Any)", "A reference to a Bundle containing the Resources that were used in the calculation of this measure.", 0, java.lang.Integer.MAX_VALUE, evaluatedResource));
@@ -2586,11 +3218,14 @@ public class MeasureReport extends DomainResource {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A formal identifier that is used to identify this MeasureReport when it is represented in other formats or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case -892481550: /*status*/  return new Property("status", "code", "The MeasureReport status. No data will be available until the MeasureReport status is complete.", 0, 1, status);
         case 3575610: /*type*/  return new Property("type", "code", "The type of measure report. This may be an individual report, which provides the score for the measure for an individual member of the population; a subject-listing, which returns the list of members that meet the various criteria in the measure; a summary report, which returns a population count for each of the criteria in the measure; or a data-collection, which enables the MeasureReport to be used to exchange the data-of-interest for a quality measure.", 0, 1, type);
+        case -425890067: /*dataUpdateType*/  return new Property("dataUpdateType", "code", "Indicates whether the data submitted in an data-exchange report represents a snapshot or incremental update. A snapshot update replaces all previously submitted data for the receiver, whereas an incremental update represents only updated and/or changed data and should be applied as a differential update to the existing submitted data for the receiver.", 0, 1, dataUpdateType);
         case 938321246: /*measure*/  return new Property("measure", "canonical(Measure)", "A reference to the Measure that was calculated to produce this report.", 0, 1, measure);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Practitioner|PractitionerRole|Location|Device|RelatedPerson|Group)", "Optional subject identifying the individual or individuals the report is for.", 0, 1, subject);
         case 3076014: /*date*/  return new Property("date", "dateTime", "The date this measure report was generated.", 0, 1, date);
-        case -427039519: /*reporter*/  return new Property("reporter", "Reference(Practitioner|PractitionerRole|Location|Organization)", "The individual, location, or organization that is reporting the data.", 0, 1, reporter);
+        case -427039519: /*reporter*/  return new Property("reporter", "Reference(Practitioner|PractitionerRole|Location|Organization|Group)", "The individual, location, or organization that is reporting the data.", 0, 1, reporter);
+        case 581336342: /*reportingVendor*/  return new Property("reportingVendor", "Reference(Organization)", "A reference to the vendor who queried the data, calculated results and/or generated the report. The ‘reporting vendor’ is intended to represent the submitting entity when it is not the same as the reporting entity. This extension is used when the Receiver is interested in getting vendor information in the report.", 0, 1, reportingVendor);
         case -991726143: /*period*/  return new Property("period", "Period", "The reporting period for which the report was calculated.", 0, 1, period);
+        case 1924005583: /*scoring*/  return new Property("scoring", "CodeableConcept", "Indicates how the calculation is performed for the measure, including proportion, ratio, continuous-variable, and cohort. The value set is extensible, allowing additional measure scoring types to be represented. It is expected to be the same as the scoring element on the referenced Measure.", 0, 1, scoring);
         case -2085456136: /*improvementNotation*/  return new Property("improvementNotation", "CodeableConcept", "Whether improvement in the measure is noted by an increase or decrease in the measure score.", 0, 1, improvementNotation);
         case 98629247: /*group*/  return new Property("group", "", "The results of the calculation, one for each population group in the measure.", 0, java.lang.Integer.MAX_VALUE, group);
         case -1056771047: /*evaluatedResource*/  return new Property("evaluatedResource", "Reference(Any)", "A reference to a Bundle containing the Resources that were used in the calculation of this measure.", 0, java.lang.Integer.MAX_VALUE, evaluatedResource);
@@ -2605,11 +3240,14 @@ public class MeasureReport extends DomainResource {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<MeasureReportStatus>
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<MeasureReportType>
+        case -425890067: /*dataUpdateType*/ return this.dataUpdateType == null ? new Base[0] : new Base[] {this.dataUpdateType}; // Enumeration<SubmitDataUpdateType>
         case 938321246: /*measure*/ return this.measure == null ? new Base[0] : new Base[] {this.measure}; // CanonicalType
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
         case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
         case -427039519: /*reporter*/ return this.reporter == null ? new Base[0] : new Base[] {this.reporter}; // Reference
+        case 581336342: /*reportingVendor*/ return this.reportingVendor == null ? new Base[0] : new Base[] {this.reportingVendor}; // Reference
         case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // Period
+        case 1924005583: /*scoring*/ return this.scoring == null ? new Base[0] : new Base[] {this.scoring}; // CodeableConcept
         case -2085456136: /*improvementNotation*/ return this.improvementNotation == null ? new Base[0] : new Base[] {this.improvementNotation}; // CodeableConcept
         case 98629247: /*group*/ return this.group == null ? new Base[0] : this.group.toArray(new Base[this.group.size()]); // MeasureReportGroupComponent
         case -1056771047: /*evaluatedResource*/ return this.evaluatedResource == null ? new Base[0] : this.evaluatedResource.toArray(new Base[this.evaluatedResource.size()]); // Reference
@@ -2632,6 +3270,10 @@ public class MeasureReport extends DomainResource {
           value = new MeasureReportTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<MeasureReportType>
           return value;
+        case -425890067: // dataUpdateType
+          value = new SubmitDataUpdateTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.dataUpdateType = (Enumeration) value; // Enumeration<SubmitDataUpdateType>
+          return value;
         case 938321246: // measure
           this.measure = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
@@ -2644,8 +3286,14 @@ public class MeasureReport extends DomainResource {
         case -427039519: // reporter
           this.reporter = TypeConvertor.castToReference(value); // Reference
           return value;
+        case 581336342: // reportingVendor
+          this.reportingVendor = TypeConvertor.castToReference(value); // Reference
+          return value;
         case -991726143: // period
           this.period = TypeConvertor.castToPeriod(value); // Period
+          return value;
+        case 1924005583: // scoring
+          this.scoring = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -2085456136: // improvementNotation
           this.improvementNotation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -2671,6 +3319,9 @@ public class MeasureReport extends DomainResource {
         } else if (name.equals("type")) {
           value = new MeasureReportTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<MeasureReportType>
+        } else if (name.equals("dataUpdateType")) {
+          value = new SubmitDataUpdateTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.dataUpdateType = (Enumeration) value; // Enumeration<SubmitDataUpdateType>
         } else if (name.equals("measure")) {
           this.measure = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("subject")) {
@@ -2679,8 +3330,12 @@ public class MeasureReport extends DomainResource {
           this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("reporter")) {
           this.reporter = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("reportingVendor")) {
+          this.reportingVendor = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("period")) {
           this.period = TypeConvertor.castToPeriod(value); // Period
+        } else if (name.equals("scoring")) {
+          this.scoring = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("improvementNotation")) {
           this.improvementNotation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("group")) {
@@ -2698,11 +3353,14 @@ public class MeasureReport extends DomainResource {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
         case 3575610:  return getTypeElement();
+        case -425890067:  return getDataUpdateTypeElement();
         case 938321246:  return getMeasureElement();
         case -1867885268:  return getSubject();
         case 3076014:  return getDateElement();
         case -427039519:  return getReporter();
+        case 581336342:  return getReportingVendor();
         case -991726143:  return getPeriod();
+        case 1924005583:  return getScoring();
         case -2085456136:  return getImprovementNotation();
         case 98629247:  return addGroup(); 
         case -1056771047:  return addEvaluatedResource(); 
@@ -2717,11 +3375,14 @@ public class MeasureReport extends DomainResource {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case -892481550: /*status*/ return new String[] {"code"};
         case 3575610: /*type*/ return new String[] {"code"};
+        case -425890067: /*dataUpdateType*/ return new String[] {"code"};
         case 938321246: /*measure*/ return new String[] {"canonical"};
         case -1867885268: /*subject*/ return new String[] {"Reference"};
         case 3076014: /*date*/ return new String[] {"dateTime"};
         case -427039519: /*reporter*/ return new String[] {"Reference"};
+        case 581336342: /*reportingVendor*/ return new String[] {"Reference"};
         case -991726143: /*period*/ return new String[] {"Period"};
+        case 1924005583: /*scoring*/ return new String[] {"CodeableConcept"};
         case -2085456136: /*improvementNotation*/ return new String[] {"CodeableConcept"};
         case 98629247: /*group*/ return new String[] {};
         case -1056771047: /*evaluatedResource*/ return new String[] {"Reference"};
@@ -2741,6 +3402,9 @@ public class MeasureReport extends DomainResource {
         else if (name.equals("type")) {
           throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.type");
         }
+        else if (name.equals("dataUpdateType")) {
+          throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.dataUpdateType");
+        }
         else if (name.equals("measure")) {
           throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.measure");
         }
@@ -2755,9 +3419,17 @@ public class MeasureReport extends DomainResource {
           this.reporter = new Reference();
           return this.reporter;
         }
+        else if (name.equals("reportingVendor")) {
+          this.reportingVendor = new Reference();
+          return this.reportingVendor;
+        }
         else if (name.equals("period")) {
           this.period = new Period();
           return this.period;
+        }
+        else if (name.equals("scoring")) {
+          this.scoring = new CodeableConcept();
+          return this.scoring;
         }
         else if (name.equals("improvementNotation")) {
           this.improvementNotation = new CodeableConcept();
@@ -2793,11 +3465,14 @@ public class MeasureReport extends DomainResource {
         };
         dst.status = status == null ? null : status.copy();
         dst.type = type == null ? null : type.copy();
+        dst.dataUpdateType = dataUpdateType == null ? null : dataUpdateType.copy();
         dst.measure = measure == null ? null : measure.copy();
         dst.subject = subject == null ? null : subject.copy();
         dst.date = date == null ? null : date.copy();
         dst.reporter = reporter == null ? null : reporter.copy();
+        dst.reportingVendor = reportingVendor == null ? null : reportingVendor.copy();
         dst.period = period == null ? null : period.copy();
+        dst.scoring = scoring == null ? null : scoring.copy();
         dst.improvementNotation = improvementNotation == null ? null : improvementNotation.copy();
         if (group != null) {
           dst.group = new ArrayList<MeasureReportGroupComponent>();
@@ -2823,8 +3498,10 @@ public class MeasureReport extends DomainResource {
           return false;
         MeasureReport o = (MeasureReport) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(type, o.type, true)
-           && compareDeep(measure, o.measure, true) && compareDeep(subject, o.subject, true) && compareDeep(date, o.date, true)
-           && compareDeep(reporter, o.reporter, true) && compareDeep(period, o.period, true) && compareDeep(improvementNotation, o.improvementNotation, true)
+           && compareDeep(dataUpdateType, o.dataUpdateType, true) && compareDeep(measure, o.measure, true)
+           && compareDeep(subject, o.subject, true) && compareDeep(date, o.date, true) && compareDeep(reporter, o.reporter, true)
+           && compareDeep(reportingVendor, o.reportingVendor, true) && compareDeep(period, o.period, true)
+           && compareDeep(scoring, o.scoring, true) && compareDeep(improvementNotation, o.improvementNotation, true)
            && compareDeep(group, o.group, true) && compareDeep(evaluatedResource, o.evaluatedResource, true)
           ;
       }
@@ -2836,14 +3513,14 @@ public class MeasureReport extends DomainResource {
         if (!(other_ instanceof MeasureReport))
           return false;
         MeasureReport o = (MeasureReport) other_;
-        return compareValues(status, o.status, true) && compareValues(type, o.type, true) && compareValues(measure, o.measure, true)
-           && compareValues(date, o.date, true);
+        return compareValues(status, o.status, true) && compareValues(type, o.type, true) && compareValues(dataUpdateType, o.dataUpdateType, true)
+           && compareValues(measure, o.measure, true) && compareValues(date, o.date, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, type
-          , measure, subject, date, reporter, period, improvementNotation, group, evaluatedResource
-          );
+          , dataUpdateType, measure, subject, date, reporter, reportingVendor, period, scoring
+          , improvementNotation, group, evaluatedResource);
       }
 
   @Override
@@ -2879,7 +3556,7 @@ public class MeasureReport extends DomainResource {
    * Path: <b>MeasureReport.evaluatedResource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="evaluated-resource", path="MeasureReport.evaluatedResource", description="An evaluated resource referenced by the measure report", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="evaluated-resource", path="MeasureReport.evaluatedResource", description="An evaluated resource referenced by the measure report", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_EVALUATED_RESOURCE = "evaluated-resource";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>evaluated-resource</b>
@@ -2951,7 +3628,7 @@ public class MeasureReport extends DomainResource {
    * Path: <b>MeasureReport.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="MeasureReport.subject.where(resolve() is Patient)", description="The identity of a patient to search for individual measure report results for", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="MeasureReport.subject.where(resolve() is Patient)", description="The identity of a patient to search for individual measure report results for", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Device.class, Group.class, Location.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -2997,7 +3674,7 @@ public class MeasureReport extends DomainResource {
    * Path: <b>MeasureReport.reporter</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="reporter", path="MeasureReport.reporter", description="The reporter to return measure report results for", type="reference", target={Location.class, Organization.class, Practitioner.class, PractitionerRole.class } )
+  @SearchParamDefinition(name="reporter", path="MeasureReport.reporter", description="The reporter to return measure report results for", type="reference", target={Group.class, Location.class, Organization.class, Practitioner.class, PractitionerRole.class } )
   public static final String SP_REPORTER = "reporter";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>reporter</b>

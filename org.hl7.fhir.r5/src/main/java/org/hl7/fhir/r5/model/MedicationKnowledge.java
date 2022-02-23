@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,17 +55,17 @@ public class MedicationKnowledge extends DomainResource {
 
     public enum MedicationKnowledgeStatusCodes {
         /**
-         * 
+         * The medication referred to by this MedicationKnowledge is in active use within the drug database or inventory system.
          */
         ACTIVE, 
         /**
-         * 
-         */
-        INACTIVE, 
-        /**
-         * 
+         * The medication referred to by this MedicationKnowledge was entered in error within the drug database or inventory system.
          */
         ENTEREDINERROR, 
+        /**
+         * The medication referred to by this MedicationKnowledge is not in active use within the drug database or inventory system.
+         */
+        INACTIVE, 
         /**
          * added to help the parsers with the generic types
          */
@@ -75,10 +75,10 @@ public class MedicationKnowledge extends DomainResource {
                 return null;
         if ("active".equals(codeString))
           return ACTIVE;
-        if ("inactive".equals(codeString))
-          return INACTIVE;
         if ("entered-in-error".equals(codeString))
           return ENTEREDINERROR;
+        if ("inactive".equals(codeString))
+          return INACTIVE;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
@@ -87,36 +87,32 @@ public class MedicationKnowledge extends DomainResource {
         public String toCode() {
           switch (this) {
             case ACTIVE: return "active";
-            case INACTIVE: return "inactive";
             case ENTEREDINERROR: return "entered-in-error";
-            case NULL: return null;
+            case INACTIVE: return "inactive";
             default: return "?";
           }
         }
         public String getSystem() {
           switch (this) {
-            case ACTIVE: return "http://terminology.hl7.org/CodeSystem/medicationknowledge-status";
-            case INACTIVE: return "http://terminology.hl7.org/CodeSystem/medicationknowledge-status";
-            case ENTEREDINERROR: return "http://terminology.hl7.org/CodeSystem/medicationknowledge-status";
-            case NULL: return null;
+            case ACTIVE: return "http://hl7.org/fhir/CodeSystem/medicationknowledge-status";
+            case ENTEREDINERROR: return "http://hl7.org/fhir/CodeSystem/medicationknowledge-status";
+            case INACTIVE: return "http://hl7.org/fhir/CodeSystem/medicationknowledge-status";
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
-            case ACTIVE: return "";
-            case INACTIVE: return "";
-            case ENTEREDINERROR: return "";
-            case NULL: return null;
+            case ACTIVE: return "The medication referred to by this MedicationKnowledge is in active use within the drug database or inventory system.";
+            case ENTEREDINERROR: return "The medication referred to by this MedicationKnowledge was entered in error within the drug database or inventory system.";
+            case INACTIVE: return "The medication referred to by this MedicationKnowledge is not in active use within the drug database or inventory system.";
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case ACTIVE: return "Active";
-            case INACTIVE: return "Inactive";
             case ENTEREDINERROR: return "Entered in Error";
-            case NULL: return null;
+            case INACTIVE: return "Inactive";
             default: return "?";
           }
         }
@@ -129,10 +125,10 @@ public class MedicationKnowledge extends DomainResource {
                 return null;
         if ("active".equals(codeString))
           return MedicationKnowledgeStatusCodes.ACTIVE;
-        if ("inactive".equals(codeString))
-          return MedicationKnowledgeStatusCodes.INACTIVE;
         if ("entered-in-error".equals(codeString))
           return MedicationKnowledgeStatusCodes.ENTEREDINERROR;
+        if ("inactive".equals(codeString))
+          return MedicationKnowledgeStatusCodes.INACTIVE;
         throw new IllegalArgumentException("Unknown MedicationKnowledgeStatusCodes code '"+codeString+"'");
         }
         public Enumeration<MedicationKnowledgeStatusCodes> fromType(Base code) throws FHIRException {
@@ -145,19 +141,19 @@ public class MedicationKnowledge extends DomainResource {
             return null;
         if ("active".equals(codeString))
           return new Enumeration<MedicationKnowledgeStatusCodes>(this, MedicationKnowledgeStatusCodes.ACTIVE);
-        if ("inactive".equals(codeString))
-          return new Enumeration<MedicationKnowledgeStatusCodes>(this, MedicationKnowledgeStatusCodes.INACTIVE);
         if ("entered-in-error".equals(codeString))
           return new Enumeration<MedicationKnowledgeStatusCodes>(this, MedicationKnowledgeStatusCodes.ENTEREDINERROR);
+        if ("inactive".equals(codeString))
+          return new Enumeration<MedicationKnowledgeStatusCodes>(this, MedicationKnowledgeStatusCodes.INACTIVE);
         throw new FHIRException("Unknown MedicationKnowledgeStatusCodes code '"+codeString+"'");
         }
     public String toCode(MedicationKnowledgeStatusCodes code) {
       if (code == MedicationKnowledgeStatusCodes.ACTIVE)
         return "active";
-      if (code == MedicationKnowledgeStatusCodes.INACTIVE)
-        return "inactive";
       if (code == MedicationKnowledgeStatusCodes.ENTEREDINERROR)
         return "entered-in-error";
+      if (code == MedicationKnowledgeStatusCodes.INACTIVE)
+        return "inactive";
       return "?";
       }
     public String toSystem(MedicationKnowledgeStatusCodes code) {
@@ -603,339 +599,6 @@ public class MedicationKnowledge extends DomainResource {
 
   public String fhirType() {
     return "MedicationKnowledge.monograph";
-
-  }
-
-  }
-
-    @Block()
-    public static class MedicationKnowledgeIngredientComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * The actual ingredient - either a substance (simple ingredient) or another medication.
-         */
-        @Child(name = "item", type = {CodeableReference.class}, order=1, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Medication(s) or MedicinalProductIngredient(s) contained in the medication", formalDefinition="The actual ingredient - either a substance (simple ingredient) or another medication." )
-        protected CodeableReference item;
-
-        /**
-         * Indication of whether this ingredient affects the therapeutic action of the drug.
-         */
-        @Child(name = "isActive", type = {BooleanType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Active ingredient indicator", formalDefinition="Indication of whether this ingredient affects the therapeutic action of the drug." )
-        protected BooleanType isActive;
-
-        /**
-         * Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.
-         */
-        @Child(name = "strength", type = {Ratio.class, CodeableConcept.class, Quantity.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Quantity of ingredient present", formalDefinition="Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medication-ingredientstrength")
-        protected DataType strength;
-
-        private static final long serialVersionUID = -979760018L;
-
-    /**
-     * Constructor
-     */
-      public MedicationKnowledgeIngredientComponent() {
-        super();
-      }
-
-    /**
-     * Constructor
-     */
-      public MedicationKnowledgeIngredientComponent(CodeableReference item) {
-        super();
-        this.setItem(item);
-      }
-
-        /**
-         * @return {@link #item} (The actual ingredient - either a substance (simple ingredient) or another medication.)
-         */
-        public CodeableReference getItem() { 
-          if (this.item == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicationKnowledgeIngredientComponent.item");
-            else if (Configuration.doAutoCreate())
-              this.item = new CodeableReference(); // cc
-          return this.item;
-        }
-
-        public boolean hasItem() { 
-          return this.item != null && !this.item.isEmpty();
-        }
-
-        /**
-         * @param value {@link #item} (The actual ingredient - either a substance (simple ingredient) or another medication.)
-         */
-        public MedicationKnowledgeIngredientComponent setItem(CodeableReference value) { 
-          this.item = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #isActive} (Indication of whether this ingredient affects the therapeutic action of the drug.). This is the underlying object with id, value and extensions. The accessor "getIsActive" gives direct access to the value
-         */
-        public BooleanType getIsActiveElement() { 
-          if (this.isActive == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicationKnowledgeIngredientComponent.isActive");
-            else if (Configuration.doAutoCreate())
-              this.isActive = new BooleanType(); // bb
-          return this.isActive;
-        }
-
-        public boolean hasIsActiveElement() { 
-          return this.isActive != null && !this.isActive.isEmpty();
-        }
-
-        public boolean hasIsActive() { 
-          return this.isActive != null && !this.isActive.isEmpty();
-        }
-
-        /**
-         * @param value {@link #isActive} (Indication of whether this ingredient affects the therapeutic action of the drug.). This is the underlying object with id, value and extensions. The accessor "getIsActive" gives direct access to the value
-         */
-        public MedicationKnowledgeIngredientComponent setIsActiveElement(BooleanType value) { 
-          this.isActive = value;
-          return this;
-        }
-
-        /**
-         * @return Indication of whether this ingredient affects the therapeutic action of the drug.
-         */
-        public boolean getIsActive() { 
-          return this.isActive == null || this.isActive.isEmpty() ? false : this.isActive.getValue();
-        }
-
-        /**
-         * @param value Indication of whether this ingredient affects the therapeutic action of the drug.
-         */
-        public MedicationKnowledgeIngredientComponent setIsActive(boolean value) { 
-            if (this.isActive == null)
-              this.isActive = new BooleanType();
-            this.isActive.setValue(value);
-          return this;
-        }
-
-        /**
-         * @return {@link #strength} (Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.)
-         */
-        public DataType getStrength() { 
-          return this.strength;
-        }
-
-        /**
-         * @return {@link #strength} (Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.)
-         */
-        public Ratio getStrengthRatio() throws FHIRException { 
-          if (this.strength == null)
-            this.strength = new Ratio();
-          if (!(this.strength instanceof Ratio))
-            throw new FHIRException("Type mismatch: the type Ratio was expected, but "+this.strength.getClass().getName()+" was encountered");
-          return (Ratio) this.strength;
-        }
-
-        public boolean hasStrengthRatio() { 
-          return this != null && this.strength instanceof Ratio;
-        }
-
-        /**
-         * @return {@link #strength} (Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.)
-         */
-        public CodeableConcept getStrengthCodeableConcept() throws FHIRException { 
-          if (this.strength == null)
-            this.strength = new CodeableConcept();
-          if (!(this.strength instanceof CodeableConcept))
-            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.strength.getClass().getName()+" was encountered");
-          return (CodeableConcept) this.strength;
-        }
-
-        public boolean hasStrengthCodeableConcept() { 
-          return this != null && this.strength instanceof CodeableConcept;
-        }
-
-        /**
-         * @return {@link #strength} (Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.)
-         */
-        public Quantity getStrengthQuantity() throws FHIRException { 
-          if (this.strength == null)
-            this.strength = new Quantity();
-          if (!(this.strength instanceof Quantity))
-            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.strength.getClass().getName()+" was encountered");
-          return (Quantity) this.strength;
-        }
-
-        public boolean hasStrengthQuantity() { 
-          return this != null && this.strength instanceof Quantity;
-        }
-
-        public boolean hasStrength() { 
-          return this.strength != null && !this.strength.isEmpty();
-        }
-
-        /**
-         * @param value {@link #strength} (Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.)
-         */
-        public MedicationKnowledgeIngredientComponent setStrength(DataType value) { 
-          if (value != null && !(value instanceof Ratio || value instanceof CodeableConcept || value instanceof Quantity))
-            throw new Error("Not the right type for MedicationKnowledge.ingredient.strength[x]: "+value.fhirType());
-          this.strength = value;
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("item", "CodeableReference(Ingredient)", "The actual ingredient - either a substance (simple ingredient) or another medication.", 0, 1, item));
-          children.add(new Property("isActive", "boolean", "Indication of whether this ingredient affects the therapeutic action of the drug.", 0, 1, isActive));
-          children.add(new Property("strength[x]", "Ratio|CodeableConcept|Quantity", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.", 0, 1, strength));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case 3242771: /*item*/  return new Property("item", "CodeableReference(Ingredient)", "The actual ingredient - either a substance (simple ingredient) or another medication.", 0, 1, item);
-          case -748916528: /*isActive*/  return new Property("isActive", "boolean", "Indication of whether this ingredient affects the therapeutic action of the drug.", 0, 1, isActive);
-          case 127377567: /*strength[x]*/  return new Property("strength[x]", "Ratio|CodeableConcept|Quantity", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.", 0, 1, strength);
-          case 1791316033: /*strength*/  return new Property("strength[x]", "Ratio|CodeableConcept|Quantity", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.", 0, 1, strength);
-          case 2141786186: /*strengthRatio*/  return new Property("strength[x]", "Ratio", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.", 0, 1, strength);
-          case -1455903456: /*strengthCodeableConcept*/  return new Property("strength[x]", "CodeableConcept", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.", 0, 1, strength);
-          case -1793570836: /*strengthQuantity*/  return new Property("strength[x]", "Quantity", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.", 0, 1, strength);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case 3242771: /*item*/ return this.item == null ? new Base[0] : new Base[] {this.item}; // CodeableReference
-        case -748916528: /*isActive*/ return this.isActive == null ? new Base[0] : new Base[] {this.isActive}; // BooleanType
-        case 1791316033: /*strength*/ return this.strength == null ? new Base[0] : new Base[] {this.strength}; // DataType
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case 3242771: // item
-          this.item = TypeConvertor.castToCodeableReference(value); // CodeableReference
-          return value;
-        case -748916528: // isActive
-          this.isActive = TypeConvertor.castToBoolean(value); // BooleanType
-          return value;
-        case 1791316033: // strength
-          this.strength = TypeConvertor.castToType(value); // DataType
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("item")) {
-          this.item = TypeConvertor.castToCodeableReference(value); // CodeableReference
-        } else if (name.equals("isActive")) {
-          this.isActive = TypeConvertor.castToBoolean(value); // BooleanType
-        } else if (name.equals("strength[x]")) {
-          this.strength = TypeConvertor.castToType(value); // DataType
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 3242771:  return getItem();
-        case -748916528:  return getIsActiveElement();
-        case 127377567:  return getStrength();
-        case 1791316033:  return getStrength();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 3242771: /*item*/ return new String[] {"CodeableReference"};
-        case -748916528: /*isActive*/ return new String[] {"boolean"};
-        case 1791316033: /*strength*/ return new String[] {"Ratio", "CodeableConcept", "Quantity"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("item")) {
-          this.item = new CodeableReference();
-          return this.item;
-        }
-        else if (name.equals("isActive")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MedicationKnowledge.ingredient.isActive");
-        }
-        else if (name.equals("strengthRatio")) {
-          this.strength = new Ratio();
-          return this.strength;
-        }
-        else if (name.equals("strengthCodeableConcept")) {
-          this.strength = new CodeableConcept();
-          return this.strength;
-        }
-        else if (name.equals("strengthQuantity")) {
-          this.strength = new Quantity();
-          return this.strength;
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public MedicationKnowledgeIngredientComponent copy() {
-        MedicationKnowledgeIngredientComponent dst = new MedicationKnowledgeIngredientComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(MedicationKnowledgeIngredientComponent dst) {
-        super.copyValues(dst);
-        dst.item = item == null ? null : item.copy();
-        dst.isActive = isActive == null ? null : isActive.copy();
-        dst.strength = strength == null ? null : strength.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof MedicationKnowledgeIngredientComponent))
-          return false;
-        MedicationKnowledgeIngredientComponent o = (MedicationKnowledgeIngredientComponent) other_;
-        return compareDeep(item, o.item, true) && compareDeep(isActive, o.isActive, true) && compareDeep(strength, o.strength, true)
-          ;
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof MedicationKnowledgeIngredientComponent))
-          return false;
-        MedicationKnowledgeIngredientComponent o = (MedicationKnowledgeIngredientComponent) other_;
-        return compareValues(isActive, o.isActive, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(item, isActive, strength
-          );
-      }
-
-  public String fhirType() {
-    return "MedicationKnowledge.ingredient";
 
   }
 
@@ -1563,50 +1226,348 @@ public class MedicationKnowledge extends DomainResource {
   }
 
     @Block()
-    public static class MedicationKnowledgeAdministrationGuidelineComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class MedicationKnowledgeIndicationGuidelineComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Dosage for the medication for the specific guidelines.
+         * Indication or reason for use of the medication that applies to the specific administration guideline.
          */
-        @Child(name = "dosage", type = {}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Dosage for the medication for the specific guidelines", formalDefinition="Dosage for the medication for the specific guidelines." )
-        protected List<MedicationKnowledgeAdministrationGuidelineDosageComponent> dosage;
+        @Child(name = "indication", type = {CodeableReference.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Indication for use that applies to the specific administration guideline", formalDefinition="Indication or reason for use of the medication that applies to the specific administration guideline." )
+        protected List<CodeableReference> indication;
 
         /**
-         * Indication or reason for use of the medication that applies to the specific administration guidelines.
+         * The guidelines for the dosage of the medication for the indication.
          */
-        @Child(name = "indication", type = {CodeableReference.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Indication for use that apply to the specific administration guidelines", formalDefinition="Indication or reason for use of the medication that applies to the specific administration guidelines." )
-        protected CodeableReference indication;
+        @Child(name = "dosingGuideline", type = {}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Guidelines for dosage of the medication", formalDefinition="The guidelines for the dosage of the medication for the indication." )
+        protected List<MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent> dosingGuideline;
 
-        /**
-         * Characteristics of the patient that are relevant to the administration guidelines (for example, height, weight, gender, etc.).
-         */
-        @Child(name = "patientCharacteristic", type = {}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Characteristics of the patient that are relevant to the administration guidelines", formalDefinition="Characteristics of the patient that are relevant to the administration guidelines (for example, height, weight, gender, etc.)." )
-        protected List<MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent> patientCharacteristic;
-
-        private static final long serialVersionUID = 1786736896L;
+        private static final long serialVersionUID = 256409722L;
 
     /**
      * Constructor
      */
-      public MedicationKnowledgeAdministrationGuidelineComponent() {
+      public MedicationKnowledgeIndicationGuidelineComponent() {
         super();
       }
 
         /**
+         * @return {@link #indication} (Indication or reason for use of the medication that applies to the specific administration guideline.)
+         */
+        public List<CodeableReference> getIndication() { 
+          if (this.indication == null)
+            this.indication = new ArrayList<CodeableReference>();
+          return this.indication;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public MedicationKnowledgeIndicationGuidelineComponent setIndication(List<CodeableReference> theIndication) { 
+          this.indication = theIndication;
+          return this;
+        }
+
+        public boolean hasIndication() { 
+          if (this.indication == null)
+            return false;
+          for (CodeableReference item : this.indication)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CodeableReference addIndication() { //3
+          CodeableReference t = new CodeableReference();
+          if (this.indication == null)
+            this.indication = new ArrayList<CodeableReference>();
+          this.indication.add(t);
+          return t;
+        }
+
+        public MedicationKnowledgeIndicationGuidelineComponent addIndication(CodeableReference t) { //3
+          if (t == null)
+            return this;
+          if (this.indication == null)
+            this.indication = new ArrayList<CodeableReference>();
+          this.indication.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #indication}, creating it if it does not already exist {3}
+         */
+        public CodeableReference getIndicationFirstRep() { 
+          if (getIndication().isEmpty()) {
+            addIndication();
+          }
+          return getIndication().get(0);
+        }
+
+        /**
+         * @return {@link #dosingGuideline} (The guidelines for the dosage of the medication for the indication.)
+         */
+        public List<MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent> getDosingGuideline() { 
+          if (this.dosingGuideline == null)
+            this.dosingGuideline = new ArrayList<MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent>();
+          return this.dosingGuideline;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public MedicationKnowledgeIndicationGuidelineComponent setDosingGuideline(List<MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent> theDosingGuideline) { 
+          this.dosingGuideline = theDosingGuideline;
+          return this;
+        }
+
+        public boolean hasDosingGuideline() { 
+          if (this.dosingGuideline == null)
+            return false;
+          for (MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent item : this.dosingGuideline)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent addDosingGuideline() { //3
+          MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent t = new MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent();
+          if (this.dosingGuideline == null)
+            this.dosingGuideline = new ArrayList<MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent>();
+          this.dosingGuideline.add(t);
+          return t;
+        }
+
+        public MedicationKnowledgeIndicationGuidelineComponent addDosingGuideline(MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.dosingGuideline == null)
+            this.dosingGuideline = new ArrayList<MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent>();
+          this.dosingGuideline.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #dosingGuideline}, creating it if it does not already exist {3}
+         */
+        public MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent getDosingGuidelineFirstRep() { 
+          if (getDosingGuideline().isEmpty()) {
+            addDosingGuideline();
+          }
+          return getDosingGuideline().get(0);
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("indication", "CodeableReference(ClinicalUseDefinition)", "Indication or reason for use of the medication that applies to the specific administration guideline.", 0, java.lang.Integer.MAX_VALUE, indication));
+          children.add(new Property("dosingGuideline", "", "The guidelines for the dosage of the medication for the indication.", 0, java.lang.Integer.MAX_VALUE, dosingGuideline));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case -597168804: /*indication*/  return new Property("indication", "CodeableReference(ClinicalUseDefinition)", "Indication or reason for use of the medication that applies to the specific administration guideline.", 0, java.lang.Integer.MAX_VALUE, indication);
+          case -1792856970: /*dosingGuideline*/  return new Property("dosingGuideline", "", "The guidelines for the dosage of the medication for the indication.", 0, java.lang.Integer.MAX_VALUE, dosingGuideline);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case -597168804: /*indication*/ return this.indication == null ? new Base[0] : this.indication.toArray(new Base[this.indication.size()]); // CodeableReference
+        case -1792856970: /*dosingGuideline*/ return this.dosingGuideline == null ? new Base[0] : this.dosingGuideline.toArray(new Base[this.dosingGuideline.size()]); // MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case -597168804: // indication
+          this.getIndication().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
+          return value;
+        case -1792856970: // dosingGuideline
+          this.getDosingGuideline().add((MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent) value); // MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("indication")) {
+          this.getIndication().add(TypeConvertor.castToCodeableReference(value));
+        } else if (name.equals("dosingGuideline")) {
+          this.getDosingGuideline().add((MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent) value);
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -597168804:  return addIndication(); 
+        case -1792856970:  return addDosingGuideline(); 
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -597168804: /*indication*/ return new String[] {"CodeableReference"};
+        case -1792856970: /*dosingGuideline*/ return new String[] {};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("indication")) {
+          return addIndication();
+        }
+        else if (name.equals("dosingGuideline")) {
+          return addDosingGuideline();
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public MedicationKnowledgeIndicationGuidelineComponent copy() {
+        MedicationKnowledgeIndicationGuidelineComponent dst = new MedicationKnowledgeIndicationGuidelineComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationKnowledgeIndicationGuidelineComponent dst) {
+        super.copyValues(dst);
+        if (indication != null) {
+          dst.indication = new ArrayList<CodeableReference>();
+          for (CodeableReference i : indication)
+            dst.indication.add(i.copy());
+        };
+        if (dosingGuideline != null) {
+          dst.dosingGuideline = new ArrayList<MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent>();
+          for (MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent i : dosingGuideline)
+            dst.dosingGuideline.add(i.copy());
+        };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof MedicationKnowledgeIndicationGuidelineComponent))
+          return false;
+        MedicationKnowledgeIndicationGuidelineComponent o = (MedicationKnowledgeIndicationGuidelineComponent) other_;
+        return compareDeep(indication, o.indication, true) && compareDeep(dosingGuideline, o.dosingGuideline, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof MedicationKnowledgeIndicationGuidelineComponent))
+          return false;
+        MedicationKnowledgeIndicationGuidelineComponent o = (MedicationKnowledgeIndicationGuidelineComponent) other_;
+        return true;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(indication, dosingGuideline
+          );
+      }
+
+  public String fhirType() {
+    return "MedicationKnowledge.indicationGuideline";
+
+  }
+
+  }
+
+    @Block()
+    public static class MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * The overall intention of the treatment, for example, prophylactic, supporative, curative, etc.
+         */
+        @Child(name = "treatmentIntent", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Intention of the treatment", formalDefinition="The overall intention of the treatment, for example, prophylactic, supporative, curative, etc." )
+        protected CodeableConcept treatmentIntent;
+
+        /**
+         * Dosage for the medication for the specific guidelines.
+         */
+        @Child(name = "dosage", type = {}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Dosage for the medication for the specific guidelines", formalDefinition="Dosage for the medication for the specific guidelines." )
+        protected List<MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent> dosage;
+
+        /**
+         * The type of the treatment that the guideline applies to, for example, long term therapy, first line treatment, etc.
+         */
+        @Child(name = "administrationTreatment", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Type of treatment the guideline applies to", formalDefinition="The type of the treatment that the guideline applies to, for example, long term therapy, first line treatment, etc." )
+        protected CodeableConcept administrationTreatment;
+
+        /**
+         * Characteristics of the patient that are relevant to the administration guidelines (for example, height, weight, gender, etc.).
+         */
+        @Child(name = "patientCharacteristic", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Characteristics of the patient that are relevant to the administration guidelines", formalDefinition="Characteristics of the patient that are relevant to the administration guidelines (for example, height, weight, gender, etc.)." )
+        protected List<MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent> patientCharacteristic;
+
+        private static final long serialVersionUID = 882198366L;
+
+    /**
+     * Constructor
+     */
+      public MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #treatmentIntent} (The overall intention of the treatment, for example, prophylactic, supporative, curative, etc.)
+         */
+        public CodeableConcept getTreatmentIntent() { 
+          if (this.treatmentIntent == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent.treatmentIntent");
+            else if (Configuration.doAutoCreate())
+              this.treatmentIntent = new CodeableConcept(); // cc
+          return this.treatmentIntent;
+        }
+
+        public boolean hasTreatmentIntent() { 
+          return this.treatmentIntent != null && !this.treatmentIntent.isEmpty();
+        }
+
+        /**
+         * @param value {@link #treatmentIntent} (The overall intention of the treatment, for example, prophylactic, supporative, curative, etc.)
+         */
+        public MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent setTreatmentIntent(CodeableConcept value) { 
+          this.treatmentIntent = value;
+          return this;
+        }
+
+        /**
          * @return {@link #dosage} (Dosage for the medication for the specific guidelines.)
          */
-        public List<MedicationKnowledgeAdministrationGuidelineDosageComponent> getDosage() { 
+        public List<MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent> getDosage() { 
           if (this.dosage == null)
-            this.dosage = new ArrayList<MedicationKnowledgeAdministrationGuidelineDosageComponent>();
+            this.dosage = new ArrayList<MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent>();
           return this.dosage;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public MedicationKnowledgeAdministrationGuidelineComponent setDosage(List<MedicationKnowledgeAdministrationGuidelineDosageComponent> theDosage) { 
+        public MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent setDosage(List<MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent> theDosage) { 
           this.dosage = theDosage;
           return this;
         }
@@ -1614,25 +1575,25 @@ public class MedicationKnowledge extends DomainResource {
         public boolean hasDosage() { 
           if (this.dosage == null)
             return false;
-          for (MedicationKnowledgeAdministrationGuidelineDosageComponent item : this.dosage)
+          for (MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent item : this.dosage)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public MedicationKnowledgeAdministrationGuidelineDosageComponent addDosage() { //3
-          MedicationKnowledgeAdministrationGuidelineDosageComponent t = new MedicationKnowledgeAdministrationGuidelineDosageComponent();
+        public MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent addDosage() { //3
+          MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent t = new MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent();
           if (this.dosage == null)
-            this.dosage = new ArrayList<MedicationKnowledgeAdministrationGuidelineDosageComponent>();
+            this.dosage = new ArrayList<MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent>();
           this.dosage.add(t);
           return t;
         }
 
-        public MedicationKnowledgeAdministrationGuidelineComponent addDosage(MedicationKnowledgeAdministrationGuidelineDosageComponent t) { //3
+        public MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent addDosage(MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent t) { //3
           if (t == null)
             return this;
           if (this.dosage == null)
-            this.dosage = new ArrayList<MedicationKnowledgeAdministrationGuidelineDosageComponent>();
+            this.dosage = new ArrayList<MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent>();
           this.dosage.add(t);
           return this;
         }
@@ -1640,7 +1601,7 @@ public class MedicationKnowledge extends DomainResource {
         /**
          * @return The first repetition of repeating field {@link #dosage}, creating it if it does not already exist {3}
          */
-        public MedicationKnowledgeAdministrationGuidelineDosageComponent getDosageFirstRep() { 
+        public MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent getDosageFirstRep() { 
           if (getDosage().isEmpty()) {
             addDosage();
           }
@@ -1648,42 +1609,42 @@ public class MedicationKnowledge extends DomainResource {
         }
 
         /**
-         * @return {@link #indication} (Indication or reason for use of the medication that applies to the specific administration guidelines.)
+         * @return {@link #administrationTreatment} (The type of the treatment that the guideline applies to, for example, long term therapy, first line treatment, etc.)
          */
-        public CodeableReference getIndication() { 
-          if (this.indication == null)
+        public CodeableConcept getAdministrationTreatment() { 
+          if (this.administrationTreatment == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicationKnowledgeAdministrationGuidelineComponent.indication");
+              throw new Error("Attempt to auto-create MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent.administrationTreatment");
             else if (Configuration.doAutoCreate())
-              this.indication = new CodeableReference(); // cc
-          return this.indication;
+              this.administrationTreatment = new CodeableConcept(); // cc
+          return this.administrationTreatment;
         }
 
-        public boolean hasIndication() { 
-          return this.indication != null && !this.indication.isEmpty();
+        public boolean hasAdministrationTreatment() { 
+          return this.administrationTreatment != null && !this.administrationTreatment.isEmpty();
         }
 
         /**
-         * @param value {@link #indication} (Indication or reason for use of the medication that applies to the specific administration guidelines.)
+         * @param value {@link #administrationTreatment} (The type of the treatment that the guideline applies to, for example, long term therapy, first line treatment, etc.)
          */
-        public MedicationKnowledgeAdministrationGuidelineComponent setIndication(CodeableReference value) { 
-          this.indication = value;
+        public MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent setAdministrationTreatment(CodeableConcept value) { 
+          this.administrationTreatment = value;
           return this;
         }
 
         /**
          * @return {@link #patientCharacteristic} (Characteristics of the patient that are relevant to the administration guidelines (for example, height, weight, gender, etc.).)
          */
-        public List<MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent> getPatientCharacteristic() { 
+        public List<MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent> getPatientCharacteristic() { 
           if (this.patientCharacteristic == null)
-            this.patientCharacteristic = new ArrayList<MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent>();
+            this.patientCharacteristic = new ArrayList<MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent>();
           return this.patientCharacteristic;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public MedicationKnowledgeAdministrationGuidelineComponent setPatientCharacteristic(List<MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent> thePatientCharacteristic) { 
+        public MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent setPatientCharacteristic(List<MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent> thePatientCharacteristic) { 
           this.patientCharacteristic = thePatientCharacteristic;
           return this;
         }
@@ -1691,25 +1652,25 @@ public class MedicationKnowledge extends DomainResource {
         public boolean hasPatientCharacteristic() { 
           if (this.patientCharacteristic == null)
             return false;
-          for (MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent item : this.patientCharacteristic)
+          for (MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent item : this.patientCharacteristic)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent addPatientCharacteristic() { //3
-          MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent t = new MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent();
+        public MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent addPatientCharacteristic() { //3
+          MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent t = new MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent();
           if (this.patientCharacteristic == null)
-            this.patientCharacteristic = new ArrayList<MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent>();
+            this.patientCharacteristic = new ArrayList<MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent>();
           this.patientCharacteristic.add(t);
           return t;
         }
 
-        public MedicationKnowledgeAdministrationGuidelineComponent addPatientCharacteristic(MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent t) { //3
+        public MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent addPatientCharacteristic(MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent t) { //3
           if (t == null)
             return this;
           if (this.patientCharacteristic == null)
-            this.patientCharacteristic = new ArrayList<MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent>();
+            this.patientCharacteristic = new ArrayList<MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent>();
           this.patientCharacteristic.add(t);
           return this;
         }
@@ -1717,7 +1678,7 @@ public class MedicationKnowledge extends DomainResource {
         /**
          * @return The first repetition of repeating field {@link #patientCharacteristic}, creating it if it does not already exist {3}
          */
-        public MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent getPatientCharacteristicFirstRep() { 
+        public MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent getPatientCharacteristicFirstRep() { 
           if (getPatientCharacteristic().isEmpty()) {
             addPatientCharacteristic();
           }
@@ -1726,16 +1687,18 @@ public class MedicationKnowledge extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
+          children.add(new Property("treatmentIntent", "CodeableConcept", "The overall intention of the treatment, for example, prophylactic, supporative, curative, etc.", 0, 1, treatmentIntent));
           children.add(new Property("dosage", "", "Dosage for the medication for the specific guidelines.", 0, java.lang.Integer.MAX_VALUE, dosage));
-          children.add(new Property("indication", "CodeableReference(ClinicalUseIssue)", "Indication or reason for use of the medication that applies to the specific administration guidelines.", 0, 1, indication));
+          children.add(new Property("administrationTreatment", "CodeableConcept", "The type of the treatment that the guideline applies to, for example, long term therapy, first line treatment, etc.", 0, 1, administrationTreatment));
           children.add(new Property("patientCharacteristic", "", "Characteristics of the patient that are relevant to the administration guidelines (for example, height, weight, gender, etc.).", 0, java.lang.Integer.MAX_VALUE, patientCharacteristic));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
+          case 1744920884: /*treatmentIntent*/  return new Property("treatmentIntent", "CodeableConcept", "The overall intention of the treatment, for example, prophylactic, supporative, curative, etc.", 0, 1, treatmentIntent);
           case -1326018889: /*dosage*/  return new Property("dosage", "", "Dosage for the medication for the specific guidelines.", 0, java.lang.Integer.MAX_VALUE, dosage);
-          case -597168804: /*indication*/  return new Property("indication", "CodeableReference(ClinicalUseIssue)", "Indication or reason for use of the medication that applies to the specific administration guidelines.", 0, 1, indication);
+          case 1197121978: /*administrationTreatment*/  return new Property("administrationTreatment", "CodeableConcept", "The type of the treatment that the guideline applies to, for example, long term therapy, first line treatment, etc.", 0, 1, administrationTreatment);
           case 1770130432: /*patientCharacteristic*/  return new Property("patientCharacteristic", "", "Characteristics of the patient that are relevant to the administration guidelines (for example, height, weight, gender, etc.).", 0, java.lang.Integer.MAX_VALUE, patientCharacteristic);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -1745,9 +1708,10 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1326018889: /*dosage*/ return this.dosage == null ? new Base[0] : this.dosage.toArray(new Base[this.dosage.size()]); // MedicationKnowledgeAdministrationGuidelineDosageComponent
-        case -597168804: /*indication*/ return this.indication == null ? new Base[0] : new Base[] {this.indication}; // CodeableReference
-        case 1770130432: /*patientCharacteristic*/ return this.patientCharacteristic == null ? new Base[0] : this.patientCharacteristic.toArray(new Base[this.patientCharacteristic.size()]); // MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent
+        case 1744920884: /*treatmentIntent*/ return this.treatmentIntent == null ? new Base[0] : new Base[] {this.treatmentIntent}; // CodeableConcept
+        case -1326018889: /*dosage*/ return this.dosage == null ? new Base[0] : this.dosage.toArray(new Base[this.dosage.size()]); // MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent
+        case 1197121978: /*administrationTreatment*/ return this.administrationTreatment == null ? new Base[0] : new Base[] {this.administrationTreatment}; // CodeableConcept
+        case 1770130432: /*patientCharacteristic*/ return this.patientCharacteristic == null ? new Base[0] : this.patientCharacteristic.toArray(new Base[this.patientCharacteristic.size()]); // MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1756,14 +1720,17 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case -1326018889: // dosage
-          this.getDosage().add((MedicationKnowledgeAdministrationGuidelineDosageComponent) value); // MedicationKnowledgeAdministrationGuidelineDosageComponent
+        case 1744920884: // treatmentIntent
+          this.treatmentIntent = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
-        case -597168804: // indication
-          this.indication = TypeConvertor.castToCodeableReference(value); // CodeableReference
+        case -1326018889: // dosage
+          this.getDosage().add((MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent) value); // MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent
+          return value;
+        case 1197121978: // administrationTreatment
+          this.administrationTreatment = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 1770130432: // patientCharacteristic
-          this.getPatientCharacteristic().add((MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent) value); // MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent
+          this.getPatientCharacteristic().add((MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent) value); // MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1772,12 +1739,14 @@ public class MedicationKnowledge extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("dosage")) {
-          this.getDosage().add((MedicationKnowledgeAdministrationGuidelineDosageComponent) value);
-        } else if (name.equals("indication")) {
-          this.indication = TypeConvertor.castToCodeableReference(value); // CodeableReference
+        if (name.equals("treatmentIntent")) {
+          this.treatmentIntent = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("dosage")) {
+          this.getDosage().add((MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent) value);
+        } else if (name.equals("administrationTreatment")) {
+          this.administrationTreatment = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("patientCharacteristic")) {
-          this.getPatientCharacteristic().add((MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent) value);
+          this.getPatientCharacteristic().add((MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -1786,8 +1755,9 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
+        case 1744920884:  return getTreatmentIntent();
         case -1326018889:  return addDosage(); 
-        case -597168804:  return getIndication();
+        case 1197121978:  return getAdministrationTreatment();
         case 1770130432:  return addPatientCharacteristic(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1797,8 +1767,9 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
+        case 1744920884: /*treatmentIntent*/ return new String[] {"CodeableConcept"};
         case -1326018889: /*dosage*/ return new String[] {};
-        case -597168804: /*indication*/ return new String[] {"CodeableReference"};
+        case 1197121978: /*administrationTreatment*/ return new String[] {"CodeableConcept"};
         case 1770130432: /*patientCharacteristic*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -1807,12 +1778,16 @@ public class MedicationKnowledge extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("dosage")) {
+        if (name.equals("treatmentIntent")) {
+          this.treatmentIntent = new CodeableConcept();
+          return this.treatmentIntent;
+        }
+        else if (name.equals("dosage")) {
           return addDosage();
         }
-        else if (name.equals("indication")) {
-          this.indication = new CodeableReference();
-          return this.indication;
+        else if (name.equals("administrationTreatment")) {
+          this.administrationTreatment = new CodeableConcept();
+          return this.administrationTreatment;
         }
         else if (name.equals("patientCharacteristic")) {
           return addPatientCharacteristic();
@@ -1821,23 +1796,24 @@ public class MedicationKnowledge extends DomainResource {
           return super.addChild(name);
       }
 
-      public MedicationKnowledgeAdministrationGuidelineComponent copy() {
-        MedicationKnowledgeAdministrationGuidelineComponent dst = new MedicationKnowledgeAdministrationGuidelineComponent();
+      public MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent copy() {
+        MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent dst = new MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(MedicationKnowledgeAdministrationGuidelineComponent dst) {
+      public void copyValues(MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent dst) {
         super.copyValues(dst);
+        dst.treatmentIntent = treatmentIntent == null ? null : treatmentIntent.copy();
         if (dosage != null) {
-          dst.dosage = new ArrayList<MedicationKnowledgeAdministrationGuidelineDosageComponent>();
-          for (MedicationKnowledgeAdministrationGuidelineDosageComponent i : dosage)
+          dst.dosage = new ArrayList<MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent>();
+          for (MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent i : dosage)
             dst.dosage.add(i.copy());
         };
-        dst.indication = indication == null ? null : indication.copy();
+        dst.administrationTreatment = administrationTreatment == null ? null : administrationTreatment.copy();
         if (patientCharacteristic != null) {
-          dst.patientCharacteristic = new ArrayList<MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent>();
-          for (MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent i : patientCharacteristic)
+          dst.patientCharacteristic = new ArrayList<MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent>();
+          for (MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent i : patientCharacteristic)
             dst.patientCharacteristic.add(i.copy());
         };
       }
@@ -1846,10 +1822,11 @@ public class MedicationKnowledge extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof MedicationKnowledgeAdministrationGuidelineComponent))
+        if (!(other_ instanceof MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent))
           return false;
-        MedicationKnowledgeAdministrationGuidelineComponent o = (MedicationKnowledgeAdministrationGuidelineComponent) other_;
-        return compareDeep(dosage, o.dosage, true) && compareDeep(indication, o.indication, true) && compareDeep(patientCharacteristic, o.patientCharacteristic, true)
+        MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent o = (MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent) other_;
+        return compareDeep(treatmentIntent, o.treatmentIntent, true) && compareDeep(dosage, o.dosage, true)
+           && compareDeep(administrationTreatment, o.administrationTreatment, true) && compareDeep(patientCharacteristic, o.patientCharacteristic, true)
           ;
       }
 
@@ -1857,26 +1834,26 @@ public class MedicationKnowledge extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof MedicationKnowledgeAdministrationGuidelineComponent))
+        if (!(other_ instanceof MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent))
           return false;
-        MedicationKnowledgeAdministrationGuidelineComponent o = (MedicationKnowledgeAdministrationGuidelineComponent) other_;
+        MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent o = (MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent) other_;
         return true;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(dosage, indication, patientCharacteristic
-          );
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(treatmentIntent, dosage, administrationTreatment
+          , patientCharacteristic);
       }
 
   public String fhirType() {
-    return "MedicationKnowledge.administrationGuideline";
+    return "MedicationKnowledge.indicationGuideline.dosingGuideline";
 
   }
 
   }
 
     @Block()
-    public static class MedicationKnowledgeAdministrationGuidelineDosageComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * The type or category of dosage for a given medication (for example, prophylaxis, maintenance, therapeutic, etc.).
          */
@@ -1896,14 +1873,14 @@ public class MedicationKnowledge extends DomainResource {
     /**
      * Constructor
      */
-      public MedicationKnowledgeAdministrationGuidelineDosageComponent() {
+      public MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent() {
         super();
       }
 
     /**
      * Constructor
      */
-      public MedicationKnowledgeAdministrationGuidelineDosageComponent(CodeableConcept type, Dosage dosage) {
+      public MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent(CodeableConcept type, Dosage dosage) {
         super();
         this.setType(type);
         this.addDosage(dosage);
@@ -1915,7 +1892,7 @@ public class MedicationKnowledge extends DomainResource {
         public CodeableConcept getType() { 
           if (this.type == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicationKnowledgeAdministrationGuidelineDosageComponent.type");
+              throw new Error("Attempt to auto-create MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent.type");
             else if (Configuration.doAutoCreate())
               this.type = new CodeableConcept(); // cc
           return this.type;
@@ -1928,7 +1905,7 @@ public class MedicationKnowledge extends DomainResource {
         /**
          * @param value {@link #type} (The type or category of dosage for a given medication (for example, prophylaxis, maintenance, therapeutic, etc.).)
          */
-        public MedicationKnowledgeAdministrationGuidelineDosageComponent setType(CodeableConcept value) { 
+        public MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent setType(CodeableConcept value) { 
           this.type = value;
           return this;
         }
@@ -1945,7 +1922,7 @@ public class MedicationKnowledge extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public MedicationKnowledgeAdministrationGuidelineDosageComponent setDosage(List<Dosage> theDosage) { 
+        public MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent setDosage(List<Dosage> theDosage) { 
           this.dosage = theDosage;
           return this;
         }
@@ -1967,7 +1944,7 @@ public class MedicationKnowledge extends DomainResource {
           return t;
         }
 
-        public MedicationKnowledgeAdministrationGuidelineDosageComponent addDosage(Dosage t) { //3
+        public MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent addDosage(Dosage t) { //3
           if (t == null)
             return this;
           if (this.dosage == null)
@@ -2070,13 +2047,13 @@ public class MedicationKnowledge extends DomainResource {
           return super.addChild(name);
       }
 
-      public MedicationKnowledgeAdministrationGuidelineDosageComponent copy() {
-        MedicationKnowledgeAdministrationGuidelineDosageComponent dst = new MedicationKnowledgeAdministrationGuidelineDosageComponent();
+      public MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent copy() {
+        MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent dst = new MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(MedicationKnowledgeAdministrationGuidelineDosageComponent dst) {
+      public void copyValues(MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         if (dosage != null) {
@@ -2090,9 +2067,9 @@ public class MedicationKnowledge extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof MedicationKnowledgeAdministrationGuidelineDosageComponent))
+        if (!(other_ instanceof MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent))
           return false;
-        MedicationKnowledgeAdministrationGuidelineDosageComponent o = (MedicationKnowledgeAdministrationGuidelineDosageComponent) other_;
+        MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent o = (MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent) other_;
         return compareDeep(type, o.type, true) && compareDeep(dosage, o.dosage, true);
       }
 
@@ -2100,9 +2077,9 @@ public class MedicationKnowledge extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof MedicationKnowledgeAdministrationGuidelineDosageComponent))
+        if (!(other_ instanceof MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent))
           return false;
-        MedicationKnowledgeAdministrationGuidelineDosageComponent o = (MedicationKnowledgeAdministrationGuidelineDosageComponent) other_;
+        MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent o = (MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent) other_;
         return true;
       }
 
@@ -2111,14 +2088,14 @@ public class MedicationKnowledge extends DomainResource {
       }
 
   public String fhirType() {
-    return "MedicationKnowledge.administrationGuideline.dosage";
+    return "MedicationKnowledge.indicationGuideline.dosingGuideline.dosage";
 
   }
 
   }
 
     @Block()
-    public static class MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * The categorization of the specific characteristic that is relevant to the administration guideline (e.g. height, weight, gender).
          */
@@ -2129,7 +2106,7 @@ public class MedicationKnowledge extends DomainResource {
         /**
          * The specific characteristic (e.g. height, weight, gender, etc.).
          */
-        @Child(name = "value", type = {CodeableConcept.class, Quantity.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "value", type = {CodeableConcept.class, Quantity.class, Range.class}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The specific characteristic", formalDefinition="The specific characteristic (e.g. height, weight, gender, etc.)." )
         protected DataType value;
 
@@ -2138,14 +2115,14 @@ public class MedicationKnowledge extends DomainResource {
     /**
      * Constructor
      */
-      public MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent() {
+      public MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent() {
         super();
       }
 
     /**
      * Constructor
      */
-      public MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent(CodeableConcept type) {
+      public MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent(CodeableConcept type) {
         super();
         this.setType(type);
       }
@@ -2156,7 +2133,7 @@ public class MedicationKnowledge extends DomainResource {
         public CodeableConcept getType() { 
           if (this.type == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent.type");
+              throw new Error("Attempt to auto-create MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent.type");
             else if (Configuration.doAutoCreate())
               this.type = new CodeableConcept(); // cc
           return this.type;
@@ -2169,7 +2146,7 @@ public class MedicationKnowledge extends DomainResource {
         /**
          * @param value {@link #type} (The categorization of the specific characteristic that is relevant to the administration guideline (e.g. height, weight, gender).)
          */
-        public MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent setType(CodeableConcept value) { 
+        public MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent setType(CodeableConcept value) { 
           this.type = value;
           return this;
         }
@@ -2211,6 +2188,21 @@ public class MedicationKnowledge extends DomainResource {
           return this != null && this.value instanceof Quantity;
         }
 
+        /**
+         * @return {@link #value} (The specific characteristic (e.g. height, weight, gender, etc.).)
+         */
+        public Range getValueRange() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Range();
+          if (!(this.value instanceof Range))
+            throw new FHIRException("Type mismatch: the type Range was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Range) this.value;
+        }
+
+        public boolean hasValueRange() { 
+          return this != null && this.value instanceof Range;
+        }
+
         public boolean hasValue() { 
           return this.value != null && !this.value.isEmpty();
         }
@@ -2218,9 +2210,9 @@ public class MedicationKnowledge extends DomainResource {
         /**
          * @param value {@link #value} (The specific characteristic (e.g. height, weight, gender, etc.).)
          */
-        public MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity))
-            throw new Error("Not the right type for MedicationKnowledge.administrationGuideline.patientCharacteristic.value[x]: "+value.fhirType());
+        public MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent setValue(DataType value) { 
+          if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity || value instanceof Range))
+            throw new Error("Not the right type for MedicationKnowledge.indicationGuideline.dosingGuideline.patientCharacteristic.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -2228,17 +2220,18 @@ public class MedicationKnowledge extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "The categorization of the specific characteristic that is relevant to the administration guideline (e.g. height, weight, gender).", 0, 1, type));
-          children.add(new Property("value[x]", "CodeableConcept|Quantity", "The specific characteristic (e.g. height, weight, gender, etc.).", 0, 1, value));
+          children.add(new Property("value[x]", "CodeableConcept|Quantity|Range", "The specific characteristic (e.g. height, weight, gender, etc.).", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The categorization of the specific characteristic that is relevant to the administration guideline (e.g. height, weight, gender).", 0, 1, type);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "CodeableConcept|Quantity", "The specific characteristic (e.g. height, weight, gender, etc.).", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "CodeableConcept|Quantity", "The specific characteristic (e.g. height, weight, gender, etc.).", 0, 1, value);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "CodeableConcept|Quantity|Range", "The specific characteristic (e.g. height, weight, gender, etc.).", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "CodeableConcept|Quantity|Range", "The specific characteristic (e.g. height, weight, gender, etc.).", 0, 1, value);
           case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "The specific characteristic (e.g. height, weight, gender, etc.).", 0, 1, value);
           case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "The specific characteristic (e.g. height, weight, gender, etc.).", 0, 1, value);
+          case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "The specific characteristic (e.g. height, weight, gender, etc.).", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -2294,7 +2287,7 @@ public class MedicationKnowledge extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case 111972721: /*value*/ return new String[] {"CodeableConcept", "Quantity"};
+        case 111972721: /*value*/ return new String[] {"CodeableConcept", "Quantity", "Range"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -2314,17 +2307,21 @@ public class MedicationKnowledge extends DomainResource {
           this.value = new Quantity();
           return this.value;
         }
+        else if (name.equals("valueRange")) {
+          this.value = new Range();
+          return this.value;
+        }
         else
           return super.addChild(name);
       }
 
-      public MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent copy() {
-        MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent dst = new MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent();
+      public MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent copy() {
+        MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent dst = new MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent dst) {
+      public void copyValues(MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.value = value == null ? null : value.copy();
@@ -2334,9 +2331,9 @@ public class MedicationKnowledge extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent))
+        if (!(other_ instanceof MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent))
           return false;
-        MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent o = (MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent) other_;
+        MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent o = (MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent) other_;
         return compareDeep(type, o.type, true) && compareDeep(value, o.value, true);
       }
 
@@ -2344,9 +2341,9 @@ public class MedicationKnowledge extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent))
+        if (!(other_ instanceof MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent))
           return false;
-        MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent o = (MedicationKnowledgeAdministrationGuidelinePatientCharacteristicComponent) other_;
+        MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent o = (MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent) other_;
         return true;
       }
 
@@ -2355,7 +2352,7 @@ public class MedicationKnowledge extends DomainResource {
       }
 
   public String fhirType() {
-    return "MedicationKnowledge.administrationGuideline.patientCharacteristic";
+    return "MedicationKnowledge.indicationGuideline.dosingGuideline.patientCharacteristic";
 
   }
 
@@ -2371,13 +2368,20 @@ public class MedicationKnowledge extends DomainResource {
         protected CodeableConcept type;
 
         /**
+         * Either a textual source of the classification or a reference to an online source.
+         */
+        @Child(name = "source", type = {StringType.class, UriType.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The source of the classification", formalDefinition="Either a textual source of the classification or a reference to an online source." )
+        protected DataType source;
+
+        /**
          * Specific category assigned to the medication (e.g. anti-infective, anti-hypertensive, antibiotic, etc.).
          */
-        @Child(name = "classification", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "classification", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Specific category assigned to the medication", formalDefinition="Specific category assigned to the medication (e.g. anti-infective, anti-hypertensive, antibiotic, etc.)." )
         protected List<CodeableConcept> classification;
 
-        private static final long serialVersionUID = 1562996046L;
+        private static final long serialVersionUID = 1598220123L;
 
     /**
      * Constructor
@@ -2415,6 +2419,57 @@ public class MedicationKnowledge extends DomainResource {
          */
         public MedicationKnowledgeMedicineClassificationComponent setType(CodeableConcept value) { 
           this.type = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #source} (Either a textual source of the classification or a reference to an online source.)
+         */
+        public DataType getSource() { 
+          return this.source;
+        }
+
+        /**
+         * @return {@link #source} (Either a textual source of the classification or a reference to an online source.)
+         */
+        public StringType getSourceStringType() throws FHIRException { 
+          if (this.source == null)
+            this.source = new StringType();
+          if (!(this.source instanceof StringType))
+            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.source.getClass().getName()+" was encountered");
+          return (StringType) this.source;
+        }
+
+        public boolean hasSourceStringType() { 
+          return this != null && this.source instanceof StringType;
+        }
+
+        /**
+         * @return {@link #source} (Either a textual source of the classification or a reference to an online source.)
+         */
+        public UriType getSourceUriType() throws FHIRException { 
+          if (this.source == null)
+            this.source = new UriType();
+          if (!(this.source instanceof UriType))
+            throw new FHIRException("Type mismatch: the type UriType was expected, but "+this.source.getClass().getName()+" was encountered");
+          return (UriType) this.source;
+        }
+
+        public boolean hasSourceUriType() { 
+          return this != null && this.source instanceof UriType;
+        }
+
+        public boolean hasSource() { 
+          return this.source != null && !this.source.isEmpty();
+        }
+
+        /**
+         * @param value {@link #source} (Either a textual source of the classification or a reference to an online source.)
+         */
+        public MedicationKnowledgeMedicineClassificationComponent setSource(DataType value) { 
+          if (value != null && !(value instanceof StringType || value instanceof UriType))
+            throw new Error("Not the right type for MedicationKnowledge.medicineClassification.source[x]: "+value.fhirType());
+          this.source = value;
           return this;
         }
 
@@ -2474,6 +2529,7 @@ public class MedicationKnowledge extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "The type of category for the medication (for example, therapeutic classification, therapeutic sub-classification).", 0, 1, type));
+          children.add(new Property("source[x]", "string|uri", "Either a textual source of the classification or a reference to an online source.", 0, 1, source));
           children.add(new Property("classification", "CodeableConcept", "Specific category assigned to the medication (e.g. anti-infective, anti-hypertensive, antibiotic, etc.).", 0, java.lang.Integer.MAX_VALUE, classification));
         }
 
@@ -2481,6 +2537,10 @@ public class MedicationKnowledge extends DomainResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The type of category for the medication (for example, therapeutic classification, therapeutic sub-classification).", 0, 1, type);
+          case -1698413947: /*source[x]*/  return new Property("source[x]", "string|uri", "Either a textual source of the classification or a reference to an online source.", 0, 1, source);
+          case -896505829: /*source*/  return new Property("source[x]", "string|uri", "Either a textual source of the classification or a reference to an online source.", 0, 1, source);
+          case 1327821836: /*sourceString*/  return new Property("source[x]", "string", "Either a textual source of the classification or a reference to an online source.", 0, 1, source);
+          case -1698419887: /*sourceUri*/  return new Property("source[x]", "uri", "Either a textual source of the classification or a reference to an online source.", 0, 1, source);
           case 382350310: /*classification*/  return new Property("classification", "CodeableConcept", "Specific category assigned to the medication (e.g. anti-infective, anti-hypertensive, antibiotic, etc.).", 0, java.lang.Integer.MAX_VALUE, classification);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -2491,6 +2551,7 @@ public class MedicationKnowledge extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case -896505829: /*source*/ return this.source == null ? new Base[0] : new Base[] {this.source}; // DataType
         case 382350310: /*classification*/ return this.classification == null ? new Base[0] : this.classification.toArray(new Base[this.classification.size()]); // CodeableConcept
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -2502,6 +2563,9 @@ public class MedicationKnowledge extends DomainResource {
         switch (hash) {
         case 3575610: // type
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -896505829: // source
+          this.source = TypeConvertor.castToType(value); // DataType
           return value;
         case 382350310: // classification
           this.getClassification().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -2515,6 +2579,8 @@ public class MedicationKnowledge extends DomainResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("source[x]")) {
+          this.source = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("classification")) {
           this.getClassification().add(TypeConvertor.castToCodeableConcept(value));
         } else
@@ -2526,6 +2592,8 @@ public class MedicationKnowledge extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610:  return getType();
+        case -1698413947:  return getSource();
+        case -896505829:  return getSource();
         case 382350310:  return addClassification(); 
         default: return super.makeProperty(hash, name);
         }
@@ -2536,6 +2604,7 @@ public class MedicationKnowledge extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case -896505829: /*source*/ return new String[] {"string", "uri"};
         case 382350310: /*classification*/ return new String[] {"CodeableConcept"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -2547,6 +2616,14 @@ public class MedicationKnowledge extends DomainResource {
         if (name.equals("type")) {
           this.type = new CodeableConcept();
           return this.type;
+        }
+        else if (name.equals("sourceString")) {
+          this.source = new StringType();
+          return this.source;
+        }
+        else if (name.equals("sourceUri")) {
+          this.source = new UriType();
+          return this.source;
         }
         else if (name.equals("classification")) {
           return addClassification();
@@ -2564,6 +2641,7 @@ public class MedicationKnowledge extends DomainResource {
       public void copyValues(MedicationKnowledgeMedicineClassificationComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
+        dst.source = source == null ? null : source.copy();
         if (classification != null) {
           dst.classification = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : classification)
@@ -2578,7 +2656,8 @@ public class MedicationKnowledge extends DomainResource {
         if (!(other_ instanceof MedicationKnowledgeMedicineClassificationComponent))
           return false;
         MedicationKnowledgeMedicineClassificationComponent o = (MedicationKnowledgeMedicineClassificationComponent) other_;
-        return compareDeep(type, o.type, true) && compareDeep(classification, o.classification, true);
+        return compareDeep(type, o.type, true) && compareDeep(source, o.source, true) && compareDeep(classification, o.classification, true)
+          ;
       }
 
       @Override
@@ -2592,7 +2671,8 @@ public class MedicationKnowledge extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, classification);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, source, classification
+          );
       }
 
   public String fhirType() {
@@ -2605,56 +2685,20 @@ public class MedicationKnowledge extends DomainResource {
     @Block()
     public static class MedicationKnowledgePackagingComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The business identifier of the packaged medication.
-         */
-        @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Business identifier of the packaged medication", formalDefinition="The business identifier of the packaged medication." )
-        protected Identifier identifier;
-
-        /**
          * The cost of the packaged medication.
          */
-        @Child(name = "cost", type = {MedicationKnowledgeCostComponent.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "cost", type = {MedicationKnowledgeCostComponent.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Cost of the packaged medication", formalDefinition="The cost of the packaged medication." )
-        protected MedicationKnowledgeCostComponent cost;
+        protected List<MedicationKnowledgeCostComponent> cost;
 
         /**
-         * A code that defines the specific type of packaging that the medication can be found in (e.g. blister sleeve, tube, bottle).
+         * A reference to a PackagedProductDefinition that provides the details of the product that is in the packaging and is being priced.
          */
-        @Child(name = "type", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="A code that defines the specific type of packaging that the medication can be found in", formalDefinition="A code that defines the specific type of packaging that the medication can be found in (e.g. blister sleeve, tube, bottle)." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medicationknowledge-package-type")
-        protected CodeableConcept type;
+        @Child(name = "packagedProduct", type = {PackagedProductDefinition.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The packaged medication that is being priced", formalDefinition="A reference to a PackagedProductDefinition that provides the details of the product that is in the packaging and is being priced." )
+        protected Reference packagedProduct;
 
-        /**
-         * The number of product units the package would contain if fully loaded.
-         */
-        @Child(name = "quantity", type = {Quantity.class}, order=4, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The number of product units the package would contain if fully loaded", formalDefinition="The number of product units the package would contain if fully loaded." )
-        protected Quantity quantity;
-
-        /**
-         * The device used to administer the medication (e.g. scoop, applicator, syringe).
-         */
-        @Child(name = "device", type = {Device.class}, order=5, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The device used to administer the medication (e.g. scoop, applicator, syringe)", formalDefinition="The device used to administer the medication (e.g. scoop, applicator, syringe)." )
-        protected Reference device;
-
-        /**
-         * Material type of the package item.
-         */
-        @Child(name = "material", type = {CodeableConcept.class}, order=6, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Material type of the package item", formalDefinition="Material type of the package item." )
-        protected CodeableConcept material;
-
-        /**
-         * Allows packages within packages (e.g. blister packages within a box or vials of medications within a box).
-         */
-        @Child(name = "packaging", type = {MedicationKnowledgePackagingComponent.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Allows packages within packages", formalDefinition="Allows packages within packages (e.g. blister packages within a box or vials of medications within a box)." )
-        protected List<MedicationKnowledgePackagingComponent> packaging;
-
-        private static final long serialVersionUID = -811886104L;
+        private static final long serialVersionUID = -337249398L;
 
     /**
      * Constructor
@@ -2664,223 +2708,93 @@ public class MedicationKnowledge extends DomainResource {
       }
 
         /**
-         * @return {@link #identifier} (The business identifier of the packaged medication.)
-         */
-        public Identifier getIdentifier() { 
-          if (this.identifier == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicationKnowledgePackagingComponent.identifier");
-            else if (Configuration.doAutoCreate())
-              this.identifier = new Identifier(); // cc
-          return this.identifier;
-        }
-
-        public boolean hasIdentifier() { 
-          return this.identifier != null && !this.identifier.isEmpty();
-        }
-
-        /**
-         * @param value {@link #identifier} (The business identifier of the packaged medication.)
-         */
-        public MedicationKnowledgePackagingComponent setIdentifier(Identifier value) { 
-          this.identifier = value;
-          return this;
-        }
-
-        /**
          * @return {@link #cost} (The cost of the packaged medication.)
          */
-        public MedicationKnowledgeCostComponent getCost() { 
+        public List<MedicationKnowledgeCostComponent> getCost() { 
           if (this.cost == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicationKnowledgePackagingComponent.cost");
-            else if (Configuration.doAutoCreate())
-              this.cost = new MedicationKnowledgeCostComponent(); // cc
+            this.cost = new ArrayList<MedicationKnowledgeCostComponent>();
           return this.cost;
-        }
-
-        public boolean hasCost() { 
-          return this.cost != null && !this.cost.isEmpty();
-        }
-
-        /**
-         * @param value {@link #cost} (The cost of the packaged medication.)
-         */
-        public MedicationKnowledgePackagingComponent setCost(MedicationKnowledgeCostComponent value) { 
-          this.cost = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #type} (A code that defines the specific type of packaging that the medication can be found in (e.g. blister sleeve, tube, bottle).)
-         */
-        public CodeableConcept getType() { 
-          if (this.type == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicationKnowledgePackagingComponent.type");
-            else if (Configuration.doAutoCreate())
-              this.type = new CodeableConcept(); // cc
-          return this.type;
-        }
-
-        public boolean hasType() { 
-          return this.type != null && !this.type.isEmpty();
-        }
-
-        /**
-         * @param value {@link #type} (A code that defines the specific type of packaging that the medication can be found in (e.g. blister sleeve, tube, bottle).)
-         */
-        public MedicationKnowledgePackagingComponent setType(CodeableConcept value) { 
-          this.type = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #quantity} (The number of product units the package would contain if fully loaded.)
-         */
-        public Quantity getQuantity() { 
-          if (this.quantity == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicationKnowledgePackagingComponent.quantity");
-            else if (Configuration.doAutoCreate())
-              this.quantity = new Quantity(); // cc
-          return this.quantity;
-        }
-
-        public boolean hasQuantity() { 
-          return this.quantity != null && !this.quantity.isEmpty();
-        }
-
-        /**
-         * @param value {@link #quantity} (The number of product units the package would contain if fully loaded.)
-         */
-        public MedicationKnowledgePackagingComponent setQuantity(Quantity value) { 
-          this.quantity = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #device} (The device used to administer the medication (e.g. scoop, applicator, syringe).)
-         */
-        public Reference getDevice() { 
-          if (this.device == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicationKnowledgePackagingComponent.device");
-            else if (Configuration.doAutoCreate())
-              this.device = new Reference(); // cc
-          return this.device;
-        }
-
-        public boolean hasDevice() { 
-          return this.device != null && !this.device.isEmpty();
-        }
-
-        /**
-         * @param value {@link #device} (The device used to administer the medication (e.g. scoop, applicator, syringe).)
-         */
-        public MedicationKnowledgePackagingComponent setDevice(Reference value) { 
-          this.device = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #material} (Material type of the package item.)
-         */
-        public CodeableConcept getMaterial() { 
-          if (this.material == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicationKnowledgePackagingComponent.material");
-            else if (Configuration.doAutoCreate())
-              this.material = new CodeableConcept(); // cc
-          return this.material;
-        }
-
-        public boolean hasMaterial() { 
-          return this.material != null && !this.material.isEmpty();
-        }
-
-        /**
-         * @param value {@link #material} (Material type of the package item.)
-         */
-        public MedicationKnowledgePackagingComponent setMaterial(CodeableConcept value) { 
-          this.material = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #packaging} (Allows packages within packages (e.g. blister packages within a box or vials of medications within a box).)
-         */
-        public List<MedicationKnowledgePackagingComponent> getPackaging() { 
-          if (this.packaging == null)
-            this.packaging = new ArrayList<MedicationKnowledgePackagingComponent>();
-          return this.packaging;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public MedicationKnowledgePackagingComponent setPackaging(List<MedicationKnowledgePackagingComponent> thePackaging) { 
-          this.packaging = thePackaging;
+        public MedicationKnowledgePackagingComponent setCost(List<MedicationKnowledgeCostComponent> theCost) { 
+          this.cost = theCost;
           return this;
         }
 
-        public boolean hasPackaging() { 
-          if (this.packaging == null)
+        public boolean hasCost() { 
+          if (this.cost == null)
             return false;
-          for (MedicationKnowledgePackagingComponent item : this.packaging)
+          for (MedicationKnowledgeCostComponent item : this.cost)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public MedicationKnowledgePackagingComponent addPackaging() { //3
-          MedicationKnowledgePackagingComponent t = new MedicationKnowledgePackagingComponent();
-          if (this.packaging == null)
-            this.packaging = new ArrayList<MedicationKnowledgePackagingComponent>();
-          this.packaging.add(t);
+        public MedicationKnowledgeCostComponent addCost() { //3
+          MedicationKnowledgeCostComponent t = new MedicationKnowledgeCostComponent();
+          if (this.cost == null)
+            this.cost = new ArrayList<MedicationKnowledgeCostComponent>();
+          this.cost.add(t);
           return t;
         }
 
-        public MedicationKnowledgePackagingComponent addPackaging(MedicationKnowledgePackagingComponent t) { //3
+        public MedicationKnowledgePackagingComponent addCost(MedicationKnowledgeCostComponent t) { //3
           if (t == null)
             return this;
-          if (this.packaging == null)
-            this.packaging = new ArrayList<MedicationKnowledgePackagingComponent>();
-          this.packaging.add(t);
+          if (this.cost == null)
+            this.cost = new ArrayList<MedicationKnowledgeCostComponent>();
+          this.cost.add(t);
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #packaging}, creating it if it does not already exist {3}
+         * @return The first repetition of repeating field {@link #cost}, creating it if it does not already exist {3}
          */
-        public MedicationKnowledgePackagingComponent getPackagingFirstRep() { 
-          if (getPackaging().isEmpty()) {
-            addPackaging();
+        public MedicationKnowledgeCostComponent getCostFirstRep() { 
+          if (getCost().isEmpty()) {
+            addCost();
           }
-          return getPackaging().get(0);
+          return getCost().get(0);
+        }
+
+        /**
+         * @return {@link #packagedProduct} (A reference to a PackagedProductDefinition that provides the details of the product that is in the packaging and is being priced.)
+         */
+        public Reference getPackagedProduct() { 
+          if (this.packagedProduct == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create MedicationKnowledgePackagingComponent.packagedProduct");
+            else if (Configuration.doAutoCreate())
+              this.packagedProduct = new Reference(); // cc
+          return this.packagedProduct;
+        }
+
+        public boolean hasPackagedProduct() { 
+          return this.packagedProduct != null && !this.packagedProduct.isEmpty();
+        }
+
+        /**
+         * @param value {@link #packagedProduct} (A reference to a PackagedProductDefinition that provides the details of the product that is in the packaging and is being priced.)
+         */
+        public MedicationKnowledgePackagingComponent setPackagedProduct(Reference value) { 
+          this.packagedProduct = value;
+          return this;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("identifier", "Identifier", "The business identifier of the packaged medication.", 0, 1, identifier));
-          children.add(new Property("cost", "@MedicationKnowledge.cost", "The cost of the packaged medication.", 0, 1, cost));
-          children.add(new Property("type", "CodeableConcept", "A code that defines the specific type of packaging that the medication can be found in (e.g. blister sleeve, tube, bottle).", 0, 1, type));
-          children.add(new Property("quantity", "Quantity", "The number of product units the package would contain if fully loaded.", 0, 1, quantity));
-          children.add(new Property("device", "Reference(Device)", "The device used to administer the medication (e.g. scoop, applicator, syringe).", 0, 1, device));
-          children.add(new Property("material", "CodeableConcept", "Material type of the package item.", 0, 1, material));
-          children.add(new Property("packaging", "@MedicationKnowledge.packaging", "Allows packages within packages (e.g. blister packages within a box or vials of medications within a box).", 0, java.lang.Integer.MAX_VALUE, packaging));
+          children.add(new Property("cost", "@MedicationKnowledge.cost", "The cost of the packaged medication.", 0, java.lang.Integer.MAX_VALUE, cost));
+          children.add(new Property("packagedProduct", "Reference(PackagedProductDefinition)", "A reference to a PackagedProductDefinition that provides the details of the product that is in the packaging and is being priced.", 0, 1, packagedProduct));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "The business identifier of the packaged medication.", 0, 1, identifier);
-          case 3059661: /*cost*/  return new Property("cost", "@MedicationKnowledge.cost", "The cost of the packaged medication.", 0, 1, cost);
-          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "A code that defines the specific type of packaging that the medication can be found in (e.g. blister sleeve, tube, bottle).", 0, 1, type);
-          case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "The number of product units the package would contain if fully loaded.", 0, 1, quantity);
-          case -1335157162: /*device*/  return new Property("device", "Reference(Device)", "The device used to administer the medication (e.g. scoop, applicator, syringe).", 0, 1, device);
-          case 299066663: /*material*/  return new Property("material", "CodeableConcept", "Material type of the package item.", 0, 1, material);
-          case 1802065795: /*packaging*/  return new Property("packaging", "@MedicationKnowledge.packaging", "Allows packages within packages (e.g. blister packages within a box or vials of medications within a box).", 0, java.lang.Integer.MAX_VALUE, packaging);
+          case 3059661: /*cost*/  return new Property("cost", "@MedicationKnowledge.cost", "The cost of the packaged medication.", 0, java.lang.Integer.MAX_VALUE, cost);
+          case 1893956145: /*packagedProduct*/  return new Property("packagedProduct", "Reference(PackagedProductDefinition)", "A reference to a PackagedProductDefinition that provides the details of the product that is in the packaging and is being priced.", 0, 1, packagedProduct);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -2889,13 +2803,8 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : new Base[] {this.identifier}; // Identifier
-        case 3059661: /*cost*/ return this.cost == null ? new Base[0] : new Base[] {this.cost}; // MedicationKnowledgeCostComponent
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
-        case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
-        case -1335157162: /*device*/ return this.device == null ? new Base[0] : new Base[] {this.device}; // Reference
-        case 299066663: /*material*/ return this.material == null ? new Base[0] : new Base[] {this.material}; // CodeableConcept
-        case 1802065795: /*packaging*/ return this.packaging == null ? new Base[0] : this.packaging.toArray(new Base[this.packaging.size()]); // MedicationKnowledgePackagingComponent
+        case 3059661: /*cost*/ return this.cost == null ? new Base[0] : this.cost.toArray(new Base[this.cost.size()]); // MedicationKnowledgeCostComponent
+        case 1893956145: /*packagedProduct*/ return this.packagedProduct == null ? new Base[0] : new Base[] {this.packagedProduct}; // Reference
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -2904,26 +2813,11 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case -1618432855: // identifier
-          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
-          return value;
         case 3059661: // cost
-          this.cost = (MedicationKnowledgeCostComponent) value; // MedicationKnowledgeCostComponent
+          this.getCost().add((MedicationKnowledgeCostComponent) value); // MedicationKnowledgeCostComponent
           return value;
-        case 3575610: // type
-          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case -1285004149: // quantity
-          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
-          return value;
-        case -1335157162: // device
-          this.device = TypeConvertor.castToReference(value); // Reference
-          return value;
-        case 299066663: // material
-          this.material = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case 1802065795: // packaging
-          this.getPackaging().add((MedicationKnowledgePackagingComponent) value); // MedicationKnowledgePackagingComponent
+        case 1893956145: // packagedProduct
+          this.packagedProduct = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2932,20 +2826,10 @@ public class MedicationKnowledge extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("identifier")) {
-          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
-        } else if (name.equals("cost")) {
-          this.cost = (MedicationKnowledgeCostComponent) value; // MedicationKnowledgeCostComponent
-        } else if (name.equals("type")) {
-          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("quantity")) {
-          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
-        } else if (name.equals("device")) {
-          this.device = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("material")) {
-          this.material = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("packaging")) {
-          this.getPackaging().add((MedicationKnowledgePackagingComponent) value);
+        if (name.equals("cost")) {
+          this.getCost().add((MedicationKnowledgeCostComponent) value);
+        } else if (name.equals("packagedProduct")) {
+          this.packagedProduct = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -2954,13 +2838,8 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1618432855:  return getIdentifier();
-        case 3059661:  return getCost();
-        case 3575610:  return getType();
-        case -1285004149:  return getQuantity();
-        case -1335157162:  return getDevice();
-        case 299066663:  return getMaterial();
-        case 1802065795:  return addPackaging(); 
+        case 3059661:  return addCost(); 
+        case 1893956145:  return getPackagedProduct();
         default: return super.makeProperty(hash, name);
         }
 
@@ -2969,13 +2848,8 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case 3059661: /*cost*/ return new String[] {"@MedicationKnowledge.cost"};
-        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case -1285004149: /*quantity*/ return new String[] {"Quantity"};
-        case -1335157162: /*device*/ return new String[] {"Reference"};
-        case 299066663: /*material*/ return new String[] {"CodeableConcept"};
-        case 1802065795: /*packaging*/ return new String[] {"@MedicationKnowledge.packaging"};
+        case 1893956145: /*packagedProduct*/ return new String[] {"Reference"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -2983,32 +2857,12 @@ public class MedicationKnowledge extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("identifier")) {
-          this.identifier = new Identifier();
-          return this.identifier;
+        if (name.equals("cost")) {
+          return addCost();
         }
-        else if (name.equals("cost")) {
-          this.cost = new MedicationKnowledgeCostComponent();
-          return this.cost;
-        }
-        else if (name.equals("type")) {
-          this.type = new CodeableConcept();
-          return this.type;
-        }
-        else if (name.equals("quantity")) {
-          this.quantity = new Quantity();
-          return this.quantity;
-        }
-        else if (name.equals("device")) {
-          this.device = new Reference();
-          return this.device;
-        }
-        else if (name.equals("material")) {
-          this.material = new CodeableConcept();
-          return this.material;
-        }
-        else if (name.equals("packaging")) {
-          return addPackaging();
+        else if (name.equals("packagedProduct")) {
+          this.packagedProduct = new Reference();
+          return this.packagedProduct;
         }
         else
           return super.addChild(name);
@@ -3022,17 +2876,12 @@ public class MedicationKnowledge extends DomainResource {
 
       public void copyValues(MedicationKnowledgePackagingComponent dst) {
         super.copyValues(dst);
-        dst.identifier = identifier == null ? null : identifier.copy();
-        dst.cost = cost == null ? null : cost.copy();
-        dst.type = type == null ? null : type.copy();
-        dst.quantity = quantity == null ? null : quantity.copy();
-        dst.device = device == null ? null : device.copy();
-        dst.material = material == null ? null : material.copy();
-        if (packaging != null) {
-          dst.packaging = new ArrayList<MedicationKnowledgePackagingComponent>();
-          for (MedicationKnowledgePackagingComponent i : packaging)
-            dst.packaging.add(i.copy());
+        if (cost != null) {
+          dst.cost = new ArrayList<MedicationKnowledgeCostComponent>();
+          for (MedicationKnowledgeCostComponent i : cost)
+            dst.cost.add(i.copy());
         };
+        dst.packagedProduct = packagedProduct == null ? null : packagedProduct.copy();
       }
 
       @Override
@@ -3042,9 +2891,8 @@ public class MedicationKnowledge extends DomainResource {
         if (!(other_ instanceof MedicationKnowledgePackagingComponent))
           return false;
         MedicationKnowledgePackagingComponent o = (MedicationKnowledgePackagingComponent) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(cost, o.cost, true) && compareDeep(type, o.type, true)
-           && compareDeep(quantity, o.quantity, true) && compareDeep(device, o.device, true) && compareDeep(material, o.material, true)
-           && compareDeep(packaging, o.packaging, true);
+        return compareDeep(cost, o.cost, true) && compareDeep(packagedProduct, o.packagedProduct, true)
+          ;
       }
 
       @Override
@@ -3058,309 +2906,11 @@ public class MedicationKnowledge extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, cost, type, quantity
-          , device, material, packaging);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(cost, packagedProduct);
       }
 
   public String fhirType() {
     return "MedicationKnowledge.packaging";
-
-  }
-
-  }
-
-    @Block()
-    public static class MedicationKnowledgeDrugCharacteristicComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * A code specifying which characteristic of the medicine is being described (for example, colour, shape, imprint).
-         */
-        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Code specifying the type of characteristic of medication", formalDefinition="A code specifying which characteristic of the medicine is being described (for example, colour, shape, imprint)." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medicationknowledge-characteristic")
-        protected CodeableConcept type;
-
-        /**
-         * Description of the characteristic.
-         */
-        @Child(name = "value", type = {CodeableConcept.class, StringType.class, Quantity.class, Base64BinaryType.class, Attachment.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Description of the characteristic", formalDefinition="Description of the characteristic." )
-        protected DataType value;
-
-        private static final long serialVersionUID = -1659186716L;
-
-    /**
-     * Constructor
-     */
-      public MedicationKnowledgeDrugCharacteristicComponent() {
-        super();
-      }
-
-        /**
-         * @return {@link #type} (A code specifying which characteristic of the medicine is being described (for example, colour, shape, imprint).)
-         */
-        public CodeableConcept getType() { 
-          if (this.type == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicationKnowledgeDrugCharacteristicComponent.type");
-            else if (Configuration.doAutoCreate())
-              this.type = new CodeableConcept(); // cc
-          return this.type;
-        }
-
-        public boolean hasType() { 
-          return this.type != null && !this.type.isEmpty();
-        }
-
-        /**
-         * @param value {@link #type} (A code specifying which characteristic of the medicine is being described (for example, colour, shape, imprint).)
-         */
-        public MedicationKnowledgeDrugCharacteristicComponent setType(CodeableConcept value) { 
-          this.type = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #value} (Description of the characteristic.)
-         */
-        public DataType getValue() { 
-          return this.value;
-        }
-
-        /**
-         * @return {@link #value} (Description of the characteristic.)
-         */
-        public CodeableConcept getValueCodeableConcept() throws FHIRException { 
-          if (this.value == null)
-            this.value = new CodeableConcept();
-          if (!(this.value instanceof CodeableConcept))
-            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (CodeableConcept) this.value;
-        }
-
-        public boolean hasValueCodeableConcept() { 
-          return this != null && this.value instanceof CodeableConcept;
-        }
-
-        /**
-         * @return {@link #value} (Description of the characteristic.)
-         */
-        public StringType getValueStringType() throws FHIRException { 
-          if (this.value == null)
-            this.value = new StringType();
-          if (!(this.value instanceof StringType))
-            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (StringType) this.value;
-        }
-
-        public boolean hasValueStringType() { 
-          return this != null && this.value instanceof StringType;
-        }
-
-        /**
-         * @return {@link #value} (Description of the characteristic.)
-         */
-        public Quantity getValueQuantity() throws FHIRException { 
-          if (this.value == null)
-            this.value = new Quantity();
-          if (!(this.value instanceof Quantity))
-            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (Quantity) this.value;
-        }
-
-        public boolean hasValueQuantity() { 
-          return this != null && this.value instanceof Quantity;
-        }
-
-        /**
-         * @return {@link #value} (Description of the characteristic.)
-         */
-        public Base64BinaryType getValueBase64BinaryType() throws FHIRException { 
-          if (this.value == null)
-            this.value = new Base64BinaryType();
-          if (!(this.value instanceof Base64BinaryType))
-            throw new FHIRException("Type mismatch: the type Base64BinaryType was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (Base64BinaryType) this.value;
-        }
-
-        public boolean hasValueBase64BinaryType() { 
-          return this != null && this.value instanceof Base64BinaryType;
-        }
-
-        /**
-         * @return {@link #value} (Description of the characteristic.)
-         */
-        public Attachment getValueAttachment() throws FHIRException { 
-          if (this.value == null)
-            this.value = new Attachment();
-          if (!(this.value instanceof Attachment))
-            throw new FHIRException("Type mismatch: the type Attachment was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (Attachment) this.value;
-        }
-
-        public boolean hasValueAttachment() { 
-          return this != null && this.value instanceof Attachment;
-        }
-
-        public boolean hasValue() { 
-          return this.value != null && !this.value.isEmpty();
-        }
-
-        /**
-         * @param value {@link #value} (Description of the characteristic.)
-         */
-        public MedicationKnowledgeDrugCharacteristicComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof CodeableConcept || value instanceof StringType || value instanceof Quantity || value instanceof Base64BinaryType || value instanceof Attachment))
-            throw new Error("Not the right type for MedicationKnowledge.drugCharacteristic.value[x]: "+value.fhirType());
-          this.value = value;
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("type", "CodeableConcept", "A code specifying which characteristic of the medicine is being described (for example, colour, shape, imprint).", 0, 1, type));
-          children.add(new Property("value[x]", "CodeableConcept|string|Quantity|base64Binary|Attachment", "Description of the characteristic.", 0, 1, value));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "A code specifying which characteristic of the medicine is being described (for example, colour, shape, imprint).", 0, 1, type);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "CodeableConcept|string|Quantity|base64Binary|Attachment", "Description of the characteristic.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "CodeableConcept|string|Quantity|base64Binary|Attachment", "Description of the characteristic.", 0, 1, value);
-          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "Description of the characteristic.", 0, 1, value);
-          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "Description of the characteristic.", 0, 1, value);
-          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "Description of the characteristic.", 0, 1, value);
-          case -1535024575: /*valueBase64Binary*/  return new Property("value[x]", "base64Binary", "Description of the characteristic.", 0, 1, value);
-          case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "Description of the characteristic.", 0, 1, value);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
-        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case 3575610: // type
-          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case 111972721: // value
-          this.value = TypeConvertor.castToType(value); // DataType
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("type")) {
-          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("value[x]")) {
-          this.value = TypeConvertor.castToType(value); // DataType
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 3575610:  return getType();
-        case -1410166417:  return getValue();
-        case 111972721:  return getValue();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case 111972721: /*value*/ return new String[] {"CodeableConcept", "string", "Quantity", "base64Binary", "Attachment"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("type")) {
-          this.type = new CodeableConcept();
-          return this.type;
-        }
-        else if (name.equals("valueCodeableConcept")) {
-          this.value = new CodeableConcept();
-          return this.value;
-        }
-        else if (name.equals("valueString")) {
-          this.value = new StringType();
-          return this.value;
-        }
-        else if (name.equals("valueQuantity")) {
-          this.value = new Quantity();
-          return this.value;
-        }
-        else if (name.equals("valueBase64Binary")) {
-          this.value = new Base64BinaryType();
-          return this.value;
-        }
-        else if (name.equals("valueAttachment")) {
-          this.value = new Attachment();
-          return this.value;
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public MedicationKnowledgeDrugCharacteristicComponent copy() {
-        MedicationKnowledgeDrugCharacteristicComponent dst = new MedicationKnowledgeDrugCharacteristicComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(MedicationKnowledgeDrugCharacteristicComponent dst) {
-        super.copyValues(dst);
-        dst.type = type == null ? null : type.copy();
-        dst.value = value == null ? null : value.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof MedicationKnowledgeDrugCharacteristicComponent))
-          return false;
-        MedicationKnowledgeDrugCharacteristicComponent o = (MedicationKnowledgeDrugCharacteristicComponent) other_;
-        return compareDeep(type, o.type, true) && compareDeep(value, o.value, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof MedicationKnowledgeDrugCharacteristicComponent))
-          return false;
-        MedicationKnowledgeDrugCharacteristicComponent o = (MedicationKnowledgeDrugCharacteristicComponent) other_;
-        return true;
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, value);
-      }
-
-  public String fhirType() {
-    return "MedicationKnowledge.drugCharacteristic";
 
   }
 
@@ -4173,37 +3723,550 @@ public class MedicationKnowledge extends DomainResource {
   }
 
     @Block()
-    public static class MedicationKnowledgeKineticCharacteristicComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class MedicationKnowledgeDefinitionalComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Code specifying the type of kinetics (e.g. area under the curve, half life period, lethal dose 50.).
+         * Associated definitions for this medication.
          */
-        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Code specifying the type of kinetics", formalDefinition="Code specifying the type of kinetics (e.g. area under the curve, half life period, lethal dose 50.)." )
-        protected CodeableConcept type;
+        @Child(name = "definition", type = {MedicinalProductDefinition.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Definitional resources that provide more information about this medication", formalDefinition="Associated definitions for this medication." )
+        protected List<Reference> definition;
 
         /**
-         * Description of the characteristic.
+         * Describes the form of the item.  Powder; tablets; capsule.
          */
-        @Child(name = "value", type = {Quantity.class, Duration.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Description of the characteristic", formalDefinition="Description of the characteristic." )
-        protected DataType value;
+        @Child(name = "doseForm", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="powder | tablets | capsule +", formalDefinition="Describes the form of the item.  Powder; tablets; capsule." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medication-form-codes")
+        protected CodeableConcept doseForm;
 
-        private static final long serialVersionUID = -1659186716L;
+        /**
+         * The intended or approved route of administration.
+         */
+        @Child(name = "intendedRoute", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="The intended or approved route of administration", formalDefinition="The intended or approved route of administration." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/route-codes")
+        protected List<CodeableConcept> intendedRoute;
+
+        /**
+         * Identifies a particular constituent of interest in the product.
+         */
+        @Child(name = "ingredient", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Description(shortDefinition="Active or inactive ingredient", formalDefinition="Identifies a particular constituent of interest in the product." )
+        protected List<MedicationKnowledgeDefinitionalIngredientComponent> ingredient;
+
+        /**
+         * Specifies descriptive properties of the medicine, such as color, shape, imprints, etc.
+         */
+        @Child(name = "drugCharacteristic", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Specifies descriptive properties of the medicine", formalDefinition="Specifies descriptive properties of the medicine, such as color, shape, imprints, etc." )
+        protected List<MedicationKnowledgeDefinitionalDrugCharacteristicComponent> drugCharacteristic;
+
+        private static final long serialVersionUID = 2050532775L;
 
     /**
      * Constructor
      */
-      public MedicationKnowledgeKineticCharacteristicComponent() {
+      public MedicationKnowledgeDefinitionalComponent() {
         super();
       }
 
         /**
-         * @return {@link #type} (Code specifying the type of kinetics (e.g. area under the curve, half life period, lethal dose 50.).)
+         * @return {@link #definition} (Associated definitions for this medication.)
+         */
+        public List<Reference> getDefinition() { 
+          if (this.definition == null)
+            this.definition = new ArrayList<Reference>();
+          return this.definition;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public MedicationKnowledgeDefinitionalComponent setDefinition(List<Reference> theDefinition) { 
+          this.definition = theDefinition;
+          return this;
+        }
+
+        public boolean hasDefinition() { 
+          if (this.definition == null)
+            return false;
+          for (Reference item : this.definition)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Reference addDefinition() { //3
+          Reference t = new Reference();
+          if (this.definition == null)
+            this.definition = new ArrayList<Reference>();
+          this.definition.add(t);
+          return t;
+        }
+
+        public MedicationKnowledgeDefinitionalComponent addDefinition(Reference t) { //3
+          if (t == null)
+            return this;
+          if (this.definition == null)
+            this.definition = new ArrayList<Reference>();
+          this.definition.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #definition}, creating it if it does not already exist {3}
+         */
+        public Reference getDefinitionFirstRep() { 
+          if (getDefinition().isEmpty()) {
+            addDefinition();
+          }
+          return getDefinition().get(0);
+        }
+
+        /**
+         * @return {@link #doseForm} (Describes the form of the item.  Powder; tablets; capsule.)
+         */
+        public CodeableConcept getDoseForm() { 
+          if (this.doseForm == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create MedicationKnowledgeDefinitionalComponent.doseForm");
+            else if (Configuration.doAutoCreate())
+              this.doseForm = new CodeableConcept(); // cc
+          return this.doseForm;
+        }
+
+        public boolean hasDoseForm() { 
+          return this.doseForm != null && !this.doseForm.isEmpty();
+        }
+
+        /**
+         * @param value {@link #doseForm} (Describes the form of the item.  Powder; tablets; capsule.)
+         */
+        public MedicationKnowledgeDefinitionalComponent setDoseForm(CodeableConcept value) { 
+          this.doseForm = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #intendedRoute} (The intended or approved route of administration.)
+         */
+        public List<CodeableConcept> getIntendedRoute() { 
+          if (this.intendedRoute == null)
+            this.intendedRoute = new ArrayList<CodeableConcept>();
+          return this.intendedRoute;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public MedicationKnowledgeDefinitionalComponent setIntendedRoute(List<CodeableConcept> theIntendedRoute) { 
+          this.intendedRoute = theIntendedRoute;
+          return this;
+        }
+
+        public boolean hasIntendedRoute() { 
+          if (this.intendedRoute == null)
+            return false;
+          for (CodeableConcept item : this.intendedRoute)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CodeableConcept addIntendedRoute() { //3
+          CodeableConcept t = new CodeableConcept();
+          if (this.intendedRoute == null)
+            this.intendedRoute = new ArrayList<CodeableConcept>();
+          this.intendedRoute.add(t);
+          return t;
+        }
+
+        public MedicationKnowledgeDefinitionalComponent addIntendedRoute(CodeableConcept t) { //3
+          if (t == null)
+            return this;
+          if (this.intendedRoute == null)
+            this.intendedRoute = new ArrayList<CodeableConcept>();
+          this.intendedRoute.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #intendedRoute}, creating it if it does not already exist {3}
+         */
+        public CodeableConcept getIntendedRouteFirstRep() { 
+          if (getIntendedRoute().isEmpty()) {
+            addIntendedRoute();
+          }
+          return getIntendedRoute().get(0);
+        }
+
+        /**
+         * @return {@link #ingredient} (Identifies a particular constituent of interest in the product.)
+         */
+        public List<MedicationKnowledgeDefinitionalIngredientComponent> getIngredient() { 
+          if (this.ingredient == null)
+            this.ingredient = new ArrayList<MedicationKnowledgeDefinitionalIngredientComponent>();
+          return this.ingredient;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public MedicationKnowledgeDefinitionalComponent setIngredient(List<MedicationKnowledgeDefinitionalIngredientComponent> theIngredient) { 
+          this.ingredient = theIngredient;
+          return this;
+        }
+
+        public boolean hasIngredient() { 
+          if (this.ingredient == null)
+            return false;
+          for (MedicationKnowledgeDefinitionalIngredientComponent item : this.ingredient)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public MedicationKnowledgeDefinitionalIngredientComponent addIngredient() { //3
+          MedicationKnowledgeDefinitionalIngredientComponent t = new MedicationKnowledgeDefinitionalIngredientComponent();
+          if (this.ingredient == null)
+            this.ingredient = new ArrayList<MedicationKnowledgeDefinitionalIngredientComponent>();
+          this.ingredient.add(t);
+          return t;
+        }
+
+        public MedicationKnowledgeDefinitionalComponent addIngredient(MedicationKnowledgeDefinitionalIngredientComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.ingredient == null)
+            this.ingredient = new ArrayList<MedicationKnowledgeDefinitionalIngredientComponent>();
+          this.ingredient.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #ingredient}, creating it if it does not already exist {3}
+         */
+        public MedicationKnowledgeDefinitionalIngredientComponent getIngredientFirstRep() { 
+          if (getIngredient().isEmpty()) {
+            addIngredient();
+          }
+          return getIngredient().get(0);
+        }
+
+        /**
+         * @return {@link #drugCharacteristic} (Specifies descriptive properties of the medicine, such as color, shape, imprints, etc.)
+         */
+        public List<MedicationKnowledgeDefinitionalDrugCharacteristicComponent> getDrugCharacteristic() { 
+          if (this.drugCharacteristic == null)
+            this.drugCharacteristic = new ArrayList<MedicationKnowledgeDefinitionalDrugCharacteristicComponent>();
+          return this.drugCharacteristic;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public MedicationKnowledgeDefinitionalComponent setDrugCharacteristic(List<MedicationKnowledgeDefinitionalDrugCharacteristicComponent> theDrugCharacteristic) { 
+          this.drugCharacteristic = theDrugCharacteristic;
+          return this;
+        }
+
+        public boolean hasDrugCharacteristic() { 
+          if (this.drugCharacteristic == null)
+            return false;
+          for (MedicationKnowledgeDefinitionalDrugCharacteristicComponent item : this.drugCharacteristic)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public MedicationKnowledgeDefinitionalDrugCharacteristicComponent addDrugCharacteristic() { //3
+          MedicationKnowledgeDefinitionalDrugCharacteristicComponent t = new MedicationKnowledgeDefinitionalDrugCharacteristicComponent();
+          if (this.drugCharacteristic == null)
+            this.drugCharacteristic = new ArrayList<MedicationKnowledgeDefinitionalDrugCharacteristicComponent>();
+          this.drugCharacteristic.add(t);
+          return t;
+        }
+
+        public MedicationKnowledgeDefinitionalComponent addDrugCharacteristic(MedicationKnowledgeDefinitionalDrugCharacteristicComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.drugCharacteristic == null)
+            this.drugCharacteristic = new ArrayList<MedicationKnowledgeDefinitionalDrugCharacteristicComponent>();
+          this.drugCharacteristic.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #drugCharacteristic}, creating it if it does not already exist {3}
+         */
+        public MedicationKnowledgeDefinitionalDrugCharacteristicComponent getDrugCharacteristicFirstRep() { 
+          if (getDrugCharacteristic().isEmpty()) {
+            addDrugCharacteristic();
+          }
+          return getDrugCharacteristic().get(0);
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("definition", "Reference(MedicinalProductDefinition)", "Associated definitions for this medication.", 0, java.lang.Integer.MAX_VALUE, definition));
+          children.add(new Property("doseForm", "CodeableConcept", "Describes the form of the item.  Powder; tablets; capsule.", 0, 1, doseForm));
+          children.add(new Property("intendedRoute", "CodeableConcept", "The intended or approved route of administration.", 0, java.lang.Integer.MAX_VALUE, intendedRoute));
+          children.add(new Property("ingredient", "", "Identifies a particular constituent of interest in the product.", 0, java.lang.Integer.MAX_VALUE, ingredient));
+          children.add(new Property("drugCharacteristic", "", "Specifies descriptive properties of the medicine, such as color, shape, imprints, etc.", 0, java.lang.Integer.MAX_VALUE, drugCharacteristic));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case -1014418093: /*definition*/  return new Property("definition", "Reference(MedicinalProductDefinition)", "Associated definitions for this medication.", 0, java.lang.Integer.MAX_VALUE, definition);
+          case 1303858817: /*doseForm*/  return new Property("doseForm", "CodeableConcept", "Describes the form of the item.  Powder; tablets; capsule.", 0, 1, doseForm);
+          case -767798050: /*intendedRoute*/  return new Property("intendedRoute", "CodeableConcept", "The intended or approved route of administration.", 0, java.lang.Integer.MAX_VALUE, intendedRoute);
+          case -206409263: /*ingredient*/  return new Property("ingredient", "", "Identifies a particular constituent of interest in the product.", 0, java.lang.Integer.MAX_VALUE, ingredient);
+          case -844126885: /*drugCharacteristic*/  return new Property("drugCharacteristic", "", "Specifies descriptive properties of the medicine, such as color, shape, imprints, etc.", 0, java.lang.Integer.MAX_VALUE, drugCharacteristic);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case -1014418093: /*definition*/ return this.definition == null ? new Base[0] : this.definition.toArray(new Base[this.definition.size()]); // Reference
+        case 1303858817: /*doseForm*/ return this.doseForm == null ? new Base[0] : new Base[] {this.doseForm}; // CodeableConcept
+        case -767798050: /*intendedRoute*/ return this.intendedRoute == null ? new Base[0] : this.intendedRoute.toArray(new Base[this.intendedRoute.size()]); // CodeableConcept
+        case -206409263: /*ingredient*/ return this.ingredient == null ? new Base[0] : this.ingredient.toArray(new Base[this.ingredient.size()]); // MedicationKnowledgeDefinitionalIngredientComponent
+        case -844126885: /*drugCharacteristic*/ return this.drugCharacteristic == null ? new Base[0] : this.drugCharacteristic.toArray(new Base[this.drugCharacteristic.size()]); // MedicationKnowledgeDefinitionalDrugCharacteristicComponent
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case -1014418093: // definition
+          this.getDefinition().add(TypeConvertor.castToReference(value)); // Reference
+          return value;
+        case 1303858817: // doseForm
+          this.doseForm = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -767798050: // intendedRoute
+          this.getIntendedRoute().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        case -206409263: // ingredient
+          this.getIngredient().add((MedicationKnowledgeDefinitionalIngredientComponent) value); // MedicationKnowledgeDefinitionalIngredientComponent
+          return value;
+        case -844126885: // drugCharacteristic
+          this.getDrugCharacteristic().add((MedicationKnowledgeDefinitionalDrugCharacteristicComponent) value); // MedicationKnowledgeDefinitionalDrugCharacteristicComponent
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("definition")) {
+          this.getDefinition().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("doseForm")) {
+          this.doseForm = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("intendedRoute")) {
+          this.getIntendedRoute().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("ingredient")) {
+          this.getIngredient().add((MedicationKnowledgeDefinitionalIngredientComponent) value);
+        } else if (name.equals("drugCharacteristic")) {
+          this.getDrugCharacteristic().add((MedicationKnowledgeDefinitionalDrugCharacteristicComponent) value);
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1014418093:  return addDefinition(); 
+        case 1303858817:  return getDoseForm();
+        case -767798050:  return addIntendedRoute(); 
+        case -206409263:  return addIngredient(); 
+        case -844126885:  return addDrugCharacteristic(); 
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1014418093: /*definition*/ return new String[] {"Reference"};
+        case 1303858817: /*doseForm*/ return new String[] {"CodeableConcept"};
+        case -767798050: /*intendedRoute*/ return new String[] {"CodeableConcept"};
+        case -206409263: /*ingredient*/ return new String[] {};
+        case -844126885: /*drugCharacteristic*/ return new String[] {};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("definition")) {
+          return addDefinition();
+        }
+        else if (name.equals("doseForm")) {
+          this.doseForm = new CodeableConcept();
+          return this.doseForm;
+        }
+        else if (name.equals("intendedRoute")) {
+          return addIntendedRoute();
+        }
+        else if (name.equals("ingredient")) {
+          return addIngredient();
+        }
+        else if (name.equals("drugCharacteristic")) {
+          return addDrugCharacteristic();
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public MedicationKnowledgeDefinitionalComponent copy() {
+        MedicationKnowledgeDefinitionalComponent dst = new MedicationKnowledgeDefinitionalComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationKnowledgeDefinitionalComponent dst) {
+        super.copyValues(dst);
+        if (definition != null) {
+          dst.definition = new ArrayList<Reference>();
+          for (Reference i : definition)
+            dst.definition.add(i.copy());
+        };
+        dst.doseForm = doseForm == null ? null : doseForm.copy();
+        if (intendedRoute != null) {
+          dst.intendedRoute = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : intendedRoute)
+            dst.intendedRoute.add(i.copy());
+        };
+        if (ingredient != null) {
+          dst.ingredient = new ArrayList<MedicationKnowledgeDefinitionalIngredientComponent>();
+          for (MedicationKnowledgeDefinitionalIngredientComponent i : ingredient)
+            dst.ingredient.add(i.copy());
+        };
+        if (drugCharacteristic != null) {
+          dst.drugCharacteristic = new ArrayList<MedicationKnowledgeDefinitionalDrugCharacteristicComponent>();
+          for (MedicationKnowledgeDefinitionalDrugCharacteristicComponent i : drugCharacteristic)
+            dst.drugCharacteristic.add(i.copy());
+        };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof MedicationKnowledgeDefinitionalComponent))
+          return false;
+        MedicationKnowledgeDefinitionalComponent o = (MedicationKnowledgeDefinitionalComponent) other_;
+        return compareDeep(definition, o.definition, true) && compareDeep(doseForm, o.doseForm, true) && compareDeep(intendedRoute, o.intendedRoute, true)
+           && compareDeep(ingredient, o.ingredient, true) && compareDeep(drugCharacteristic, o.drugCharacteristic, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof MedicationKnowledgeDefinitionalComponent))
+          return false;
+        MedicationKnowledgeDefinitionalComponent o = (MedicationKnowledgeDefinitionalComponent) other_;
+        return true;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(definition, doseForm, intendedRoute
+          , ingredient, drugCharacteristic);
+      }
+
+  public String fhirType() {
+    return "MedicationKnowledge.definitional";
+
+  }
+
+  }
+
+    @Block()
+    public static class MedicationKnowledgeDefinitionalIngredientComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * A reference to the resource that provides information about the ingredient.
+         */
+        @Child(name = "item", type = {CodeableReference.class}, order=1, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Substances contained in the medication", formalDefinition="A reference to the resource that provides information about the ingredient." )
+        protected CodeableReference item;
+
+        /**
+         * Indication of whether this ingredient affects the therapeutic action of the drug.
+         */
+        @Child(name = "type", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="A code that defines the type of ingredient, active, base, etc.", formalDefinition="Indication of whether this ingredient affects the therapeutic action of the drug." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/v3-RoleClassIngredientEntity")
+        protected CodeableConcept type;
+
+        /**
+         * Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.
+         */
+        @Child(name = "strength", type = {Ratio.class, CodeableConcept.class, Quantity.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Quantity of ingredient present", formalDefinition="Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medication-ingredientstrength")
+        protected DataType strength;
+
+        private static final long serialVersionUID = 1772676131L;
+
+    /**
+     * Constructor
+     */
+      public MedicationKnowledgeDefinitionalIngredientComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public MedicationKnowledgeDefinitionalIngredientComponent(CodeableReference item) {
+        super();
+        this.setItem(item);
+      }
+
+        /**
+         * @return {@link #item} (A reference to the resource that provides information about the ingredient.)
+         */
+        public CodeableReference getItem() { 
+          if (this.item == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create MedicationKnowledgeDefinitionalIngredientComponent.item");
+            else if (Configuration.doAutoCreate())
+              this.item = new CodeableReference(); // cc
+          return this.item;
+        }
+
+        public boolean hasItem() { 
+          return this.item != null && !this.item.isEmpty();
+        }
+
+        /**
+         * @param value {@link #item} (A reference to the resource that provides information about the ingredient.)
+         */
+        public MedicationKnowledgeDefinitionalIngredientComponent setItem(CodeableReference value) { 
+          this.item = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #type} (Indication of whether this ingredient affects the therapeutic action of the drug.)
          */
         public CodeableConcept getType() { 
           if (this.type == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create MedicationKnowledgeKineticCharacteristicComponent.type");
+              throw new Error("Attempt to auto-create MedicationKnowledgeDefinitionalIngredientComponent.type");
             else if (Configuration.doAutoCreate())
               this.type = new CodeableConcept(); // cc
           return this.type;
@@ -4214,9 +4277,282 @@ public class MedicationKnowledge extends DomainResource {
         }
 
         /**
-         * @param value {@link #type} (Code specifying the type of kinetics (e.g. area under the curve, half life period, lethal dose 50.).)
+         * @param value {@link #type} (Indication of whether this ingredient affects the therapeutic action of the drug.)
          */
-        public MedicationKnowledgeKineticCharacteristicComponent setType(CodeableConcept value) { 
+        public MedicationKnowledgeDefinitionalIngredientComponent setType(CodeableConcept value) { 
+          this.type = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #strength} (Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.)
+         */
+        public DataType getStrength() { 
+          return this.strength;
+        }
+
+        /**
+         * @return {@link #strength} (Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.)
+         */
+        public Ratio getStrengthRatio() throws FHIRException { 
+          if (this.strength == null)
+            this.strength = new Ratio();
+          if (!(this.strength instanceof Ratio))
+            throw new FHIRException("Type mismatch: the type Ratio was expected, but "+this.strength.getClass().getName()+" was encountered");
+          return (Ratio) this.strength;
+        }
+
+        public boolean hasStrengthRatio() { 
+          return this != null && this.strength instanceof Ratio;
+        }
+
+        /**
+         * @return {@link #strength} (Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.)
+         */
+        public CodeableConcept getStrengthCodeableConcept() throws FHIRException { 
+          if (this.strength == null)
+            this.strength = new CodeableConcept();
+          if (!(this.strength instanceof CodeableConcept))
+            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.strength.getClass().getName()+" was encountered");
+          return (CodeableConcept) this.strength;
+        }
+
+        public boolean hasStrengthCodeableConcept() { 
+          return this != null && this.strength instanceof CodeableConcept;
+        }
+
+        /**
+         * @return {@link #strength} (Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.)
+         */
+        public Quantity getStrengthQuantity() throws FHIRException { 
+          if (this.strength == null)
+            this.strength = new Quantity();
+          if (!(this.strength instanceof Quantity))
+            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.strength.getClass().getName()+" was encountered");
+          return (Quantity) this.strength;
+        }
+
+        public boolean hasStrengthQuantity() { 
+          return this != null && this.strength instanceof Quantity;
+        }
+
+        public boolean hasStrength() { 
+          return this.strength != null && !this.strength.isEmpty();
+        }
+
+        /**
+         * @param value {@link #strength} (Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.)
+         */
+        public MedicationKnowledgeDefinitionalIngredientComponent setStrength(DataType value) { 
+          if (value != null && !(value instanceof Ratio || value instanceof CodeableConcept || value instanceof Quantity))
+            throw new Error("Not the right type for MedicationKnowledge.definitional.ingredient.strength[x]: "+value.fhirType());
+          this.strength = value;
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("item", "CodeableReference(Substance)", "A reference to the resource that provides information about the ingredient.", 0, 1, item));
+          children.add(new Property("type", "CodeableConcept", "Indication of whether this ingredient affects the therapeutic action of the drug.", 0, 1, type));
+          children.add(new Property("strength[x]", "Ratio|CodeableConcept|Quantity", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.", 0, 1, strength));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3242771: /*item*/  return new Property("item", "CodeableReference(Substance)", "A reference to the resource that provides information about the ingredient.", 0, 1, item);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Indication of whether this ingredient affects the therapeutic action of the drug.", 0, 1, type);
+          case 127377567: /*strength[x]*/  return new Property("strength[x]", "Ratio|CodeableConcept|Quantity", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.", 0, 1, strength);
+          case 1791316033: /*strength*/  return new Property("strength[x]", "Ratio|CodeableConcept|Quantity", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.", 0, 1, strength);
+          case 2141786186: /*strengthRatio*/  return new Property("strength[x]", "Ratio", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.", 0, 1, strength);
+          case -1455903456: /*strengthCodeableConcept*/  return new Property("strength[x]", "CodeableConcept", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.", 0, 1, strength);
+          case -1793570836: /*strengthQuantity*/  return new Property("strength[x]", "Quantity", "Specifies how many (or how much) of the items there are in this Medication.  For example, 250 mg per tablet.  This is expressed as a ratio where the numerator is 250mg and the denominator is 1 tablet but can also be expressed a quantity when the denominator is assumed to be 1 tablet.", 0, 1, strength);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3242771: /*item*/ return this.item == null ? new Base[0] : new Base[] {this.item}; // CodeableReference
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case 1791316033: /*strength*/ return this.strength == null ? new Base[0] : new Base[] {this.strength}; // DataType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3242771: // item
+          this.item = TypeConvertor.castToCodeableReference(value); // CodeableReference
+          return value;
+        case 3575610: // type
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 1791316033: // strength
+          this.strength = TypeConvertor.castToType(value); // DataType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("item")) {
+          this.item = TypeConvertor.castToCodeableReference(value); // CodeableReference
+        } else if (name.equals("type")) {
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("strength[x]")) {
+          this.strength = TypeConvertor.castToType(value); // DataType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3242771:  return getItem();
+        case 3575610:  return getType();
+        case 127377567:  return getStrength();
+        case 1791316033:  return getStrength();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3242771: /*item*/ return new String[] {"CodeableReference"};
+        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case 1791316033: /*strength*/ return new String[] {"Ratio", "CodeableConcept", "Quantity"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("item")) {
+          this.item = new CodeableReference();
+          return this.item;
+        }
+        else if (name.equals("type")) {
+          this.type = new CodeableConcept();
+          return this.type;
+        }
+        else if (name.equals("strengthRatio")) {
+          this.strength = new Ratio();
+          return this.strength;
+        }
+        else if (name.equals("strengthCodeableConcept")) {
+          this.strength = new CodeableConcept();
+          return this.strength;
+        }
+        else if (name.equals("strengthQuantity")) {
+          this.strength = new Quantity();
+          return this.strength;
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public MedicationKnowledgeDefinitionalIngredientComponent copy() {
+        MedicationKnowledgeDefinitionalIngredientComponent dst = new MedicationKnowledgeDefinitionalIngredientComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationKnowledgeDefinitionalIngredientComponent dst) {
+        super.copyValues(dst);
+        dst.item = item == null ? null : item.copy();
+        dst.type = type == null ? null : type.copy();
+        dst.strength = strength == null ? null : strength.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof MedicationKnowledgeDefinitionalIngredientComponent))
+          return false;
+        MedicationKnowledgeDefinitionalIngredientComponent o = (MedicationKnowledgeDefinitionalIngredientComponent) other_;
+        return compareDeep(item, o.item, true) && compareDeep(type, o.type, true) && compareDeep(strength, o.strength, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof MedicationKnowledgeDefinitionalIngredientComponent))
+          return false;
+        MedicationKnowledgeDefinitionalIngredientComponent o = (MedicationKnowledgeDefinitionalIngredientComponent) other_;
+        return true;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(item, type, strength);
+      }
+
+  public String fhirType() {
+    return "MedicationKnowledge.definitional.ingredient";
+
+  }
+
+  }
+
+    @Block()
+    public static class MedicationKnowledgeDefinitionalDrugCharacteristicComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * A code specifying which characteristic of the medicine is being described (for example, colour, shape, imprint).
+         */
+        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Code specifying the type of characteristic of medication", formalDefinition="A code specifying which characteristic of the medicine is being described (for example, colour, shape, imprint)." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medicationknowledge-characteristic")
+        protected CodeableConcept type;
+
+        /**
+         * Description of the characteristic.
+         */
+        @Child(name = "value", type = {CodeableConcept.class, StringType.class, Quantity.class, Base64BinaryType.class, Attachment.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Description of the characteristic", formalDefinition="Description of the characteristic." )
+        protected DataType value;
+
+        private static final long serialVersionUID = -1659186716L;
+
+    /**
+     * Constructor
+     */
+      public MedicationKnowledgeDefinitionalDrugCharacteristicComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #type} (A code specifying which characteristic of the medicine is being described (for example, colour, shape, imprint).)
+         */
+        public CodeableConcept getType() { 
+          if (this.type == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create MedicationKnowledgeDefinitionalDrugCharacteristicComponent.type");
+            else if (Configuration.doAutoCreate())
+              this.type = new CodeableConcept(); // cc
+          return this.type;
+        }
+
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        /**
+         * @param value {@link #type} (A code specifying which characteristic of the medicine is being described (for example, colour, shape, imprint).)
+         */
+        public MedicationKnowledgeDefinitionalDrugCharacteristicComponent setType(CodeableConcept value) { 
           this.type = value;
           return this;
         }
@@ -4226,6 +4562,36 @@ public class MedicationKnowledge extends DomainResource {
          */
         public DataType getValue() { 
           return this.value;
+        }
+
+        /**
+         * @return {@link #value} (Description of the characteristic.)
+         */
+        public CodeableConcept getValueCodeableConcept() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CodeableConcept();
+          if (!(this.value instanceof CodeableConcept))
+            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CodeableConcept) this.value;
+        }
+
+        public boolean hasValueCodeableConcept() { 
+          return this != null && this.value instanceof CodeableConcept;
+        }
+
+        /**
+         * @return {@link #value} (Description of the characteristic.)
+         */
+        public StringType getValueStringType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new StringType();
+          if (!(this.value instanceof StringType))
+            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (StringType) this.value;
+        }
+
+        public boolean hasValueStringType() { 
+          return this != null && this.value instanceof StringType;
         }
 
         /**
@@ -4246,16 +4612,31 @@ public class MedicationKnowledge extends DomainResource {
         /**
          * @return {@link #value} (Description of the characteristic.)
          */
-        public Duration getValueDuration() throws FHIRException { 
+        public Base64BinaryType getValueBase64BinaryType() throws FHIRException { 
           if (this.value == null)
-            this.value = new Duration();
-          if (!(this.value instanceof Duration))
-            throw new FHIRException("Type mismatch: the type Duration was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (Duration) this.value;
+            this.value = new Base64BinaryType();
+          if (!(this.value instanceof Base64BinaryType))
+            throw new FHIRException("Type mismatch: the type Base64BinaryType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Base64BinaryType) this.value;
         }
 
-        public boolean hasValueDuration() { 
-          return this != null && this.value instanceof Duration;
+        public boolean hasValueBase64BinaryType() { 
+          return this != null && this.value instanceof Base64BinaryType;
+        }
+
+        /**
+         * @return {@link #value} (Description of the characteristic.)
+         */
+        public Attachment getValueAttachment() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Attachment();
+          if (!(this.value instanceof Attachment))
+            throw new FHIRException("Type mismatch: the type Attachment was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Attachment) this.value;
+        }
+
+        public boolean hasValueAttachment() { 
+          return this != null && this.value instanceof Attachment;
         }
 
         public boolean hasValue() { 
@@ -4265,27 +4646,30 @@ public class MedicationKnowledge extends DomainResource {
         /**
          * @param value {@link #value} (Description of the characteristic.)
          */
-        public MedicationKnowledgeKineticCharacteristicComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof Quantity || value instanceof Duration))
-            throw new Error("Not the right type for MedicationKnowledge.kineticCharacteristic.value[x]: "+value.fhirType());
+        public MedicationKnowledgeDefinitionalDrugCharacteristicComponent setValue(DataType value) { 
+          if (value != null && !(value instanceof CodeableConcept || value instanceof StringType || value instanceof Quantity || value instanceof Base64BinaryType || value instanceof Attachment))
+            throw new Error("Not the right type for MedicationKnowledge.definitional.drugCharacteristic.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("type", "CodeableConcept", "Code specifying the type of kinetics (e.g. area under the curve, half life period, lethal dose 50.).", 0, 1, type));
-          children.add(new Property("value[x]", "Quantity|Duration", "Description of the characteristic.", 0, 1, value));
+          children.add(new Property("type", "CodeableConcept", "A code specifying which characteristic of the medicine is being described (for example, colour, shape, imprint).", 0, 1, type));
+          children.add(new Property("value[x]", "CodeableConcept|string|Quantity|base64Binary|Attachment", "Description of the characteristic.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Code specifying the type of kinetics (e.g. area under the curve, half life period, lethal dose 50.).", 0, 1, type);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "Quantity|Duration", "Description of the characteristic.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "Quantity|Duration", "Description of the characteristic.", 0, 1, value);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "A code specifying which characteristic of the medicine is being described (for example, colour, shape, imprint).", 0, 1, type);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "CodeableConcept|string|Quantity|base64Binary|Attachment", "Description of the characteristic.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "CodeableConcept|string|Quantity|base64Binary|Attachment", "Description of the characteristic.", 0, 1, value);
+          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "Description of the characteristic.", 0, 1, value);
+          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "Description of the characteristic.", 0, 1, value);
           case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "Description of the characteristic.", 0, 1, value);
-          case 1558135333: /*valueDuration*/  return new Property("value[x]", "Duration", "Description of the characteristic.", 0, 1, value);
+          case -1535024575: /*valueBase64Binary*/  return new Property("value[x]", "base64Binary", "Description of the characteristic.", 0, 1, value);
+          case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "Description of the characteristic.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -4341,7 +4725,7 @@ public class MedicationKnowledge extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case 111972721: /*value*/ return new String[] {"Quantity", "Duration"};
+        case 111972721: /*value*/ return new String[] {"CodeableConcept", "string", "Quantity", "base64Binary", "Attachment"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -4353,25 +4737,37 @@ public class MedicationKnowledge extends DomainResource {
           this.type = new CodeableConcept();
           return this.type;
         }
+        else if (name.equals("valueCodeableConcept")) {
+          this.value = new CodeableConcept();
+          return this.value;
+        }
+        else if (name.equals("valueString")) {
+          this.value = new StringType();
+          return this.value;
+        }
         else if (name.equals("valueQuantity")) {
           this.value = new Quantity();
           return this.value;
         }
-        else if (name.equals("valueDuration")) {
-          this.value = new Duration();
+        else if (name.equals("valueBase64Binary")) {
+          this.value = new Base64BinaryType();
+          return this.value;
+        }
+        else if (name.equals("valueAttachment")) {
+          this.value = new Attachment();
           return this.value;
         }
         else
           return super.addChild(name);
       }
 
-      public MedicationKnowledgeKineticCharacteristicComponent copy() {
-        MedicationKnowledgeKineticCharacteristicComponent dst = new MedicationKnowledgeKineticCharacteristicComponent();
+      public MedicationKnowledgeDefinitionalDrugCharacteristicComponent copy() {
+        MedicationKnowledgeDefinitionalDrugCharacteristicComponent dst = new MedicationKnowledgeDefinitionalDrugCharacteristicComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(MedicationKnowledgeKineticCharacteristicComponent dst) {
+      public void copyValues(MedicationKnowledgeDefinitionalDrugCharacteristicComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.value = value == null ? null : value.copy();
@@ -4381,9 +4777,9 @@ public class MedicationKnowledge extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof MedicationKnowledgeKineticCharacteristicComponent))
+        if (!(other_ instanceof MedicationKnowledgeDefinitionalDrugCharacteristicComponent))
           return false;
-        MedicationKnowledgeKineticCharacteristicComponent o = (MedicationKnowledgeKineticCharacteristicComponent) other_;
+        MedicationKnowledgeDefinitionalDrugCharacteristicComponent o = (MedicationKnowledgeDefinitionalDrugCharacteristicComponent) other_;
         return compareDeep(type, o.type, true) && compareDeep(value, o.value, true);
       }
 
@@ -4391,9 +4787,9 @@ public class MedicationKnowledge extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof MedicationKnowledgeKineticCharacteristicComponent))
+        if (!(other_ instanceof MedicationKnowledgeDefinitionalDrugCharacteristicComponent))
           return false;
-        MedicationKnowledgeKineticCharacteristicComponent o = (MedicationKnowledgeKineticCharacteristicComponent) other_;
+        MedicationKnowledgeDefinitionalDrugCharacteristicComponent o = (MedicationKnowledgeDefinitionalDrugCharacteristicComponent) other_;
         return true;
       }
 
@@ -4402,7 +4798,7 @@ public class MedicationKnowledge extends DomainResource {
       }
 
   public String fhirType() {
-    return "MedicationKnowledge.kineticCharacteristic";
+    return "MedicationKnowledge.definitional.drugCharacteristic";
 
   }
 
@@ -4424,10 +4820,10 @@ public class MedicationKnowledge extends DomainResource {
     protected CodeableConcept code;
 
     /**
-     * A code to indicate if the medication is in active use.  The status refers to the validity about the information of the medication and not to its medicinal properties.
+     * A code to indicate if the medication referred to by this MedicationKnowledge is in active use within the drug database or inventory system. The status refers to the validity about the information of the medication and not to its medicinal properties.
      */
     @Child(name = "status", type = {CodeType.class}, order=2, min=0, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="active | inactive | entered-in-error", formalDefinition="A code to indicate if the medication is in active use.  The status refers to the validity about the information of the medication and not to its medicinal properties." )
+    @Description(shortDefinition="active | entered-in-error | inactive", formalDefinition="A code to indicate if the medication referred to by this MedicationKnowledge is in active use within the drug database or inventory system. The status refers to the validity about the information of the medication and not to its medicinal properties." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medicationknowledge-status")
     protected Enumeration<MedicationKnowledgeStatusCodes> status;
 
@@ -4439,162 +4835,111 @@ public class MedicationKnowledge extends DomainResource {
     protected Reference author;
 
     /**
-     * Describes the details of the manufacturer of the medication product.  This is not intended to represent the distributor of a medication product.
+     * Lists the jurisdictions that this medication knowledge was written for.
      */
-    @Child(name = "manufacturer", type = {Organization.class}, order=4, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Manufacturer of the item", formalDefinition="Describes the details of the manufacturer of the medication product.  This is not intended to represent the distributor of a medication product." )
-    protected Reference manufacturer;
+    @Child(name = "intendedJurisdiction", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Codes that identify the different jurisdictions for which the information of this resource was created", formalDefinition="Lists the jurisdictions that this medication knowledge was written for." )
+    protected List<CodeableConcept> intendedJurisdiction;
 
     /**
-     * Describes the form of the item.  Powder; tablets; capsule.
+     * All of the names for a medication, for example, the name(s) given to a medication in different countries.  For example, acetaminophen and paracetamol or salbutamol and albuterol.
      */
-    @Child(name = "doseForm", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="powder | tablets | capsule +", formalDefinition="Describes the form of the item.  Powder; tablets; capsule." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medication-form-codes")
-    protected CodeableConcept doseForm;
-
-    /**
-     * Specific amount of the drug in the packaged product.  For example, when specifying a product that has the same strength (For example, Insulin glargine 100 unit per mL solution for injection), this attribute provides additional clarification of the package amount (For example, 3 mL, 10mL, etc.).
-     */
-    @Child(name = "amount", type = {Quantity.class}, order=6, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Amount of drug in package", formalDefinition="Specific amount of the drug in the packaged product.  For example, when specifying a product that has the same strength (For example, Insulin glargine 100 unit per mL solution for injection), this attribute provides additional clarification of the package amount (For example, 3 mL, 10mL, etc.)." )
-    protected Quantity amount;
-
-    /**
-     * Additional names for a medication, for example, the name(s) given to a medication in different countries.  For example, acetaminophen and paracetamol or salbutamol and albuterol.
-     */
-    @Child(name = "synonym", type = {StringType.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Additional names for a medication", formalDefinition="Additional names for a medication, for example, the name(s) given to a medication in different countries.  For example, acetaminophen and paracetamol or salbutamol and albuterol." )
-    protected List<StringType> synonym;
+    @Child(name = "name", type = {StringType.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="A name associated with the medication being described", formalDefinition="All of the names for a medication, for example, the name(s) given to a medication in different countries.  For example, acetaminophen and paracetamol or salbutamol and albuterol." )
+    protected List<StringType> name;
 
     /**
      * Associated or related medications. For example, if the medication is a branded product (e.g. Crestor), this is the Therapeutic Moeity (e.g. Rosuvastatin) or if this is a generic medication (e.g. Rosuvastatin), this would link to a branded product (e.g. Crestor.
      */
-    @Child(name = "relatedMedicationKnowledge", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "relatedMedicationKnowledge", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Associated or related medication information", formalDefinition="Associated or related medications. For example, if the medication is a branded product (e.g. Crestor), this is the Therapeutic Moeity (e.g. Rosuvastatin) or if this is a generic medication (e.g. Rosuvastatin), this would link to a branded product (e.g. Crestor." )
     protected List<MedicationKnowledgeRelatedMedicationKnowledgeComponent> relatedMedicationKnowledge;
 
     /**
      * Links to associated medications that could be prescribed, dispensed or administered.
      */
-    @Child(name = "associatedMedication", type = {Medication.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="A medication resource that is associated with this medication", formalDefinition="Links to associated medications that could be prescribed, dispensed or administered." )
+    @Child(name = "associatedMedication", type = {Medication.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="The set of medication resources that are associated with this medication", formalDefinition="Links to associated medications that could be prescribed, dispensed or administered." )
     protected List<Reference> associatedMedication;
-
-    /**
-     * Associated definitions for this medication.
-     */
-    @Child(name = "associatedDefinition", type = {MedicinalProductDefinition.class}, order=10, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="A definition resource that is associated with this medication", formalDefinition="Associated definitions for this medication." )
-    protected Reference associatedDefinition;
 
     /**
      * Category of the medication or product (e.g. branded product, therapeutic moeity, generic product, innovator product, etc.).
      */
-    @Child(name = "productType", type = {CodeableConcept.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "productType", type = {CodeableConcept.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Category of the medication or product", formalDefinition="Category of the medication or product (e.g. branded product, therapeutic moeity, generic product, innovator product, etc.)." )
     protected List<CodeableConcept> productType;
 
     /**
      * Associated documentation about the medication.
      */
-    @Child(name = "monograph", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "monograph", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Associated documentation about the medication", formalDefinition="Associated documentation about the medication." )
     protected List<MedicationKnowledgeMonographComponent> monograph;
 
     /**
-     * Identifies a particular constituent of interest in the product.
-     */
-    @Child(name = "ingredient", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Active or inactive ingredient", formalDefinition="Identifies a particular constituent of interest in the product." )
-    protected List<MedicationKnowledgeIngredientComponent> ingredient;
-
-    /**
-     * A device associated with the medication (for example, a drug coated catheter or a drug impregnated dressing).
-     */
-    @Child(name = "device", type = {Device.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="A device associated with the medication (for example, a drug coated catheter or a drug impregnated dressing)", formalDefinition="A device associated with the medication (for example, a drug coated catheter or a drug impregnated dressing)." )
-    protected List<Reference> device;
-
-    /**
      * The instructions for preparing the medication.
      */
-    @Child(name = "preparationInstruction", type = {MarkdownType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "preparationInstruction", type = {MarkdownType.class}, order=10, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The instructions for preparing the medication", formalDefinition="The instructions for preparing the medication." )
     protected MarkdownType preparationInstruction;
 
     /**
-     * The intended or approved route of administration.
-     */
-    @Child(name = "intendedRoute", type = {CodeableConcept.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="The intended or approved route of administration", formalDefinition="The intended or approved route of administration." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/route-codes")
-    protected List<CodeableConcept> intendedRoute;
-
-    /**
      * The price of the medication.
      */
-    @Child(name = "cost", type = {}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "cost", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The pricing of the medication", formalDefinition="The price of the medication." )
     protected List<MedicationKnowledgeCostComponent> cost;
 
     /**
      * The program under which the medication is reviewed.
      */
-    @Child(name = "monitoringProgram", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "monitoringProgram", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Program under which a medication is reviewed", formalDefinition="The program under which the medication is reviewed." )
     protected List<MedicationKnowledgeMonitoringProgramComponent> monitoringProgram;
 
     /**
-     * Guidelines or protocols that are applicable for the administration of the medication.
+     * Guidelines or protocols that are applicable for the administration of the medication based on indication.
      */
-    @Child(name = "administrationGuideline", type = {}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Guidelines or protocols for administration of the medication", formalDefinition="Guidelines or protocols that are applicable for the administration of the medication." )
-    protected List<MedicationKnowledgeAdministrationGuidelineComponent> administrationGuideline;
+    @Child(name = "indicationGuideline", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Guidelines or protocols for administration of the medication for an indication", formalDefinition="Guidelines or protocols that are applicable for the administration of the medication based on indication." )
+    protected List<MedicationKnowledgeIndicationGuidelineComponent> indicationGuideline;
 
     /**
      * Categorization of the medication within a formulary or classification system.
      */
-    @Child(name = "medicineClassification", type = {}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "medicineClassification", type = {}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Categorization of the medication within a formulary or classification system", formalDefinition="Categorization of the medication within a formulary or classification system." )
     protected List<MedicationKnowledgeMedicineClassificationComponent> medicineClassification;
 
     /**
      * Information that only applies to packages (not products).
      */
-    @Child(name = "packaging", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "packaging", type = {}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Details about packaged medications", formalDefinition="Information that only applies to packages (not products)." )
     protected List<MedicationKnowledgePackagingComponent> packaging;
 
     /**
-     * Specifies descriptive properties of the medicine, such as color, shape, imprints, etc.
-     */
-    @Child(name = "drugCharacteristic", type = {}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Specifies descriptive properties of the medicine", formalDefinition="Specifies descriptive properties of the medicine, such as color, shape, imprints, etc." )
-    protected List<MedicationKnowledgeDrugCharacteristicComponent> drugCharacteristic;
-
-    /**
      * Potential clinical issue with or between medication(s) (for example, drug-drug interaction, drug-disease contraindication, drug-allergy interaction, etc.).
      */
-    @Child(name = "clinicalUseIssue", type = {ClinicalUseIssue.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "clinicalUseIssue", type = {ClinicalUseDefinition.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Potential clinical issue with or between medication(s)", formalDefinition="Potential clinical issue with or between medication(s) (for example, drug-drug interaction, drug-disease contraindication, drug-allergy interaction, etc.)." )
     protected List<Reference> clinicalUseIssue;
 
     /**
      * Regulatory information about a medication.
      */
-    @Child(name = "regulatory", type = {}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "regulatory", type = {}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Regulatory information about a medication", formalDefinition="Regulatory information about a medication." )
     protected List<MedicationKnowledgeRegulatoryComponent> regulatory;
 
     /**
-     * The time course of drug absorption, distribution, metabolism and excretion of a medication from the body.
+     * Along with the link to a Medicinal Product Definition resource, this information provides common definitional elements that are needed to understand the specific medication that is being described.
      */
-    @Child(name = "kineticCharacteristic", type = {}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="The time course of drug absorption, distribution, metabolism and excretion of a medication from the body", formalDefinition="The time course of drug absorption, distribution, metabolism and excretion of a medication from the body." )
-    protected List<MedicationKnowledgeKineticCharacteristicComponent> kineticCharacteristic;
+    @Child(name = "definitional", type = {}, order=18, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Minimal definition information about the medication", formalDefinition="Along with the link to a Medicinal Product Definition resource, this information provides common definitional elements that are needed to understand the specific medication that is being described." )
+    protected MedicationKnowledgeDefinitionalComponent definitional;
 
-    private static final long serialVersionUID = 2074985965L;
+    private static final long serialVersionUID = 259479639L;
 
   /**
    * Constructor
@@ -4681,7 +5026,7 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     /**
-     * @return {@link #status} (A code to indicate if the medication is in active use.  The status refers to the validity about the information of the medication and not to its medicinal properties.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @return {@link #status} (A code to indicate if the medication referred to by this MedicationKnowledge is in active use within the drug database or inventory system. The status refers to the validity about the information of the medication and not to its medicinal properties.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public Enumeration<MedicationKnowledgeStatusCodes> getStatusElement() { 
       if (this.status == null)
@@ -4701,7 +5046,7 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     /**
-     * @param value {@link #status} (A code to indicate if the medication is in active use.  The status refers to the validity about the information of the medication and not to its medicinal properties.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @param value {@link #status} (A code to indicate if the medication referred to by this MedicationKnowledge is in active use within the drug database or inventory system. The status refers to the validity about the information of the medication and not to its medicinal properties.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public MedicationKnowledge setStatusElement(Enumeration<MedicationKnowledgeStatusCodes> value) { 
       this.status = value;
@@ -4709,14 +5054,14 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     /**
-     * @return A code to indicate if the medication is in active use.  The status refers to the validity about the information of the medication and not to its medicinal properties.
+     * @return A code to indicate if the medication referred to by this MedicationKnowledge is in active use within the drug database or inventory system. The status refers to the validity about the information of the medication and not to its medicinal properties.
      */
     public MedicationKnowledgeStatusCodes getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
-     * @param value A code to indicate if the medication is in active use.  The status refers to the validity about the information of the medication and not to its medicinal properties.
+     * @param value A code to indicate if the medication referred to by this MedicationKnowledge is in active use within the drug database or inventory system. The status refers to the validity about the information of the medication and not to its medicinal properties.
      */
     public MedicationKnowledge setStatus(MedicationKnowledgeStatusCodes value) { 
       if (value == null)
@@ -4754,133 +5099,114 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     /**
-     * @return {@link #manufacturer} (Describes the details of the manufacturer of the medication product.  This is not intended to represent the distributor of a medication product.)
+     * @return {@link #intendedJurisdiction} (Lists the jurisdictions that this medication knowledge was written for.)
      */
-    public Reference getManufacturer() { 
-      if (this.manufacturer == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create MedicationKnowledge.manufacturer");
-        else if (Configuration.doAutoCreate())
-          this.manufacturer = new Reference(); // cc
-      return this.manufacturer;
-    }
-
-    public boolean hasManufacturer() { 
-      return this.manufacturer != null && !this.manufacturer.isEmpty();
-    }
-
-    /**
-     * @param value {@link #manufacturer} (Describes the details of the manufacturer of the medication product.  This is not intended to represent the distributor of a medication product.)
-     */
-    public MedicationKnowledge setManufacturer(Reference value) { 
-      this.manufacturer = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #doseForm} (Describes the form of the item.  Powder; tablets; capsule.)
-     */
-    public CodeableConcept getDoseForm() { 
-      if (this.doseForm == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create MedicationKnowledge.doseForm");
-        else if (Configuration.doAutoCreate())
-          this.doseForm = new CodeableConcept(); // cc
-      return this.doseForm;
-    }
-
-    public boolean hasDoseForm() { 
-      return this.doseForm != null && !this.doseForm.isEmpty();
-    }
-
-    /**
-     * @param value {@link #doseForm} (Describes the form of the item.  Powder; tablets; capsule.)
-     */
-    public MedicationKnowledge setDoseForm(CodeableConcept value) { 
-      this.doseForm = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #amount} (Specific amount of the drug in the packaged product.  For example, when specifying a product that has the same strength (For example, Insulin glargine 100 unit per mL solution for injection), this attribute provides additional clarification of the package amount (For example, 3 mL, 10mL, etc.).)
-     */
-    public Quantity getAmount() { 
-      if (this.amount == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create MedicationKnowledge.amount");
-        else if (Configuration.doAutoCreate())
-          this.amount = new Quantity(); // cc
-      return this.amount;
-    }
-
-    public boolean hasAmount() { 
-      return this.amount != null && !this.amount.isEmpty();
-    }
-
-    /**
-     * @param value {@link #amount} (Specific amount of the drug in the packaged product.  For example, when specifying a product that has the same strength (For example, Insulin glargine 100 unit per mL solution for injection), this attribute provides additional clarification of the package amount (For example, 3 mL, 10mL, etc.).)
-     */
-    public MedicationKnowledge setAmount(Quantity value) { 
-      this.amount = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #synonym} (Additional names for a medication, for example, the name(s) given to a medication in different countries.  For example, acetaminophen and paracetamol or salbutamol and albuterol.)
-     */
-    public List<StringType> getSynonym() { 
-      if (this.synonym == null)
-        this.synonym = new ArrayList<StringType>();
-      return this.synonym;
+    public List<CodeableConcept> getIntendedJurisdiction() { 
+      if (this.intendedJurisdiction == null)
+        this.intendedJurisdiction = new ArrayList<CodeableConcept>();
+      return this.intendedJurisdiction;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public MedicationKnowledge setSynonym(List<StringType> theSynonym) { 
-      this.synonym = theSynonym;
+    public MedicationKnowledge setIntendedJurisdiction(List<CodeableConcept> theIntendedJurisdiction) { 
+      this.intendedJurisdiction = theIntendedJurisdiction;
       return this;
     }
 
-    public boolean hasSynonym() { 
-      if (this.synonym == null)
+    public boolean hasIntendedJurisdiction() { 
+      if (this.intendedJurisdiction == null)
         return false;
-      for (StringType item : this.synonym)
+      for (CodeableConcept item : this.intendedJurisdiction)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableConcept addIntendedJurisdiction() { //3
+      CodeableConcept t = new CodeableConcept();
+      if (this.intendedJurisdiction == null)
+        this.intendedJurisdiction = new ArrayList<CodeableConcept>();
+      this.intendedJurisdiction.add(t);
+      return t;
+    }
+
+    public MedicationKnowledge addIntendedJurisdiction(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.intendedJurisdiction == null)
+        this.intendedJurisdiction = new ArrayList<CodeableConcept>();
+      this.intendedJurisdiction.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #intendedJurisdiction}, creating it if it does not already exist {3}
+     */
+    public CodeableConcept getIntendedJurisdictionFirstRep() { 
+      if (getIntendedJurisdiction().isEmpty()) {
+        addIntendedJurisdiction();
+      }
+      return getIntendedJurisdiction().get(0);
+    }
+
+    /**
+     * @return {@link #name} (All of the names for a medication, for example, the name(s) given to a medication in different countries.  For example, acetaminophen and paracetamol or salbutamol and albuterol.)
+     */
+    public List<StringType> getName() { 
+      if (this.name == null)
+        this.name = new ArrayList<StringType>();
+      return this.name;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public MedicationKnowledge setName(List<StringType> theName) { 
+      this.name = theName;
+      return this;
+    }
+
+    public boolean hasName() { 
+      if (this.name == null)
+        return false;
+      for (StringType item : this.name)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
     /**
-     * @return {@link #synonym} (Additional names for a medication, for example, the name(s) given to a medication in different countries.  For example, acetaminophen and paracetamol or salbutamol and albuterol.)
+     * @return {@link #name} (All of the names for a medication, for example, the name(s) given to a medication in different countries.  For example, acetaminophen and paracetamol or salbutamol and albuterol.)
      */
-    public StringType addSynonymElement() {//2 
+    public StringType addNameElement() {//2 
       StringType t = new StringType();
-      if (this.synonym == null)
-        this.synonym = new ArrayList<StringType>();
-      this.synonym.add(t);
+      if (this.name == null)
+        this.name = new ArrayList<StringType>();
+      this.name.add(t);
       return t;
     }
 
     /**
-     * @param value {@link #synonym} (Additional names for a medication, for example, the name(s) given to a medication in different countries.  For example, acetaminophen and paracetamol or salbutamol and albuterol.)
+     * @param value {@link #name} (All of the names for a medication, for example, the name(s) given to a medication in different countries.  For example, acetaminophen and paracetamol or salbutamol and albuterol.)
      */
-    public MedicationKnowledge addSynonym(String value) { //1
+    public MedicationKnowledge addName(String value) { //1
       StringType t = new StringType();
       t.setValue(value);
-      if (this.synonym == null)
-        this.synonym = new ArrayList<StringType>();
-      this.synonym.add(t);
+      if (this.name == null)
+        this.name = new ArrayList<StringType>();
+      this.name.add(t);
       return this;
     }
 
     /**
-     * @param value {@link #synonym} (Additional names for a medication, for example, the name(s) given to a medication in different countries.  For example, acetaminophen and paracetamol or salbutamol and albuterol.)
+     * @param value {@link #name} (All of the names for a medication, for example, the name(s) given to a medication in different countries.  For example, acetaminophen and paracetamol or salbutamol and albuterol.)
      */
-    public boolean hasSynonym(String value) { 
-      if (this.synonym == null)
+    public boolean hasName(String value) { 
+      if (this.name == null)
         return false;
-      for (StringType v : this.synonym)
+      for (StringType v : this.name)
         if (v.getValue().equals(value)) // string
           return true;
       return false;
@@ -4993,30 +5319,6 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     /**
-     * @return {@link #associatedDefinition} (Associated definitions for this medication.)
-     */
-    public Reference getAssociatedDefinition() { 
-      if (this.associatedDefinition == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create MedicationKnowledge.associatedDefinition");
-        else if (Configuration.doAutoCreate())
-          this.associatedDefinition = new Reference(); // cc
-      return this.associatedDefinition;
-    }
-
-    public boolean hasAssociatedDefinition() { 
-      return this.associatedDefinition != null && !this.associatedDefinition.isEmpty();
-    }
-
-    /**
-     * @param value {@link #associatedDefinition} (Associated definitions for this medication.)
-     */
-    public MedicationKnowledge setAssociatedDefinition(Reference value) { 
-      this.associatedDefinition = value;
-      return this;
-    }
-
-    /**
      * @return {@link #productType} (Category of the medication or product (e.g. branded product, therapeutic moeity, generic product, innovator product, etc.).)
      */
     public List<CodeableConcept> getProductType() { 
@@ -5123,112 +5425,6 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     /**
-     * @return {@link #ingredient} (Identifies a particular constituent of interest in the product.)
-     */
-    public List<MedicationKnowledgeIngredientComponent> getIngredient() { 
-      if (this.ingredient == null)
-        this.ingredient = new ArrayList<MedicationKnowledgeIngredientComponent>();
-      return this.ingredient;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public MedicationKnowledge setIngredient(List<MedicationKnowledgeIngredientComponent> theIngredient) { 
-      this.ingredient = theIngredient;
-      return this;
-    }
-
-    public boolean hasIngredient() { 
-      if (this.ingredient == null)
-        return false;
-      for (MedicationKnowledgeIngredientComponent item : this.ingredient)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public MedicationKnowledgeIngredientComponent addIngredient() { //3
-      MedicationKnowledgeIngredientComponent t = new MedicationKnowledgeIngredientComponent();
-      if (this.ingredient == null)
-        this.ingredient = new ArrayList<MedicationKnowledgeIngredientComponent>();
-      this.ingredient.add(t);
-      return t;
-    }
-
-    public MedicationKnowledge addIngredient(MedicationKnowledgeIngredientComponent t) { //3
-      if (t == null)
-        return this;
-      if (this.ingredient == null)
-        this.ingredient = new ArrayList<MedicationKnowledgeIngredientComponent>();
-      this.ingredient.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #ingredient}, creating it if it does not already exist {3}
-     */
-    public MedicationKnowledgeIngredientComponent getIngredientFirstRep() { 
-      if (getIngredient().isEmpty()) {
-        addIngredient();
-      }
-      return getIngredient().get(0);
-    }
-
-    /**
-     * @return {@link #device} (A device associated with the medication (for example, a drug coated catheter or a drug impregnated dressing).)
-     */
-    public List<Reference> getDevice() { 
-      if (this.device == null)
-        this.device = new ArrayList<Reference>();
-      return this.device;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public MedicationKnowledge setDevice(List<Reference> theDevice) { 
-      this.device = theDevice;
-      return this;
-    }
-
-    public boolean hasDevice() { 
-      if (this.device == null)
-        return false;
-      for (Reference item : this.device)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public Reference addDevice() { //3
-      Reference t = new Reference();
-      if (this.device == null)
-        this.device = new ArrayList<Reference>();
-      this.device.add(t);
-      return t;
-    }
-
-    public MedicationKnowledge addDevice(Reference t) { //3
-      if (t == null)
-        return this;
-      if (this.device == null)
-        this.device = new ArrayList<Reference>();
-      this.device.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #device}, creating it if it does not already exist {3}
-     */
-    public Reference getDeviceFirstRep() { 
-      if (getDevice().isEmpty()) {
-        addDevice();
-      }
-      return getDevice().get(0);
-    }
-
-    /**
      * @return {@link #preparationInstruction} (The instructions for preparing the medication.). This is the underlying object with id, value and extensions. The accessor "getPreparationInstruction" gives direct access to the value
      */
     public MarkdownType getPreparationInstructionElement() { 
@@ -5275,59 +5471,6 @@ public class MedicationKnowledge extends DomainResource {
         this.preparationInstruction.setValue(value);
       }
       return this;
-    }
-
-    /**
-     * @return {@link #intendedRoute} (The intended or approved route of administration.)
-     */
-    public List<CodeableConcept> getIntendedRoute() { 
-      if (this.intendedRoute == null)
-        this.intendedRoute = new ArrayList<CodeableConcept>();
-      return this.intendedRoute;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public MedicationKnowledge setIntendedRoute(List<CodeableConcept> theIntendedRoute) { 
-      this.intendedRoute = theIntendedRoute;
-      return this;
-    }
-
-    public boolean hasIntendedRoute() { 
-      if (this.intendedRoute == null)
-        return false;
-      for (CodeableConcept item : this.intendedRoute)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public CodeableConcept addIntendedRoute() { //3
-      CodeableConcept t = new CodeableConcept();
-      if (this.intendedRoute == null)
-        this.intendedRoute = new ArrayList<CodeableConcept>();
-      this.intendedRoute.add(t);
-      return t;
-    }
-
-    public MedicationKnowledge addIntendedRoute(CodeableConcept t) { //3
-      if (t == null)
-        return this;
-      if (this.intendedRoute == null)
-        this.intendedRoute = new ArrayList<CodeableConcept>();
-      this.intendedRoute.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #intendedRoute}, creating it if it does not already exist {3}
-     */
-    public CodeableConcept getIntendedRouteFirstRep() { 
-      if (getIntendedRoute().isEmpty()) {
-        addIntendedRoute();
-      }
-      return getIntendedRoute().get(0);
     }
 
     /**
@@ -5437,56 +5580,56 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     /**
-     * @return {@link #administrationGuideline} (Guidelines or protocols that are applicable for the administration of the medication.)
+     * @return {@link #indicationGuideline} (Guidelines or protocols that are applicable for the administration of the medication based on indication.)
      */
-    public List<MedicationKnowledgeAdministrationGuidelineComponent> getAdministrationGuideline() { 
-      if (this.administrationGuideline == null)
-        this.administrationGuideline = new ArrayList<MedicationKnowledgeAdministrationGuidelineComponent>();
-      return this.administrationGuideline;
+    public List<MedicationKnowledgeIndicationGuidelineComponent> getIndicationGuideline() { 
+      if (this.indicationGuideline == null)
+        this.indicationGuideline = new ArrayList<MedicationKnowledgeIndicationGuidelineComponent>();
+      return this.indicationGuideline;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public MedicationKnowledge setAdministrationGuideline(List<MedicationKnowledgeAdministrationGuidelineComponent> theAdministrationGuideline) { 
-      this.administrationGuideline = theAdministrationGuideline;
+    public MedicationKnowledge setIndicationGuideline(List<MedicationKnowledgeIndicationGuidelineComponent> theIndicationGuideline) { 
+      this.indicationGuideline = theIndicationGuideline;
       return this;
     }
 
-    public boolean hasAdministrationGuideline() { 
-      if (this.administrationGuideline == null)
+    public boolean hasIndicationGuideline() { 
+      if (this.indicationGuideline == null)
         return false;
-      for (MedicationKnowledgeAdministrationGuidelineComponent item : this.administrationGuideline)
+      for (MedicationKnowledgeIndicationGuidelineComponent item : this.indicationGuideline)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public MedicationKnowledgeAdministrationGuidelineComponent addAdministrationGuideline() { //3
-      MedicationKnowledgeAdministrationGuidelineComponent t = new MedicationKnowledgeAdministrationGuidelineComponent();
-      if (this.administrationGuideline == null)
-        this.administrationGuideline = new ArrayList<MedicationKnowledgeAdministrationGuidelineComponent>();
-      this.administrationGuideline.add(t);
+    public MedicationKnowledgeIndicationGuidelineComponent addIndicationGuideline() { //3
+      MedicationKnowledgeIndicationGuidelineComponent t = new MedicationKnowledgeIndicationGuidelineComponent();
+      if (this.indicationGuideline == null)
+        this.indicationGuideline = new ArrayList<MedicationKnowledgeIndicationGuidelineComponent>();
+      this.indicationGuideline.add(t);
       return t;
     }
 
-    public MedicationKnowledge addAdministrationGuideline(MedicationKnowledgeAdministrationGuidelineComponent t) { //3
+    public MedicationKnowledge addIndicationGuideline(MedicationKnowledgeIndicationGuidelineComponent t) { //3
       if (t == null)
         return this;
-      if (this.administrationGuideline == null)
-        this.administrationGuideline = new ArrayList<MedicationKnowledgeAdministrationGuidelineComponent>();
-      this.administrationGuideline.add(t);
+      if (this.indicationGuideline == null)
+        this.indicationGuideline = new ArrayList<MedicationKnowledgeIndicationGuidelineComponent>();
+      this.indicationGuideline.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #administrationGuideline}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #indicationGuideline}, creating it if it does not already exist {3}
      */
-    public MedicationKnowledgeAdministrationGuidelineComponent getAdministrationGuidelineFirstRep() { 
-      if (getAdministrationGuideline().isEmpty()) {
-        addAdministrationGuideline();
+    public MedicationKnowledgeIndicationGuidelineComponent getIndicationGuidelineFirstRep() { 
+      if (getIndicationGuideline().isEmpty()) {
+        addIndicationGuideline();
       }
-      return getAdministrationGuideline().get(0);
+      return getIndicationGuideline().get(0);
     }
 
     /**
@@ -5596,59 +5739,6 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     /**
-     * @return {@link #drugCharacteristic} (Specifies descriptive properties of the medicine, such as color, shape, imprints, etc.)
-     */
-    public List<MedicationKnowledgeDrugCharacteristicComponent> getDrugCharacteristic() { 
-      if (this.drugCharacteristic == null)
-        this.drugCharacteristic = new ArrayList<MedicationKnowledgeDrugCharacteristicComponent>();
-      return this.drugCharacteristic;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public MedicationKnowledge setDrugCharacteristic(List<MedicationKnowledgeDrugCharacteristicComponent> theDrugCharacteristic) { 
-      this.drugCharacteristic = theDrugCharacteristic;
-      return this;
-    }
-
-    public boolean hasDrugCharacteristic() { 
-      if (this.drugCharacteristic == null)
-        return false;
-      for (MedicationKnowledgeDrugCharacteristicComponent item : this.drugCharacteristic)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public MedicationKnowledgeDrugCharacteristicComponent addDrugCharacteristic() { //3
-      MedicationKnowledgeDrugCharacteristicComponent t = new MedicationKnowledgeDrugCharacteristicComponent();
-      if (this.drugCharacteristic == null)
-        this.drugCharacteristic = new ArrayList<MedicationKnowledgeDrugCharacteristicComponent>();
-      this.drugCharacteristic.add(t);
-      return t;
-    }
-
-    public MedicationKnowledge addDrugCharacteristic(MedicationKnowledgeDrugCharacteristicComponent t) { //3
-      if (t == null)
-        return this;
-      if (this.drugCharacteristic == null)
-        this.drugCharacteristic = new ArrayList<MedicationKnowledgeDrugCharacteristicComponent>();
-      this.drugCharacteristic.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #drugCharacteristic}, creating it if it does not already exist {3}
-     */
-    public MedicationKnowledgeDrugCharacteristicComponent getDrugCharacteristicFirstRep() { 
-      if (getDrugCharacteristic().isEmpty()) {
-        addDrugCharacteristic();
-      }
-      return getDrugCharacteristic().get(0);
-    }
-
-    /**
      * @return {@link #clinicalUseIssue} (Potential clinical issue with or between medication(s) (for example, drug-drug interaction, drug-disease contraindication, drug-allergy interaction, etc.).)
      */
     public List<Reference> getClinicalUseIssue() { 
@@ -5755,86 +5845,50 @@ public class MedicationKnowledge extends DomainResource {
     }
 
     /**
-     * @return {@link #kineticCharacteristic} (The time course of drug absorption, distribution, metabolism and excretion of a medication from the body.)
+     * @return {@link #definitional} (Along with the link to a Medicinal Product Definition resource, this information provides common definitional elements that are needed to understand the specific medication that is being described.)
      */
-    public List<MedicationKnowledgeKineticCharacteristicComponent> getKineticCharacteristic() { 
-      if (this.kineticCharacteristic == null)
-        this.kineticCharacteristic = new ArrayList<MedicationKnowledgeKineticCharacteristicComponent>();
-      return this.kineticCharacteristic;
+    public MedicationKnowledgeDefinitionalComponent getDefinitional() { 
+      if (this.definitional == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create MedicationKnowledge.definitional");
+        else if (Configuration.doAutoCreate())
+          this.definitional = new MedicationKnowledgeDefinitionalComponent(); // cc
+      return this.definitional;
+    }
+
+    public boolean hasDefinitional() { 
+      return this.definitional != null && !this.definitional.isEmpty();
     }
 
     /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
+     * @param value {@link #definitional} (Along with the link to a Medicinal Product Definition resource, this information provides common definitional elements that are needed to understand the specific medication that is being described.)
      */
-    public MedicationKnowledge setKineticCharacteristic(List<MedicationKnowledgeKineticCharacteristicComponent> theKineticCharacteristic) { 
-      this.kineticCharacteristic = theKineticCharacteristic;
+    public MedicationKnowledge setDefinitional(MedicationKnowledgeDefinitionalComponent value) { 
+      this.definitional = value;
       return this;
-    }
-
-    public boolean hasKineticCharacteristic() { 
-      if (this.kineticCharacteristic == null)
-        return false;
-      for (MedicationKnowledgeKineticCharacteristicComponent item : this.kineticCharacteristic)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public MedicationKnowledgeKineticCharacteristicComponent addKineticCharacteristic() { //3
-      MedicationKnowledgeKineticCharacteristicComponent t = new MedicationKnowledgeKineticCharacteristicComponent();
-      if (this.kineticCharacteristic == null)
-        this.kineticCharacteristic = new ArrayList<MedicationKnowledgeKineticCharacteristicComponent>();
-      this.kineticCharacteristic.add(t);
-      return t;
-    }
-
-    public MedicationKnowledge addKineticCharacteristic(MedicationKnowledgeKineticCharacteristicComponent t) { //3
-      if (t == null)
-        return this;
-      if (this.kineticCharacteristic == null)
-        this.kineticCharacteristic = new ArrayList<MedicationKnowledgeKineticCharacteristicComponent>();
-      this.kineticCharacteristic.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #kineticCharacteristic}, creating it if it does not already exist {3}
-     */
-    public MedicationKnowledgeKineticCharacteristicComponent getKineticCharacteristicFirstRep() { 
-      if (getKineticCharacteristic().isEmpty()) {
-        addKineticCharacteristic();
-      }
-      return getKineticCharacteristic().get(0);
     }
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Business identifier for this medication.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("code", "CodeableConcept", "A code that specifies this medication, or a textual description if no code is available. Usage note: This could be a standard medication code such as a code from RxNorm, SNOMED CT, IDMP etc. It could also be a national or local formulary code, optionally with translations to other code systems.", 0, 1, code));
-        children.add(new Property("status", "code", "A code to indicate if the medication is in active use.  The status refers to the validity about the information of the medication and not to its medicinal properties.", 0, 1, status));
+        children.add(new Property("status", "code", "A code to indicate if the medication referred to by this MedicationKnowledge is in active use within the drug database or inventory system. The status refers to the validity about the information of the medication and not to its medicinal properties.", 0, 1, status));
         children.add(new Property("author", "Reference(Organization)", "The creator or owner of the knowledge or information about the medication.", 0, 1, author));
-        children.add(new Property("manufacturer", "Reference(Organization)", "Describes the details of the manufacturer of the medication product.  This is not intended to represent the distributor of a medication product.", 0, 1, manufacturer));
-        children.add(new Property("doseForm", "CodeableConcept", "Describes the form of the item.  Powder; tablets; capsule.", 0, 1, doseForm));
-        children.add(new Property("amount", "Quantity", "Specific amount of the drug in the packaged product.  For example, when specifying a product that has the same strength (For example, Insulin glargine 100 unit per mL solution for injection), this attribute provides additional clarification of the package amount (For example, 3 mL, 10mL, etc.).", 0, 1, amount));
-        children.add(new Property("synonym", "string", "Additional names for a medication, for example, the name(s) given to a medication in different countries.  For example, acetaminophen and paracetamol or salbutamol and albuterol.", 0, java.lang.Integer.MAX_VALUE, synonym));
+        children.add(new Property("intendedJurisdiction", "CodeableConcept", "Lists the jurisdictions that this medication knowledge was written for.", 0, java.lang.Integer.MAX_VALUE, intendedJurisdiction));
+        children.add(new Property("name", "string", "All of the names for a medication, for example, the name(s) given to a medication in different countries.  For example, acetaminophen and paracetamol or salbutamol and albuterol.", 0, java.lang.Integer.MAX_VALUE, name));
         children.add(new Property("relatedMedicationKnowledge", "", "Associated or related medications. For example, if the medication is a branded product (e.g. Crestor), this is the Therapeutic Moeity (e.g. Rosuvastatin) or if this is a generic medication (e.g. Rosuvastatin), this would link to a branded product (e.g. Crestor.", 0, java.lang.Integer.MAX_VALUE, relatedMedicationKnowledge));
         children.add(new Property("associatedMedication", "Reference(Medication)", "Links to associated medications that could be prescribed, dispensed or administered.", 0, java.lang.Integer.MAX_VALUE, associatedMedication));
-        children.add(new Property("associatedDefinition", "Reference(MedicinalProductDefinition)", "Associated definitions for this medication.", 0, 1, associatedDefinition));
         children.add(new Property("productType", "CodeableConcept", "Category of the medication or product (e.g. branded product, therapeutic moeity, generic product, innovator product, etc.).", 0, java.lang.Integer.MAX_VALUE, productType));
         children.add(new Property("monograph", "", "Associated documentation about the medication.", 0, java.lang.Integer.MAX_VALUE, monograph));
-        children.add(new Property("ingredient", "", "Identifies a particular constituent of interest in the product.", 0, java.lang.Integer.MAX_VALUE, ingredient));
-        children.add(new Property("device", "Reference(Device)", "A device associated with the medication (for example, a drug coated catheter or a drug impregnated dressing).", 0, java.lang.Integer.MAX_VALUE, device));
         children.add(new Property("preparationInstruction", "markdown", "The instructions for preparing the medication.", 0, 1, preparationInstruction));
-        children.add(new Property("intendedRoute", "CodeableConcept", "The intended or approved route of administration.", 0, java.lang.Integer.MAX_VALUE, intendedRoute));
         children.add(new Property("cost", "", "The price of the medication.", 0, java.lang.Integer.MAX_VALUE, cost));
         children.add(new Property("monitoringProgram", "", "The program under which the medication is reviewed.", 0, java.lang.Integer.MAX_VALUE, monitoringProgram));
-        children.add(new Property("administrationGuideline", "", "Guidelines or protocols that are applicable for the administration of the medication.", 0, java.lang.Integer.MAX_VALUE, administrationGuideline));
+        children.add(new Property("indicationGuideline", "", "Guidelines or protocols that are applicable for the administration of the medication based on indication.", 0, java.lang.Integer.MAX_VALUE, indicationGuideline));
         children.add(new Property("medicineClassification", "", "Categorization of the medication within a formulary or classification system.", 0, java.lang.Integer.MAX_VALUE, medicineClassification));
         children.add(new Property("packaging", "", "Information that only applies to packages (not products).", 0, java.lang.Integer.MAX_VALUE, packaging));
-        children.add(new Property("drugCharacteristic", "", "Specifies descriptive properties of the medicine, such as color, shape, imprints, etc.", 0, java.lang.Integer.MAX_VALUE, drugCharacteristic));
-        children.add(new Property("clinicalUseIssue", "Reference(ClinicalUseIssue)", "Potential clinical issue with or between medication(s) (for example, drug-drug interaction, drug-disease contraindication, drug-allergy interaction, etc.).", 0, java.lang.Integer.MAX_VALUE, clinicalUseIssue));
+        children.add(new Property("clinicalUseIssue", "Reference(ClinicalUseDefinition)", "Potential clinical issue with or between medication(s) (for example, drug-drug interaction, drug-disease contraindication, drug-allergy interaction, etc.).", 0, java.lang.Integer.MAX_VALUE, clinicalUseIssue));
         children.add(new Property("regulatory", "", "Regulatory information about a medication.", 0, java.lang.Integer.MAX_VALUE, regulatory));
-        children.add(new Property("kineticCharacteristic", "", "The time course of drug absorption, distribution, metabolism and excretion of a medication from the body.", 0, java.lang.Integer.MAX_VALUE, kineticCharacteristic));
+        children.add(new Property("definitional", "", "Along with the link to a Medicinal Product Definition resource, this information provides common definitional elements that are needed to understand the specific medication that is being described.", 0, 1, definitional));
       }
 
       @Override
@@ -5842,30 +5896,23 @@ public class MedicationKnowledge extends DomainResource {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifier for this medication.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 3059181: /*code*/  return new Property("code", "CodeableConcept", "A code that specifies this medication, or a textual description if no code is available. Usage note: This could be a standard medication code such as a code from RxNorm, SNOMED CT, IDMP etc. It could also be a national or local formulary code, optionally with translations to other code systems.", 0, 1, code);
-        case -892481550: /*status*/  return new Property("status", "code", "A code to indicate if the medication is in active use.  The status refers to the validity about the information of the medication and not to its medicinal properties.", 0, 1, status);
+        case -892481550: /*status*/  return new Property("status", "code", "A code to indicate if the medication referred to by this MedicationKnowledge is in active use within the drug database or inventory system. The status refers to the validity about the information of the medication and not to its medicinal properties.", 0, 1, status);
         case -1406328437: /*author*/  return new Property("author", "Reference(Organization)", "The creator or owner of the knowledge or information about the medication.", 0, 1, author);
-        case -1969347631: /*manufacturer*/  return new Property("manufacturer", "Reference(Organization)", "Describes the details of the manufacturer of the medication product.  This is not intended to represent the distributor of a medication product.", 0, 1, manufacturer);
-        case 1303858817: /*doseForm*/  return new Property("doseForm", "CodeableConcept", "Describes the form of the item.  Powder; tablets; capsule.", 0, 1, doseForm);
-        case -1413853096: /*amount*/  return new Property("amount", "Quantity", "Specific amount of the drug in the packaged product.  For example, when specifying a product that has the same strength (For example, Insulin glargine 100 unit per mL solution for injection), this attribute provides additional clarification of the package amount (For example, 3 mL, 10mL, etc.).", 0, 1, amount);
-        case -1742128133: /*synonym*/  return new Property("synonym", "string", "Additional names for a medication, for example, the name(s) given to a medication in different countries.  For example, acetaminophen and paracetamol or salbutamol and albuterol.", 0, java.lang.Integer.MAX_VALUE, synonym);
+        case 2136596300: /*intendedJurisdiction*/  return new Property("intendedJurisdiction", "CodeableConcept", "Lists the jurisdictions that this medication knowledge was written for.", 0, java.lang.Integer.MAX_VALUE, intendedJurisdiction);
+        case 3373707: /*name*/  return new Property("name", "string", "All of the names for a medication, for example, the name(s) given to a medication in different countries.  For example, acetaminophen and paracetamol or salbutamol and albuterol.", 0, java.lang.Integer.MAX_VALUE, name);
         case 723067972: /*relatedMedicationKnowledge*/  return new Property("relatedMedicationKnowledge", "", "Associated or related medications. For example, if the medication is a branded product (e.g. Crestor), this is the Therapeutic Moeity (e.g. Rosuvastatin) or if this is a generic medication (e.g. Rosuvastatin), this would link to a branded product (e.g. Crestor.", 0, java.lang.Integer.MAX_VALUE, relatedMedicationKnowledge);
         case 1312779381: /*associatedMedication*/  return new Property("associatedMedication", "Reference(Medication)", "Links to associated medications that could be prescribed, dispensed or administered.", 0, java.lang.Integer.MAX_VALUE, associatedMedication);
-        case -1700604167: /*associatedDefinition*/  return new Property("associatedDefinition", "Reference(MedicinalProductDefinition)", "Associated definitions for this medication.", 0, 1, associatedDefinition);
         case -1491615543: /*productType*/  return new Property("productType", "CodeableConcept", "Category of the medication or product (e.g. branded product, therapeutic moeity, generic product, innovator product, etc.).", 0, java.lang.Integer.MAX_VALUE, productType);
         case -1442980789: /*monograph*/  return new Property("monograph", "", "Associated documentation about the medication.", 0, java.lang.Integer.MAX_VALUE, monograph);
-        case -206409263: /*ingredient*/  return new Property("ingredient", "", "Identifies a particular constituent of interest in the product.", 0, java.lang.Integer.MAX_VALUE, ingredient);
-        case -1335157162: /*device*/  return new Property("device", "Reference(Device)", "A device associated with the medication (for example, a drug coated catheter or a drug impregnated dressing).", 0, java.lang.Integer.MAX_VALUE, device);
         case 1025456503: /*preparationInstruction*/  return new Property("preparationInstruction", "markdown", "The instructions for preparing the medication.", 0, 1, preparationInstruction);
-        case -767798050: /*intendedRoute*/  return new Property("intendedRoute", "CodeableConcept", "The intended or approved route of administration.", 0, java.lang.Integer.MAX_VALUE, intendedRoute);
         case 3059661: /*cost*/  return new Property("cost", "", "The price of the medication.", 0, java.lang.Integer.MAX_VALUE, cost);
         case 569848092: /*monitoringProgram*/  return new Property("monitoringProgram", "", "The program under which the medication is reviewed.", 0, java.lang.Integer.MAX_VALUE, monitoringProgram);
-        case -815253966: /*administrationGuideline*/  return new Property("administrationGuideline", "", "Guidelines or protocols that are applicable for the administration of the medication.", 0, java.lang.Integer.MAX_VALUE, administrationGuideline);
+        case -347044108: /*indicationGuideline*/  return new Property("indicationGuideline", "", "Guidelines or protocols that are applicable for the administration of the medication based on indication.", 0, java.lang.Integer.MAX_VALUE, indicationGuideline);
         case 1791551680: /*medicineClassification*/  return new Property("medicineClassification", "", "Categorization of the medication within a formulary or classification system.", 0, java.lang.Integer.MAX_VALUE, medicineClassification);
         case 1802065795: /*packaging*/  return new Property("packaging", "", "Information that only applies to packages (not products).", 0, java.lang.Integer.MAX_VALUE, packaging);
-        case -844126885: /*drugCharacteristic*/  return new Property("drugCharacteristic", "", "Specifies descriptive properties of the medicine, such as color, shape, imprints, etc.", 0, java.lang.Integer.MAX_VALUE, drugCharacteristic);
-        case 251885509: /*clinicalUseIssue*/  return new Property("clinicalUseIssue", "Reference(ClinicalUseIssue)", "Potential clinical issue with or between medication(s) (for example, drug-drug interaction, drug-disease contraindication, drug-allergy interaction, etc.).", 0, java.lang.Integer.MAX_VALUE, clinicalUseIssue);
+        case 251885509: /*clinicalUseIssue*/  return new Property("clinicalUseIssue", "Reference(ClinicalUseDefinition)", "Potential clinical issue with or between medication(s) (for example, drug-drug interaction, drug-disease contraindication, drug-allergy interaction, etc.).", 0, java.lang.Integer.MAX_VALUE, clinicalUseIssue);
         case -27327848: /*regulatory*/  return new Property("regulatory", "", "Regulatory information about a medication.", 0, java.lang.Integer.MAX_VALUE, regulatory);
-        case -573129004: /*kineticCharacteristic*/  return new Property("kineticCharacteristic", "", "The time course of drug absorption, distribution, metabolism and excretion of a medication from the body.", 0, java.lang.Integer.MAX_VALUE, kineticCharacteristic);
+        case 101791934: /*definitional*/  return new Property("definitional", "", "Along with the link to a Medicinal Product Definition resource, this information provides common definitional elements that are needed to understand the specific medication that is being described.", 0, 1, definitional);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -5878,28 +5925,21 @@ public class MedicationKnowledge extends DomainResource {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<MedicationKnowledgeStatusCodes>
         case -1406328437: /*author*/ return this.author == null ? new Base[0] : new Base[] {this.author}; // Reference
-        case -1969347631: /*manufacturer*/ return this.manufacturer == null ? new Base[0] : new Base[] {this.manufacturer}; // Reference
-        case 1303858817: /*doseForm*/ return this.doseForm == null ? new Base[0] : new Base[] {this.doseForm}; // CodeableConcept
-        case -1413853096: /*amount*/ return this.amount == null ? new Base[0] : new Base[] {this.amount}; // Quantity
-        case -1742128133: /*synonym*/ return this.synonym == null ? new Base[0] : this.synonym.toArray(new Base[this.synonym.size()]); // StringType
+        case 2136596300: /*intendedJurisdiction*/ return this.intendedJurisdiction == null ? new Base[0] : this.intendedJurisdiction.toArray(new Base[this.intendedJurisdiction.size()]); // CodeableConcept
+        case 3373707: /*name*/ return this.name == null ? new Base[0] : this.name.toArray(new Base[this.name.size()]); // StringType
         case 723067972: /*relatedMedicationKnowledge*/ return this.relatedMedicationKnowledge == null ? new Base[0] : this.relatedMedicationKnowledge.toArray(new Base[this.relatedMedicationKnowledge.size()]); // MedicationKnowledgeRelatedMedicationKnowledgeComponent
         case 1312779381: /*associatedMedication*/ return this.associatedMedication == null ? new Base[0] : this.associatedMedication.toArray(new Base[this.associatedMedication.size()]); // Reference
-        case -1700604167: /*associatedDefinition*/ return this.associatedDefinition == null ? new Base[0] : new Base[] {this.associatedDefinition}; // Reference
         case -1491615543: /*productType*/ return this.productType == null ? new Base[0] : this.productType.toArray(new Base[this.productType.size()]); // CodeableConcept
         case -1442980789: /*monograph*/ return this.monograph == null ? new Base[0] : this.monograph.toArray(new Base[this.monograph.size()]); // MedicationKnowledgeMonographComponent
-        case -206409263: /*ingredient*/ return this.ingredient == null ? new Base[0] : this.ingredient.toArray(new Base[this.ingredient.size()]); // MedicationKnowledgeIngredientComponent
-        case -1335157162: /*device*/ return this.device == null ? new Base[0] : this.device.toArray(new Base[this.device.size()]); // Reference
         case 1025456503: /*preparationInstruction*/ return this.preparationInstruction == null ? new Base[0] : new Base[] {this.preparationInstruction}; // MarkdownType
-        case -767798050: /*intendedRoute*/ return this.intendedRoute == null ? new Base[0] : this.intendedRoute.toArray(new Base[this.intendedRoute.size()]); // CodeableConcept
         case 3059661: /*cost*/ return this.cost == null ? new Base[0] : this.cost.toArray(new Base[this.cost.size()]); // MedicationKnowledgeCostComponent
         case 569848092: /*monitoringProgram*/ return this.monitoringProgram == null ? new Base[0] : this.monitoringProgram.toArray(new Base[this.monitoringProgram.size()]); // MedicationKnowledgeMonitoringProgramComponent
-        case -815253966: /*administrationGuideline*/ return this.administrationGuideline == null ? new Base[0] : this.administrationGuideline.toArray(new Base[this.administrationGuideline.size()]); // MedicationKnowledgeAdministrationGuidelineComponent
+        case -347044108: /*indicationGuideline*/ return this.indicationGuideline == null ? new Base[0] : this.indicationGuideline.toArray(new Base[this.indicationGuideline.size()]); // MedicationKnowledgeIndicationGuidelineComponent
         case 1791551680: /*medicineClassification*/ return this.medicineClassification == null ? new Base[0] : this.medicineClassification.toArray(new Base[this.medicineClassification.size()]); // MedicationKnowledgeMedicineClassificationComponent
         case 1802065795: /*packaging*/ return this.packaging == null ? new Base[0] : this.packaging.toArray(new Base[this.packaging.size()]); // MedicationKnowledgePackagingComponent
-        case -844126885: /*drugCharacteristic*/ return this.drugCharacteristic == null ? new Base[0] : this.drugCharacteristic.toArray(new Base[this.drugCharacteristic.size()]); // MedicationKnowledgeDrugCharacteristicComponent
         case 251885509: /*clinicalUseIssue*/ return this.clinicalUseIssue == null ? new Base[0] : this.clinicalUseIssue.toArray(new Base[this.clinicalUseIssue.size()]); // Reference
         case -27327848: /*regulatory*/ return this.regulatory == null ? new Base[0] : this.regulatory.toArray(new Base[this.regulatory.size()]); // MedicationKnowledgeRegulatoryComponent
-        case -573129004: /*kineticCharacteristic*/ return this.kineticCharacteristic == null ? new Base[0] : this.kineticCharacteristic.toArray(new Base[this.kineticCharacteristic.size()]); // MedicationKnowledgeKineticCharacteristicComponent
+        case 101791934: /*definitional*/ return this.definitional == null ? new Base[0] : new Base[] {this.definitional}; // MedicationKnowledgeDefinitionalComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -5921,17 +5961,11 @@ public class MedicationKnowledge extends DomainResource {
         case -1406328437: // author
           this.author = TypeConvertor.castToReference(value); // Reference
           return value;
-        case -1969347631: // manufacturer
-          this.manufacturer = TypeConvertor.castToReference(value); // Reference
+        case 2136596300: // intendedJurisdiction
+          this.getIntendedJurisdiction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
-        case 1303858817: // doseForm
-          this.doseForm = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case -1413853096: // amount
-          this.amount = TypeConvertor.castToQuantity(value); // Quantity
-          return value;
-        case -1742128133: // synonym
-          this.getSynonym().add(TypeConvertor.castToString(value)); // StringType
+        case 3373707: // name
+          this.getName().add(TypeConvertor.castToString(value)); // StringType
           return value;
         case 723067972: // relatedMedicationKnowledge
           this.getRelatedMedicationKnowledge().add((MedicationKnowledgeRelatedMedicationKnowledgeComponent) value); // MedicationKnowledgeRelatedMedicationKnowledgeComponent
@@ -5939,26 +5973,14 @@ public class MedicationKnowledge extends DomainResource {
         case 1312779381: // associatedMedication
           this.getAssociatedMedication().add(TypeConvertor.castToReference(value)); // Reference
           return value;
-        case -1700604167: // associatedDefinition
-          this.associatedDefinition = TypeConvertor.castToReference(value); // Reference
-          return value;
         case -1491615543: // productType
           this.getProductType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1442980789: // monograph
           this.getMonograph().add((MedicationKnowledgeMonographComponent) value); // MedicationKnowledgeMonographComponent
           return value;
-        case -206409263: // ingredient
-          this.getIngredient().add((MedicationKnowledgeIngredientComponent) value); // MedicationKnowledgeIngredientComponent
-          return value;
-        case -1335157162: // device
-          this.getDevice().add(TypeConvertor.castToReference(value)); // Reference
-          return value;
         case 1025456503: // preparationInstruction
           this.preparationInstruction = TypeConvertor.castToMarkdown(value); // MarkdownType
-          return value;
-        case -767798050: // intendedRoute
-          this.getIntendedRoute().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 3059661: // cost
           this.getCost().add((MedicationKnowledgeCostComponent) value); // MedicationKnowledgeCostComponent
@@ -5966,8 +5988,8 @@ public class MedicationKnowledge extends DomainResource {
         case 569848092: // monitoringProgram
           this.getMonitoringProgram().add((MedicationKnowledgeMonitoringProgramComponent) value); // MedicationKnowledgeMonitoringProgramComponent
           return value;
-        case -815253966: // administrationGuideline
-          this.getAdministrationGuideline().add((MedicationKnowledgeAdministrationGuidelineComponent) value); // MedicationKnowledgeAdministrationGuidelineComponent
+        case -347044108: // indicationGuideline
+          this.getIndicationGuideline().add((MedicationKnowledgeIndicationGuidelineComponent) value); // MedicationKnowledgeIndicationGuidelineComponent
           return value;
         case 1791551680: // medicineClassification
           this.getMedicineClassification().add((MedicationKnowledgeMedicineClassificationComponent) value); // MedicationKnowledgeMedicineClassificationComponent
@@ -5975,17 +5997,14 @@ public class MedicationKnowledge extends DomainResource {
         case 1802065795: // packaging
           this.getPackaging().add((MedicationKnowledgePackagingComponent) value); // MedicationKnowledgePackagingComponent
           return value;
-        case -844126885: // drugCharacteristic
-          this.getDrugCharacteristic().add((MedicationKnowledgeDrugCharacteristicComponent) value); // MedicationKnowledgeDrugCharacteristicComponent
-          return value;
         case 251885509: // clinicalUseIssue
           this.getClinicalUseIssue().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -27327848: // regulatory
           this.getRegulatory().add((MedicationKnowledgeRegulatoryComponent) value); // MedicationKnowledgeRegulatoryComponent
           return value;
-        case -573129004: // kineticCharacteristic
-          this.getKineticCharacteristic().add((MedicationKnowledgeKineticCharacteristicComponent) value); // MedicationKnowledgeKineticCharacteristicComponent
+        case 101791934: // definitional
+          this.definitional = (MedicationKnowledgeDefinitionalComponent) value; // MedicationKnowledgeDefinitionalComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -6003,50 +6022,36 @@ public class MedicationKnowledge extends DomainResource {
           this.status = (Enumeration) value; // Enumeration<MedicationKnowledgeStatusCodes>
         } else if (name.equals("author")) {
           this.author = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("manufacturer")) {
-          this.manufacturer = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("doseForm")) {
-          this.doseForm = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("amount")) {
-          this.amount = TypeConvertor.castToQuantity(value); // Quantity
-        } else if (name.equals("synonym")) {
-          this.getSynonym().add(TypeConvertor.castToString(value));
+        } else if (name.equals("intendedJurisdiction")) {
+          this.getIntendedJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("name")) {
+          this.getName().add(TypeConvertor.castToString(value));
         } else if (name.equals("relatedMedicationKnowledge")) {
           this.getRelatedMedicationKnowledge().add((MedicationKnowledgeRelatedMedicationKnowledgeComponent) value);
         } else if (name.equals("associatedMedication")) {
           this.getAssociatedMedication().add(TypeConvertor.castToReference(value));
-        } else if (name.equals("associatedDefinition")) {
-          this.associatedDefinition = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("productType")) {
           this.getProductType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("monograph")) {
           this.getMonograph().add((MedicationKnowledgeMonographComponent) value);
-        } else if (name.equals("ingredient")) {
-          this.getIngredient().add((MedicationKnowledgeIngredientComponent) value);
-        } else if (name.equals("device")) {
-          this.getDevice().add(TypeConvertor.castToReference(value));
         } else if (name.equals("preparationInstruction")) {
           this.preparationInstruction = TypeConvertor.castToMarkdown(value); // MarkdownType
-        } else if (name.equals("intendedRoute")) {
-          this.getIntendedRoute().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("cost")) {
           this.getCost().add((MedicationKnowledgeCostComponent) value);
         } else if (name.equals("monitoringProgram")) {
           this.getMonitoringProgram().add((MedicationKnowledgeMonitoringProgramComponent) value);
-        } else if (name.equals("administrationGuideline")) {
-          this.getAdministrationGuideline().add((MedicationKnowledgeAdministrationGuidelineComponent) value);
+        } else if (name.equals("indicationGuideline")) {
+          this.getIndicationGuideline().add((MedicationKnowledgeIndicationGuidelineComponent) value);
         } else if (name.equals("medicineClassification")) {
           this.getMedicineClassification().add((MedicationKnowledgeMedicineClassificationComponent) value);
         } else if (name.equals("packaging")) {
           this.getPackaging().add((MedicationKnowledgePackagingComponent) value);
-        } else if (name.equals("drugCharacteristic")) {
-          this.getDrugCharacteristic().add((MedicationKnowledgeDrugCharacteristicComponent) value);
         } else if (name.equals("clinicalUseIssue")) {
           this.getClinicalUseIssue().add(TypeConvertor.castToReference(value));
         } else if (name.equals("regulatory")) {
           this.getRegulatory().add((MedicationKnowledgeRegulatoryComponent) value);
-        } else if (name.equals("kineticCharacteristic")) {
-          this.getKineticCharacteristic().add((MedicationKnowledgeKineticCharacteristicComponent) value);
+        } else if (name.equals("definitional")) {
+          this.definitional = (MedicationKnowledgeDefinitionalComponent) value; // MedicationKnowledgeDefinitionalComponent
         } else
           return super.setProperty(name, value);
         return value;
@@ -6059,28 +6064,21 @@ public class MedicationKnowledge extends DomainResource {
         case 3059181:  return getCode();
         case -892481550:  return getStatusElement();
         case -1406328437:  return getAuthor();
-        case -1969347631:  return getManufacturer();
-        case 1303858817:  return getDoseForm();
-        case -1413853096:  return getAmount();
-        case -1742128133:  return addSynonymElement();
+        case 2136596300:  return addIntendedJurisdiction(); 
+        case 3373707:  return addNameElement();
         case 723067972:  return addRelatedMedicationKnowledge(); 
         case 1312779381:  return addAssociatedMedication(); 
-        case -1700604167:  return getAssociatedDefinition();
         case -1491615543:  return addProductType(); 
         case -1442980789:  return addMonograph(); 
-        case -206409263:  return addIngredient(); 
-        case -1335157162:  return addDevice(); 
         case 1025456503:  return getPreparationInstructionElement();
-        case -767798050:  return addIntendedRoute(); 
         case 3059661:  return addCost(); 
         case 569848092:  return addMonitoringProgram(); 
-        case -815253966:  return addAdministrationGuideline(); 
+        case -347044108:  return addIndicationGuideline(); 
         case 1791551680:  return addMedicineClassification(); 
         case 1802065795:  return addPackaging(); 
-        case -844126885:  return addDrugCharacteristic(); 
         case 251885509:  return addClinicalUseIssue(); 
         case -27327848:  return addRegulatory(); 
-        case -573129004:  return addKineticCharacteristic(); 
+        case 101791934:  return getDefinitional();
         default: return super.makeProperty(hash, name);
         }
 
@@ -6093,28 +6091,21 @@ public class MedicationKnowledge extends DomainResource {
         case 3059181: /*code*/ return new String[] {"CodeableConcept"};
         case -892481550: /*status*/ return new String[] {"code"};
         case -1406328437: /*author*/ return new String[] {"Reference"};
-        case -1969347631: /*manufacturer*/ return new String[] {"Reference"};
-        case 1303858817: /*doseForm*/ return new String[] {"CodeableConcept"};
-        case -1413853096: /*amount*/ return new String[] {"Quantity"};
-        case -1742128133: /*synonym*/ return new String[] {"string"};
+        case 2136596300: /*intendedJurisdiction*/ return new String[] {"CodeableConcept"};
+        case 3373707: /*name*/ return new String[] {"string"};
         case 723067972: /*relatedMedicationKnowledge*/ return new String[] {};
         case 1312779381: /*associatedMedication*/ return new String[] {"Reference"};
-        case -1700604167: /*associatedDefinition*/ return new String[] {"Reference"};
         case -1491615543: /*productType*/ return new String[] {"CodeableConcept"};
         case -1442980789: /*monograph*/ return new String[] {};
-        case -206409263: /*ingredient*/ return new String[] {};
-        case -1335157162: /*device*/ return new String[] {"Reference"};
         case 1025456503: /*preparationInstruction*/ return new String[] {"markdown"};
-        case -767798050: /*intendedRoute*/ return new String[] {"CodeableConcept"};
         case 3059661: /*cost*/ return new String[] {};
         case 569848092: /*monitoringProgram*/ return new String[] {};
-        case -815253966: /*administrationGuideline*/ return new String[] {};
+        case -347044108: /*indicationGuideline*/ return new String[] {};
         case 1791551680: /*medicineClassification*/ return new String[] {};
         case 1802065795: /*packaging*/ return new String[] {};
-        case -844126885: /*drugCharacteristic*/ return new String[] {};
         case 251885509: /*clinicalUseIssue*/ return new String[] {"Reference"};
         case -27327848: /*regulatory*/ return new String[] {};
-        case -573129004: /*kineticCharacteristic*/ return new String[] {};
+        case 101791934: /*definitional*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -6136,20 +6127,11 @@ public class MedicationKnowledge extends DomainResource {
           this.author = new Reference();
           return this.author;
         }
-        else if (name.equals("manufacturer")) {
-          this.manufacturer = new Reference();
-          return this.manufacturer;
+        else if (name.equals("intendedJurisdiction")) {
+          return addIntendedJurisdiction();
         }
-        else if (name.equals("doseForm")) {
-          this.doseForm = new CodeableConcept();
-          return this.doseForm;
-        }
-        else if (name.equals("amount")) {
-          this.amount = new Quantity();
-          return this.amount;
-        }
-        else if (name.equals("synonym")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MedicationKnowledge.synonym");
+        else if (name.equals("name")) {
+          throw new FHIRException("Cannot call addChild on a primitive type MedicationKnowledge.name");
         }
         else if (name.equals("relatedMedicationKnowledge")) {
           return addRelatedMedicationKnowledge();
@@ -6157,27 +6139,14 @@ public class MedicationKnowledge extends DomainResource {
         else if (name.equals("associatedMedication")) {
           return addAssociatedMedication();
         }
-        else if (name.equals("associatedDefinition")) {
-          this.associatedDefinition = new Reference();
-          return this.associatedDefinition;
-        }
         else if (name.equals("productType")) {
           return addProductType();
         }
         else if (name.equals("monograph")) {
           return addMonograph();
         }
-        else if (name.equals("ingredient")) {
-          return addIngredient();
-        }
-        else if (name.equals("device")) {
-          return addDevice();
-        }
         else if (name.equals("preparationInstruction")) {
           throw new FHIRException("Cannot call addChild on a primitive type MedicationKnowledge.preparationInstruction");
-        }
-        else if (name.equals("intendedRoute")) {
-          return addIntendedRoute();
         }
         else if (name.equals("cost")) {
           return addCost();
@@ -6185,8 +6154,8 @@ public class MedicationKnowledge extends DomainResource {
         else if (name.equals("monitoringProgram")) {
           return addMonitoringProgram();
         }
-        else if (name.equals("administrationGuideline")) {
-          return addAdministrationGuideline();
+        else if (name.equals("indicationGuideline")) {
+          return addIndicationGuideline();
         }
         else if (name.equals("medicineClassification")) {
           return addMedicineClassification();
@@ -6194,17 +6163,15 @@ public class MedicationKnowledge extends DomainResource {
         else if (name.equals("packaging")) {
           return addPackaging();
         }
-        else if (name.equals("drugCharacteristic")) {
-          return addDrugCharacteristic();
-        }
         else if (name.equals("clinicalUseIssue")) {
           return addClinicalUseIssue();
         }
         else if (name.equals("regulatory")) {
           return addRegulatory();
         }
-        else if (name.equals("kineticCharacteristic")) {
-          return addKineticCharacteristic();
+        else if (name.equals("definitional")) {
+          this.definitional = new MedicationKnowledgeDefinitionalComponent();
+          return this.definitional;
         }
         else
           return super.addChild(name);
@@ -6231,13 +6198,15 @@ public class MedicationKnowledge extends DomainResource {
         dst.code = code == null ? null : code.copy();
         dst.status = status == null ? null : status.copy();
         dst.author = author == null ? null : author.copy();
-        dst.manufacturer = manufacturer == null ? null : manufacturer.copy();
-        dst.doseForm = doseForm == null ? null : doseForm.copy();
-        dst.amount = amount == null ? null : amount.copy();
-        if (synonym != null) {
-          dst.synonym = new ArrayList<StringType>();
-          for (StringType i : synonym)
-            dst.synonym.add(i.copy());
+        if (intendedJurisdiction != null) {
+          dst.intendedJurisdiction = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : intendedJurisdiction)
+            dst.intendedJurisdiction.add(i.copy());
+        };
+        if (name != null) {
+          dst.name = new ArrayList<StringType>();
+          for (StringType i : name)
+            dst.name.add(i.copy());
         };
         if (relatedMedicationKnowledge != null) {
           dst.relatedMedicationKnowledge = new ArrayList<MedicationKnowledgeRelatedMedicationKnowledgeComponent>();
@@ -6249,7 +6218,6 @@ public class MedicationKnowledge extends DomainResource {
           for (Reference i : associatedMedication)
             dst.associatedMedication.add(i.copy());
         };
-        dst.associatedDefinition = associatedDefinition == null ? null : associatedDefinition.copy();
         if (productType != null) {
           dst.productType = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : productType)
@@ -6260,22 +6228,7 @@ public class MedicationKnowledge extends DomainResource {
           for (MedicationKnowledgeMonographComponent i : monograph)
             dst.monograph.add(i.copy());
         };
-        if (ingredient != null) {
-          dst.ingredient = new ArrayList<MedicationKnowledgeIngredientComponent>();
-          for (MedicationKnowledgeIngredientComponent i : ingredient)
-            dst.ingredient.add(i.copy());
-        };
-        if (device != null) {
-          dst.device = new ArrayList<Reference>();
-          for (Reference i : device)
-            dst.device.add(i.copy());
-        };
         dst.preparationInstruction = preparationInstruction == null ? null : preparationInstruction.copy();
-        if (intendedRoute != null) {
-          dst.intendedRoute = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : intendedRoute)
-            dst.intendedRoute.add(i.copy());
-        };
         if (cost != null) {
           dst.cost = new ArrayList<MedicationKnowledgeCostComponent>();
           for (MedicationKnowledgeCostComponent i : cost)
@@ -6286,10 +6239,10 @@ public class MedicationKnowledge extends DomainResource {
           for (MedicationKnowledgeMonitoringProgramComponent i : monitoringProgram)
             dst.monitoringProgram.add(i.copy());
         };
-        if (administrationGuideline != null) {
-          dst.administrationGuideline = new ArrayList<MedicationKnowledgeAdministrationGuidelineComponent>();
-          for (MedicationKnowledgeAdministrationGuidelineComponent i : administrationGuideline)
-            dst.administrationGuideline.add(i.copy());
+        if (indicationGuideline != null) {
+          dst.indicationGuideline = new ArrayList<MedicationKnowledgeIndicationGuidelineComponent>();
+          for (MedicationKnowledgeIndicationGuidelineComponent i : indicationGuideline)
+            dst.indicationGuideline.add(i.copy());
         };
         if (medicineClassification != null) {
           dst.medicineClassification = new ArrayList<MedicationKnowledgeMedicineClassificationComponent>();
@@ -6301,11 +6254,6 @@ public class MedicationKnowledge extends DomainResource {
           for (MedicationKnowledgePackagingComponent i : packaging)
             dst.packaging.add(i.copy());
         };
-        if (drugCharacteristic != null) {
-          dst.drugCharacteristic = new ArrayList<MedicationKnowledgeDrugCharacteristicComponent>();
-          for (MedicationKnowledgeDrugCharacteristicComponent i : drugCharacteristic)
-            dst.drugCharacteristic.add(i.copy());
-        };
         if (clinicalUseIssue != null) {
           dst.clinicalUseIssue = new ArrayList<Reference>();
           for (Reference i : clinicalUseIssue)
@@ -6316,11 +6264,7 @@ public class MedicationKnowledge extends DomainResource {
           for (MedicationKnowledgeRegulatoryComponent i : regulatory)
             dst.regulatory.add(i.copy());
         };
-        if (kineticCharacteristic != null) {
-          dst.kineticCharacteristic = new ArrayList<MedicationKnowledgeKineticCharacteristicComponent>();
-          for (MedicationKnowledgeKineticCharacteristicComponent i : kineticCharacteristic)
-            dst.kineticCharacteristic.add(i.copy());
-        };
+        dst.definitional = definitional == null ? null : definitional.copy();
       }
 
       protected MedicationKnowledge typedCopy() {
@@ -6335,16 +6279,15 @@ public class MedicationKnowledge extends DomainResource {
           return false;
         MedicationKnowledge o = (MedicationKnowledge) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(code, o.code, true) && compareDeep(status, o.status, true)
-           && compareDeep(author, o.author, true) && compareDeep(manufacturer, o.manufacturer, true) && compareDeep(doseForm, o.doseForm, true)
-           && compareDeep(amount, o.amount, true) && compareDeep(synonym, o.synonym, true) && compareDeep(relatedMedicationKnowledge, o.relatedMedicationKnowledge, true)
-           && compareDeep(associatedMedication, o.associatedMedication, true) && compareDeep(associatedDefinition, o.associatedDefinition, true)
-           && compareDeep(productType, o.productType, true) && compareDeep(monograph, o.monograph, true) && compareDeep(ingredient, o.ingredient, true)
-           && compareDeep(device, o.device, true) && compareDeep(preparationInstruction, o.preparationInstruction, true)
-           && compareDeep(intendedRoute, o.intendedRoute, true) && compareDeep(cost, o.cost, true) && compareDeep(monitoringProgram, o.monitoringProgram, true)
-           && compareDeep(administrationGuideline, o.administrationGuideline, true) && compareDeep(medicineClassification, o.medicineClassification, true)
-           && compareDeep(packaging, o.packaging, true) && compareDeep(drugCharacteristic, o.drugCharacteristic, true)
-           && compareDeep(clinicalUseIssue, o.clinicalUseIssue, true) && compareDeep(regulatory, o.regulatory, true)
-           && compareDeep(kineticCharacteristic, o.kineticCharacteristic, true);
+           && compareDeep(author, o.author, true) && compareDeep(intendedJurisdiction, o.intendedJurisdiction, true)
+           && compareDeep(name, o.name, true) && compareDeep(relatedMedicationKnowledge, o.relatedMedicationKnowledge, true)
+           && compareDeep(associatedMedication, o.associatedMedication, true) && compareDeep(productType, o.productType, true)
+           && compareDeep(monograph, o.monograph, true) && compareDeep(preparationInstruction, o.preparationInstruction, true)
+           && compareDeep(cost, o.cost, true) && compareDeep(monitoringProgram, o.monitoringProgram, true)
+           && compareDeep(indicationGuideline, o.indicationGuideline, true) && compareDeep(medicineClassification, o.medicineClassification, true)
+           && compareDeep(packaging, o.packaging, true) && compareDeep(clinicalUseIssue, o.clinicalUseIssue, true)
+           && compareDeep(regulatory, o.regulatory, true) && compareDeep(definitional, o.definitional, true)
+          ;
       }
 
       @Override
@@ -6354,17 +6297,15 @@ public class MedicationKnowledge extends DomainResource {
         if (!(other_ instanceof MedicationKnowledge))
           return false;
         MedicationKnowledge o = (MedicationKnowledge) other_;
-        return compareValues(status, o.status, true) && compareValues(synonym, o.synonym, true) && compareValues(preparationInstruction, o.preparationInstruction, true)
+        return compareValues(status, o.status, true) && compareValues(name, o.name, true) && compareValues(preparationInstruction, o.preparationInstruction, true)
           ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, code, status
-          , author, manufacturer, doseForm, amount, synonym, relatedMedicationKnowledge, associatedMedication
-          , associatedDefinition, productType, monograph, ingredient, device, preparationInstruction
-          , intendedRoute, cost, monitoringProgram, administrationGuideline, medicineClassification
-          , packaging, drugCharacteristic, clinicalUseIssue, regulatory, kineticCharacteristic
-          );
+          , author, intendedJurisdiction, name, relatedMedicationKnowledge, associatedMedication
+          , productType, monograph, preparationInstruction, cost, monitoringProgram, indicationGuideline
+          , medicineClassification, packaging, clinicalUseIssue, regulatory, definitional);
       }
 
   @Override
@@ -6437,17 +6378,17 @@ public class MedicationKnowledge extends DomainResource {
    * <p>
    * Description: <b>powder | tablets | capsule +</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>MedicationKnowledge.doseForm</b><br>
+   * Path: <b>MedicationKnowledge.definitional.doseForm</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="doseform", path="MedicationKnowledge.doseForm", description="powder | tablets | capsule +", type="token" )
+  @SearchParamDefinition(name="doseform", path="MedicationKnowledge.definitional.doseForm", description="powder | tablets | capsule +", type="token" )
   public static final String SP_DOSEFORM = "doseform";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>doseform</b>
    * <p>
    * Description: <b>powder | tablets | capsule +</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>MedicationKnowledge.doseForm</b><br>
+   * Path: <b>MedicationKnowledge.definitional.doseForm</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam DOSEFORM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_DOSEFORM);
@@ -6477,17 +6418,17 @@ public class MedicationKnowledge extends DomainResource {
    * <p>
    * Description: <b>Reference to a concept (by class)</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>MedicationKnowledge.ingredient.item.concept</b><br>
+   * Path: <b>MedicationKnowledge.definitional.ingredient.item.concept</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="ingredient-code", path="MedicationKnowledge.ingredient.item.concept", description="Reference to a concept (by class)", type="token" )
+  @SearchParamDefinition(name="ingredient-code", path="MedicationKnowledge.definitional.ingredient.item.concept", description="Reference to a concept (by class)", type="token" )
   public static final String SP_INGREDIENT_CODE = "ingredient-code";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>ingredient-code</b>
    * <p>
    * Description: <b>Reference to a concept (by class)</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>MedicationKnowledge.ingredient.item.concept</b><br>
+   * Path: <b>MedicationKnowledge.definitional.ingredient.item.concept</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam INGREDIENT_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INGREDIENT_CODE);
@@ -6497,17 +6438,17 @@ public class MedicationKnowledge extends DomainResource {
    * <p>
    * Description: <b>Reference to a resource (by instance)</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>MedicationKnowledge.ingredient.item.reference</b><br>
+   * Path: <b>MedicationKnowledge.definitional.ingredient.item.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="ingredient", path="MedicationKnowledge.ingredient.item.reference", description="Reference to a resource (by instance)", type="reference" )
+  @SearchParamDefinition(name="ingredient", path="MedicationKnowledge.definitional.ingredient.item.reference", description="Reference to a resource (by instance)", type="reference" )
   public static final String SP_INGREDIENT = "ingredient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>ingredient</b>
    * <p>
    * Description: <b>Reference to a resource (by instance)</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>MedicationKnowledge.ingredient.item.reference</b><br>
+   * Path: <b>MedicationKnowledge.definitional.ingredient.item.reference</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INGREDIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INGREDIENT);
@@ -6517,32 +6458,6 @@ public class MedicationKnowledge extends DomainResource {
    * the path value of "<b>MedicationKnowledge:ingredient</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_INGREDIENT = new ca.uhn.fhir.model.api.Include("MedicationKnowledge:ingredient").toLocked();
-
- /**
-   * Search parameter: <b>manufacturer</b>
-   * <p>
-   * Description: <b>Manufacturer of the item</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>MedicationKnowledge.manufacturer</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="manufacturer", path="MedicationKnowledge.manufacturer", description="Manufacturer of the item", type="reference", target={Organization.class } )
-  public static final String SP_MANUFACTURER = "manufacturer";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>manufacturer</b>
-   * <p>
-   * Description: <b>Manufacturer of the item</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>MedicationKnowledge.manufacturer</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MANUFACTURER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MANUFACTURER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>MedicationKnowledge:manufacturer</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_MANUFACTURER = new ca.uhn.fhir.model.api.Include("MedicationKnowledge:manufacturer").toLocked();
 
  /**
    * Search parameter: <b>monitoring-program-name</b>

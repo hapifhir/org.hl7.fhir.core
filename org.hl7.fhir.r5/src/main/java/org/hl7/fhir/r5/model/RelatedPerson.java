@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1279,6 +1279,46 @@ public class RelatedPerson extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam ACTIVE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ACTIVE);
+
+ /**
+   * Search parameter: <b>family</b>
+   * <p>
+   * Description: <b>A portion of the family name of the related person</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>RelatedPerson.name.family</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="family", path="RelatedPerson.name.family", description="A portion of the family name of the related person", type="string" )
+  public static final String SP_FAMILY = "family";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>family</b>
+   * <p>
+   * Description: <b>A portion of the family name of the related person</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>RelatedPerson.name.family</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam FAMILY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_FAMILY);
+
+ /**
+   * Search parameter: <b>given</b>
+   * <p>
+   * Description: <b>A portion of the given name of the related person</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>RelatedPerson.name.given</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="given", path="RelatedPerson.name.given", description="A portion of the given name of the related person", type="string" )
+  public static final String SP_GIVEN = "given";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>given</b>
+   * <p>
+   * Description: <b>A portion of the given name of the related person</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>RelatedPerson.name.given</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam GIVEN = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_GIVEN);
 
  /**
    * Search parameter: <b>identifier</b>

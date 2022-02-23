@@ -23,14 +23,14 @@ public class ValidationTestConvertor {
    * @throws FileNotFoundException
    */
   public static void main(String[] args) throws FileNotFoundException, IOException, FHIRException {
-    SimpleWorkerContext context = SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation-min.xml.zip");
+    SimpleWorkerContext context = new SimpleWorkerContext.SimpleWorkerContextBuilder().fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation-min.xml.zip");
     for (File f : new File("C:\\work\\org.hl7.fhir\\build\\tests\\validation-examples").listFiles()) {
       if (f.getAbsolutePath().endsWith(".xml")) {
         File t = new File(Utilities.changeFileExt(f.getAbsolutePath(), ".ttl"));
         if (!t.exists()) {
           try {
             System.out.print("Process " + f.getAbsolutePath());
-            Element e = Manager.parse(context, new FileInputStream(f), FhirFormat.XML);
+            Element e = Manager.parseSingle(context, new FileInputStream(f), FhirFormat.XML);
             Manager.compose(context, e, new FileOutputStream(t), FhirFormat.TURTLE, OutputStyle.PRETTY, null);
             System.out.println("   .... success");
           } catch (Exception e) {
@@ -44,7 +44,7 @@ public class ValidationTestConvertor {
           if (!t.exists()) {
             try {
               System.out.print("Process " + f.getAbsolutePath());
-              Element e = Manager.parse(context, new FileInputStream(f), FhirFormat.JSON);
+              Element e = Manager.parseSingle(context, new FileInputStream(f), FhirFormat.JSON);
               Manager.compose(context, e, new FileOutputStream(t), FhirFormat.TURTLE, OutputStyle.PRETTY, null);
               System.out.println("   .... success");
             } catch (Exception e) {

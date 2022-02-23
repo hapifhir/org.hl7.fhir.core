@@ -45,14 +45,14 @@ public class ProfileComparer extends CanonicalResourceComparer {
 
   public class ProfileComparison extends CanonicalResourceComparison<StructureDefinition> {
 
-    private StructuralMatch<ElementDefinition> combined;                                             
+    private StructuralMatch<ElementDefinitionNode> combined;                                             
 
     public ProfileComparison(StructureDefinition left, StructureDefinition right) {
       super(left, right);
-      combined = new StructuralMatch<ElementDefinition>(); // base
+      combined = new StructuralMatch<ElementDefinitionNode>(); // base
     }
 
-    public StructuralMatch<ElementDefinition> getCombined() {
+    public StructuralMatch<ElementDefinitionNode> getCombined() {
       return combined;
     }
 
@@ -79,7 +79,21 @@ public class ProfileComparer extends CanonicalResourceComparer {
   }
 
 
-
+  private class ElementDefinitionNode {
+    private ElementDefinition def;
+    private StructureDefinition src;
+    private ElementDefinitionNode(StructureDefinition src, ElementDefinition def) {
+      super();
+      this.src = src;
+      this.def = def;
+    }
+    public ElementDefinition getDef() {
+      return def;
+    }
+    public StructureDefinition getSrc() {
+      return src;
+    }
+  }
 
   private ProfileUtilities utilsLeft;
   private ProfileUtilities utilsRight;
@@ -127,7 +141,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     if (left.getType().equals(right.getType())) {
       DefinitionNavigator ln = new DefinitionNavigator(session.getContextLeft(), left);
       DefinitionNavigator rn = new DefinitionNavigator(session.getContextRight(), right);
-      StructuralMatch<ElementDefinition> sm = new StructuralMatch<ElementDefinition>(ln.current(), rn.current());
+      StructuralMatch<ElementDefinitionNode> sm = new StructuralMatch<ElementDefinitionNode>(new ElementDefinitionNode(left, ln.current()), new ElementDefinitionNode(right, rn.current()));
       compareElements(res, sm, ln.path(), null, ln, rn);
       res.combined = sm;
     }
@@ -147,7 +161,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
       throw new DefinitionException("StructureDefinition snapshot is empty ("+name+": "+sd.getName()+")");
   }
 
-  private void compareElements(ProfileComparison comp, StructuralMatch<ElementDefinition> res,  String path, String sliceName, DefinitionNavigator left, DefinitionNavigator right) throws DefinitionException, FHIRFormatError, IOException {
+  private void compareElements(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res,  String path, String sliceName, DefinitionNavigator left, DefinitionNavigator right) throws DefinitionException, FHIRFormatError, IOException {
     assert(path != null);  
     assert(left != null);
     assert(right != null);
@@ -190,7 +204,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     subset.setExample(left.current().hasExample() ? left.current().getExample() : right.current().getExample());
 
     if (left.current().getMustSupport() != right.current().getMustSupport()) {
-      vm(IssueSeverity.ERROR, "Elements differ in definition for mustSupport:\r\n  \""+left.current().getMustSupport()+"\"\r\n  \""+right.current().getMustSupport()+"\"", path, comp.getMessages(), res.getMessages());
+      vm(IssueSeverity.WARNING, "Elements differ in definition for mustSupport: '"+left.current().getMustSupport()+"' vs '"+right.current().getMustSupport()+"'", path, comp.getMessages(), res.getMessages());
 
     }
     subset.setMustSupport(left.current().getMustSupport() || right.current().getMustSupport());
@@ -198,15 +212,20 @@ public class ProfileComparer extends CanonicalResourceComparer {
 
 
     // compare and intersect
-    superset.setMin(unionMin(left.current().getMin(), right.current().getMin()));
-    superset.setMax(unionMax(left.current().getMax(), right.current().getMax()));
-    subset.setMin(intersectMin(left.current().getMin(), right.current().getMin()));
-    subset.setMax(intersectMax(left.current().getMax(), right.current().getMax()));
-    rule(comp, res, subset.getMax().equals("*") || Integer.parseInt(subset.getMax()) >= subset.getMin(), path, "Cardinality Mismatch: "+card(left)+"/"+card(right));
+    int leftMin = left.current().getMin();
+    int rightMin = right.current().getMin();
+    int leftMax = "*".equals(left.current().getMax()) ? Integer.MAX_VALUE : Integer.parseInt(left.current().getMax());
+    int rightMax = "*".equals(right.current().getMax()) ? Integer.MAX_VALUE : Integer.parseInt(right.current().getMax());
+    
+    checkMinMax(comp, res, path, leftMin, rightMin, leftMax, rightMax);
+    superset.setMin(unionMin(leftMin, rightMin));
+    superset.setMax(unionMax(leftMax, rightMax, left.current().getMax(), right.current().getMax()));
+    subset.setMin(intersectMin(leftMin, rightMin));
+    subset.setMax(intersectMax(leftMax, rightMax, left.current().getMax(), right.current().getMax()));
 
     superset.getType().addAll(unionTypes(comp, res, path, left.current().getType(), right.current().getType()));
     subset.getType().addAll(intersectTypes(comp, res, subset, path, left.current().getType(), right.current().getType()));
-    rule(comp, res, !subset.getType().isEmpty() || (!left.current().hasType() && !right.current().hasType()), path, "Type Mismatch:\r\n  "+typeCode(left)+"\r\n  "+typeCode(right));
+    rule(comp, res, !subset.getType().isEmpty() || (!left.current().hasType() && !right.current().hasType()), path, "Type Mismatch: "+typeCode(left)+" vs "+typeCode(right));
     //    <fixed[x]><!-- ?? 0..1 * Value must be exactly this --></fixed[x]>
     //    <pattern[x]><!-- ?? 0..1 * Value must have at least these property values --></pattern[x]>
     superset.setMaxLengthElement(unionMaxLength(left.current().getMaxLength(), right.current().getMaxLength()));
@@ -283,7 +302,8 @@ public class ProfileComparer extends CanonicalResourceComparer {
 //    return null;
   }
 
-  private void compareChildren(ProfileComparison comp, StructuralMatch<ElementDefinition> res, String path, DefinitionNavigator left, DefinitionNavigator right) throws DefinitionException, IOException, FHIRFormatError {
+
+  private void compareChildren(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, String path, DefinitionNavigator left, DefinitionNavigator right) throws DefinitionException, IOException, FHIRFormatError {
     List<DefinitionNavigator> lc = left.children();
     List<DefinitionNavigator> rc = right.children();
     // it's possible that one of these profiles walks into a data type and the other doesn't
@@ -299,10 +319,10 @@ public class ProfileComparer extends CanonicalResourceComparer {
       DefinitionNavigator r = findInList(rc, l);
       if (r == null) {
         comp.getUnion().getSnapshot().getElement().add(l.current().copy());
-        res.getChildren().add(new StructuralMatch<ElementDefinition>(l.current(), vmI(IssueSeverity.INFORMATION, "Removed this element", path)));
+        res.getChildren().add(new StructuralMatch<ElementDefinitionNode>(new ElementDefinitionNode(l.getStructure(), l.current()), vmI(IssueSeverity.INFORMATION, "Removed this element", path)));
       } else {
         matchR.add(r);
-        StructuralMatch<ElementDefinition> sm = new StructuralMatch<ElementDefinition>(l.current(), r.current());
+        StructuralMatch<ElementDefinitionNode> sm = new StructuralMatch<ElementDefinitionNode>(new ElementDefinitionNode(l.getStructure(), l.current()), new ElementDefinitionNode(r.getStructure(), r.current()));
         res.getChildren().add(sm);
         compareElements(comp, sm, l.path(), null, l, r);
       }
@@ -310,7 +330,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     for (DefinitionNavigator r : rc) {
       if (!matchR.contains(r)) {
         comp.getUnion().getSnapshot().getElement().add(r.current().copy());
-        res.getChildren().add(new StructuralMatch<ElementDefinition>(vmI(IssueSeverity.INFORMATION, "Added this element", path), r.current()));        
+        res.getChildren().add(new StructuralMatch<ElementDefinitionNode>(vmI(IssueSeverity.INFORMATION, "Added this element", path), new ElementDefinitionNode(r.getStructure(), r.current())));        
       }
     }
   }
@@ -324,7 +344,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     return null;
   }
 
-  private void ruleEqual(ProfileComparison comp, StructuralMatch<ElementDefinition> res, DataType vLeft, DataType vRight, String name, String path) throws IOException {
+  private void ruleEqual(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, DataType vLeft, DataType vRight, String name, String path) throws IOException {
     if (vLeft == null && vRight == null) {
       // nothing
     } else if (vLeft == null) {
@@ -338,7 +358,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
 
   private String toString(DataType val, boolean left) throws IOException {
     if (val instanceof PrimitiveType) 
-      return "\"" + ((PrimitiveType) val).getValueAsString()+"\"";
+      return "'" + ((PrimitiveType) val).getValueAsString()+"'";
     
     IParser jp = left ? session.getContextLeft().newJsonParser() : session.getContextRight().newJsonParser();
     return jp.composeString(val, "value");
@@ -356,14 +376,14 @@ public class ProfileComparer extends CanonicalResourceComparer {
     return s;
   }
   
-  private boolean rule(ProfileComparison comp, StructuralMatch<ElementDefinition> res, boolean test, String path, String message) {
+  private boolean rule(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, boolean test, String path, String message) {
     if (!test)  {
       vm(IssueSeverity.ERROR, message, path, comp.getMessages(), res.getMessages());
     }
     return test;
   }
 
-  private String mergeText(ProfileComparison comp, StructuralMatch<ElementDefinition> res, String path, String name, String left, String right, boolean isError) {
+  private String mergeText(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, String path, String name, String left, String right, boolean isError) {
     if (left == null && right == null)
       return null;
     if (left == null)
@@ -375,7 +395,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     if (left.equalsIgnoreCase(right))
       return left;
     if (path != null) {
-      vm(isError ? IssueSeverity.ERROR : IssueSeverity.WARNING, "Elements differ in "+name+":\r\n  \""+left+"\"\r\n  \""+right+"\"", path, comp.getMessages(), res.getMessages());
+      vm(isError ? IssueSeverity.ERROR : IssueSeverity.WARNING, "Elements differ in "+name+": '"+left+"' vs '"+right+"'", path, comp.getMessages(), res.getMessages());
     }
     return "left: "+left+"; right: "+right;
   }
@@ -429,6 +449,36 @@ public class ProfileComparer extends CanonicalResourceComparer {
       return right;
   }
 
+  private void checkMinMax(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, String path, int leftMin, int rightMin, int leftMax, int rightMax) {
+    if (leftMin != rightMin) {
+      if (leftMin == 0) {
+        vm(IssueSeverity.INFORMATION, "Element minimum cardinalities differ:  '"+leftMin+"' vs '"+rightMin+"'", path, comp.getMessages(), res.getMessages());
+      } else if (rightMin == 0) { 
+        vm(IssueSeverity.INFORMATION, "Element minimum cardinalities differ:  '"+leftMin+"' vs '"+rightMin+"'", path, comp.getMessages(), res.getMessages());
+      } else {
+        vm(IssueSeverity.INFORMATION, "Element minimum cardinalities differ:  '"+leftMin+"' vs '"+rightMin+"'", path, comp.getMessages(), res.getMessages());
+      }
+    }    
+    if (leftMax != rightMax) {
+      if (leftMax == Integer.MAX_VALUE) {
+        vm(IssueSeverity.INFORMATION, "Element maximum cardinalities differ:  '"+leftMax+"' vs '"+rightMax+"'", path, comp.getMessages(), res.getMessages());
+      } else if (rightMax == Integer.MAX_VALUE) { 
+        vm(IssueSeverity.INFORMATION, "Element maximum cardinalities differ:  '"+leftMax+"' vs '"+rightMax+"'", path, comp.getMessages(), res.getMessages());
+      } else {
+        vm(IssueSeverity.INFORMATION, "Element maximum cardinalities differ:  '"+leftMax+"' vs '"+rightMax+"'", path, comp.getMessages(), res.getMessages());
+      }
+    }    
+//    rule(comp, res, subset.getMax().equals("*") || Integer.parseInt(subset.getMax()) >= subset.getMin(), path, "Cardinality Mismatch: "+card(left)+"/"+card(right));
+
+    // cross comparison - if max > min in either direction, there can be no instances that are valid against both
+    if (leftMax < rightMin) {
+      vm(IssueSeverity.ERROR, "Element minimum cardinalities conflict:  '"+leftMin+".."+leftMax+"' vs '"+rightMin+".."+rightMax+"': No instances can be valid against both profiles", path, comp.getMessages(), res.getMessages());      
+    }
+    if (rightMax < leftMin) {
+      vm(IssueSeverity.ERROR, "Element minimum cardinalities conflict:  '"+leftMin+".."+leftMax+"' vs '"+rightMin+".."+rightMax+"': No instances can be valid against both profiles", path, comp.getMessages(), res.getMessages());            
+    }
+  }
+  
   private int unionMin(int left, int right) {
     if (left > right)
       return right;
@@ -436,18 +486,14 @@ public class ProfileComparer extends CanonicalResourceComparer {
       return left;
   }
 
-  private String intersectMax(String left, String right) {
-    int l = "*".equals(left) ? Integer.MAX_VALUE : Integer.parseInt(left);
-    int r = "*".equals(right) ? Integer.MAX_VALUE : Integer.parseInt(right);
+  private String intersectMax(int l, int r, String left, String right) {
     if (l < r)
       return left;
     else
       return right;
   }
 
-  private String unionMax(String left, String right) {
-    int l = "*".equals(left) ? Integer.MAX_VALUE : Integer.parseInt(left);
-    int r = "*".equals(right) ? Integer.MAX_VALUE : Integer.parseInt(right);
+  private String unionMax(int l, int r, String left, String right) {
     if (l < r)
       return right;
     else
@@ -480,7 +526,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     return Integer.toString(defn.current().getMin())+".."+defn.current().getMax();
   }
 
-  private Collection<? extends TypeRefComponent> unionTypes(ProfileComparison comp, StructuralMatch<ElementDefinition> res, String path, List<TypeRefComponent> left, List<TypeRefComponent> right) throws DefinitionException, IOException, FHIRFormatError {
+  private Collection<? extends TypeRefComponent> unionTypes(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, String path, List<TypeRefComponent> left, List<TypeRefComponent> right) throws DefinitionException, IOException, FHIRFormatError {
     List<TypeRefComponent> result = new ArrayList<TypeRefComponent>();
     for (TypeRefComponent l : left) 
       checkAddTypeUnion(comp, res, path, result, l, session.getContextLeft());
@@ -489,7 +535,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     return result;
   }    
 
-  private void checkAddTypeUnion(ProfileComparison comp, StructuralMatch<ElementDefinition> res, String path, List<TypeRefComponent> results, TypeRefComponent nw, IWorkerContext ctxt) throws DefinitionException, IOException, FHIRFormatError {
+  private void checkAddTypeUnion(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, String path, List<TypeRefComponent> results, TypeRefComponent nw, IWorkerContext ctxt) throws DefinitionException, IOException, FHIRFormatError {
     boolean pfound = false;
     boolean tfound = false;
     nw = nw.copy();
@@ -586,7 +632,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     return false;
   }
 
-  private Collection<? extends TypeRefComponent> intersectTypes(ProfileComparison comp, StructuralMatch<ElementDefinition> res, ElementDefinition ed, String path, List<TypeRefComponent> left, List<TypeRefComponent> right) throws DefinitionException, IOException, FHIRFormatError {
+  private Collection<? extends TypeRefComponent> intersectTypes(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, ElementDefinition ed, String path, List<TypeRefComponent> left, List<TypeRefComponent> right) throws DefinitionException, IOException, FHIRFormatError {
     List<TypeRefComponent> result = new ArrayList<TypeRefComponent>();
     for (TypeRefComponent l : left) {
       if (l.hasAggregation())
@@ -665,7 +711,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     return b.toString();
   }
 
-  private boolean compareBindings(ProfileComparison comp, StructuralMatch<ElementDefinition> res, ElementDefinition subset, ElementDefinition superset, String path, ElementDefinition lDef, ElementDefinition rDef) throws FHIRFormatError, DefinitionException, IOException {
+  private boolean compareBindings(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, ElementDefinition subset, ElementDefinition superset, String path, ElementDefinition lDef, ElementDefinition rDef) throws FHIRFormatError, DefinitionException, IOException {
     assert(lDef.hasBinding() || rDef.hasBinding());
     if (!lDef.hasBinding()) {
       subset.setBinding(rDef.getBinding());
@@ -801,7 +847,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
   }
 
   // we can't really know about constraints. We create warnings, and collate them 
-  private List<ElementDefinitionConstraintComponent> unionConstraints(ProfileComparison comp, StructuralMatch<ElementDefinition> res, String path, List<ElementDefinitionConstraintComponent> left, List<ElementDefinitionConstraintComponent> right) {
+  private List<ElementDefinitionConstraintComponent> unionConstraints(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, String path, List<ElementDefinitionConstraintComponent> left, List<ElementDefinitionConstraintComponent> right) {
     List<ElementDefinitionConstraintComponent> result = new ArrayList<ElementDefinitionConstraintComponent>();
     for (ElementDefinitionConstraintComponent l : left) {
       boolean found = false;
@@ -829,7 +875,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     return result;
   }
 
-  private StructureDefinition resolveProfile(ProfileComparison comp, StructuralMatch<ElementDefinition> res, String path, String url, String name, IWorkerContext ctxt) {
+  private StructureDefinition resolveProfile(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, String path, String url, String name, IWorkerContext ctxt) {
     StructureDefinition sd = ctxt.fetchResource(StructureDefinition.class, url);
     if (sd == null) {
       ValidationMessage vm = vmI(IssueSeverity.WARNING, "Unable to resolve profile "+url+" in profile "+name, path);
@@ -841,7 +887,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     return binding.getStrength() == BindingStrength.EXAMPLE || binding.getStrength() == BindingStrength.PREFERRED;
   }
 
-  private ElementDefinitionBindingComponent unionBindings(ProfileComparison comp, StructuralMatch<ElementDefinition> res, String path, ElementDefinitionBindingComponent left, ElementDefinitionBindingComponent right) throws FHIRFormatError, DefinitionException, IOException {
+  private ElementDefinitionBindingComponent unionBindings(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, String path, ElementDefinitionBindingComponent left, ElementDefinitionBindingComponent right) throws FHIRFormatError, DefinitionException, IOException {
     ElementDefinitionBindingComponent union = new ElementDefinitionBindingComponent();
     if (left.getStrength().compareTo(right.getStrength()) < 0)
       union.setStrength(left.getStrength());
@@ -881,17 +927,17 @@ public class ProfileComparer extends CanonicalResourceComparer {
     return gen.generate(model, prefix, 0, null);
   }
 
-  private void genElementComp(String defPath, HierarchicalTableGenerator gen, List<Row> rows, StructuralMatch<ElementDefinition> combined, String corePath, String prefix, Row slicingRow, boolean root) throws IOException {
+  private void genElementComp(String defPath, HierarchicalTableGenerator gen, List<Row> rows, StructuralMatch<ElementDefinitionNode> combined, String corePath, String prefix, Row slicingRow, boolean root) throws IOException {
     Row originalRow = slicingRow;
     Row typesRow = null;
     
-    List<StructuralMatch<ElementDefinition>> children = combined.getChildren();
+    List<StructuralMatch<ElementDefinitionNode>> children = combined.getChildren();
 
     Row row = gen.new Row();
     rows.add(row);
-    String path = combined.either().getPath();
+    String path = combined.either().getDef().getPath();
     row.setAnchor(path);
-      row.setColor(utilsRight.getRowColor(combined.either(), false));
+      row.setColor(utilsRight.getRowColor(combined.either().getDef(), false));
       if (eitherHasSlicing(combined))
         row.setLineColor(1);
       else if (eitherHasSliceName(combined))
@@ -917,7 +963,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
           row.setIcon("icon_choice.gif", HierarchicalTableGenerator.TEXT_ICON_CHOICE);
           typesRow = row;
         }
-      } else if (combined.either().hasContentReference())
+      } else if (combined.either().getDef().hasContentReference())
         row.setIcon("icon_reuse.png", HierarchicalTableGenerator.TEXT_ICON_REUSE);
       else if (isPrimitive(combined))
         row.setIcon("icon_primitive.png", HierarchicalTableGenerator.TEXT_ICON_PRIMITIVE);
@@ -927,7 +973,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
         row.setIcon("icon_datatype.gif", HierarchicalTableGenerator.TEXT_ICON_DATATYPE);
       else
         row.setIcon("icon_resource.png", HierarchicalTableGenerator.TEXT_ICON_RESOURCE);
-      String ref = defPath == null ? null : defPath + combined.either().getId();
+      String ref = defPath == null ? null : defPath + combined.either().getDef().getId();
       String sName = tail(path);
       String sn = getSliceName(combined);
       if (sn != null)
@@ -937,23 +983,23 @@ public class ProfileComparer extends CanonicalResourceComparer {
       String leftColor = !combined.hasLeft() ? COLOR_NO_ROW_LEFT : combined.hasErrors() ? COLOR_DIFFERENT : null;
       String rightColor = !combined.hasRight() ? COLOR_NO_ROW_LEFT : combined.hasErrors() ? COLOR_DIFFERENT : null;
       if (combined.hasLeft()) {
-        nc = utilsRight.genElementNameCell(gen, combined.getLeft(),  "??", true, corePath, prefix, root, false, false, null, typesRow, row, false, ext, used , ref, sName);
+        nc = utilsRight.genElementNameCell(gen, combined.getLeft().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getLeft().getSrc(), typesRow, row, false, ext, used , ref, sName);
       } else {
-        nc = utilsRight.genElementNameCell(gen, combined.getRight(),  "??", true, corePath, prefix, root, false, false, null, typesRow, row, false, ext, used , ref, sName);
+        nc = utilsRight.genElementNameCell(gen, combined.getRight().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, false, ext, used , ref, sName);
       }
       if (combined.hasLeft()) {
-        frame(utilsRight.genElementCells(gen, combined.getLeft(),  "??", true, corePath, prefix, root, false, false, null, typesRow, row, false, ext, used , ref, sName, nc, false), leftColor);
+        frame(utilsRight.genElementCells(gen, combined.getLeft().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getLeft().getSrc(), typesRow, row, true, ext, used , ref, sName, nc, false, false), leftColor);
       } else {
         frame(spacers(row, 4, gen), leftColor);
       }
       if (combined.hasRight()) {
-        frame(utilsRight.genElementCells(gen, combined.getRight(), "??", true, corePath, prefix, root, false, false, null, typesRow, row, false, ext, used, ref, sName, nc, false), rightColor);
+        frame(utilsRight.genElementCells(gen, combined.getRight().getDef(), "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, true, ext, used, ref, sName, nc, false, false), rightColor);
       } else {
         frame(spacers(row, 4, gen), rightColor);
       }
       row.getCells().add(cellForMessages(gen, combined.getMessages()));
 
-      for (StructuralMatch<ElementDefinition> child : children) {
+      for (StructuralMatch<ElementDefinitionNode> child : children) {
         genElementComp(defPath, gen, row.getSubRows(), child, corePath, prefix, originalRow, false);
       }
     }
@@ -978,47 +1024,47 @@ public class ProfileComparer extends CanonicalResourceComparer {
     return res;
   }
 
-  private String getSliceName(StructuralMatch<ElementDefinition> combined) {
+  private String getSliceName(StructuralMatch<ElementDefinitionNode> combined) {
     // TODO Auto-generated method stub
     return null;
   }
 
-  private boolean isDataType(StructuralMatch<ElementDefinition> combined) {
+  private boolean isDataType(StructuralMatch<ElementDefinitionNode> combined) {
     // TODO Auto-generated method stub
     return false;
   }
 
-  private boolean hasTarget(StructuralMatch<ElementDefinition> combined) {
+  private boolean hasTarget(StructuralMatch<ElementDefinitionNode> combined) {
     // TODO Auto-generated method stub
     return false;
   }
 
-  private boolean isPrimitive(StructuralMatch<ElementDefinition> combined) {
+  private boolean isPrimitive(StructuralMatch<ElementDefinitionNode> combined) {
     // TODO Auto-generated method stub
     return false;
   }
 
-  private boolean allAreReference(StructuralMatch<ElementDefinition> combined) {
+  private boolean allAreReference(StructuralMatch<ElementDefinitionNode> combined) {
     // TODO Auto-generated method stub
     return false;
   }
 
-  private boolean hasChoice(StructuralMatch<ElementDefinition> combined) {
+  private boolean hasChoice(StructuralMatch<ElementDefinitionNode> combined) {
     // TODO Auto-generated method stub
     return false;
   }
 
-  private boolean elementIsComplex(StructuralMatch<ElementDefinition> combined) {
+  private boolean elementIsComplex(StructuralMatch<ElementDefinitionNode> combined) {
     // TODO Auto-generated method stub velement.hasType() && element.getType().get(0).hasProfile() && extensionIsComplex(element.getType().get(0).getProfile().get(0).getValue()
     return false;
   }
 
-  private boolean eitherHasSliceName(StructuralMatch<ElementDefinition> combined) {
+  private boolean eitherHasSliceName(StructuralMatch<ElementDefinitionNode> combined) {
     // TODO Auto-generated method stub
     return false;
   }
 
-  private boolean eitherHasSlicing(StructuralMatch<ElementDefinition> combined) {
+  private boolean eitherHasSlicing(StructuralMatch<ElementDefinitionNode> combined) {
     // TODO Auto-generated method stub
     return false;
   }

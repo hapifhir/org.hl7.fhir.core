@@ -25,16 +25,17 @@ public class NodeStack {
   private String workingLang;
   private Map<String, Element> ids;
   private boolean resetPoint = false;
+  private boolean contained = false; 
 
   public NodeStack(IWorkerContext context) {
     this.context = context;
   }
 
-  public NodeStack(IWorkerContext context, Element element, String validationLanguage) {
+  public NodeStack(IWorkerContext context, String initialPath, Element element, String validationLanguage) {
     this.context = context;
     ids = new HashMap<>();
     this.element = element;
-    literalPath = element.getName();
+    literalPath = (initialPath == null ? "" : initialPath+".") + element.getPath();
     workingLang = validationLanguage;
     if (!element.getName().equals(element.fhirType())) {
       logicalPaths = new ArrayList<>();
@@ -101,6 +102,7 @@ public class NodeStack {
     res.workingLang = this.workingLang;
     res.element = element;
     res.definition = definition;
+    res.contained = contained;
     res.literalPath = getLiteralPath() + sep + element.getName();
     if (count > -1)
       res.literalPath = res.literalPath + "[" + Integer.toString(count) + "]";
@@ -117,7 +119,7 @@ public class NodeStack {
     }
     res.logicalPaths = new ArrayList<String>();
     if (type != null) {
-      // type will be bull if we on a stitching point of a contained resource, or if....
+      // type will be null if we on a stitching point of a contained resource, or if....
       res.type = type;
       String tn = res.type.getPath();
       String t = tail(definition.getPath());
@@ -126,8 +128,10 @@ public class NodeStack {
       }
       for (String lp : getLogicalPaths()) {
         res.logicalPaths.add(lp + "." + t);
-        if (t.endsWith("[x]"))
+        if (t.endsWith("[x]")) {
+          res.logicalPaths.add(lp + "." + t.substring(0, t.length() - 3) + ".ofType("+type.getPath()+")");
           res.logicalPaths.add(lp + "." + t.substring(0, t.length() - 3) + type.getPath());
+        }
       }
       res.logicalPaths.add(tn);
     } else if (definition != null) {
@@ -193,6 +197,14 @@ public class NodeStack {
     } else {
       return parent.depth()+1;
     }
+  }
+
+  public boolean isContained() {
+    return contained;
+  }
+
+  public void setContained(boolean contained) {
+    this.contained = contained;
   }
 
 

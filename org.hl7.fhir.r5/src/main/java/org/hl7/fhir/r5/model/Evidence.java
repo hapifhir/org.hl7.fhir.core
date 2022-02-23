@@ -29,11 +29,12 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.math.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -48,7 +49,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * This represents statistics, certainty, both the intended and actual population, and evidence variables.
+ * The Evidence Resource provides a machine-interpretable expression of an evidence concept including the evidence variables (e.g., population, exposures/interventions, comparators, outcomes, measured variables, confounding variables), the statistics, and the certainty of this evidence.
  */
 @ResourceDef(name="Evidence", profile="http://hl7.org/fhir/StructureDefinition/Evidence")
 public class Evidence extends MetadataResource {
@@ -508,6 +509,2609 @@ public class Evidence extends MetadataResource {
   }
 
     @Block()
+    public static class EvidenceStatisticComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * A description of the content value of the statistic.
+         */
+        @Child(name = "description", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Description of content", formalDefinition="A description of the content value of the statistic." )
+        protected StringType description;
+
+        /**
+         * Footnotes and/or explanatory notes.
+         */
+        @Child(name = "note", type = {Annotation.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Footnotes and/or explanatory notes", formalDefinition="Footnotes and/or explanatory notes." )
+        protected List<Annotation> note;
+
+        /**
+         * Type of statistic, e.g., relative risk.
+         */
+        @Child(name = "statisticType", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Type of statistic, e.g., relative risk", formalDefinition="Type of statistic, e.g., relative risk." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/statistic-type")
+        protected CodeableConcept statisticType;
+
+        /**
+         * When the measured variable is handled categorically, the category element is used to define which category the statistic is reporting.
+         */
+        @Child(name = "category", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Associated category for categorical variable", formalDefinition="When the measured variable is handled categorically, the category element is used to define which category the statistic is reporting." )
+        protected CodeableConcept category;
+
+        /**
+         * Statistic value.
+         */
+        @Child(name = "quantity", type = {Quantity.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Statistic value", formalDefinition="Statistic value." )
+        protected Quantity quantity;
+
+        /**
+         * The number of events associated with the statistic, where the unit of analysis is different from numberAffected, sampleSize.knownDataCount and sampleSize.numberOfParticipants.
+         */
+        @Child(name = "numberOfEvents", type = {UnsignedIntType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The number of events associated with the statistic", formalDefinition="The number of events associated with the statistic, where the unit of analysis is different from numberAffected, sampleSize.knownDataCount and sampleSize.numberOfParticipants." )
+        protected UnsignedIntType numberOfEvents;
+
+        /**
+         * The number of participants affected where the unit of analysis is the same as sampleSize.knownDataCount and sampleSize.numberOfParticipants.
+         */
+        @Child(name = "numberAffected", type = {UnsignedIntType.class}, order=7, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The number of participants affected", formalDefinition="The number of participants affected where the unit of analysis is the same as sampleSize.knownDataCount and sampleSize.numberOfParticipants." )
+        protected UnsignedIntType numberAffected;
+
+        /**
+         * Number of samples in the statistic.
+         */
+        @Child(name = "sampleSize", type = {}, order=8, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Number of samples in the statistic", formalDefinition="Number of samples in the statistic." )
+        protected EvidenceStatisticSampleSizeComponent sampleSize;
+
+        /**
+         * A statistical attribute of the statistic such as a measure of heterogeneity.
+         */
+        @Child(name = "attributeEstimate", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="An attribute of the Statistic", formalDefinition="A statistical attribute of the statistic such as a measure of heterogeneity." )
+        protected List<EvidenceStatisticAttributeEstimateComponent> attributeEstimate;
+
+        /**
+         * A component of the method to generate the statistic.
+         */
+        @Child(name = "modelCharacteristic", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="An aspect of the statistical model", formalDefinition="A component of the method to generate the statistic." )
+        protected List<EvidenceStatisticModelCharacteristicComponent> modelCharacteristic;
+
+        private static final long serialVersionUID = 479247832L;
+
+    /**
+     * Constructor
+     */
+      public EvidenceStatisticComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #description} (A description of the content value of the statistic.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         */
+        public StringType getDescriptionElement() { 
+          if (this.description == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceStatisticComponent.description");
+            else if (Configuration.doAutoCreate())
+              this.description = new StringType(); // bb
+          return this.description;
+        }
+
+        public boolean hasDescriptionElement() { 
+          return this.description != null && !this.description.isEmpty();
+        }
+
+        public boolean hasDescription() { 
+          return this.description != null && !this.description.isEmpty();
+        }
+
+        /**
+         * @param value {@link #description} (A description of the content value of the statistic.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         */
+        public EvidenceStatisticComponent setDescriptionElement(StringType value) { 
+          this.description = value;
+          return this;
+        }
+
+        /**
+         * @return A description of the content value of the statistic.
+         */
+        public String getDescription() { 
+          return this.description == null ? null : this.description.getValue();
+        }
+
+        /**
+         * @param value A description of the content value of the statistic.
+         */
+        public EvidenceStatisticComponent setDescription(String value) { 
+          if (Utilities.noString(value))
+            this.description = null;
+          else {
+            if (this.description == null)
+              this.description = new StringType();
+            this.description.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #note} (Footnotes and/or explanatory notes.)
+         */
+        public List<Annotation> getNote() { 
+          if (this.note == null)
+            this.note = new ArrayList<Annotation>();
+          return this.note;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public EvidenceStatisticComponent setNote(List<Annotation> theNote) { 
+          this.note = theNote;
+          return this;
+        }
+
+        public boolean hasNote() { 
+          if (this.note == null)
+            return false;
+          for (Annotation item : this.note)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Annotation addNote() { //3
+          Annotation t = new Annotation();
+          if (this.note == null)
+            this.note = new ArrayList<Annotation>();
+          this.note.add(t);
+          return t;
+        }
+
+        public EvidenceStatisticComponent addNote(Annotation t) { //3
+          if (t == null)
+            return this;
+          if (this.note == null)
+            this.note = new ArrayList<Annotation>();
+          this.note.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist {3}
+         */
+        public Annotation getNoteFirstRep() { 
+          if (getNote().isEmpty()) {
+            addNote();
+          }
+          return getNote().get(0);
+        }
+
+        /**
+         * @return {@link #statisticType} (Type of statistic, e.g., relative risk.)
+         */
+        public CodeableConcept getStatisticType() { 
+          if (this.statisticType == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceStatisticComponent.statisticType");
+            else if (Configuration.doAutoCreate())
+              this.statisticType = new CodeableConcept(); // cc
+          return this.statisticType;
+        }
+
+        public boolean hasStatisticType() { 
+          return this.statisticType != null && !this.statisticType.isEmpty();
+        }
+
+        /**
+         * @param value {@link #statisticType} (Type of statistic, e.g., relative risk.)
+         */
+        public EvidenceStatisticComponent setStatisticType(CodeableConcept value) { 
+          this.statisticType = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #category} (When the measured variable is handled categorically, the category element is used to define which category the statistic is reporting.)
+         */
+        public CodeableConcept getCategory() { 
+          if (this.category == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceStatisticComponent.category");
+            else if (Configuration.doAutoCreate())
+              this.category = new CodeableConcept(); // cc
+          return this.category;
+        }
+
+        public boolean hasCategory() { 
+          return this.category != null && !this.category.isEmpty();
+        }
+
+        /**
+         * @param value {@link #category} (When the measured variable is handled categorically, the category element is used to define which category the statistic is reporting.)
+         */
+        public EvidenceStatisticComponent setCategory(CodeableConcept value) { 
+          this.category = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #quantity} (Statistic value.)
+         */
+        public Quantity getQuantity() { 
+          if (this.quantity == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceStatisticComponent.quantity");
+            else if (Configuration.doAutoCreate())
+              this.quantity = new Quantity(); // cc
+          return this.quantity;
+        }
+
+        public boolean hasQuantity() { 
+          return this.quantity != null && !this.quantity.isEmpty();
+        }
+
+        /**
+         * @param value {@link #quantity} (Statistic value.)
+         */
+        public EvidenceStatisticComponent setQuantity(Quantity value) { 
+          this.quantity = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #numberOfEvents} (The number of events associated with the statistic, where the unit of analysis is different from numberAffected, sampleSize.knownDataCount and sampleSize.numberOfParticipants.). This is the underlying object with id, value and extensions. The accessor "getNumberOfEvents" gives direct access to the value
+         */
+        public UnsignedIntType getNumberOfEventsElement() { 
+          if (this.numberOfEvents == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceStatisticComponent.numberOfEvents");
+            else if (Configuration.doAutoCreate())
+              this.numberOfEvents = new UnsignedIntType(); // bb
+          return this.numberOfEvents;
+        }
+
+        public boolean hasNumberOfEventsElement() { 
+          return this.numberOfEvents != null && !this.numberOfEvents.isEmpty();
+        }
+
+        public boolean hasNumberOfEvents() { 
+          return this.numberOfEvents != null && !this.numberOfEvents.isEmpty();
+        }
+
+        /**
+         * @param value {@link #numberOfEvents} (The number of events associated with the statistic, where the unit of analysis is different from numberAffected, sampleSize.knownDataCount and sampleSize.numberOfParticipants.). This is the underlying object with id, value and extensions. The accessor "getNumberOfEvents" gives direct access to the value
+         */
+        public EvidenceStatisticComponent setNumberOfEventsElement(UnsignedIntType value) { 
+          this.numberOfEvents = value;
+          return this;
+        }
+
+        /**
+         * @return The number of events associated with the statistic, where the unit of analysis is different from numberAffected, sampleSize.knownDataCount and sampleSize.numberOfParticipants.
+         */
+        public int getNumberOfEvents() { 
+          return this.numberOfEvents == null || this.numberOfEvents.isEmpty() ? 0 : this.numberOfEvents.getValue();
+        }
+
+        /**
+         * @param value The number of events associated with the statistic, where the unit of analysis is different from numberAffected, sampleSize.knownDataCount and sampleSize.numberOfParticipants.
+         */
+        public EvidenceStatisticComponent setNumberOfEvents(int value) { 
+            if (this.numberOfEvents == null)
+              this.numberOfEvents = new UnsignedIntType();
+            this.numberOfEvents.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #numberAffected} (The number of participants affected where the unit of analysis is the same as sampleSize.knownDataCount and sampleSize.numberOfParticipants.). This is the underlying object with id, value and extensions. The accessor "getNumberAffected" gives direct access to the value
+         */
+        public UnsignedIntType getNumberAffectedElement() { 
+          if (this.numberAffected == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceStatisticComponent.numberAffected");
+            else if (Configuration.doAutoCreate())
+              this.numberAffected = new UnsignedIntType(); // bb
+          return this.numberAffected;
+        }
+
+        public boolean hasNumberAffectedElement() { 
+          return this.numberAffected != null && !this.numberAffected.isEmpty();
+        }
+
+        public boolean hasNumberAffected() { 
+          return this.numberAffected != null && !this.numberAffected.isEmpty();
+        }
+
+        /**
+         * @param value {@link #numberAffected} (The number of participants affected where the unit of analysis is the same as sampleSize.knownDataCount and sampleSize.numberOfParticipants.). This is the underlying object with id, value and extensions. The accessor "getNumberAffected" gives direct access to the value
+         */
+        public EvidenceStatisticComponent setNumberAffectedElement(UnsignedIntType value) { 
+          this.numberAffected = value;
+          return this;
+        }
+
+        /**
+         * @return The number of participants affected where the unit of analysis is the same as sampleSize.knownDataCount and sampleSize.numberOfParticipants.
+         */
+        public int getNumberAffected() { 
+          return this.numberAffected == null || this.numberAffected.isEmpty() ? 0 : this.numberAffected.getValue();
+        }
+
+        /**
+         * @param value The number of participants affected where the unit of analysis is the same as sampleSize.knownDataCount and sampleSize.numberOfParticipants.
+         */
+        public EvidenceStatisticComponent setNumberAffected(int value) { 
+            if (this.numberAffected == null)
+              this.numberAffected = new UnsignedIntType();
+            this.numberAffected.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #sampleSize} (Number of samples in the statistic.)
+         */
+        public EvidenceStatisticSampleSizeComponent getSampleSize() { 
+          if (this.sampleSize == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceStatisticComponent.sampleSize");
+            else if (Configuration.doAutoCreate())
+              this.sampleSize = new EvidenceStatisticSampleSizeComponent(); // cc
+          return this.sampleSize;
+        }
+
+        public boolean hasSampleSize() { 
+          return this.sampleSize != null && !this.sampleSize.isEmpty();
+        }
+
+        /**
+         * @param value {@link #sampleSize} (Number of samples in the statistic.)
+         */
+        public EvidenceStatisticComponent setSampleSize(EvidenceStatisticSampleSizeComponent value) { 
+          this.sampleSize = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #attributeEstimate} (A statistical attribute of the statistic such as a measure of heterogeneity.)
+         */
+        public List<EvidenceStatisticAttributeEstimateComponent> getAttributeEstimate() { 
+          if (this.attributeEstimate == null)
+            this.attributeEstimate = new ArrayList<EvidenceStatisticAttributeEstimateComponent>();
+          return this.attributeEstimate;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public EvidenceStatisticComponent setAttributeEstimate(List<EvidenceStatisticAttributeEstimateComponent> theAttributeEstimate) { 
+          this.attributeEstimate = theAttributeEstimate;
+          return this;
+        }
+
+        public boolean hasAttributeEstimate() { 
+          if (this.attributeEstimate == null)
+            return false;
+          for (EvidenceStatisticAttributeEstimateComponent item : this.attributeEstimate)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public EvidenceStatisticAttributeEstimateComponent addAttributeEstimate() { //3
+          EvidenceStatisticAttributeEstimateComponent t = new EvidenceStatisticAttributeEstimateComponent();
+          if (this.attributeEstimate == null)
+            this.attributeEstimate = new ArrayList<EvidenceStatisticAttributeEstimateComponent>();
+          this.attributeEstimate.add(t);
+          return t;
+        }
+
+        public EvidenceStatisticComponent addAttributeEstimate(EvidenceStatisticAttributeEstimateComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.attributeEstimate == null)
+            this.attributeEstimate = new ArrayList<EvidenceStatisticAttributeEstimateComponent>();
+          this.attributeEstimate.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #attributeEstimate}, creating it if it does not already exist {3}
+         */
+        public EvidenceStatisticAttributeEstimateComponent getAttributeEstimateFirstRep() { 
+          if (getAttributeEstimate().isEmpty()) {
+            addAttributeEstimate();
+          }
+          return getAttributeEstimate().get(0);
+        }
+
+        /**
+         * @return {@link #modelCharacteristic} (A component of the method to generate the statistic.)
+         */
+        public List<EvidenceStatisticModelCharacteristicComponent> getModelCharacteristic() { 
+          if (this.modelCharacteristic == null)
+            this.modelCharacteristic = new ArrayList<EvidenceStatisticModelCharacteristicComponent>();
+          return this.modelCharacteristic;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public EvidenceStatisticComponent setModelCharacteristic(List<EvidenceStatisticModelCharacteristicComponent> theModelCharacteristic) { 
+          this.modelCharacteristic = theModelCharacteristic;
+          return this;
+        }
+
+        public boolean hasModelCharacteristic() { 
+          if (this.modelCharacteristic == null)
+            return false;
+          for (EvidenceStatisticModelCharacteristicComponent item : this.modelCharacteristic)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public EvidenceStatisticModelCharacteristicComponent addModelCharacteristic() { //3
+          EvidenceStatisticModelCharacteristicComponent t = new EvidenceStatisticModelCharacteristicComponent();
+          if (this.modelCharacteristic == null)
+            this.modelCharacteristic = new ArrayList<EvidenceStatisticModelCharacteristicComponent>();
+          this.modelCharacteristic.add(t);
+          return t;
+        }
+
+        public EvidenceStatisticComponent addModelCharacteristic(EvidenceStatisticModelCharacteristicComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.modelCharacteristic == null)
+            this.modelCharacteristic = new ArrayList<EvidenceStatisticModelCharacteristicComponent>();
+          this.modelCharacteristic.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #modelCharacteristic}, creating it if it does not already exist {3}
+         */
+        public EvidenceStatisticModelCharacteristicComponent getModelCharacteristicFirstRep() { 
+          if (getModelCharacteristic().isEmpty()) {
+            addModelCharacteristic();
+          }
+          return getModelCharacteristic().get(0);
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("description", "string", "A description of the content value of the statistic.", 0, 1, description));
+          children.add(new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note));
+          children.add(new Property("statisticType", "CodeableConcept", "Type of statistic, e.g., relative risk.", 0, 1, statisticType));
+          children.add(new Property("category", "CodeableConcept", "When the measured variable is handled categorically, the category element is used to define which category the statistic is reporting.", 0, 1, category));
+          children.add(new Property("quantity", "Quantity", "Statistic value.", 0, 1, quantity));
+          children.add(new Property("numberOfEvents", "unsignedInt", "The number of events associated with the statistic, where the unit of analysis is different from numberAffected, sampleSize.knownDataCount and sampleSize.numberOfParticipants.", 0, 1, numberOfEvents));
+          children.add(new Property("numberAffected", "unsignedInt", "The number of participants affected where the unit of analysis is the same as sampleSize.knownDataCount and sampleSize.numberOfParticipants.", 0, 1, numberAffected));
+          children.add(new Property("sampleSize", "", "Number of samples in the statistic.", 0, 1, sampleSize));
+          children.add(new Property("attributeEstimate", "", "A statistical attribute of the statistic such as a measure of heterogeneity.", 0, java.lang.Integer.MAX_VALUE, attributeEstimate));
+          children.add(new Property("modelCharacteristic", "", "A component of the method to generate the statistic.", 0, java.lang.Integer.MAX_VALUE, modelCharacteristic));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case -1724546052: /*description*/  return new Property("description", "string", "A description of the content value of the statistic.", 0, 1, description);
+          case 3387378: /*note*/  return new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note);
+          case -392342358: /*statisticType*/  return new Property("statisticType", "CodeableConcept", "Type of statistic, e.g., relative risk.", 0, 1, statisticType);
+          case 50511102: /*category*/  return new Property("category", "CodeableConcept", "When the measured variable is handled categorically, the category element is used to define which category the statistic is reporting.", 0, 1, category);
+          case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "Statistic value.", 0, 1, quantity);
+          case 1534510137: /*numberOfEvents*/  return new Property("numberOfEvents", "unsignedInt", "The number of events associated with the statistic, where the unit of analysis is different from numberAffected, sampleSize.knownDataCount and sampleSize.numberOfParticipants.", 0, 1, numberOfEvents);
+          case -460990243: /*numberAffected*/  return new Property("numberAffected", "unsignedInt", "The number of participants affected where the unit of analysis is the same as sampleSize.knownDataCount and sampleSize.numberOfParticipants.", 0, 1, numberAffected);
+          case 143123659: /*sampleSize*/  return new Property("sampleSize", "", "Number of samples in the statistic.", 0, 1, sampleSize);
+          case -1539581980: /*attributeEstimate*/  return new Property("attributeEstimate", "", "A statistical attribute of the statistic such as a measure of heterogeneity.", 0, java.lang.Integer.MAX_VALUE, attributeEstimate);
+          case 274795812: /*modelCharacteristic*/  return new Property("modelCharacteristic", "", "A component of the method to generate the statistic.", 0, java.lang.Integer.MAX_VALUE, modelCharacteristic);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
+        case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
+        case -392342358: /*statisticType*/ return this.statisticType == null ? new Base[0] : new Base[] {this.statisticType}; // CodeableConcept
+        case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // CodeableConcept
+        case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
+        case 1534510137: /*numberOfEvents*/ return this.numberOfEvents == null ? new Base[0] : new Base[] {this.numberOfEvents}; // UnsignedIntType
+        case -460990243: /*numberAffected*/ return this.numberAffected == null ? new Base[0] : new Base[] {this.numberAffected}; // UnsignedIntType
+        case 143123659: /*sampleSize*/ return this.sampleSize == null ? new Base[0] : new Base[] {this.sampleSize}; // EvidenceStatisticSampleSizeComponent
+        case -1539581980: /*attributeEstimate*/ return this.attributeEstimate == null ? new Base[0] : this.attributeEstimate.toArray(new Base[this.attributeEstimate.size()]); // EvidenceStatisticAttributeEstimateComponent
+        case 274795812: /*modelCharacteristic*/ return this.modelCharacteristic == null ? new Base[0] : this.modelCharacteristic.toArray(new Base[this.modelCharacteristic.size()]); // EvidenceStatisticModelCharacteristicComponent
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case -1724546052: // description
+          this.description = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 3387378: // note
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
+          return value;
+        case -392342358: // statisticType
+          this.statisticType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 50511102: // category
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -1285004149: // quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
+          return value;
+        case 1534510137: // numberOfEvents
+          this.numberOfEvents = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
+          return value;
+        case -460990243: // numberAffected
+          this.numberAffected = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
+          return value;
+        case 143123659: // sampleSize
+          this.sampleSize = (EvidenceStatisticSampleSizeComponent) value; // EvidenceStatisticSampleSizeComponent
+          return value;
+        case -1539581980: // attributeEstimate
+          this.getAttributeEstimate().add((EvidenceStatisticAttributeEstimateComponent) value); // EvidenceStatisticAttributeEstimateComponent
+          return value;
+        case 274795812: // modelCharacteristic
+          this.getModelCharacteristic().add((EvidenceStatisticModelCharacteristicComponent) value); // EvidenceStatisticModelCharacteristicComponent
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("description")) {
+          this.description = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("note")) {
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
+        } else if (name.equals("statisticType")) {
+          this.statisticType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("category")) {
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("quantity")) {
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
+        } else if (name.equals("numberOfEvents")) {
+          this.numberOfEvents = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
+        } else if (name.equals("numberAffected")) {
+          this.numberAffected = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
+        } else if (name.equals("sampleSize")) {
+          this.sampleSize = (EvidenceStatisticSampleSizeComponent) value; // EvidenceStatisticSampleSizeComponent
+        } else if (name.equals("attributeEstimate")) {
+          this.getAttributeEstimate().add((EvidenceStatisticAttributeEstimateComponent) value);
+        } else if (name.equals("modelCharacteristic")) {
+          this.getModelCharacteristic().add((EvidenceStatisticModelCharacteristicComponent) value);
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1724546052:  return getDescriptionElement();
+        case 3387378:  return addNote(); 
+        case -392342358:  return getStatisticType();
+        case 50511102:  return getCategory();
+        case -1285004149:  return getQuantity();
+        case 1534510137:  return getNumberOfEventsElement();
+        case -460990243:  return getNumberAffectedElement();
+        case 143123659:  return getSampleSize();
+        case -1539581980:  return addAttributeEstimate(); 
+        case 274795812:  return addModelCharacteristic(); 
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1724546052: /*description*/ return new String[] {"string"};
+        case 3387378: /*note*/ return new String[] {"Annotation"};
+        case -392342358: /*statisticType*/ return new String[] {"CodeableConcept"};
+        case 50511102: /*category*/ return new String[] {"CodeableConcept"};
+        case -1285004149: /*quantity*/ return new String[] {"Quantity"};
+        case 1534510137: /*numberOfEvents*/ return new String[] {"unsignedInt"};
+        case -460990243: /*numberAffected*/ return new String[] {"unsignedInt"};
+        case 143123659: /*sampleSize*/ return new String[] {};
+        case -1539581980: /*attributeEstimate*/ return new String[] {};
+        case 274795812: /*modelCharacteristic*/ return new String[] {};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("description")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Evidence.statistic.description");
+        }
+        else if (name.equals("note")) {
+          return addNote();
+        }
+        else if (name.equals("statisticType")) {
+          this.statisticType = new CodeableConcept();
+          return this.statisticType;
+        }
+        else if (name.equals("category")) {
+          this.category = new CodeableConcept();
+          return this.category;
+        }
+        else if (name.equals("quantity")) {
+          this.quantity = new Quantity();
+          return this.quantity;
+        }
+        else if (name.equals("numberOfEvents")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Evidence.statistic.numberOfEvents");
+        }
+        else if (name.equals("numberAffected")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Evidence.statistic.numberAffected");
+        }
+        else if (name.equals("sampleSize")) {
+          this.sampleSize = new EvidenceStatisticSampleSizeComponent();
+          return this.sampleSize;
+        }
+        else if (name.equals("attributeEstimate")) {
+          return addAttributeEstimate();
+        }
+        else if (name.equals("modelCharacteristic")) {
+          return addModelCharacteristic();
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public EvidenceStatisticComponent copy() {
+        EvidenceStatisticComponent dst = new EvidenceStatisticComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EvidenceStatisticComponent dst) {
+        super.copyValues(dst);
+        dst.description = description == null ? null : description.copy();
+        if (note != null) {
+          dst.note = new ArrayList<Annotation>();
+          for (Annotation i : note)
+            dst.note.add(i.copy());
+        };
+        dst.statisticType = statisticType == null ? null : statisticType.copy();
+        dst.category = category == null ? null : category.copy();
+        dst.quantity = quantity == null ? null : quantity.copy();
+        dst.numberOfEvents = numberOfEvents == null ? null : numberOfEvents.copy();
+        dst.numberAffected = numberAffected == null ? null : numberAffected.copy();
+        dst.sampleSize = sampleSize == null ? null : sampleSize.copy();
+        if (attributeEstimate != null) {
+          dst.attributeEstimate = new ArrayList<EvidenceStatisticAttributeEstimateComponent>();
+          for (EvidenceStatisticAttributeEstimateComponent i : attributeEstimate)
+            dst.attributeEstimate.add(i.copy());
+        };
+        if (modelCharacteristic != null) {
+          dst.modelCharacteristic = new ArrayList<EvidenceStatisticModelCharacteristicComponent>();
+          for (EvidenceStatisticModelCharacteristicComponent i : modelCharacteristic)
+            dst.modelCharacteristic.add(i.copy());
+        };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof EvidenceStatisticComponent))
+          return false;
+        EvidenceStatisticComponent o = (EvidenceStatisticComponent) other_;
+        return compareDeep(description, o.description, true) && compareDeep(note, o.note, true) && compareDeep(statisticType, o.statisticType, true)
+           && compareDeep(category, o.category, true) && compareDeep(quantity, o.quantity, true) && compareDeep(numberOfEvents, o.numberOfEvents, true)
+           && compareDeep(numberAffected, o.numberAffected, true) && compareDeep(sampleSize, o.sampleSize, true)
+           && compareDeep(attributeEstimate, o.attributeEstimate, true) && compareDeep(modelCharacteristic, o.modelCharacteristic, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof EvidenceStatisticComponent))
+          return false;
+        EvidenceStatisticComponent o = (EvidenceStatisticComponent) other_;
+        return compareValues(description, o.description, true) && compareValues(numberOfEvents, o.numberOfEvents, true)
+           && compareValues(numberAffected, o.numberAffected, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, note, statisticType
+          , category, quantity, numberOfEvents, numberAffected, sampleSize, attributeEstimate
+          , modelCharacteristic);
+      }
+
+  public String fhirType() {
+    return "Evidence.statistic";
+
+  }
+
+  }
+
+    @Block()
+    public static class EvidenceStatisticSampleSizeComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Human-readable summary of population sample size.
+         */
+        @Child(name = "description", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Textual description of sample size for statistic", formalDefinition="Human-readable summary of population sample size." )
+        protected StringType description;
+
+        /**
+         * Footnote or explanatory note about the sample size.
+         */
+        @Child(name = "note", type = {Annotation.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Footnote or explanatory note about the sample size", formalDefinition="Footnote or explanatory note about the sample size." )
+        protected List<Annotation> note;
+
+        /**
+         * Number of participants in the population.
+         */
+        @Child(name = "numberOfStudies", type = {UnsignedIntType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Number of contributing studies", formalDefinition="Number of participants in the population." )
+        protected UnsignedIntType numberOfStudies;
+
+        /**
+         * A human-readable string to clarify or explain concepts about the sample size.
+         */
+        @Child(name = "numberOfParticipants", type = {UnsignedIntType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Cumulative number of participants", formalDefinition="A human-readable string to clarify or explain concepts about the sample size." )
+        protected UnsignedIntType numberOfParticipants;
+
+        /**
+         * Number of participants with known results for measured variables.
+         */
+        @Child(name = "knownDataCount", type = {UnsignedIntType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Number of participants with known results for measured variables", formalDefinition="Number of participants with known results for measured variables." )
+        protected UnsignedIntType knownDataCount;
+
+        private static final long serialVersionUID = -1870635979L;
+
+    /**
+     * Constructor
+     */
+      public EvidenceStatisticSampleSizeComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #description} (Human-readable summary of population sample size.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         */
+        public StringType getDescriptionElement() { 
+          if (this.description == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceStatisticSampleSizeComponent.description");
+            else if (Configuration.doAutoCreate())
+              this.description = new StringType(); // bb
+          return this.description;
+        }
+
+        public boolean hasDescriptionElement() { 
+          return this.description != null && !this.description.isEmpty();
+        }
+
+        public boolean hasDescription() { 
+          return this.description != null && !this.description.isEmpty();
+        }
+
+        /**
+         * @param value {@link #description} (Human-readable summary of population sample size.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         */
+        public EvidenceStatisticSampleSizeComponent setDescriptionElement(StringType value) { 
+          this.description = value;
+          return this;
+        }
+
+        /**
+         * @return Human-readable summary of population sample size.
+         */
+        public String getDescription() { 
+          return this.description == null ? null : this.description.getValue();
+        }
+
+        /**
+         * @param value Human-readable summary of population sample size.
+         */
+        public EvidenceStatisticSampleSizeComponent setDescription(String value) { 
+          if (Utilities.noString(value))
+            this.description = null;
+          else {
+            if (this.description == null)
+              this.description = new StringType();
+            this.description.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #note} (Footnote or explanatory note about the sample size.)
+         */
+        public List<Annotation> getNote() { 
+          if (this.note == null)
+            this.note = new ArrayList<Annotation>();
+          return this.note;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public EvidenceStatisticSampleSizeComponent setNote(List<Annotation> theNote) { 
+          this.note = theNote;
+          return this;
+        }
+
+        public boolean hasNote() { 
+          if (this.note == null)
+            return false;
+          for (Annotation item : this.note)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Annotation addNote() { //3
+          Annotation t = new Annotation();
+          if (this.note == null)
+            this.note = new ArrayList<Annotation>();
+          this.note.add(t);
+          return t;
+        }
+
+        public EvidenceStatisticSampleSizeComponent addNote(Annotation t) { //3
+          if (t == null)
+            return this;
+          if (this.note == null)
+            this.note = new ArrayList<Annotation>();
+          this.note.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist {3}
+         */
+        public Annotation getNoteFirstRep() { 
+          if (getNote().isEmpty()) {
+            addNote();
+          }
+          return getNote().get(0);
+        }
+
+        /**
+         * @return {@link #numberOfStudies} (Number of participants in the population.). This is the underlying object with id, value and extensions. The accessor "getNumberOfStudies" gives direct access to the value
+         */
+        public UnsignedIntType getNumberOfStudiesElement() { 
+          if (this.numberOfStudies == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceStatisticSampleSizeComponent.numberOfStudies");
+            else if (Configuration.doAutoCreate())
+              this.numberOfStudies = new UnsignedIntType(); // bb
+          return this.numberOfStudies;
+        }
+
+        public boolean hasNumberOfStudiesElement() { 
+          return this.numberOfStudies != null && !this.numberOfStudies.isEmpty();
+        }
+
+        public boolean hasNumberOfStudies() { 
+          return this.numberOfStudies != null && !this.numberOfStudies.isEmpty();
+        }
+
+        /**
+         * @param value {@link #numberOfStudies} (Number of participants in the population.). This is the underlying object with id, value and extensions. The accessor "getNumberOfStudies" gives direct access to the value
+         */
+        public EvidenceStatisticSampleSizeComponent setNumberOfStudiesElement(UnsignedIntType value) { 
+          this.numberOfStudies = value;
+          return this;
+        }
+
+        /**
+         * @return Number of participants in the population.
+         */
+        public int getNumberOfStudies() { 
+          return this.numberOfStudies == null || this.numberOfStudies.isEmpty() ? 0 : this.numberOfStudies.getValue();
+        }
+
+        /**
+         * @param value Number of participants in the population.
+         */
+        public EvidenceStatisticSampleSizeComponent setNumberOfStudies(int value) { 
+            if (this.numberOfStudies == null)
+              this.numberOfStudies = new UnsignedIntType();
+            this.numberOfStudies.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #numberOfParticipants} (A human-readable string to clarify or explain concepts about the sample size.). This is the underlying object with id, value and extensions. The accessor "getNumberOfParticipants" gives direct access to the value
+         */
+        public UnsignedIntType getNumberOfParticipantsElement() { 
+          if (this.numberOfParticipants == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceStatisticSampleSizeComponent.numberOfParticipants");
+            else if (Configuration.doAutoCreate())
+              this.numberOfParticipants = new UnsignedIntType(); // bb
+          return this.numberOfParticipants;
+        }
+
+        public boolean hasNumberOfParticipantsElement() { 
+          return this.numberOfParticipants != null && !this.numberOfParticipants.isEmpty();
+        }
+
+        public boolean hasNumberOfParticipants() { 
+          return this.numberOfParticipants != null && !this.numberOfParticipants.isEmpty();
+        }
+
+        /**
+         * @param value {@link #numberOfParticipants} (A human-readable string to clarify or explain concepts about the sample size.). This is the underlying object with id, value and extensions. The accessor "getNumberOfParticipants" gives direct access to the value
+         */
+        public EvidenceStatisticSampleSizeComponent setNumberOfParticipantsElement(UnsignedIntType value) { 
+          this.numberOfParticipants = value;
+          return this;
+        }
+
+        /**
+         * @return A human-readable string to clarify or explain concepts about the sample size.
+         */
+        public int getNumberOfParticipants() { 
+          return this.numberOfParticipants == null || this.numberOfParticipants.isEmpty() ? 0 : this.numberOfParticipants.getValue();
+        }
+
+        /**
+         * @param value A human-readable string to clarify or explain concepts about the sample size.
+         */
+        public EvidenceStatisticSampleSizeComponent setNumberOfParticipants(int value) { 
+            if (this.numberOfParticipants == null)
+              this.numberOfParticipants = new UnsignedIntType();
+            this.numberOfParticipants.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #knownDataCount} (Number of participants with known results for measured variables.). This is the underlying object with id, value and extensions. The accessor "getKnownDataCount" gives direct access to the value
+         */
+        public UnsignedIntType getKnownDataCountElement() { 
+          if (this.knownDataCount == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceStatisticSampleSizeComponent.knownDataCount");
+            else if (Configuration.doAutoCreate())
+              this.knownDataCount = new UnsignedIntType(); // bb
+          return this.knownDataCount;
+        }
+
+        public boolean hasKnownDataCountElement() { 
+          return this.knownDataCount != null && !this.knownDataCount.isEmpty();
+        }
+
+        public boolean hasKnownDataCount() { 
+          return this.knownDataCount != null && !this.knownDataCount.isEmpty();
+        }
+
+        /**
+         * @param value {@link #knownDataCount} (Number of participants with known results for measured variables.). This is the underlying object with id, value and extensions. The accessor "getKnownDataCount" gives direct access to the value
+         */
+        public EvidenceStatisticSampleSizeComponent setKnownDataCountElement(UnsignedIntType value) { 
+          this.knownDataCount = value;
+          return this;
+        }
+
+        /**
+         * @return Number of participants with known results for measured variables.
+         */
+        public int getKnownDataCount() { 
+          return this.knownDataCount == null || this.knownDataCount.isEmpty() ? 0 : this.knownDataCount.getValue();
+        }
+
+        /**
+         * @param value Number of participants with known results for measured variables.
+         */
+        public EvidenceStatisticSampleSizeComponent setKnownDataCount(int value) { 
+            if (this.knownDataCount == null)
+              this.knownDataCount = new UnsignedIntType();
+            this.knownDataCount.setValue(value);
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("description", "string", "Human-readable summary of population sample size.", 0, 1, description));
+          children.add(new Property("note", "Annotation", "Footnote or explanatory note about the sample size.", 0, java.lang.Integer.MAX_VALUE, note));
+          children.add(new Property("numberOfStudies", "unsignedInt", "Number of participants in the population.", 0, 1, numberOfStudies));
+          children.add(new Property("numberOfParticipants", "unsignedInt", "A human-readable string to clarify or explain concepts about the sample size.", 0, 1, numberOfParticipants));
+          children.add(new Property("knownDataCount", "unsignedInt", "Number of participants with known results for measured variables.", 0, 1, knownDataCount));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case -1724546052: /*description*/  return new Property("description", "string", "Human-readable summary of population sample size.", 0, 1, description);
+          case 3387378: /*note*/  return new Property("note", "Annotation", "Footnote or explanatory note about the sample size.", 0, java.lang.Integer.MAX_VALUE, note);
+          case -177467129: /*numberOfStudies*/  return new Property("numberOfStudies", "unsignedInt", "Number of participants in the population.", 0, 1, numberOfStudies);
+          case 1799357120: /*numberOfParticipants*/  return new Property("numberOfParticipants", "unsignedInt", "A human-readable string to clarify or explain concepts about the sample size.", 0, 1, numberOfParticipants);
+          case -937344126: /*knownDataCount*/  return new Property("knownDataCount", "unsignedInt", "Number of participants with known results for measured variables.", 0, 1, knownDataCount);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
+        case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
+        case -177467129: /*numberOfStudies*/ return this.numberOfStudies == null ? new Base[0] : new Base[] {this.numberOfStudies}; // UnsignedIntType
+        case 1799357120: /*numberOfParticipants*/ return this.numberOfParticipants == null ? new Base[0] : new Base[] {this.numberOfParticipants}; // UnsignedIntType
+        case -937344126: /*knownDataCount*/ return this.knownDataCount == null ? new Base[0] : new Base[] {this.knownDataCount}; // UnsignedIntType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case -1724546052: // description
+          this.description = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 3387378: // note
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
+          return value;
+        case -177467129: // numberOfStudies
+          this.numberOfStudies = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
+          return value;
+        case 1799357120: // numberOfParticipants
+          this.numberOfParticipants = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
+          return value;
+        case -937344126: // knownDataCount
+          this.knownDataCount = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("description")) {
+          this.description = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("note")) {
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
+        } else if (name.equals("numberOfStudies")) {
+          this.numberOfStudies = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
+        } else if (name.equals("numberOfParticipants")) {
+          this.numberOfParticipants = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
+        } else if (name.equals("knownDataCount")) {
+          this.knownDataCount = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1724546052:  return getDescriptionElement();
+        case 3387378:  return addNote(); 
+        case -177467129:  return getNumberOfStudiesElement();
+        case 1799357120:  return getNumberOfParticipantsElement();
+        case -937344126:  return getKnownDataCountElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1724546052: /*description*/ return new String[] {"string"};
+        case 3387378: /*note*/ return new String[] {"Annotation"};
+        case -177467129: /*numberOfStudies*/ return new String[] {"unsignedInt"};
+        case 1799357120: /*numberOfParticipants*/ return new String[] {"unsignedInt"};
+        case -937344126: /*knownDataCount*/ return new String[] {"unsignedInt"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("description")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Evidence.statistic.sampleSize.description");
+        }
+        else if (name.equals("note")) {
+          return addNote();
+        }
+        else if (name.equals("numberOfStudies")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Evidence.statistic.sampleSize.numberOfStudies");
+        }
+        else if (name.equals("numberOfParticipants")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Evidence.statistic.sampleSize.numberOfParticipants");
+        }
+        else if (name.equals("knownDataCount")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Evidence.statistic.sampleSize.knownDataCount");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public EvidenceStatisticSampleSizeComponent copy() {
+        EvidenceStatisticSampleSizeComponent dst = new EvidenceStatisticSampleSizeComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EvidenceStatisticSampleSizeComponent dst) {
+        super.copyValues(dst);
+        dst.description = description == null ? null : description.copy();
+        if (note != null) {
+          dst.note = new ArrayList<Annotation>();
+          for (Annotation i : note)
+            dst.note.add(i.copy());
+        };
+        dst.numberOfStudies = numberOfStudies == null ? null : numberOfStudies.copy();
+        dst.numberOfParticipants = numberOfParticipants == null ? null : numberOfParticipants.copy();
+        dst.knownDataCount = knownDataCount == null ? null : knownDataCount.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof EvidenceStatisticSampleSizeComponent))
+          return false;
+        EvidenceStatisticSampleSizeComponent o = (EvidenceStatisticSampleSizeComponent) other_;
+        return compareDeep(description, o.description, true) && compareDeep(note, o.note, true) && compareDeep(numberOfStudies, o.numberOfStudies, true)
+           && compareDeep(numberOfParticipants, o.numberOfParticipants, true) && compareDeep(knownDataCount, o.knownDataCount, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof EvidenceStatisticSampleSizeComponent))
+          return false;
+        EvidenceStatisticSampleSizeComponent o = (EvidenceStatisticSampleSizeComponent) other_;
+        return compareValues(description, o.description, true) && compareValues(numberOfStudies, o.numberOfStudies, true)
+           && compareValues(numberOfParticipants, o.numberOfParticipants, true) && compareValues(knownDataCount, o.knownDataCount, true)
+          ;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, note, numberOfStudies
+          , numberOfParticipants, knownDataCount);
+      }
+
+  public String fhirType() {
+    return "Evidence.statistic.sampleSize";
+
+  }
+
+  }
+
+    @Block()
+    public static class EvidenceStatisticAttributeEstimateComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Human-readable summary of the estimate.
+         */
+        @Child(name = "description", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Textual description of the attribute estimate", formalDefinition="Human-readable summary of the estimate." )
+        protected StringType description;
+
+        /**
+         * Footnote or explanatory note about the estimate.
+         */
+        @Child(name = "note", type = {Annotation.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Footnote or explanatory note about the estimate", formalDefinition="Footnote or explanatory note about the estimate." )
+        protected List<Annotation> note;
+
+        /**
+         * The type of attribute estimate, e.g., confidence interval or p value.
+         */
+        @Child(name = "type", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The type of attribute estimate, e.g., confidence interval or p value", formalDefinition="The type of attribute estimate, e.g., confidence interval or p value." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/attribute-estimate-type")
+        protected CodeableConcept type;
+
+        /**
+         * The singular quantity of the attribute estimate, for attribute estimates represented as single values; also used to report unit of measure.
+         */
+        @Child(name = "quantity", type = {Quantity.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The singular quantity of the attribute estimate, for attribute estimates represented as single values; also used to report unit of measure", formalDefinition="The singular quantity of the attribute estimate, for attribute estimates represented as single values; also used to report unit of measure." )
+        protected Quantity quantity;
+
+        /**
+         * Use 95 for a 95% confidence interval.
+         */
+        @Child(name = "level", type = {DecimalType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Level of confidence interval, e.g., 0.95 for 95% confidence interval", formalDefinition="Use 95 for a 95% confidence interval." )
+        protected DecimalType level;
+
+        /**
+         * Lower bound of confidence interval.
+         */
+        @Child(name = "range", type = {Range.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Lower and upper bound values of the attribute estimate", formalDefinition="Lower bound of confidence interval." )
+        protected Range range;
+
+        /**
+         * A nested attribute estimate; which is the attribute estimate of an attribute estimate.
+         */
+        @Child(name = "attributeEstimate", type = {EvidenceStatisticAttributeEstimateComponent.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="A nested attribute estimate; which is the attribute estimate of an attribute estimate", formalDefinition="A nested attribute estimate; which is the attribute estimate of an attribute estimate." )
+        protected List<EvidenceStatisticAttributeEstimateComponent> attributeEstimate;
+
+        private static final long serialVersionUID = -1654630186L;
+
+    /**
+     * Constructor
+     */
+      public EvidenceStatisticAttributeEstimateComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #description} (Human-readable summary of the estimate.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         */
+        public StringType getDescriptionElement() { 
+          if (this.description == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceStatisticAttributeEstimateComponent.description");
+            else if (Configuration.doAutoCreate())
+              this.description = new StringType(); // bb
+          return this.description;
+        }
+
+        public boolean hasDescriptionElement() { 
+          return this.description != null && !this.description.isEmpty();
+        }
+
+        public boolean hasDescription() { 
+          return this.description != null && !this.description.isEmpty();
+        }
+
+        /**
+         * @param value {@link #description} (Human-readable summary of the estimate.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         */
+        public EvidenceStatisticAttributeEstimateComponent setDescriptionElement(StringType value) { 
+          this.description = value;
+          return this;
+        }
+
+        /**
+         * @return Human-readable summary of the estimate.
+         */
+        public String getDescription() { 
+          return this.description == null ? null : this.description.getValue();
+        }
+
+        /**
+         * @param value Human-readable summary of the estimate.
+         */
+        public EvidenceStatisticAttributeEstimateComponent setDescription(String value) { 
+          if (Utilities.noString(value))
+            this.description = null;
+          else {
+            if (this.description == null)
+              this.description = new StringType();
+            this.description.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #note} (Footnote or explanatory note about the estimate.)
+         */
+        public List<Annotation> getNote() { 
+          if (this.note == null)
+            this.note = new ArrayList<Annotation>();
+          return this.note;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public EvidenceStatisticAttributeEstimateComponent setNote(List<Annotation> theNote) { 
+          this.note = theNote;
+          return this;
+        }
+
+        public boolean hasNote() { 
+          if (this.note == null)
+            return false;
+          for (Annotation item : this.note)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Annotation addNote() { //3
+          Annotation t = new Annotation();
+          if (this.note == null)
+            this.note = new ArrayList<Annotation>();
+          this.note.add(t);
+          return t;
+        }
+
+        public EvidenceStatisticAttributeEstimateComponent addNote(Annotation t) { //3
+          if (t == null)
+            return this;
+          if (this.note == null)
+            this.note = new ArrayList<Annotation>();
+          this.note.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist {3}
+         */
+        public Annotation getNoteFirstRep() { 
+          if (getNote().isEmpty()) {
+            addNote();
+          }
+          return getNote().get(0);
+        }
+
+        /**
+         * @return {@link #type} (The type of attribute estimate, e.g., confidence interval or p value.)
+         */
+        public CodeableConcept getType() { 
+          if (this.type == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceStatisticAttributeEstimateComponent.type");
+            else if (Configuration.doAutoCreate())
+              this.type = new CodeableConcept(); // cc
+          return this.type;
+        }
+
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        /**
+         * @param value {@link #type} (The type of attribute estimate, e.g., confidence interval or p value.)
+         */
+        public EvidenceStatisticAttributeEstimateComponent setType(CodeableConcept value) { 
+          this.type = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #quantity} (The singular quantity of the attribute estimate, for attribute estimates represented as single values; also used to report unit of measure.)
+         */
+        public Quantity getQuantity() { 
+          if (this.quantity == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceStatisticAttributeEstimateComponent.quantity");
+            else if (Configuration.doAutoCreate())
+              this.quantity = new Quantity(); // cc
+          return this.quantity;
+        }
+
+        public boolean hasQuantity() { 
+          return this.quantity != null && !this.quantity.isEmpty();
+        }
+
+        /**
+         * @param value {@link #quantity} (The singular quantity of the attribute estimate, for attribute estimates represented as single values; also used to report unit of measure.)
+         */
+        public EvidenceStatisticAttributeEstimateComponent setQuantity(Quantity value) { 
+          this.quantity = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #level} (Use 95 for a 95% confidence interval.). This is the underlying object with id, value and extensions. The accessor "getLevel" gives direct access to the value
+         */
+        public DecimalType getLevelElement() { 
+          if (this.level == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceStatisticAttributeEstimateComponent.level");
+            else if (Configuration.doAutoCreate())
+              this.level = new DecimalType(); // bb
+          return this.level;
+        }
+
+        public boolean hasLevelElement() { 
+          return this.level != null && !this.level.isEmpty();
+        }
+
+        public boolean hasLevel() { 
+          return this.level != null && !this.level.isEmpty();
+        }
+
+        /**
+         * @param value {@link #level} (Use 95 for a 95% confidence interval.). This is the underlying object with id, value and extensions. The accessor "getLevel" gives direct access to the value
+         */
+        public EvidenceStatisticAttributeEstimateComponent setLevelElement(DecimalType value) { 
+          this.level = value;
+          return this;
+        }
+
+        /**
+         * @return Use 95 for a 95% confidence interval.
+         */
+        public BigDecimal getLevel() { 
+          return this.level == null ? null : this.level.getValue();
+        }
+
+        /**
+         * @param value Use 95 for a 95% confidence interval.
+         */
+        public EvidenceStatisticAttributeEstimateComponent setLevel(BigDecimal value) { 
+          if (value == null)
+            this.level = null;
+          else {
+            if (this.level == null)
+              this.level = new DecimalType();
+            this.level.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @param value Use 95 for a 95% confidence interval.
+         */
+        public EvidenceStatisticAttributeEstimateComponent setLevel(long value) { 
+              this.level = new DecimalType();
+            this.level.setValue(value);
+          return this;
+        }
+
+        /**
+         * @param value Use 95 for a 95% confidence interval.
+         */
+        public EvidenceStatisticAttributeEstimateComponent setLevel(double value) { 
+              this.level = new DecimalType();
+            this.level.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #range} (Lower bound of confidence interval.)
+         */
+        public Range getRange() { 
+          if (this.range == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceStatisticAttributeEstimateComponent.range");
+            else if (Configuration.doAutoCreate())
+              this.range = new Range(); // cc
+          return this.range;
+        }
+
+        public boolean hasRange() { 
+          return this.range != null && !this.range.isEmpty();
+        }
+
+        /**
+         * @param value {@link #range} (Lower bound of confidence interval.)
+         */
+        public EvidenceStatisticAttributeEstimateComponent setRange(Range value) { 
+          this.range = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #attributeEstimate} (A nested attribute estimate; which is the attribute estimate of an attribute estimate.)
+         */
+        public List<EvidenceStatisticAttributeEstimateComponent> getAttributeEstimate() { 
+          if (this.attributeEstimate == null)
+            this.attributeEstimate = new ArrayList<EvidenceStatisticAttributeEstimateComponent>();
+          return this.attributeEstimate;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public EvidenceStatisticAttributeEstimateComponent setAttributeEstimate(List<EvidenceStatisticAttributeEstimateComponent> theAttributeEstimate) { 
+          this.attributeEstimate = theAttributeEstimate;
+          return this;
+        }
+
+        public boolean hasAttributeEstimate() { 
+          if (this.attributeEstimate == null)
+            return false;
+          for (EvidenceStatisticAttributeEstimateComponent item : this.attributeEstimate)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public EvidenceStatisticAttributeEstimateComponent addAttributeEstimate() { //3
+          EvidenceStatisticAttributeEstimateComponent t = new EvidenceStatisticAttributeEstimateComponent();
+          if (this.attributeEstimate == null)
+            this.attributeEstimate = new ArrayList<EvidenceStatisticAttributeEstimateComponent>();
+          this.attributeEstimate.add(t);
+          return t;
+        }
+
+        public EvidenceStatisticAttributeEstimateComponent addAttributeEstimate(EvidenceStatisticAttributeEstimateComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.attributeEstimate == null)
+            this.attributeEstimate = new ArrayList<EvidenceStatisticAttributeEstimateComponent>();
+          this.attributeEstimate.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #attributeEstimate}, creating it if it does not already exist {3}
+         */
+        public EvidenceStatisticAttributeEstimateComponent getAttributeEstimateFirstRep() { 
+          if (getAttributeEstimate().isEmpty()) {
+            addAttributeEstimate();
+          }
+          return getAttributeEstimate().get(0);
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("description", "string", "Human-readable summary of the estimate.", 0, 1, description));
+          children.add(new Property("note", "Annotation", "Footnote or explanatory note about the estimate.", 0, java.lang.Integer.MAX_VALUE, note));
+          children.add(new Property("type", "CodeableConcept", "The type of attribute estimate, e.g., confidence interval or p value.", 0, 1, type));
+          children.add(new Property("quantity", "Quantity", "The singular quantity of the attribute estimate, for attribute estimates represented as single values; also used to report unit of measure.", 0, 1, quantity));
+          children.add(new Property("level", "decimal", "Use 95 for a 95% confidence interval.", 0, 1, level));
+          children.add(new Property("range", "Range", "Lower bound of confidence interval.", 0, 1, range));
+          children.add(new Property("attributeEstimate", "@Evidence.statistic.attributeEstimate", "A nested attribute estimate; which is the attribute estimate of an attribute estimate.", 0, java.lang.Integer.MAX_VALUE, attributeEstimate));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case -1724546052: /*description*/  return new Property("description", "string", "Human-readable summary of the estimate.", 0, 1, description);
+          case 3387378: /*note*/  return new Property("note", "Annotation", "Footnote or explanatory note about the estimate.", 0, java.lang.Integer.MAX_VALUE, note);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The type of attribute estimate, e.g., confidence interval or p value.", 0, 1, type);
+          case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "The singular quantity of the attribute estimate, for attribute estimates represented as single values; also used to report unit of measure.", 0, 1, quantity);
+          case 102865796: /*level*/  return new Property("level", "decimal", "Use 95 for a 95% confidence interval.", 0, 1, level);
+          case 108280125: /*range*/  return new Property("range", "Range", "Lower bound of confidence interval.", 0, 1, range);
+          case -1539581980: /*attributeEstimate*/  return new Property("attributeEstimate", "@Evidence.statistic.attributeEstimate", "A nested attribute estimate; which is the attribute estimate of an attribute estimate.", 0, java.lang.Integer.MAX_VALUE, attributeEstimate);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
+        case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
+        case 102865796: /*level*/ return this.level == null ? new Base[0] : new Base[] {this.level}; // DecimalType
+        case 108280125: /*range*/ return this.range == null ? new Base[0] : new Base[] {this.range}; // Range
+        case -1539581980: /*attributeEstimate*/ return this.attributeEstimate == null ? new Base[0] : this.attributeEstimate.toArray(new Base[this.attributeEstimate.size()]); // EvidenceStatisticAttributeEstimateComponent
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case -1724546052: // description
+          this.description = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 3387378: // note
+          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
+          return value;
+        case 3575610: // type
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -1285004149: // quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
+          return value;
+        case 102865796: // level
+          this.level = TypeConvertor.castToDecimal(value); // DecimalType
+          return value;
+        case 108280125: // range
+          this.range = TypeConvertor.castToRange(value); // Range
+          return value;
+        case -1539581980: // attributeEstimate
+          this.getAttributeEstimate().add((EvidenceStatisticAttributeEstimateComponent) value); // EvidenceStatisticAttributeEstimateComponent
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("description")) {
+          this.description = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("note")) {
+          this.getNote().add(TypeConvertor.castToAnnotation(value));
+        } else if (name.equals("type")) {
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("quantity")) {
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
+        } else if (name.equals("level")) {
+          this.level = TypeConvertor.castToDecimal(value); // DecimalType
+        } else if (name.equals("range")) {
+          this.range = TypeConvertor.castToRange(value); // Range
+        } else if (name.equals("attributeEstimate")) {
+          this.getAttributeEstimate().add((EvidenceStatisticAttributeEstimateComponent) value);
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1724546052:  return getDescriptionElement();
+        case 3387378:  return addNote(); 
+        case 3575610:  return getType();
+        case -1285004149:  return getQuantity();
+        case 102865796:  return getLevelElement();
+        case 108280125:  return getRange();
+        case -1539581980:  return addAttributeEstimate(); 
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1724546052: /*description*/ return new String[] {"string"};
+        case 3387378: /*note*/ return new String[] {"Annotation"};
+        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case -1285004149: /*quantity*/ return new String[] {"Quantity"};
+        case 102865796: /*level*/ return new String[] {"decimal"};
+        case 108280125: /*range*/ return new String[] {"Range"};
+        case -1539581980: /*attributeEstimate*/ return new String[] {"@Evidence.statistic.attributeEstimate"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("description")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Evidence.statistic.attributeEstimate.description");
+        }
+        else if (name.equals("note")) {
+          return addNote();
+        }
+        else if (name.equals("type")) {
+          this.type = new CodeableConcept();
+          return this.type;
+        }
+        else if (name.equals("quantity")) {
+          this.quantity = new Quantity();
+          return this.quantity;
+        }
+        else if (name.equals("level")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Evidence.statistic.attributeEstimate.level");
+        }
+        else if (name.equals("range")) {
+          this.range = new Range();
+          return this.range;
+        }
+        else if (name.equals("attributeEstimate")) {
+          return addAttributeEstimate();
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public EvidenceStatisticAttributeEstimateComponent copy() {
+        EvidenceStatisticAttributeEstimateComponent dst = new EvidenceStatisticAttributeEstimateComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EvidenceStatisticAttributeEstimateComponent dst) {
+        super.copyValues(dst);
+        dst.description = description == null ? null : description.copy();
+        if (note != null) {
+          dst.note = new ArrayList<Annotation>();
+          for (Annotation i : note)
+            dst.note.add(i.copy());
+        };
+        dst.type = type == null ? null : type.copy();
+        dst.quantity = quantity == null ? null : quantity.copy();
+        dst.level = level == null ? null : level.copy();
+        dst.range = range == null ? null : range.copy();
+        if (attributeEstimate != null) {
+          dst.attributeEstimate = new ArrayList<EvidenceStatisticAttributeEstimateComponent>();
+          for (EvidenceStatisticAttributeEstimateComponent i : attributeEstimate)
+            dst.attributeEstimate.add(i.copy());
+        };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof EvidenceStatisticAttributeEstimateComponent))
+          return false;
+        EvidenceStatisticAttributeEstimateComponent o = (EvidenceStatisticAttributeEstimateComponent) other_;
+        return compareDeep(description, o.description, true) && compareDeep(note, o.note, true) && compareDeep(type, o.type, true)
+           && compareDeep(quantity, o.quantity, true) && compareDeep(level, o.level, true) && compareDeep(range, o.range, true)
+           && compareDeep(attributeEstimate, o.attributeEstimate, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof EvidenceStatisticAttributeEstimateComponent))
+          return false;
+        EvidenceStatisticAttributeEstimateComponent o = (EvidenceStatisticAttributeEstimateComponent) other_;
+        return compareValues(description, o.description, true) && compareValues(level, o.level, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, note, type
+          , quantity, level, range, attributeEstimate);
+      }
+
+  public String fhirType() {
+    return "Evidence.statistic.attributeEstimate";
+
+  }
+
+  }
+
+    @Block()
+    public static class EvidenceStatisticModelCharacteristicComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Description of a component of the method to generate the statistic.
+         */
+        @Child(name = "code", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Model specification", formalDefinition="Description of a component of the method to generate the statistic." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/statistic-model-code")
+        protected CodeableConcept code;
+
+        /**
+         * Further specification of the quantified value of the component of the method to generate the statistic.
+         */
+        @Child(name = "value", type = {Quantity.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Numerical value to complete model specification", formalDefinition="Further specification of the quantified value of the component of the method to generate the statistic." )
+        protected Quantity value;
+
+        /**
+         * A variable adjusted for in the adjusted analysis.
+         */
+        @Child(name = "variable", type = {}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="A variable adjusted for in the adjusted analysis", formalDefinition="A variable adjusted for in the adjusted analysis." )
+        protected List<EvidenceStatisticModelCharacteristicVariableComponent> variable;
+
+        /**
+         * An attribute of the statistic used as a model characteristic.
+         */
+        @Child(name = "attributeEstimate", type = {EvidenceStatisticAttributeEstimateComponent.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="An attribute of the statistic used as a model characteristic", formalDefinition="An attribute of the statistic used as a model characteristic." )
+        protected List<EvidenceStatisticAttributeEstimateComponent> attributeEstimate;
+
+        private static final long serialVersionUID = 1787793468L;
+
+    /**
+     * Constructor
+     */
+      public EvidenceStatisticModelCharacteristicComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public EvidenceStatisticModelCharacteristicComponent(CodeableConcept code) {
+        super();
+        this.setCode(code);
+      }
+
+        /**
+         * @return {@link #code} (Description of a component of the method to generate the statistic.)
+         */
+        public CodeableConcept getCode() { 
+          if (this.code == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceStatisticModelCharacteristicComponent.code");
+            else if (Configuration.doAutoCreate())
+              this.code = new CodeableConcept(); // cc
+          return this.code;
+        }
+
+        public boolean hasCode() { 
+          return this.code != null && !this.code.isEmpty();
+        }
+
+        /**
+         * @param value {@link #code} (Description of a component of the method to generate the statistic.)
+         */
+        public EvidenceStatisticModelCharacteristicComponent setCode(CodeableConcept value) { 
+          this.code = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #value} (Further specification of the quantified value of the component of the method to generate the statistic.)
+         */
+        public Quantity getValue() { 
+          if (this.value == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceStatisticModelCharacteristicComponent.value");
+            else if (Configuration.doAutoCreate())
+              this.value = new Quantity(); // cc
+          return this.value;
+        }
+
+        public boolean hasValue() { 
+          return this.value != null && !this.value.isEmpty();
+        }
+
+        /**
+         * @param value {@link #value} (Further specification of the quantified value of the component of the method to generate the statistic.)
+         */
+        public EvidenceStatisticModelCharacteristicComponent setValue(Quantity value) { 
+          this.value = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #variable} (A variable adjusted for in the adjusted analysis.)
+         */
+        public List<EvidenceStatisticModelCharacteristicVariableComponent> getVariable() { 
+          if (this.variable == null)
+            this.variable = new ArrayList<EvidenceStatisticModelCharacteristicVariableComponent>();
+          return this.variable;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public EvidenceStatisticModelCharacteristicComponent setVariable(List<EvidenceStatisticModelCharacteristicVariableComponent> theVariable) { 
+          this.variable = theVariable;
+          return this;
+        }
+
+        public boolean hasVariable() { 
+          if (this.variable == null)
+            return false;
+          for (EvidenceStatisticModelCharacteristicVariableComponent item : this.variable)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public EvidenceStatisticModelCharacteristicVariableComponent addVariable() { //3
+          EvidenceStatisticModelCharacteristicVariableComponent t = new EvidenceStatisticModelCharacteristicVariableComponent();
+          if (this.variable == null)
+            this.variable = new ArrayList<EvidenceStatisticModelCharacteristicVariableComponent>();
+          this.variable.add(t);
+          return t;
+        }
+
+        public EvidenceStatisticModelCharacteristicComponent addVariable(EvidenceStatisticModelCharacteristicVariableComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.variable == null)
+            this.variable = new ArrayList<EvidenceStatisticModelCharacteristicVariableComponent>();
+          this.variable.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #variable}, creating it if it does not already exist {3}
+         */
+        public EvidenceStatisticModelCharacteristicVariableComponent getVariableFirstRep() { 
+          if (getVariable().isEmpty()) {
+            addVariable();
+          }
+          return getVariable().get(0);
+        }
+
+        /**
+         * @return {@link #attributeEstimate} (An attribute of the statistic used as a model characteristic.)
+         */
+        public List<EvidenceStatisticAttributeEstimateComponent> getAttributeEstimate() { 
+          if (this.attributeEstimate == null)
+            this.attributeEstimate = new ArrayList<EvidenceStatisticAttributeEstimateComponent>();
+          return this.attributeEstimate;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public EvidenceStatisticModelCharacteristicComponent setAttributeEstimate(List<EvidenceStatisticAttributeEstimateComponent> theAttributeEstimate) { 
+          this.attributeEstimate = theAttributeEstimate;
+          return this;
+        }
+
+        public boolean hasAttributeEstimate() { 
+          if (this.attributeEstimate == null)
+            return false;
+          for (EvidenceStatisticAttributeEstimateComponent item : this.attributeEstimate)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public EvidenceStatisticAttributeEstimateComponent addAttributeEstimate() { //3
+          EvidenceStatisticAttributeEstimateComponent t = new EvidenceStatisticAttributeEstimateComponent();
+          if (this.attributeEstimate == null)
+            this.attributeEstimate = new ArrayList<EvidenceStatisticAttributeEstimateComponent>();
+          this.attributeEstimate.add(t);
+          return t;
+        }
+
+        public EvidenceStatisticModelCharacteristicComponent addAttributeEstimate(EvidenceStatisticAttributeEstimateComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.attributeEstimate == null)
+            this.attributeEstimate = new ArrayList<EvidenceStatisticAttributeEstimateComponent>();
+          this.attributeEstimate.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #attributeEstimate}, creating it if it does not already exist {3}
+         */
+        public EvidenceStatisticAttributeEstimateComponent getAttributeEstimateFirstRep() { 
+          if (getAttributeEstimate().isEmpty()) {
+            addAttributeEstimate();
+          }
+          return getAttributeEstimate().get(0);
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("code", "CodeableConcept", "Description of a component of the method to generate the statistic.", 0, 1, code));
+          children.add(new Property("value", "Quantity", "Further specification of the quantified value of the component of the method to generate the statistic.", 0, 1, value));
+          children.add(new Property("variable", "", "A variable adjusted for in the adjusted analysis.", 0, java.lang.Integer.MAX_VALUE, variable));
+          children.add(new Property("attributeEstimate", "@Evidence.statistic.attributeEstimate", "An attribute of the statistic used as a model characteristic.", 0, java.lang.Integer.MAX_VALUE, attributeEstimate));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Description of a component of the method to generate the statistic.", 0, 1, code);
+          case 111972721: /*value*/  return new Property("value", "Quantity", "Further specification of the quantified value of the component of the method to generate the statistic.", 0, 1, value);
+          case -1249586564: /*variable*/  return new Property("variable", "", "A variable adjusted for in the adjusted analysis.", 0, java.lang.Integer.MAX_VALUE, variable);
+          case -1539581980: /*attributeEstimate*/  return new Property("attributeEstimate", "@Evidence.statistic.attributeEstimate", "An attribute of the statistic used as a model characteristic.", 0, java.lang.Integer.MAX_VALUE, attributeEstimate);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // Quantity
+        case -1249586564: /*variable*/ return this.variable == null ? new Base[0] : this.variable.toArray(new Base[this.variable.size()]); // EvidenceStatisticModelCharacteristicVariableComponent
+        case -1539581980: /*attributeEstimate*/ return this.attributeEstimate == null ? new Base[0] : this.attributeEstimate.toArray(new Base[this.attributeEstimate.size()]); // EvidenceStatisticAttributeEstimateComponent
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3059181: // code
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 111972721: // value
+          this.value = TypeConvertor.castToQuantity(value); // Quantity
+          return value;
+        case -1249586564: // variable
+          this.getVariable().add((EvidenceStatisticModelCharacteristicVariableComponent) value); // EvidenceStatisticModelCharacteristicVariableComponent
+          return value;
+        case -1539581980: // attributeEstimate
+          this.getAttributeEstimate().add((EvidenceStatisticAttributeEstimateComponent) value); // EvidenceStatisticAttributeEstimateComponent
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("value")) {
+          this.value = TypeConvertor.castToQuantity(value); // Quantity
+        } else if (name.equals("variable")) {
+          this.getVariable().add((EvidenceStatisticModelCharacteristicVariableComponent) value);
+        } else if (name.equals("attributeEstimate")) {
+          this.getAttributeEstimate().add((EvidenceStatisticAttributeEstimateComponent) value);
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3059181:  return getCode();
+        case 111972721:  return getValue();
+        case -1249586564:  return addVariable(); 
+        case -1539581980:  return addAttributeEstimate(); 
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3059181: /*code*/ return new String[] {"CodeableConcept"};
+        case 111972721: /*value*/ return new String[] {"Quantity"};
+        case -1249586564: /*variable*/ return new String[] {};
+        case -1539581980: /*attributeEstimate*/ return new String[] {"@Evidence.statistic.attributeEstimate"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = new CodeableConcept();
+          return this.code;
+        }
+        else if (name.equals("value")) {
+          this.value = new Quantity();
+          return this.value;
+        }
+        else if (name.equals("variable")) {
+          return addVariable();
+        }
+        else if (name.equals("attributeEstimate")) {
+          return addAttributeEstimate();
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public EvidenceStatisticModelCharacteristicComponent copy() {
+        EvidenceStatisticModelCharacteristicComponent dst = new EvidenceStatisticModelCharacteristicComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EvidenceStatisticModelCharacteristicComponent dst) {
+        super.copyValues(dst);
+        dst.code = code == null ? null : code.copy();
+        dst.value = value == null ? null : value.copy();
+        if (variable != null) {
+          dst.variable = new ArrayList<EvidenceStatisticModelCharacteristicVariableComponent>();
+          for (EvidenceStatisticModelCharacteristicVariableComponent i : variable)
+            dst.variable.add(i.copy());
+        };
+        if (attributeEstimate != null) {
+          dst.attributeEstimate = new ArrayList<EvidenceStatisticAttributeEstimateComponent>();
+          for (EvidenceStatisticAttributeEstimateComponent i : attributeEstimate)
+            dst.attributeEstimate.add(i.copy());
+        };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof EvidenceStatisticModelCharacteristicComponent))
+          return false;
+        EvidenceStatisticModelCharacteristicComponent o = (EvidenceStatisticModelCharacteristicComponent) other_;
+        return compareDeep(code, o.code, true) && compareDeep(value, o.value, true) && compareDeep(variable, o.variable, true)
+           && compareDeep(attributeEstimate, o.attributeEstimate, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof EvidenceStatisticModelCharacteristicComponent))
+          return false;
+        EvidenceStatisticModelCharacteristicComponent o = (EvidenceStatisticModelCharacteristicComponent) other_;
+        return true;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, value, variable, attributeEstimate
+          );
+      }
+
+  public String fhirType() {
+    return "Evidence.statistic.modelCharacteristic";
+
+  }
+
+  }
+
+    @Block()
+    public static class EvidenceStatisticModelCharacteristicVariableComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Description of the variable.
+         */
+        @Child(name = "variableDefinition", type = {Group.class, EvidenceVariable.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Description of the variable", formalDefinition="Description of the variable." )
+        protected Reference variableDefinition;
+
+        /**
+         * How the variable is classified for use in adjusted analysis.
+         */
+        @Child(name = "handling", type = {CodeType.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="continuous | dichotomous | ordinal | polychotomous", formalDefinition="How the variable is classified for use in adjusted analysis." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/variable-handling")
+        protected Enumeration<EvidenceVariableHandling> handling;
+
+        /**
+         * Description for grouping of ordinal or polychotomous variables.
+         */
+        @Child(name = "valueCategory", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Description for grouping of ordinal or polychotomous variables", formalDefinition="Description for grouping of ordinal or polychotomous variables." )
+        protected List<CodeableConcept> valueCategory;
+
+        /**
+         * Discrete value for grouping of ordinal or polychotomous variables.
+         */
+        @Child(name = "valueQuantity", type = {Quantity.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Discrete value for grouping of ordinal or polychotomous variables", formalDefinition="Discrete value for grouping of ordinal or polychotomous variables." )
+        protected List<Quantity> valueQuantity;
+
+        /**
+         * Range of values for grouping of ordinal or polychotomous variables.
+         */
+        @Child(name = "valueRange", type = {Range.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Range of values for grouping of ordinal or polychotomous variables", formalDefinition="Range of values for grouping of ordinal or polychotomous variables." )
+        protected List<Range> valueRange;
+
+        private static final long serialVersionUID = 1516174900L;
+
+    /**
+     * Constructor
+     */
+      public EvidenceStatisticModelCharacteristicVariableComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public EvidenceStatisticModelCharacteristicVariableComponent(Reference variableDefinition) {
+        super();
+        this.setVariableDefinition(variableDefinition);
+      }
+
+        /**
+         * @return {@link #variableDefinition} (Description of the variable.)
+         */
+        public Reference getVariableDefinition() { 
+          if (this.variableDefinition == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceStatisticModelCharacteristicVariableComponent.variableDefinition");
+            else if (Configuration.doAutoCreate())
+              this.variableDefinition = new Reference(); // cc
+          return this.variableDefinition;
+        }
+
+        public boolean hasVariableDefinition() { 
+          return this.variableDefinition != null && !this.variableDefinition.isEmpty();
+        }
+
+        /**
+         * @param value {@link #variableDefinition} (Description of the variable.)
+         */
+        public EvidenceStatisticModelCharacteristicVariableComponent setVariableDefinition(Reference value) { 
+          this.variableDefinition = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #handling} (How the variable is classified for use in adjusted analysis.). This is the underlying object with id, value and extensions. The accessor "getHandling" gives direct access to the value
+         */
+        public Enumeration<EvidenceVariableHandling> getHandlingElement() { 
+          if (this.handling == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceStatisticModelCharacteristicVariableComponent.handling");
+            else if (Configuration.doAutoCreate())
+              this.handling = new Enumeration<EvidenceVariableHandling>(new EvidenceVariableHandlingEnumFactory()); // bb
+          return this.handling;
+        }
+
+        public boolean hasHandlingElement() { 
+          return this.handling != null && !this.handling.isEmpty();
+        }
+
+        public boolean hasHandling() { 
+          return this.handling != null && !this.handling.isEmpty();
+        }
+
+        /**
+         * @param value {@link #handling} (How the variable is classified for use in adjusted analysis.). This is the underlying object with id, value and extensions. The accessor "getHandling" gives direct access to the value
+         */
+        public EvidenceStatisticModelCharacteristicVariableComponent setHandlingElement(Enumeration<EvidenceVariableHandling> value) { 
+          this.handling = value;
+          return this;
+        }
+
+        /**
+         * @return How the variable is classified for use in adjusted analysis.
+         */
+        public EvidenceVariableHandling getHandling() { 
+          return this.handling == null ? null : this.handling.getValue();
+        }
+
+        /**
+         * @param value How the variable is classified for use in adjusted analysis.
+         */
+        public EvidenceStatisticModelCharacteristicVariableComponent setHandling(EvidenceVariableHandling value) { 
+          if (value == null)
+            this.handling = null;
+          else {
+            if (this.handling == null)
+              this.handling = new Enumeration<EvidenceVariableHandling>(new EvidenceVariableHandlingEnumFactory());
+            this.handling.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #valueCategory} (Description for grouping of ordinal or polychotomous variables.)
+         */
+        public List<CodeableConcept> getValueCategory() { 
+          if (this.valueCategory == null)
+            this.valueCategory = new ArrayList<CodeableConcept>();
+          return this.valueCategory;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public EvidenceStatisticModelCharacteristicVariableComponent setValueCategory(List<CodeableConcept> theValueCategory) { 
+          this.valueCategory = theValueCategory;
+          return this;
+        }
+
+        public boolean hasValueCategory() { 
+          if (this.valueCategory == null)
+            return false;
+          for (CodeableConcept item : this.valueCategory)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CodeableConcept addValueCategory() { //3
+          CodeableConcept t = new CodeableConcept();
+          if (this.valueCategory == null)
+            this.valueCategory = new ArrayList<CodeableConcept>();
+          this.valueCategory.add(t);
+          return t;
+        }
+
+        public EvidenceStatisticModelCharacteristicVariableComponent addValueCategory(CodeableConcept t) { //3
+          if (t == null)
+            return this;
+          if (this.valueCategory == null)
+            this.valueCategory = new ArrayList<CodeableConcept>();
+          this.valueCategory.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #valueCategory}, creating it if it does not already exist {3}
+         */
+        public CodeableConcept getValueCategoryFirstRep() { 
+          if (getValueCategory().isEmpty()) {
+            addValueCategory();
+          }
+          return getValueCategory().get(0);
+        }
+
+        /**
+         * @return {@link #valueQuantity} (Discrete value for grouping of ordinal or polychotomous variables.)
+         */
+        public List<Quantity> getValueQuantity() { 
+          if (this.valueQuantity == null)
+            this.valueQuantity = new ArrayList<Quantity>();
+          return this.valueQuantity;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public EvidenceStatisticModelCharacteristicVariableComponent setValueQuantity(List<Quantity> theValueQuantity) { 
+          this.valueQuantity = theValueQuantity;
+          return this;
+        }
+
+        public boolean hasValueQuantity() { 
+          if (this.valueQuantity == null)
+            return false;
+          for (Quantity item : this.valueQuantity)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Quantity addValueQuantity() { //3
+          Quantity t = new Quantity();
+          if (this.valueQuantity == null)
+            this.valueQuantity = new ArrayList<Quantity>();
+          this.valueQuantity.add(t);
+          return t;
+        }
+
+        public EvidenceStatisticModelCharacteristicVariableComponent addValueQuantity(Quantity t) { //3
+          if (t == null)
+            return this;
+          if (this.valueQuantity == null)
+            this.valueQuantity = new ArrayList<Quantity>();
+          this.valueQuantity.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #valueQuantity}, creating it if it does not already exist {3}
+         */
+        public Quantity getValueQuantityFirstRep() { 
+          if (getValueQuantity().isEmpty()) {
+            addValueQuantity();
+          }
+          return getValueQuantity().get(0);
+        }
+
+        /**
+         * @return {@link #valueRange} (Range of values for grouping of ordinal or polychotomous variables.)
+         */
+        public List<Range> getValueRange() { 
+          if (this.valueRange == null)
+            this.valueRange = new ArrayList<Range>();
+          return this.valueRange;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public EvidenceStatisticModelCharacteristicVariableComponent setValueRange(List<Range> theValueRange) { 
+          this.valueRange = theValueRange;
+          return this;
+        }
+
+        public boolean hasValueRange() { 
+          if (this.valueRange == null)
+            return false;
+          for (Range item : this.valueRange)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Range addValueRange() { //3
+          Range t = new Range();
+          if (this.valueRange == null)
+            this.valueRange = new ArrayList<Range>();
+          this.valueRange.add(t);
+          return t;
+        }
+
+        public EvidenceStatisticModelCharacteristicVariableComponent addValueRange(Range t) { //3
+          if (t == null)
+            return this;
+          if (this.valueRange == null)
+            this.valueRange = new ArrayList<Range>();
+          this.valueRange.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #valueRange}, creating it if it does not already exist {3}
+         */
+        public Range getValueRangeFirstRep() { 
+          if (getValueRange().isEmpty()) {
+            addValueRange();
+          }
+          return getValueRange().get(0);
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("variableDefinition", "Reference(Group|EvidenceVariable)", "Description of the variable.", 0, 1, variableDefinition));
+          children.add(new Property("handling", "code", "How the variable is classified for use in adjusted analysis.", 0, 1, handling));
+          children.add(new Property("valueCategory", "CodeableConcept", "Description for grouping of ordinal or polychotomous variables.", 0, java.lang.Integer.MAX_VALUE, valueCategory));
+          children.add(new Property("valueQuantity", "Quantity", "Discrete value for grouping of ordinal or polychotomous variables.", 0, java.lang.Integer.MAX_VALUE, valueQuantity));
+          children.add(new Property("valueRange", "Range", "Range of values for grouping of ordinal or polychotomous variables.", 0, java.lang.Integer.MAX_VALUE, valueRange));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case -1807222545: /*variableDefinition*/  return new Property("variableDefinition", "Reference(Group|EvidenceVariable)", "Description of the variable.", 0, 1, variableDefinition);
+          case 2072805: /*handling*/  return new Property("handling", "code", "How the variable is classified for use in adjusted analysis.", 0, 1, handling);
+          case -694308465: /*valueCategory*/  return new Property("valueCategory", "CodeableConcept", "Description for grouping of ordinal or polychotomous variables.", 0, java.lang.Integer.MAX_VALUE, valueCategory);
+          case -2029823716: /*valueQuantity*/  return new Property("valueQuantity", "Quantity", "Discrete value for grouping of ordinal or polychotomous variables.", 0, java.lang.Integer.MAX_VALUE, valueQuantity);
+          case 2030761548: /*valueRange*/  return new Property("valueRange", "Range", "Range of values for grouping of ordinal or polychotomous variables.", 0, java.lang.Integer.MAX_VALUE, valueRange);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case -1807222545: /*variableDefinition*/ return this.variableDefinition == null ? new Base[0] : new Base[] {this.variableDefinition}; // Reference
+        case 2072805: /*handling*/ return this.handling == null ? new Base[0] : new Base[] {this.handling}; // Enumeration<EvidenceVariableHandling>
+        case -694308465: /*valueCategory*/ return this.valueCategory == null ? new Base[0] : this.valueCategory.toArray(new Base[this.valueCategory.size()]); // CodeableConcept
+        case -2029823716: /*valueQuantity*/ return this.valueQuantity == null ? new Base[0] : this.valueQuantity.toArray(new Base[this.valueQuantity.size()]); // Quantity
+        case 2030761548: /*valueRange*/ return this.valueRange == null ? new Base[0] : this.valueRange.toArray(new Base[this.valueRange.size()]); // Range
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case -1807222545: // variableDefinition
+          this.variableDefinition = TypeConvertor.castToReference(value); // Reference
+          return value;
+        case 2072805: // handling
+          value = new EvidenceVariableHandlingEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.handling = (Enumeration) value; // Enumeration<EvidenceVariableHandling>
+          return value;
+        case -694308465: // valueCategory
+          this.getValueCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        case -2029823716: // valueQuantity
+          this.getValueQuantity().add(TypeConvertor.castToQuantity(value)); // Quantity
+          return value;
+        case 2030761548: // valueRange
+          this.getValueRange().add(TypeConvertor.castToRange(value)); // Range
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("variableDefinition")) {
+          this.variableDefinition = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("handling")) {
+          value = new EvidenceVariableHandlingEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.handling = (Enumeration) value; // Enumeration<EvidenceVariableHandling>
+        } else if (name.equals("valueCategory")) {
+          this.getValueCategory().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("valueQuantity")) {
+          this.getValueQuantity().add(TypeConvertor.castToQuantity(value));
+        } else if (name.equals("valueRange")) {
+          this.getValueRange().add(TypeConvertor.castToRange(value));
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1807222545:  return getVariableDefinition();
+        case 2072805:  return getHandlingElement();
+        case -694308465:  return addValueCategory(); 
+        case -2029823716:  return addValueQuantity(); 
+        case 2030761548:  return addValueRange(); 
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1807222545: /*variableDefinition*/ return new String[] {"Reference"};
+        case 2072805: /*handling*/ return new String[] {"code"};
+        case -694308465: /*valueCategory*/ return new String[] {"CodeableConcept"};
+        case -2029823716: /*valueQuantity*/ return new String[] {"Quantity"};
+        case 2030761548: /*valueRange*/ return new String[] {"Range"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("variableDefinition")) {
+          this.variableDefinition = new Reference();
+          return this.variableDefinition;
+        }
+        else if (name.equals("handling")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Evidence.statistic.modelCharacteristic.variable.handling");
+        }
+        else if (name.equals("valueCategory")) {
+          return addValueCategory();
+        }
+        else if (name.equals("valueQuantity")) {
+          return addValueQuantity();
+        }
+        else if (name.equals("valueRange")) {
+          return addValueRange();
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public EvidenceStatisticModelCharacteristicVariableComponent copy() {
+        EvidenceStatisticModelCharacteristicVariableComponent dst = new EvidenceStatisticModelCharacteristicVariableComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EvidenceStatisticModelCharacteristicVariableComponent dst) {
+        super.copyValues(dst);
+        dst.variableDefinition = variableDefinition == null ? null : variableDefinition.copy();
+        dst.handling = handling == null ? null : handling.copy();
+        if (valueCategory != null) {
+          dst.valueCategory = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : valueCategory)
+            dst.valueCategory.add(i.copy());
+        };
+        if (valueQuantity != null) {
+          dst.valueQuantity = new ArrayList<Quantity>();
+          for (Quantity i : valueQuantity)
+            dst.valueQuantity.add(i.copy());
+        };
+        if (valueRange != null) {
+          dst.valueRange = new ArrayList<Range>();
+          for (Range i : valueRange)
+            dst.valueRange.add(i.copy());
+        };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof EvidenceStatisticModelCharacteristicVariableComponent))
+          return false;
+        EvidenceStatisticModelCharacteristicVariableComponent o = (EvidenceStatisticModelCharacteristicVariableComponent) other_;
+        return compareDeep(variableDefinition, o.variableDefinition, true) && compareDeep(handling, o.handling, true)
+           && compareDeep(valueCategory, o.valueCategory, true) && compareDeep(valueQuantity, o.valueQuantity, true)
+           && compareDeep(valueRange, o.valueRange, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof EvidenceStatisticModelCharacteristicVariableComponent))
+          return false;
+        EvidenceStatisticModelCharacteristicVariableComponent o = (EvidenceStatisticModelCharacteristicVariableComponent) other_;
+        return compareValues(handling, o.handling, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(variableDefinition, handling
+          , valueCategory, valueQuantity, valueRange);
+      }
+
+  public String fhirType() {
+    return "Evidence.statistic.modelCharacteristic.variable";
+
+  }
+
+  }
+
+    @Block()
     public static class EvidenceCertaintyComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Textual description of certainty.
@@ -524,21 +3128,36 @@ public class Evidence extends MetadataResource {
         protected List<Annotation> note;
 
         /**
-         * Quality or certainty of the Evidence.
+         * Aspect of certainty being rated.
          */
-        @Child(name = "rating", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Quality or certainty of the Evidence", formalDefinition="Quality or certainty of the Evidence." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/evidence-quality")
-        protected List<CodeableConcept> rating;
+        @Child(name = "type", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Aspect of certainty being rated", formalDefinition="Aspect of certainty being rated." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/certainty-type")
+        protected CodeableConcept type;
 
         /**
-         * A domain or subdomain of certainty rating.
+         * Assessment or judgement of the aspect.
          */
-        @Child(name = "certaintySubcomponent", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="A domain or subdomain of certainty rating", formalDefinition="A domain or subdomain of certainty rating." )
-        protected List<EvidenceCertaintyCertaintySubcomponentComponent> certaintySubcomponent;
+        @Child(name = "rating", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Assessment or judgement of the aspect", formalDefinition="Assessment or judgement of the aspect." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/certainty-rating")
+        protected CodeableConcept rating;
 
-        private static final long serialVersionUID = 775762511L;
+        /**
+         * Individual or group who did the rating.
+         */
+        @Child(name = "rater", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Individual or group who did the rating", formalDefinition="Individual or group who did the rating." )
+        protected StringType rater;
+
+        /**
+         * A domain or subdomain of certainty.
+         */
+        @Child(name = "subcomponent", type = {EvidenceCertaintyComponent.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="A domain or subdomain of certainty", formalDefinition="A domain or subdomain of certainty." )
+        protected List<EvidenceCertaintyComponent> subcomponent;
+
+        private static final long serialVersionUID = 432882532L;
 
     /**
      * Constructor
@@ -650,117 +3269,163 @@ public class Evidence extends MetadataResource {
         }
 
         /**
-         * @return {@link #rating} (Quality or certainty of the Evidence.)
+         * @return {@link #type} (Aspect of certainty being rated.)
          */
-        public List<CodeableConcept> getRating() { 
+        public CodeableConcept getType() { 
+          if (this.type == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceCertaintyComponent.type");
+            else if (Configuration.doAutoCreate())
+              this.type = new CodeableConcept(); // cc
+          return this.type;
+        }
+
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        /**
+         * @param value {@link #type} (Aspect of certainty being rated.)
+         */
+        public EvidenceCertaintyComponent setType(CodeableConcept value) { 
+          this.type = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #rating} (Assessment or judgement of the aspect.)
+         */
+        public CodeableConcept getRating() { 
           if (this.rating == null)
-            this.rating = new ArrayList<CodeableConcept>();
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceCertaintyComponent.rating");
+            else if (Configuration.doAutoCreate())
+              this.rating = new CodeableConcept(); // cc
           return this.rating;
         }
 
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public EvidenceCertaintyComponent setRating(List<CodeableConcept> theRating) { 
-          this.rating = theRating;
-          return this;
-        }
-
         public boolean hasRating() { 
-          if (this.rating == null)
-            return false;
-          for (CodeableConcept item : this.rating)
-            if (!item.isEmpty())
-              return true;
-          return false;
+          return this.rating != null && !this.rating.isEmpty();
         }
 
-        public CodeableConcept addRating() { //3
-          CodeableConcept t = new CodeableConcept();
-          if (this.rating == null)
-            this.rating = new ArrayList<CodeableConcept>();
-          this.rating.add(t);
-          return t;
-        }
-
-        public EvidenceCertaintyComponent addRating(CodeableConcept t) { //3
-          if (t == null)
-            return this;
-          if (this.rating == null)
-            this.rating = new ArrayList<CodeableConcept>();
-          this.rating.add(t);
+        /**
+         * @param value {@link #rating} (Assessment or judgement of the aspect.)
+         */
+        public EvidenceCertaintyComponent setRating(CodeableConcept value) { 
+          this.rating = value;
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #rating}, creating it if it does not already exist {3}
+         * @return {@link #rater} (Individual or group who did the rating.). This is the underlying object with id, value and extensions. The accessor "getRater" gives direct access to the value
          */
-        public CodeableConcept getRatingFirstRep() { 
-          if (getRating().isEmpty()) {
-            addRating();
-          }
-          return getRating().get(0);
+        public StringType getRaterElement() { 
+          if (this.rater == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceCertaintyComponent.rater");
+            else if (Configuration.doAutoCreate())
+              this.rater = new StringType(); // bb
+          return this.rater;
+        }
+
+        public boolean hasRaterElement() { 
+          return this.rater != null && !this.rater.isEmpty();
+        }
+
+        public boolean hasRater() { 
+          return this.rater != null && !this.rater.isEmpty();
         }
 
         /**
-         * @return {@link #certaintySubcomponent} (A domain or subdomain of certainty rating.)
+         * @param value {@link #rater} (Individual or group who did the rating.). This is the underlying object with id, value and extensions. The accessor "getRater" gives direct access to the value
          */
-        public List<EvidenceCertaintyCertaintySubcomponentComponent> getCertaintySubcomponent() { 
-          if (this.certaintySubcomponent == null)
-            this.certaintySubcomponent = new ArrayList<EvidenceCertaintyCertaintySubcomponentComponent>();
-          return this.certaintySubcomponent;
+        public EvidenceCertaintyComponent setRaterElement(StringType value) { 
+          this.rater = value;
+          return this;
+        }
+
+        /**
+         * @return Individual or group who did the rating.
+         */
+        public String getRater() { 
+          return this.rater == null ? null : this.rater.getValue();
+        }
+
+        /**
+         * @param value Individual or group who did the rating.
+         */
+        public EvidenceCertaintyComponent setRater(String value) { 
+          if (Utilities.noString(value))
+            this.rater = null;
+          else {
+            if (this.rater == null)
+              this.rater = new StringType();
+            this.rater.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #subcomponent} (A domain or subdomain of certainty.)
+         */
+        public List<EvidenceCertaintyComponent> getSubcomponent() { 
+          if (this.subcomponent == null)
+            this.subcomponent = new ArrayList<EvidenceCertaintyComponent>();
+          return this.subcomponent;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public EvidenceCertaintyComponent setCertaintySubcomponent(List<EvidenceCertaintyCertaintySubcomponentComponent> theCertaintySubcomponent) { 
-          this.certaintySubcomponent = theCertaintySubcomponent;
+        public EvidenceCertaintyComponent setSubcomponent(List<EvidenceCertaintyComponent> theSubcomponent) { 
+          this.subcomponent = theSubcomponent;
           return this;
         }
 
-        public boolean hasCertaintySubcomponent() { 
-          if (this.certaintySubcomponent == null)
+        public boolean hasSubcomponent() { 
+          if (this.subcomponent == null)
             return false;
-          for (EvidenceCertaintyCertaintySubcomponentComponent item : this.certaintySubcomponent)
+          for (EvidenceCertaintyComponent item : this.subcomponent)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public EvidenceCertaintyCertaintySubcomponentComponent addCertaintySubcomponent() { //3
-          EvidenceCertaintyCertaintySubcomponentComponent t = new EvidenceCertaintyCertaintySubcomponentComponent();
-          if (this.certaintySubcomponent == null)
-            this.certaintySubcomponent = new ArrayList<EvidenceCertaintyCertaintySubcomponentComponent>();
-          this.certaintySubcomponent.add(t);
+        public EvidenceCertaintyComponent addSubcomponent() { //3
+          EvidenceCertaintyComponent t = new EvidenceCertaintyComponent();
+          if (this.subcomponent == null)
+            this.subcomponent = new ArrayList<EvidenceCertaintyComponent>();
+          this.subcomponent.add(t);
           return t;
         }
 
-        public EvidenceCertaintyComponent addCertaintySubcomponent(EvidenceCertaintyCertaintySubcomponentComponent t) { //3
+        public EvidenceCertaintyComponent addSubcomponent(EvidenceCertaintyComponent t) { //3
           if (t == null)
             return this;
-          if (this.certaintySubcomponent == null)
-            this.certaintySubcomponent = new ArrayList<EvidenceCertaintyCertaintySubcomponentComponent>();
-          this.certaintySubcomponent.add(t);
+          if (this.subcomponent == null)
+            this.subcomponent = new ArrayList<EvidenceCertaintyComponent>();
+          this.subcomponent.add(t);
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #certaintySubcomponent}, creating it if it does not already exist {3}
+         * @return The first repetition of repeating field {@link #subcomponent}, creating it if it does not already exist {3}
          */
-        public EvidenceCertaintyCertaintySubcomponentComponent getCertaintySubcomponentFirstRep() { 
-          if (getCertaintySubcomponent().isEmpty()) {
-            addCertaintySubcomponent();
+        public EvidenceCertaintyComponent getSubcomponentFirstRep() { 
+          if (getSubcomponent().isEmpty()) {
+            addSubcomponent();
           }
-          return getCertaintySubcomponent().get(0);
+          return getSubcomponent().get(0);
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("description", "string", "Textual description of certainty.", 0, 1, description));
           children.add(new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note));
-          children.add(new Property("rating", "CodeableConcept", "Quality or certainty of the Evidence.", 0, java.lang.Integer.MAX_VALUE, rating));
-          children.add(new Property("certaintySubcomponent", "", "A domain or subdomain of certainty rating.", 0, java.lang.Integer.MAX_VALUE, certaintySubcomponent));
+          children.add(new Property("type", "CodeableConcept", "Aspect of certainty being rated.", 0, 1, type));
+          children.add(new Property("rating", "CodeableConcept", "Assessment or judgement of the aspect.", 0, 1, rating));
+          children.add(new Property("rater", "string", "Individual or group who did the rating.", 0, 1, rater));
+          children.add(new Property("subcomponent", "@Evidence.certainty", "A domain or subdomain of certainty.", 0, java.lang.Integer.MAX_VALUE, subcomponent));
         }
 
         @Override
@@ -768,8 +3433,10 @@ public class Evidence extends MetadataResource {
           switch (_hash) {
           case -1724546052: /*description*/  return new Property("description", "string", "Textual description of certainty.", 0, 1, description);
           case 3387378: /*note*/  return new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note);
-          case -938102371: /*rating*/  return new Property("rating", "CodeableConcept", "Quality or certainty of the Evidence.", 0, java.lang.Integer.MAX_VALUE, rating);
-          case 1806398212: /*certaintySubcomponent*/  return new Property("certaintySubcomponent", "", "A domain or subdomain of certainty rating.", 0, java.lang.Integer.MAX_VALUE, certaintySubcomponent);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Aspect of certainty being rated.", 0, 1, type);
+          case -938102371: /*rating*/  return new Property("rating", "CodeableConcept", "Assessment or judgement of the aspect.", 0, 1, rating);
+          case 108285842: /*rater*/  return new Property("rater", "string", "Individual or group who did the rating.", 0, 1, rater);
+          case -1308662083: /*subcomponent*/  return new Property("subcomponent", "@Evidence.certainty", "A domain or subdomain of certainty.", 0, java.lang.Integer.MAX_VALUE, subcomponent);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -780,8 +3447,10 @@ public class Evidence extends MetadataResource {
         switch (hash) {
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
-        case -938102371: /*rating*/ return this.rating == null ? new Base[0] : this.rating.toArray(new Base[this.rating.size()]); // CodeableConcept
-        case 1806398212: /*certaintySubcomponent*/ return this.certaintySubcomponent == null ? new Base[0] : this.certaintySubcomponent.toArray(new Base[this.certaintySubcomponent.size()]); // EvidenceCertaintyCertaintySubcomponentComponent
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case -938102371: /*rating*/ return this.rating == null ? new Base[0] : new Base[] {this.rating}; // CodeableConcept
+        case 108285842: /*rater*/ return this.rater == null ? new Base[0] : new Base[] {this.rater}; // StringType
+        case -1308662083: /*subcomponent*/ return this.subcomponent == null ? new Base[0] : this.subcomponent.toArray(new Base[this.subcomponent.size()]); // EvidenceCertaintyComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -796,11 +3465,17 @@ public class Evidence extends MetadataResource {
         case 3387378: // note
           this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
-        case -938102371: // rating
-          this.getRating().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+        case 3575610: // type
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
-        case 1806398212: // certaintySubcomponent
-          this.getCertaintySubcomponent().add((EvidenceCertaintyCertaintySubcomponentComponent) value); // EvidenceCertaintyCertaintySubcomponentComponent
+        case -938102371: // rating
+          this.rating = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 108285842: // rater
+          this.rater = TypeConvertor.castToString(value); // StringType
+          return value;
+        case -1308662083: // subcomponent
+          this.getSubcomponent().add((EvidenceCertaintyComponent) value); // EvidenceCertaintyComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -813,10 +3488,14 @@ public class Evidence extends MetadataResource {
           this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("note")) {
           this.getNote().add(TypeConvertor.castToAnnotation(value));
+        } else if (name.equals("type")) {
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("rating")) {
-          this.getRating().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("certaintySubcomponent")) {
-          this.getCertaintySubcomponent().add((EvidenceCertaintyCertaintySubcomponentComponent) value);
+          this.rating = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("rater")) {
+          this.rater = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("subcomponent")) {
+          this.getSubcomponent().add((EvidenceCertaintyComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -827,8 +3506,10 @@ public class Evidence extends MetadataResource {
         switch (hash) {
         case -1724546052:  return getDescriptionElement();
         case 3387378:  return addNote(); 
-        case -938102371:  return addRating(); 
-        case 1806398212:  return addCertaintySubcomponent(); 
+        case 3575610:  return getType();
+        case -938102371:  return getRating();
+        case 108285842:  return getRaterElement();
+        case -1308662083:  return addSubcomponent(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -839,8 +3520,10 @@ public class Evidence extends MetadataResource {
         switch (hash) {
         case -1724546052: /*description*/ return new String[] {"string"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
+        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case -938102371: /*rating*/ return new String[] {"CodeableConcept"};
-        case 1806398212: /*certaintySubcomponent*/ return new String[] {};
+        case 108285842: /*rater*/ return new String[] {"string"};
+        case -1308662083: /*subcomponent*/ return new String[] {"@Evidence.certainty"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -854,11 +3537,19 @@ public class Evidence extends MetadataResource {
         else if (name.equals("note")) {
           return addNote();
         }
-        else if (name.equals("rating")) {
-          return addRating();
+        else if (name.equals("type")) {
+          this.type = new CodeableConcept();
+          return this.type;
         }
-        else if (name.equals("certaintySubcomponent")) {
-          return addCertaintySubcomponent();
+        else if (name.equals("rating")) {
+          this.rating = new CodeableConcept();
+          return this.rating;
+        }
+        else if (name.equals("rater")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Evidence.certainty.rater");
+        }
+        else if (name.equals("subcomponent")) {
+          return addSubcomponent();
         }
         else
           return super.addChild(name);
@@ -878,15 +3569,13 @@ public class Evidence extends MetadataResource {
           for (Annotation i : note)
             dst.note.add(i.copy());
         };
-        if (rating != null) {
-          dst.rating = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : rating)
-            dst.rating.add(i.copy());
-        };
-        if (certaintySubcomponent != null) {
-          dst.certaintySubcomponent = new ArrayList<EvidenceCertaintyCertaintySubcomponentComponent>();
-          for (EvidenceCertaintyCertaintySubcomponentComponent i : certaintySubcomponent)
-            dst.certaintySubcomponent.add(i.copy());
+        dst.type = type == null ? null : type.copy();
+        dst.rating = rating == null ? null : rating.copy();
+        dst.rater = rater == null ? null : rater.copy();
+        if (subcomponent != null) {
+          dst.subcomponent = new ArrayList<EvidenceCertaintyComponent>();
+          for (EvidenceCertaintyComponent i : subcomponent)
+            dst.subcomponent.add(i.copy());
         };
       }
 
@@ -897,444 +3586,28 @@ public class Evidence extends MetadataResource {
         if (!(other_ instanceof EvidenceCertaintyComponent))
           return false;
         EvidenceCertaintyComponent o = (EvidenceCertaintyComponent) other_;
-        return compareDeep(description, o.description, true) && compareDeep(note, o.note, true) && compareDeep(rating, o.rating, true)
-           && compareDeep(certaintySubcomponent, o.certaintySubcomponent, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof EvidenceCertaintyComponent))
-          return false;
-        EvidenceCertaintyComponent o = (EvidenceCertaintyComponent) other_;
-        return compareValues(description, o.description, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, note, rating
-          , certaintySubcomponent);
-      }
-
-  public String fhirType() {
-    return "Evidence.certainty";
-
-  }
-
-  }
-
-    @Block()
-    public static class EvidenceCertaintyCertaintySubcomponentComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * Textual description of certainty subcomponent.
-         */
-        @Child(name = "description", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Textual description of certainty subcomponent", formalDefinition="Textual description of certainty subcomponent." )
-        protected StringType description;
-
-        /**
-         * Footnotes and/or explanatory notes.
-         */
-        @Child(name = "note", type = {Annotation.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Footnotes and/or explanatory notes", formalDefinition="Footnotes and/or explanatory notes." )
-        protected List<Annotation> note;
-
-        /**
-         * Aspect of quality or certainty being rated.
-         */
-        @Child(name = "type", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Aspect of quality or certainty being rated", formalDefinition="Aspect of quality or certainty being rated." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/certainty-subcomponent-type")
-        protected List<CodeableConcept> type;
-
-        /**
-         * Quality or certainty of the aspect.
-         */
-        @Child(name = "rating", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Quality or certainty of the aspect", formalDefinition="Quality or certainty of the aspect." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/certainty-subcomponent-rating")
-        protected List<CodeableConcept> rating;
-
-        private static final long serialVersionUID = 619041733L;
-
-    /**
-     * Constructor
-     */
-      public EvidenceCertaintyCertaintySubcomponentComponent() {
-        super();
-      }
-
-        /**
-         * @return {@link #description} (Textual description of certainty subcomponent.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
-         */
-        public StringType getDescriptionElement() { 
-          if (this.description == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create EvidenceCertaintyCertaintySubcomponentComponent.description");
-            else if (Configuration.doAutoCreate())
-              this.description = new StringType(); // bb
-          return this.description;
-        }
-
-        public boolean hasDescriptionElement() { 
-          return this.description != null && !this.description.isEmpty();
-        }
-
-        public boolean hasDescription() { 
-          return this.description != null && !this.description.isEmpty();
-        }
-
-        /**
-         * @param value {@link #description} (Textual description of certainty subcomponent.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
-         */
-        public EvidenceCertaintyCertaintySubcomponentComponent setDescriptionElement(StringType value) { 
-          this.description = value;
-          return this;
-        }
-
-        /**
-         * @return Textual description of certainty subcomponent.
-         */
-        public String getDescription() { 
-          return this.description == null ? null : this.description.getValue();
-        }
-
-        /**
-         * @param value Textual description of certainty subcomponent.
-         */
-        public EvidenceCertaintyCertaintySubcomponentComponent setDescription(String value) { 
-          if (Utilities.noString(value))
-            this.description = null;
-          else {
-            if (this.description == null)
-              this.description = new StringType();
-            this.description.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #note} (Footnotes and/or explanatory notes.)
-         */
-        public List<Annotation> getNote() { 
-          if (this.note == null)
-            this.note = new ArrayList<Annotation>();
-          return this.note;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public EvidenceCertaintyCertaintySubcomponentComponent setNote(List<Annotation> theNote) { 
-          this.note = theNote;
-          return this;
-        }
-
-        public boolean hasNote() { 
-          if (this.note == null)
-            return false;
-          for (Annotation item : this.note)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public Annotation addNote() { //3
-          Annotation t = new Annotation();
-          if (this.note == null)
-            this.note = new ArrayList<Annotation>();
-          this.note.add(t);
-          return t;
-        }
-
-        public EvidenceCertaintyCertaintySubcomponentComponent addNote(Annotation t) { //3
-          if (t == null)
-            return this;
-          if (this.note == null)
-            this.note = new ArrayList<Annotation>();
-          this.note.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist {3}
-         */
-        public Annotation getNoteFirstRep() { 
-          if (getNote().isEmpty()) {
-            addNote();
-          }
-          return getNote().get(0);
-        }
-
-        /**
-         * @return {@link #type} (Aspect of quality or certainty being rated.)
-         */
-        public List<CodeableConcept> getType() { 
-          if (this.type == null)
-            this.type = new ArrayList<CodeableConcept>();
-          return this.type;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public EvidenceCertaintyCertaintySubcomponentComponent setType(List<CodeableConcept> theType) { 
-          this.type = theType;
-          return this;
-        }
-
-        public boolean hasType() { 
-          if (this.type == null)
-            return false;
-          for (CodeableConcept item : this.type)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public CodeableConcept addType() { //3
-          CodeableConcept t = new CodeableConcept();
-          if (this.type == null)
-            this.type = new ArrayList<CodeableConcept>();
-          this.type.add(t);
-          return t;
-        }
-
-        public EvidenceCertaintyCertaintySubcomponentComponent addType(CodeableConcept t) { //3
-          if (t == null)
-            return this;
-          if (this.type == null)
-            this.type = new ArrayList<CodeableConcept>();
-          this.type.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #type}, creating it if it does not already exist {3}
-         */
-        public CodeableConcept getTypeFirstRep() { 
-          if (getType().isEmpty()) {
-            addType();
-          }
-          return getType().get(0);
-        }
-
-        /**
-         * @return {@link #rating} (Quality or certainty of the aspect.)
-         */
-        public List<CodeableConcept> getRating() { 
-          if (this.rating == null)
-            this.rating = new ArrayList<CodeableConcept>();
-          return this.rating;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public EvidenceCertaintyCertaintySubcomponentComponent setRating(List<CodeableConcept> theRating) { 
-          this.rating = theRating;
-          return this;
-        }
-
-        public boolean hasRating() { 
-          if (this.rating == null)
-            return false;
-          for (CodeableConcept item : this.rating)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public CodeableConcept addRating() { //3
-          CodeableConcept t = new CodeableConcept();
-          if (this.rating == null)
-            this.rating = new ArrayList<CodeableConcept>();
-          this.rating.add(t);
-          return t;
-        }
-
-        public EvidenceCertaintyCertaintySubcomponentComponent addRating(CodeableConcept t) { //3
-          if (t == null)
-            return this;
-          if (this.rating == null)
-            this.rating = new ArrayList<CodeableConcept>();
-          this.rating.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #rating}, creating it if it does not already exist {3}
-         */
-        public CodeableConcept getRatingFirstRep() { 
-          if (getRating().isEmpty()) {
-            addRating();
-          }
-          return getRating().get(0);
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("description", "string", "Textual description of certainty subcomponent.", 0, 1, description));
-          children.add(new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note));
-          children.add(new Property("type", "CodeableConcept", "Aspect of quality or certainty being rated.", 0, java.lang.Integer.MAX_VALUE, type));
-          children.add(new Property("rating", "CodeableConcept", "Quality or certainty of the aspect.", 0, java.lang.Integer.MAX_VALUE, rating));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case -1724546052: /*description*/  return new Property("description", "string", "Textual description of certainty subcomponent.", 0, 1, description);
-          case 3387378: /*note*/  return new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note);
-          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Aspect of quality or certainty being rated.", 0, java.lang.Integer.MAX_VALUE, type);
-          case -938102371: /*rating*/  return new Property("rating", "CodeableConcept", "Quality or certainty of the aspect.", 0, java.lang.Integer.MAX_VALUE, rating);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
-        case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : this.type.toArray(new Base[this.type.size()]); // CodeableConcept
-        case -938102371: /*rating*/ return this.rating == null ? new Base[0] : this.rating.toArray(new Base[this.rating.size()]); // CodeableConcept
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case -1724546052: // description
-          this.description = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 3387378: // note
-          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
-          return value;
-        case 3575610: // type
-          this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        case -938102371: // rating
-          this.getRating().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("description")) {
-          this.description = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("note")) {
-          this.getNote().add(TypeConvertor.castToAnnotation(value));
-        } else if (name.equals("type")) {
-          this.getType().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("rating")) {
-          this.getRating().add(TypeConvertor.castToCodeableConcept(value));
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1724546052:  return getDescriptionElement();
-        case 3387378:  return addNote(); 
-        case 3575610:  return addType(); 
-        case -938102371:  return addRating(); 
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1724546052: /*description*/ return new String[] {"string"};
-        case 3387378: /*note*/ return new String[] {"Annotation"};
-        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case -938102371: /*rating*/ return new String[] {"CodeableConcept"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Evidence.certainty.certaintySubcomponent.description");
-        }
-        else if (name.equals("note")) {
-          return addNote();
-        }
-        else if (name.equals("type")) {
-          return addType();
-        }
-        else if (name.equals("rating")) {
-          return addRating();
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public EvidenceCertaintyCertaintySubcomponentComponent copy() {
-        EvidenceCertaintyCertaintySubcomponentComponent dst = new EvidenceCertaintyCertaintySubcomponentComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(EvidenceCertaintyCertaintySubcomponentComponent dst) {
-        super.copyValues(dst);
-        dst.description = description == null ? null : description.copy();
-        if (note != null) {
-          dst.note = new ArrayList<Annotation>();
-          for (Annotation i : note)
-            dst.note.add(i.copy());
-        };
-        if (type != null) {
-          dst.type = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : type)
-            dst.type.add(i.copy());
-        };
-        if (rating != null) {
-          dst.rating = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : rating)
-            dst.rating.add(i.copy());
-        };
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof EvidenceCertaintyCertaintySubcomponentComponent))
-          return false;
-        EvidenceCertaintyCertaintySubcomponentComponent o = (EvidenceCertaintyCertaintySubcomponentComponent) other_;
         return compareDeep(description, o.description, true) && compareDeep(note, o.note, true) && compareDeep(type, o.type, true)
-           && compareDeep(rating, o.rating, true);
+           && compareDeep(rating, o.rating, true) && compareDeep(rater, o.rater, true) && compareDeep(subcomponent, o.subcomponent, true)
+          ;
       }
 
       @Override
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof EvidenceCertaintyCertaintySubcomponentComponent))
+        if (!(other_ instanceof EvidenceCertaintyComponent))
           return false;
-        EvidenceCertaintyCertaintySubcomponentComponent o = (EvidenceCertaintyCertaintySubcomponentComponent) other_;
-        return compareValues(description, o.description, true);
+        EvidenceCertaintyComponent o = (EvidenceCertaintyComponent) other_;
+        return compareValues(description, o.description, true) && compareValues(rater, o.rater, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, note, type
-          , rating);
+          , rating, rater, subcomponent);
       }
 
   public String fhirType() {
-    return "Evidence.certainty.certaintySubcomponent";
+    return "Evidence.certainty";
 
   }
 
@@ -1369,9 +3642,16 @@ public class Evidence extends MetadataResource {
     protected StringType title;
 
     /**
+     * Citation Resource or display of suggested citation for this evidence.
+     */
+    @Child(name = "citeAs", type = {Citation.class, MarkdownType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Citation for this evidence", formalDefinition="Citation Resource or display of suggested citation for this evidence." )
+    protected DataType citeAs;
+
+    /**
      * The status of this summary. Enables tracking the life-cycle of the content.
      */
-    @Child(name = "status", type = {CodeType.class}, order=4, min=1, max=1, modifier=true, summary=true)
+    @Child(name = "status", type = {CodeType.class}, order=5, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this summary. Enables tracking the life-cycle of the content." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
     protected Enumeration<PublicationStatus> status;
@@ -1379,146 +3659,139 @@ public class Evidence extends MetadataResource {
     /**
      * The date  (and optionally time) when the summary was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the summary changes.
      */
-    @Child(name = "date", type = {DateTimeType.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "date", type = {DateTimeType.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Date last changed", formalDefinition="The date  (and optionally time) when the summary was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the summary changes." )
     protected DateTimeType date;
 
     /**
      * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate evidence instances.
      */
-    @Child(name = "useContext", type = {UsageContext.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "useContext", type = {UsageContext.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The context that the content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate evidence instances." )
     protected List<UsageContext> useContext;
 
     /**
      * The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    @Child(name = "approvalDate", type = {DateType.class}, order=7, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "approvalDate", type = {DateType.class}, order=8, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the summary was approved by publisher", formalDefinition="The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage." )
     protected DateType approvalDate;
 
     /**
      * The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
-    @Child(name = "lastReviewDate", type = {DateType.class}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "lastReviewDate", type = {DateType.class}, order=9, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the summary was last reviewed", formalDefinition="The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date." )
     protected DateType lastReviewDate;
 
     /**
      * The name of the organization or individual that published the evidence.
      */
-    @Child(name = "publisher", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "publisher", type = {StringType.class}, order=10, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the evidence." )
     protected StringType publisher;
 
     /**
      * Contact details to assist a user in finding and communicating with the publisher.
      */
-    @Child(name = "contact", type = {ContactDetail.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "contact", type = {ContactDetail.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
     protected List<ContactDetail> contact;
 
     /**
      * An individiual, organization, or device primarily involved in the creation and maintenance of the content.
      */
-    @Child(name = "author", type = {ContactDetail.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "author", type = {ContactDetail.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Who authored the content", formalDefinition="An individiual, organization, or device primarily involved in the creation and maintenance of the content." )
     protected List<ContactDetail> author;
 
     /**
      * An individiual, organization, or device primarily responsible for internal coherence of the content.
      */
-    @Child(name = "editor", type = {ContactDetail.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "editor", type = {ContactDetail.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who edited the content", formalDefinition="An individiual, organization, or device primarily responsible for internal coherence of the content." )
     protected List<ContactDetail> editor;
 
     /**
      * An individiual, organization, or device primarily responsible for review of some aspect of the content.
      */
-    @Child(name = "reviewer", type = {ContactDetail.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "reviewer", type = {ContactDetail.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who reviewed the content", formalDefinition="An individiual, organization, or device primarily responsible for review of some aspect of the content." )
     protected List<ContactDetail> reviewer;
 
     /**
      * An individiual, organization, or device responsible for officially endorsing the content for use in some setting.
      */
-    @Child(name = "endorser", type = {ContactDetail.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "endorser", type = {ContactDetail.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Who endorsed the content", formalDefinition="An individiual, organization, or device responsible for officially endorsing the content for use in some setting." )
     protected List<ContactDetail> endorser;
 
     /**
      * Link or citation to artifact associated with the summary.
      */
-    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Link or citation to artifact associated with the summary", formalDefinition="Link or citation to artifact associated with the summary." )
     protected List<RelatedArtifact> relatedArtifact;
 
     /**
      * A free text natural language description of the evidence from a consumer's perspective.
      */
-    @Child(name = "description", type = {MarkdownType.class}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "description", type = {MarkdownType.class}, order=17, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Description of the particular summary", formalDefinition="A free text natural language description of the evidence from a consumer's perspective." )
     protected MarkdownType description;
 
     /**
      * Declarative description of the Evidence.
      */
-    @Child(name = "assertion", type = {MarkdownType.class}, order=17, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "assertion", type = {MarkdownType.class}, order=18, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Declarative description of the Evidence", formalDefinition="Declarative description of the Evidence." )
     protected MarkdownType assertion;
 
     /**
      * Footnotes and/or explanatory notes.
      */
-    @Child(name = "note", type = {Annotation.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Footnotes and/or explanatory notes", formalDefinition="Footnotes and/or explanatory notes." )
     protected List<Annotation> note;
 
     /**
      * Evidence variable such as population, exposure, or outcome.
      */
-    @Child(name = "variableDefinition", type = {}, order=19, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "variableDefinition", type = {}, order=20, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Evidence variable such as population, exposure, or outcome", formalDefinition="Evidence variable such as population, exposure, or outcome." )
     protected List<EvidenceVariableDefinitionComponent> variableDefinition;
 
     /**
-     * The particular type of synthesis if this is a synthesis summary.
+     * The method to combine studies.
      */
-    @Child(name = "synthesisType", type = {CodeableConcept.class}, order=20, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="The particular type of synthesis if this is a synthesis summary", formalDefinition="The particular type of synthesis if this is a synthesis summary." )
+    @Child(name = "synthesisType", type = {CodeableConcept.class}, order=21, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="The method to combine studies", formalDefinition="The method to combine studies." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/synthesis-type")
     protected CodeableConcept synthesisType;
 
     /**
-     * The type of study that produced this summary.
+     * The type of study that produced this evidence.
      */
-    @Child(name = "studyType", type = {CodeableConcept.class}, order=21, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="The type of study that produced this summary", formalDefinition="The type of study that produced this summary." )
+    @Child(name = "studyType", type = {CodeableConcept.class}, order=22, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="The type of study that produced this evidence", formalDefinition="The type of study that produced this evidence." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/study-type")
     protected CodeableConcept studyType;
 
     /**
-     * The statistic value(s).
+     * Values and parameters for a single statistic.
      */
-    @Child(name = "statistic", type = {Statistic.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Values and parameters for a single statistic", formalDefinition="The statistic value(s)." )
-    protected List<Statistic> statistic;
+    @Child(name = "statistic", type = {}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Values and parameters for a single statistic", formalDefinition="Values and parameters for a single statistic." )
+    protected List<EvidenceStatisticComponent> statistic;
 
     /**
-     * Ordered distribution.
-     */
-    @Child(name = "distribution", type = {OrderedDistribution.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="An ordered group of statistics", formalDefinition="Ordered distribution." )
-    protected List<OrderedDistribution> distribution;
-
-    /**
-     * Level of certainty.
+     * Assessment of certainty, confidence in the estimates, or quality of the evidence.
      */
     @Child(name = "certainty", type = {}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Level of certainty", formalDefinition="Level of certainty." )
+    @Description(shortDefinition="Certainty or quality of the evidence", formalDefinition="Assessment of certainty, confidence in the estimates, or quality of the evidence." )
     protected List<EvidenceCertaintyComponent> certainty;
 
-    private static final long serialVersionUID = 100960848L;
+    private static final long serialVersionUID = -468979974L;
 
   /**
    * Constructor
@@ -1733,6 +4006,57 @@ public class Evidence extends MetadataResource {
           this.title = new StringType();
         this.title.setValue(value);
       }
+      return this;
+    }
+
+    /**
+     * @return {@link #citeAs} (Citation Resource or display of suggested citation for this evidence.)
+     */
+    public DataType getCiteAs() { 
+      return this.citeAs;
+    }
+
+    /**
+     * @return {@link #citeAs} (Citation Resource or display of suggested citation for this evidence.)
+     */
+    public Reference getCiteAsReference() throws FHIRException { 
+      if (this.citeAs == null)
+        this.citeAs = new Reference();
+      if (!(this.citeAs instanceof Reference))
+        throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.citeAs.getClass().getName()+" was encountered");
+      return (Reference) this.citeAs;
+    }
+
+    public boolean hasCiteAsReference() { 
+      return this != null && this.citeAs instanceof Reference;
+    }
+
+    /**
+     * @return {@link #citeAs} (Citation Resource or display of suggested citation for this evidence.)
+     */
+    public MarkdownType getCiteAsMarkdownType() throws FHIRException { 
+      if (this.citeAs == null)
+        this.citeAs = new MarkdownType();
+      if (!(this.citeAs instanceof MarkdownType))
+        throw new FHIRException("Type mismatch: the type MarkdownType was expected, but "+this.citeAs.getClass().getName()+" was encountered");
+      return (MarkdownType) this.citeAs;
+    }
+
+    public boolean hasCiteAsMarkdownType() { 
+      return this != null && this.citeAs instanceof MarkdownType;
+    }
+
+    public boolean hasCiteAs() { 
+      return this.citeAs != null && !this.citeAs.isEmpty();
+    }
+
+    /**
+     * @param value {@link #citeAs} (Citation Resource or display of suggested citation for this evidence.)
+     */
+    public Evidence setCiteAs(DataType value) { 
+      if (value != null && !(value instanceof Reference || value instanceof MarkdownType))
+        throw new Error("Not the right type for Evidence.citeAs[x]: "+value.fhirType());
+      this.citeAs = value;
       return this;
     }
 
@@ -2553,7 +4877,7 @@ public class Evidence extends MetadataResource {
     }
 
     /**
-     * @return {@link #synthesisType} (The particular type of synthesis if this is a synthesis summary.)
+     * @return {@link #synthesisType} (The method to combine studies.)
      */
     public CodeableConcept getSynthesisType() { 
       if (this.synthesisType == null)
@@ -2569,7 +4893,7 @@ public class Evidence extends MetadataResource {
     }
 
     /**
-     * @param value {@link #synthesisType} (The particular type of synthesis if this is a synthesis summary.)
+     * @param value {@link #synthesisType} (The method to combine studies.)
      */
     public Evidence setSynthesisType(CodeableConcept value) { 
       this.synthesisType = value;
@@ -2577,7 +4901,7 @@ public class Evidence extends MetadataResource {
     }
 
     /**
-     * @return {@link #studyType} (The type of study that produced this summary.)
+     * @return {@link #studyType} (The type of study that produced this evidence.)
      */
     public CodeableConcept getStudyType() { 
       if (this.studyType == null)
@@ -2593,7 +4917,7 @@ public class Evidence extends MetadataResource {
     }
 
     /**
-     * @param value {@link #studyType} (The type of study that produced this summary.)
+     * @param value {@link #studyType} (The type of study that produced this evidence.)
      */
     public Evidence setStudyType(CodeableConcept value) { 
       this.studyType = value;
@@ -2601,18 +4925,18 @@ public class Evidence extends MetadataResource {
     }
 
     /**
-     * @return {@link #statistic} (The statistic value(s).)
+     * @return {@link #statistic} (Values and parameters for a single statistic.)
      */
-    public List<Statistic> getStatistic() { 
+    public List<EvidenceStatisticComponent> getStatistic() { 
       if (this.statistic == null)
-        this.statistic = new ArrayList<Statistic>();
+        this.statistic = new ArrayList<EvidenceStatisticComponent>();
       return this.statistic;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Evidence setStatistic(List<Statistic> theStatistic) { 
+    public Evidence setStatistic(List<EvidenceStatisticComponent> theStatistic) { 
       this.statistic = theStatistic;
       return this;
     }
@@ -2620,25 +4944,25 @@ public class Evidence extends MetadataResource {
     public boolean hasStatistic() { 
       if (this.statistic == null)
         return false;
-      for (Statistic item : this.statistic)
+      for (EvidenceStatisticComponent item : this.statistic)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public Statistic addStatistic() { //3
-      Statistic t = new Statistic();
+    public EvidenceStatisticComponent addStatistic() { //3
+      EvidenceStatisticComponent t = new EvidenceStatisticComponent();
       if (this.statistic == null)
-        this.statistic = new ArrayList<Statistic>();
+        this.statistic = new ArrayList<EvidenceStatisticComponent>();
       this.statistic.add(t);
       return t;
     }
 
-    public Evidence addStatistic(Statistic t) { //3
+    public Evidence addStatistic(EvidenceStatisticComponent t) { //3
       if (t == null)
         return this;
       if (this.statistic == null)
-        this.statistic = new ArrayList<Statistic>();
+        this.statistic = new ArrayList<EvidenceStatisticComponent>();
       this.statistic.add(t);
       return this;
     }
@@ -2646,7 +4970,7 @@ public class Evidence extends MetadataResource {
     /**
      * @return The first repetition of repeating field {@link #statistic}, creating it if it does not already exist {3}
      */
-    public Statistic getStatisticFirstRep() { 
+    public EvidenceStatisticComponent getStatisticFirstRep() { 
       if (getStatistic().isEmpty()) {
         addStatistic();
       }
@@ -2654,60 +4978,7 @@ public class Evidence extends MetadataResource {
     }
 
     /**
-     * @return {@link #distribution} (Ordered distribution.)
-     */
-    public List<OrderedDistribution> getDistribution() { 
-      if (this.distribution == null)
-        this.distribution = new ArrayList<OrderedDistribution>();
-      return this.distribution;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public Evidence setDistribution(List<OrderedDistribution> theDistribution) { 
-      this.distribution = theDistribution;
-      return this;
-    }
-
-    public boolean hasDistribution() { 
-      if (this.distribution == null)
-        return false;
-      for (OrderedDistribution item : this.distribution)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public OrderedDistribution addDistribution() { //3
-      OrderedDistribution t = new OrderedDistribution();
-      if (this.distribution == null)
-        this.distribution = new ArrayList<OrderedDistribution>();
-      this.distribution.add(t);
-      return t;
-    }
-
-    public Evidence addDistribution(OrderedDistribution t) { //3
-      if (t == null)
-        return this;
-      if (this.distribution == null)
-        this.distribution = new ArrayList<OrderedDistribution>();
-      this.distribution.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #distribution}, creating it if it does not already exist {3}
-     */
-    public OrderedDistribution getDistributionFirstRep() { 
-      if (getDistribution().isEmpty()) {
-        addDistribution();
-      }
-      return getDistribution().get(0);
-    }
-
-    /**
-     * @return {@link #certainty} (Level of certainty.)
+     * @return {@link #certainty} (Assessment of certainty, confidence in the estimates, or quality of the evidence.)
      */
     public List<EvidenceCertaintyComponent> getCertainty() { 
       if (this.certainty == null)
@@ -2961,12 +5232,48 @@ public class Evidence extends MetadataResource {
       throw new Error("The resource type \"Evidence\" does not implement the property \"effectivePeriod\"");
     }
 
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getTopicMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #topic} (Descriptive topics related to the content of the library. Topics provide a high-level categorization of the library that can be useful for filtering and searching.)
+     */
+    public List<CodeableConcept> getTopic() { 
+      return new ArrayList<>();
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Evidence setTopic(List<CodeableConcept> theTopic) { 
+      throw new Error("The resource type \"Evidence\" does not implement the property \"topic\"");
+    }
+    public boolean hasTopic() { 
+      return false;
+    }
+
+    public CodeableConcept addTopic() { //3
+      throw new Error("The resource type \"Evidence\" does not implement the property \"topic\"");
+    }
+    public Evidence addTopic(CodeableConcept t) { //3
+      throw new Error("The resource type \"Evidence\" does not implement the property \"topic\"");
+    }
+    /**
+     * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist {2}
+     */
+    public CodeableConcept getTopicFirstRep() { 
+      throw new Error("The resource type \"Evidence\" does not implement the property \"topic\"");
+    }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("url", "uri", "An absolute URI that is used to identify this evidence when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.", 0, 1, url));
         children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this summary when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("version", "string", "The identifier that is used to identify this version of the summary when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the summary author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version));
         children.add(new Property("title", "string", "A short, descriptive, user-friendly title for the summary.", 0, 1, title));
+        children.add(new Property("citeAs[x]", "Reference(Citation)|markdown", "Citation Resource or display of suggested citation for this evidence.", 0, 1, citeAs));
         children.add(new Property("status", "code", "The status of this summary. Enables tracking the life-cycle of the content.", 0, 1, status));
         children.add(new Property("date", "dateTime", "The date  (and optionally time) when the summary was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the summary changes.", 0, 1, date));
         children.add(new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate evidence instances.", 0, java.lang.Integer.MAX_VALUE, useContext));
@@ -2983,11 +5290,10 @@ public class Evidence extends MetadataResource {
         children.add(new Property("assertion", "markdown", "Declarative description of the Evidence.", 0, 1, assertion));
         children.add(new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("variableDefinition", "", "Evidence variable such as population, exposure, or outcome.", 0, java.lang.Integer.MAX_VALUE, variableDefinition));
-        children.add(new Property("synthesisType", "CodeableConcept", "The particular type of synthesis if this is a synthesis summary.", 0, 1, synthesisType));
-        children.add(new Property("studyType", "CodeableConcept", "The type of study that produced this summary.", 0, 1, studyType));
-        children.add(new Property("statistic", "Statistic", "The statistic value(s).", 0, java.lang.Integer.MAX_VALUE, statistic));
-        children.add(new Property("distribution", "OrderedDistribution", "Ordered distribution.", 0, java.lang.Integer.MAX_VALUE, distribution));
-        children.add(new Property("certainty", "", "Level of certainty.", 0, java.lang.Integer.MAX_VALUE, certainty));
+        children.add(new Property("synthesisType", "CodeableConcept", "The method to combine studies.", 0, 1, synthesisType));
+        children.add(new Property("studyType", "CodeableConcept", "The type of study that produced this evidence.", 0, 1, studyType));
+        children.add(new Property("statistic", "", "Values and parameters for a single statistic.", 0, java.lang.Integer.MAX_VALUE, statistic));
+        children.add(new Property("certainty", "", "Assessment of certainty, confidence in the estimates, or quality of the evidence.", 0, java.lang.Integer.MAX_VALUE, certainty));
       }
 
       @Override
@@ -2997,6 +5303,10 @@ public class Evidence extends MetadataResource {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A formal identifier that is used to identify this summary when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the summary when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the summary author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version);
         case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive, user-friendly title for the summary.", 0, 1, title);
+        case -1706539017: /*citeAs[x]*/  return new Property("citeAs[x]", "Reference(Citation)|markdown", "Citation Resource or display of suggested citation for this evidence.", 0, 1, citeAs);
+        case -1360156695: /*citeAs*/  return new Property("citeAs[x]", "Reference(Citation)|markdown", "Citation Resource or display of suggested citation for this evidence.", 0, 1, citeAs);
+        case 1269009762: /*citeAsReference*/  return new Property("citeAs[x]", "Reference(Citation)", "Citation Resource or display of suggested citation for this evidence.", 0, 1, citeAs);
+        case 456265720: /*citeAsMarkdown*/  return new Property("citeAs[x]", "markdown", "Citation Resource or display of suggested citation for this evidence.", 0, 1, citeAs);
         case -892481550: /*status*/  return new Property("status", "code", "The status of this summary. Enables tracking the life-cycle of the content.", 0, 1, status);
         case 3076014: /*date*/  return new Property("date", "dateTime", "The date  (and optionally time) when the summary was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the summary changes.", 0, 1, date);
         case -669707736: /*useContext*/  return new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate evidence instances.", 0, java.lang.Integer.MAX_VALUE, useContext);
@@ -3013,11 +5323,10 @@ public class Evidence extends MetadataResource {
         case 1314395906: /*assertion*/  return new Property("assertion", "markdown", "Declarative description of the Evidence.", 0, 1, assertion);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note);
         case -1807222545: /*variableDefinition*/  return new Property("variableDefinition", "", "Evidence variable such as population, exposure, or outcome.", 0, java.lang.Integer.MAX_VALUE, variableDefinition);
-        case 672726254: /*synthesisType*/  return new Property("synthesisType", "CodeableConcept", "The particular type of synthesis if this is a synthesis summary.", 0, 1, synthesisType);
-        case -1955265373: /*studyType*/  return new Property("studyType", "CodeableConcept", "The type of study that produced this summary.", 0, 1, studyType);
-        case -2081261232: /*statistic*/  return new Property("statistic", "Statistic", "The statistic value(s).", 0, java.lang.Integer.MAX_VALUE, statistic);
-        case -1580708220: /*distribution*/  return new Property("distribution", "OrderedDistribution", "Ordered distribution.", 0, java.lang.Integer.MAX_VALUE, distribution);
-        case -1404142937: /*certainty*/  return new Property("certainty", "", "Level of certainty.", 0, java.lang.Integer.MAX_VALUE, certainty);
+        case 672726254: /*synthesisType*/  return new Property("synthesisType", "CodeableConcept", "The method to combine studies.", 0, 1, synthesisType);
+        case -1955265373: /*studyType*/  return new Property("studyType", "CodeableConcept", "The type of study that produced this evidence.", 0, 1, studyType);
+        case -2081261232: /*statistic*/  return new Property("statistic", "", "Values and parameters for a single statistic.", 0, java.lang.Integer.MAX_VALUE, statistic);
+        case -1404142937: /*certainty*/  return new Property("certainty", "", "Assessment of certainty, confidence in the estimates, or quality of the evidence.", 0, java.lang.Integer.MAX_VALUE, certainty);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -3030,6 +5339,7 @@ public class Evidence extends MetadataResource {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
         case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
+        case -1360156695: /*citeAs*/ return this.citeAs == null ? new Base[0] : new Base[] {this.citeAs}; // DataType
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
         case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
         case -669707736: /*useContext*/ return this.useContext == null ? new Base[0] : this.useContext.toArray(new Base[this.useContext.size()]); // UsageContext
@@ -3048,8 +5358,7 @@ public class Evidence extends MetadataResource {
         case -1807222545: /*variableDefinition*/ return this.variableDefinition == null ? new Base[0] : this.variableDefinition.toArray(new Base[this.variableDefinition.size()]); // EvidenceVariableDefinitionComponent
         case 672726254: /*synthesisType*/ return this.synthesisType == null ? new Base[0] : new Base[] {this.synthesisType}; // CodeableConcept
         case -1955265373: /*studyType*/ return this.studyType == null ? new Base[0] : new Base[] {this.studyType}; // CodeableConcept
-        case -2081261232: /*statistic*/ return this.statistic == null ? new Base[0] : this.statistic.toArray(new Base[this.statistic.size()]); // Statistic
-        case -1580708220: /*distribution*/ return this.distribution == null ? new Base[0] : this.distribution.toArray(new Base[this.distribution.size()]); // OrderedDistribution
+        case -2081261232: /*statistic*/ return this.statistic == null ? new Base[0] : this.statistic.toArray(new Base[this.statistic.size()]); // EvidenceStatisticComponent
         case -1404142937: /*certainty*/ return this.certainty == null ? new Base[0] : this.certainty.toArray(new Base[this.certainty.size()]); // EvidenceCertaintyComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -3070,6 +5379,9 @@ public class Evidence extends MetadataResource {
           return value;
         case 110371416: // title
           this.title = TypeConvertor.castToString(value); // StringType
+          return value;
+        case -1360156695: // citeAs
+          this.citeAs = TypeConvertor.castToType(value); // DataType
           return value;
         case -892481550: // status
           value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
@@ -3127,10 +5439,7 @@ public class Evidence extends MetadataResource {
           this.studyType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -2081261232: // statistic
-          this.getStatistic().add(TypeConvertor.castToStatistic(value)); // Statistic
-          return value;
-        case -1580708220: // distribution
-          this.getDistribution().add(TypeConvertor.castToOrderedDistribution(value)); // OrderedDistribution
+          this.getStatistic().add((EvidenceStatisticComponent) value); // EvidenceStatisticComponent
           return value;
         case -1404142937: // certainty
           this.getCertainty().add((EvidenceCertaintyComponent) value); // EvidenceCertaintyComponent
@@ -3150,6 +5459,8 @@ public class Evidence extends MetadataResource {
           this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
           this.title = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("citeAs[x]")) {
+          this.citeAs = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("status")) {
           value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
@@ -3188,9 +5499,7 @@ public class Evidence extends MetadataResource {
         } else if (name.equals("studyType")) {
           this.studyType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("statistic")) {
-          this.getStatistic().add(TypeConvertor.castToStatistic(value));
-        } else if (name.equals("distribution")) {
-          this.getDistribution().add(TypeConvertor.castToOrderedDistribution(value));
+          this.getStatistic().add((EvidenceStatisticComponent) value);
         } else if (name.equals("certainty")) {
           this.getCertainty().add((EvidenceCertaintyComponent) value);
         } else
@@ -3205,6 +5514,8 @@ public class Evidence extends MetadataResource {
         case -1618432855:  return addIdentifier(); 
         case 351608024:  return getVersionElement();
         case 110371416:  return getTitleElement();
+        case -1706539017:  return getCiteAs();
+        case -1360156695:  return getCiteAs();
         case -892481550:  return getStatusElement();
         case 3076014:  return getDateElement();
         case -669707736:  return addUseContext(); 
@@ -3224,7 +5535,6 @@ public class Evidence extends MetadataResource {
         case 672726254:  return getSynthesisType();
         case -1955265373:  return getStudyType();
         case -2081261232:  return addStatistic(); 
-        case -1580708220:  return addDistribution(); 
         case -1404142937:  return addCertainty(); 
         default: return super.makeProperty(hash, name);
         }
@@ -3238,6 +5548,7 @@ public class Evidence extends MetadataResource {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case 351608024: /*version*/ return new String[] {"string"};
         case 110371416: /*title*/ return new String[] {"string"};
+        case -1360156695: /*citeAs*/ return new String[] {"Reference", "markdown"};
         case -892481550: /*status*/ return new String[] {"code"};
         case 3076014: /*date*/ return new String[] {"dateTime"};
         case -669707736: /*useContext*/ return new String[] {"UsageContext"};
@@ -3256,8 +5567,7 @@ public class Evidence extends MetadataResource {
         case -1807222545: /*variableDefinition*/ return new String[] {};
         case 672726254: /*synthesisType*/ return new String[] {"CodeableConcept"};
         case -1955265373: /*studyType*/ return new String[] {"CodeableConcept"};
-        case -2081261232: /*statistic*/ return new String[] {"Statistic"};
-        case -1580708220: /*distribution*/ return new String[] {"OrderedDistribution"};
+        case -2081261232: /*statistic*/ return new String[] {};
         case -1404142937: /*certainty*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -3277,6 +5587,14 @@ public class Evidence extends MetadataResource {
         }
         else if (name.equals("title")) {
           throw new FHIRException("Cannot call addChild on a primitive type Evidence.title");
+        }
+        else if (name.equals("citeAsReference")) {
+          this.citeAs = new Reference();
+          return this.citeAs;
+        }
+        else if (name.equals("citeAsMarkdown")) {
+          this.citeAs = new MarkdownType();
+          return this.citeAs;
         }
         else if (name.equals("status")) {
           throw new FHIRException("Cannot call addChild on a primitive type Evidence.status");
@@ -3337,9 +5655,6 @@ public class Evidence extends MetadataResource {
         else if (name.equals("statistic")) {
           return addStatistic();
         }
-        else if (name.equals("distribution")) {
-          return addDistribution();
-        }
         else if (name.equals("certainty")) {
           return addCertainty();
         }
@@ -3368,6 +5683,7 @@ public class Evidence extends MetadataResource {
         };
         dst.version = version == null ? null : version.copy();
         dst.title = title == null ? null : title.copy();
+        dst.citeAs = citeAs == null ? null : citeAs.copy();
         dst.status = status == null ? null : status.copy();
         dst.date = date == null ? null : date.copy();
         if (useContext != null) {
@@ -3423,14 +5739,9 @@ public class Evidence extends MetadataResource {
         dst.synthesisType = synthesisType == null ? null : synthesisType.copy();
         dst.studyType = studyType == null ? null : studyType.copy();
         if (statistic != null) {
-          dst.statistic = new ArrayList<Statistic>();
-          for (Statistic i : statistic)
+          dst.statistic = new ArrayList<EvidenceStatisticComponent>();
+          for (EvidenceStatisticComponent i : statistic)
             dst.statistic.add(i.copy());
-        };
-        if (distribution != null) {
-          dst.distribution = new ArrayList<OrderedDistribution>();
-          for (OrderedDistribution i : distribution)
-            dst.distribution.add(i.copy());
         };
         if (certainty != null) {
           dst.certainty = new ArrayList<EvidenceCertaintyComponent>();
@@ -3451,15 +5762,15 @@ public class Evidence extends MetadataResource {
           return false;
         Evidence o = (Evidence) other_;
         return compareDeep(url, o.url, true) && compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true)
-           && compareDeep(title, o.title, true) && compareDeep(status, o.status, true) && compareDeep(date, o.date, true)
-           && compareDeep(useContext, o.useContext, true) && compareDeep(approvalDate, o.approvalDate, true)
+           && compareDeep(title, o.title, true) && compareDeep(citeAs, o.citeAs, true) && compareDeep(status, o.status, true)
+           && compareDeep(date, o.date, true) && compareDeep(useContext, o.useContext, true) && compareDeep(approvalDate, o.approvalDate, true)
            && compareDeep(lastReviewDate, o.lastReviewDate, true) && compareDeep(publisher, o.publisher, true)
            && compareDeep(contact, o.contact, true) && compareDeep(author, o.author, true) && compareDeep(editor, o.editor, true)
            && compareDeep(reviewer, o.reviewer, true) && compareDeep(endorser, o.endorser, true) && compareDeep(relatedArtifact, o.relatedArtifact, true)
            && compareDeep(description, o.description, true) && compareDeep(assertion, o.assertion, true) && compareDeep(note, o.note, true)
            && compareDeep(variableDefinition, o.variableDefinition, true) && compareDeep(synthesisType, o.synthesisType, true)
-           && compareDeep(studyType, o.studyType, true) && compareDeep(statistic, o.statistic, true) && compareDeep(distribution, o.distribution, true)
-           && compareDeep(certainty, o.certainty, true);
+           && compareDeep(studyType, o.studyType, true) && compareDeep(statistic, o.statistic, true) && compareDeep(certainty, o.certainty, true)
+          ;
       }
 
       @Override
@@ -3477,10 +5788,9 @@ public class Evidence extends MetadataResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
-          , title, status, date, useContext, approvalDate, lastReviewDate, publisher, contact
-          , author, editor, reviewer, endorser, relatedArtifact, description, assertion
-          , note, variableDefinition, synthesisType, studyType, statistic, distribution, certainty
-          );
+          , title, citeAs, status, date, useContext, approvalDate, lastReviewDate, publisher
+          , contact, author, editor, reviewer, endorser, relatedArtifact, description, assertion
+          , note, variableDefinition, synthesisType, studyType, statistic, certainty);
       }
 
   @Override

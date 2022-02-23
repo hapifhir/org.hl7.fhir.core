@@ -59,7 +59,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       p.addText(Utilities.capitalize(cm.getStatus().toString())+" (not intended for production usage). ");
     else
       p.addText(Utilities.capitalize(cm.getStatus().toString())+". ");
-    p.tx("Published on "+(cm.hasDate() ? cm.getDateElement().toHumanDisplay() : "?ngen-10?")+" by "+cm.getPublisher());
+    p.tx("Published on "+(cm.hasDate() ? display(cm.getDateElement()) : "?ngen-10?")+" by "+cm.getPublisher());
     if (!cm.getContact().isEmpty()) {
       p.tx(" (");
       boolean firsti = true;
@@ -132,11 +132,25 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         tr.td().b().tx("Destination Code");
         if (comment)
           tr.td().b().tx("Comment");
+        tr = tbl.tr();
+        XhtmlNode td = tr.td().colspan(comment ? "4" : "3");
+        td.tx("Mapping from ");
+        if (grp.hasSource()) {
+          renderCanonical(cm, td, grp.getSource());
+        } else {
+          td.code("unspecified code system");
+        }
+        td.tx(" to ");
+        if (grp.hasTarget()) {
+          renderCanonical(cm, td, grp.getTarget());
+        } else {
+          td.code("unspecified code system");
+        }
         for (SourceElementComponent ccl : grp.getElement()) {
           tr = tbl.tr();
-          XhtmlNode td = tr.td();
+          td = tr.td();
           td.addText(ccl.getCode());
-          display = getDisplayForConcept(grp.getSource(), ccl.getCode());
+          display = ccl.hasDisplay() ? ccl.getDisplay() : getDisplayForConcept(systemFromCanonical(grp.getSource()), versionFromCanonical(grp.getSource()), ccl.getCode());
           if (display != null && !isSameCodeAndDisplay(ccl.getCode(), display))
             td.tx(" ("+display+")");
           TargetElementComponent ccm = ccl.getTarget().get(0);
@@ -152,7 +166,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           }
           td = tr.td();
           td.addText(ccm.getCode());
-          display = getDisplayForConcept(grp.getTarget(), ccm.getCode());
+          display = ccm.hasDisplay() ? ccm.getDisplay() : getDisplayForConcept(systemFromCanonical(grp.getTarget()), versionFromCanonical(grp.getTarget()), ccm.getCode());
           if (display != null && !isSameCodeAndDisplay(ccm.getCode(), display))
             td.tx(" ("+display+")");
           if (comment)
@@ -160,11 +174,24 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           addUnmapped(tbl, grp);
         }
       } else {
+        boolean hasRelationships = false;
+        for (int si = 0; si < grp.getElement().size(); si++) {
+          SourceElementComponent ccl = grp.getElement().get(si);
+          for (int ti = 0; ti < ccl.getTarget().size(); ti++) {
+            TargetElementComponent ccm = ccl.getTarget().get(ti);
+            if (ccm.hasRelationship()) {
+              hasRelationships = true;
+            }  
+          }
+        }
+        
         XhtmlNode tbl = x.table( "grid");
         XhtmlNode tr = tbl.tr();
         XhtmlNode td;
         tr.td().colspan(Integer.toString(1+sources.size())).b().tx("Source Concept Details");
-        tr.td().b().tx("Relationship");
+        if (hasRelationships) {
+          tr.td().b().tx("Relationship");
+        }
         tr.td().colspan(Integer.toString(1+targets.size())).b().tx("Destination Concept Details");
         if (comment) {
           tr.td().b().tx("Comment");
@@ -184,7 +211,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
               tr.td().b().addText(getDescForConcept(s));
           }
         }
-        tr.td();
+        if (hasRelationships) {
+          tr.td();
+        }
         if (targets.get("code").size() == 1) {
           String url = targets.get("code").iterator().next();
           renderCSDetailsLink(tr, url, true);           
@@ -217,7 +246,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
               td.addText(ccl.getCode());
             else
               td.addText(grp.getSource()+" / "+ccl.getCode());
-            display = getDisplayForConcept(grp.getSource(), ccl.getCode());
+            display = getDisplayForConcept(systemFromCanonical(grp.getSource()), versionFromCanonical(grp.getSource()), ccl.getCode());
             tr.td().style("border-left-width: 0px").tx(display == null ? "" : display);
             tr.td().colspan("4").style("background-color: #efefef").tx("(not mapped)");
 
@@ -238,23 +267,19 @@ public class ConceptMapRenderer extends TerminologyRenderer {
                   td.addText(ccl.getCode());
                 else
                   td.addText(grp.getSource()+" / "+ccl.getCode());
-                display = getDisplayForConcept(grp.getSource(), ccl.getCode());
+                display = ccl.hasDisplay() ? ccl.getDisplay() : getDisplayForConcept(systemFromCanonical(grp.getSource()), versionFromCanonical(grp.getSource()), ccl.getCode());
                 td = tr.td();
-                if (!first)
-                  td.style("border-left-width: 0px; border-top-style: none");
-                else if (!last)
+                if (!last)
                   td.style("border-left-width: 0px; border-bottom-style: none");
                 else
                   td.style("border-left-width: 0px");
                 td.tx(display == null ? "" : display);
               } else {
                 td = tr.td(); // for display
-                if (!first)
-                  td.style("border-left-width: 0px; border-top-style: none");
-                else if (!last)
-                  td.style("border-left-width: 0px; border-bottom-style: none");
+                if (!last)
+                  td.style("border-left-width: 0px; border-top-style: none; border-bottom-style: none");
                 else
-                  td.style("border-left-width: 0px");
+                  td.style("border-top-style: none; border-left-width: 0px");
               }
               for (String s : sources.keySet()) {
                 if (!s.equals("code")) {
@@ -268,14 +293,16 @@ public class ConceptMapRenderer extends TerminologyRenderer {
                 }
               }
               first = false;
-              if (!ccm.hasRelationship())
-                tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
-              else {
-                if (ccm.getRelationshipElement().hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
-                  String code = ToolingExtensions.readStringExtension(ccm.getRelationshipElement(), ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-                  tr.td().ah(eqpath+"#"+code).tx(presentEquivalenceCode(code));                
-                } else {
-                  tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
+              if (hasRelationships) {
+                if (!ccm.hasRelationship())
+                  tr.td();
+                else {
+                  if (ccm.getRelationshipElement().hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
+                    String code = ToolingExtensions.readStringExtension(ccm.getRelationshipElement(), ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
+                    tr.td().ah(eqpath+"#"+code).tx(presentEquivalenceCode(code));                
+                  } else {
+                    tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
+                  }
                 }
               }
               td = tr.td().style("border-right-width: 0px");
@@ -283,7 +310,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
                 td.addText(ccm.getCode());
               else
                 td.addText(grp.getTarget()+" / "+ccm.getCode());
-              display = getDisplayForConcept(grp.getTarget(), ccm.getCode());
+              display = ccm.hasDisplay() ? ccm.getDisplay() : getDisplayForConcept(systemFromCanonical(grp.getTarget()), versionFromCanonical(grp.getTarget()), ccm.getCode());
               tr.td().style("border-left-width: 0px").tx(display == null ? "" : display);
 
               for (String s : targets.keySet()) {
@@ -327,9 +354,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     } else if ("equivalent".equals(code)) {
       return "is equivalent to";
     } else if ("source-is-narrower-than-target".equals(code)) {
-      return "maps to wider concept";
+      return "is narrower then";
     } else if ("source-is-broader-than-target".equals(code)) {
-      return "maps to narrower target";
+      return "is broader than";
     } else if ("not-related-to".equals(code)) {
       return "is not related to";
     } else {
@@ -408,11 +435,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
   private String getDisplay(List<OtherElementComponent> list, String s) {
     for (OtherElementComponent c : list) {
       if (s.equals(c.getProperty()))
-        return getDisplayForConcept(c.getSystem(), c.getValue());
+        return getDisplayForConcept(systemFromCanonical(c.getSystem()), versionFromCanonical(c.getSystem()), c.getValue());
     }
     return null;
   }
-
-
 
 }

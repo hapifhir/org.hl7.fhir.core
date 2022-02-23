@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -582,13 +582,20 @@ public class ValueSet extends CanonicalResource {
         protected List<ConceptSetFilterComponent> filter;
 
         /**
-         * Selects the concepts found in this value set (based on its value set definition). This is an absolute URI that is a reference to ValueSet.url.  If multiple value sets are specified this includes the union of the contents of all of the referenced value sets.
+         * Selects the concepts found in this value set (based on its value set definition). This is an absolute URI that is a reference to ValueSet.url.  If multiple value sets are specified this includes the intersection of the contents of all of the referenced value sets.
          */
         @Child(name = "valueSet", type = {CanonicalType.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Select the contents included in this value set", formalDefinition="Selects the concepts found in this value set (based on its value set definition). This is an absolute URI that is a reference to ValueSet.url.  If multiple value sets are specified this includes the union of the contents of all of the referenced value sets." )
+        @Description(shortDefinition="Select the contents included in this value set", formalDefinition="Selects the concepts found in this value set (based on its value set definition). This is an absolute URI that is a reference to ValueSet.url.  If multiple value sets are specified this includes the intersection of the contents of all of the referenced value sets." )
         protected List<CanonicalType> valueSet;
 
-        private static final long serialVersionUID = 969391146L;
+        /**
+         * A copyright statement for the specific code system asserted by the containing ValueSet.compose.include element's system value (if the associated ValueSet.compose.include.version element is not present); or the code system and version combination (if the associated ValueSet.compose.include.version element is present).
+         */
+        @Child(name = "copyright", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="A copyright statement for the specific code system included in the value set", formalDefinition="A copyright statement for the specific code system asserted by the containing ValueSet.compose.include element's system value (if the associated ValueSet.compose.include.version element is not present); or the code system and version combination (if the associated ValueSet.compose.include.version element is present)." )
+        protected StringType copyright;
+
+        private static final long serialVersionUID = -517139062L;
 
     /**
      * Constructor
@@ -802,7 +809,7 @@ public class ValueSet extends CanonicalResource {
         }
 
         /**
-         * @return {@link #valueSet} (Selects the concepts found in this value set (based on its value set definition). This is an absolute URI that is a reference to ValueSet.url.  If multiple value sets are specified this includes the union of the contents of all of the referenced value sets.)
+         * @return {@link #valueSet} (Selects the concepts found in this value set (based on its value set definition). This is an absolute URI that is a reference to ValueSet.url.  If multiple value sets are specified this includes the intersection of the contents of all of the referenced value sets.)
          */
         public List<CanonicalType> getValueSet() { 
           if (this.valueSet == null)
@@ -828,7 +835,7 @@ public class ValueSet extends CanonicalResource {
         }
 
         /**
-         * @return {@link #valueSet} (Selects the concepts found in this value set (based on its value set definition). This is an absolute URI that is a reference to ValueSet.url.  If multiple value sets are specified this includes the union of the contents of all of the referenced value sets.)
+         * @return {@link #valueSet} (Selects the concepts found in this value set (based on its value set definition). This is an absolute URI that is a reference to ValueSet.url.  If multiple value sets are specified this includes the intersection of the contents of all of the referenced value sets.)
          */
         public CanonicalType addValueSetElement() {//2 
           CanonicalType t = new CanonicalType();
@@ -839,7 +846,7 @@ public class ValueSet extends CanonicalResource {
         }
 
         /**
-         * @param value {@link #valueSet} (Selects the concepts found in this value set (based on its value set definition). This is an absolute URI that is a reference to ValueSet.url.  If multiple value sets are specified this includes the union of the contents of all of the referenced value sets.)
+         * @param value {@link #valueSet} (Selects the concepts found in this value set (based on its value set definition). This is an absolute URI that is a reference to ValueSet.url.  If multiple value sets are specified this includes the intersection of the contents of all of the referenced value sets.)
          */
         public ConceptSetComponent addValueSet(String value) { //1
           CanonicalType t = new CanonicalType();
@@ -851,7 +858,7 @@ public class ValueSet extends CanonicalResource {
         }
 
         /**
-         * @param value {@link #valueSet} (Selects the concepts found in this value set (based on its value set definition). This is an absolute URI that is a reference to ValueSet.url.  If multiple value sets are specified this includes the union of the contents of all of the referenced value sets.)
+         * @param value {@link #valueSet} (Selects the concepts found in this value set (based on its value set definition). This is an absolute URI that is a reference to ValueSet.url.  If multiple value sets are specified this includes the intersection of the contents of all of the referenced value sets.)
          */
         public boolean hasValueSet(String value) { 
           if (this.valueSet == null)
@@ -862,13 +869,63 @@ public class ValueSet extends CanonicalResource {
           return false;
         }
 
+        /**
+         * @return {@link #copyright} (A copyright statement for the specific code system asserted by the containing ValueSet.compose.include element's system value (if the associated ValueSet.compose.include.version element is not present); or the code system and version combination (if the associated ValueSet.compose.include.version element is present).). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
+         */
+        public StringType getCopyrightElement() { 
+          if (this.copyright == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ConceptSetComponent.copyright");
+            else if (Configuration.doAutoCreate())
+              this.copyright = new StringType(); // bb
+          return this.copyright;
+        }
+
+        public boolean hasCopyrightElement() { 
+          return this.copyright != null && !this.copyright.isEmpty();
+        }
+
+        public boolean hasCopyright() { 
+          return this.copyright != null && !this.copyright.isEmpty();
+        }
+
+        /**
+         * @param value {@link #copyright} (A copyright statement for the specific code system asserted by the containing ValueSet.compose.include element's system value (if the associated ValueSet.compose.include.version element is not present); or the code system and version combination (if the associated ValueSet.compose.include.version element is present).). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
+         */
+        public ConceptSetComponent setCopyrightElement(StringType value) { 
+          this.copyright = value;
+          return this;
+        }
+
+        /**
+         * @return A copyright statement for the specific code system asserted by the containing ValueSet.compose.include element's system value (if the associated ValueSet.compose.include.version element is not present); or the code system and version combination (if the associated ValueSet.compose.include.version element is present).
+         */
+        public String getCopyright() { 
+          return this.copyright == null ? null : this.copyright.getValue();
+        }
+
+        /**
+         * @param value A copyright statement for the specific code system asserted by the containing ValueSet.compose.include element's system value (if the associated ValueSet.compose.include.version element is not present); or the code system and version combination (if the associated ValueSet.compose.include.version element is present).
+         */
+        public ConceptSetComponent setCopyright(String value) { 
+          if (Utilities.noString(value))
+            this.copyright = null;
+          else {
+            if (this.copyright == null)
+              this.copyright = new StringType();
+            this.copyright.setValue(value);
+          }
+          return this;
+        }
+
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("system", "uri", "An absolute URI which is the code system from which the selected codes come from.", 0, 1, system));
           children.add(new Property("version", "string", "The version of the code system that the codes are selected from, or the special version '*' for all versions.", 0, 1, version));
           children.add(new Property("concept", "", "Specifies a concept to be included or excluded.", 0, java.lang.Integer.MAX_VALUE, concept));
           children.add(new Property("filter", "", "Select concepts by specify a matching criterion based on the properties (including relationships) defined by the system, or on filters defined by the system. If multiple filters are specified, they SHALL all be true.", 0, java.lang.Integer.MAX_VALUE, filter));
-          children.add(new Property("valueSet", "canonical(ValueSet)", "Selects the concepts found in this value set (based on its value set definition). This is an absolute URI that is a reference to ValueSet.url.  If multiple value sets are specified this includes the union of the contents of all of the referenced value sets.", 0, java.lang.Integer.MAX_VALUE, valueSet));
+          children.add(new Property("valueSet", "canonical(ValueSet)", "Selects the concepts found in this value set (based on its value set definition). This is an absolute URI that is a reference to ValueSet.url.  If multiple value sets are specified this includes the intersection of the contents of all of the referenced value sets.", 0, java.lang.Integer.MAX_VALUE, valueSet));
+          children.add(new Property("copyright", "string", "A copyright statement for the specific code system asserted by the containing ValueSet.compose.include element's system value (if the associated ValueSet.compose.include.version element is not present); or the code system and version combination (if the associated ValueSet.compose.include.version element is present).", 0, 1, copyright));
         }
 
         @Override
@@ -878,7 +935,8 @@ public class ValueSet extends CanonicalResource {
           case 351608024: /*version*/  return new Property("version", "string", "The version of the code system that the codes are selected from, or the special version '*' for all versions.", 0, 1, version);
           case 951024232: /*concept*/  return new Property("concept", "", "Specifies a concept to be included or excluded.", 0, java.lang.Integer.MAX_VALUE, concept);
           case -1274492040: /*filter*/  return new Property("filter", "", "Select concepts by specify a matching criterion based on the properties (including relationships) defined by the system, or on filters defined by the system. If multiple filters are specified, they SHALL all be true.", 0, java.lang.Integer.MAX_VALUE, filter);
-          case -1410174671: /*valueSet*/  return new Property("valueSet", "canonical(ValueSet)", "Selects the concepts found in this value set (based on its value set definition). This is an absolute URI that is a reference to ValueSet.url.  If multiple value sets are specified this includes the union of the contents of all of the referenced value sets.", 0, java.lang.Integer.MAX_VALUE, valueSet);
+          case -1410174671: /*valueSet*/  return new Property("valueSet", "canonical(ValueSet)", "Selects the concepts found in this value set (based on its value set definition). This is an absolute URI that is a reference to ValueSet.url.  If multiple value sets are specified this includes the intersection of the contents of all of the referenced value sets.", 0, java.lang.Integer.MAX_VALUE, valueSet);
+          case 1522889671: /*copyright*/  return new Property("copyright", "string", "A copyright statement for the specific code system asserted by the containing ValueSet.compose.include element's system value (if the associated ValueSet.compose.include.version element is not present); or the code system and version combination (if the associated ValueSet.compose.include.version element is present).", 0, 1, copyright);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -892,6 +950,7 @@ public class ValueSet extends CanonicalResource {
         case 951024232: /*concept*/ return this.concept == null ? new Base[0] : this.concept.toArray(new Base[this.concept.size()]); // ConceptReferenceComponent
         case -1274492040: /*filter*/ return this.filter == null ? new Base[0] : this.filter.toArray(new Base[this.filter.size()]); // ConceptSetFilterComponent
         case -1410174671: /*valueSet*/ return this.valueSet == null ? new Base[0] : this.valueSet.toArray(new Base[this.valueSet.size()]); // CanonicalType
+        case 1522889671: /*copyright*/ return this.copyright == null ? new Base[0] : new Base[] {this.copyright}; // StringType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -915,6 +974,9 @@ public class ValueSet extends CanonicalResource {
         case -1410174671: // valueSet
           this.getValueSet().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
+        case 1522889671: // copyright
+          this.copyright = TypeConvertor.castToString(value); // StringType
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -932,6 +994,8 @@ public class ValueSet extends CanonicalResource {
           this.getFilter().add((ConceptSetFilterComponent) value);
         } else if (name.equals("valueSet")) {
           this.getValueSet().add(TypeConvertor.castToCanonical(value));
+        } else if (name.equals("copyright")) {
+          this.copyright = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -945,6 +1009,7 @@ public class ValueSet extends CanonicalResource {
         case 951024232:  return addConcept(); 
         case -1274492040:  return addFilter(); 
         case -1410174671:  return addValueSetElement();
+        case 1522889671:  return getCopyrightElement();
         default: return super.makeProperty(hash, name);
         }
 
@@ -958,6 +1023,7 @@ public class ValueSet extends CanonicalResource {
         case 951024232: /*concept*/ return new String[] {};
         case -1274492040: /*filter*/ return new String[] {};
         case -1410174671: /*valueSet*/ return new String[] {"canonical"};
+        case 1522889671: /*copyright*/ return new String[] {"string"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -979,6 +1045,9 @@ public class ValueSet extends CanonicalResource {
         }
         else if (name.equals("valueSet")) {
           throw new FHIRException("Cannot call addChild on a primitive type ValueSet.compose.include.valueSet");
+        }
+        else if (name.equals("copyright")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.compose.include.copyright");
         }
         else
           return super.addChild(name);
@@ -1009,6 +1078,7 @@ public class ValueSet extends CanonicalResource {
           for (CanonicalType i : valueSet)
             dst.valueSet.add(i.copy());
         };
+        dst.copyright = copyright == null ? null : copyright.copy();
       }
 
       @Override
@@ -1019,7 +1089,8 @@ public class ValueSet extends CanonicalResource {
           return false;
         ConceptSetComponent o = (ConceptSetComponent) other_;
         return compareDeep(system, o.system, true) && compareDeep(version, o.version, true) && compareDeep(concept, o.concept, true)
-           && compareDeep(filter, o.filter, true) && compareDeep(valueSet, o.valueSet, true);
+           && compareDeep(filter, o.filter, true) && compareDeep(valueSet, o.valueSet, true) && compareDeep(copyright, o.copyright, true)
+          ;
       }
 
       @Override
@@ -1030,12 +1101,12 @@ public class ValueSet extends CanonicalResource {
           return false;
         ConceptSetComponent o = (ConceptSetComponent) other_;
         return compareValues(system, o.system, true) && compareValues(version, o.version, true) && compareValues(valueSet, o.valueSet, true)
-          ;
+           && compareValues(copyright, o.copyright, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(system, version, concept
-          , filter, valueSet);
+          , filter, valueSet, copyright);
       }
 
   public String fhirType() {
@@ -1693,7 +1764,7 @@ public class ValueSet extends CanonicalResource {
          * The kind of operation to perform as a part of the filter criteria.
          */
         @Child(name = "op", type = {CodeType.class}, order=2, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="= | is-a | descendent-of | is-not-a | regex | in | not-in | generalizes | exists", formalDefinition="The kind of operation to perform as a part of the filter criteria." )
+        @Description(shortDefinition="= | is-a | descendent-of | is-not-a | regex | in | not-in | generalizes | child-of | descendent-leaf | exists", formalDefinition="The kind of operation to perform as a part of the filter criteria." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/filter-operator")
         protected Enumeration<FilterOperator> op;
 
@@ -4368,11 +4439,333 @@ public class ValueSet extends CanonicalResource {
 
   }
 
+    @Block()
+    public static class ValueSetScopeComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * The general focus of the Value Set as it relates to the intended semantic space. This can be the information about clinical relevancy or the statement about the general focus of the Value Set, such as a description of types of messages, payment options, geographic locations, etc.
+         */
+        @Child(name = "focus", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="General focus of the Value Set as it relates to the intended semantic space", formalDefinition="The general focus of the Value Set as it relates to the intended semantic space. This can be the information about clinical relevancy or the statement about the general focus of the Value Set, such as a description of types of messages, payment options, geographic locations, etc." )
+        protected StringType focus;
+
+        /**
+         * Criteria describing which concepts or codes should be included and why.
+         */
+        @Child(name = "inclusionCriteria", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Criteria describing which concepts or codes should be included and why", formalDefinition="Criteria describing which concepts or codes should be included and why." )
+        protected StringType inclusionCriteria;
+
+        /**
+         * Criteria describing which concepts or codes should be excluded and why.
+         */
+        @Child(name = "exclusionCriteria", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Criteria describing which concepts or codes should be excluded and why", formalDefinition="Criteria describing which concepts or codes should be excluded and why." )
+        protected StringType exclusionCriteria;
+
+        private static final long serialVersionUID = -467705711L;
+
     /**
-     * An absolute URI that is used to identify this value set when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this value set is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the value set is stored on different servers.
+     * Constructor
+     */
+      public ValueSetScopeComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #focus} (The general focus of the Value Set as it relates to the intended semantic space. This can be the information about clinical relevancy or the statement about the general focus of the Value Set, such as a description of types of messages, payment options, geographic locations, etc.). This is the underlying object with id, value and extensions. The accessor "getFocus" gives direct access to the value
+         */
+        public StringType getFocusElement() { 
+          if (this.focus == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ValueSetScopeComponent.focus");
+            else if (Configuration.doAutoCreate())
+              this.focus = new StringType(); // bb
+          return this.focus;
+        }
+
+        public boolean hasFocusElement() { 
+          return this.focus != null && !this.focus.isEmpty();
+        }
+
+        public boolean hasFocus() { 
+          return this.focus != null && !this.focus.isEmpty();
+        }
+
+        /**
+         * @param value {@link #focus} (The general focus of the Value Set as it relates to the intended semantic space. This can be the information about clinical relevancy or the statement about the general focus of the Value Set, such as a description of types of messages, payment options, geographic locations, etc.). This is the underlying object with id, value and extensions. The accessor "getFocus" gives direct access to the value
+         */
+        public ValueSetScopeComponent setFocusElement(StringType value) { 
+          this.focus = value;
+          return this;
+        }
+
+        /**
+         * @return The general focus of the Value Set as it relates to the intended semantic space. This can be the information about clinical relevancy or the statement about the general focus of the Value Set, such as a description of types of messages, payment options, geographic locations, etc.
+         */
+        public String getFocus() { 
+          return this.focus == null ? null : this.focus.getValue();
+        }
+
+        /**
+         * @param value The general focus of the Value Set as it relates to the intended semantic space. This can be the information about clinical relevancy or the statement about the general focus of the Value Set, such as a description of types of messages, payment options, geographic locations, etc.
+         */
+        public ValueSetScopeComponent setFocus(String value) { 
+          if (Utilities.noString(value))
+            this.focus = null;
+          else {
+            if (this.focus == null)
+              this.focus = new StringType();
+            this.focus.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #inclusionCriteria} (Criteria describing which concepts or codes should be included and why.). This is the underlying object with id, value and extensions. The accessor "getInclusionCriteria" gives direct access to the value
+         */
+        public StringType getInclusionCriteriaElement() { 
+          if (this.inclusionCriteria == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ValueSetScopeComponent.inclusionCriteria");
+            else if (Configuration.doAutoCreate())
+              this.inclusionCriteria = new StringType(); // bb
+          return this.inclusionCriteria;
+        }
+
+        public boolean hasInclusionCriteriaElement() { 
+          return this.inclusionCriteria != null && !this.inclusionCriteria.isEmpty();
+        }
+
+        public boolean hasInclusionCriteria() { 
+          return this.inclusionCriteria != null && !this.inclusionCriteria.isEmpty();
+        }
+
+        /**
+         * @param value {@link #inclusionCriteria} (Criteria describing which concepts or codes should be included and why.). This is the underlying object with id, value and extensions. The accessor "getInclusionCriteria" gives direct access to the value
+         */
+        public ValueSetScopeComponent setInclusionCriteriaElement(StringType value) { 
+          this.inclusionCriteria = value;
+          return this;
+        }
+
+        /**
+         * @return Criteria describing which concepts or codes should be included and why.
+         */
+        public String getInclusionCriteria() { 
+          return this.inclusionCriteria == null ? null : this.inclusionCriteria.getValue();
+        }
+
+        /**
+         * @param value Criteria describing which concepts or codes should be included and why.
+         */
+        public ValueSetScopeComponent setInclusionCriteria(String value) { 
+          if (Utilities.noString(value))
+            this.inclusionCriteria = null;
+          else {
+            if (this.inclusionCriteria == null)
+              this.inclusionCriteria = new StringType();
+            this.inclusionCriteria.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #exclusionCriteria} (Criteria describing which concepts or codes should be excluded and why.). This is the underlying object with id, value and extensions. The accessor "getExclusionCriteria" gives direct access to the value
+         */
+        public StringType getExclusionCriteriaElement() { 
+          if (this.exclusionCriteria == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ValueSetScopeComponent.exclusionCriteria");
+            else if (Configuration.doAutoCreate())
+              this.exclusionCriteria = new StringType(); // bb
+          return this.exclusionCriteria;
+        }
+
+        public boolean hasExclusionCriteriaElement() { 
+          return this.exclusionCriteria != null && !this.exclusionCriteria.isEmpty();
+        }
+
+        public boolean hasExclusionCriteria() { 
+          return this.exclusionCriteria != null && !this.exclusionCriteria.isEmpty();
+        }
+
+        /**
+         * @param value {@link #exclusionCriteria} (Criteria describing which concepts or codes should be excluded and why.). This is the underlying object with id, value and extensions. The accessor "getExclusionCriteria" gives direct access to the value
+         */
+        public ValueSetScopeComponent setExclusionCriteriaElement(StringType value) { 
+          this.exclusionCriteria = value;
+          return this;
+        }
+
+        /**
+         * @return Criteria describing which concepts or codes should be excluded and why.
+         */
+        public String getExclusionCriteria() { 
+          return this.exclusionCriteria == null ? null : this.exclusionCriteria.getValue();
+        }
+
+        /**
+         * @param value Criteria describing which concepts or codes should be excluded and why.
+         */
+        public ValueSetScopeComponent setExclusionCriteria(String value) { 
+          if (Utilities.noString(value))
+            this.exclusionCriteria = null;
+          else {
+            if (this.exclusionCriteria == null)
+              this.exclusionCriteria = new StringType();
+            this.exclusionCriteria.setValue(value);
+          }
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("focus", "string", "The general focus of the Value Set as it relates to the intended semantic space. This can be the information about clinical relevancy or the statement about the general focus of the Value Set, such as a description of types of messages, payment options, geographic locations, etc.", 0, 1, focus));
+          children.add(new Property("inclusionCriteria", "string", "Criteria describing which concepts or codes should be included and why.", 0, 1, inclusionCriteria));
+          children.add(new Property("exclusionCriteria", "string", "Criteria describing which concepts or codes should be excluded and why.", 0, 1, exclusionCriteria));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 97604824: /*focus*/  return new Property("focus", "string", "The general focus of the Value Set as it relates to the intended semantic space. This can be the information about clinical relevancy or the statement about the general focus of the Value Set, such as a description of types of messages, payment options, geographic locations, etc.", 0, 1, focus);
+          case -1380638565: /*inclusionCriteria*/  return new Property("inclusionCriteria", "string", "Criteria describing which concepts or codes should be included and why.", 0, 1, inclusionCriteria);
+          case 985682765: /*exclusionCriteria*/  return new Property("exclusionCriteria", "string", "Criteria describing which concepts or codes should be excluded and why.", 0, 1, exclusionCriteria);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 97604824: /*focus*/ return this.focus == null ? new Base[0] : new Base[] {this.focus}; // StringType
+        case -1380638565: /*inclusionCriteria*/ return this.inclusionCriteria == null ? new Base[0] : new Base[] {this.inclusionCriteria}; // StringType
+        case 985682765: /*exclusionCriteria*/ return this.exclusionCriteria == null ? new Base[0] : new Base[] {this.exclusionCriteria}; // StringType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 97604824: // focus
+          this.focus = TypeConvertor.castToString(value); // StringType
+          return value;
+        case -1380638565: // inclusionCriteria
+          this.inclusionCriteria = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 985682765: // exclusionCriteria
+          this.exclusionCriteria = TypeConvertor.castToString(value); // StringType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("focus")) {
+          this.focus = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("inclusionCriteria")) {
+          this.inclusionCriteria = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("exclusionCriteria")) {
+          this.exclusionCriteria = TypeConvertor.castToString(value); // StringType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 97604824:  return getFocusElement();
+        case -1380638565:  return getInclusionCriteriaElement();
+        case 985682765:  return getExclusionCriteriaElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 97604824: /*focus*/ return new String[] {"string"};
+        case -1380638565: /*inclusionCriteria*/ return new String[] {"string"};
+        case 985682765: /*exclusionCriteria*/ return new String[] {"string"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("focus")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.scope.focus");
+        }
+        else if (name.equals("inclusionCriteria")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.scope.inclusionCriteria");
+        }
+        else if (name.equals("exclusionCriteria")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ValueSet.scope.exclusionCriteria");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public ValueSetScopeComponent copy() {
+        ValueSetScopeComponent dst = new ValueSetScopeComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ValueSetScopeComponent dst) {
+        super.copyValues(dst);
+        dst.focus = focus == null ? null : focus.copy();
+        dst.inclusionCriteria = inclusionCriteria == null ? null : inclusionCriteria.copy();
+        dst.exclusionCriteria = exclusionCriteria == null ? null : exclusionCriteria.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof ValueSetScopeComponent))
+          return false;
+        ValueSetScopeComponent o = (ValueSetScopeComponent) other_;
+        return compareDeep(focus, o.focus, true) && compareDeep(inclusionCriteria, o.inclusionCriteria, true)
+           && compareDeep(exclusionCriteria, o.exclusionCriteria, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof ValueSetScopeComponent))
+          return false;
+        ValueSetScopeComponent o = (ValueSetScopeComponent) other_;
+        return compareValues(focus, o.focus, true) && compareValues(inclusionCriteria, o.inclusionCriteria, true)
+           && compareValues(exclusionCriteria, o.exclusionCriteria, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(focus, inclusionCriteria, exclusionCriteria
+          );
+      }
+
+  public String fhirType() {
+    return "ValueSet.scope";
+
+  }
+
+  }
+
+    /**
+     * An absolute URI that is used to identify this value set when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this value set is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the value set is stored on different servers.
      */
     @Child(name = "url", type = {UriType.class}, order=0, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Canonical identifier for this value set, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this value set when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this value set is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the value set is stored on different servers." )
+    @Description(shortDefinition="Canonical identifier for this value set, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this value set when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this value set is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the value set is stored on different servers." )
     protected UriType url;
 
     /**
@@ -4496,7 +4889,14 @@ public class ValueSet extends CanonicalResource {
     @Description(shortDefinition="Used when the value set is \"expanded\"", formalDefinition="A value set can also be \"expanded\", where the value set is turned into a simple collection of enumerated codes. This element holds the expansion, if it has been performed." )
     protected ValueSetExpansionComponent expansion;
 
-    private static final long serialVersionUID = 1466998405L;
+    /**
+     * Description of the semantic space the Value Set Expansion is intended to cover.
+     */
+    @Child(name = "scope", type = {}, order=18, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Description of the semantic space the Value Set Expansion is intended to cover", formalDefinition="Description of the semantic space the Value Set Expansion is intended to cover." )
+    protected ValueSetScopeComponent scope;
+
+    private static final long serialVersionUID = 1111958035L;
 
   /**
    * Constructor
@@ -4514,7 +4914,7 @@ public class ValueSet extends CanonicalResource {
     }
 
     /**
-     * @return {@link #url} (An absolute URI that is used to identify this value set when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this value set is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the value set is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @return {@link #url} (An absolute URI that is used to identify this value set when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this value set is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the value set is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public UriType getUrlElement() { 
       if (this.url == null)
@@ -4534,7 +4934,7 @@ public class ValueSet extends CanonicalResource {
     }
 
     /**
-     * @param value {@link #url} (An absolute URI that is used to identify this value set when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this value set is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the value set is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @param value {@link #url} (An absolute URI that is used to identify this value set when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this value set is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the value set is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public ValueSet setUrlElement(UriType value) { 
       this.url = value;
@@ -4542,14 +4942,14 @@ public class ValueSet extends CanonicalResource {
     }
 
     /**
-     * @return An absolute URI that is used to identify this value set when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this value set is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the value set is stored on different servers.
+     * @return An absolute URI that is used to identify this value set when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this value set is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the value set is stored on different servers.
      */
     public String getUrl() { 
       return this.url == null ? null : this.url.getValue();
     }
 
     /**
-     * @param value An absolute URI that is used to identify this value set when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this value set is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the value set is stored on different servers.
+     * @param value An absolute URI that is used to identify this value set when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this value set is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the value set is stored on different servers.
      */
     public ValueSet setUrl(String value) { 
       if (Utilities.noString(value))
@@ -5349,9 +5749,33 @@ public class ValueSet extends CanonicalResource {
       return this;
     }
 
+    /**
+     * @return {@link #scope} (Description of the semantic space the Value Set Expansion is intended to cover.)
+     */
+    public ValueSetScopeComponent getScope() { 
+      if (this.scope == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create ValueSet.scope");
+        else if (Configuration.doAutoCreate())
+          this.scope = new ValueSetScopeComponent(); // cc
+      return this.scope;
+    }
+
+    public boolean hasScope() { 
+      return this.scope != null && !this.scope.isEmpty();
+    }
+
+    /**
+     * @param value {@link #scope} (Description of the semantic space the Value Set Expansion is intended to cover.)
+     */
+    public ValueSet setScope(ValueSetScopeComponent value) { 
+      this.scope = value;
+      return this;
+    }
+
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("url", "uri", "An absolute URI that is used to identify this value set when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this value set is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the value set is stored on different servers.", 0, 1, url));
+        children.add(new Property("url", "uri", "An absolute URI that is used to identify this value set when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this value set is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the value set is stored on different servers.", 0, 1, url));
         children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this value set when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("version", "string", "The identifier that is used to identify this version of the value set when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the value set author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version));
         children.add(new Property("name", "string", "A natural language name identifying the value set. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name));
@@ -5369,12 +5793,13 @@ public class ValueSet extends CanonicalResource {
         children.add(new Property("copyright", "markdown", "A copyright statement relating to the value set and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the value set.", 0, 1, copyright));
         children.add(new Property("compose", "", "A set of criteria that define the contents of the value set by including or excluding codes selected from the specified code system(s) that the value set draws from. This is also known as the Content Logical Definition (CLD).", 0, 1, compose));
         children.add(new Property("expansion", "", "A value set can also be \"expanded\", where the value set is turned into a simple collection of enumerated codes. This element holds the expansion, if it has been performed.", 0, 1, expansion));
+        children.add(new Property("scope", "", "Description of the semantic space the Value Set Expansion is intended to cover.", 0, 1, scope));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this value set when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this value set is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the value set is stored on different servers.", 0, 1, url);
+        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this value set when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this value set is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the value set is stored on different servers.", 0, 1, url);
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A formal identifier that is used to identify this value set when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the value set when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the value set author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version);
         case 3373707: /*name*/  return new Property("name", "string", "A natural language name identifying the value set. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name);
@@ -5392,6 +5817,7 @@ public class ValueSet extends CanonicalResource {
         case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to the value set and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the value set.", 0, 1, copyright);
         case 950497682: /*compose*/  return new Property("compose", "", "A set of criteria that define the contents of the value set by including or excluding codes selected from the specified code system(s) that the value set draws from. This is also known as the Content Logical Definition (CLD).", 0, 1, compose);
         case 17878207: /*expansion*/  return new Property("expansion", "", "A value set can also be \"expanded\", where the value set is turned into a simple collection of enumerated codes. This element holds the expansion, if it has been performed.", 0, 1, expansion);
+        case 109264468: /*scope*/  return new Property("scope", "", "Description of the semantic space the Value Set Expansion is intended to cover.", 0, 1, scope);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -5418,6 +5844,7 @@ public class ValueSet extends CanonicalResource {
         case 1522889671: /*copyright*/ return this.copyright == null ? new Base[0] : new Base[] {this.copyright}; // MarkdownType
         case 950497682: /*compose*/ return this.compose == null ? new Base[0] : new Base[] {this.compose}; // ValueSetComposeComponent
         case 17878207: /*expansion*/ return this.expansion == null ? new Base[0] : new Base[] {this.expansion}; // ValueSetExpansionComponent
+        case 109264468: /*scope*/ return this.scope == null ? new Base[0] : new Base[] {this.scope}; // ValueSetScopeComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -5481,6 +5908,9 @@ public class ValueSet extends CanonicalResource {
         case 17878207: // expansion
           this.expansion = (ValueSetExpansionComponent) value; // ValueSetExpansionComponent
           return value;
+        case 109264468: // scope
+          this.scope = (ValueSetScopeComponent) value; // ValueSetScopeComponent
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -5525,6 +5955,8 @@ public class ValueSet extends CanonicalResource {
           this.compose = (ValueSetComposeComponent) value; // ValueSetComposeComponent
         } else if (name.equals("expansion")) {
           this.expansion = (ValueSetExpansionComponent) value; // ValueSetExpansionComponent
+        } else if (name.equals("scope")) {
+          this.scope = (ValueSetScopeComponent) value; // ValueSetScopeComponent
         } else
           return super.setProperty(name, value);
         return value;
@@ -5551,6 +5983,7 @@ public class ValueSet extends CanonicalResource {
         case 1522889671:  return getCopyrightElement();
         case 950497682:  return getCompose();
         case 17878207:  return getExpansion();
+        case 109264468:  return getScope();
         default: return super.makeProperty(hash, name);
         }
 
@@ -5577,6 +6010,7 @@ public class ValueSet extends CanonicalResource {
         case 1522889671: /*copyright*/ return new String[] {"markdown"};
         case 950497682: /*compose*/ return new String[] {};
         case 17878207: /*expansion*/ return new String[] {};
+        case 109264468: /*scope*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -5640,6 +6074,10 @@ public class ValueSet extends CanonicalResource {
           this.expansion = new ValueSetExpansionComponent();
           return this.expansion;
         }
+        else if (name.equals("scope")) {
+          this.scope = new ValueSetScopeComponent();
+          return this.scope;
+        }
         else
           return super.addChild(name);
       }
@@ -5691,6 +6129,7 @@ public class ValueSet extends CanonicalResource {
         dst.copyright = copyright == null ? null : copyright.copy();
         dst.compose = compose == null ? null : compose.copy();
         dst.expansion = expansion == null ? null : expansion.copy();
+        dst.scope = scope == null ? null : scope.copy();
       }
 
       protected ValueSet typedCopy() {
@@ -5710,7 +6149,7 @@ public class ValueSet extends CanonicalResource {
            && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
            && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(immutable, o.immutable, true)
            && compareDeep(purpose, o.purpose, true) && compareDeep(copyright, o.copyright, true) && compareDeep(compose, o.compose, true)
-           && compareDeep(expansion, o.expansion, true);
+           && compareDeep(expansion, o.expansion, true) && compareDeep(scope, o.scope, true);
       }
 
       @Override
@@ -5730,7 +6169,7 @@ public class ValueSet extends CanonicalResource {
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
           , name, title, status, experimental, date, publisher, contact, description, useContext
-          , jurisdiction, immutable, purpose, copyright, compose, expansion);
+          , jurisdiction, immutable, purpose, copyright, compose, expansion, scope);
       }
 
   @Override

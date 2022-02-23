@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * This resource allows for the definition of various types of plans as a sharable, consumable, and executable artifact. The resource is general enough to support the description of a broad range of clinical artifacts such as clinical decision support rules, order sets and protocols.
+ * This resource allows for the definition of various types of plans as a sharable, consumable, and executable artifact. The resource is general enough to support the description of a broad range of clinical and non-clinical artifacts such as clinical decision support rules, order sets, protocols, and drug quality specifications.
  */
 @ResourceDef(name="PlanDefinition", profile="http://hl7.org/fhir/StructureDefinition/PlanDefinition")
 public class PlanDefinition extends MetadataResource {
@@ -607,10 +607,10 @@ public class PlanDefinition extends MetadataResource {
         protected CodeableConcept measure;
 
         /**
-         * The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.
+         * The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%, or in the case of pharmaceutical quality - NMT 0.6%, Clear solution, etc. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.
          */
-        @Child(name = "detail", type = {Quantity.class, Range.class, CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The target value to be achieved", formalDefinition="The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value." )
+        @Child(name = "detail", type = {Quantity.class, Range.class, CodeableConcept.class, StringType.class, BooleanType.class, IntegerType.class, Ratio.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The target value to be achieved", formalDefinition="The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%, or in the case of pharmaceutical quality - NMT 0.6%, Clear solution, etc. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value." )
         protected DataType detail;
 
         /**
@@ -654,14 +654,14 @@ public class PlanDefinition extends MetadataResource {
         }
 
         /**
-         * @return {@link #detail} (The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.)
+         * @return {@link #detail} (The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%, or in the case of pharmaceutical quality - NMT 0.6%, Clear solution, etc. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.)
          */
         public DataType getDetail() { 
           return this.detail;
         }
 
         /**
-         * @return {@link #detail} (The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.)
+         * @return {@link #detail} (The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%, or in the case of pharmaceutical quality - NMT 0.6%, Clear solution, etc. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.)
          */
         public Quantity getDetailQuantity() throws FHIRException { 
           if (this.detail == null)
@@ -676,7 +676,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         /**
-         * @return {@link #detail} (The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.)
+         * @return {@link #detail} (The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%, or in the case of pharmaceutical quality - NMT 0.6%, Clear solution, etc. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.)
          */
         public Range getDetailRange() throws FHIRException { 
           if (this.detail == null)
@@ -691,7 +691,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         /**
-         * @return {@link #detail} (The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.)
+         * @return {@link #detail} (The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%, or in the case of pharmaceutical quality - NMT 0.6%, Clear solution, etc. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.)
          */
         public CodeableConcept getDetailCodeableConcept() throws FHIRException { 
           if (this.detail == null)
@@ -705,15 +705,75 @@ public class PlanDefinition extends MetadataResource {
           return this != null && this.detail instanceof CodeableConcept;
         }
 
+        /**
+         * @return {@link #detail} (The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%, or in the case of pharmaceutical quality - NMT 0.6%, Clear solution, etc. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.)
+         */
+        public StringType getDetailStringType() throws FHIRException { 
+          if (this.detail == null)
+            this.detail = new StringType();
+          if (!(this.detail instanceof StringType))
+            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.detail.getClass().getName()+" was encountered");
+          return (StringType) this.detail;
+        }
+
+        public boolean hasDetailStringType() { 
+          return this != null && this.detail instanceof StringType;
+        }
+
+        /**
+         * @return {@link #detail} (The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%, or in the case of pharmaceutical quality - NMT 0.6%, Clear solution, etc. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.)
+         */
+        public BooleanType getDetailBooleanType() throws FHIRException { 
+          if (this.detail == null)
+            this.detail = new BooleanType();
+          if (!(this.detail instanceof BooleanType))
+            throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.detail.getClass().getName()+" was encountered");
+          return (BooleanType) this.detail;
+        }
+
+        public boolean hasDetailBooleanType() { 
+          return this != null && this.detail instanceof BooleanType;
+        }
+
+        /**
+         * @return {@link #detail} (The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%, or in the case of pharmaceutical quality - NMT 0.6%, Clear solution, etc. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.)
+         */
+        public IntegerType getDetailIntegerType() throws FHIRException { 
+          if (this.detail == null)
+            this.detail = new IntegerType();
+          if (!(this.detail instanceof IntegerType))
+            throw new FHIRException("Type mismatch: the type IntegerType was expected, but "+this.detail.getClass().getName()+" was encountered");
+          return (IntegerType) this.detail;
+        }
+
+        public boolean hasDetailIntegerType() { 
+          return this != null && this.detail instanceof IntegerType;
+        }
+
+        /**
+         * @return {@link #detail} (The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%, or in the case of pharmaceutical quality - NMT 0.6%, Clear solution, etc. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.)
+         */
+        public Ratio getDetailRatio() throws FHIRException { 
+          if (this.detail == null)
+            this.detail = new Ratio();
+          if (!(this.detail instanceof Ratio))
+            throw new FHIRException("Type mismatch: the type Ratio was expected, but "+this.detail.getClass().getName()+" was encountered");
+          return (Ratio) this.detail;
+        }
+
+        public boolean hasDetailRatio() { 
+          return this != null && this.detail instanceof Ratio;
+        }
+
         public boolean hasDetail() { 
           return this.detail != null && !this.detail.isEmpty();
         }
 
         /**
-         * @param value {@link #detail} (The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.)
+         * @param value {@link #detail} (The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%, or in the case of pharmaceutical quality - NMT 0.6%, Clear solution, etc. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.)
          */
         public PlanDefinitionGoalTargetComponent setDetail(DataType value) { 
-          if (value != null && !(value instanceof Quantity || value instanceof Range || value instanceof CodeableConcept))
+          if (value != null && !(value instanceof Quantity || value instanceof Range || value instanceof CodeableConcept || value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof Ratio))
             throw new Error("Not the right type for PlanDefinition.goal.target.detail[x]: "+value.fhirType());
           this.detail = value;
           return this;
@@ -746,7 +806,7 @@ public class PlanDefinition extends MetadataResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("measure", "CodeableConcept", "The parameter whose value is to be tracked, e.g. body weight, blood pressure, or hemoglobin A1c level.", 0, 1, measure));
-          children.add(new Property("detail[x]", "Quantity|Range|CodeableConcept", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail));
+          children.add(new Property("detail[x]", "Quantity|Range|CodeableConcept|string|boolean|integer|Ratio", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%, or in the case of pharmaceutical quality - NMT 0.6%, Clear solution, etc. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail));
           children.add(new Property("due", "Duration", "Indicates the timeframe after the start of the goal in which the goal should be met.", 0, 1, due));
         }
 
@@ -754,11 +814,15 @@ public class PlanDefinition extends MetadataResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 938321246: /*measure*/  return new Property("measure", "CodeableConcept", "The parameter whose value is to be tracked, e.g. body weight, blood pressure, or hemoglobin A1c level.", 0, 1, measure);
-          case -1973084529: /*detail[x]*/  return new Property("detail[x]", "Quantity|Range|CodeableConcept", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail);
-          case -1335224239: /*detail*/  return new Property("detail[x]", "Quantity|Range|CodeableConcept", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail);
-          case -1313079300: /*detailQuantity*/  return new Property("detail[x]", "Quantity", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail);
-          case -2062632084: /*detailRange*/  return new Property("detail[x]", "Range", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail);
-          case -175586544: /*detailCodeableConcept*/  return new Property("detail[x]", "CodeableConcept", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail);
+          case -1973084529: /*detail[x]*/  return new Property("detail[x]", "Quantity|Range|CodeableConcept|string|boolean|integer|Ratio", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%, or in the case of pharmaceutical quality - NMT 0.6%, Clear solution, etc. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail);
+          case -1335224239: /*detail*/  return new Property("detail[x]", "Quantity|Range|CodeableConcept|string|boolean|integer|Ratio", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%, or in the case of pharmaceutical quality - NMT 0.6%, Clear solution, etc. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail);
+          case -1313079300: /*detailQuantity*/  return new Property("detail[x]", "Quantity", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%, or in the case of pharmaceutical quality - NMT 0.6%, Clear solution, etc. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail);
+          case -2062632084: /*detailRange*/  return new Property("detail[x]", "Range", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%, or in the case of pharmaceutical quality - NMT 0.6%, Clear solution, etc. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail);
+          case -175586544: /*detailCodeableConcept*/  return new Property("detail[x]", "CodeableConcept", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%, or in the case of pharmaceutical quality - NMT 0.6%, Clear solution, etc. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail);
+          case 529212354: /*detailString*/  return new Property("detail[x]", "string", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%, or in the case of pharmaceutical quality - NMT 0.6%, Clear solution, etc. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail);
+          case 1172184727: /*detailBoolean*/  return new Property("detail[x]", "boolean", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%, or in the case of pharmaceutical quality - NMT 0.6%, Clear solution, etc. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail);
+          case -1229442131: /*detailInteger*/  return new Property("detail[x]", "integer", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%, or in the case of pharmaceutical quality - NMT 0.6%, Clear solution, etc. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail);
+          case -2062626246: /*detailRatio*/  return new Property("detail[x]", "Ratio", "The target value of the measure to be achieved to signify fulfillment of the goal, e.g. 150 pounds or 7.0%, or in the case of pharmaceutical quality - NMT 0.6%, Clear solution, etc. Either the high or low or both values of the range can be specified. When a low value is missing, it indicates that the goal is achieved at any value at or below the high value. Similarly, if the high value is missing, it indicates that the goal is achieved at any value at or above the low value.", 0, 1, detail);
           case 99828: /*due*/  return new Property("due", "Duration", "Indicates the timeframe after the start of the goal in which the goal should be met.", 0, 1, due);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -822,7 +886,7 @@ public class PlanDefinition extends MetadataResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 938321246: /*measure*/ return new String[] {"CodeableConcept"};
-        case -1335224239: /*detail*/ return new String[] {"Quantity", "Range", "CodeableConcept"};
+        case -1335224239: /*detail*/ return new String[] {"Quantity", "Range", "CodeableConcept", "string", "boolean", "integer", "Ratio"};
         case 99828: /*due*/ return new String[] {"Duration"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -845,6 +909,22 @@ public class PlanDefinition extends MetadataResource {
         }
         else if (name.equals("detailCodeableConcept")) {
           this.detail = new CodeableConcept();
+          return this.detail;
+        }
+        else if (name.equals("detailString")) {
+          this.detail = new StringType();
+          return this.detail;
+        }
+        else if (name.equals("detailBoolean")) {
+          this.detail = new BooleanType();
+          return this.detail;
+        }
+        else if (name.equals("detailInteger")) {
+          this.detail = new IntegerType();
+          return this.detail;
+        }
+        else if (name.equals("detailRatio")) {
+          this.detail = new Ratio();
           return this.detail;
         }
         else if (name.equals("due")) {
@@ -901,132 +981,762 @@ public class PlanDefinition extends MetadataResource {
   }
 
     @Block()
+    public static class PlanDefinitionActorComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * A descriptive label for the actor.
+         */
+        @Child(name = "title", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="User-visible title", formalDefinition="A descriptive label for the actor." )
+        protected StringType title;
+
+        /**
+         * A description of how the actor fits into the overall actions of the plan definition.
+         */
+        @Child(name = "description", type = {MarkdownType.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Describes the actor", formalDefinition="A description of how the actor fits into the overall actions of the plan definition." )
+        protected MarkdownType description;
+
+        /**
+         * The characteristics of the candidates that could serve as the actor.
+         */
+        @Child(name = "option", type = {}, order=3, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Who or what can be this actor", formalDefinition="The characteristics of the candidates that could serve as the actor." )
+        protected List<PlanDefinitionActorOptionComponent> option;
+
+        private static final long serialVersionUID = -571302300L;
+
+    /**
+     * Constructor
+     */
+      public PlanDefinitionActorComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public PlanDefinitionActorComponent(PlanDefinitionActorOptionComponent option) {
+        super();
+        this.addOption(option);
+      }
+
+        /**
+         * @return {@link #title} (A descriptive label for the actor.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
+         */
+        public StringType getTitleElement() { 
+          if (this.title == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PlanDefinitionActorComponent.title");
+            else if (Configuration.doAutoCreate())
+              this.title = new StringType(); // bb
+          return this.title;
+        }
+
+        public boolean hasTitleElement() { 
+          return this.title != null && !this.title.isEmpty();
+        }
+
+        public boolean hasTitle() { 
+          return this.title != null && !this.title.isEmpty();
+        }
+
+        /**
+         * @param value {@link #title} (A descriptive label for the actor.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
+         */
+        public PlanDefinitionActorComponent setTitleElement(StringType value) { 
+          this.title = value;
+          return this;
+        }
+
+        /**
+         * @return A descriptive label for the actor.
+         */
+        public String getTitle() { 
+          return this.title == null ? null : this.title.getValue();
+        }
+
+        /**
+         * @param value A descriptive label for the actor.
+         */
+        public PlanDefinitionActorComponent setTitle(String value) { 
+          if (Utilities.noString(value))
+            this.title = null;
+          else {
+            if (this.title == null)
+              this.title = new StringType();
+            this.title.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #description} (A description of how the actor fits into the overall actions of the plan definition.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         */
+        public MarkdownType getDescriptionElement() { 
+          if (this.description == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PlanDefinitionActorComponent.description");
+            else if (Configuration.doAutoCreate())
+              this.description = new MarkdownType(); // bb
+          return this.description;
+        }
+
+        public boolean hasDescriptionElement() { 
+          return this.description != null && !this.description.isEmpty();
+        }
+
+        public boolean hasDescription() { 
+          return this.description != null && !this.description.isEmpty();
+        }
+
+        /**
+         * @param value {@link #description} (A description of how the actor fits into the overall actions of the plan definition.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         */
+        public PlanDefinitionActorComponent setDescriptionElement(MarkdownType value) { 
+          this.description = value;
+          return this;
+        }
+
+        /**
+         * @return A description of how the actor fits into the overall actions of the plan definition.
+         */
+        public String getDescription() { 
+          return this.description == null ? null : this.description.getValue();
+        }
+
+        /**
+         * @param value A description of how the actor fits into the overall actions of the plan definition.
+         */
+        public PlanDefinitionActorComponent setDescription(String value) { 
+          if (value == null)
+            this.description = null;
+          else {
+            if (this.description == null)
+              this.description = new MarkdownType();
+            this.description.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #option} (The characteristics of the candidates that could serve as the actor.)
+         */
+        public List<PlanDefinitionActorOptionComponent> getOption() { 
+          if (this.option == null)
+            this.option = new ArrayList<PlanDefinitionActorOptionComponent>();
+          return this.option;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public PlanDefinitionActorComponent setOption(List<PlanDefinitionActorOptionComponent> theOption) { 
+          this.option = theOption;
+          return this;
+        }
+
+        public boolean hasOption() { 
+          if (this.option == null)
+            return false;
+          for (PlanDefinitionActorOptionComponent item : this.option)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public PlanDefinitionActorOptionComponent addOption() { //3
+          PlanDefinitionActorOptionComponent t = new PlanDefinitionActorOptionComponent();
+          if (this.option == null)
+            this.option = new ArrayList<PlanDefinitionActorOptionComponent>();
+          this.option.add(t);
+          return t;
+        }
+
+        public PlanDefinitionActorComponent addOption(PlanDefinitionActorOptionComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.option == null)
+            this.option = new ArrayList<PlanDefinitionActorOptionComponent>();
+          this.option.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #option}, creating it if it does not already exist {3}
+         */
+        public PlanDefinitionActorOptionComponent getOptionFirstRep() { 
+          if (getOption().isEmpty()) {
+            addOption();
+          }
+          return getOption().get(0);
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("title", "string", "A descriptive label for the actor.", 0, 1, title));
+          children.add(new Property("description", "markdown", "A description of how the actor fits into the overall actions of the plan definition.", 0, 1, description));
+          children.add(new Property("option", "", "The characteristics of the candidates that could serve as the actor.", 0, java.lang.Integer.MAX_VALUE, option));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 110371416: /*title*/  return new Property("title", "string", "A descriptive label for the actor.", 0, 1, title);
+          case -1724546052: /*description*/  return new Property("description", "markdown", "A description of how the actor fits into the overall actions of the plan definition.", 0, 1, description);
+          case -1010136971: /*option*/  return new Property("option", "", "The characteristics of the candidates that could serve as the actor.", 0, java.lang.Integer.MAX_VALUE, option);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
+        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
+        case -1010136971: /*option*/ return this.option == null ? new Base[0] : this.option.toArray(new Base[this.option.size()]); // PlanDefinitionActorOptionComponent
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 110371416: // title
+          this.title = TypeConvertor.castToString(value); // StringType
+          return value;
+        case -1724546052: // description
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
+          return value;
+        case -1010136971: // option
+          this.getOption().add((PlanDefinitionActorOptionComponent) value); // PlanDefinitionActorOptionComponent
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("title")) {
+          this.title = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("description")) {
+          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else if (name.equals("option")) {
+          this.getOption().add((PlanDefinitionActorOptionComponent) value);
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 110371416:  return getTitleElement();
+        case -1724546052:  return getDescriptionElement();
+        case -1010136971:  return addOption(); 
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 110371416: /*title*/ return new String[] {"string"};
+        case -1724546052: /*description*/ return new String[] {"markdown"};
+        case -1010136971: /*option*/ return new String[] {};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("title")) {
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.actor.title");
+        }
+        else if (name.equals("description")) {
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.actor.description");
+        }
+        else if (name.equals("option")) {
+          return addOption();
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public PlanDefinitionActorComponent copy() {
+        PlanDefinitionActorComponent dst = new PlanDefinitionActorComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanDefinitionActorComponent dst) {
+        super.copyValues(dst);
+        dst.title = title == null ? null : title.copy();
+        dst.description = description == null ? null : description.copy();
+        if (option != null) {
+          dst.option = new ArrayList<PlanDefinitionActorOptionComponent>();
+          for (PlanDefinitionActorOptionComponent i : option)
+            dst.option.add(i.copy());
+        };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof PlanDefinitionActorComponent))
+          return false;
+        PlanDefinitionActorComponent o = (PlanDefinitionActorComponent) other_;
+        return compareDeep(title, o.title, true) && compareDeep(description, o.description, true) && compareDeep(option, o.option, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof PlanDefinitionActorComponent))
+          return false;
+        PlanDefinitionActorComponent o = (PlanDefinitionActorComponent) other_;
+        return compareValues(title, o.title, true) && compareValues(description, o.description, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(title, description, option
+          );
+      }
+
+  public String fhirType() {
+    return "PlanDefinition.actor";
+
+  }
+
+  }
+
+    @Block()
+    public static class PlanDefinitionActorOptionComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * The type of participant in the action.
+         */
+        @Child(name = "type", type = {CodeType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="careteam | device | group | healthcareservice | location | organization | patient | practitioner | practitionerrole | relatedperson", formalDefinition="The type of participant in the action." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-participant-type")
+        protected Enumeration<ActionParticipantType> type;
+
+        /**
+         * The type of participant in the action.
+         */
+        @Child(name = "typeReference", type = {CareTeam.class, Device.class, Group.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Who or what can participate", formalDefinition="The type of participant in the action." )
+        protected Reference typeReference;
+
+        /**
+         * The role the participant should play in performing the described action.
+         */
+        @Child(name = "role", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="E.g. Nurse, Surgeon, Parent", formalDefinition="The role the participant should play in performing the described action." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/action-participant-role")
+        protected CodeableConcept role;
+
+        private static final long serialVersionUID = -1613816809L;
+
+    /**
+     * Constructor
+     */
+      public PlanDefinitionActorOptionComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #type} (The type of participant in the action.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+         */
+        public Enumeration<ActionParticipantType> getTypeElement() { 
+          if (this.type == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PlanDefinitionActorOptionComponent.type");
+            else if (Configuration.doAutoCreate())
+              this.type = new Enumeration<ActionParticipantType>(new ActionParticipantTypeEnumFactory()); // bb
+          return this.type;
+        }
+
+        public boolean hasTypeElement() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        /**
+         * @param value {@link #type} (The type of participant in the action.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+         */
+        public PlanDefinitionActorOptionComponent setTypeElement(Enumeration<ActionParticipantType> value) { 
+          this.type = value;
+          return this;
+        }
+
+        /**
+         * @return The type of participant in the action.
+         */
+        public ActionParticipantType getType() { 
+          return this.type == null ? null : this.type.getValue();
+        }
+
+        /**
+         * @param value The type of participant in the action.
+         */
+        public PlanDefinitionActorOptionComponent setType(ActionParticipantType value) { 
+          if (value == null)
+            this.type = null;
+          else {
+            if (this.type == null)
+              this.type = new Enumeration<ActionParticipantType>(new ActionParticipantTypeEnumFactory());
+            this.type.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #typeReference} (The type of participant in the action.)
+         */
+        public Reference getTypeReference() { 
+          if (this.typeReference == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PlanDefinitionActorOptionComponent.typeReference");
+            else if (Configuration.doAutoCreate())
+              this.typeReference = new Reference(); // cc
+          return this.typeReference;
+        }
+
+        public boolean hasTypeReference() { 
+          return this.typeReference != null && !this.typeReference.isEmpty();
+        }
+
+        /**
+         * @param value {@link #typeReference} (The type of participant in the action.)
+         */
+        public PlanDefinitionActorOptionComponent setTypeReference(Reference value) { 
+          this.typeReference = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #role} (The role the participant should play in performing the described action.)
+         */
+        public CodeableConcept getRole() { 
+          if (this.role == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PlanDefinitionActorOptionComponent.role");
+            else if (Configuration.doAutoCreate())
+              this.role = new CodeableConcept(); // cc
+          return this.role;
+        }
+
+        public boolean hasRole() { 
+          return this.role != null && !this.role.isEmpty();
+        }
+
+        /**
+         * @param value {@link #role} (The role the participant should play in performing the described action.)
+         */
+        public PlanDefinitionActorOptionComponent setRole(CodeableConcept value) { 
+          this.role = value;
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("type", "code", "The type of participant in the action.", 0, 1, type));
+          children.add(new Property("typeReference", "Reference(CareTeam|Device|Group|HealthcareService|Location|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The type of participant in the action.", 0, 1, typeReference));
+          children.add(new Property("role", "CodeableConcept", "The role the participant should play in performing the described action.", 0, 1, role));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3575610: /*type*/  return new Property("type", "code", "The type of participant in the action.", 0, 1, type);
+          case 2074825009: /*typeReference*/  return new Property("typeReference", "Reference(CareTeam|Device|Group|HealthcareService|Location|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The type of participant in the action.", 0, 1, typeReference);
+          case 3506294: /*role*/  return new Property("role", "CodeableConcept", "The role the participant should play in performing the described action.", 0, 1, role);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<ActionParticipantType>
+        case 2074825009: /*typeReference*/ return this.typeReference == null ? new Base[0] : new Base[] {this.typeReference}; // Reference
+        case 3506294: /*role*/ return this.role == null ? new Base[0] : new Base[] {this.role}; // CodeableConcept
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3575610: // type
+          value = new ActionParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<ActionParticipantType>
+          return value;
+        case 2074825009: // typeReference
+          this.typeReference = TypeConvertor.castToReference(value); // Reference
+          return value;
+        case 3506294: // role
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          value = new ActionParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<ActionParticipantType>
+        } else if (name.equals("typeReference")) {
+          this.typeReference = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("role")) {
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3575610:  return getTypeElement();
+        case 2074825009:  return getTypeReference();
+        case 3506294:  return getRole();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3575610: /*type*/ return new String[] {"code"};
+        case 2074825009: /*typeReference*/ return new String[] {"Reference"};
+        case 3506294: /*role*/ return new String[] {"CodeableConcept"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("type")) {
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.actor.option.type");
+        }
+        else if (name.equals("typeReference")) {
+          this.typeReference = new Reference();
+          return this.typeReference;
+        }
+        else if (name.equals("role")) {
+          this.role = new CodeableConcept();
+          return this.role;
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public PlanDefinitionActorOptionComponent copy() {
+        PlanDefinitionActorOptionComponent dst = new PlanDefinitionActorOptionComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanDefinitionActorOptionComponent dst) {
+        super.copyValues(dst);
+        dst.type = type == null ? null : type.copy();
+        dst.typeReference = typeReference == null ? null : typeReference.copy();
+        dst.role = role == null ? null : role.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof PlanDefinitionActorOptionComponent))
+          return false;
+        PlanDefinitionActorOptionComponent o = (PlanDefinitionActorOptionComponent) other_;
+        return compareDeep(type, o.type, true) && compareDeep(typeReference, o.typeReference, true) && compareDeep(role, o.role, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof PlanDefinitionActorOptionComponent))
+          return false;
+        PlanDefinitionActorOptionComponent o = (PlanDefinitionActorOptionComponent) other_;
+        return compareValues(type, o.type, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, typeReference, role
+          );
+      }
+
+  public String fhirType() {
+    return "PlanDefinition.actor.option";
+
+  }
+
+  }
+
+    @Block()
     public static class PlanDefinitionActionComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * A user-visible prefix for the action.
+         * An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestGroup.
          */
-        @Child(name = "prefix", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="User-visible prefix for the action (e.g. 1. or A.)", formalDefinition="A user-visible prefix for the action." )
+        @Child(name = "linkId", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Unique id for the action in the PlanDefinition", formalDefinition="An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestGroup." )
+        protected StringType linkId;
+
+        /**
+         * A user-visible prefix for the action. For example a section or item numbering such as 1. or A.
+         */
+        @Child(name = "prefix", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="User-visible prefix for the action (e.g. 1. or A.)", formalDefinition="A user-visible prefix for the action. For example a section or item numbering such as 1. or A." )
         protected StringType prefix;
 
         /**
-         * The title of the action displayed to a user.
+         * The textual description of the action displayed to a user. For example, when the action is a test to be performed, the title would be the title of the test such as Assay by HPLC.
          */
-        @Child(name = "title", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="User-visible title", formalDefinition="The title of the action displayed to a user." )
+        @Child(name = "title", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="User-visible title", formalDefinition="The textual description of the action displayed to a user. For example, when the action is a test to be performed, the title would be the title of the test such as Assay by HPLC." )
         protected StringType title;
 
         /**
          * A brief description of the action used to provide a summary to display to the user.
          */
-        @Child(name = "description", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "description", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Brief description of the action", formalDefinition="A brief description of the action used to provide a summary to display to the user." )
         protected StringType description;
 
         /**
          * A text equivalent of the action to be performed. This provides a human-interpretable description of the action when the definition is consumed by a system that might not be capable of interpreting it dynamically.
          */
-        @Child(name = "textEquivalent", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "textEquivalent", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Static text equivalent of the action, used if the dynamic aspects cannot be interpreted by the receiving system", formalDefinition="A text equivalent of the action to be performed. This provides a human-interpretable description of the action when the definition is consumed by a system that might not be capable of interpreting it dynamically." )
         protected StringType textEquivalent;
 
         /**
          * Indicates how quickly the action should be addressed with respect to other actions.
          */
-        @Child(name = "priority", type = {CodeType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "priority", type = {CodeType.class}, order=6, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="routine | urgent | asap | stat", formalDefinition="Indicates how quickly the action should be addressed with respect to other actions." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-priority")
         protected Enumeration<RequestPriority> priority;
 
         /**
-         * A code that provides meaning for the action or action group. For example, a section may have a LOINC code for the section of a documentation template.
+         * A code that provides a meaning, grouping, or classification for the action or action group. For example, a section may have a LOINC code for the section of a documentation template. In pharmaceutical quality, an action (Test) such as pH could be classified as a physical property.
          */
-        @Child(name = "code", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Code representing the meaning of the action or sub-actions", formalDefinition="A code that provides meaning for the action or action group. For example, a section may have a LOINC code for the section of a documentation template." )
-        protected List<CodeableConcept> code;
+        @Child(name = "code", type = {CodeableConcept.class}, order=7, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Code representing the meaning of the action or sub-actions", formalDefinition="A code that provides a meaning, grouping, or classification for the action or action group. For example, a section may have a LOINC code for the section of a documentation template. In pharmaceutical quality, an action (Test) such as pH could be classified as a physical property." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-code")
+        protected CodeableConcept code;
 
         /**
          * A description of why this action is necessary or appropriate.
          */
-        @Child(name = "reason", type = {CodeableConcept.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "reason", type = {CodeableConcept.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Why the action should be performed", formalDefinition="A description of why this action is necessary or appropriate." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-reason-code")
         protected List<CodeableConcept> reason;
 
         /**
          * Didactic or other informational resources associated with the action that can be provided to the CDS recipient. Information resources can include inline text commentary and links to web resources.
          */
-        @Child(name = "documentation", type = {RelatedArtifact.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "documentation", type = {RelatedArtifact.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Supporting documentation for the intended performer of the action", formalDefinition="Didactic or other informational resources associated with the action that can be provided to the CDS recipient. Information resources can include inline text commentary and links to web resources." )
         protected List<RelatedArtifact> documentation;
 
         /**
-         * Identifies goals that this action supports. The reference must be to a goal element defined within this plan definition.
+         * Identifies goals that this action supports. The reference must be to a goal element defined within this plan definition. In pharmaceutical quality, a goal represents acceptance criteria (Goal) for a given action (Test), so the goalId would be the unique id of a defined goal element establishing the acceptance criteria for the action.
          */
-        @Child(name = "goalId", type = {IdType.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="What goals this action supports", formalDefinition="Identifies goals that this action supports. The reference must be to a goal element defined within this plan definition." )
+        @Child(name = "goalId", type = {IdType.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="What goals this action supports", formalDefinition="Identifies goals that this action supports. The reference must be to a goal element defined within this plan definition. In pharmaceutical quality, a goal represents acceptance criteria (Goal) for a given action (Test), so the goalId would be the unique id of a defined goal element establishing the acceptance criteria for the action." )
         protected List<IdType> goalId;
 
         /**
-         * A code or group definition that describes the intended subject of the action and its children, if any.
+         * A code, group definition, or canonical reference that describes the intended subject of the action and its children, if any. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.
          */
-        @Child(name = "subject", type = {CodeableConcept.class, Group.class}, order=10, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Type of individual the action is focused on", formalDefinition="A code or group definition that describes the intended subject of the action and its children, if any." )
+        @Child(name = "subject", type = {CodeableConcept.class, Group.class, CanonicalType.class}, order=11, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Type of individual the action is focused on", formalDefinition="A code, group definition, or canonical reference that describes the intended subject of the action and its children, if any. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subject-type")
         protected DataType subject;
 
         /**
          * A description of when the action should be triggered.
          */
-        @Child(name = "trigger", type = {TriggerDefinition.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "trigger", type = {TriggerDefinition.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="When the action should be triggered", formalDefinition="A description of when the action should be triggered." )
         protected List<TriggerDefinition> trigger;
 
         /**
          * An expression that describes applicability criteria or start/stop conditions for the action.
          */
-        @Child(name = "condition", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "condition", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Whether or not the action is applicable", formalDefinition="An expression that describes applicability criteria or start/stop conditions for the action." )
         protected List<PlanDefinitionActionConditionComponent> condition;
 
         /**
          * Defines input data requirements for the action.
          */
-        @Child(name = "input", type = {DataRequirement.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "input", type = {}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Input data requirements", formalDefinition="Defines input data requirements for the action." )
-        protected List<DataRequirement> input;
+        protected List<PlanDefinitionActionInputComponent> input;
 
         /**
          * Defines the outputs of the action, if any.
          */
-        @Child(name = "output", type = {DataRequirement.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "output", type = {}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Output data definition", formalDefinition="Defines the outputs of the action, if any." )
-        protected List<DataRequirement> output;
+        protected List<PlanDefinitionActionOutputComponent> output;
 
         /**
          * A relationship to another action such as "before" or "30-60 minutes after start of".
          */
-        @Child(name = "relatedAction", type = {}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "relatedAction", type = {}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Relationship to another action", formalDefinition="A relationship to another action such as \"before\" or \"30-60 minutes after start of\"." )
         protected List<PlanDefinitionActionRelatedActionComponent> relatedAction;
 
         /**
          * An optional value describing when the action should be performed.
          */
-        @Child(name = "timing", type = {DateTimeType.class, Age.class, Period.class, Duration.class, Range.class, Timing.class}, order=16, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "timing", type = {Age.class, Duration.class, Range.class, Timing.class}, order=17, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="When the action should take place", formalDefinition="An optional value describing when the action should be performed." )
         protected DataType timing;
 
         /**
+         * Identifies the facility where the action will occur; e.g. home, hospital, specific clinic, etc.
+         */
+        @Child(name = "location", type = {CodeableReference.class}, order=18, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Where it should happen", formalDefinition="Identifies the facility where the action will occur; e.g. home, hospital, specific clinic, etc." )
+        protected CodeableReference location;
+
+        /**
          * Indicates who should participate in performing the action described.
          */
-        @Child(name = "participant", type = {}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "participant", type = {}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Who should participate in the action", formalDefinition="Indicates who should participate in performing the action described." )
         protected List<PlanDefinitionActionParticipantComponent> participant;
 
         /**
          * The type of action to perform (create, update, remove).
          */
-        @Child(name = "type", type = {CodeableConcept.class}, order=18, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "type", type = {CodeableConcept.class}, order=20, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="create | update | remove | fire-event", formalDefinition="The type of action to perform (create, update, remove)." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-type")
         protected CodeableConcept type;
@@ -1034,7 +1744,7 @@ public class PlanDefinition extends MetadataResource {
         /**
          * Defines the grouping behavior for the action and its children.
          */
-        @Child(name = "groupingBehavior", type = {CodeType.class}, order=19, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "groupingBehavior", type = {CodeType.class}, order=21, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="visual-group | logical-group | sentence-group", formalDefinition="Defines the grouping behavior for the action and its children." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-grouping-behavior")
         protected Enumeration<ActionGroupingBehavior> groupingBehavior;
@@ -1042,7 +1752,7 @@ public class PlanDefinition extends MetadataResource {
         /**
          * Defines the selection behavior for the action and its children.
          */
-        @Child(name = "selectionBehavior", type = {CodeType.class}, order=20, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "selectionBehavior", type = {CodeType.class}, order=22, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="any | all | all-or-none | exactly-one | at-most-one | one-or-more", formalDefinition="Defines the selection behavior for the action and its children." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-selection-behavior")
         protected Enumeration<ActionSelectionBehavior> selectionBehavior;
@@ -1050,7 +1760,7 @@ public class PlanDefinition extends MetadataResource {
         /**
          * Defines the required behavior for the action.
          */
-        @Child(name = "requiredBehavior", type = {CodeType.class}, order=21, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "requiredBehavior", type = {CodeType.class}, order=23, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="must | could | must-unless-documented", formalDefinition="Defines the required behavior for the action." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-required-behavior")
         protected Enumeration<ActionRequiredBehavior> requiredBehavior;
@@ -1058,7 +1768,7 @@ public class PlanDefinition extends MetadataResource {
         /**
          * Defines whether the action should usually be preselected.
          */
-        @Child(name = "precheckBehavior", type = {CodeType.class}, order=22, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "precheckBehavior", type = {CodeType.class}, order=24, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="yes | no", formalDefinition="Defines whether the action should usually be preselected." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-precheck-behavior")
         protected Enumeration<ActionPrecheckBehavior> precheckBehavior;
@@ -1066,40 +1776,40 @@ public class PlanDefinition extends MetadataResource {
         /**
          * Defines whether the action can be selected multiple times.
          */
-        @Child(name = "cardinalityBehavior", type = {CodeType.class}, order=23, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "cardinalityBehavior", type = {CodeType.class}, order=25, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="single | multiple", formalDefinition="Defines whether the action can be selected multiple times." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-cardinality-behavior")
         protected Enumeration<ActionCardinalityBehavior> cardinalityBehavior;
 
         /**
-         * A reference to an ActivityDefinition that describes the action to be taken in detail, or a PlanDefinition that describes a series of actions to be taken.
+         * A reference to an ActivityDefinition that describes the action to be taken in detail, a PlanDefinition that describes a series of actions to be taken, a Questionnaire that should be filled out, or an ObservationDefinition that specifies what observation should be captured.
          */
-        @Child(name = "definition", type = {CanonicalType.class, UriType.class}, order=24, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Description of the activity to be performed", formalDefinition="A reference to an ActivityDefinition that describes the action to be taken in detail, or a PlanDefinition that describes a series of actions to be taken." )
+        @Child(name = "definition", type = {CanonicalType.class, UriType.class}, order=26, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Description of the activity to be performed", formalDefinition="A reference to an ActivityDefinition that describes the action to be taken in detail, a PlanDefinition that describes a series of actions to be taken, a Questionnaire that should be filled out, or an ObservationDefinition that specifies what observation should be captured." )
         protected DataType definition;
 
         /**
          * A reference to a StructureMap resource that defines a transform that can be executed to produce the intent resource using the ActivityDefinition instance as the input.
          */
-        @Child(name = "transform", type = {CanonicalType.class}, order=25, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "transform", type = {CanonicalType.class}, order=27, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Transform to apply the template", formalDefinition="A reference to a StructureMap resource that defines a transform that can be executed to produce the intent resource using the ActivityDefinition instance as the input." )
         protected CanonicalType transform;
 
         /**
          * Customizations that should be applied to the statically defined resource. For example, if the dosage of a medication must be computed based on the patient's weight, a customization would be used to specify an expression that calculated the weight, and the path on the resource that would contain the result.
          */
-        @Child(name = "dynamicValue", type = {}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "dynamicValue", type = {}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Dynamic aspects of the definition", formalDefinition="Customizations that should be applied to the statically defined resource. For example, if the dosage of a medication must be computed based on the patient's weight, a customization would be used to specify an expression that calculated the weight, and the path on the resource that would contain the result." )
         protected List<PlanDefinitionActionDynamicValueComponent> dynamicValue;
 
         /**
          * Sub actions that are contained within the action. The behavior of this action determines the functionality of the sub-actions. For example, a selection behavior of at-most-one indicates that of the sub-actions, at most one may be chosen as part of realizing the action definition.
          */
-        @Child(name = "action", type = {PlanDefinitionActionComponent.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "action", type = {PlanDefinitionActionComponent.class}, order=29, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="A sub-action", formalDefinition="Sub actions that are contained within the action. The behavior of this action determines the functionality of the sub-actions. For example, a selection behavior of at-most-one indicates that of the sub-actions, at most one may be chosen as part of realizing the action definition." )
         protected List<PlanDefinitionActionComponent> action;
 
-        private static final long serialVersionUID = -1494545766L;
+        private static final long serialVersionUID = 1445040760L;
 
     /**
      * Constructor
@@ -1109,7 +1819,56 @@ public class PlanDefinition extends MetadataResource {
       }
 
         /**
-         * @return {@link #prefix} (A user-visible prefix for the action.). This is the underlying object with id, value and extensions. The accessor "getPrefix" gives direct access to the value
+         * @return {@link #linkId} (An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestGroup.). This is the underlying object with id, value and extensions. The accessor "getLinkId" gives direct access to the value
+         */
+        public StringType getLinkIdElement() { 
+          if (this.linkId == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PlanDefinitionActionComponent.linkId");
+            else if (Configuration.doAutoCreate())
+              this.linkId = new StringType(); // bb
+          return this.linkId;
+        }
+
+        public boolean hasLinkIdElement() { 
+          return this.linkId != null && !this.linkId.isEmpty();
+        }
+
+        public boolean hasLinkId() { 
+          return this.linkId != null && !this.linkId.isEmpty();
+        }
+
+        /**
+         * @param value {@link #linkId} (An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestGroup.). This is the underlying object with id, value and extensions. The accessor "getLinkId" gives direct access to the value
+         */
+        public PlanDefinitionActionComponent setLinkIdElement(StringType value) { 
+          this.linkId = value;
+          return this;
+        }
+
+        /**
+         * @return An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestGroup.
+         */
+        public String getLinkId() { 
+          return this.linkId == null ? null : this.linkId.getValue();
+        }
+
+        /**
+         * @param value An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestGroup.
+         */
+        public PlanDefinitionActionComponent setLinkId(String value) { 
+          if (Utilities.noString(value))
+            this.linkId = null;
+          else {
+            if (this.linkId == null)
+              this.linkId = new StringType();
+            this.linkId.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #prefix} (A user-visible prefix for the action. For example a section or item numbering such as 1. or A.). This is the underlying object with id, value and extensions. The accessor "getPrefix" gives direct access to the value
          */
         public StringType getPrefixElement() { 
           if (this.prefix == null)
@@ -1129,7 +1888,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         /**
-         * @param value {@link #prefix} (A user-visible prefix for the action.). This is the underlying object with id, value and extensions. The accessor "getPrefix" gives direct access to the value
+         * @param value {@link #prefix} (A user-visible prefix for the action. For example a section or item numbering such as 1. or A.). This is the underlying object with id, value and extensions. The accessor "getPrefix" gives direct access to the value
          */
         public PlanDefinitionActionComponent setPrefixElement(StringType value) { 
           this.prefix = value;
@@ -1137,14 +1896,14 @@ public class PlanDefinition extends MetadataResource {
         }
 
         /**
-         * @return A user-visible prefix for the action.
+         * @return A user-visible prefix for the action. For example a section or item numbering such as 1. or A.
          */
         public String getPrefix() { 
           return this.prefix == null ? null : this.prefix.getValue();
         }
 
         /**
-         * @param value A user-visible prefix for the action.
+         * @param value A user-visible prefix for the action. For example a section or item numbering such as 1. or A.
          */
         public PlanDefinitionActionComponent setPrefix(String value) { 
           if (Utilities.noString(value))
@@ -1158,7 +1917,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         /**
-         * @return {@link #title} (The title of the action displayed to a user.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
+         * @return {@link #title} (The textual description of the action displayed to a user. For example, when the action is a test to be performed, the title would be the title of the test such as Assay by HPLC.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
          */
         public StringType getTitleElement() { 
           if (this.title == null)
@@ -1178,7 +1937,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         /**
-         * @param value {@link #title} (The title of the action displayed to a user.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
+         * @param value {@link #title} (The textual description of the action displayed to a user. For example, when the action is a test to be performed, the title would be the title of the test such as Assay by HPLC.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
          */
         public PlanDefinitionActionComponent setTitleElement(StringType value) { 
           this.title = value;
@@ -1186,14 +1945,14 @@ public class PlanDefinition extends MetadataResource {
         }
 
         /**
-         * @return The title of the action displayed to a user.
+         * @return The textual description of the action displayed to a user. For example, when the action is a test to be performed, the title would be the title of the test such as Assay by HPLC.
          */
         public String getTitle() { 
           return this.title == null ? null : this.title.getValue();
         }
 
         /**
-         * @param value The title of the action displayed to a user.
+         * @param value The textual description of the action displayed to a user. For example, when the action is a test to be performed, the title would be the title of the test such as Assay by HPLC.
          */
         public PlanDefinitionActionComponent setTitle(String value) { 
           if (Utilities.noString(value))
@@ -1354,56 +2113,27 @@ public class PlanDefinition extends MetadataResource {
         }
 
         /**
-         * @return {@link #code} (A code that provides meaning for the action or action group. For example, a section may have a LOINC code for the section of a documentation template.)
+         * @return {@link #code} (A code that provides a meaning, grouping, or classification for the action or action group. For example, a section may have a LOINC code for the section of a documentation template. In pharmaceutical quality, an action (Test) such as pH could be classified as a physical property.)
          */
-        public List<CodeableConcept> getCode() { 
+        public CodeableConcept getCode() { 
           if (this.code == null)
-            this.code = new ArrayList<CodeableConcept>();
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PlanDefinitionActionComponent.code");
+            else if (Configuration.doAutoCreate())
+              this.code = new CodeableConcept(); // cc
           return this.code;
         }
 
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public PlanDefinitionActionComponent setCode(List<CodeableConcept> theCode) { 
-          this.code = theCode;
-          return this;
-        }
-
         public boolean hasCode() { 
-          if (this.code == null)
-            return false;
-          for (CodeableConcept item : this.code)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public CodeableConcept addCode() { //3
-          CodeableConcept t = new CodeableConcept();
-          if (this.code == null)
-            this.code = new ArrayList<CodeableConcept>();
-          this.code.add(t);
-          return t;
-        }
-
-        public PlanDefinitionActionComponent addCode(CodeableConcept t) { //3
-          if (t == null)
-            return this;
-          if (this.code == null)
-            this.code = new ArrayList<CodeableConcept>();
-          this.code.add(t);
-          return this;
+          return this.code != null && !this.code.isEmpty();
         }
 
         /**
-         * @return The first repetition of repeating field {@link #code}, creating it if it does not already exist {3}
+         * @param value {@link #code} (A code that provides a meaning, grouping, or classification for the action or action group. For example, a section may have a LOINC code for the section of a documentation template. In pharmaceutical quality, an action (Test) such as pH could be classified as a physical property.)
          */
-        public CodeableConcept getCodeFirstRep() { 
-          if (getCode().isEmpty()) {
-            addCode();
-          }
-          return getCode().get(0);
+        public PlanDefinitionActionComponent setCode(CodeableConcept value) { 
+          this.code = value;
+          return this;
         }
 
         /**
@@ -1513,7 +2243,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         /**
-         * @return {@link #goalId} (Identifies goals that this action supports. The reference must be to a goal element defined within this plan definition.)
+         * @return {@link #goalId} (Identifies goals that this action supports. The reference must be to a goal element defined within this plan definition. In pharmaceutical quality, a goal represents acceptance criteria (Goal) for a given action (Test), so the goalId would be the unique id of a defined goal element establishing the acceptance criteria for the action.)
          */
         public List<IdType> getGoalId() { 
           if (this.goalId == null)
@@ -1539,7 +2269,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         /**
-         * @return {@link #goalId} (Identifies goals that this action supports. The reference must be to a goal element defined within this plan definition.)
+         * @return {@link #goalId} (Identifies goals that this action supports. The reference must be to a goal element defined within this plan definition. In pharmaceutical quality, a goal represents acceptance criteria (Goal) for a given action (Test), so the goalId would be the unique id of a defined goal element establishing the acceptance criteria for the action.)
          */
         public IdType addGoalIdElement() {//2 
           IdType t = new IdType();
@@ -1550,7 +2280,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         /**
-         * @param value {@link #goalId} (Identifies goals that this action supports. The reference must be to a goal element defined within this plan definition.)
+         * @param value {@link #goalId} (Identifies goals that this action supports. The reference must be to a goal element defined within this plan definition. In pharmaceutical quality, a goal represents acceptance criteria (Goal) for a given action (Test), so the goalId would be the unique id of a defined goal element establishing the acceptance criteria for the action.)
          */
         public PlanDefinitionActionComponent addGoalId(String value) { //1
           IdType t = new IdType();
@@ -1562,7 +2292,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         /**
-         * @param value {@link #goalId} (Identifies goals that this action supports. The reference must be to a goal element defined within this plan definition.)
+         * @param value {@link #goalId} (Identifies goals that this action supports. The reference must be to a goal element defined within this plan definition. In pharmaceutical quality, a goal represents acceptance criteria (Goal) for a given action (Test), so the goalId would be the unique id of a defined goal element establishing the acceptance criteria for the action.)
          */
         public boolean hasGoalId(String value) { 
           if (this.goalId == null)
@@ -1574,14 +2304,14 @@ public class PlanDefinition extends MetadataResource {
         }
 
         /**
-         * @return {@link #subject} (A code or group definition that describes the intended subject of the action and its children, if any.)
+         * @return {@link #subject} (A code, group definition, or canonical reference that describes the intended subject of the action and its children, if any. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.)
          */
         public DataType getSubject() { 
           return this.subject;
         }
 
         /**
-         * @return {@link #subject} (A code or group definition that describes the intended subject of the action and its children, if any.)
+         * @return {@link #subject} (A code, group definition, or canonical reference that describes the intended subject of the action and its children, if any. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.)
          */
         public CodeableConcept getSubjectCodeableConcept() throws FHIRException { 
           if (this.subject == null)
@@ -1596,7 +2326,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         /**
-         * @return {@link #subject} (A code or group definition that describes the intended subject of the action and its children, if any.)
+         * @return {@link #subject} (A code, group definition, or canonical reference that describes the intended subject of the action and its children, if any. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.)
          */
         public Reference getSubjectReference() throws FHIRException { 
           if (this.subject == null)
@@ -1610,15 +2340,30 @@ public class PlanDefinition extends MetadataResource {
           return this != null && this.subject instanceof Reference;
         }
 
+        /**
+         * @return {@link #subject} (A code, group definition, or canonical reference that describes the intended subject of the action and its children, if any. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.)
+         */
+        public CanonicalType getSubjectCanonicalType() throws FHIRException { 
+          if (this.subject == null)
+            this.subject = new CanonicalType();
+          if (!(this.subject instanceof CanonicalType))
+            throw new FHIRException("Type mismatch: the type CanonicalType was expected, but "+this.subject.getClass().getName()+" was encountered");
+          return (CanonicalType) this.subject;
+        }
+
+        public boolean hasSubjectCanonicalType() { 
+          return this != null && this.subject instanceof CanonicalType;
+        }
+
         public boolean hasSubject() { 
           return this.subject != null && !this.subject.isEmpty();
         }
 
         /**
-         * @param value {@link #subject} (A code or group definition that describes the intended subject of the action and its children, if any.)
+         * @param value {@link #subject} (A code, group definition, or canonical reference that describes the intended subject of the action and its children, if any. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.)
          */
         public PlanDefinitionActionComponent setSubject(DataType value) { 
-          if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
+          if (value != null && !(value instanceof CodeableConcept || value instanceof Reference || value instanceof CanonicalType))
             throw new Error("Not the right type for PlanDefinition.action.subject[x]: "+value.fhirType());
           this.subject = value;
           return this;
@@ -1733,16 +2478,16 @@ public class PlanDefinition extends MetadataResource {
         /**
          * @return {@link #input} (Defines input data requirements for the action.)
          */
-        public List<DataRequirement> getInput() { 
+        public List<PlanDefinitionActionInputComponent> getInput() { 
           if (this.input == null)
-            this.input = new ArrayList<DataRequirement>();
+            this.input = new ArrayList<PlanDefinitionActionInputComponent>();
           return this.input;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public PlanDefinitionActionComponent setInput(List<DataRequirement> theInput) { 
+        public PlanDefinitionActionComponent setInput(List<PlanDefinitionActionInputComponent> theInput) { 
           this.input = theInput;
           return this;
         }
@@ -1750,25 +2495,25 @@ public class PlanDefinition extends MetadataResource {
         public boolean hasInput() { 
           if (this.input == null)
             return false;
-          for (DataRequirement item : this.input)
+          for (PlanDefinitionActionInputComponent item : this.input)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public DataRequirement addInput() { //3
-          DataRequirement t = new DataRequirement();
+        public PlanDefinitionActionInputComponent addInput() { //3
+          PlanDefinitionActionInputComponent t = new PlanDefinitionActionInputComponent();
           if (this.input == null)
-            this.input = new ArrayList<DataRequirement>();
+            this.input = new ArrayList<PlanDefinitionActionInputComponent>();
           this.input.add(t);
           return t;
         }
 
-        public PlanDefinitionActionComponent addInput(DataRequirement t) { //3
+        public PlanDefinitionActionComponent addInput(PlanDefinitionActionInputComponent t) { //3
           if (t == null)
             return this;
           if (this.input == null)
-            this.input = new ArrayList<DataRequirement>();
+            this.input = new ArrayList<PlanDefinitionActionInputComponent>();
           this.input.add(t);
           return this;
         }
@@ -1776,7 +2521,7 @@ public class PlanDefinition extends MetadataResource {
         /**
          * @return The first repetition of repeating field {@link #input}, creating it if it does not already exist {3}
          */
-        public DataRequirement getInputFirstRep() { 
+        public PlanDefinitionActionInputComponent getInputFirstRep() { 
           if (getInput().isEmpty()) {
             addInput();
           }
@@ -1786,16 +2531,16 @@ public class PlanDefinition extends MetadataResource {
         /**
          * @return {@link #output} (Defines the outputs of the action, if any.)
          */
-        public List<DataRequirement> getOutput() { 
+        public List<PlanDefinitionActionOutputComponent> getOutput() { 
           if (this.output == null)
-            this.output = new ArrayList<DataRequirement>();
+            this.output = new ArrayList<PlanDefinitionActionOutputComponent>();
           return this.output;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public PlanDefinitionActionComponent setOutput(List<DataRequirement> theOutput) { 
+        public PlanDefinitionActionComponent setOutput(List<PlanDefinitionActionOutputComponent> theOutput) { 
           this.output = theOutput;
           return this;
         }
@@ -1803,25 +2548,25 @@ public class PlanDefinition extends MetadataResource {
         public boolean hasOutput() { 
           if (this.output == null)
             return false;
-          for (DataRequirement item : this.output)
+          for (PlanDefinitionActionOutputComponent item : this.output)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public DataRequirement addOutput() { //3
-          DataRequirement t = new DataRequirement();
+        public PlanDefinitionActionOutputComponent addOutput() { //3
+          PlanDefinitionActionOutputComponent t = new PlanDefinitionActionOutputComponent();
           if (this.output == null)
-            this.output = new ArrayList<DataRequirement>();
+            this.output = new ArrayList<PlanDefinitionActionOutputComponent>();
           this.output.add(t);
           return t;
         }
 
-        public PlanDefinitionActionComponent addOutput(DataRequirement t) { //3
+        public PlanDefinitionActionComponent addOutput(PlanDefinitionActionOutputComponent t) { //3
           if (t == null)
             return this;
           if (this.output == null)
-            this.output = new ArrayList<DataRequirement>();
+            this.output = new ArrayList<PlanDefinitionActionOutputComponent>();
           this.output.add(t);
           return this;
         }
@@ -1829,7 +2574,7 @@ public class PlanDefinition extends MetadataResource {
         /**
          * @return The first repetition of repeating field {@link #output}, creating it if it does not already exist {3}
          */
-        public DataRequirement getOutputFirstRep() { 
+        public PlanDefinitionActionOutputComponent getOutputFirstRep() { 
           if (getOutput().isEmpty()) {
             addOutput();
           }
@@ -1899,21 +2644,6 @@ public class PlanDefinition extends MetadataResource {
         /**
          * @return {@link #timing} (An optional value describing when the action should be performed.)
          */
-        public DateTimeType getTimingDateTimeType() throws FHIRException { 
-          if (this.timing == null)
-            this.timing = new DateTimeType();
-          if (!(this.timing instanceof DateTimeType))
-            throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.timing.getClass().getName()+" was encountered");
-          return (DateTimeType) this.timing;
-        }
-
-        public boolean hasTimingDateTimeType() { 
-          return this != null && this.timing instanceof DateTimeType;
-        }
-
-        /**
-         * @return {@link #timing} (An optional value describing when the action should be performed.)
-         */
         public Age getTimingAge() throws FHIRException { 
           if (this.timing == null)
             this.timing = new Age();
@@ -1924,21 +2654,6 @@ public class PlanDefinition extends MetadataResource {
 
         public boolean hasTimingAge() { 
           return this != null && this.timing instanceof Age;
-        }
-
-        /**
-         * @return {@link #timing} (An optional value describing when the action should be performed.)
-         */
-        public Period getTimingPeriod() throws FHIRException { 
-          if (this.timing == null)
-            this.timing = new Period();
-          if (!(this.timing instanceof Period))
-            throw new FHIRException("Type mismatch: the type Period was expected, but "+this.timing.getClass().getName()+" was encountered");
-          return (Period) this.timing;
-        }
-
-        public boolean hasTimingPeriod() { 
-          return this != null && this.timing instanceof Period;
         }
 
         /**
@@ -1994,9 +2709,33 @@ public class PlanDefinition extends MetadataResource {
          * @param value {@link #timing} (An optional value describing when the action should be performed.)
          */
         public PlanDefinitionActionComponent setTiming(DataType value) { 
-          if (value != null && !(value instanceof DateTimeType || value instanceof Age || value instanceof Period || value instanceof Duration || value instanceof Range || value instanceof Timing))
+          if (value != null && !(value instanceof Age || value instanceof Duration || value instanceof Range || value instanceof Timing))
             throw new Error("Not the right type for PlanDefinition.action.timing[x]: "+value.fhirType());
           this.timing = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #location} (Identifies the facility where the action will occur; e.g. home, hospital, specific clinic, etc.)
+         */
+        public CodeableReference getLocation() { 
+          if (this.location == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PlanDefinitionActionComponent.location");
+            else if (Configuration.doAutoCreate())
+              this.location = new CodeableReference(); // cc
+          return this.location;
+        }
+
+        public boolean hasLocation() { 
+          return this.location != null && !this.location.isEmpty();
+        }
+
+        /**
+         * @param value {@link #location} (Identifies the facility where the action will occur; e.g. home, hospital, specific clinic, etc.)
+         */
+        public PlanDefinitionActionComponent setLocation(CodeableReference value) { 
+          this.location = value;
           return this;
         }
 
@@ -2323,14 +3062,14 @@ public class PlanDefinition extends MetadataResource {
         }
 
         /**
-         * @return {@link #definition} (A reference to an ActivityDefinition that describes the action to be taken in detail, or a PlanDefinition that describes a series of actions to be taken.)
+         * @return {@link #definition} (A reference to an ActivityDefinition that describes the action to be taken in detail, a PlanDefinition that describes a series of actions to be taken, a Questionnaire that should be filled out, or an ObservationDefinition that specifies what observation should be captured.)
          */
         public DataType getDefinition() { 
           return this.definition;
         }
 
         /**
-         * @return {@link #definition} (A reference to an ActivityDefinition that describes the action to be taken in detail, or a PlanDefinition that describes a series of actions to be taken.)
+         * @return {@link #definition} (A reference to an ActivityDefinition that describes the action to be taken in detail, a PlanDefinition that describes a series of actions to be taken, a Questionnaire that should be filled out, or an ObservationDefinition that specifies what observation should be captured.)
          */
         public CanonicalType getDefinitionCanonicalType() throws FHIRException { 
           if (this.definition == null)
@@ -2345,7 +3084,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         /**
-         * @return {@link #definition} (A reference to an ActivityDefinition that describes the action to be taken in detail, or a PlanDefinition that describes a series of actions to be taken.)
+         * @return {@link #definition} (A reference to an ActivityDefinition that describes the action to be taken in detail, a PlanDefinition that describes a series of actions to be taken, a Questionnaire that should be filled out, or an ObservationDefinition that specifies what observation should be captured.)
          */
         public UriType getDefinitionUriType() throws FHIRException { 
           if (this.definition == null)
@@ -2364,7 +3103,7 @@ public class PlanDefinition extends MetadataResource {
         }
 
         /**
-         * @param value {@link #definition} (A reference to an ActivityDefinition that describes the action to be taken in detail, or a PlanDefinition that describes a series of actions to be taken.)
+         * @param value {@link #definition} (A reference to an ActivityDefinition that describes the action to be taken in detail, a PlanDefinition that describes a series of actions to be taken, a Questionnaire that should be filled out, or an ObservationDefinition that specifies what observation should be captured.)
          */
         public PlanDefinitionActionComponent setDefinition(DataType value) { 
           if (value != null && !(value instanceof CanonicalType || value instanceof UriType))
@@ -2530,22 +3269,24 @@ public class PlanDefinition extends MetadataResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("prefix", "string", "A user-visible prefix for the action.", 0, 1, prefix));
-          children.add(new Property("title", "string", "The title of the action displayed to a user.", 0, 1, title));
+          children.add(new Property("linkId", "string", "An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestGroup.", 0, 1, linkId));
+          children.add(new Property("prefix", "string", "A user-visible prefix for the action. For example a section or item numbering such as 1. or A.", 0, 1, prefix));
+          children.add(new Property("title", "string", "The textual description of the action displayed to a user. For example, when the action is a test to be performed, the title would be the title of the test such as Assay by HPLC.", 0, 1, title));
           children.add(new Property("description", "string", "A brief description of the action used to provide a summary to display to the user.", 0, 1, description));
           children.add(new Property("textEquivalent", "string", "A text equivalent of the action to be performed. This provides a human-interpretable description of the action when the definition is consumed by a system that might not be capable of interpreting it dynamically.", 0, 1, textEquivalent));
           children.add(new Property("priority", "code", "Indicates how quickly the action should be addressed with respect to other actions.", 0, 1, priority));
-          children.add(new Property("code", "CodeableConcept", "A code that provides meaning for the action or action group. For example, a section may have a LOINC code for the section of a documentation template.", 0, java.lang.Integer.MAX_VALUE, code));
+          children.add(new Property("code", "CodeableConcept", "A code that provides a meaning, grouping, or classification for the action or action group. For example, a section may have a LOINC code for the section of a documentation template. In pharmaceutical quality, an action (Test) such as pH could be classified as a physical property.", 0, 1, code));
           children.add(new Property("reason", "CodeableConcept", "A description of why this action is necessary or appropriate.", 0, java.lang.Integer.MAX_VALUE, reason));
           children.add(new Property("documentation", "RelatedArtifact", "Didactic or other informational resources associated with the action that can be provided to the CDS recipient. Information resources can include inline text commentary and links to web resources.", 0, java.lang.Integer.MAX_VALUE, documentation));
-          children.add(new Property("goalId", "id", "Identifies goals that this action supports. The reference must be to a goal element defined within this plan definition.", 0, java.lang.Integer.MAX_VALUE, goalId));
-          children.add(new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of the action and its children, if any.", 0, 1, subject));
+          children.add(new Property("goalId", "id", "Identifies goals that this action supports. The reference must be to a goal element defined within this plan definition. In pharmaceutical quality, a goal represents acceptance criteria (Goal) for a given action (Test), so the goalId would be the unique id of a defined goal element establishing the acceptance criteria for the action.", 0, java.lang.Integer.MAX_VALUE, goalId));
+          children.add(new Property("subject[x]", "CodeableConcept|Reference(Group)|canonical", "A code, group definition, or canonical reference that describes the intended subject of the action and its children, if any. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject));
           children.add(new Property("trigger", "TriggerDefinition", "A description of when the action should be triggered.", 0, java.lang.Integer.MAX_VALUE, trigger));
           children.add(new Property("condition", "", "An expression that describes applicability criteria or start/stop conditions for the action.", 0, java.lang.Integer.MAX_VALUE, condition));
-          children.add(new Property("input", "DataRequirement", "Defines input data requirements for the action.", 0, java.lang.Integer.MAX_VALUE, input));
-          children.add(new Property("output", "DataRequirement", "Defines the outputs of the action, if any.", 0, java.lang.Integer.MAX_VALUE, output));
+          children.add(new Property("input", "", "Defines input data requirements for the action.", 0, java.lang.Integer.MAX_VALUE, input));
+          children.add(new Property("output", "", "Defines the outputs of the action, if any.", 0, java.lang.Integer.MAX_VALUE, output));
           children.add(new Property("relatedAction", "", "A relationship to another action such as \"before\" or \"30-60 minutes after start of\".", 0, java.lang.Integer.MAX_VALUE, relatedAction));
-          children.add(new Property("timing[x]", "dateTime|Age|Period|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing));
+          children.add(new Property("timing[x]", "Age|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing));
+          children.add(new Property("location", "CodeableReference(Location)", "Identifies the facility where the action will occur; e.g. home, hospital, specific clinic, etc.", 0, 1, location));
           children.add(new Property("participant", "", "Indicates who should participate in performing the action described.", 0, java.lang.Integer.MAX_VALUE, participant));
           children.add(new Property("type", "CodeableConcept", "The type of action to perform (create, update, remove).", 0, 1, type));
           children.add(new Property("groupingBehavior", "code", "Defines the grouping behavior for the action and its children.", 0, 1, groupingBehavior));
@@ -2553,7 +3294,7 @@ public class PlanDefinition extends MetadataResource {
           children.add(new Property("requiredBehavior", "code", "Defines the required behavior for the action.", 0, 1, requiredBehavior));
           children.add(new Property("precheckBehavior", "code", "Defines whether the action should usually be preselected.", 0, 1, precheckBehavior));
           children.add(new Property("cardinalityBehavior", "code", "Defines whether the action can be selected multiple times.", 0, 1, cardinalityBehavior));
-          children.add(new Property("definition[x]", "canonical(ActivityDefinition|PlanDefinition|Questionnaire)|uri", "A reference to an ActivityDefinition that describes the action to be taken in detail, or a PlanDefinition that describes a series of actions to be taken.", 0, 1, definition));
+          children.add(new Property("definition[x]", "canonical(ActivityDefinition|ObservationDefinition|PlanDefinition|Questionnaire)|uri", "A reference to an ActivityDefinition that describes the action to be taken in detail, a PlanDefinition that describes a series of actions to be taken, a Questionnaire that should be filled out, or an ObservationDefinition that specifies what observation should be captured.", 0, 1, definition));
           children.add(new Property("transform", "canonical(StructureMap)", "A reference to a StructureMap resource that defines a transform that can be executed to produce the intent resource using the ActivityDefinition instance as the input.", 0, 1, transform));
           children.add(new Property("dynamicValue", "", "Customizations that should be applied to the statically defined resource. For example, if the dosage of a medication must be computed based on the patient's weight, a customization would be used to specify an expression that calculated the weight, and the path on the resource that would contain the result.", 0, java.lang.Integer.MAX_VALUE, dynamicValue));
           children.add(new Property("action", "@PlanDefinition.action", "Sub actions that are contained within the action. The behavior of this action determines the functionality of the sub-actions. For example, a selection behavior of at-most-one indicates that of the sub-actions, at most one may be chosen as part of realizing the action definition.", 0, java.lang.Integer.MAX_VALUE, action));
@@ -2562,32 +3303,33 @@ public class PlanDefinition extends MetadataResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -980110702: /*prefix*/  return new Property("prefix", "string", "A user-visible prefix for the action.", 0, 1, prefix);
-          case 110371416: /*title*/  return new Property("title", "string", "The title of the action displayed to a user.", 0, 1, title);
+          case -1102667083: /*linkId*/  return new Property("linkId", "string", "An identifier that is unique within the PlanDefinition to allow linkage within the realized CarePlan and/or RequestGroup.", 0, 1, linkId);
+          case -980110702: /*prefix*/  return new Property("prefix", "string", "A user-visible prefix for the action. For example a section or item numbering such as 1. or A.", 0, 1, prefix);
+          case 110371416: /*title*/  return new Property("title", "string", "The textual description of the action displayed to a user. For example, when the action is a test to be performed, the title would be the title of the test such as Assay by HPLC.", 0, 1, title);
           case -1724546052: /*description*/  return new Property("description", "string", "A brief description of the action used to provide a summary to display to the user.", 0, 1, description);
           case -900391049: /*textEquivalent*/  return new Property("textEquivalent", "string", "A text equivalent of the action to be performed. This provides a human-interpretable description of the action when the definition is consumed by a system that might not be capable of interpreting it dynamically.", 0, 1, textEquivalent);
           case -1165461084: /*priority*/  return new Property("priority", "code", "Indicates how quickly the action should be addressed with respect to other actions.", 0, 1, priority);
-          case 3059181: /*code*/  return new Property("code", "CodeableConcept", "A code that provides meaning for the action or action group. For example, a section may have a LOINC code for the section of a documentation template.", 0, java.lang.Integer.MAX_VALUE, code);
+          case 3059181: /*code*/  return new Property("code", "CodeableConcept", "A code that provides a meaning, grouping, or classification for the action or action group. For example, a section may have a LOINC code for the section of a documentation template. In pharmaceutical quality, an action (Test) such as pH could be classified as a physical property.", 0, 1, code);
           case -934964668: /*reason*/  return new Property("reason", "CodeableConcept", "A description of why this action is necessary or appropriate.", 0, java.lang.Integer.MAX_VALUE, reason);
           case 1587405498: /*documentation*/  return new Property("documentation", "RelatedArtifact", "Didactic or other informational resources associated with the action that can be provided to the CDS recipient. Information resources can include inline text commentary and links to web resources.", 0, java.lang.Integer.MAX_VALUE, documentation);
-          case -1240658034: /*goalId*/  return new Property("goalId", "id", "Identifies goals that this action supports. The reference must be to a goal element defined within this plan definition.", 0, java.lang.Integer.MAX_VALUE, goalId);
-          case -573640748: /*subject[x]*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of the action and its children, if any.", 0, 1, subject);
-          case -1867885268: /*subject*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of the action and its children, if any.", 0, 1, subject);
-          case -1257122603: /*subjectCodeableConcept*/  return new Property("subject[x]", "CodeableConcept", "A code or group definition that describes the intended subject of the action and its children, if any.", 0, 1, subject);
-          case 772938623: /*subjectReference*/  return new Property("subject[x]", "Reference(Group)", "A code or group definition that describes the intended subject of the action and its children, if any.", 0, 1, subject);
+          case -1240658034: /*goalId*/  return new Property("goalId", "id", "Identifies goals that this action supports. The reference must be to a goal element defined within this plan definition. In pharmaceutical quality, a goal represents acceptance criteria (Goal) for a given action (Test), so the goalId would be the unique id of a defined goal element establishing the acceptance criteria for the action.", 0, java.lang.Integer.MAX_VALUE, goalId);
+          case -573640748: /*subject[x]*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)|canonical", "A code, group definition, or canonical reference that describes the intended subject of the action and its children, if any. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject);
+          case -1867885268: /*subject*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)|canonical", "A code, group definition, or canonical reference that describes the intended subject of the action and its children, if any. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject);
+          case -1257122603: /*subjectCodeableConcept*/  return new Property("subject[x]", "CodeableConcept", "A code, group definition, or canonical reference that describes the intended subject of the action and its children, if any. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject);
+          case 772938623: /*subjectReference*/  return new Property("subject[x]", "Reference(Group)", "A code, group definition, or canonical reference that describes the intended subject of the action and its children, if any. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject);
+          case -1768521432: /*subjectCanonical*/  return new Property("subject[x]", "canonical", "A code, group definition, or canonical reference that describes the intended subject of the action and its children, if any. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject);
           case -1059891784: /*trigger*/  return new Property("trigger", "TriggerDefinition", "A description of when the action should be triggered.", 0, java.lang.Integer.MAX_VALUE, trigger);
           case -861311717: /*condition*/  return new Property("condition", "", "An expression that describes applicability criteria or start/stop conditions for the action.", 0, java.lang.Integer.MAX_VALUE, condition);
-          case 100358090: /*input*/  return new Property("input", "DataRequirement", "Defines input data requirements for the action.", 0, java.lang.Integer.MAX_VALUE, input);
-          case -1005512447: /*output*/  return new Property("output", "DataRequirement", "Defines the outputs of the action, if any.", 0, java.lang.Integer.MAX_VALUE, output);
+          case 100358090: /*input*/  return new Property("input", "", "Defines input data requirements for the action.", 0, java.lang.Integer.MAX_VALUE, input);
+          case -1005512447: /*output*/  return new Property("output", "", "Defines the outputs of the action, if any.", 0, java.lang.Integer.MAX_VALUE, output);
           case -384107967: /*relatedAction*/  return new Property("relatedAction", "", "A relationship to another action such as \"before\" or \"30-60 minutes after start of\".", 0, java.lang.Integer.MAX_VALUE, relatedAction);
-          case 164632566: /*timing[x]*/  return new Property("timing[x]", "dateTime|Age|Period|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
-          case -873664438: /*timing*/  return new Property("timing[x]", "dateTime|Age|Period|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
-          case -1837458939: /*timingDateTime*/  return new Property("timing[x]", "dateTime", "An optional value describing when the action should be performed.", 0, 1, timing);
+          case 164632566: /*timing[x]*/  return new Property("timing[x]", "Age|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
+          case -873664438: /*timing*/  return new Property("timing[x]", "Age|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
           case 164607061: /*timingAge*/  return new Property("timing[x]", "Age", "An optional value describing when the action should be performed.", 0, 1, timing);
-          case -615615829: /*timingPeriod*/  return new Property("timing[x]", "Period", "An optional value describing when the action should be performed.", 0, 1, timing);
           case -1327253506: /*timingDuration*/  return new Property("timing[x]", "Duration", "An optional value describing when the action should be performed.", 0, 1, timing);
           case -710871277: /*timingRange*/  return new Property("timing[x]", "Range", "An optional value describing when the action should be performed.", 0, 1, timing);
           case -497554124: /*timingTiming*/  return new Property("timing[x]", "Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
+          case 1901043637: /*location*/  return new Property("location", "CodeableReference(Location)", "Identifies the facility where the action will occur; e.g. home, hospital, specific clinic, etc.", 0, 1, location);
           case 767422259: /*participant*/  return new Property("participant", "", "Indicates who should participate in performing the action described.", 0, java.lang.Integer.MAX_VALUE, participant);
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The type of action to perform (create, update, remove).", 0, 1, type);
           case 586678389: /*groupingBehavior*/  return new Property("groupingBehavior", "code", "Defines the grouping behavior for the action and its children.", 0, 1, groupingBehavior);
@@ -2595,10 +3337,10 @@ public class PlanDefinition extends MetadataResource {
           case -1163906287: /*requiredBehavior*/  return new Property("requiredBehavior", "code", "Defines the required behavior for the action.", 0, 1, requiredBehavior);
           case -1174249033: /*precheckBehavior*/  return new Property("precheckBehavior", "code", "Defines whether the action should usually be preselected.", 0, 1, precheckBehavior);
           case -922577408: /*cardinalityBehavior*/  return new Property("cardinalityBehavior", "code", "Defines whether the action can be selected multiple times.", 0, 1, cardinalityBehavior);
-          case -1139422643: /*definition[x]*/  return new Property("definition[x]", "canonical(ActivityDefinition|PlanDefinition|Questionnaire)|uri", "A reference to an ActivityDefinition that describes the action to be taken in detail, or a PlanDefinition that describes a series of actions to be taken.", 0, 1, definition);
-          case -1014418093: /*definition*/  return new Property("definition[x]", "canonical(ActivityDefinition|PlanDefinition|Questionnaire)|uri", "A reference to an ActivityDefinition that describes the action to be taken in detail, or a PlanDefinition that describes a series of actions to be taken.", 0, 1, definition);
-          case 933485793: /*definitionCanonical*/  return new Property("definition[x]", "canonical(ActivityDefinition|PlanDefinition|Questionnaire)", "A reference to an ActivityDefinition that describes the action to be taken in detail, or a PlanDefinition that describes a series of actions to be taken.", 0, 1, definition);
-          case -1139428583: /*definitionUri*/  return new Property("definition[x]", "uri", "A reference to an ActivityDefinition that describes the action to be taken in detail, or a PlanDefinition that describes a series of actions to be taken.", 0, 1, definition);
+          case -1139422643: /*definition[x]*/  return new Property("definition[x]", "canonical(ActivityDefinition|ObservationDefinition|PlanDefinition|Questionnaire)|uri", "A reference to an ActivityDefinition that describes the action to be taken in detail, a PlanDefinition that describes a series of actions to be taken, a Questionnaire that should be filled out, or an ObservationDefinition that specifies what observation should be captured.", 0, 1, definition);
+          case -1014418093: /*definition*/  return new Property("definition[x]", "canonical(ActivityDefinition|ObservationDefinition|PlanDefinition|Questionnaire)|uri", "A reference to an ActivityDefinition that describes the action to be taken in detail, a PlanDefinition that describes a series of actions to be taken, a Questionnaire that should be filled out, or an ObservationDefinition that specifies what observation should be captured.", 0, 1, definition);
+          case 933485793: /*definitionCanonical*/  return new Property("definition[x]", "canonical(ActivityDefinition|ObservationDefinition|PlanDefinition|Questionnaire)", "A reference to an ActivityDefinition that describes the action to be taken in detail, a PlanDefinition that describes a series of actions to be taken, a Questionnaire that should be filled out, or an ObservationDefinition that specifies what observation should be captured.", 0, 1, definition);
+          case -1139428583: /*definitionUri*/  return new Property("definition[x]", "uri", "A reference to an ActivityDefinition that describes the action to be taken in detail, a PlanDefinition that describes a series of actions to be taken, a Questionnaire that should be filled out, or an ObservationDefinition that specifies what observation should be captured.", 0, 1, definition);
           case 1052666732: /*transform*/  return new Property("transform", "canonical(StructureMap)", "A reference to a StructureMap resource that defines a transform that can be executed to produce the intent resource using the ActivityDefinition instance as the input.", 0, 1, transform);
           case 572625010: /*dynamicValue*/  return new Property("dynamicValue", "", "Customizations that should be applied to the statically defined resource. For example, if the dosage of a medication must be computed based on the patient's weight, a customization would be used to specify an expression that calculated the weight, and the path on the resource that would contain the result.", 0, java.lang.Integer.MAX_VALUE, dynamicValue);
           case -1422950858: /*action*/  return new Property("action", "@PlanDefinition.action", "Sub actions that are contained within the action. The behavior of this action determines the functionality of the sub-actions. For example, a selection behavior of at-most-one indicates that of the sub-actions, at most one may be chosen as part of realizing the action definition.", 0, java.lang.Integer.MAX_VALUE, action);
@@ -2610,22 +3352,24 @@ public class PlanDefinition extends MetadataResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
+        case -1102667083: /*linkId*/ return this.linkId == null ? new Base[0] : new Base[] {this.linkId}; // StringType
         case -980110702: /*prefix*/ return this.prefix == null ? new Base[0] : new Base[] {this.prefix}; // StringType
         case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case -900391049: /*textEquivalent*/ return this.textEquivalent == null ? new Base[0] : new Base[] {this.textEquivalent}; // StringType
         case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // Enumeration<RequestPriority>
-        case 3059181: /*code*/ return this.code == null ? new Base[0] : this.code.toArray(new Base[this.code.size()]); // CodeableConcept
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case -934964668: /*reason*/ return this.reason == null ? new Base[0] : this.reason.toArray(new Base[this.reason.size()]); // CodeableConcept
         case 1587405498: /*documentation*/ return this.documentation == null ? new Base[0] : this.documentation.toArray(new Base[this.documentation.size()]); // RelatedArtifact
         case -1240658034: /*goalId*/ return this.goalId == null ? new Base[0] : this.goalId.toArray(new Base[this.goalId.size()]); // IdType
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // DataType
         case -1059891784: /*trigger*/ return this.trigger == null ? new Base[0] : this.trigger.toArray(new Base[this.trigger.size()]); // TriggerDefinition
         case -861311717: /*condition*/ return this.condition == null ? new Base[0] : this.condition.toArray(new Base[this.condition.size()]); // PlanDefinitionActionConditionComponent
-        case 100358090: /*input*/ return this.input == null ? new Base[0] : this.input.toArray(new Base[this.input.size()]); // DataRequirement
-        case -1005512447: /*output*/ return this.output == null ? new Base[0] : this.output.toArray(new Base[this.output.size()]); // DataRequirement
+        case 100358090: /*input*/ return this.input == null ? new Base[0] : this.input.toArray(new Base[this.input.size()]); // PlanDefinitionActionInputComponent
+        case -1005512447: /*output*/ return this.output == null ? new Base[0] : this.output.toArray(new Base[this.output.size()]); // PlanDefinitionActionOutputComponent
         case -384107967: /*relatedAction*/ return this.relatedAction == null ? new Base[0] : this.relatedAction.toArray(new Base[this.relatedAction.size()]); // PlanDefinitionActionRelatedActionComponent
         case -873664438: /*timing*/ return this.timing == null ? new Base[0] : new Base[] {this.timing}; // DataType
+        case 1901043637: /*location*/ return this.location == null ? new Base[0] : new Base[] {this.location}; // CodeableReference
         case 767422259: /*participant*/ return this.participant == null ? new Base[0] : this.participant.toArray(new Base[this.participant.size()]); // PlanDefinitionActionParticipantComponent
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case 586678389: /*groupingBehavior*/ return this.groupingBehavior == null ? new Base[0] : new Base[] {this.groupingBehavior}; // Enumeration<ActionGroupingBehavior>
@@ -2645,6 +3389,9 @@ public class PlanDefinition extends MetadataResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
+        case -1102667083: // linkId
+          this.linkId = TypeConvertor.castToString(value); // StringType
+          return value;
         case -980110702: // prefix
           this.prefix = TypeConvertor.castToString(value); // StringType
           return value;
@@ -2662,7 +3409,7 @@ public class PlanDefinition extends MetadataResource {
           this.priority = (Enumeration) value; // Enumeration<RequestPriority>
           return value;
         case 3059181: // code
-          this.getCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -934964668: // reason
           this.getReason().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -2683,16 +3430,19 @@ public class PlanDefinition extends MetadataResource {
           this.getCondition().add((PlanDefinitionActionConditionComponent) value); // PlanDefinitionActionConditionComponent
           return value;
         case 100358090: // input
-          this.getInput().add(TypeConvertor.castToDataRequirement(value)); // DataRequirement
+          this.getInput().add((PlanDefinitionActionInputComponent) value); // PlanDefinitionActionInputComponent
           return value;
         case -1005512447: // output
-          this.getOutput().add(TypeConvertor.castToDataRequirement(value)); // DataRequirement
+          this.getOutput().add((PlanDefinitionActionOutputComponent) value); // PlanDefinitionActionOutputComponent
           return value;
         case -384107967: // relatedAction
           this.getRelatedAction().add((PlanDefinitionActionRelatedActionComponent) value); // PlanDefinitionActionRelatedActionComponent
           return value;
         case -873664438: // timing
           this.timing = TypeConvertor.castToType(value); // DataType
+          return value;
+        case 1901043637: // location
+          this.location = TypeConvertor.castToCodeableReference(value); // CodeableReference
           return value;
         case 767422259: // participant
           this.getParticipant().add((PlanDefinitionActionParticipantComponent) value); // PlanDefinitionActionParticipantComponent
@@ -2739,7 +3489,9 @@ public class PlanDefinition extends MetadataResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("prefix")) {
+        if (name.equals("linkId")) {
+          this.linkId = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("prefix")) {
           this.prefix = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
           this.title = TypeConvertor.castToString(value); // StringType
@@ -2751,7 +3503,7 @@ public class PlanDefinition extends MetadataResource {
           value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<RequestPriority>
         } else if (name.equals("code")) {
-          this.getCode().add(TypeConvertor.castToCodeableConcept(value));
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("reason")) {
           this.getReason().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("documentation")) {
@@ -2765,13 +3517,15 @@ public class PlanDefinition extends MetadataResource {
         } else if (name.equals("condition")) {
           this.getCondition().add((PlanDefinitionActionConditionComponent) value);
         } else if (name.equals("input")) {
-          this.getInput().add(TypeConvertor.castToDataRequirement(value));
+          this.getInput().add((PlanDefinitionActionInputComponent) value);
         } else if (name.equals("output")) {
-          this.getOutput().add(TypeConvertor.castToDataRequirement(value));
+          this.getOutput().add((PlanDefinitionActionOutputComponent) value);
         } else if (name.equals("relatedAction")) {
           this.getRelatedAction().add((PlanDefinitionActionRelatedActionComponent) value);
         } else if (name.equals("timing[x]")) {
           this.timing = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("location")) {
+          this.location = TypeConvertor.castToCodeableReference(value); // CodeableReference
         } else if (name.equals("participant")) {
           this.getParticipant().add((PlanDefinitionActionParticipantComponent) value);
         } else if (name.equals("type")) {
@@ -2807,12 +3561,13 @@ public class PlanDefinition extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
+        case -1102667083:  return getLinkIdElement();
         case -980110702:  return getPrefixElement();
         case 110371416:  return getTitleElement();
         case -1724546052:  return getDescriptionElement();
         case -900391049:  return getTextEquivalentElement();
         case -1165461084:  return getPriorityElement();
-        case 3059181:  return addCode(); 
+        case 3059181:  return getCode();
         case -934964668:  return addReason(); 
         case 1587405498:  return addDocumentation(); 
         case -1240658034:  return addGoalIdElement();
@@ -2825,6 +3580,7 @@ public class PlanDefinition extends MetadataResource {
         case -384107967:  return addRelatedAction(); 
         case 164632566:  return getTiming();
         case -873664438:  return getTiming();
+        case 1901043637:  return getLocation();
         case 767422259:  return addParticipant(); 
         case 3575610:  return getType();
         case 586678389:  return getGroupingBehaviorElement();
@@ -2845,6 +3601,7 @@ public class PlanDefinition extends MetadataResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
+        case -1102667083: /*linkId*/ return new String[] {"string"};
         case -980110702: /*prefix*/ return new String[] {"string"};
         case 110371416: /*title*/ return new String[] {"string"};
         case -1724546052: /*description*/ return new String[] {"string"};
@@ -2854,13 +3611,14 @@ public class PlanDefinition extends MetadataResource {
         case -934964668: /*reason*/ return new String[] {"CodeableConcept"};
         case 1587405498: /*documentation*/ return new String[] {"RelatedArtifact"};
         case -1240658034: /*goalId*/ return new String[] {"id"};
-        case -1867885268: /*subject*/ return new String[] {"CodeableConcept", "Reference"};
+        case -1867885268: /*subject*/ return new String[] {"CodeableConcept", "Reference", "canonical"};
         case -1059891784: /*trigger*/ return new String[] {"TriggerDefinition"};
         case -861311717: /*condition*/ return new String[] {};
-        case 100358090: /*input*/ return new String[] {"DataRequirement"};
-        case -1005512447: /*output*/ return new String[] {"DataRequirement"};
+        case 100358090: /*input*/ return new String[] {};
+        case -1005512447: /*output*/ return new String[] {};
         case -384107967: /*relatedAction*/ return new String[] {};
-        case -873664438: /*timing*/ return new String[] {"dateTime", "Age", "Period", "Duration", "Range", "Timing"};
+        case -873664438: /*timing*/ return new String[] {"Age", "Duration", "Range", "Timing"};
+        case 1901043637: /*location*/ return new String[] {"CodeableReference"};
         case 767422259: /*participant*/ return new String[] {};
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case 586678389: /*groupingBehavior*/ return new String[] {"code"};
@@ -2879,7 +3637,10 @@ public class PlanDefinition extends MetadataResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("prefix")) {
+        if (name.equals("linkId")) {
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.linkId");
+        }
+        else if (name.equals("prefix")) {
           throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.prefix");
         }
         else if (name.equals("title")) {
@@ -2895,7 +3656,8 @@ public class PlanDefinition extends MetadataResource {
           throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.priority");
         }
         else if (name.equals("code")) {
-          return addCode();
+          this.code = new CodeableConcept();
+          return this.code;
         }
         else if (name.equals("reason")) {
           return addReason();
@@ -2914,6 +3676,10 @@ public class PlanDefinition extends MetadataResource {
           this.subject = new Reference();
           return this.subject;
         }
+        else if (name.equals("subjectCanonical")) {
+          this.subject = new CanonicalType();
+          return this.subject;
+        }
         else if (name.equals("trigger")) {
           return addTrigger();
         }
@@ -2929,16 +3695,8 @@ public class PlanDefinition extends MetadataResource {
         else if (name.equals("relatedAction")) {
           return addRelatedAction();
         }
-        else if (name.equals("timingDateTime")) {
-          this.timing = new DateTimeType();
-          return this.timing;
-        }
         else if (name.equals("timingAge")) {
           this.timing = new Age();
-          return this.timing;
-        }
-        else if (name.equals("timingPeriod")) {
-          this.timing = new Period();
           return this.timing;
         }
         else if (name.equals("timingDuration")) {
@@ -2952,6 +3710,10 @@ public class PlanDefinition extends MetadataResource {
         else if (name.equals("timingTiming")) {
           this.timing = new Timing();
           return this.timing;
+        }
+        else if (name.equals("location")) {
+          this.location = new CodeableReference();
+          return this.location;
         }
         else if (name.equals("participant")) {
           return addParticipant();
@@ -3004,16 +3766,13 @@ public class PlanDefinition extends MetadataResource {
 
       public void copyValues(PlanDefinitionActionComponent dst) {
         super.copyValues(dst);
+        dst.linkId = linkId == null ? null : linkId.copy();
         dst.prefix = prefix == null ? null : prefix.copy();
         dst.title = title == null ? null : title.copy();
         dst.description = description == null ? null : description.copy();
         dst.textEquivalent = textEquivalent == null ? null : textEquivalent.copy();
         dst.priority = priority == null ? null : priority.copy();
-        if (code != null) {
-          dst.code = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : code)
-            dst.code.add(i.copy());
-        };
+        dst.code = code == null ? null : code.copy();
         if (reason != null) {
           dst.reason = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : reason)
@@ -3041,13 +3800,13 @@ public class PlanDefinition extends MetadataResource {
             dst.condition.add(i.copy());
         };
         if (input != null) {
-          dst.input = new ArrayList<DataRequirement>();
-          for (DataRequirement i : input)
+          dst.input = new ArrayList<PlanDefinitionActionInputComponent>();
+          for (PlanDefinitionActionInputComponent i : input)
             dst.input.add(i.copy());
         };
         if (output != null) {
-          dst.output = new ArrayList<DataRequirement>();
-          for (DataRequirement i : output)
+          dst.output = new ArrayList<PlanDefinitionActionOutputComponent>();
+          for (PlanDefinitionActionOutputComponent i : output)
             dst.output.add(i.copy());
         };
         if (relatedAction != null) {
@@ -3056,6 +3815,7 @@ public class PlanDefinition extends MetadataResource {
             dst.relatedAction.add(i.copy());
         };
         dst.timing = timing == null ? null : timing.copy();
+        dst.location = location == null ? null : location.copy();
         if (participant != null) {
           dst.participant = new ArrayList<PlanDefinitionActionParticipantComponent>();
           for (PlanDefinitionActionParticipantComponent i : participant)
@@ -3088,13 +3848,14 @@ public class PlanDefinition extends MetadataResource {
         if (!(other_ instanceof PlanDefinitionActionComponent))
           return false;
         PlanDefinitionActionComponent o = (PlanDefinitionActionComponent) other_;
-        return compareDeep(prefix, o.prefix, true) && compareDeep(title, o.title, true) && compareDeep(description, o.description, true)
-           && compareDeep(textEquivalent, o.textEquivalent, true) && compareDeep(priority, o.priority, true)
-           && compareDeep(code, o.code, true) && compareDeep(reason, o.reason, true) && compareDeep(documentation, o.documentation, true)
-           && compareDeep(goalId, o.goalId, true) && compareDeep(subject, o.subject, true) && compareDeep(trigger, o.trigger, true)
-           && compareDeep(condition, o.condition, true) && compareDeep(input, o.input, true) && compareDeep(output, o.output, true)
-           && compareDeep(relatedAction, o.relatedAction, true) && compareDeep(timing, o.timing, true) && compareDeep(participant, o.participant, true)
-           && compareDeep(type, o.type, true) && compareDeep(groupingBehavior, o.groupingBehavior, true) && compareDeep(selectionBehavior, o.selectionBehavior, true)
+        return compareDeep(linkId, o.linkId, true) && compareDeep(prefix, o.prefix, true) && compareDeep(title, o.title, true)
+           && compareDeep(description, o.description, true) && compareDeep(textEquivalent, o.textEquivalent, true)
+           && compareDeep(priority, o.priority, true) && compareDeep(code, o.code, true) && compareDeep(reason, o.reason, true)
+           && compareDeep(documentation, o.documentation, true) && compareDeep(goalId, o.goalId, true) && compareDeep(subject, o.subject, true)
+           && compareDeep(trigger, o.trigger, true) && compareDeep(condition, o.condition, true) && compareDeep(input, o.input, true)
+           && compareDeep(output, o.output, true) && compareDeep(relatedAction, o.relatedAction, true) && compareDeep(timing, o.timing, true)
+           && compareDeep(location, o.location, true) && compareDeep(participant, o.participant, true) && compareDeep(type, o.type, true)
+           && compareDeep(groupingBehavior, o.groupingBehavior, true) && compareDeep(selectionBehavior, o.selectionBehavior, true)
            && compareDeep(requiredBehavior, o.requiredBehavior, true) && compareDeep(precheckBehavior, o.precheckBehavior, true)
            && compareDeep(cardinalityBehavior, o.cardinalityBehavior, true) && compareDeep(definition, o.definition, true)
            && compareDeep(transform, o.transform, true) && compareDeep(dynamicValue, o.dynamicValue, true)
@@ -3108,20 +3869,20 @@ public class PlanDefinition extends MetadataResource {
         if (!(other_ instanceof PlanDefinitionActionComponent))
           return false;
         PlanDefinitionActionComponent o = (PlanDefinitionActionComponent) other_;
-        return compareValues(prefix, o.prefix, true) && compareValues(title, o.title, true) && compareValues(description, o.description, true)
-           && compareValues(textEquivalent, o.textEquivalent, true) && compareValues(priority, o.priority, true)
-           && compareValues(goalId, o.goalId, true) && compareValues(groupingBehavior, o.groupingBehavior, true)
+        return compareValues(linkId, o.linkId, true) && compareValues(prefix, o.prefix, true) && compareValues(title, o.title, true)
+           && compareValues(description, o.description, true) && compareValues(textEquivalent, o.textEquivalent, true)
+           && compareValues(priority, o.priority, true) && compareValues(goalId, o.goalId, true) && compareValues(groupingBehavior, o.groupingBehavior, true)
            && compareValues(selectionBehavior, o.selectionBehavior, true) && compareValues(requiredBehavior, o.requiredBehavior, true)
            && compareValues(precheckBehavior, o.precheckBehavior, true) && compareValues(cardinalityBehavior, o.cardinalityBehavior, true)
            && compareValues(transform, o.transform, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(prefix, title, description
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(linkId, prefix, title, description
           , textEquivalent, priority, code, reason, documentation, goalId, subject, trigger
-          , condition, input, output, relatedAction, timing, participant, type, groupingBehavior
-          , selectionBehavior, requiredBehavior, precheckBehavior, cardinalityBehavior, definition
-          , transform, dynamicValue, action);
+          , condition, input, output, relatedAction, timing, location, participant, type
+          , groupingBehavior, selectionBehavior, requiredBehavior, precheckBehavior, cardinalityBehavior
+          , definition, transform, dynamicValue, action);
       }
 
   public String fhirType() {
@@ -3364,13 +4125,607 @@ public class PlanDefinition extends MetadataResource {
   }
 
     @Block()
+    public static class PlanDefinitionActionInputComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * A human-readable label for the data requirement used to label data flows in BPMN or similar diagrams. Also provides a human readable label when rendering the data requirement that conveys its purpose to human readers.
+         */
+        @Child(name = "title", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="User-visible title", formalDefinition="A human-readable label for the data requirement used to label data flows in BPMN or similar diagrams. Also provides a human readable label when rendering the data requirement that conveys its purpose to human readers." )
+        protected StringType title;
+
+        /**
+         * Defines the data that is to be provided as input to the action.
+         */
+        @Child(name = "requirement", type = {DataRequirement.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="What data is provided", formalDefinition="Defines the data that is to be provided as input to the action." )
+        protected DataRequirement requirement;
+
+        /**
+         * Points to an existing input or output element that provides data to this input.
+         */
+        @Child(name = "relatedData", type = {IdType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="What data is provided", formalDefinition="Points to an existing input or output element that provides data to this input." )
+        protected IdType relatedData;
+
+        private static final long serialVersionUID = -1064046709L;
+
+    /**
+     * Constructor
+     */
+      public PlanDefinitionActionInputComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #title} (A human-readable label for the data requirement used to label data flows in BPMN or similar diagrams. Also provides a human readable label when rendering the data requirement that conveys its purpose to human readers.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
+         */
+        public StringType getTitleElement() { 
+          if (this.title == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PlanDefinitionActionInputComponent.title");
+            else if (Configuration.doAutoCreate())
+              this.title = new StringType(); // bb
+          return this.title;
+        }
+
+        public boolean hasTitleElement() { 
+          return this.title != null && !this.title.isEmpty();
+        }
+
+        public boolean hasTitle() { 
+          return this.title != null && !this.title.isEmpty();
+        }
+
+        /**
+         * @param value {@link #title} (A human-readable label for the data requirement used to label data flows in BPMN or similar diagrams. Also provides a human readable label when rendering the data requirement that conveys its purpose to human readers.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
+         */
+        public PlanDefinitionActionInputComponent setTitleElement(StringType value) { 
+          this.title = value;
+          return this;
+        }
+
+        /**
+         * @return A human-readable label for the data requirement used to label data flows in BPMN or similar diagrams. Also provides a human readable label when rendering the data requirement that conveys its purpose to human readers.
+         */
+        public String getTitle() { 
+          return this.title == null ? null : this.title.getValue();
+        }
+
+        /**
+         * @param value A human-readable label for the data requirement used to label data flows in BPMN or similar diagrams. Also provides a human readable label when rendering the data requirement that conveys its purpose to human readers.
+         */
+        public PlanDefinitionActionInputComponent setTitle(String value) { 
+          if (Utilities.noString(value))
+            this.title = null;
+          else {
+            if (this.title == null)
+              this.title = new StringType();
+            this.title.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #requirement} (Defines the data that is to be provided as input to the action.)
+         */
+        public DataRequirement getRequirement() { 
+          if (this.requirement == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PlanDefinitionActionInputComponent.requirement");
+            else if (Configuration.doAutoCreate())
+              this.requirement = new DataRequirement(); // cc
+          return this.requirement;
+        }
+
+        public boolean hasRequirement() { 
+          return this.requirement != null && !this.requirement.isEmpty();
+        }
+
+        /**
+         * @param value {@link #requirement} (Defines the data that is to be provided as input to the action.)
+         */
+        public PlanDefinitionActionInputComponent setRequirement(DataRequirement value) { 
+          this.requirement = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #relatedData} (Points to an existing input or output element that provides data to this input.). This is the underlying object with id, value and extensions. The accessor "getRelatedData" gives direct access to the value
+         */
+        public IdType getRelatedDataElement() { 
+          if (this.relatedData == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PlanDefinitionActionInputComponent.relatedData");
+            else if (Configuration.doAutoCreate())
+              this.relatedData = new IdType(); // bb
+          return this.relatedData;
+        }
+
+        public boolean hasRelatedDataElement() { 
+          return this.relatedData != null && !this.relatedData.isEmpty();
+        }
+
+        public boolean hasRelatedData() { 
+          return this.relatedData != null && !this.relatedData.isEmpty();
+        }
+
+        /**
+         * @param value {@link #relatedData} (Points to an existing input or output element that provides data to this input.). This is the underlying object with id, value and extensions. The accessor "getRelatedData" gives direct access to the value
+         */
+        public PlanDefinitionActionInputComponent setRelatedDataElement(IdType value) { 
+          this.relatedData = value;
+          return this;
+        }
+
+        /**
+         * @return Points to an existing input or output element that provides data to this input.
+         */
+        public String getRelatedData() { 
+          return this.relatedData == null ? null : this.relatedData.getValue();
+        }
+
+        /**
+         * @param value Points to an existing input or output element that provides data to this input.
+         */
+        public PlanDefinitionActionInputComponent setRelatedData(String value) { 
+          if (Utilities.noString(value))
+            this.relatedData = null;
+          else {
+            if (this.relatedData == null)
+              this.relatedData = new IdType();
+            this.relatedData.setValue(value);
+          }
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("title", "string", "A human-readable label for the data requirement used to label data flows in BPMN or similar diagrams. Also provides a human readable label when rendering the data requirement that conveys its purpose to human readers.", 0, 1, title));
+          children.add(new Property("requirement", "DataRequirement", "Defines the data that is to be provided as input to the action.", 0, 1, requirement));
+          children.add(new Property("relatedData", "id", "Points to an existing input or output element that provides data to this input.", 0, 1, relatedData));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 110371416: /*title*/  return new Property("title", "string", "A human-readable label for the data requirement used to label data flows in BPMN or similar diagrams. Also provides a human readable label when rendering the data requirement that conveys its purpose to human readers.", 0, 1, title);
+          case 363387971: /*requirement*/  return new Property("requirement", "DataRequirement", "Defines the data that is to be provided as input to the action.", 0, 1, requirement);
+          case 1112535669: /*relatedData*/  return new Property("relatedData", "id", "Points to an existing input or output element that provides data to this input.", 0, 1, relatedData);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
+        case 363387971: /*requirement*/ return this.requirement == null ? new Base[0] : new Base[] {this.requirement}; // DataRequirement
+        case 1112535669: /*relatedData*/ return this.relatedData == null ? new Base[0] : new Base[] {this.relatedData}; // IdType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 110371416: // title
+          this.title = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 363387971: // requirement
+          this.requirement = TypeConvertor.castToDataRequirement(value); // DataRequirement
+          return value;
+        case 1112535669: // relatedData
+          this.relatedData = TypeConvertor.castToId(value); // IdType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("title")) {
+          this.title = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("requirement")) {
+          this.requirement = TypeConvertor.castToDataRequirement(value); // DataRequirement
+        } else if (name.equals("relatedData")) {
+          this.relatedData = TypeConvertor.castToId(value); // IdType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 110371416:  return getTitleElement();
+        case 363387971:  return getRequirement();
+        case 1112535669:  return getRelatedDataElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 110371416: /*title*/ return new String[] {"string"};
+        case 363387971: /*requirement*/ return new String[] {"DataRequirement"};
+        case 1112535669: /*relatedData*/ return new String[] {"id"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("title")) {
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.input.title");
+        }
+        else if (name.equals("requirement")) {
+          this.requirement = new DataRequirement();
+          return this.requirement;
+        }
+        else if (name.equals("relatedData")) {
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.input.relatedData");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public PlanDefinitionActionInputComponent copy() {
+        PlanDefinitionActionInputComponent dst = new PlanDefinitionActionInputComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanDefinitionActionInputComponent dst) {
+        super.copyValues(dst);
+        dst.title = title == null ? null : title.copy();
+        dst.requirement = requirement == null ? null : requirement.copy();
+        dst.relatedData = relatedData == null ? null : relatedData.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof PlanDefinitionActionInputComponent))
+          return false;
+        PlanDefinitionActionInputComponent o = (PlanDefinitionActionInputComponent) other_;
+        return compareDeep(title, o.title, true) && compareDeep(requirement, o.requirement, true) && compareDeep(relatedData, o.relatedData, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof PlanDefinitionActionInputComponent))
+          return false;
+        PlanDefinitionActionInputComponent o = (PlanDefinitionActionInputComponent) other_;
+        return compareValues(title, o.title, true) && compareValues(relatedData, o.relatedData, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(title, requirement, relatedData
+          );
+      }
+
+  public String fhirType() {
+    return "PlanDefinition.action.input";
+
+  }
+
+  }
+
+    @Block()
+    public static class PlanDefinitionActionOutputComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * A human-readable label for the data requirement used to label data flows in BPMN or similar diagrams. Also provides a human readable label when rendering the data requirement that conveys its purpose to human readers.
+         */
+        @Child(name = "title", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="User-visible title", formalDefinition="A human-readable label for the data requirement used to label data flows in BPMN or similar diagrams. Also provides a human readable label when rendering the data requirement that conveys its purpose to human readers." )
+        protected StringType title;
+
+        /**
+         * Defines the data that results as output from the action.
+         */
+        @Child(name = "requirement", type = {DataRequirement.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="What data is provided", formalDefinition="Defines the data that results as output from the action." )
+        protected DataRequirement requirement;
+
+        /**
+         * Points to an existing input or output element that is results as output from the action.
+         */
+        @Child(name = "relatedData", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="What data is provided", formalDefinition="Points to an existing input or output element that is results as output from the action." )
+        protected StringType relatedData;
+
+        private static final long serialVersionUID = 1822414421L;
+
+    /**
+     * Constructor
+     */
+      public PlanDefinitionActionOutputComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #title} (A human-readable label for the data requirement used to label data flows in BPMN or similar diagrams. Also provides a human readable label when rendering the data requirement that conveys its purpose to human readers.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
+         */
+        public StringType getTitleElement() { 
+          if (this.title == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PlanDefinitionActionOutputComponent.title");
+            else if (Configuration.doAutoCreate())
+              this.title = new StringType(); // bb
+          return this.title;
+        }
+
+        public boolean hasTitleElement() { 
+          return this.title != null && !this.title.isEmpty();
+        }
+
+        public boolean hasTitle() { 
+          return this.title != null && !this.title.isEmpty();
+        }
+
+        /**
+         * @param value {@link #title} (A human-readable label for the data requirement used to label data flows in BPMN or similar diagrams. Also provides a human readable label when rendering the data requirement that conveys its purpose to human readers.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
+         */
+        public PlanDefinitionActionOutputComponent setTitleElement(StringType value) { 
+          this.title = value;
+          return this;
+        }
+
+        /**
+         * @return A human-readable label for the data requirement used to label data flows in BPMN or similar diagrams. Also provides a human readable label when rendering the data requirement that conveys its purpose to human readers.
+         */
+        public String getTitle() { 
+          return this.title == null ? null : this.title.getValue();
+        }
+
+        /**
+         * @param value A human-readable label for the data requirement used to label data flows in BPMN or similar diagrams. Also provides a human readable label when rendering the data requirement that conveys its purpose to human readers.
+         */
+        public PlanDefinitionActionOutputComponent setTitle(String value) { 
+          if (Utilities.noString(value))
+            this.title = null;
+          else {
+            if (this.title == null)
+              this.title = new StringType();
+            this.title.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #requirement} (Defines the data that results as output from the action.)
+         */
+        public DataRequirement getRequirement() { 
+          if (this.requirement == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PlanDefinitionActionOutputComponent.requirement");
+            else if (Configuration.doAutoCreate())
+              this.requirement = new DataRequirement(); // cc
+          return this.requirement;
+        }
+
+        public boolean hasRequirement() { 
+          return this.requirement != null && !this.requirement.isEmpty();
+        }
+
+        /**
+         * @param value {@link #requirement} (Defines the data that results as output from the action.)
+         */
+        public PlanDefinitionActionOutputComponent setRequirement(DataRequirement value) { 
+          this.requirement = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #relatedData} (Points to an existing input or output element that is results as output from the action.). This is the underlying object with id, value and extensions. The accessor "getRelatedData" gives direct access to the value
+         */
+        public StringType getRelatedDataElement() { 
+          if (this.relatedData == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PlanDefinitionActionOutputComponent.relatedData");
+            else if (Configuration.doAutoCreate())
+              this.relatedData = new StringType(); // bb
+          return this.relatedData;
+        }
+
+        public boolean hasRelatedDataElement() { 
+          return this.relatedData != null && !this.relatedData.isEmpty();
+        }
+
+        public boolean hasRelatedData() { 
+          return this.relatedData != null && !this.relatedData.isEmpty();
+        }
+
+        /**
+         * @param value {@link #relatedData} (Points to an existing input or output element that is results as output from the action.). This is the underlying object with id, value and extensions. The accessor "getRelatedData" gives direct access to the value
+         */
+        public PlanDefinitionActionOutputComponent setRelatedDataElement(StringType value) { 
+          this.relatedData = value;
+          return this;
+        }
+
+        /**
+         * @return Points to an existing input or output element that is results as output from the action.
+         */
+        public String getRelatedData() { 
+          return this.relatedData == null ? null : this.relatedData.getValue();
+        }
+
+        /**
+         * @param value Points to an existing input or output element that is results as output from the action.
+         */
+        public PlanDefinitionActionOutputComponent setRelatedData(String value) { 
+          if (Utilities.noString(value))
+            this.relatedData = null;
+          else {
+            if (this.relatedData == null)
+              this.relatedData = new StringType();
+            this.relatedData.setValue(value);
+          }
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("title", "string", "A human-readable label for the data requirement used to label data flows in BPMN or similar diagrams. Also provides a human readable label when rendering the data requirement that conveys its purpose to human readers.", 0, 1, title));
+          children.add(new Property("requirement", "DataRequirement", "Defines the data that results as output from the action.", 0, 1, requirement));
+          children.add(new Property("relatedData", "string", "Points to an existing input or output element that is results as output from the action.", 0, 1, relatedData));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 110371416: /*title*/  return new Property("title", "string", "A human-readable label for the data requirement used to label data flows in BPMN or similar diagrams. Also provides a human readable label when rendering the data requirement that conveys its purpose to human readers.", 0, 1, title);
+          case 363387971: /*requirement*/  return new Property("requirement", "DataRequirement", "Defines the data that results as output from the action.", 0, 1, requirement);
+          case 1112535669: /*relatedData*/  return new Property("relatedData", "string", "Points to an existing input or output element that is results as output from the action.", 0, 1, relatedData);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
+        case 363387971: /*requirement*/ return this.requirement == null ? new Base[0] : new Base[] {this.requirement}; // DataRequirement
+        case 1112535669: /*relatedData*/ return this.relatedData == null ? new Base[0] : new Base[] {this.relatedData}; // StringType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 110371416: // title
+          this.title = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 363387971: // requirement
+          this.requirement = TypeConvertor.castToDataRequirement(value); // DataRequirement
+          return value;
+        case 1112535669: // relatedData
+          this.relatedData = TypeConvertor.castToString(value); // StringType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("title")) {
+          this.title = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("requirement")) {
+          this.requirement = TypeConvertor.castToDataRequirement(value); // DataRequirement
+        } else if (name.equals("relatedData")) {
+          this.relatedData = TypeConvertor.castToString(value); // StringType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 110371416:  return getTitleElement();
+        case 363387971:  return getRequirement();
+        case 1112535669:  return getRelatedDataElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 110371416: /*title*/ return new String[] {"string"};
+        case 363387971: /*requirement*/ return new String[] {"DataRequirement"};
+        case 1112535669: /*relatedData*/ return new String[] {"string"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("title")) {
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.output.title");
+        }
+        else if (name.equals("requirement")) {
+          this.requirement = new DataRequirement();
+          return this.requirement;
+        }
+        else if (name.equals("relatedData")) {
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.output.relatedData");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public PlanDefinitionActionOutputComponent copy() {
+        PlanDefinitionActionOutputComponent dst = new PlanDefinitionActionOutputComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanDefinitionActionOutputComponent dst) {
+        super.copyValues(dst);
+        dst.title = title == null ? null : title.copy();
+        dst.requirement = requirement == null ? null : requirement.copy();
+        dst.relatedData = relatedData == null ? null : relatedData.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof PlanDefinitionActionOutputComponent))
+          return false;
+        PlanDefinitionActionOutputComponent o = (PlanDefinitionActionOutputComponent) other_;
+        return compareDeep(title, o.title, true) && compareDeep(requirement, o.requirement, true) && compareDeep(relatedData, o.relatedData, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof PlanDefinitionActionOutputComponent))
+          return false;
+        PlanDefinitionActionOutputComponent o = (PlanDefinitionActionOutputComponent) other_;
+        return compareValues(title, o.title, true) && compareValues(relatedData, o.relatedData, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(title, requirement, relatedData
+          );
+      }
+
+  public String fhirType() {
+    return "PlanDefinition.action.output";
+
+  }
+
+  }
+
+    @Block()
     public static class PlanDefinitionActionRelatedActionComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The element id of the related action.
+         * The element id of the target related action.
          */
-        @Child(name = "actionId", type = {IdType.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="What action is this related to", formalDefinition="The element id of the related action." )
-        protected IdType actionId;
+        @Child(name = "targetId", type = {IdType.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="What action is this related to", formalDefinition="The element id of the target related action." )
+        protected IdType targetId;
 
         /**
          * The relationship of this action to the related action.
@@ -3387,7 +4742,7 @@ public class PlanDefinition extends MetadataResource {
         @Description(shortDefinition="Time offset for the relationship", formalDefinition="A duration or range of durations to apply to the relationship. For example, 30-60 minutes before." )
         protected DataType offset;
 
-        private static final long serialVersionUID = 621784796L;
+        private static final long serialVersionUID = -462773513L;
 
     /**
      * Constructor
@@ -3399,54 +4754,54 @@ public class PlanDefinition extends MetadataResource {
     /**
      * Constructor
      */
-      public PlanDefinitionActionRelatedActionComponent(String actionId, ActionRelationshipType relationship) {
+      public PlanDefinitionActionRelatedActionComponent(String targetId, ActionRelationshipType relationship) {
         super();
-        this.setActionId(actionId);
+        this.setTargetId(targetId);
         this.setRelationship(relationship);
       }
 
         /**
-         * @return {@link #actionId} (The element id of the related action.). This is the underlying object with id, value and extensions. The accessor "getActionId" gives direct access to the value
+         * @return {@link #targetId} (The element id of the target related action.). This is the underlying object with id, value and extensions. The accessor "getTargetId" gives direct access to the value
          */
-        public IdType getActionIdElement() { 
-          if (this.actionId == null)
+        public IdType getTargetIdElement() { 
+          if (this.targetId == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create PlanDefinitionActionRelatedActionComponent.actionId");
+              throw new Error("Attempt to auto-create PlanDefinitionActionRelatedActionComponent.targetId");
             else if (Configuration.doAutoCreate())
-              this.actionId = new IdType(); // bb
-          return this.actionId;
+              this.targetId = new IdType(); // bb
+          return this.targetId;
         }
 
-        public boolean hasActionIdElement() { 
-          return this.actionId != null && !this.actionId.isEmpty();
+        public boolean hasTargetIdElement() { 
+          return this.targetId != null && !this.targetId.isEmpty();
         }
 
-        public boolean hasActionId() { 
-          return this.actionId != null && !this.actionId.isEmpty();
+        public boolean hasTargetId() { 
+          return this.targetId != null && !this.targetId.isEmpty();
         }
 
         /**
-         * @param value {@link #actionId} (The element id of the related action.). This is the underlying object with id, value and extensions. The accessor "getActionId" gives direct access to the value
+         * @param value {@link #targetId} (The element id of the target related action.). This is the underlying object with id, value and extensions. The accessor "getTargetId" gives direct access to the value
          */
-        public PlanDefinitionActionRelatedActionComponent setActionIdElement(IdType value) { 
-          this.actionId = value;
+        public PlanDefinitionActionRelatedActionComponent setTargetIdElement(IdType value) { 
+          this.targetId = value;
           return this;
         }
 
         /**
-         * @return The element id of the related action.
+         * @return The element id of the target related action.
          */
-        public String getActionId() { 
-          return this.actionId == null ? null : this.actionId.getValue();
+        public String getTargetId() { 
+          return this.targetId == null ? null : this.targetId.getValue();
         }
 
         /**
-         * @param value The element id of the related action.
+         * @param value The element id of the target related action.
          */
-        public PlanDefinitionActionRelatedActionComponent setActionId(String value) { 
-            if (this.actionId == null)
-              this.actionId = new IdType();
-            this.actionId.setValue(value);
+        public PlanDefinitionActionRelatedActionComponent setTargetId(String value) { 
+            if (this.targetId == null)
+              this.targetId = new IdType();
+            this.targetId.setValue(value);
           return this;
         }
 
@@ -3548,7 +4903,7 @@ public class PlanDefinition extends MetadataResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("actionId", "id", "The element id of the related action.", 0, 1, actionId));
+          children.add(new Property("targetId", "id", "The element id of the target related action.", 0, 1, targetId));
           children.add(new Property("relationship", "code", "The relationship of this action to the related action.", 0, 1, relationship));
           children.add(new Property("offset[x]", "Duration|Range", "A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.", 0, 1, offset));
         }
@@ -3556,7 +4911,7 @@ public class PlanDefinition extends MetadataResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1656172047: /*actionId*/  return new Property("actionId", "id", "The element id of the related action.", 0, 1, actionId);
+          case -441951604: /*targetId*/  return new Property("targetId", "id", "The element id of the target related action.", 0, 1, targetId);
           case -261851592: /*relationship*/  return new Property("relationship", "code", "The relationship of this action to the related action.", 0, 1, relationship);
           case -1960684787: /*offset[x]*/  return new Property("offset[x]", "Duration|Range", "A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.", 0, 1, offset);
           case -1019779949: /*offset*/  return new Property("offset[x]", "Duration|Range", "A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.", 0, 1, offset);
@@ -3570,7 +4925,7 @@ public class PlanDefinition extends MetadataResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1656172047: /*actionId*/ return this.actionId == null ? new Base[0] : new Base[] {this.actionId}; // IdType
+        case -441951604: /*targetId*/ return this.targetId == null ? new Base[0] : new Base[] {this.targetId}; // IdType
         case -261851592: /*relationship*/ return this.relationship == null ? new Base[0] : new Base[] {this.relationship}; // Enumeration<ActionRelationshipType>
         case -1019779949: /*offset*/ return this.offset == null ? new Base[0] : new Base[] {this.offset}; // DataType
         default: return super.getProperty(hash, name, checkValid);
@@ -3581,8 +4936,8 @@ public class PlanDefinition extends MetadataResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case -1656172047: // actionId
-          this.actionId = TypeConvertor.castToId(value); // IdType
+        case -441951604: // targetId
+          this.targetId = TypeConvertor.castToId(value); // IdType
           return value;
         case -261851592: // relationship
           value = new ActionRelationshipTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
@@ -3598,8 +4953,8 @@ public class PlanDefinition extends MetadataResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("actionId")) {
-          this.actionId = TypeConvertor.castToId(value); // IdType
+        if (name.equals("targetId")) {
+          this.targetId = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("relationship")) {
           value = new ActionRelationshipTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.relationship = (Enumeration) value; // Enumeration<ActionRelationshipType>
@@ -3613,7 +4968,7 @@ public class PlanDefinition extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1656172047:  return getActionIdElement();
+        case -441951604:  return getTargetIdElement();
         case -261851592:  return getRelationshipElement();
         case -1960684787:  return getOffset();
         case -1019779949:  return getOffset();
@@ -3625,7 +4980,7 @@ public class PlanDefinition extends MetadataResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1656172047: /*actionId*/ return new String[] {"id"};
+        case -441951604: /*targetId*/ return new String[] {"id"};
         case -261851592: /*relationship*/ return new String[] {"code"};
         case -1019779949: /*offset*/ return new String[] {"Duration", "Range"};
         default: return super.getTypesForProperty(hash, name);
@@ -3635,8 +4990,8 @@ public class PlanDefinition extends MetadataResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("actionId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.relatedAction.actionId");
+        if (name.equals("targetId")) {
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.relatedAction.targetId");
         }
         else if (name.equals("relationship")) {
           throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.relatedAction.relationship");
@@ -3661,7 +5016,7 @@ public class PlanDefinition extends MetadataResource {
 
       public void copyValues(PlanDefinitionActionRelatedActionComponent dst) {
         super.copyValues(dst);
-        dst.actionId = actionId == null ? null : actionId.copy();
+        dst.targetId = targetId == null ? null : targetId.copy();
         dst.relationship = relationship == null ? null : relationship.copy();
         dst.offset = offset == null ? null : offset.copy();
       }
@@ -3673,7 +5028,7 @@ public class PlanDefinition extends MetadataResource {
         if (!(other_ instanceof PlanDefinitionActionRelatedActionComponent))
           return false;
         PlanDefinitionActionRelatedActionComponent o = (PlanDefinitionActionRelatedActionComponent) other_;
-        return compareDeep(actionId, o.actionId, true) && compareDeep(relationship, o.relationship, true)
+        return compareDeep(targetId, o.targetId, true) && compareDeep(relationship, o.relationship, true)
            && compareDeep(offset, o.offset, true);
       }
 
@@ -3684,12 +5039,12 @@ public class PlanDefinition extends MetadataResource {
         if (!(other_ instanceof PlanDefinitionActionRelatedActionComponent))
           return false;
         PlanDefinitionActionRelatedActionComponent o = (PlanDefinitionActionRelatedActionComponent) other_;
-        return compareValues(actionId, o.actionId, true) && compareValues(relationship, o.relationship, true)
+        return compareValues(targetId, o.targetId, true) && compareValues(relationship, o.relationship, true)
           ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(actionId, relationship, offset
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(targetId, relationship, offset
           );
       }
 
@@ -3703,22 +5058,44 @@ public class PlanDefinition extends MetadataResource {
     @Block()
     public static class PlanDefinitionActionParticipantComponent extends BackboneElement implements IBaseBackboneElement {
         /**
+         * A reference to the id element of the actor who will participate in this action.
+         */
+        @Child(name = "actorId", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="What actor", formalDefinition="A reference to the id element of the actor who will participate in this action." )
+        protected StringType actorId;
+
+        /**
          * The type of participant in the action.
          */
-        @Child(name = "type", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="patient | practitioner | related-person | device", formalDefinition="The type of participant in the action." )
+        @Child(name = "type", type = {CodeType.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="careteam | device | group | healthcareservice | location | organization | patient | practitioner | practitionerrole | relatedperson", formalDefinition="The type of participant in the action." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-participant-type")
         protected Enumeration<ActionParticipantType> type;
 
         /**
+         * The type of participant in the action.
+         */
+        @Child(name = "typeReference", type = {CareTeam.class, Device.class, Group.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Who or what can participate", formalDefinition="The type of participant in the action." )
+        protected Reference typeReference;
+
+        /**
          * The role the participant should play in performing the described action.
          */
-        @Child(name = "role", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "role", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="E.g. Nurse, Surgeon, Parent", formalDefinition="The role the participant should play in performing the described action." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/action-participant-role")
         protected CodeableConcept role;
 
-        private static final long serialVersionUID = -1152013659L;
+        /**
+         * Indicates how the actor will be involved in the action - author, reviewer, witness, etc.
+         */
+        @Child(name = "function", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="E.g. Author, Reviewer, Witness, etc.", formalDefinition="Indicates how the actor will be involved in the action - author, reviewer, witness, etc." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-participant-function")
+        protected CodeableConcept function;
+
+        private static final long serialVersionUID = -1307587293L;
 
     /**
      * Constructor
@@ -3727,13 +5104,54 @@ public class PlanDefinition extends MetadataResource {
         super();
       }
 
-    /**
-     * Constructor
-     */
-      public PlanDefinitionActionParticipantComponent(ActionParticipantType type) {
-        super();
-        this.setType(type);
-      }
+        /**
+         * @return {@link #actorId} (A reference to the id element of the actor who will participate in this action.). This is the underlying object with id, value and extensions. The accessor "getActorId" gives direct access to the value
+         */
+        public StringType getActorIdElement() { 
+          if (this.actorId == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PlanDefinitionActionParticipantComponent.actorId");
+            else if (Configuration.doAutoCreate())
+              this.actorId = new StringType(); // bb
+          return this.actorId;
+        }
+
+        public boolean hasActorIdElement() { 
+          return this.actorId != null && !this.actorId.isEmpty();
+        }
+
+        public boolean hasActorId() { 
+          return this.actorId != null && !this.actorId.isEmpty();
+        }
+
+        /**
+         * @param value {@link #actorId} (A reference to the id element of the actor who will participate in this action.). This is the underlying object with id, value and extensions. The accessor "getActorId" gives direct access to the value
+         */
+        public PlanDefinitionActionParticipantComponent setActorIdElement(StringType value) { 
+          this.actorId = value;
+          return this;
+        }
+
+        /**
+         * @return A reference to the id element of the actor who will participate in this action.
+         */
+        public String getActorId() { 
+          return this.actorId == null ? null : this.actorId.getValue();
+        }
+
+        /**
+         * @param value A reference to the id element of the actor who will participate in this action.
+         */
+        public PlanDefinitionActionParticipantComponent setActorId(String value) { 
+          if (Utilities.noString(value))
+            this.actorId = null;
+          else {
+            if (this.actorId == null)
+              this.actorId = new StringType();
+            this.actorId.setValue(value);
+          }
+          return this;
+        }
 
         /**
          * @return {@link #type} (The type of participant in the action.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
@@ -3774,9 +5192,37 @@ public class PlanDefinition extends MetadataResource {
          * @param value The type of participant in the action.
          */
         public PlanDefinitionActionParticipantComponent setType(ActionParticipantType value) { 
+          if (value == null)
+            this.type = null;
+          else {
             if (this.type == null)
               this.type = new Enumeration<ActionParticipantType>(new ActionParticipantTypeEnumFactory());
             this.type.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #typeReference} (The type of participant in the action.)
+         */
+        public Reference getTypeReference() { 
+          if (this.typeReference == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PlanDefinitionActionParticipantComponent.typeReference");
+            else if (Configuration.doAutoCreate())
+              this.typeReference = new Reference(); // cc
+          return this.typeReference;
+        }
+
+        public boolean hasTypeReference() { 
+          return this.typeReference != null && !this.typeReference.isEmpty();
+        }
+
+        /**
+         * @param value {@link #typeReference} (The type of participant in the action.)
+         */
+        public PlanDefinitionActionParticipantComponent setTypeReference(Reference value) { 
+          this.typeReference = value;
           return this;
         }
 
@@ -3804,17 +5250,47 @@ public class PlanDefinition extends MetadataResource {
           return this;
         }
 
+        /**
+         * @return {@link #function} (Indicates how the actor will be involved in the action - author, reviewer, witness, etc.)
+         */
+        public CodeableConcept getFunction() { 
+          if (this.function == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PlanDefinitionActionParticipantComponent.function");
+            else if (Configuration.doAutoCreate())
+              this.function = new CodeableConcept(); // cc
+          return this.function;
+        }
+
+        public boolean hasFunction() { 
+          return this.function != null && !this.function.isEmpty();
+        }
+
+        /**
+         * @param value {@link #function} (Indicates how the actor will be involved in the action - author, reviewer, witness, etc.)
+         */
+        public PlanDefinitionActionParticipantComponent setFunction(CodeableConcept value) { 
+          this.function = value;
+          return this;
+        }
+
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
+          children.add(new Property("actorId", "string", "A reference to the id element of the actor who will participate in this action.", 0, 1, actorId));
           children.add(new Property("type", "code", "The type of participant in the action.", 0, 1, type));
+          children.add(new Property("typeReference", "Reference(CareTeam|Device|Group|HealthcareService|Location|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The type of participant in the action.", 0, 1, typeReference));
           children.add(new Property("role", "CodeableConcept", "The role the participant should play in performing the described action.", 0, 1, role));
+          children.add(new Property("function", "CodeableConcept", "Indicates how the actor will be involved in the action - author, reviewer, witness, etc.", 0, 1, function));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
+          case -1161623056: /*actorId*/  return new Property("actorId", "string", "A reference to the id element of the actor who will participate in this action.", 0, 1, actorId);
           case 3575610: /*type*/  return new Property("type", "code", "The type of participant in the action.", 0, 1, type);
+          case 2074825009: /*typeReference*/  return new Property("typeReference", "Reference(CareTeam|Device|Group|HealthcareService|Location|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The type of participant in the action.", 0, 1, typeReference);
           case 3506294: /*role*/  return new Property("role", "CodeableConcept", "The role the participant should play in performing the described action.", 0, 1, role);
+          case 1380938712: /*function*/  return new Property("function", "CodeableConcept", "Indicates how the actor will be involved in the action - author, reviewer, witness, etc.", 0, 1, function);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -3823,8 +5299,11 @@ public class PlanDefinition extends MetadataResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
+        case -1161623056: /*actorId*/ return this.actorId == null ? new Base[0] : new Base[] {this.actorId}; // StringType
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<ActionParticipantType>
+        case 2074825009: /*typeReference*/ return this.typeReference == null ? new Base[0] : new Base[] {this.typeReference}; // Reference
         case 3506294: /*role*/ return this.role == null ? new Base[0] : new Base[] {this.role}; // CodeableConcept
+        case 1380938712: /*function*/ return this.function == null ? new Base[0] : new Base[] {this.function}; // CodeableConcept
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -3833,12 +5312,21 @@ public class PlanDefinition extends MetadataResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
+        case -1161623056: // actorId
+          this.actorId = TypeConvertor.castToString(value); // StringType
+          return value;
         case 3575610: // type
           value = new ActionParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ActionParticipantType>
           return value;
+        case 2074825009: // typeReference
+          this.typeReference = TypeConvertor.castToReference(value); // Reference
+          return value;
         case 3506294: // role
           this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 1380938712: // function
+          this.function = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3847,11 +5335,17 @@ public class PlanDefinition extends MetadataResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("type")) {
+        if (name.equals("actorId")) {
+          this.actorId = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("type")) {
           value = new ActionParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ActionParticipantType>
+        } else if (name.equals("typeReference")) {
+          this.typeReference = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("role")) {
           this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("function")) {
+          this.function = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -3860,8 +5354,11 @@ public class PlanDefinition extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
+        case -1161623056:  return getActorIdElement();
         case 3575610:  return getTypeElement();
+        case 2074825009:  return getTypeReference();
         case 3506294:  return getRole();
+        case 1380938712:  return getFunction();
         default: return super.makeProperty(hash, name);
         }
 
@@ -3870,8 +5367,11 @@ public class PlanDefinition extends MetadataResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
+        case -1161623056: /*actorId*/ return new String[] {"string"};
         case 3575610: /*type*/ return new String[] {"code"};
+        case 2074825009: /*typeReference*/ return new String[] {"Reference"};
         case 3506294: /*role*/ return new String[] {"CodeableConcept"};
+        case 1380938712: /*function*/ return new String[] {"CodeableConcept"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -3879,12 +5379,23 @@ public class PlanDefinition extends MetadataResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("type")) {
+        if (name.equals("actorId")) {
+          throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.participant.actorId");
+        }
+        else if (name.equals("type")) {
           throw new FHIRException("Cannot call addChild on a primitive type PlanDefinition.action.participant.type");
+        }
+        else if (name.equals("typeReference")) {
+          this.typeReference = new Reference();
+          return this.typeReference;
         }
         else if (name.equals("role")) {
           this.role = new CodeableConcept();
           return this.role;
+        }
+        else if (name.equals("function")) {
+          this.function = new CodeableConcept();
+          return this.function;
         }
         else
           return super.addChild(name);
@@ -3898,8 +5409,11 @@ public class PlanDefinition extends MetadataResource {
 
       public void copyValues(PlanDefinitionActionParticipantComponent dst) {
         super.copyValues(dst);
+        dst.actorId = actorId == null ? null : actorId.copy();
         dst.type = type == null ? null : type.copy();
+        dst.typeReference = typeReference == null ? null : typeReference.copy();
         dst.role = role == null ? null : role.copy();
+        dst.function = function == null ? null : function.copy();
       }
 
       @Override
@@ -3909,7 +5423,8 @@ public class PlanDefinition extends MetadataResource {
         if (!(other_ instanceof PlanDefinitionActionParticipantComponent))
           return false;
         PlanDefinitionActionParticipantComponent o = (PlanDefinitionActionParticipantComponent) other_;
-        return compareDeep(type, o.type, true) && compareDeep(role, o.role, true);
+        return compareDeep(actorId, o.actorId, true) && compareDeep(type, o.type, true) && compareDeep(typeReference, o.typeReference, true)
+           && compareDeep(role, o.role, true) && compareDeep(function, o.function, true);
       }
 
       @Override
@@ -3919,11 +5434,12 @@ public class PlanDefinition extends MetadataResource {
         if (!(other_ instanceof PlanDefinitionActionParticipantComponent))
           return false;
         PlanDefinitionActionParticipantComponent o = (PlanDefinitionActionParticipantComponent) other_;
-        return compareValues(type, o.type, true);
+        return compareValues(actorId, o.actorId, true) && compareValues(type, o.type, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, role);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(actorId, type, typeReference
+          , role, function);
       }
 
   public String fhirType() {
@@ -4224,10 +5740,10 @@ public class PlanDefinition extends MetadataResource {
     protected BooleanType experimental;
 
     /**
-     * A code or group definition that describes the intended subject of the plan definition.
+     * A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.
      */
-    @Child(name = "subject", type = {CodeableConcept.class, Group.class}, order=9, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Type of individual the plan definition is focused on", formalDefinition="A code or group definition that describes the intended subject of the plan definition." )
+    @Child(name = "subject", type = {CodeableConcept.class, Group.class, CanonicalType.class}, order=9, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Type of individual the plan definition is focused on", formalDefinition="A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subject-type")
     protected DataType subject;
 
@@ -4367,20 +5883,27 @@ public class PlanDefinition extends MetadataResource {
     protected List<CanonicalType> library;
 
     /**
-     * Goals that describe what the activities within the plan are intended to achieve. For example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, etc.
+     * A goal describes an expected outcome that activities within the plan are intended to achieve. For example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, meeting the acceptance criteria for a test as specified by a quality specification, etc.
      */
     @Child(name = "goal", type = {}, order=29, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="What the plan is trying to accomplish", formalDefinition="Goals that describe what the activities within the plan are intended to achieve. For example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, etc." )
+    @Description(shortDefinition="What the plan is trying to accomplish", formalDefinition="A goal describes an expected outcome that activities within the plan are intended to achieve. For example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, meeting the acceptance criteria for a test as specified by a quality specification, etc." )
     protected List<PlanDefinitionGoalComponent> goal;
 
     /**
-     * An action or group of actions to be taken as part of the plan.
+     * Actors represent the individuals or groups involved in the execution of the defined set of activities.
      */
-    @Child(name = "action", type = {}, order=30, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Action defined by the plan", formalDefinition="An action or group of actions to be taken as part of the plan." )
+    @Child(name = "actor", type = {}, order=30, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Actors within the plan", formalDefinition="Actors represent the individuals or groups involved in the execution of the defined set of activities." )
+    protected List<PlanDefinitionActorComponent> actor;
+
+    /**
+     * An action or group of actions to be taken as part of the plan. For example, in clinical care, an action would be to prescribe a particular indicated medication, or perform a particular test as appropriate. In pharmaceutical quality, an action would be the test that needs to be performed on a drug product as defined in the quality specification.
+     */
+    @Child(name = "action", type = {}, order=31, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Action defined by the plan", formalDefinition="An action or group of actions to be taken as part of the plan. For example, in clinical care, an action would be to prescribe a particular indicated medication, or perform a particular test as appropriate. In pharmaceutical quality, an action would be the test that needs to be performed on a drug product as defined in the quality specification." )
     protected List<PlanDefinitionActionComponent> action;
 
-    private static final long serialVersionUID = 485099011L;
+    private static final long serialVersionUID = -2104269622L;
 
   /**
    * Constructor
@@ -4810,14 +6333,14 @@ public class PlanDefinition extends MetadataResource {
     }
 
     /**
-     * @return {@link #subject} (A code or group definition that describes the intended subject of the plan definition.)
+     * @return {@link #subject} (A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.)
      */
     public DataType getSubject() { 
       return this.subject;
     }
 
     /**
-     * @return {@link #subject} (A code or group definition that describes the intended subject of the plan definition.)
+     * @return {@link #subject} (A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.)
      */
     public CodeableConcept getSubjectCodeableConcept() throws FHIRException { 
       if (this.subject == null)
@@ -4832,7 +6355,7 @@ public class PlanDefinition extends MetadataResource {
     }
 
     /**
-     * @return {@link #subject} (A code or group definition that describes the intended subject of the plan definition.)
+     * @return {@link #subject} (A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.)
      */
     public Reference getSubjectReference() throws FHIRException { 
       if (this.subject == null)
@@ -4846,15 +6369,30 @@ public class PlanDefinition extends MetadataResource {
       return this != null && this.subject instanceof Reference;
     }
 
+    /**
+     * @return {@link #subject} (A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.)
+     */
+    public CanonicalType getSubjectCanonicalType() throws FHIRException { 
+      if (this.subject == null)
+        this.subject = new CanonicalType();
+      if (!(this.subject instanceof CanonicalType))
+        throw new FHIRException("Type mismatch: the type CanonicalType was expected, but "+this.subject.getClass().getName()+" was encountered");
+      return (CanonicalType) this.subject;
+    }
+
+    public boolean hasSubjectCanonicalType() { 
+      return this != null && this.subject instanceof CanonicalType;
+    }
+
     public boolean hasSubject() { 
       return this.subject != null && !this.subject.isEmpty();
     }
 
     /**
-     * @param value {@link #subject} (A code or group definition that describes the intended subject of the plan definition.)
+     * @param value {@link #subject} (A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.)
      */
     public PlanDefinition setSubject(DataType value) { 
-      if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
+      if (value != null && !(value instanceof CodeableConcept || value instanceof Reference || value instanceof CanonicalType))
         throw new Error("Not the right type for PlanDefinition.subject[x]: "+value.fhirType());
       this.subject = value;
       return this;
@@ -5815,7 +7353,7 @@ public class PlanDefinition extends MetadataResource {
     }
 
     /**
-     * @return {@link #goal} (Goals that describe what the activities within the plan are intended to achieve. For example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, etc.)
+     * @return {@link #goal} (A goal describes an expected outcome that activities within the plan are intended to achieve. For example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, meeting the acceptance criteria for a test as specified by a quality specification, etc.)
      */
     public List<PlanDefinitionGoalComponent> getGoal() { 
       if (this.goal == null)
@@ -5868,7 +7406,60 @@ public class PlanDefinition extends MetadataResource {
     }
 
     /**
-     * @return {@link #action} (An action or group of actions to be taken as part of the plan.)
+     * @return {@link #actor} (Actors represent the individuals or groups involved in the execution of the defined set of activities.)
+     */
+    public List<PlanDefinitionActorComponent> getActor() { 
+      if (this.actor == null)
+        this.actor = new ArrayList<PlanDefinitionActorComponent>();
+      return this.actor;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public PlanDefinition setActor(List<PlanDefinitionActorComponent> theActor) { 
+      this.actor = theActor;
+      return this;
+    }
+
+    public boolean hasActor() { 
+      if (this.actor == null)
+        return false;
+      for (PlanDefinitionActorComponent item : this.actor)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public PlanDefinitionActorComponent addActor() { //3
+      PlanDefinitionActorComponent t = new PlanDefinitionActorComponent();
+      if (this.actor == null)
+        this.actor = new ArrayList<PlanDefinitionActorComponent>();
+      this.actor.add(t);
+      return t;
+    }
+
+    public PlanDefinition addActor(PlanDefinitionActorComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.actor == null)
+        this.actor = new ArrayList<PlanDefinitionActorComponent>();
+      this.actor.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #actor}, creating it if it does not already exist {3}
+     */
+    public PlanDefinitionActorComponent getActorFirstRep() { 
+      if (getActor().isEmpty()) {
+        addActor();
+      }
+      return getActor().get(0);
+    }
+
+    /**
+     * @return {@link #action} (An action or group of actions to be taken as part of the plan. For example, in clinical care, an action would be to prescribe a particular indicated medication, or perform a particular test as appropriate. In pharmaceutical quality, an action would be the test that needs to be performed on a drug product as defined in the quality specification.)
      */
     public List<PlanDefinitionActionComponent> getAction() { 
       if (this.action == null)
@@ -5931,7 +7522,7 @@ public class PlanDefinition extends MetadataResource {
         children.add(new Property("type", "CodeableConcept", "A high-level category for the plan definition that distinguishes the kinds of systems that would be interested in the plan definition.", 0, 1, type));
         children.add(new Property("status", "code", "The status of this plan definition. Enables tracking the life-cycle of the content.", 0, 1, status));
         children.add(new Property("experimental", "boolean", "A Boolean value to indicate that this plan definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental));
-        children.add(new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of the plan definition.", 0, 1, subject));
+        children.add(new Property("subject[x]", "CodeableConcept|Reference(Group)|canonical(MedicinalProductDefinition|SubstanceDefinition|AdministrableProductDefinition|ManufacturedItemDefinition|PackagedProductDefinition)", "A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject));
         children.add(new Property("date", "dateTime", "The date  (and optionally time) when the plan definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the plan definition changes.", 0, 1, date));
         children.add(new Property("publisher", "string", "The name of the organization or individual that published the plan definition.", 0, 1, publisher));
         children.add(new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact));
@@ -5951,8 +7542,9 @@ public class PlanDefinition extends MetadataResource {
         children.add(new Property("endorser", "ContactDetail", "An individual or organization responsible for officially endorsing the content for use in some setting.", 0, java.lang.Integer.MAX_VALUE, endorser));
         children.add(new Property("relatedArtifact", "RelatedArtifact", "Related artifacts such as additional documentation, justification, or bibliographic references.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact));
         children.add(new Property("library", "canonical(Library)", "A reference to a Library resource containing any formal logic used by the plan definition.", 0, java.lang.Integer.MAX_VALUE, library));
-        children.add(new Property("goal", "", "Goals that describe what the activities within the plan are intended to achieve. For example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, etc.", 0, java.lang.Integer.MAX_VALUE, goal));
-        children.add(new Property("action", "", "An action or group of actions to be taken as part of the plan.", 0, java.lang.Integer.MAX_VALUE, action));
+        children.add(new Property("goal", "", "A goal describes an expected outcome that activities within the plan are intended to achieve. For example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, meeting the acceptance criteria for a test as specified by a quality specification, etc.", 0, java.lang.Integer.MAX_VALUE, goal));
+        children.add(new Property("actor", "", "Actors represent the individuals or groups involved in the execution of the defined set of activities.", 0, java.lang.Integer.MAX_VALUE, actor));
+        children.add(new Property("action", "", "An action or group of actions to be taken as part of the plan. For example, in clinical care, an action would be to prescribe a particular indicated medication, or perform a particular test as appropriate. In pharmaceutical quality, an action would be the test that needs to be performed on a drug product as defined in the quality specification.", 0, java.lang.Integer.MAX_VALUE, action));
       }
 
       @Override
@@ -5967,10 +7559,11 @@ public class PlanDefinition extends MetadataResource {
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "A high-level category for the plan definition that distinguishes the kinds of systems that would be interested in the plan definition.", 0, 1, type);
         case -892481550: /*status*/  return new Property("status", "code", "The status of this plan definition. Enables tracking the life-cycle of the content.", 0, 1, status);
         case -404562712: /*experimental*/  return new Property("experimental", "boolean", "A Boolean value to indicate that this plan definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental);
-        case -573640748: /*subject[x]*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of the plan definition.", 0, 1, subject);
-        case -1867885268: /*subject*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "A code or group definition that describes the intended subject of the plan definition.", 0, 1, subject);
-        case -1257122603: /*subjectCodeableConcept*/  return new Property("subject[x]", "CodeableConcept", "A code or group definition that describes the intended subject of the plan definition.", 0, 1, subject);
-        case 772938623: /*subjectReference*/  return new Property("subject[x]", "Reference(Group)", "A code or group definition that describes the intended subject of the plan definition.", 0, 1, subject);
+        case -573640748: /*subject[x]*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)|canonical(MedicinalProductDefinition|SubstanceDefinition|AdministrableProductDefinition|ManufacturedItemDefinition|PackagedProductDefinition)", "A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject);
+        case -1867885268: /*subject*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)|canonical(MedicinalProductDefinition|SubstanceDefinition|AdministrableProductDefinition|ManufacturedItemDefinition|PackagedProductDefinition)", "A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject);
+        case -1257122603: /*subjectCodeableConcept*/  return new Property("subject[x]", "CodeableConcept", "A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject);
+        case 772938623: /*subjectReference*/  return new Property("subject[x]", "Reference(Group)", "A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject);
+        case -1768521432: /*subjectCanonical*/  return new Property("subject[x]", "canonical(MedicinalProductDefinition|SubstanceDefinition|AdministrableProductDefinition|ManufacturedItemDefinition|PackagedProductDefinition)", "A code, group definition, or canonical reference that describes  or identifies the intended subject of the plan definition. Canonical references are allowed to support the definition of protocols for drug and substance quality specifications, and is allowed to reference a MedicinalProductDefinition, SubstanceDefinition, AdministrableProductDefinition, ManufacturedItemDefinition, or PackagedProductDefinition resource.", 0, 1, subject);
         case 3076014: /*date*/  return new Property("date", "dateTime", "The date  (and optionally time) when the plan definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the plan definition changes.", 0, 1, date);
         case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual that published the plan definition.", 0, 1, publisher);
         case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact);
@@ -5990,8 +7583,9 @@ public class PlanDefinition extends MetadataResource {
         case 1740277666: /*endorser*/  return new Property("endorser", "ContactDetail", "An individual or organization responsible for officially endorsing the content for use in some setting.", 0, java.lang.Integer.MAX_VALUE, endorser);
         case 666807069: /*relatedArtifact*/  return new Property("relatedArtifact", "RelatedArtifact", "Related artifacts such as additional documentation, justification, or bibliographic references.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact);
         case 166208699: /*library*/  return new Property("library", "canonical(Library)", "A reference to a Library resource containing any formal logic used by the plan definition.", 0, java.lang.Integer.MAX_VALUE, library);
-        case 3178259: /*goal*/  return new Property("goal", "", "Goals that describe what the activities within the plan are intended to achieve. For example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, etc.", 0, java.lang.Integer.MAX_VALUE, goal);
-        case -1422950858: /*action*/  return new Property("action", "", "An action or group of actions to be taken as part of the plan.", 0, java.lang.Integer.MAX_VALUE, action);
+        case 3178259: /*goal*/  return new Property("goal", "", "A goal describes an expected outcome that activities within the plan are intended to achieve. For example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, meeting the acceptance criteria for a test as specified by a quality specification, etc.", 0, java.lang.Integer.MAX_VALUE, goal);
+        case 92645877: /*actor*/  return new Property("actor", "", "Actors represent the individuals or groups involved in the execution of the defined set of activities.", 0, java.lang.Integer.MAX_VALUE, actor);
+        case -1422950858: /*action*/  return new Property("action", "", "An action or group of actions to be taken as part of the plan. For example, in clinical care, an action would be to prescribe a particular indicated medication, or perform a particular test as appropriate. In pharmaceutical quality, an action would be the test that needs to be performed on a drug product as defined in the quality specification.", 0, java.lang.Integer.MAX_VALUE, action);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -6030,6 +7624,7 @@ public class PlanDefinition extends MetadataResource {
         case 666807069: /*relatedArtifact*/ return this.relatedArtifact == null ? new Base[0] : this.relatedArtifact.toArray(new Base[this.relatedArtifact.size()]); // RelatedArtifact
         case 166208699: /*library*/ return this.library == null ? new Base[0] : this.library.toArray(new Base[this.library.size()]); // CanonicalType
         case 3178259: /*goal*/ return this.goal == null ? new Base[0] : this.goal.toArray(new Base[this.goal.size()]); // PlanDefinitionGoalComponent
+        case 92645877: /*actor*/ return this.actor == null ? new Base[0] : this.actor.toArray(new Base[this.actor.size()]); // PlanDefinitionActorComponent
         case -1422950858: /*action*/ return this.action == null ? new Base[0] : this.action.toArray(new Base[this.action.size()]); // PlanDefinitionActionComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -6130,6 +7725,9 @@ public class PlanDefinition extends MetadataResource {
         case 3178259: // goal
           this.getGoal().add((PlanDefinitionGoalComponent) value); // PlanDefinitionGoalComponent
           return value;
+        case 92645877: // actor
+          this.getActor().add((PlanDefinitionActorComponent) value); // PlanDefinitionActorComponent
+          return value;
         case -1422950858: // action
           this.getAction().add((PlanDefinitionActionComponent) value); // PlanDefinitionActionComponent
           return value;
@@ -6201,6 +7799,8 @@ public class PlanDefinition extends MetadataResource {
           this.getLibrary().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("goal")) {
           this.getGoal().add((PlanDefinitionGoalComponent) value);
+        } else if (name.equals("actor")) {
+          this.getActor().add((PlanDefinitionActorComponent) value);
         } else if (name.equals("action")) {
           this.getAction().add((PlanDefinitionActionComponent) value);
         } else
@@ -6242,6 +7842,7 @@ public class PlanDefinition extends MetadataResource {
         case 666807069:  return addRelatedArtifact(); 
         case 166208699:  return addLibraryElement();
         case 3178259:  return addGoal(); 
+        case 92645877:  return addActor(); 
         case -1422950858:  return addAction(); 
         default: return super.makeProperty(hash, name);
         }
@@ -6260,7 +7861,7 @@ public class PlanDefinition extends MetadataResource {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case -892481550: /*status*/ return new String[] {"code"};
         case -404562712: /*experimental*/ return new String[] {"boolean"};
-        case -1867885268: /*subject*/ return new String[] {"CodeableConcept", "Reference"};
+        case -1867885268: /*subject*/ return new String[] {"CodeableConcept", "Reference", "canonical"};
         case 3076014: /*date*/ return new String[] {"dateTime"};
         case 1447404028: /*publisher*/ return new String[] {"string"};
         case 951526432: /*contact*/ return new String[] {"ContactDetail"};
@@ -6281,6 +7882,7 @@ public class PlanDefinition extends MetadataResource {
         case 666807069: /*relatedArtifact*/ return new String[] {"RelatedArtifact"};
         case 166208699: /*library*/ return new String[] {"canonical"};
         case 3178259: /*goal*/ return new String[] {};
+        case 92645877: /*actor*/ return new String[] {};
         case -1422950858: /*action*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -6323,6 +7925,10 @@ public class PlanDefinition extends MetadataResource {
         }
         else if (name.equals("subjectReference")) {
           this.subject = new Reference();
+          return this.subject;
+        }
+        else if (name.equals("subjectCanonical")) {
+          this.subject = new CanonicalType();
           return this.subject;
         }
         else if (name.equals("date")) {
@@ -6385,6 +7991,9 @@ public class PlanDefinition extends MetadataResource {
         }
         else if (name.equals("goal")) {
           return addGoal();
+        }
+        else if (name.equals("actor")) {
+          return addActor();
         }
         else if (name.equals("action")) {
           return addAction();
@@ -6484,6 +8093,11 @@ public class PlanDefinition extends MetadataResource {
           for (PlanDefinitionGoalComponent i : goal)
             dst.goal.add(i.copy());
         };
+        if (actor != null) {
+          dst.actor = new ArrayList<PlanDefinitionActorComponent>();
+          for (PlanDefinitionActorComponent i : actor)
+            dst.actor.add(i.copy());
+        };
         if (action != null) {
           dst.action = new ArrayList<PlanDefinitionActionComponent>();
           for (PlanDefinitionActionComponent i : action)
@@ -6512,8 +8126,8 @@ public class PlanDefinition extends MetadataResource {
            && compareDeep(lastReviewDate, o.lastReviewDate, true) && compareDeep(effectivePeriod, o.effectivePeriod, true)
            && compareDeep(topic, o.topic, true) && compareDeep(author, o.author, true) && compareDeep(editor, o.editor, true)
            && compareDeep(reviewer, o.reviewer, true) && compareDeep(endorser, o.endorser, true) && compareDeep(relatedArtifact, o.relatedArtifact, true)
-           && compareDeep(library, o.library, true) && compareDeep(goal, o.goal, true) && compareDeep(action, o.action, true)
-          ;
+           && compareDeep(library, o.library, true) && compareDeep(goal, o.goal, true) && compareDeep(actor, o.actor, true)
+           && compareDeep(action, o.action, true);
       }
 
       @Override
@@ -6537,7 +8151,7 @@ public class PlanDefinition extends MetadataResource {
           , name, title, subtitle, type, status, experimental, subject, date, publisher
           , contact, description, useContext, jurisdiction, purpose, usage, copyright, approvalDate
           , lastReviewDate, effectivePeriod, topic, author, editor, reviewer, endorser, relatedArtifact
-          , library, goal, action);
+          , library, goal, actor, action);
       }
 
   @Override
@@ -6553,7 +8167,7 @@ public class PlanDefinition extends MetadataResource {
    * Path: <b>PlanDefinition.relatedArtifact.where(type='composed-of').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="composed-of", path="PlanDefinition.relatedArtifact.where(type='composed-of').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="composed-of", path="PlanDefinition.relatedArtifact.where(type='composed-of').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_COMPOSED_OF = "composed-of";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>composed-of</b>
@@ -6699,7 +8313,7 @@ public class PlanDefinition extends MetadataResource {
    * Path: <b>PlanDefinition.action.definition</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="definition", path="PlanDefinition.action.definition", description="Activity or plan definitions used by plan definition", type="reference", target={ActivityDefinition.class, PlanDefinition.class, Questionnaire.class } )
+  @SearchParamDefinition(name="definition", path="PlanDefinition.action.definition", description="Activity or plan definitions used by plan definition", type="reference", target={ActivityDefinition.class, ObservationDefinition.class, PlanDefinition.class, Questionnaire.class } )
   public static final String SP_DEFINITION = "definition";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>definition</b>
@@ -6725,7 +8339,7 @@ public class PlanDefinition extends MetadataResource {
    * Path: <b>PlanDefinition.relatedArtifact.where(type='depends-on').resource | PlanDefinition.library</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="depends-on", path="PlanDefinition.relatedArtifact.where(type='depends-on').resource | PlanDefinition.library", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="depends-on", path="PlanDefinition.relatedArtifact.where(type='depends-on').resource | PlanDefinition.library", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_DEPENDS_ON = "depends-on";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>depends-on</b>
@@ -6751,7 +8365,7 @@ public class PlanDefinition extends MetadataResource {
    * Path: <b>PlanDefinition.relatedArtifact.where(type='derived-from').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="derived-from", path="PlanDefinition.relatedArtifact.where(type='derived-from').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="derived-from", path="PlanDefinition.relatedArtifact.where(type='derived-from').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_DERIVED_FROM = "derived-from";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>derived-from</b>
@@ -6877,7 +8491,7 @@ public class PlanDefinition extends MetadataResource {
    * Path: <b>PlanDefinition.relatedArtifact.where(type='predecessor').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="predecessor", path="PlanDefinition.relatedArtifact.where(type='predecessor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="predecessor", path="PlanDefinition.relatedArtifact.where(type='predecessor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_PREDECESSOR = "predecessor";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>predecessor</b>
@@ -6943,7 +8557,7 @@ public class PlanDefinition extends MetadataResource {
    * Path: <b>PlanDefinition.relatedArtifact.where(type='successor').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="successor", path="PlanDefinition.relatedArtifact.where(type='successor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="successor", path="PlanDefinition.relatedArtifact.where(type='successor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_SUCCESSOR = "successor";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>successor</b>

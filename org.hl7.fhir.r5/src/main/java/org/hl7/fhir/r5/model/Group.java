@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -110,7 +110,6 @@ public class Group extends DomainResource {
             case DEVICE: return "device";
             case MEDICATION: return "medication";
             case SUBSTANCE: return "substance";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,7 +121,6 @@ public class Group extends DomainResource {
             case DEVICE: return "http://hl7.org/fhir/group-type";
             case MEDICATION: return "http://hl7.org/fhir/group-type";
             case SUBSTANCE: return "http://hl7.org/fhir/group-type";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -134,7 +132,6 @@ public class Group extends DomainResource {
             case DEVICE: return "Group contains Device resources.";
             case MEDICATION: return "Group contains Medication resources.";
             case SUBSTANCE: return "Group contains Substance resources.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -146,7 +143,6 @@ public class Group extends DomainResource {
             case DEVICE: return "Device";
             case MEDICATION: return "Medication";
             case SUBSTANCE: return "Substance";
-            case NULL: return null;
             default: return "?";
           }
         }

@@ -4,11 +4,20 @@ import com.google.gson.JsonObject;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.context.IWorkerContext.ICanonicalResourceLocator;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
-import org.hl7.fhir.r5.utils.IResourceValidator.IValidatorResourceFetcher;
-import org.hl7.fhir.r5.utils.IResourceValidator.ReferenceValidationPolicy;
+import org.hl7.fhir.r5.utils.validation.IResourceValidator;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
+import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
+import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
+import org.hl7.fhir.r5.utils.validation.constants.CodedContentValidationPolicy;
+import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
+import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.VersionUtilities.VersionURLInfo;
@@ -21,15 +30,20 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
-public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
+public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IValidationPolicyAdvisor, ICanonicalResourceLocator {
 
   List<String> mappingsUris = new ArrayList<>();
   private FilesystemPackageCacheManager pcm;
   private IWorkerContext context;
   private IPackageInstaller installer;
+  private Map<String, Boolean> urlList = new HashMap<>();
+  private Map<String, String> pidList = new HashMap<>();
+  private Map<String, NpmPackage> pidMap = new HashMap<>();
 
   public StandAloneValidatorFetcher(FilesystemPackageCacheManager pcm, IWorkerContext context, IPackageInstaller installer) {
     super();
@@ -39,17 +53,31 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
   }
 
   @Override
-  public Element fetch(Object appContext, String url) throws FHIRException {
+  public Element fetch(IResourceValidator validator, Object appContext, String url) throws FHIRException {
     throw new FHIRException("The URL '" + url + "' is not known to the FHIR validator, and has not been provided as part of the setup / parameters");
   }
 
   @Override
-  public ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url) {
+  public ReferenceValidationPolicy policyForReference(IResourceValidator validator,
+                                                      Object appContext,
+                                                      String path,
+                                                      String url) {
     return ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS;
   }
 
   @Override
-  public boolean resolveURL(Object appContext, String path, String url, String type) throws IOException, FHIRException {
+  public ContainedReferenceValidationPolicy policyForContained(IResourceValidator validator,
+                                                               Object appContext,
+                                                               String containerType,
+                                                               String containerId,
+                                                               Element.SpecialElement containingResourceType,
+                                                               String path,
+                                                               String url) {
+    return ContainedReferenceValidationPolicy.CHECK_VALID;
+  }
+
+  @Override
+  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type) throws IOException, FHIRException {
     if (!Utilities.isAbsoluteUrl(url)) {
       return false;
     }
@@ -58,7 +86,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
       url = url.substring(0, url.lastIndexOf("|"));
     }
 
-    if (type.equals("uri") && isMappingUri(url)) {
+    if (type != null && type.equals("uri") && isMappingUri(url)) {
       return true;
     }
 
@@ -70,15 +98,25 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
       return !url.startsWith("http://hl7.org/fhir") && !type.equals("canonical");
     }
 
+    // the next operations are expensive. we're going to cache them 
+    if (urlList.containsKey(url)) {
+      return urlList.get(url);
+    }
     if (base.equals("http://terminology.hl7.org")) {
       pid = "hl7.terminology";
     } else if (url.startsWith("http://hl7.org/fhir")) {
       pid = pcm.getPackageId(base);
     } else {
-      pid = pcm.findCanonicalInLocalCache(base);
+      if (pidList.containsKey(base)) {
+        pid = pidList.get(base);
+      } else {
+        pid = pcm.findCanonicalInLocalCache(base);
+        pidList.put(base, pid);
+      }
     }
     ver = url.contains("|") ? url.substring(url.indexOf("|") + 1) : null;
     if (pid == null && Utilities.startsWithInList(url, "http://hl7.org/fhir", "http://terminology.hl7.org")) {
+      urlList.put(url, false);
       return false;
     }
 
@@ -87,15 +125,33 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
       VersionURLInfo vu = VersionUtilities.parseVersionUrl(url);
       if (vu != null) {
         NpmPackage pi = pcm.loadPackage(VersionUtilities.packageForVersion(vu.getVersion()), VersionUtilities.getCurrentVersion(vu.getVersion()));
-        return pi.hasCanonical(vu.getUrl());
+        boolean res = pi.hasCanonical(vu.getUrl());
+        urlList.put(url, res);
+        return res;
       }
     }
 
     // ok maybe it's a reference to a package we know
     if (pid != null) {
-      if (installer.packageExists(pid, ver)) {
-        installer.loadPackage(pid, ver);
-        NpmPackage pi = pcm.loadPackage(pid);
+      if ("sharedhealth.fhir.ca.common".equals(pid)) { // special case - optimise this
+        return false;
+      }
+      NpmPackage pi = null;
+      if (pidMap.containsKey(pid+"|"+ver)) {
+        pi = pidMap.get(pid+"|"+ver);
+      } else  if (installer.packageExists(pid, ver)) {
+        try {
+          installer.loadPackage(pid, ver);
+          pi = pcm.loadPackage(pid);
+          pidMap.put(pid+"|"+ver, pi);
+        } catch (Exception e) {
+          pidMap.put(pid+"|"+ver, null);          
+        }
+      } else {
+        pidMap.put(pid+"|"+ver, null);
+      }
+      if (pi != null) {
+        context.loadFromPackage(pi, null);
         return pi.hasCanonical(url);
       }
     }
@@ -179,7 +235,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
   }
 
   @Override
-  public byte[] fetchRaw(String url) throws MalformedURLException, IOException {
+  public byte[] fetchRaw(IResourceValidator validator, String url) throws MalformedURLException, IOException {
     throw new FHIRException("The URL '" + url + "' is not known to the FHIR validator, and has not been provided as part of the setup / parameters");
   }
 
@@ -191,12 +247,12 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
   }
 
   @Override
-  public CanonicalResource fetchCanonicalResource(String url) throws URISyntaxException {
+  public CanonicalResource fetchCanonicalResource(IResourceValidator validator, String url) throws URISyntaxException {
     String[] p = url.split("\\/");
     String root = getRoot(p, url);
     if (root != null) {
       TerminologyClient c;
-      c = TerminologyClientFactory.makeClient(root, context.getVersion());
+      c = TerminologyClientFactory.makeClient(root, "fhir/validator", context.getVersion());
       return c.read(p[p.length - 2], p[p.length - 1]);
     } else {
       throw new FHIRException("The URL '" + url + "' is not known to the FHIR validator, and has not been provided as part of the setup / parameters");
@@ -213,8 +269,22 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
   }
 
   @Override
-  public boolean fetchesCanonicalResource(String url) {
+  public boolean fetchesCanonicalResource(IResourceValidator validator, String url) {
     return true;
+  }
+
+  @Override
+  public void findResource(Object validator, String url) {
+    try {
+      resolveURL((IResourceValidator) validator, null, null, url, null);
+    } catch (Exception e) {
+    }
+  }
+
+  @Override
+  public CodedContentValidationPolicy policyForCodedContent(IResourceValidator validator, Object appContext, String stackPath, ElementDefinition definition,
+      StructureDefinition structure, BindingKind kind, ValueSet valueSet, List<String> systems) {
+    return CodedContentValidationPolicy.VALUESET;
   }
 
 }

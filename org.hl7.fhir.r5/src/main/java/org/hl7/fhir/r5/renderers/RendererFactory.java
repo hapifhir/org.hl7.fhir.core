@@ -114,8 +114,14 @@ public class RendererFactory {
     if ("Library".equals(resource.getName())) {
       return new LibraryRenderer(context);
     }
+    if ("Patient".equals(resource.getName())) {
+      return new PatientRenderer(context);
+    }
     if ("DiagnosticReport".equals(resource.getName())) {
       return new DiagnosticReportRenderer(context);
+    }
+    if ("QuestionnaireResponse".equals(resource.getName())) {
+      return new QuestionnaireResponseRenderer(context);
     }
 
     return new ProfileDrivenRenderer(context, resourceContext);    

@@ -1,6 +1,11 @@
 package org.hl7.fhir.validation;
 
-import org.hl7.fhir.convertors.*;
+import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
+import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
+import org.hl7.fhir.convertors.conv14_30.VersionConvertor_14_30;
+import org.hl7.fhir.convertors.conv14_40.VersionConvertor_14_40;
+import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.factory.*;
 import org.hl7.fhir.dstu2016may.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -26,13 +31,13 @@ public class VersionConvertor {
     if (VersionUtilities.isR2Ver(targetVer)) {
       return getBytesDstu2(cnt, format, r2);
     } else if (VersionUtilities.isR2BVer(targetVer)) {
-      org.hl7.fhir.dstu3.model.Resource r3 = VersionConvertor_10_30.convertResource(r2);
-      org.hl7.fhir.dstu2016may.model.Resource r2b = VersionConvertor_14_30.convertResource(r3);
+      org.hl7.fhir.dstu3.model.Resource r3 = VersionConvertorFactory_10_30.convertResource(r2);
+      org.hl7.fhir.dstu2016may.model.Resource r2b = VersionConvertorFactory_14_30.convertResource(r3);
       return getBytesDstu2016(cnt, format, r2b);
     } else if (VersionUtilities.isR3Ver(targetVer)) {
-      return getBytesDstu3(cnt, format, VersionConvertor_10_30.convertResource(r2));
+      return getBytesDstu3(cnt, format, VersionConvertorFactory_10_30.convertResource(r2));
     } else if (VersionUtilities.isR4Ver(targetVer)) {
-      return getBytesR4(cnt, format, VersionConvertor_10_40.convertResource(r2));
+      return getBytesR4(cnt, format, VersionConvertorFactory_10_40.convertResource(r2));
     } else {
       throw new FHIRException("Target Version not supported yet: " + targetVer);
     }
@@ -51,15 +56,15 @@ public class VersionConvertor {
         throw new FHIRException("Unsupported input format: " + cnt.cntType.toString());
     }
     if (VersionUtilities.isR2Ver(targetVer)) {
-      org.hl7.fhir.dstu3.model.Resource r3 = VersionConvertor_14_30.convertResource(r2b);
-      org.hl7.fhir.dstu2.model.Resource r2 = VersionConvertor_10_30.convertResource(r3);
+      org.hl7.fhir.dstu3.model.Resource r3 = VersionConvertorFactory_14_30.convertResource(r2b);
+      org.hl7.fhir.dstu2.model.Resource r2 = VersionConvertorFactory_10_30.convertResource(r3);
       return getBytesDstu2(cnt, format, r2);
     } else if (VersionUtilities.isR2BVer(targetVer)) {
       return getBytesDstu2016(cnt, format, r2b);
     } else if (VersionUtilities.isR3Ver(targetVer)) {
-      return getBytesDstu3(cnt, format, VersionConvertor_14_30.convertResource(r2b));
+      return getBytesDstu3(cnt, format, VersionConvertorFactory_14_30.convertResource(r2b));
     } else if (VersionUtilities.isR4Ver(targetVer)) {
-      return getBytesR4(cnt, format, VersionConvertor_14_40.convertResource(r2b));
+      return getBytesR4(cnt, format, VersionConvertorFactory_14_40.convertResource(r2b));
     } else {
       throw new FHIRException("Target Version not supported yet: " + targetVer);
     }
@@ -78,13 +83,13 @@ public class VersionConvertor {
         throw new FHIRException("Unsupported input format: " + cnt.cntType.toString());
     }
     if (VersionUtilities.isR2Ver(targetVer)) {
-      return getBytesDstu2(cnt, format, VersionConvertor_10_30.convertResource(r3));
+      return getBytesDstu2(cnt, format, VersionConvertorFactory_10_30.convertResource(r3));
     } else if (VersionUtilities.isR2BVer(targetVer)) {
-      return getBytesDstu2016(cnt, format, VersionConvertor_14_30.convertResource(r3));
+      return getBytesDstu2016(cnt, format, VersionConvertorFactory_14_30.convertResource(r3));
     } else if (VersionUtilities.isR3Ver(targetVer)) {
       return getBytesDstu3(cnt, format, r3);
     } else if (VersionUtilities.isR4Ver(targetVer)) {
-      return getBytesR4(cnt, format, VersionConvertor_30_40.convertResource(r3, false));
+      return getBytesR4(cnt, format, VersionConvertorFactory_30_40.convertResource(r3));
     } else {
       throw new FHIRException("Target Version not supported yet: " + targetVer);
     }
@@ -103,11 +108,11 @@ public class VersionConvertor {
         throw new FHIRException("Unsupported input format: " + cnt.cntType.toString());
     }
     if (VersionUtilities.isR2Ver(targetVer)) {
-      return getBytesDstu2(cnt, format, VersionConvertor_10_40.convertResource(r4));
+      return getBytesDstu2(cnt, format, VersionConvertorFactory_10_40.convertResource(r4));
     } else if (VersionUtilities.isR2BVer(targetVer)) {
-      return getBytesDstu2016(cnt, format, VersionConvertor_14_40.convertResource(r4));
+      return getBytesDstu2016(cnt, format, VersionConvertorFactory_14_40.convertResource(r4));
     } else if (VersionUtilities.isR3Ver(targetVer)) {
-      return getBytesDstu3(cnt, format, VersionConvertor_30_40.convertResource(r4, false));
+      return getBytesDstu3(cnt, format, VersionConvertorFactory_30_40.convertResource(r4));
     } else if (VersionUtilities.isR4Ver(targetVer)) {
       return getBytesR4(cnt, format, r4);
     } else {

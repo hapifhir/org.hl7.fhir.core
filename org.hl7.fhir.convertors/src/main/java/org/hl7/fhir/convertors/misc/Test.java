@@ -33,10 +33,8 @@ package org.hl7.fhir.convertors.misc;
   
 */
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-
 import org.fhir.ucum.UcumEssenceService;
+import org.hl7.fhir.convertors.misc.ccda.CCDAConverter;
 import org.hl7.fhir.dstu3.context.SimpleWorkerContext;
 import org.hl7.fhir.dstu3.formats.IParser;
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
@@ -45,31 +43,34 @@ import org.hl7.fhir.dstu3.formats.XmlParser;
 import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.utilities.Utilities;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
 public class Test {
   public final static String DEF_TS_SERVER = "http://fhir-dev.healthintersections.com.au/open";
-  public final static String DEV_TS_SERVER = "http://local.fhir.org:960/open";
-  
+  public final static String DEV_TS_SERVER = "http://local.fhir.org:8080/open";
 
-	public static final String DEF_PATH = "c:\\work\\org.hl7.fhir\\build\\implementations\\java\\org.hl7.fhir.convertors\\samples\\";
-	public static final String UCUM_PATH = "c:\\work\\org.hl7.fhir\\build\\implementations\\java\\org.hl7.fhir.convertors\\samples\\ucum-essence.xml";
-	public static final String SRC_PATH = "c:\\work\\org.hl7.fhir\\build\\publish\\";
-	
-	public static void main(String[] args) {
-		try {
-			CCDAConverter c = new CCDAConverter(new UcumEssenceService(UCUM_PATH), SimpleWorkerContext.fromPack(Utilities.path(SRC_PATH, "validation.zip")));
-			Bundle a = c.convert(new FileInputStream(DEF_PATH + "ccda.xml"));
-			String fx = DEF_PATH + "output.xml";
-			IParser x = new XmlParser().setOutputStyle(OutputStyle.PRETTY);
-			x.compose(new FileOutputStream(fx),  a);
-			String fj = DEF_PATH + "output.json";
-			IParser j = new JsonParser().setOutputStyle(OutputStyle.PRETTY);
-			j.compose(new FileOutputStream(fj),  a);
-			System.out.println("done. save as "+fx+" and "+fj);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
 
-	}
+  public static final String DEF_PATH = "c:\\work\\org.hl7.fhir\\build\\implementations\\java\\org.hl7.fhir.convertors\\samples\\";
+  public static final String UCUM_PATH = "c:\\work\\org.hl7.fhir\\build\\implementations\\java\\org.hl7.fhir.convertors\\samples\\ucum-essence.xml";
+  public static final String SRC_PATH = "c:\\work\\org.hl7.fhir\\build\\publish\\";
+
+  public static void main(String[] args) {
+    try {
+      CCDAConverter c = new CCDAConverter(new UcumEssenceService(UCUM_PATH), SimpleWorkerContext.fromPack(Utilities.path(SRC_PATH, "validation.zip")));
+      Bundle a = c.convert(new FileInputStream(DEF_PATH + "ccda.xml"));
+      String fx = DEF_PATH + "output.xml";
+      IParser x = new XmlParser().setOutputStyle(OutputStyle.PRETTY);
+      x.compose(new FileOutputStream(fx), a);
+      String fj = DEF_PATH + "output.json";
+      IParser j = new JsonParser().setOutputStyle(OutputStyle.PRETTY);
+      j.compose(new FileOutputStream(fj), a);
+      System.out.println("done. save as " + fx + " and " + fj);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+
+  }
 
 }

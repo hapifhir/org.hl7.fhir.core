@@ -57,12 +57,12 @@ changes for James
 */
 public class JavaEnumerationsGenerator extends JavaBaseGenerator {
   
-  public JavaEnumerationsGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version) throws UnsupportedEncodingException {
-    super(out, definitions, configuration, version, genDate);
+  public JavaEnumerationsGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version, String jid) throws UnsupportedEncodingException {
+    super(out, definitions, configuration, version, genDate, jid);
   }
   
 	public void generate() throws Exception {		
-		write("package org.hl7.fhir.r5.model;\r\n");
+		write("package org.hl7.fhir."+jid+".model;\r\n");
     startMark(version, genDate);
     write("\r\n");
     write("import org.hl7.fhir.instance.model.api.*;\r\n");
@@ -153,8 +153,9 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
 				String cc = Utilities.camelCase(c.getCode());
 	      cc = makeConst(cc);
-				write("            case "+cc+": return \""+c.getCode()+"\";\r\n");
+        write("            case "+cc+": return \""+c.getCode()+"\";\r\n");
 			}
+    write("            case NULL: return null;\r\n");
 		write("            default: return \"?\";\r\n");
 		write("          }\r\n"); 
 		write("        }\r\n"); 
@@ -166,6 +167,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
       cc = makeConst(cc);
       write("            case "+cc+": return \""+c.getSystem()+"\";\r\n");
     }
+    write("            case NULL: return null;\r\n");
     write("            default: return \"?\";\r\n");
     write("          }\r\n"); 
     write("        }\r\n"); 
@@ -177,6 +179,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
 	      cc = makeConst(cc);
 	      write("            case "+cc+": return \""+Utilities.escapeJava(definitions.getCodeDefinition(c.getSystem(), c.getCode()))+"\";\r\n");
 			}
+    write("            case NULL: return null;\r\n");
     write("            default: return \"?\";\r\n");
     write("          }\r\n"); 
     write("        }\r\n"); 
@@ -188,6 +191,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
 	      cc = makeConst(cc);
 	      write("            case "+cc+": return \""+Utilities.escapeJava(Utilities.noString(c.getDisplay()) ? c.getCode() : c.getDisplay())+"\";\r\n");
 			}
+    write("            case NULL: return null;\r\n");
     write("            default: return \"?\";\r\n");
     write("          }\r\n"); 
     write("        }\r\n"); 

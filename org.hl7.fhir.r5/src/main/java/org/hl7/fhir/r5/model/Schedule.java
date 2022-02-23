@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -94,7 +94,7 @@ public class Schedule extends DomainResource {
     /**
      * Slots that reference this schedule resource provide the availability details to these referenced resource(s).
      */
-    @Child(name = "actor", type = {Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, Device.class, HealthcareService.class, Location.class}, order=5, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "actor", type = {Patient.class, Practitioner.class, PractitionerRole.class, CareTeam.class, RelatedPerson.class, Device.class, HealthcareService.class, Location.class}, order=5, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Resource(s) that availability information is being provided for", formalDefinition="Slots that reference this schedule resource provide the availability details to these referenced resource(s)." )
     protected List<Reference> actor;
 
@@ -519,7 +519,7 @@ public class Schedule extends DomainResource {
         children.add(new Property("serviceCategory", "CodeableConcept", "A broad categorization of the service that is to be performed during this appointment.", 0, java.lang.Integer.MAX_VALUE, serviceCategory));
         children.add(new Property("serviceType", "CodeableConcept", "The specific service that is to be performed during this appointment.", 0, java.lang.Integer.MAX_VALUE, serviceType));
         children.add(new Property("specialty", "CodeableConcept", "The specialty of a practitioner that would be required to perform the service requested in this appointment.", 0, java.lang.Integer.MAX_VALUE, specialty));
-        children.add(new Property("actor", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson|Device|HealthcareService|Location)", "Slots that reference this schedule resource provide the availability details to these referenced resource(s).", 0, java.lang.Integer.MAX_VALUE, actor));
+        children.add(new Property("actor", "Reference(Patient|Practitioner|PractitionerRole|CareTeam|RelatedPerson|Device|HealthcareService|Location)", "Slots that reference this schedule resource provide the availability details to these referenced resource(s).", 0, java.lang.Integer.MAX_VALUE, actor));
         children.add(new Property("planningHorizon", "Period", "The period of time that the slots that reference this Schedule resource cover (even if none exist). These  cover the amount of time that an organization's planning horizon; the interval for which they are currently accepting appointments. This does not define a \"template\" for planning outside these dates.", 0, 1, planningHorizon));
         children.add(new Property("comment", "string", "Comments on the availability to describe any extended information. Such as custom constraints on the slots that may be associated.", 0, 1, comment));
       }
@@ -532,7 +532,7 @@ public class Schedule extends DomainResource {
         case 1281188563: /*serviceCategory*/  return new Property("serviceCategory", "CodeableConcept", "A broad categorization of the service that is to be performed during this appointment.", 0, java.lang.Integer.MAX_VALUE, serviceCategory);
         case -1928370289: /*serviceType*/  return new Property("serviceType", "CodeableConcept", "The specific service that is to be performed during this appointment.", 0, java.lang.Integer.MAX_VALUE, serviceType);
         case -1694759682: /*specialty*/  return new Property("specialty", "CodeableConcept", "The specialty of a practitioner that would be required to perform the service requested in this appointment.", 0, java.lang.Integer.MAX_VALUE, specialty);
-        case 92645877: /*actor*/  return new Property("actor", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson|Device|HealthcareService|Location)", "Slots that reference this schedule resource provide the availability details to these referenced resource(s).", 0, java.lang.Integer.MAX_VALUE, actor);
+        case 92645877: /*actor*/  return new Property("actor", "Reference(Patient|Practitioner|PractitionerRole|CareTeam|RelatedPerson|Device|HealthcareService|Location)", "Slots that reference this schedule resource provide the availability details to these referenced resource(s).", 0, java.lang.Integer.MAX_VALUE, actor);
         case -1718507650: /*planningHorizon*/  return new Property("planningHorizon", "Period", "The period of time that the slots that reference this Schedule resource cover (even if none exist). These  cover the amount of time that an organization's planning horizon; the interval for which they are currently accepting appointments. This does not define a \"template\" for planning outside these dates.", 0, 1, planningHorizon);
         case 950398559: /*comment*/  return new Property("comment", "string", "Comments on the availability to describe any extended information. Such as custom constraints on the slots that may be associated.", 0, 1, comment);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -782,7 +782,7 @@ public class Schedule extends DomainResource {
    * Path: <b>Schedule.actor</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="actor", path="Schedule.actor", description="The individual(HealthcareService, Practitioner, Location, ...) to find a Schedule for", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Device.class, HealthcareService.class, Location.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  @SearchParamDefinition(name="actor", path="Schedule.actor", description="The individual(HealthcareService, Practitioner, Location, ...) to find a Schedule for", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={CareTeam.class, Device.class, HealthcareService.class, Location.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_ACTOR = "actor";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>actor</b>

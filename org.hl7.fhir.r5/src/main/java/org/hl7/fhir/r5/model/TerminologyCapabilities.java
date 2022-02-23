@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,7 +82,6 @@ public class TerminologyCapabilities extends CanonicalResource {
           switch (this) {
             case EXPLICIT: return "explicit";
             case ALL: return "all";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,7 +89,6 @@ public class TerminologyCapabilities extends CanonicalResource {
           switch (this) {
             case EXPLICIT: return "http://hl7.org/fhir/code-search-support";
             case ALL: return "http://hl7.org/fhir/code-search-support";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,7 +96,6 @@ public class TerminologyCapabilities extends CanonicalResource {
           switch (this) {
             case EXPLICIT: return "The search for code on ValueSet only includes codes explicitly detailed on includes or expansions.";
             case ALL: return "The search for code on ValueSet only includes all codes based on the expansion of the value set.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,7 +103,6 @@ public class TerminologyCapabilities extends CanonicalResource {
           switch (this) {
             case EXPLICIT: return "Explicit Codes";
             case ALL: return "Implicit Codes";
-            case NULL: return null;
             default: return "?";
           }
         }

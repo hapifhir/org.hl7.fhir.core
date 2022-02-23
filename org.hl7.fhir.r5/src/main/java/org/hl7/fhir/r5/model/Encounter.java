@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,7 +96,6 @@ public class Encounter extends DomainResource {
             case ACTIVE: return "active";
             case RESERVED: return "reserved";
             case COMPLETED: return "completed";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,7 +105,6 @@ public class Encounter extends DomainResource {
             case ACTIVE: return "http://hl7.org/fhir/encounter-location-status";
             case RESERVED: return "http://hl7.org/fhir/encounter-location-status";
             case COMPLETED: return "http://hl7.org/fhir/encounter-location-status";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -116,7 +114,6 @@ public class Encounter extends DomainResource {
             case ACTIVE: return "The patient is currently at this location, or was between the period specified.\r\rA system may update these records when the patient leaves the location to either reserved, or completed.";
             case RESERVED: return "This location is held empty for this patient.";
             case COMPLETED: return "The patient was at this location during the period specified.\r\rNot to be used when the patient is currently at the location.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,7 +123,6 @@ public class Encounter extends DomainResource {
             case ACTIVE: return "Active";
             case RESERVED: return "Reserved";
             case COMPLETED: return "Completed";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -245,7 +241,6 @@ public class Encounter extends DomainResource {
             case CANCELLED: return "cancelled";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -258,7 +253,6 @@ public class Encounter extends DomainResource {
             case CANCELLED: return "http://hl7.org/fhir/encounter-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/encounter-status";
             case UNKNOWN: return "http://hl7.org/fhir/encounter-status";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -271,7 +265,6 @@ public class Encounter extends DomainResource {
             case CANCELLED: return "The Encounter has ended before it has begun.";
             case ENTEREDINERROR: return "This instance should not have been part of this patient's medical record.";
             case UNKNOWN: return "The encounter status is unknown. Note that \"unknown\" is a value of last resort and every attempt should be made to provide a meaningful value other than \"unknown\".";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -284,7 +277,6 @@ public class Encounter extends DomainResource {
             case CANCELLED: return "Cancelled";
             case ENTEREDINERROR: return "Entered in Error";
             case UNKNOWN: return "Unknown";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -819,13 +811,13 @@ public class Encounter extends DomainResource {
         protected Period period;
 
         /**
-         * Persons involved in the encounter other than the patient.
+         * Persons involved in the encounter, the patient/group is also included here to indicate that the patient was actually participating in the encounter. Not including the patient here covers use cases such as a case meeting between practitioners about a patient - non contact times.
          */
-        @Child(name = "individual", type = {Practitioner.class, PractitionerRole.class, RelatedPerson.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Persons involved in the encounter other than the patient", formalDefinition="Persons involved in the encounter other than the patient." )
-        protected Reference individual;
+        @Child(name = "actor", type = {Patient.class, Group.class, RelatedPerson.class, Practitioner.class, PractitionerRole.class, Device.class, HealthcareService.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Persons involved in the encounter (including patient)", formalDefinition="Persons involved in the encounter, the patient/group is also included here to indicate that the patient was actually participating in the encounter. Not including the patient here covers use cases such as a case meeting between practitioners about a patient - non contact times." )
+        protected Reference actor;
 
-        private static final long serialVersionUID = -678291961L;
+        private static final long serialVersionUID = 1982623707L;
 
     /**
      * Constructor
@@ -912,26 +904,26 @@ public class Encounter extends DomainResource {
         }
 
         /**
-         * @return {@link #individual} (Persons involved in the encounter other than the patient.)
+         * @return {@link #actor} (Persons involved in the encounter, the patient/group is also included here to indicate that the patient was actually participating in the encounter. Not including the patient here covers use cases such as a case meeting between practitioners about a patient - non contact times.)
          */
-        public Reference getIndividual() { 
-          if (this.individual == null)
+        public Reference getActor() { 
+          if (this.actor == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create EncounterParticipantComponent.individual");
+              throw new Error("Attempt to auto-create EncounterParticipantComponent.actor");
             else if (Configuration.doAutoCreate())
-              this.individual = new Reference(); // cc
-          return this.individual;
+              this.actor = new Reference(); // cc
+          return this.actor;
         }
 
-        public boolean hasIndividual() { 
-          return this.individual != null && !this.individual.isEmpty();
+        public boolean hasActor() { 
+          return this.actor != null && !this.actor.isEmpty();
         }
 
         /**
-         * @param value {@link #individual} (Persons involved in the encounter other than the patient.)
+         * @param value {@link #actor} (Persons involved in the encounter, the patient/group is also included here to indicate that the patient was actually participating in the encounter. Not including the patient here covers use cases such as a case meeting between practitioners about a patient - non contact times.)
          */
-        public EncounterParticipantComponent setIndividual(Reference value) { 
-          this.individual = value;
+        public EncounterParticipantComponent setActor(Reference value) { 
+          this.actor = value;
           return this;
         }
 
@@ -939,7 +931,7 @@ public class Encounter extends DomainResource {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "Role of participant in encounter.", 0, java.lang.Integer.MAX_VALUE, type));
           children.add(new Property("period", "Period", "The period of time that the specified participant participated in the encounter. These can overlap or be sub-sets of the overall encounter's period.", 0, 1, period));
-          children.add(new Property("individual", "Reference(Practitioner|PractitionerRole|RelatedPerson)", "Persons involved in the encounter other than the patient.", 0, 1, individual));
+          children.add(new Property("actor", "Reference(Patient|Group|RelatedPerson|Practitioner|PractitionerRole|Device|HealthcareService)", "Persons involved in the encounter, the patient/group is also included here to indicate that the patient was actually participating in the encounter. Not including the patient here covers use cases such as a case meeting between practitioners about a patient - non contact times.", 0, 1, actor));
         }
 
         @Override
@@ -947,7 +939,7 @@ public class Encounter extends DomainResource {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Role of participant in encounter.", 0, java.lang.Integer.MAX_VALUE, type);
           case -991726143: /*period*/  return new Property("period", "Period", "The period of time that the specified participant participated in the encounter. These can overlap or be sub-sets of the overall encounter's period.", 0, 1, period);
-          case -46292327: /*individual*/  return new Property("individual", "Reference(Practitioner|PractitionerRole|RelatedPerson)", "Persons involved in the encounter other than the patient.", 0, 1, individual);
+          case 92645877: /*actor*/  return new Property("actor", "Reference(Patient|Group|RelatedPerson|Practitioner|PractitionerRole|Device|HealthcareService)", "Persons involved in the encounter, the patient/group is also included here to indicate that the patient was actually participating in the encounter. Not including the patient here covers use cases such as a case meeting between practitioners about a patient - non contact times.", 0, 1, actor);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -958,7 +950,7 @@ public class Encounter extends DomainResource {
         switch (hash) {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : this.type.toArray(new Base[this.type.size()]); // CodeableConcept
         case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // Period
-        case -46292327: /*individual*/ return this.individual == null ? new Base[0] : new Base[] {this.individual}; // Reference
+        case 92645877: /*actor*/ return this.actor == null ? new Base[0] : new Base[] {this.actor}; // Reference
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -973,8 +965,8 @@ public class Encounter extends DomainResource {
         case -991726143: // period
           this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
-        case -46292327: // individual
-          this.individual = TypeConvertor.castToReference(value); // Reference
+        case 92645877: // actor
+          this.actor = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -987,8 +979,8 @@ public class Encounter extends DomainResource {
           this.getType().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("period")) {
           this.period = TypeConvertor.castToPeriod(value); // Period
-        } else if (name.equals("individual")) {
-          this.individual = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("actor")) {
+          this.actor = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -999,7 +991,7 @@ public class Encounter extends DomainResource {
         switch (hash) {
         case 3575610:  return addType(); 
         case -991726143:  return getPeriod();
-        case -46292327:  return getIndividual();
+        case 92645877:  return getActor();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1010,7 +1002,7 @@ public class Encounter extends DomainResource {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case -991726143: /*period*/ return new String[] {"Period"};
-        case -46292327: /*individual*/ return new String[] {"Reference"};
+        case 92645877: /*actor*/ return new String[] {"Reference"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1025,9 +1017,9 @@ public class Encounter extends DomainResource {
           this.period = new Period();
           return this.period;
         }
-        else if (name.equals("individual")) {
-          this.individual = new Reference();
-          return this.individual;
+        else if (name.equals("actor")) {
+          this.actor = new Reference();
+          return this.actor;
         }
         else
           return super.addChild(name);
@@ -1047,7 +1039,7 @@ public class Encounter extends DomainResource {
             dst.type.add(i.copy());
         };
         dst.period = period == null ? null : period.copy();
-        dst.individual = individual == null ? null : individual.copy();
+        dst.actor = actor == null ? null : actor.copy();
       }
 
       @Override
@@ -1057,7 +1049,7 @@ public class Encounter extends DomainResource {
         if (!(other_ instanceof EncounterParticipantComponent))
           return false;
         EncounterParticipantComponent o = (EncounterParticipantComponent) other_;
-        return compareDeep(type, o.type, true) && compareDeep(period, o.period, true) && compareDeep(individual, o.individual, true)
+        return compareDeep(type, o.type, true) && compareDeep(period, o.period, true) && compareDeep(actor, o.actor, true)
           ;
       }
 
@@ -1072,8 +1064,7 @@ public class Encounter extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, period, individual
-          );
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, period, actor);
       }
 
   public String fhirType() {
@@ -2427,23 +2418,37 @@ public class Encounter extends DomainResource {
     protected List<Reference> appointment;
 
     /**
-     * The start and end time of the encounter.
+     * The actual start and end time of the encounter.
      */
-    @Child(name = "period", type = {Period.class}, order=14, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="The start and end time of the encounter", formalDefinition="The start and end time of the encounter." )
-    protected Period period;
+    @Child(name = "actualPeriod", type = {Period.class}, order=14, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="The actual start and end time of the encounter", formalDefinition="The actual start and end time of the encounter." )
+    protected Period actualPeriod;
+
+    /**
+     * The planned start date/time (or admission date) of the encounter.
+     */
+    @Child(name = "plannedStartDate", type = {DateTimeType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="The planned start date/time (or admission date) of the encounter", formalDefinition="The planned start date/time (or admission date) of the encounter." )
+    protected DateTimeType plannedStartDate;
+
+    /**
+     * The planned end date/time (or discharge date) of the encounter.
+     */
+    @Child(name = "plannedEndDate", type = {DateTimeType.class}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="The planned end date/time (or discharge date) of the encounter", formalDefinition="The planned end date/time (or discharge date) of the encounter." )
+    protected DateTimeType plannedEndDate;
 
     /**
      * Quantity of time the encounter lasted. This excludes the time during leaves of absence.
      */
-    @Child(name = "length", type = {Duration.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "length", type = {Duration.class}, order=17, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Quantity of time the encounter lasted (less time absent)", formalDefinition="Quantity of time the encounter lasted. This excludes the time during leaves of absence." )
     protected Duration length;
 
     /**
      * Reason the encounter takes place, expressed as a code or a reference to another resource. For admissions, this can be used for a coded admission diagnosis.
      */
-    @Child(name = "reason", type = {CodeableReference.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "reason", type = {CodeableReference.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Reason the encounter takes place (core or reference)", formalDefinition="Reason the encounter takes place, expressed as a code or a reference to another resource. For admissions, this can be used for a coded admission diagnosis." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/encounter-reason")
     protected List<CodeableReference> reason;
@@ -2451,46 +2456,46 @@ public class Encounter extends DomainResource {
     /**
      * The list of diagnosis relevant to this encounter.
      */
-    @Child(name = "diagnosis", type = {}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "diagnosis", type = {}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The list of diagnosis relevant to this encounter", formalDefinition="The list of diagnosis relevant to this encounter." )
     protected List<DiagnosisComponent> diagnosis;
 
     /**
      * The set of accounts that may be used for billing for this Encounter.
      */
-    @Child(name = "account", type = {Account.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "account", type = {Account.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The set of accounts that may be used for billing for this Encounter", formalDefinition="The set of accounts that may be used for billing for this Encounter." )
     protected List<Reference> account;
 
     /**
      * Details about the admission to a healthcare service.
      */
-    @Child(name = "hospitalization", type = {}, order=19, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "hospitalization", type = {}, order=21, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Details about the admission to a healthcare service", formalDefinition="Details about the admission to a healthcare service." )
     protected EncounterHospitalizationComponent hospitalization;
 
     /**
      * List of locations where  the patient has been during this encounter.
      */
-    @Child(name = "location", type = {}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "location", type = {}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="List of locations where the patient has been", formalDefinition="List of locations where  the patient has been during this encounter." )
     protected List<EncounterLocationComponent> location;
 
     /**
      * The organization that is primarily responsible for this Encounter's services. This MAY be the same as the organization on the Patient record, however it could be different, such as if the actor performing the services was from an external organization (which may be billed seperately) for an external consultation.  Refer to the example bundle showing an abbreviated set of Encounters for a colonoscopy.
      */
-    @Child(name = "serviceProvider", type = {Organization.class}, order=21, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "serviceProvider", type = {Organization.class}, order=23, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The organization (facility) responsible for this encounter", formalDefinition="The organization that is primarily responsible for this Encounter's services. This MAY be the same as the organization on the Patient record, however it could be different, such as if the actor performing the services was from an external organization (which may be billed seperately) for an external consultation.  Refer to the example bundle showing an abbreviated set of Encounters for a colonoscopy." )
     protected Reference serviceProvider;
 
     /**
      * Another Encounter of which this encounter is a part of (administratively or in time).
      */
-    @Child(name = "partOf", type = {Encounter.class}, order=22, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "partOf", type = {Encounter.class}, order=24, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Another Encounter this encounter is part of", formalDefinition="Another Encounter of which this encounter is a part of (administratively or in time)." )
     protected Reference partOf;
 
-    private static final long serialVersionUID = 62426777L;
+    private static final long serialVersionUID = 1632191002L;
 
   /**
    * Constructor
@@ -3098,26 +3103,124 @@ public class Encounter extends DomainResource {
     }
 
     /**
-     * @return {@link #period} (The start and end time of the encounter.)
+     * @return {@link #actualPeriod} (The actual start and end time of the encounter.)
      */
-    public Period getPeriod() { 
-      if (this.period == null)
+    public Period getActualPeriod() { 
+      if (this.actualPeriod == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Encounter.period");
+          throw new Error("Attempt to auto-create Encounter.actualPeriod");
         else if (Configuration.doAutoCreate())
-          this.period = new Period(); // cc
-      return this.period;
+          this.actualPeriod = new Period(); // cc
+      return this.actualPeriod;
     }
 
-    public boolean hasPeriod() { 
-      return this.period != null && !this.period.isEmpty();
+    public boolean hasActualPeriod() { 
+      return this.actualPeriod != null && !this.actualPeriod.isEmpty();
     }
 
     /**
-     * @param value {@link #period} (The start and end time of the encounter.)
+     * @param value {@link #actualPeriod} (The actual start and end time of the encounter.)
      */
-    public Encounter setPeriod(Period value) { 
-      this.period = value;
+    public Encounter setActualPeriod(Period value) { 
+      this.actualPeriod = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #plannedStartDate} (The planned start date/time (or admission date) of the encounter.). This is the underlying object with id, value and extensions. The accessor "getPlannedStartDate" gives direct access to the value
+     */
+    public DateTimeType getPlannedStartDateElement() { 
+      if (this.plannedStartDate == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Encounter.plannedStartDate");
+        else if (Configuration.doAutoCreate())
+          this.plannedStartDate = new DateTimeType(); // bb
+      return this.plannedStartDate;
+    }
+
+    public boolean hasPlannedStartDateElement() { 
+      return this.plannedStartDate != null && !this.plannedStartDate.isEmpty();
+    }
+
+    public boolean hasPlannedStartDate() { 
+      return this.plannedStartDate != null && !this.plannedStartDate.isEmpty();
+    }
+
+    /**
+     * @param value {@link #plannedStartDate} (The planned start date/time (or admission date) of the encounter.). This is the underlying object with id, value and extensions. The accessor "getPlannedStartDate" gives direct access to the value
+     */
+    public Encounter setPlannedStartDateElement(DateTimeType value) { 
+      this.plannedStartDate = value;
+      return this;
+    }
+
+    /**
+     * @return The planned start date/time (or admission date) of the encounter.
+     */
+    public Date getPlannedStartDate() { 
+      return this.plannedStartDate == null ? null : this.plannedStartDate.getValue();
+    }
+
+    /**
+     * @param value The planned start date/time (or admission date) of the encounter.
+     */
+    public Encounter setPlannedStartDate(Date value) { 
+      if (value == null)
+        this.plannedStartDate = null;
+      else {
+        if (this.plannedStartDate == null)
+          this.plannedStartDate = new DateTimeType();
+        this.plannedStartDate.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #plannedEndDate} (The planned end date/time (or discharge date) of the encounter.). This is the underlying object with id, value and extensions. The accessor "getPlannedEndDate" gives direct access to the value
+     */
+    public DateTimeType getPlannedEndDateElement() { 
+      if (this.plannedEndDate == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Encounter.plannedEndDate");
+        else if (Configuration.doAutoCreate())
+          this.plannedEndDate = new DateTimeType(); // bb
+      return this.plannedEndDate;
+    }
+
+    public boolean hasPlannedEndDateElement() { 
+      return this.plannedEndDate != null && !this.plannedEndDate.isEmpty();
+    }
+
+    public boolean hasPlannedEndDate() { 
+      return this.plannedEndDate != null && !this.plannedEndDate.isEmpty();
+    }
+
+    /**
+     * @param value {@link #plannedEndDate} (The planned end date/time (or discharge date) of the encounter.). This is the underlying object with id, value and extensions. The accessor "getPlannedEndDate" gives direct access to the value
+     */
+    public Encounter setPlannedEndDateElement(DateTimeType value) { 
+      this.plannedEndDate = value;
+      return this;
+    }
+
+    /**
+     * @return The planned end date/time (or discharge date) of the encounter.
+     */
+    public Date getPlannedEndDate() { 
+      return this.plannedEndDate == null ? null : this.plannedEndDate.getValue();
+    }
+
+    /**
+     * @param value The planned end date/time (or discharge date) of the encounter.
+     */
+    public Encounter setPlannedEndDate(Date value) { 
+      if (value == null)
+        this.plannedEndDate = null;
+      else {
+        if (this.plannedEndDate == null)
+          this.plannedEndDate = new DateTimeType();
+        this.plannedEndDate.setValue(value);
+      }
       return this;
     }
 
@@ -3445,7 +3548,9 @@ public class Encounter extends DomainResource {
         children.add(new Property("basedOn", "Reference(ServiceRequest)", "The request this encounter satisfies (e.g. incoming referral or procedure request).", 0, java.lang.Integer.MAX_VALUE, basedOn));
         children.add(new Property("participant", "", "The list of people responsible for providing the service.", 0, java.lang.Integer.MAX_VALUE, participant));
         children.add(new Property("appointment", "Reference(Appointment)", "The appointment that scheduled this encounter.", 0, java.lang.Integer.MAX_VALUE, appointment));
-        children.add(new Property("period", "Period", "The start and end time of the encounter.", 0, 1, period));
+        children.add(new Property("actualPeriod", "Period", "The actual start and end time of the encounter.", 0, 1, actualPeriod));
+        children.add(new Property("plannedStartDate", "dateTime", "The planned start date/time (or admission date) of the encounter.", 0, 1, plannedStartDate));
+        children.add(new Property("plannedEndDate", "dateTime", "The planned end date/time (or discharge date) of the encounter.", 0, 1, plannedEndDate));
         children.add(new Property("length", "Duration", "Quantity of time the encounter lasted. This excludes the time during leaves of absence.", 0, 1, length));
         children.add(new Property("reason", "CodeableReference(Condition|Procedure|Observation|ImmunizationRecommendation)", "Reason the encounter takes place, expressed as a code or a reference to another resource. For admissions, this can be used for a coded admission diagnosis.", 0, java.lang.Integer.MAX_VALUE, reason));
         children.add(new Property("diagnosis", "", "The list of diagnosis relevant to this encounter.", 0, java.lang.Integer.MAX_VALUE, diagnosis));
@@ -3473,7 +3578,9 @@ public class Encounter extends DomainResource {
         case -332612366: /*basedOn*/  return new Property("basedOn", "Reference(ServiceRequest)", "The request this encounter satisfies (e.g. incoming referral or procedure request).", 0, java.lang.Integer.MAX_VALUE, basedOn);
         case 767422259: /*participant*/  return new Property("participant", "", "The list of people responsible for providing the service.", 0, java.lang.Integer.MAX_VALUE, participant);
         case -1474995297: /*appointment*/  return new Property("appointment", "Reference(Appointment)", "The appointment that scheduled this encounter.", 0, java.lang.Integer.MAX_VALUE, appointment);
-        case -991726143: /*period*/  return new Property("period", "Period", "The start and end time of the encounter.", 0, 1, period);
+        case 789194991: /*actualPeriod*/  return new Property("actualPeriod", "Period", "The actual start and end time of the encounter.", 0, 1, actualPeriod);
+        case 460857804: /*plannedStartDate*/  return new Property("plannedStartDate", "dateTime", "The planned start date/time (or admission date) of the encounter.", 0, 1, plannedStartDate);
+        case 1657534661: /*plannedEndDate*/  return new Property("plannedEndDate", "dateTime", "The planned end date/time (or discharge date) of the encounter.", 0, 1, plannedEndDate);
         case -1106363674: /*length*/  return new Property("length", "Duration", "Quantity of time the encounter lasted. This excludes the time during leaves of absence.", 0, 1, length);
         case -934964668: /*reason*/  return new Property("reason", "CodeableReference(Condition|Procedure|Observation|ImmunizationRecommendation)", "Reason the encounter takes place, expressed as a code or a reference to another resource. For admissions, this can be used for a coded admission diagnosis.", 0, java.lang.Integer.MAX_VALUE, reason);
         case 1196993265: /*diagnosis*/  return new Property("diagnosis", "", "The list of diagnosis relevant to this encounter.", 0, java.lang.Integer.MAX_VALUE, diagnosis);
@@ -3504,7 +3611,9 @@ public class Encounter extends DomainResource {
         case -332612366: /*basedOn*/ return this.basedOn == null ? new Base[0] : this.basedOn.toArray(new Base[this.basedOn.size()]); // Reference
         case 767422259: /*participant*/ return this.participant == null ? new Base[0] : this.participant.toArray(new Base[this.participant.size()]); // EncounterParticipantComponent
         case -1474995297: /*appointment*/ return this.appointment == null ? new Base[0] : this.appointment.toArray(new Base[this.appointment.size()]); // Reference
-        case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // Period
+        case 789194991: /*actualPeriod*/ return this.actualPeriod == null ? new Base[0] : new Base[] {this.actualPeriod}; // Period
+        case 460857804: /*plannedStartDate*/ return this.plannedStartDate == null ? new Base[0] : new Base[] {this.plannedStartDate}; // DateTimeType
+        case 1657534661: /*plannedEndDate*/ return this.plannedEndDate == null ? new Base[0] : new Base[] {this.plannedEndDate}; // DateTimeType
         case -1106363674: /*length*/ return this.length == null ? new Base[0] : new Base[] {this.length}; // Duration
         case -934964668: /*reason*/ return this.reason == null ? new Base[0] : this.reason.toArray(new Base[this.reason.size()]); // CodeableReference
         case 1196993265: /*diagnosis*/ return this.diagnosis == null ? new Base[0] : this.diagnosis.toArray(new Base[this.diagnosis.size()]); // DiagnosisComponent
@@ -3564,8 +3673,14 @@ public class Encounter extends DomainResource {
         case -1474995297: // appointment
           this.getAppointment().add(TypeConvertor.castToReference(value)); // Reference
           return value;
-        case -991726143: // period
-          this.period = TypeConvertor.castToPeriod(value); // Period
+        case 789194991: // actualPeriod
+          this.actualPeriod = TypeConvertor.castToPeriod(value); // Period
+          return value;
+        case 460857804: // plannedStartDate
+          this.plannedStartDate = TypeConvertor.castToDateTime(value); // DateTimeType
+          return value;
+        case 1657534661: // plannedEndDate
+          this.plannedEndDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -1106363674: // length
           this.length = TypeConvertor.castToDuration(value); // Duration
@@ -3627,8 +3742,12 @@ public class Encounter extends DomainResource {
           this.getParticipant().add((EncounterParticipantComponent) value);
         } else if (name.equals("appointment")) {
           this.getAppointment().add(TypeConvertor.castToReference(value));
-        } else if (name.equals("period")) {
-          this.period = TypeConvertor.castToPeriod(value); // Period
+        } else if (name.equals("actualPeriod")) {
+          this.actualPeriod = TypeConvertor.castToPeriod(value); // Period
+        } else if (name.equals("plannedStartDate")) {
+          this.plannedStartDate = TypeConvertor.castToDateTime(value); // DateTimeType
+        } else if (name.equals("plannedEndDate")) {
+          this.plannedEndDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("length")) {
           this.length = TypeConvertor.castToDuration(value); // Duration
         } else if (name.equals("reason")) {
@@ -3667,7 +3786,9 @@ public class Encounter extends DomainResource {
         case -332612366:  return addBasedOn(); 
         case 767422259:  return addParticipant(); 
         case -1474995297:  return addAppointment(); 
-        case -991726143:  return getPeriod();
+        case 789194991:  return getActualPeriod();
+        case 460857804:  return getPlannedStartDateElement();
+        case 1657534661:  return getPlannedEndDateElement();
         case -1106363674:  return getLength();
         case -934964668:  return addReason(); 
         case 1196993265:  return addDiagnosis(); 
@@ -3698,7 +3819,9 @@ public class Encounter extends DomainResource {
         case -332612366: /*basedOn*/ return new String[] {"Reference"};
         case 767422259: /*participant*/ return new String[] {};
         case -1474995297: /*appointment*/ return new String[] {"Reference"};
-        case -991726143: /*period*/ return new String[] {"Period"};
+        case 789194991: /*actualPeriod*/ return new String[] {"Period"};
+        case 460857804: /*plannedStartDate*/ return new String[] {"dateTime"};
+        case 1657534661: /*plannedEndDate*/ return new String[] {"dateTime"};
         case -1106363674: /*length*/ return new String[] {"Duration"};
         case -934964668: /*reason*/ return new String[] {"CodeableReference"};
         case 1196993265: /*diagnosis*/ return new String[] {};
@@ -3761,9 +3884,15 @@ public class Encounter extends DomainResource {
         else if (name.equals("appointment")) {
           return addAppointment();
         }
-        else if (name.equals("period")) {
-          this.period = new Period();
-          return this.period;
+        else if (name.equals("actualPeriod")) {
+          this.actualPeriod = new Period();
+          return this.actualPeriod;
+        }
+        else if (name.equals("plannedStartDate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Encounter.plannedStartDate");
+        }
+        else if (name.equals("plannedEndDate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Encounter.plannedEndDate");
         }
         else if (name.equals("length")) {
           this.length = new Duration();
@@ -3856,7 +3985,9 @@ public class Encounter extends DomainResource {
           for (Reference i : appointment)
             dst.appointment.add(i.copy());
         };
-        dst.period = period == null ? null : period.copy();
+        dst.actualPeriod = actualPeriod == null ? null : actualPeriod.copy();
+        dst.plannedStartDate = plannedStartDate == null ? null : plannedStartDate.copy();
+        dst.plannedEndDate = plannedEndDate == null ? null : plannedEndDate.copy();
         dst.length = length == null ? null : length.copy();
         if (reason != null) {
           dst.reason = new ArrayList<CodeableReference>();
@@ -3899,7 +4030,8 @@ public class Encounter extends DomainResource {
            && compareDeep(serviceType, o.serviceType, true) && compareDeep(priority, o.priority, true) && compareDeep(subject, o.subject, true)
            && compareDeep(subjectStatus, o.subjectStatus, true) && compareDeep(episodeOfCare, o.episodeOfCare, true)
            && compareDeep(basedOn, o.basedOn, true) && compareDeep(participant, o.participant, true) && compareDeep(appointment, o.appointment, true)
-           && compareDeep(period, o.period, true) && compareDeep(length, o.length, true) && compareDeep(reason, o.reason, true)
+           && compareDeep(actualPeriod, o.actualPeriod, true) && compareDeep(plannedStartDate, o.plannedStartDate, true)
+           && compareDeep(plannedEndDate, o.plannedEndDate, true) && compareDeep(length, o.length, true) && compareDeep(reason, o.reason, true)
            && compareDeep(diagnosis, o.diagnosis, true) && compareDeep(account, o.account, true) && compareDeep(hospitalization, o.hospitalization, true)
            && compareDeep(location, o.location, true) && compareDeep(serviceProvider, o.serviceProvider, true)
            && compareDeep(partOf, o.partOf, true);
@@ -3912,14 +4044,16 @@ public class Encounter extends DomainResource {
         if (!(other_ instanceof Encounter))
           return false;
         Encounter o = (Encounter) other_;
-        return compareValues(status, o.status, true);
+        return compareValues(status, o.status, true) && compareValues(plannedStartDate, o.plannedStartDate, true)
+           && compareValues(plannedEndDate, o.plannedEndDate, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, statusHistory
           , class_, classHistory, type, serviceType, priority, subject, subjectStatus, episodeOfCare
-          , basedOn, participant, appointment, period, length, reason, diagnosis, account
-          , hospitalization, location, serviceProvider, partOf);
+          , basedOn, participant, appointment, actualPeriod, plannedStartDate, plannedEndDate
+          , length, reason, diagnosis, account, hospitalization, location, serviceProvider
+          , partOf);
       }
 
   @Override
@@ -4194,17 +4328,17 @@ public class Encounter extends DomainResource {
    * <p>
    * Description: <b>Persons involved in the encounter other than the patient</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Encounter.participant.individual</b><br>
+   * Path: <b>Encounter.participant.actor</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="participant", path="Encounter.participant.individual", description="Persons involved in the encounter other than the patient", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  @SearchParamDefinition(name="participant", path="Encounter.participant.actor", description="Persons involved in the encounter other than the patient", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Device.class, Group.class, HealthcareService.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_PARTICIPANT = "participant";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>participant</b>
    * <p>
    * Description: <b>Persons involved in the encounter other than the patient</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Encounter.participant.individual</b><br>
+   * Path: <b>Encounter.participant.actor</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PARTICIPANT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PARTICIPANT);
@@ -4220,17 +4354,17 @@ public class Encounter extends DomainResource {
    * <p>
    * Description: <b>Persons involved in the encounter other than the patient</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Encounter.participant.individual.where(resolve() is Practitioner)</b><br>
+   * Path: <b>Encounter.participant.actor.where(resolve() is Practitioner)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="practitioner", path="Encounter.participant.individual.where(resolve() is Practitioner)", description="Persons involved in the encounter other than the patient", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Practitioner.class } )
+  @SearchParamDefinition(name="practitioner", path="Encounter.participant.actor.where(resolve() is Practitioner)", description="Persons involved in the encounter other than the patient", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Device.class, Group.class, HealthcareService.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_PRACTITIONER = "practitioner";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>practitioner</b>
    * <p>
    * Description: <b>Persons involved in the encounter other than the patient</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Encounter.participant.individual.where(resolve() is Practitioner)</b><br>
+   * Path: <b>Encounter.participant.actor.where(resolve() is Practitioner)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PRACTITIONER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PRACTITIONER);
@@ -4411,7 +4545,7 @@ public class Encounter extends DomainResource {
 * [Composition](composition.html): Composition editing time
 * [Consent](consent.html): When consent was agreed to
 * [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report
-* [Encounter](encounter.html): A date within the period the Encounter lasted
+* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted
 * [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period
 * [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated
 * [Flag](flag.html): Time period when flag is active
@@ -4423,10 +4557,10 @@ public class Encounter extends DomainResource {
 * [SupplyRequest](supplyrequest.html): When the request was made
 </b><br>
    * Type: <b>date</b><br>
-   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
+   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [Encounter](encounter.html): A date within the period the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [List](list.html): When the list was prepared\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
+  @SearchParamDefinition(name="date", path="AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [List](list.html): When the list was prepared\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
   public static final String SP_DATE = "date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>date</b>
@@ -4440,7 +4574,7 @@ public class Encounter extends DomainResource {
 * [Composition](composition.html): Composition editing time
 * [Consent](consent.html): When consent was agreed to
 * [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report
-* [Encounter](encounter.html): A date within the period the Encounter lasted
+* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted
 * [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period
 * [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated
 * [Flag](flag.html): Time period when flag is active
@@ -4452,7 +4586,7 @@ public class Encounter extends DomainResource {
 * [SupplyRequest](supplyrequest.html): When the request was made
 </b><br>
    * Type: <b>date</b><br>
-   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
+   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
@@ -4477,7 +4611,7 @@ public class Encounter extends DomainResource {
 * [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
 * [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
 * [Goal](goal.html): External Ids for this goal
-* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number
+* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID
 * [Immunization](immunization.html): Business identifier
 * [List](list.html): Business identifier
 * [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier
@@ -4497,7 +4631,7 @@ public class Encounter extends DomainResource {
    * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): External ids for this item\r\n* [CarePlan](careplan.html): External Ids for this plan\r\n* [CareTeam](careteam.html): External Ids for this team\r\n* [Composition](composition.html): Version-independent identifier for the Composition\r\n* [Condition](condition.html): A unique identifier of the condition record\r\n* [Consent](consent.html): Identifier for this record (external references)\r\n* [DetectedIssue](detectedissue.html): Unique id for the detected issue\r\n* [DeviceRequest](devicerequest.html): Business identifier for request/order\r\n* [DiagnosticReport](diagnosticreport.html): An identifier for the report\r\n* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents\r\n* [DocumentReference](documentreference.html): Identifier of the attachment binary\r\n* [Encounter](encounter.html): Identifier(s) by which this encounter is known\r\n* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier\r\n* [Goal](goal.html): External Ids for this goal\r\n* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number\r\n* [Immunization](immunization.html): Business identifier\r\n* [List](list.html): Business identifier\r\n* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier\r\n* [MedicationUsage](medicationusage.html): Return statements with this external identifier\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier\r\n* [Observation](observation.html): The unique id for a particular observation\r\n* [Procedure](procedure.html): A unique identifier for a procedure\r\n* [RiskAssessment](riskassessment.html): Unique identifier for the assessment\r\n* [ServiceRequest](servicerequest.html): Identifiers assigned to this order\r\n* [SupplyDelivery](supplydelivery.html): External identifier\r\n* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier\r\n", type="token" )
+  @SearchParamDefinition(name="identifier", path="AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): External ids for this item\r\n* [CarePlan](careplan.html): External Ids for this plan\r\n* [CareTeam](careteam.html): External Ids for this team\r\n* [Composition](composition.html): Version-independent identifier for the Composition\r\n* [Condition](condition.html): A unique identifier of the condition record\r\n* [Consent](consent.html): Identifier for this record (external references)\r\n* [DetectedIssue](detectedissue.html): Unique id for the detected issue\r\n* [DeviceRequest](devicerequest.html): Business identifier for request/order\r\n* [DiagnosticReport](diagnosticreport.html): An identifier for the report\r\n* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents\r\n* [DocumentReference](documentreference.html): Identifier of the attachment binary\r\n* [Encounter](encounter.html): Identifier(s) by which this encounter is known\r\n* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier\r\n* [Goal](goal.html): External Ids for this goal\r\n* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID\r\n* [Immunization](immunization.html): Business identifier\r\n* [List](list.html): Business identifier\r\n* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier\r\n* [MedicationUsage](medicationusage.html): Return statements with this external identifier\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier\r\n* [Observation](observation.html): The unique id for a particular observation\r\n* [Procedure](procedure.html): A unique identifier for a procedure\r\n* [RiskAssessment](riskassessment.html): Unique identifier for the assessment\r\n* [ServiceRequest](servicerequest.html): Identifiers assigned to this order\r\n* [SupplyDelivery](supplydelivery.html): External identifier\r\n* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier\r\n", type="token" )
   public static final String SP_IDENTIFIER = "identifier";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
@@ -4519,7 +4653,7 @@ public class Encounter extends DomainResource {
 * [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
 * [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
 * [Goal](goal.html): External Ids for this goal
-* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number
+* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID
 * [Immunization](immunization.html): Business identifier
 * [List](list.html): Business identifier
 * [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier
@@ -4549,17 +4683,17 @@ public class Encounter extends DomainResource {
 * [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
 * [CarePlan](careplan.html): Who the care plan is for
 * [CareTeam](careteam.html): Who care team is for
-* [ClinicalImpression](clinicalimpression.html): Patient or group assessed
+* [ClinicalImpression](clinicalimpression.html): Patient assessed
 * [Composition](composition.html): Who and/or what the composition is about
 * [Condition](condition.html): Who has the condition?
 * [Consent](consent.html): Who the consent applies to
 * [DetectedIssue](detectedissue.html): Associated patient
 * [DeviceRequest](devicerequest.html): Individual the service is ordered for
-* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient
+* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device
 * [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
 * [DocumentManifest](documentmanifest.html): The subject of the set of documents
 * [DocumentReference](documentreference.html): Who/what is the subject of the document
-* [Encounter](encounter.html): The patient or group present at the encounter
+* [Encounter](encounter.html): The patient present at the encounter
 * [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
 * [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
 * [Flag](flag.html): The identity of a subject to list flags for
@@ -4580,10 +4714,10 @@ public class Encounter extends DomainResource {
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient or group assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient or group present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Group.class, Patient.class } )
+  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -4593,17 +4727,17 @@ public class Encounter extends DomainResource {
 * [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
 * [CarePlan](careplan.html): Who the care plan is for
 * [CareTeam](careteam.html): Who care team is for
-* [ClinicalImpression](clinicalimpression.html): Patient or group assessed
+* [ClinicalImpression](clinicalimpression.html): Patient assessed
 * [Composition](composition.html): Who and/or what the composition is about
 * [Condition](condition.html): Who has the condition?
 * [Consent](consent.html): Who the consent applies to
 * [DetectedIssue](detectedissue.html): Associated patient
 * [DeviceRequest](devicerequest.html): Individual the service is ordered for
-* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient
+* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device
 * [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
 * [DocumentManifest](documentmanifest.html): The subject of the set of documents
 * [DocumentReference](documentreference.html): Who/what is the subject of the document
-* [Encounter](encounter.html): The patient or group present at the encounter
+* [Encounter](encounter.html): The patient present at the encounter
 * [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
 * [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
 * [Flag](flag.html): The identity of a subject to list flags for
@@ -4624,7 +4758,7 @@ public class Encounter extends DomainResource {
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);

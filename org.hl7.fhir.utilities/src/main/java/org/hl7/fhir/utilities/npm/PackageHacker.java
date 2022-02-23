@@ -24,8 +24,10 @@ import com.google.gson.JsonObject;
  */
 public class PackageHacker {
 
+  private static boolean useSecureReferences = false;
+  
   public static void main(String[] args) throws FileNotFoundException, IOException {
-    new PackageHacker().edit("M:\\web\\hl7.org\\fhir\\us\\carin-rtpbc\\package.tgz");
+    new PackageHacker().edit("M:\\web\\hl7.org\\fhir\\5.0.0-snapshot1\\hl7.fhir.r5.examples.tgz");
   }
 
   private void edit(String name) throws FileNotFoundException, IOException {
@@ -57,8 +59,8 @@ public class PackageHacker {
 
   private void change(JsonObject npm, Map<String, byte[]> content) throws FileNotFoundException, IOException {
     fixVersions(npm);
-    npm.remove("url");
-    npm.addProperty("url", "http://hl7.org/fhir/us/carin-rtpbc/STU1");
+    npm.remove("notForPublication");
+//    npm.addProperty("url", "http://hl7.org/fhir/us/carin-rtpbc/STU1");
 //    npm.remove("name");
 //    npm.addProperty("name", "hl7.fhir.uv.smart-app-launch");
 //    npm.remove("canonical");
@@ -136,8 +138,27 @@ public class PackageHacker {
     case "file://C:\\GitHub\\hl7.fhir.uv.mhealth-framework#0.1.0\\output":   return "http://hl7.org/fhir/uv/mhealth-framework/2020May"; 
     case "file://C:\\GitHub\\hl7.fhir.uv.security-label-ds4p#0.1.0\\output": return "http://hl7.org/fhir/uv/security-label-ds4p/2020May"; 
     case "file://C:\\GitHub\\hl7.fhir.uv.shorthand#0.12.0\\output":          return "http://hl7.org/fhir/uv/shorthand/2020May"; 
+    case "http://build.fhir.org/branches/R4B//":                             return "http://hl7.org/fhir/2021Mar"; 
     }
-    return webref;  
+
+    // https://github.com/HL7/fhir-ig-publisher/issues/295
+    if (webref.contains("hl7.org/fhir/us/core/STU4.0.0")) {
+      return webref.replace("hl7.org/fhir/us/core/STU4.0.0", "hl7.org/fhir/us/core/STU4");
+    }
+
+    if (isUseSecureReferences()) {
+      return webref.replace("http://hl7.org/fhir", "https://hl7.org/fhir").replace("http://build.fhir.org", "https://build.fhir.org");
+    } else {
+      return webref;
+    }
+  }
+
+  public static boolean isUseSecureReferences() {
+    return useSecureReferences;
+  }
+
+  public static void setUseSecureReferences(boolean useSecureReferences) {
+    PackageHacker.useSecureReferences = useSecureReferences;
   }
 
 }

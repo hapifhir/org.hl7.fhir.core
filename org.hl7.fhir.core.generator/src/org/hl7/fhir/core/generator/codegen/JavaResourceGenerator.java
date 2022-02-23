@@ -83,8 +83,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
   private long hashSum;
 
 	
-	public JavaResourceGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version) throws UnsupportedEncodingException {
-		super(out, definitions, configuration, version, genDate);
+	public JavaResourceGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version, String jid) throws UnsupportedEncodingException {
+		super(out, definitions, configuration, version, genDate, jid);
 	}
 
 	// public void generate(ElementDefinition root, String name, JavaGenClass clss, ProfiledType cd, Date genDate, String version, boolean isAbstract, Map<String, SearchParameterDefn> nameToSearchParamDef, ElementDefinition template) throws Exception {
@@ -94,7 +94,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		} else {
 		  clss = JavaGenClass.Type;
 		}    
-		write("package org.hl7.fhir.r5.model;\r\n");
+		write("package org.hl7.fhir."+jid+".model;\r\n");
     startMark(version, genDate);
 		
     boolean hl = true; // hasList(root);
@@ -121,7 +121,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       if (hs)
         write("import org.hl7.fhir.utilities.Utilities;\r\n");
       if (he)
-        write("import org.hl7.fhir.r5.model.Enumerations.*;\r\n");
+        write("import org.hl7.fhir."+jid+".model.Enumerations.*;\r\n");
     }
     if (hn) {
       if (clss == JavaGenClass.Resource) {
@@ -150,14 +150,15 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     write("\r\n");
     if (config.getIni().hasProperty("imports", analysis.getName())) {
       for (String imp : config.getIni().getStringProperty("imports", analysis.getName()).split("\\,")) {
-        write("import "+imp+";\r\n");
+        write("import "+imp.replace("{{jid}}", jid)+";\r\n");
       }
     }
     
 		jdoc("", replaceTitle(analysis.getName(), analysis.getStructure().getDescription()));
 		TypeInfo ti = analysis.getRootType();
 		boolean hasChildren = ti.getChildren().size() > 0;
-    String hierarchy = "extends "+analysis.getAncestor().getName();
+		String hierarchy = analysis.getAncestor() != null ? "extends "+analysis.getAncestor().getName() : "";
+		
     if (clss == JavaGenClass.Resource) {
       if (!analysis.isAbstract()) {
         write("@ResourceDef(name=\""+upFirst(analysis.getName()).replace("ListResource", "List")+"\", profile=\"http://hl7.org/fhir/StructureDefinition/"+upFirst(analysis.getName())+"\")\r\n");
@@ -167,7 +168,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       hierarchy = hierarchy + " implements ICompositeType";
     }
     
-    if (config.getIni().hasProperty("hierarchy", analysis.getName())) {
+    if (config.getIni().hasProperty("hierarchy", analysis.getName()) && analysis.getAncestor() != null) {
       hierarchy = config.getIni().getStringProperty("hierarchy", analysis.getName()).replace("{{super}}", analysis.getAncestor().getName());
     }
 				
@@ -211,7 +212,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		      generateAccessors(analysis, ti, e, "    ", matchingInheritedElement(ti.getInheritedChildren(), e));
 	      }
 		  }
-		  if (!analysis.isInterface()) {
+		  if (!analysis.isInterface() && ti.getInheritedChildren() != null) {
 		    for (ElementDefinition e : filterInherited(ti.getInheritedChildren(), ti.getChildren())) {
 		      generateUnimplementedAccessors(analysis, ti, e, "    ");
 		    }
@@ -249,7 +250,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		  write("    return ResourceType."+analysis.getName()+";\r\n");
 		  write("   }\r\n");
 		  write("\r\n"); 
-		} else if (analysis.isAbstract() && Utilities.noString(analysis.getAncestor().getName())) {
+		} else if (analysis.isAbstract() && analysis.getAncestor() != null && Utilities.noString(analysis.getAncestor().getName())) {
       write("\r\n"); 
       write("  @Override\r\n"); 
       write("  public String getIdBase() {\r\n"); 
@@ -261,7 +262,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       write("    setId(value);\r\n");
       write("  }\r\n");
 		  write("  public abstract ResourceType getResourceType();\r\n");
-		} else if (analysis.isAbstract() && Utilities.noString(analysis.getAncestor().getName())) {
+		} else if (analysis.isAbstract() && analysis.getAncestor() != null && Utilities.noString(analysis.getAncestor().getName())) {
       write("  @Override\r\n"); 
       write("  public String getIdBase() {\r\n"); 
       write("    return getId();\r\n"); 
@@ -311,14 +312,10 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		      } else {
 		        SearchParameter comp0 = definitions.getSearchParams().get(sp.getComponent().get(0).getDefinition());
 		        SearchParameter comp1 = definitions.getSearchParams().get(sp.getComponent().get(1).getDefinition());
-		        if (comp0 == null) {
-		          throw new Error("Couldn't find composite component " + sp.getComponent().get(0).getDefinition() + " on "+analysis.getName());
+		        if (comp0 != null && comp1 != null) {
+		          String[] compositeOf = new String[] { comp0.getCode(), comp1.getCode() };
+		          writeSearchParameterField(analysis.getName(), clss, analysis.isAbstract(), sp, sp.getCode(), compositeOf, analysis.getSearchParams(), analysis.getName());
 		        }
-		        if (comp1 == null) {
-		          throw new Error("Couldn't find composite component " + sp.getComponent().get(1).getDefinition() + " on "+analysis.getName());
-		        }
-		        String[] compositeOf = new String[] { comp0.getCode(), comp1.getCode() };
-		        writeSearchParameterField(analysis.getName(), clss, analysis.isAbstract(), sp, sp.getCode(), compositeOf, analysis.getSearchParams(), analysis.getName());
 		      }  
 		    } else if (code.contains("[x]")) {
 		      /*
@@ -333,7 +330,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		}
 
 		if (config.getAdornments().containsKey(analysis.getClassName())) {
-      write("// Manual code (from Configuration.txt)t:\r\n");
+      write("// Manual code (from Configuration.txt):\r\n");
 		  write(config.getAdornments().get(analysis.getClassName())+"\r\n");
       write("// end addition\r\n");
 		}
@@ -996,7 +993,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
   private List<TypeRefComponent> getTypes(List<TypeRefComponent> types) {
     if (types.size() == 1 && types.get(0).getName().equals("*")) {
       List<TypeRefComponent> t = new ArrayList<TypeRefComponent>();
-      for (String s : TypesUtilities.wildcardTypes()) {
+      for (String s : TypesUtilities.wildcardTypes("5.0")) {
         t.add(new TypeRefComponent(s));
       }
       return t;
@@ -1184,6 +1181,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
       cc = makeConst(cc);
 			write("            case "+cc+": return \""+c.getCode()+"\";\r\n");
 		}   
+    write("            case NULL: return null;\r\n");
 		write("            default: return \"?\";\r\n");
 		write("          }\r\n"); 
 		write("        }\r\n"); 
@@ -1195,6 +1193,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
       cc = makeConst(cc);
       write("            case "+cc+": return \""+c.getSystem()+"\";\r\n");
     }   
+    write("            case NULL: return null;\r\n");
     write("            default: return \"?\";\r\n");
     write("          }\r\n"); 
     write("        }\r\n"); 
@@ -1207,6 +1206,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
       String definition = definitions.getCodeDefinition(c.getSystem(), c.getCode());
       write("            case "+cc+": return \""+Utilities.escapeJava(definition)+"\";\r\n");
     }   
+    write("            case NULL: return null;\r\n");
     write("            default: return \"?\";\r\n");
     write("          }\r\n"); 
     write("        }\r\n"); 
@@ -1218,6 +1218,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
       cc = makeConst(cc);
       write("            case "+cc+": return \""+Utilities.escapeJava(Utilities.noString(c.getDisplay()) ? c.getCode() : c.getDisplay())+"\";\r\n");
     }   
+    write("            case NULL: return null;\r\n");
     write("            default: return \"?\";\r\n");
     write("          }\r\n"); 
     write("        }\r\n"); 
@@ -1271,7 +1272,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
     write("      }\r\n"); 
     write("    }\r\n"); 
     write("\r\n");
-//    enumInfo.put("org.hl7.fhir.r5.model."+name+"."+tns, url+"|"+el.toString());
+//    enumInfo.put("org.hl7.fhir."+jid+".model."+name+"."+tns, url+"|"+el.toString());
 	}
 
   private void generateType(Analysis analysis, TypeInfo ti) throws Exception {
@@ -1676,6 +1677,8 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
   }
 	private void generateAccessors(Analysis analysis, TypeInfo ti, ElementDefinition e, String indent, ElementDefinition inh) throws Exception {
 		String tn = e.getUserString("java.type");
+		StructureDefinition sd = e.hasType() ? definitions.getStructures().get(pfxType(e.getTypeFirstRep().getCode())) : null;
+		boolean abstractTarget = (sd != null) && sd.getAbstract() && !sd.getUrl().equals("http://hl7.org/fhir/StructureDefinition/Element")&& !sd.getUrl().equals("http://hl7.org/fhir/StructureDefinition/BackboneElement");
 		String className = ti.getName();
 
 		if (Utilities.noString(tn)) {
@@ -1808,27 +1811,30 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		    write("\r\n");
 		  } else {
 		    if (!definitions.hasResource(tn)) {
-		      /*
-		       * addXXX() for repeatable composite
-		       */
-		      write(indent+"public "+tn+" add"+getTitle(getElementName(e.getName(), false))+"() { //3\r\n");
-		      if (!e.unbounded()) {
-            write(indent+"  if (this."+getElementName(e.getName(), true)+" == null) {\r\n");
-            write(indent+"    this."+getElementName(e.getName(), true)+" = new "+tn+"();\r\n");
-            write(indent+"  } else {\r\n");
-            write(indent+"    throw new Error(\"Cannot have more than one "+e.getPath()+"\");\r\n");
-            write(indent+"  }\r\n");
-            write(indent+"  return this."+getElementName(e.getName(), true)+";\r\n");		        
+		      if (abstractTarget) {
+		        System.out.println(e.getPath()+" is abstract");
 		      } else {
-  		      write(indent+"  "+tn+" t = new "+tn+"();\r\n");
-  		      write(indent+"  if (this."+getElementName(e.getName(), true)+" == null)\r\n");
-  		      write(indent+"    this."+getElementName(e.getName(), true)+" = new ArrayList<"+tn+">();\r\n");
-  		      write(indent+"  this."+getElementName(e.getName(), true)+".add(t);\r\n");
-  		      write(indent+"  return t;\r\n");
+		        /*
+		         * addXXX() for repeatable composite
+		         */
+		        write(indent+"public "+tn+" add"+getTitle(getElementName(e.getName(), false))+"() { //3\r\n");
+		        if (!e.unbounded()) {
+		          write(indent+"  if (this."+getElementName(e.getName(), true)+" == null) {\r\n");
+		          write(indent+"    this."+getElementName(e.getName(), true)+" = new "+tn+"();\r\n");
+		          write(indent+"  } else {\r\n");
+		          write(indent+"    throw new Error(\"Cannot have more than one "+e.getPath()+"\");\r\n");
+		          write(indent+"  }\r\n");
+		          write(indent+"  return this."+getElementName(e.getName(), true)+";\r\n");		        
+		        } else {
+		          write(indent+"  "+tn+" t = new "+tn+"();\r\n");
+		          write(indent+"  if (this."+getElementName(e.getName(), true)+" == null)\r\n");
+		          write(indent+"    this."+getElementName(e.getName(), true)+" = new ArrayList<"+tn+">();\r\n");
+		          write(indent+"  this."+getElementName(e.getName(), true)+".add(t);\r\n");
+		          write(indent+"  return t;\r\n");
+		        }
+		        write(indent+"}\r\n");
+		        write("\r\n");
 		      }
-          write(indent+"}\r\n");
-		      write("\r\n");
-
 		      /*
 		       * addXXX(foo) for repeatable composite
 		       */
@@ -2032,6 +2038,10 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		}
 
 	}
+
+  private String pfxType(String code) {
+    return "http://hl7.org/fhir/StructureDefinition/"+code;
+  }
 
   private void generateAbstractAccessors(Analysis analysis, TypeInfo ti, ElementDefinition e, String indent) throws Exception {
     String tn = e.getUserString("java.type");

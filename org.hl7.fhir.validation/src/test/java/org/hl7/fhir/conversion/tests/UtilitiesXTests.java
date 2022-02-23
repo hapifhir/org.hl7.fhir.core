@@ -46,15 +46,16 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.fhir.ucum.UcumEssenceService;
-import org.hl7.fhir.convertors.loaders.BaseLoaderR5.NullLoaderKnowledgeProvider;
-import org.hl7.fhir.convertors.loaders.R2016MayToR5Loader;
-import org.hl7.fhir.convertors.loaders.R2ToR5Loader;
-import org.hl7.fhir.convertors.loaders.R3ToR5Loader;
-import org.hl7.fhir.convertors.loaders.R4ToR5Loader;
+import org.hl7.fhir.convertors.loaders.loaderR5.NullLoaderKnowledgeProviderR5;
+import org.hl7.fhir.convertors.loaders.loaderR5.R2016MayToR5Loader;
+import org.hl7.fhir.convertors.loaders.loaderR5.R2ToR5Loader;
+import org.hl7.fhir.convertors.loaders.loaderR5.R3ToR5Loader;
+import org.hl7.fhir.convertors.loaders.loaderR5.R4ToR5Loader;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.Parameters;
+import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -86,7 +87,7 @@ public class UtilitiesXTests {
 	    FilesystemPackageCacheManager pcm;
 	    try {
 	      pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-	      IWorkerContext fcontext = SimpleWorkerContext.fromPackage(pcm.loadPackage(VersionUtilities.packageForVersion(version), version), loaderForVersion(version));
+	      IWorkerContext fcontext = TestingUtilities.getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(version), version), loaderForVersion(version));
 	      fcontext.setUcumService(new UcumEssenceService(UtilitiesXTests.loadTestResourceStream("ucum", "ucum-essence.xml")));
 	      fcontext.setExpansionProfile(new Parameters());
 	      fcontexts.put(version, fcontext);
@@ -101,13 +102,13 @@ public class UtilitiesXTests {
     if (Utilities.noString(version))
       return null;
     if (version.startsWith("1.0"))
-      return new R2ToR5Loader(new String[] { "Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProvider());
+      return new R2ToR5Loader(new String[] { "Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProviderR5());
     if (version.startsWith("1.4"))
-      return new R2016MayToR5Loader(new String[] { "Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProvider()); // special case
+      return new R2016MayToR5Loader(new String[] { "Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProviderR5()); // special case
     if (version.startsWith("3.0"))
-      return new R3ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProvider());    
+      return new R3ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProviderR5());
     if (version.startsWith("4.0"))
-      return new R4ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProvider());    
+      return new R4ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProviderR5(), version);
     return null;
   }
 

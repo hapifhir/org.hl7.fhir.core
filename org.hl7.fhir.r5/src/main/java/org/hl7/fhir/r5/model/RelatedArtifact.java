@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -57,7 +57,7 @@ public class RelatedArtifact extends DataType implements ICompositeType {
          */
         DOCUMENTATION, 
         /**
-         * A summary of the justification for the knowledge resource including supporting evidence, relevant guidelines, or other clinically important information. This information is intended to provide a way to make the justification for the knowledge resource available to the consumer of interventions or results produced by the knowledge resource.
+         * The target artifact is a summary of the justification for the knowledge resource including supporting evidence, relevant guidelines, or other clinically important information. This information is intended to provide a way to make the justification for the knowledge resource available to the consumer of interventions or results produced by the knowledge resource.
          */
         JUSTIFICATION, 
         /**
@@ -73,17 +73,113 @@ public class RelatedArtifact extends DataType implements ICompositeType {
          */
         SUCCESSOR, 
         /**
-         * The knowledge resource is derived from the related artifact. This is intended to capture the relationship in which a particular knowledge resource is based on the content of another artifact, but is modified to capture either a different set of overall requirements, or a more specific set of requirements such as those involved in a particular institution or clinical setting.
+         * This artifact is derived from the target artifact. This is intended to capture the relationship in which a particular knowledge resource is based on the content of another artifact, but is modified to capture either a different set of overall requirements, or a more specific set of requirements such as those involved in a particular institution or clinical setting. The artifact may be derived from one or more target artifacts.
          */
         DERIVEDFROM, 
         /**
-         * The knowledge resource depends on the given related artifact.
+         * This artifact depends on the target artifact. There is a requirement to use the target artifact in the creation or interpretation of this artifact.
          */
         DEPENDSON, 
         /**
-         * The knowledge resource is composed of the given related artifact.
+         * This artifact is composed of the target artifact. This artifact is constructed with the target artifact as a component. The target artifact is a part of this artifact. (A dataset is composed of data.).
          */
         COMPOSEDOF, 
+        /**
+         * This artifact is a part of the target artifact. The target artifact is composed of this artifact (and possibly other artifacts).
+         */
+        PARTOF, 
+        /**
+         * This artifact amends or changes the target artifact. This artifact adds additional information that is functionally expected to replace information in the target artifact. This artifact replaces a part but not all of the target artifact.
+         */
+        AMENDS, 
+        /**
+         * This artifact is amended with or changed by the target artifact. There is information in this artifact that should be functionally replaced with information in the target artifact.
+         */
+        AMENDEDWITH, 
+        /**
+         * This artifact adds additional information to the target artifact. The additional information does not replace or change information in the target artifact.
+         */
+        APPENDS, 
+        /**
+         * This artifact has additional information in the target artifact.
+         */
+        APPENDEDWITH, 
+        /**
+         * This artifact cites the target artifact. This may be a bibliographic citation for papers, references, or other relevant material for the knowledge resource. This is intended to allow for citation of related material, but that was not necessarily specifically prepared in connection with this knowledge resource.
+         */
+        CITES, 
+        /**
+         * This artifact is cited by the target artifact.
+         */
+        CITEDBY, 
+        /**
+         * This artifact contains comments about the target artifact.
+         */
+        COMMENTSON, 
+        /**
+         * This artifact has comments about it in the target artifact.  The type of comments may be expressed in the targetClassifier element such as reply, review, editorial, feedback, solicited, unsolicited, structured, unstructured.
+         */
+        COMMENTIN, 
+        /**
+         * This artifact is a container in which the target artifact is contained. A container is a data structure whose instances are collections of other objects. (A database contains the dataset.).
+         */
+        CONTAINS, 
+        /**
+         * This artifact is contained in the target artifact. The target artifact is a data structure whose instances are collections of other objects.
+         */
+        CONTAINEDIN, 
+        /**
+         * This artifact identifies errors and replacement content for the target artifact.
+         */
+        CORRECTS, 
+        /**
+         * This artifact has corrections to it in the target artifact. The target artifact identifies errors and replacement content for this artifact.
+         */
+        CORRECTIONIN, 
+        /**
+         * This artifact replaces or supersedes the target artifact. The target artifact may be considered deprecated.
+         */
+        REPLACES, 
+        /**
+         * This artifact is replaced with or superseded by the target artifact. This artifact may be considered deprecated.
+         */
+        REPLACEDWITH, 
+        /**
+         * This artifact retracts the target artifact. The content that was published in the target artifact should be considered removed from publication and should no longer be considered part of the public record.
+         */
+        RETRACTS, 
+        /**
+         * This artifact is retracted by the target artifact. The content that was published in this artifact should be considered removed from publication and should no longer be considered part of the public record.
+         */
+        RETRACTEDBY, 
+        /**
+         * This artifact is a signature of the target artifact.
+         */
+        SIGNS, 
+        /**
+         * This artifact has characteristics in common with the target artifact. This relationship may be used in systems to “deduplicate” knowledge artifacts from different sources, or in systems to show “similar items”.
+         */
+        SIMILARTO, 
+        /**
+         * This artifact provides additional documentation for the target artifact. This could include additional instructions on usage as well as additional information on clinical context or appropriateness.
+         */
+        SUPPORTS, 
+        /**
+         * The target artifact contains additional documentation for the knowledge resource. This could include additional instructions on usage as well as additional information on clinical context or appropriateness.
+         */
+        SUPPORTEDWITH, 
+        /**
+         * This artifact was generated by transforming the target artifact (e.g., format or language conversion). This is intended to capture the relationship in which a particular knowledge resource is based on the content of another artifact, but changes are only apparent in form and there is only one target artifact with the “transforms” relationship type.
+         */
+        TRANSFORMS, 
+        /**
+         * This artifact was transformed into the target artifact (e.g., by format or language conversion).
+         */
+        TRANSFORMEDINTO, 
+        /**
+         * This artifact was generated by transforming a related artifact (e.g., format or language conversion), noted separately with the “transforms” relationship type. This transformation used the target artifact to inform the transformation. The target artifact may be a conversion script or translation guide.
+         */
+        TRANSFORMEDWITH, 
         /**
          * added to help the parsers with the generic types
          */
@@ -107,6 +203,54 @@ public class RelatedArtifact extends DataType implements ICompositeType {
           return DEPENDSON;
         if ("composed-of".equals(codeString))
           return COMPOSEDOF;
+        if ("part-of".equals(codeString))
+          return PARTOF;
+        if ("amends".equals(codeString))
+          return AMENDS;
+        if ("amended-with".equals(codeString))
+          return AMENDEDWITH;
+        if ("appends".equals(codeString))
+          return APPENDS;
+        if ("appended-with".equals(codeString))
+          return APPENDEDWITH;
+        if ("cites".equals(codeString))
+          return CITES;
+        if ("cited-by".equals(codeString))
+          return CITEDBY;
+        if ("comments-on".equals(codeString))
+          return COMMENTSON;
+        if ("comment-in".equals(codeString))
+          return COMMENTIN;
+        if ("contains".equals(codeString))
+          return CONTAINS;
+        if ("contained-in".equals(codeString))
+          return CONTAINEDIN;
+        if ("corrects".equals(codeString))
+          return CORRECTS;
+        if ("correction-in".equals(codeString))
+          return CORRECTIONIN;
+        if ("replaces".equals(codeString))
+          return REPLACES;
+        if ("replaced-with".equals(codeString))
+          return REPLACEDWITH;
+        if ("retracts".equals(codeString))
+          return RETRACTS;
+        if ("retracted-by".equals(codeString))
+          return RETRACTEDBY;
+        if ("signs".equals(codeString))
+          return SIGNS;
+        if ("similar-to".equals(codeString))
+          return SIMILARTO;
+        if ("supports".equals(codeString))
+          return SUPPORTS;
+        if ("supported-with".equals(codeString))
+          return SUPPORTEDWITH;
+        if ("transforms".equals(codeString))
+          return TRANSFORMS;
+        if ("transformed-into".equals(codeString))
+          return TRANSFORMEDINTO;
+        if ("transformed-with".equals(codeString))
+          return TRANSFORMEDWITH;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
@@ -122,7 +266,30 @@ public class RelatedArtifact extends DataType implements ICompositeType {
             case DERIVEDFROM: return "derived-from";
             case DEPENDSON: return "depends-on";
             case COMPOSEDOF: return "composed-of";
-            case NULL: return null;
+            case PARTOF: return "part-of";
+            case AMENDS: return "amends";
+            case AMENDEDWITH: return "amended-with";
+            case APPENDS: return "appends";
+            case APPENDEDWITH: return "appended-with";
+            case CITES: return "cites";
+            case CITEDBY: return "cited-by";
+            case COMMENTSON: return "comments-on";
+            case COMMENTIN: return "comment-in";
+            case CONTAINS: return "contains";
+            case CONTAINEDIN: return "contained-in";
+            case CORRECTS: return "corrects";
+            case CORRECTIONIN: return "correction-in";
+            case REPLACES: return "replaces";
+            case REPLACEDWITH: return "replaced-with";
+            case RETRACTS: return "retracts";
+            case RETRACTEDBY: return "retracted-by";
+            case SIGNS: return "signs";
+            case SIMILARTO: return "similar-to";
+            case SUPPORTS: return "supports";
+            case SUPPORTEDWITH: return "supported-with";
+            case TRANSFORMS: return "transforms";
+            case TRANSFORMEDINTO: return "transformed-into";
+            case TRANSFORMEDWITH: return "transformed-with";
             default: return "?";
           }
         }
@@ -136,21 +303,67 @@ public class RelatedArtifact extends DataType implements ICompositeType {
             case DERIVEDFROM: return "http://hl7.org/fhir/related-artifact-type";
             case DEPENDSON: return "http://hl7.org/fhir/related-artifact-type";
             case COMPOSEDOF: return "http://hl7.org/fhir/related-artifact-type";
-            case NULL: return null;
+            case PARTOF: return "http://hl7.org/fhir/related-artifact-type";
+            case AMENDS: return "http://hl7.org/fhir/related-artifact-type";
+            case AMENDEDWITH: return "http://hl7.org/fhir/related-artifact-type";
+            case APPENDS: return "http://hl7.org/fhir/related-artifact-type";
+            case APPENDEDWITH: return "http://hl7.org/fhir/related-artifact-type";
+            case CITES: return "http://hl7.org/fhir/related-artifact-type";
+            case CITEDBY: return "http://hl7.org/fhir/related-artifact-type";
+            case COMMENTSON: return "http://hl7.org/fhir/related-artifact-type";
+            case COMMENTIN: return "http://hl7.org/fhir/related-artifact-type";
+            case CONTAINS: return "http://hl7.org/fhir/related-artifact-type";
+            case CONTAINEDIN: return "http://hl7.org/fhir/related-artifact-type";
+            case CORRECTS: return "http://hl7.org/fhir/related-artifact-type";
+            case CORRECTIONIN: return "http://hl7.org/fhir/related-artifact-type";
+            case REPLACES: return "http://hl7.org/fhir/related-artifact-type";
+            case REPLACEDWITH: return "http://hl7.org/fhir/related-artifact-type";
+            case RETRACTS: return "http://hl7.org/fhir/related-artifact-type";
+            case RETRACTEDBY: return "http://hl7.org/fhir/related-artifact-type";
+            case SIGNS: return "http://hl7.org/fhir/related-artifact-type";
+            case SIMILARTO: return "http://hl7.org/fhir/related-artifact-type";
+            case SUPPORTS: return "http://hl7.org/fhir/related-artifact-type";
+            case SUPPORTEDWITH: return "http://hl7.org/fhir/related-artifact-type";
+            case TRANSFORMS: return "http://hl7.org/fhir/related-artifact-type";
+            case TRANSFORMEDINTO: return "http://hl7.org/fhir/related-artifact-type";
+            case TRANSFORMEDWITH: return "http://hl7.org/fhir/related-artifact-type";
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
             case DOCUMENTATION: return "Additional documentation for the knowledge resource. This would include additional instructions on usage as well as additional information on clinical context or appropriateness.";
-            case JUSTIFICATION: return "A summary of the justification for the knowledge resource including supporting evidence, relevant guidelines, or other clinically important information. This information is intended to provide a way to make the justification for the knowledge resource available to the consumer of interventions or results produced by the knowledge resource.";
+            case JUSTIFICATION: return "The target artifact is a summary of the justification for the knowledge resource including supporting evidence, relevant guidelines, or other clinically important information. This information is intended to provide a way to make the justification for the knowledge resource available to the consumer of interventions or results produced by the knowledge resource.";
             case CITATION: return "Bibliographic citation for papers, references, or other relevant material for the knowledge resource. This is intended to allow for citation of related material, but that was not necessarily specifically prepared in connection with this knowledge resource.";
             case PREDECESSOR: return "The previous version of the knowledge resource.";
             case SUCCESSOR: return "The next version of the knowledge resource.";
-            case DERIVEDFROM: return "The knowledge resource is derived from the related artifact. This is intended to capture the relationship in which a particular knowledge resource is based on the content of another artifact, but is modified to capture either a different set of overall requirements, or a more specific set of requirements such as those involved in a particular institution or clinical setting.";
-            case DEPENDSON: return "The knowledge resource depends on the given related artifact.";
-            case COMPOSEDOF: return "The knowledge resource is composed of the given related artifact.";
-            case NULL: return null;
+            case DERIVEDFROM: return "This artifact is derived from the target artifact. This is intended to capture the relationship in which a particular knowledge resource is based on the content of another artifact, but is modified to capture either a different set of overall requirements, or a more specific set of requirements such as those involved in a particular institution or clinical setting. The artifact may be derived from one or more target artifacts.";
+            case DEPENDSON: return "This artifact depends on the target artifact. There is a requirement to use the target artifact in the creation or interpretation of this artifact.";
+            case COMPOSEDOF: return "This artifact is composed of the target artifact. This artifact is constructed with the target artifact as a component. The target artifact is a part of this artifact. (A dataset is composed of data.).";
+            case PARTOF: return "This artifact is a part of the target artifact. The target artifact is composed of this artifact (and possibly other artifacts).";
+            case AMENDS: return "This artifact amends or changes the target artifact. This artifact adds additional information that is functionally expected to replace information in the target artifact. This artifact replaces a part but not all of the target artifact.";
+            case AMENDEDWITH: return "This artifact is amended with or changed by the target artifact. There is information in this artifact that should be functionally replaced with information in the target artifact.";
+            case APPENDS: return "This artifact adds additional information to the target artifact. The additional information does not replace or change information in the target artifact.";
+            case APPENDEDWITH: return "This artifact has additional information in the target artifact.";
+            case CITES: return "This artifact cites the target artifact. This may be a bibliographic citation for papers, references, or other relevant material for the knowledge resource. This is intended to allow for citation of related material, but that was not necessarily specifically prepared in connection with this knowledge resource.";
+            case CITEDBY: return "This artifact is cited by the target artifact.";
+            case COMMENTSON: return "This artifact contains comments about the target artifact.";
+            case COMMENTIN: return "This artifact has comments about it in the target artifact.  The type of comments may be expressed in the targetClassifier element such as reply, review, editorial, feedback, solicited, unsolicited, structured, unstructured.";
+            case CONTAINS: return "This artifact is a container in which the target artifact is contained. A container is a data structure whose instances are collections of other objects. (A database contains the dataset.).";
+            case CONTAINEDIN: return "This artifact is contained in the target artifact. The target artifact is a data structure whose instances are collections of other objects.";
+            case CORRECTS: return "This artifact identifies errors and replacement content for the target artifact.";
+            case CORRECTIONIN: return "This artifact has corrections to it in the target artifact. The target artifact identifies errors and replacement content for this artifact.";
+            case REPLACES: return "This artifact replaces or supersedes the target artifact. The target artifact may be considered deprecated.";
+            case REPLACEDWITH: return "This artifact is replaced with or superseded by the target artifact. This artifact may be considered deprecated.";
+            case RETRACTS: return "This artifact retracts the target artifact. The content that was published in the target artifact should be considered removed from publication and should no longer be considered part of the public record.";
+            case RETRACTEDBY: return "This artifact is retracted by the target artifact. The content that was published in this artifact should be considered removed from publication and should no longer be considered part of the public record.";
+            case SIGNS: return "This artifact is a signature of the target artifact.";
+            case SIMILARTO: return "This artifact has characteristics in common with the target artifact. This relationship may be used in systems to “deduplicate” knowledge artifacts from different sources, or in systems to show “similar items”.";
+            case SUPPORTS: return "This artifact provides additional documentation for the target artifact. This could include additional instructions on usage as well as additional information on clinical context or appropriateness.";
+            case SUPPORTEDWITH: return "The target artifact contains additional documentation for the knowledge resource. This could include additional instructions on usage as well as additional information on clinical context or appropriateness.";
+            case TRANSFORMS: return "This artifact was generated by transforming the target artifact (e.g., format or language conversion). This is intended to capture the relationship in which a particular knowledge resource is based on the content of another artifact, but changes are only apparent in form and there is only one target artifact with the “transforms” relationship type.";
+            case TRANSFORMEDINTO: return "This artifact was transformed into the target artifact (e.g., by format or language conversion).";
+            case TRANSFORMEDWITH: return "This artifact was generated by transforming a related artifact (e.g., format or language conversion), noted separately with the “transforms” relationship type. This transformation used the target artifact to inform the transformation. The target artifact may be a conversion script or translation guide.";
             default: return "?";
           }
         }
@@ -164,7 +377,30 @@ public class RelatedArtifact extends DataType implements ICompositeType {
             case DERIVEDFROM: return "Derived From";
             case DEPENDSON: return "Depends On";
             case COMPOSEDOF: return "Composed Of";
-            case NULL: return null;
+            case PARTOF: return "Part Of";
+            case AMENDS: return "Amends";
+            case AMENDEDWITH: return "Amended With";
+            case APPENDS: return "Appends";
+            case APPENDEDWITH: return "Appended With";
+            case CITES: return "Cites";
+            case CITEDBY: return "Cited By";
+            case COMMENTSON: return "Is Comment On";
+            case COMMENTIN: return "Has Comment In";
+            case CONTAINS: return "Contains";
+            case CONTAINEDIN: return "Contained In";
+            case CORRECTS: return "Corrects";
+            case CORRECTIONIN: return "Correction In";
+            case REPLACES: return "Replaces";
+            case REPLACEDWITH: return "Replaced With";
+            case RETRACTS: return "Retracts";
+            case RETRACTEDBY: return "Retracted By";
+            case SIGNS: return "Signs";
+            case SIMILARTO: return "Similar To";
+            case SUPPORTS: return "Supports";
+            case SUPPORTEDWITH: return "Supported With";
+            case TRANSFORMS: return "Transforms";
+            case TRANSFORMEDINTO: return "Transformed Into";
+            case TRANSFORMEDWITH: return "Transformed With";
             default: return "?";
           }
         }
@@ -191,6 +427,54 @@ public class RelatedArtifact extends DataType implements ICompositeType {
           return RelatedArtifactType.DEPENDSON;
         if ("composed-of".equals(codeString))
           return RelatedArtifactType.COMPOSEDOF;
+        if ("part-of".equals(codeString))
+          return RelatedArtifactType.PARTOF;
+        if ("amends".equals(codeString))
+          return RelatedArtifactType.AMENDS;
+        if ("amended-with".equals(codeString))
+          return RelatedArtifactType.AMENDEDWITH;
+        if ("appends".equals(codeString))
+          return RelatedArtifactType.APPENDS;
+        if ("appended-with".equals(codeString))
+          return RelatedArtifactType.APPENDEDWITH;
+        if ("cites".equals(codeString))
+          return RelatedArtifactType.CITES;
+        if ("cited-by".equals(codeString))
+          return RelatedArtifactType.CITEDBY;
+        if ("comments-on".equals(codeString))
+          return RelatedArtifactType.COMMENTSON;
+        if ("comment-in".equals(codeString))
+          return RelatedArtifactType.COMMENTIN;
+        if ("contains".equals(codeString))
+          return RelatedArtifactType.CONTAINS;
+        if ("contained-in".equals(codeString))
+          return RelatedArtifactType.CONTAINEDIN;
+        if ("corrects".equals(codeString))
+          return RelatedArtifactType.CORRECTS;
+        if ("correction-in".equals(codeString))
+          return RelatedArtifactType.CORRECTIONIN;
+        if ("replaces".equals(codeString))
+          return RelatedArtifactType.REPLACES;
+        if ("replaced-with".equals(codeString))
+          return RelatedArtifactType.REPLACEDWITH;
+        if ("retracts".equals(codeString))
+          return RelatedArtifactType.RETRACTS;
+        if ("retracted-by".equals(codeString))
+          return RelatedArtifactType.RETRACTEDBY;
+        if ("signs".equals(codeString))
+          return RelatedArtifactType.SIGNS;
+        if ("similar-to".equals(codeString))
+          return RelatedArtifactType.SIMILARTO;
+        if ("supports".equals(codeString))
+          return RelatedArtifactType.SUPPORTS;
+        if ("supported-with".equals(codeString))
+          return RelatedArtifactType.SUPPORTEDWITH;
+        if ("transforms".equals(codeString))
+          return RelatedArtifactType.TRANSFORMS;
+        if ("transformed-into".equals(codeString))
+          return RelatedArtifactType.TRANSFORMEDINTO;
+        if ("transformed-with".equals(codeString))
+          return RelatedArtifactType.TRANSFORMEDWITH;
         throw new IllegalArgumentException("Unknown RelatedArtifactType code '"+codeString+"'");
         }
         public Enumeration<RelatedArtifactType> fromType(Base code) throws FHIRException {
@@ -217,6 +501,54 @@ public class RelatedArtifact extends DataType implements ICompositeType {
           return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.DEPENDSON);
         if ("composed-of".equals(codeString))
           return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.COMPOSEDOF);
+        if ("part-of".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.PARTOF);
+        if ("amends".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.AMENDS);
+        if ("amended-with".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.AMENDEDWITH);
+        if ("appends".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.APPENDS);
+        if ("appended-with".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.APPENDEDWITH);
+        if ("cites".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.CITES);
+        if ("cited-by".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.CITEDBY);
+        if ("comments-on".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.COMMENTSON);
+        if ("comment-in".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.COMMENTIN);
+        if ("contains".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.CONTAINS);
+        if ("contained-in".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.CONTAINEDIN);
+        if ("corrects".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.CORRECTS);
+        if ("correction-in".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.CORRECTIONIN);
+        if ("replaces".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.REPLACES);
+        if ("replaced-with".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.REPLACEDWITH);
+        if ("retracts".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.RETRACTS);
+        if ("retracted-by".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.RETRACTEDBY);
+        if ("signs".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.SIGNS);
+        if ("similar-to".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.SIMILARTO);
+        if ("supports".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.SUPPORTS);
+        if ("supported-with".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.SUPPORTEDWITH);
+        if ("transforms".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.TRANSFORMS);
+        if ("transformed-into".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.TRANSFORMEDINTO);
+        if ("transformed-with".equals(codeString))
+          return new Enumeration<RelatedArtifactType>(this, RelatedArtifactType.TRANSFORMEDWITH);
         throw new FHIRException("Unknown RelatedArtifactType code '"+codeString+"'");
         }
     public String toCode(RelatedArtifactType code) {
@@ -236,6 +568,54 @@ public class RelatedArtifact extends DataType implements ICompositeType {
         return "depends-on";
       if (code == RelatedArtifactType.COMPOSEDOF)
         return "composed-of";
+      if (code == RelatedArtifactType.PARTOF)
+        return "part-of";
+      if (code == RelatedArtifactType.AMENDS)
+        return "amends";
+      if (code == RelatedArtifactType.AMENDEDWITH)
+        return "amended-with";
+      if (code == RelatedArtifactType.APPENDS)
+        return "appends";
+      if (code == RelatedArtifactType.APPENDEDWITH)
+        return "appended-with";
+      if (code == RelatedArtifactType.CITES)
+        return "cites";
+      if (code == RelatedArtifactType.CITEDBY)
+        return "cited-by";
+      if (code == RelatedArtifactType.COMMENTSON)
+        return "comments-on";
+      if (code == RelatedArtifactType.COMMENTIN)
+        return "comment-in";
+      if (code == RelatedArtifactType.CONTAINS)
+        return "contains";
+      if (code == RelatedArtifactType.CONTAINEDIN)
+        return "contained-in";
+      if (code == RelatedArtifactType.CORRECTS)
+        return "corrects";
+      if (code == RelatedArtifactType.CORRECTIONIN)
+        return "correction-in";
+      if (code == RelatedArtifactType.REPLACES)
+        return "replaces";
+      if (code == RelatedArtifactType.REPLACEDWITH)
+        return "replaced-with";
+      if (code == RelatedArtifactType.RETRACTS)
+        return "retracts";
+      if (code == RelatedArtifactType.RETRACTEDBY)
+        return "retracted-by";
+      if (code == RelatedArtifactType.SIGNS)
+        return "signs";
+      if (code == RelatedArtifactType.SIMILARTO)
+        return "similar-to";
+      if (code == RelatedArtifactType.SUPPORTS)
+        return "supports";
+      if (code == RelatedArtifactType.SUPPORTEDWITH)
+        return "supported-with";
+      if (code == RelatedArtifactType.TRANSFORMS)
+        return "transforms";
+      if (code == RelatedArtifactType.TRANSFORMEDINTO)
+        return "transformed-into";
+      if (code == RelatedArtifactType.TRANSFORMEDWITH)
+        return "transformed-with";
       return "?";
       }
     public String toSystem(RelatedArtifactType code) {
@@ -247,37 +627,38 @@ public class RelatedArtifact extends DataType implements ICompositeType {
      * The type of relationship to the related artifact.
      */
     @Child(name = "type", type = {CodeType.class}, order=0, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="documentation | justification | citation | predecessor | successor | derived-from | depends-on | composed-of", formalDefinition="The type of relationship to the related artifact." )
+    @Description(shortDefinition="documentation | justification | citation | predecessor | successor | derived-from | depends-on | composed-of | part-of | amends | amended-with | appends | appended-with | cites | cited-by | comments-on | comment-in | contains | contained-in | corrects | correction-in | replaces | replaced-with | retracts | retracted-by | signs | similar-to | supports | supported-with | transforms | transformed-into | transformed-with", formalDefinition="The type of relationship to the related artifact." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/related-artifact-type")
     protected Enumeration<RelatedArtifactType> type;
 
     /**
+     * Provides additional classifiers of the related artifact.
+     */
+    @Child(name = "classifier", type = {CodeableConcept.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Additional classifiers", formalDefinition="Provides additional classifiers of the related artifact." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/citation-artifact-classifier")
+    protected List<CodeableConcept> classifier;
+
+    /**
      * A short label that can be used to reference the citation from elsewhere in the containing artifact, such as a footnote index.
      */
-    @Child(name = "label", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "label", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Short label", formalDefinition="A short label that can be used to reference the citation from elsewhere in the containing artifact, such as a footnote index." )
     protected StringType label;
 
     /**
      * A brief description of the document or knowledge resource being referenced, suitable for display to a consumer.
      */
-    @Child(name = "display", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "display", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Brief description of the related artifact", formalDefinition="A brief description of the document or knowledge resource being referenced, suitable for display to a consumer." )
     protected StringType display;
 
     /**
      * A bibliographic citation for the related artifact. This text SHOULD be formatted according to an accepted citation format.
      */
-    @Child(name = "citation", type = {MarkdownType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "citation", type = {MarkdownType.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Bibliographic citation for the artifact", formalDefinition="A bibliographic citation for the related artifact. This text SHOULD be formatted according to an accepted citation format." )
     protected MarkdownType citation;
-
-    /**
-     * A url for the artifact that can be followed to access the actual content.
-     */
-    @Child(name = "url", type = {UrlType.class}, order=4, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Where the artifact can be accessed", formalDefinition="A url for the artifact that can be followed to access the actual content." )
-    protected UrlType url;
 
     /**
      * The document being referenced, represented as an attachment. This is exclusive with the resource element.
@@ -287,13 +668,20 @@ public class RelatedArtifact extends DataType implements ICompositeType {
     protected Attachment document;
 
     /**
-     * The related resource, such as a library, value set, profile, or other knowledge resource.
+     * The related artifact, such as a library, value set, profile, or other knowledge resource.
      */
     @Child(name = "resource", type = {CanonicalType.class}, order=6, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="What resource is being referenced", formalDefinition="The related resource, such as a library, value set, profile, or other knowledge resource." )
+    @Description(shortDefinition="What artifact is being referenced", formalDefinition="The related artifact, such as a library, value set, profile, or other knowledge resource." )
     protected CanonicalType resource;
 
-    private static final long serialVersionUID = -695743528L;
+    /**
+     * The related artifact, if the artifact is not a canonical resource, or a resource reference to a canonical resource.
+     */
+    @Child(name = "resourceReference", type = {Reference.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="What artifact, if not a conformance resource", formalDefinition="The related artifact, if the artifact is not a canonical resource, or a resource reference to a canonical resource." )
+    protected Reference resourceReference;
+
+    private static final long serialVersionUID = 810506564L;
 
   /**
    * Constructor
@@ -353,6 +741,59 @@ public class RelatedArtifact extends DataType implements ICompositeType {
           this.type = new Enumeration<RelatedArtifactType>(new RelatedArtifactTypeEnumFactory());
         this.type.setValue(value);
       return this;
+    }
+
+    /**
+     * @return {@link #classifier} (Provides additional classifiers of the related artifact.)
+     */
+    public List<CodeableConcept> getClassifier() { 
+      if (this.classifier == null)
+        this.classifier = new ArrayList<CodeableConcept>();
+      return this.classifier;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public RelatedArtifact setClassifier(List<CodeableConcept> theClassifier) { 
+      this.classifier = theClassifier;
+      return this;
+    }
+
+    public boolean hasClassifier() { 
+      if (this.classifier == null)
+        return false;
+      for (CodeableConcept item : this.classifier)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableConcept addClassifier() { //3
+      CodeableConcept t = new CodeableConcept();
+      if (this.classifier == null)
+        this.classifier = new ArrayList<CodeableConcept>();
+      this.classifier.add(t);
+      return t;
+    }
+
+    public RelatedArtifact addClassifier(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.classifier == null)
+        this.classifier = new ArrayList<CodeableConcept>();
+      this.classifier.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #classifier}, creating it if it does not already exist {3}
+     */
+    public CodeableConcept getClassifierFirstRep() { 
+      if (getClassifier().isEmpty()) {
+        addClassifier();
+      }
+      return getClassifier().get(0);
     }
 
     /**
@@ -503,55 +944,6 @@ public class RelatedArtifact extends DataType implements ICompositeType {
     }
 
     /**
-     * @return {@link #url} (A url for the artifact that can be followed to access the actual content.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
-     */
-    public UrlType getUrlElement() { 
-      if (this.url == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create RelatedArtifact.url");
-        else if (Configuration.doAutoCreate())
-          this.url = new UrlType(); // bb
-      return this.url;
-    }
-
-    public boolean hasUrlElement() { 
-      return this.url != null && !this.url.isEmpty();
-    }
-
-    public boolean hasUrl() { 
-      return this.url != null && !this.url.isEmpty();
-    }
-
-    /**
-     * @param value {@link #url} (A url for the artifact that can be followed to access the actual content.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
-     */
-    public RelatedArtifact setUrlElement(UrlType value) { 
-      this.url = value;
-      return this;
-    }
-
-    /**
-     * @return A url for the artifact that can be followed to access the actual content.
-     */
-    public String getUrl() { 
-      return this.url == null ? null : this.url.getValue();
-    }
-
-    /**
-     * @param value A url for the artifact that can be followed to access the actual content.
-     */
-    public RelatedArtifact setUrl(String value) { 
-      if (Utilities.noString(value))
-        this.url = null;
-      else {
-        if (this.url == null)
-          this.url = new UrlType();
-        this.url.setValue(value);
-      }
-      return this;
-    }
-
-    /**
      * @return {@link #document} (The document being referenced, represented as an attachment. This is exclusive with the resource element.)
      */
     public Attachment getDocument() { 
@@ -576,7 +968,7 @@ public class RelatedArtifact extends DataType implements ICompositeType {
     }
 
     /**
-     * @return {@link #resource} (The related resource, such as a library, value set, profile, or other knowledge resource.). This is the underlying object with id, value and extensions. The accessor "getResource" gives direct access to the value
+     * @return {@link #resource} (The related artifact, such as a library, value set, profile, or other knowledge resource.). This is the underlying object with id, value and extensions. The accessor "getResource" gives direct access to the value
      */
     public CanonicalType getResourceElement() { 
       if (this.resource == null)
@@ -596,7 +988,7 @@ public class RelatedArtifact extends DataType implements ICompositeType {
     }
 
     /**
-     * @param value {@link #resource} (The related resource, such as a library, value set, profile, or other knowledge resource.). This is the underlying object with id, value and extensions. The accessor "getResource" gives direct access to the value
+     * @param value {@link #resource} (The related artifact, such as a library, value set, profile, or other knowledge resource.). This is the underlying object with id, value and extensions. The accessor "getResource" gives direct access to the value
      */
     public RelatedArtifact setResourceElement(CanonicalType value) { 
       this.resource = value;
@@ -604,14 +996,14 @@ public class RelatedArtifact extends DataType implements ICompositeType {
     }
 
     /**
-     * @return The related resource, such as a library, value set, profile, or other knowledge resource.
+     * @return The related artifact, such as a library, value set, profile, or other knowledge resource.
      */
     public String getResource() { 
       return this.resource == null ? null : this.resource.getValue();
     }
 
     /**
-     * @param value The related resource, such as a library, value set, profile, or other knowledge resource.
+     * @param value The related artifact, such as a library, value set, profile, or other knowledge resource.
      */
     public RelatedArtifact setResource(String value) { 
       if (Utilities.noString(value))
@@ -624,27 +1016,53 @@ public class RelatedArtifact extends DataType implements ICompositeType {
       return this;
     }
 
+    /**
+     * @return {@link #resourceReference} (The related artifact, if the artifact is not a canonical resource, or a resource reference to a canonical resource.)
+     */
+    public Reference getResourceReference() { 
+      if (this.resourceReference == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create RelatedArtifact.resourceReference");
+        else if (Configuration.doAutoCreate())
+          this.resourceReference = new Reference(); // cc
+      return this.resourceReference;
+    }
+
+    public boolean hasResourceReference() { 
+      return this.resourceReference != null && !this.resourceReference.isEmpty();
+    }
+
+    /**
+     * @param value {@link #resourceReference} (The related artifact, if the artifact is not a canonical resource, or a resource reference to a canonical resource.)
+     */
+    public RelatedArtifact setResourceReference(Reference value) { 
+      this.resourceReference = value;
+      return this;
+    }
+
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("type", "code", "The type of relationship to the related artifact.", 0, 1, type));
+        children.add(new Property("classifier", "CodeableConcept", "Provides additional classifiers of the related artifact.", 0, java.lang.Integer.MAX_VALUE, classifier));
         children.add(new Property("label", "string", "A short label that can be used to reference the citation from elsewhere in the containing artifact, such as a footnote index.", 0, 1, label));
         children.add(new Property("display", "string", "A brief description of the document or knowledge resource being referenced, suitable for display to a consumer.", 0, 1, display));
         children.add(new Property("citation", "markdown", "A bibliographic citation for the related artifact. This text SHOULD be formatted according to an accepted citation format.", 0, 1, citation));
-        children.add(new Property("url", "url", "A url for the artifact that can be followed to access the actual content.", 0, 1, url));
         children.add(new Property("document", "Attachment", "The document being referenced, represented as an attachment. This is exclusive with the resource element.", 0, 1, document));
-        children.add(new Property("resource", "canonical(Any)", "The related resource, such as a library, value set, profile, or other knowledge resource.", 0, 1, resource));
+        children.add(new Property("resource", "canonical(Any)", "The related artifact, such as a library, value set, profile, or other knowledge resource.", 0, 1, resource));
+        children.add(new Property("resourceReference", "Reference(Any)", "The related artifact, if the artifact is not a canonical resource, or a resource reference to a canonical resource.", 0, 1, resourceReference));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case 3575610: /*type*/  return new Property("type", "code", "The type of relationship to the related artifact.", 0, 1, type);
+        case -281470431: /*classifier*/  return new Property("classifier", "CodeableConcept", "Provides additional classifiers of the related artifact.", 0, java.lang.Integer.MAX_VALUE, classifier);
         case 102727412: /*label*/  return new Property("label", "string", "A short label that can be used to reference the citation from elsewhere in the containing artifact, such as a footnote index.", 0, 1, label);
         case 1671764162: /*display*/  return new Property("display", "string", "A brief description of the document or knowledge resource being referenced, suitable for display to a consumer.", 0, 1, display);
         case -1442706713: /*citation*/  return new Property("citation", "markdown", "A bibliographic citation for the related artifact. This text SHOULD be formatted according to an accepted citation format.", 0, 1, citation);
-        case 116079: /*url*/  return new Property("url", "url", "A url for the artifact that can be followed to access the actual content.", 0, 1, url);
         case 861720859: /*document*/  return new Property("document", "Attachment", "The document being referenced, represented as an attachment. This is exclusive with the resource element.", 0, 1, document);
-        case -341064690: /*resource*/  return new Property("resource", "canonical(Any)", "The related resource, such as a library, value set, profile, or other knowledge resource.", 0, 1, resource);
+        case -341064690: /*resource*/  return new Property("resource", "canonical(Any)", "The related artifact, such as a library, value set, profile, or other knowledge resource.", 0, 1, resource);
+        case -610120995: /*resourceReference*/  return new Property("resourceReference", "Reference(Any)", "The related artifact, if the artifact is not a canonical resource, or a resource reference to a canonical resource.", 0, 1, resourceReference);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -654,12 +1072,13 @@ public class RelatedArtifact extends DataType implements ICompositeType {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<RelatedArtifactType>
+        case -281470431: /*classifier*/ return this.classifier == null ? new Base[0] : this.classifier.toArray(new Base[this.classifier.size()]); // CodeableConcept
         case 102727412: /*label*/ return this.label == null ? new Base[0] : new Base[] {this.label}; // StringType
         case 1671764162: /*display*/ return this.display == null ? new Base[0] : new Base[] {this.display}; // StringType
         case -1442706713: /*citation*/ return this.citation == null ? new Base[0] : new Base[] {this.citation}; // MarkdownType
-        case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UrlType
         case 861720859: /*document*/ return this.document == null ? new Base[0] : new Base[] {this.document}; // Attachment
         case -341064690: /*resource*/ return this.resource == null ? new Base[0] : new Base[] {this.resource}; // CanonicalType
+        case -610120995: /*resourceReference*/ return this.resourceReference == null ? new Base[0] : new Base[] {this.resourceReference}; // Reference
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -672,6 +1091,9 @@ public class RelatedArtifact extends DataType implements ICompositeType {
           value = new RelatedArtifactTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<RelatedArtifactType>
           return value;
+        case -281470431: // classifier
+          this.getClassifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
         case 102727412: // label
           this.label = TypeConvertor.castToString(value); // StringType
           return value;
@@ -681,14 +1103,14 @@ public class RelatedArtifact extends DataType implements ICompositeType {
         case -1442706713: // citation
           this.citation = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
-        case 116079: // url
-          this.url = TypeConvertor.castToUrl(value); // UrlType
-          return value;
         case 861720859: // document
           this.document = TypeConvertor.castToAttachment(value); // Attachment
           return value;
         case -341064690: // resource
           this.resource = TypeConvertor.castToCanonical(value); // CanonicalType
+          return value;
+        case -610120995: // resourceReference
+          this.resourceReference = TypeConvertor.castToReference(value); // Reference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -700,18 +1122,20 @@ public class RelatedArtifact extends DataType implements ICompositeType {
         if (name.equals("type")) {
           value = new RelatedArtifactTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<RelatedArtifactType>
+        } else if (name.equals("classifier")) {
+          this.getClassifier().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("label")) {
           this.label = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("display")) {
           this.display = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("citation")) {
           this.citation = TypeConvertor.castToMarkdown(value); // MarkdownType
-        } else if (name.equals("url")) {
-          this.url = TypeConvertor.castToUrl(value); // UrlType
         } else if (name.equals("document")) {
           this.document = TypeConvertor.castToAttachment(value); // Attachment
         } else if (name.equals("resource")) {
           this.resource = TypeConvertor.castToCanonical(value); // CanonicalType
+        } else if (name.equals("resourceReference")) {
+          this.resourceReference = TypeConvertor.castToReference(value); // Reference
         } else
           return super.setProperty(name, value);
         return value;
@@ -721,12 +1145,13 @@ public class RelatedArtifact extends DataType implements ICompositeType {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610:  return getTypeElement();
+        case -281470431:  return addClassifier(); 
         case 102727412:  return getLabelElement();
         case 1671764162:  return getDisplayElement();
         case -1442706713:  return getCitationElement();
-        case 116079:  return getUrlElement();
         case 861720859:  return getDocument();
         case -341064690:  return getResourceElement();
+        case -610120995:  return getResourceReference();
         default: return super.makeProperty(hash, name);
         }
 
@@ -736,12 +1161,13 @@ public class RelatedArtifact extends DataType implements ICompositeType {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"code"};
+        case -281470431: /*classifier*/ return new String[] {"CodeableConcept"};
         case 102727412: /*label*/ return new String[] {"string"};
         case 1671764162: /*display*/ return new String[] {"string"};
         case -1442706713: /*citation*/ return new String[] {"markdown"};
-        case 116079: /*url*/ return new String[] {"url"};
         case 861720859: /*document*/ return new String[] {"Attachment"};
         case -341064690: /*resource*/ return new String[] {"canonical"};
+        case -610120995: /*resourceReference*/ return new String[] {"Reference"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -752,6 +1178,9 @@ public class RelatedArtifact extends DataType implements ICompositeType {
         if (name.equals("type")) {
           throw new FHIRException("Cannot call addChild on a primitive type RelatedArtifact.type");
         }
+        else if (name.equals("classifier")) {
+          return addClassifier();
+        }
         else if (name.equals("label")) {
           throw new FHIRException("Cannot call addChild on a primitive type RelatedArtifact.label");
         }
@@ -761,15 +1190,16 @@ public class RelatedArtifact extends DataType implements ICompositeType {
         else if (name.equals("citation")) {
           throw new FHIRException("Cannot call addChild on a primitive type RelatedArtifact.citation");
         }
-        else if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a primitive type RelatedArtifact.url");
-        }
         else if (name.equals("document")) {
           this.document = new Attachment();
           return this.document;
         }
         else if (name.equals("resource")) {
           throw new FHIRException("Cannot call addChild on a primitive type RelatedArtifact.resource");
+        }
+        else if (name.equals("resourceReference")) {
+          this.resourceReference = new Reference();
+          return this.resourceReference;
         }
         else
           return super.addChild(name);
@@ -789,12 +1219,17 @@ public class RelatedArtifact extends DataType implements ICompositeType {
       public void copyValues(RelatedArtifact dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
+        if (classifier != null) {
+          dst.classifier = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : classifier)
+            dst.classifier.add(i.copy());
+        };
         dst.label = label == null ? null : label.copy();
         dst.display = display == null ? null : display.copy();
         dst.citation = citation == null ? null : citation.copy();
-        dst.url = url == null ? null : url.copy();
         dst.document = document == null ? null : document.copy();
         dst.resource = resource == null ? null : resource.copy();
+        dst.resourceReference = resourceReference == null ? null : resourceReference.copy();
       }
 
       protected RelatedArtifact typedCopy() {
@@ -808,9 +1243,10 @@ public class RelatedArtifact extends DataType implements ICompositeType {
         if (!(other_ instanceof RelatedArtifact))
           return false;
         RelatedArtifact o = (RelatedArtifact) other_;
-        return compareDeep(type, o.type, true) && compareDeep(label, o.label, true) && compareDeep(display, o.display, true)
-           && compareDeep(citation, o.citation, true) && compareDeep(url, o.url, true) && compareDeep(document, o.document, true)
-           && compareDeep(resource, o.resource, true);
+        return compareDeep(type, o.type, true) && compareDeep(classifier, o.classifier, true) && compareDeep(label, o.label, true)
+           && compareDeep(display, o.display, true) && compareDeep(citation, o.citation, true) && compareDeep(document, o.document, true)
+           && compareDeep(resource, o.resource, true) && compareDeep(resourceReference, o.resourceReference, true)
+          ;
       }
 
       @Override
@@ -821,13 +1257,12 @@ public class RelatedArtifact extends DataType implements ICompositeType {
           return false;
         RelatedArtifact o = (RelatedArtifact) other_;
         return compareValues(type, o.type, true) && compareValues(label, o.label, true) && compareValues(display, o.display, true)
-           && compareValues(citation, o.citation, true) && compareValues(url, o.url, true) && compareValues(resource, o.resource, true)
-          ;
+           && compareValues(citation, o.citation, true) && compareValues(resource, o.resource, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, label, display, citation
-          , url, document, resource);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, classifier, label
+          , display, citation, document, resource, resourceReference);
       }
 
 

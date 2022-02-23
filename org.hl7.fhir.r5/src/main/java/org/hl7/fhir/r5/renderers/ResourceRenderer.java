@@ -11,6 +11,7 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -19,6 +20,7 @@ import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
@@ -31,6 +33,7 @@ import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -114,6 +117,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       x.setAttribute("lang", r.getLanguage());
       x.setAttribute("xml:lang", r.getLanguage());
     }
+    r.getText().setUserData("renderer.generated", true);
     if (!r.hasText() || !r.getText().hasDiv() || r.getText().getDiv().getChildNodes().isEmpty()) {
       r.setText(new Narrative());
       r.getText().setDiv(x);
@@ -155,9 +159,8 @@ public abstract class ResourceRenderer extends DataRenderer {
         if (target.hasUserData("path")) {
           x.ah(target.getUserString("path")).tx(cr.present());
         } else {
-          url = url.substring(0, url.indexOf("|"));
           x.code().tx(url);
-          x.tx(": "+cr.present());          
+          x.tx(" ("+cr.present()+")");          
         }
       }
     }
@@ -194,22 +197,42 @@ public abstract class ResourceRenderer extends DataRenderer {
     } else {
       c = x.span(null, null);
     }
-    // what to display: if text is provided, then that. if the reference was resolved, then show the generated narrative
-    if (r.hasDisplayElement()) {
-      c.addText(r.getDisplay());
-      if (tr != null && tr.getResource() != null) {
-        c.tx(". Generated Summary: ");
-        new ProfileDrivenRenderer(context).generateResourceSummary(c, tr.getResource(), true, r.getReference().startsWith("#"));
-      }
-    } else if (tr != null && tr.getResource() != null) {
-      if (tr.getReference().startsWith("#")) {
-        // we already rendered this in this page
-        c.tx("See above ("+tr.getResource().fhirType()+"/"+tr.getResource().getId()+")");
-      } else {
-        new ProfileDrivenRenderer(context).generateResourceSummary(c, tr.getResource(), r.getReference().startsWith("#"), r.getReference().startsWith("#"));
-      }
-    } else {
+    if (tr != null && tr.getReference() != null && tr.getReference().startsWith("#")) {
+      c.tx("See above (");
+    }
+    // what to display: if text is provided, then that. if the reference was resolved, then show the name, or the generated narrative
+    String display = r.hasDisplayElement() ? r.getDisplay() : null;
+    String name = tr != null && tr.getResource() != null ? tr.getResource().getNameFromResource() : null; 
+    
+    if (display == null && (tr == null || tr.getResource() == null)) {
       c.addText(r.getReference());
+    } else if (context.isTechnicalMode()) {
+      c.addText(r.getReference());
+      if (display != null) {
+        c.addText(": "+display);
+      }
+      if ((tr == null || !tr.getReference().startsWith("#")) && name != null) {
+        x.addText(" \""+name+"\"");
+      }
+      if (r.hasExtension(ToolingExtensions.EXT_TARGET_ID)) {
+        x.addText("(#"+r.getExtensionString(ToolingExtensions.EXT_TARGET_ID)+")");
+      } else if (r.hasExtension(ToolingExtensions.EXT_TARGET_PATH)) {
+        x.addText("(#/"+r.getExtensionString(ToolingExtensions.EXT_TARGET_PATH)+")");
+      }  
+    } else {
+      if (display != null) {
+        c.addText(display);
+      } else if (name != null) {
+        c.addText(name);
+      } else {
+        c.tx(". Generated Summary: ");
+        if (tr != null) {
+          new ProfileDrivenRenderer(context).generateResourceSummary(c, tr.getResource(), true, r.getReference().startsWith("#"), true);
+        }
+      }
+    }
+    if (tr != null && tr.getReference() != null && tr.getReference().startsWith("#")) {
+      c.tx(")");
     }
   }
 
@@ -235,10 +258,10 @@ public abstract class ResourceRenderer extends DataRenderer {
       c.addText(r.get("display").primitiveValue());
       if (tr != null && tr.getResource() != null) {
         c.tx(". Generated Summary: ");
-        new ProfileDrivenRenderer(context).generateResourceSummary(c, tr.getResource(), true, v.startsWith("#"));
+        new ProfileDrivenRenderer(context).generateResourceSummary(c, tr.getResource(), true, v.startsWith("#"), false);
       }
     } else if (tr != null && tr.getResource() != null) {
-      new ProfileDrivenRenderer(context).generateResourceSummary(c, tr.getResource(), v.startsWith("#"), v.startsWith("#"));
+      new ProfileDrivenRenderer(context).generateResourceSummary(c, tr.getResource(), v.startsWith("#"), v.startsWith("#"), false);
     } else {
       c.addText(v);
     }
@@ -254,6 +277,11 @@ public abstract class ResourceRenderer extends DataRenderer {
       }
       return null;
     }
+    String version = null;
+    if (url.contains("/_history/")) {
+      version = url.substring(url.indexOf("/_history/")+10);
+      url = url.substring(0, url.indexOf("/_history/"));
+    }
 
     if (rcontext != null) {
       BundleEntryComponent bundleResource = rcontext.resolve(url);
@@ -261,7 +289,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         String bundleUrl = "#" + bundleResource.getResource().getResourceType().name() + "_" + bundleResource.getResource().getId(); 
         return new ResourceWithReference(bundleUrl, new ResourceWrapperDirect(this.context, bundleResource.getResource()));
       }
-      org.hl7.fhir.r5.elementmodel.Element bundleElement = rcontext.resolveElement(url);
+      org.hl7.fhir.r5.elementmodel.Element bundleElement = rcontext.resolveElement(url, version);
       if (bundleElement != null) {
         String bundleUrl = null;
         Element br = bundleElement.getNamedChild("resource");
@@ -274,7 +302,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       }
     }
 
-    Resource ae = getContext().getWorker().fetchResource(null, url);
+    Resource ae = getContext().getWorker().fetchResource(null, url, version);
     if (ae != null)
       return new ResourceWithReference(url, new ResourceWrapperDirect(this.context, ae));
     else if (context.getResolver() != null) {
@@ -370,4 +398,107 @@ public abstract class ResourceRenderer extends DataRenderer {
     return true;
   }
 
+  protected void renderResourceHeader(ResourceWrapper r, XhtmlNode x) throws UnsupportedEncodingException, FHIRException, IOException {
+    XhtmlNode div = x.div().style("display: inline-block").style("background-color: #d9e0e7").style("padding: 6px")
+         .style("margin: 4px").style("border: 1px solid #8da1b4")
+         .style("border-radius: 5px").style("line-height: 60%");
+
+    String id = getPrimitiveValue(r, "id"); 
+    String lang = getPrimitiveValue(r, "language"); 
+    String ir = getPrimitiveValue(r, "implicitRules"); 
+    BaseWrapper meta = r.getChildByName("meta").hasValues() ? r.getChildByName("meta").getValues().get(0) : null;
+    String versionId = getPrimitiveValue(meta, "versionId");
+    String lastUpdated = getPrimitiveValue(meta, "lastUpdated");
+    String source = getPrimitiveValue(meta, "source");
+    
+    if (id != null || lang != null || versionId != null || lastUpdated != null) {
+      XhtmlNode p = plateStyle(div.para());
+      p.tx("Resource ");
+      if (id != null) {
+        p.tx("\""+id+"\" ");
+      }
+      if (versionId != null) {
+        p.tx("Version \""+versionId+"\" ");
+      }
+      if (lastUpdated != null) {
+        p.tx("Updated \"");
+        renderDateTime(p, lastUpdated);
+        p.tx("\" ");
+      }
+      if (lang != null) {
+        p.tx(" (Language \""+lang+"\") ");
+      }
+    }
+    if (ir != null) {
+      plateStyle(div.para()).b().tx("Special rules apply: "+ir+"!");     
+    }
+    if (source != null) {
+      plateStyle(div.para()).tx("Information Source: "+source+"!");           
+    }
+    if (meta != null) {
+      PropertyWrapper pl = meta.getChildByName("profile");
+      if (pl.hasValues()) {
+        XhtmlNode p = plateStyle(div.para());
+        p.tx(Utilities.pluralize("Profile", pl.getValues().size())+": ");
+        boolean first = true;
+        for (BaseWrapper bw : pl.getValues()) {
+          if (first) first = false; else p.tx(", ");
+          renderCanonical(r, p, bw.getBase().primitiveValue());
+        }
+      }
+      PropertyWrapper tl = meta.getChildByName("tag");
+      if (tl.hasValues()) {
+        XhtmlNode p = plateStyle(div.para());
+        p.tx(Utilities.pluralize("Tag", tl.getValues().size())+": ");
+        boolean first = true;
+        for (BaseWrapper bw : tl.getValues()) {
+          if (first) first = false; else p.tx(", ");
+          String system = getPrimitiveValue(bw, "system");
+          String version = getPrimitiveValue(bw, "version");
+          String code = getPrimitiveValue(bw, "system");
+          String display = getPrimitiveValue(bw, "system");
+          renderCoding(p, new Coding(system, version, code, display));
+        }        
+      }
+      PropertyWrapper sl = meta.getChildByName("security");
+      if (sl.hasValues()) {
+        XhtmlNode p = plateStyle(div.para());
+        p.tx(Utilities.pluralize("Security Label", tl.getValues().size())+": ");
+        boolean first = true;
+        for (BaseWrapper bw : sl.getValues()) {
+          if (first) first = false; else p.tx(", ");
+          String system = getPrimitiveValue(bw, "system");
+          String version = getPrimitiveValue(bw, "version");
+          String code = getPrimitiveValue(bw, "system");
+          String display = getPrimitiveValue(bw, "system");
+          renderCoding(p, new Coding(system, version, code, display));
+        }        
+      }
+    }
+      
+  }
+
+  private XhtmlNode plateStyle(XhtmlNode para) {
+    return para.style("margin-bottom: 0px");
+  }
+
+  private String getPrimitiveValue(BaseWrapper b, String name) throws UnsupportedEncodingException, FHIRException, IOException {
+    return b != null && b.has(name) && b.getChildByName(name).hasValues() ? b.getChildByName(name).getValues().get(0).getBase().primitiveValue() : null;
+  }
+
+  private String getPrimitiveValue(ResourceWrapper r, String name) throws UnsupportedEncodingException, FHIRException, IOException {
+    return r.has(name) && r.getChildByName(name).hasValues() ? r.getChildByName(name).getValues().get(0).getBase().primitiveValue() : null;
+  }
+
+  public void renderOrError(DomainResource dr) {
+    try {
+      render(dr);
+    } catch (Exception e) {
+      XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+      x.para().tx("Error rendering: "+e.getMessage());
+      dr.setText(null);
+      inject(dr, x, NarrativeStatus.GENERATED);   
+    }
+    
+  }
 }

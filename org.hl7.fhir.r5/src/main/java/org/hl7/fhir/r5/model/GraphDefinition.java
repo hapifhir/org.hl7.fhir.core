@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,7 +96,6 @@ public class GraphDefinition extends CanonicalResource {
             case MATCHING: return "matching";
             case DIFFERENT: return "different";
             case CUSTOM: return "custom";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,7 +105,6 @@ public class GraphDefinition extends CanonicalResource {
             case MATCHING: return "http://hl7.org/fhir/graph-compartment-rule";
             case DIFFERENT: return "http://hl7.org/fhir/graph-compartment-rule";
             case CUSTOM: return "http://hl7.org/fhir/graph-compartment-rule";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -116,7 +114,6 @@ public class GraphDefinition extends CanonicalResource {
             case MATCHING: return "The compartment must be the same - the record must be about the same patient, but the reference may be different.";
             case DIFFERENT: return "The compartment must be different.";
             case CUSTOM: return "The compartment rule is defined in the accompanying FHIRPath expression.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,7 +123,6 @@ public class GraphDefinition extends CanonicalResource {
             case MATCHING: return "Matching";
             case DIFFERENT: return "Different";
             case CUSTOM: return "Custom";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -210,7 +206,6 @@ public class GraphDefinition extends CanonicalResource {
           switch (this) {
             case CONDITION: return "condition";
             case REQUIREMENT: return "requirement";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -218,7 +213,6 @@ public class GraphDefinition extends CanonicalResource {
           switch (this) {
             case CONDITION: return "http://hl7.org/fhir/graph-compartment-use";
             case REQUIREMENT: return "http://hl7.org/fhir/graph-compartment-use";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -226,7 +220,6 @@ public class GraphDefinition extends CanonicalResource {
           switch (this) {
             case CONDITION: return "This compartment rule is a condition for whether the rule applies.";
             case REQUIREMENT: return "This compartment rule is enforced on any relationships that meet the conditions.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -234,7 +227,6 @@ public class GraphDefinition extends CanonicalResource {
           switch (this) {
             case CONDITION: return "Condition";
             case REQUIREMENT: return "Requirement";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -3774,9 +3766,12 @@ public class GraphDefinition extends CanonicalResource {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
+// Manual code (from Configuration.txt):
   public boolean supportsCopyright() {
     return false;
   }
+  
+// end addition
 
 }
 

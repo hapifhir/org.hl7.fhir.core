@@ -7,6 +7,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class VersionUtilitiesTest {
 
   @Test
+  public void isValidSemVer() {
+    assertTrue(VersionUtilities.isSemVer("0.1.1"));
+    assertTrue(VersionUtilities.isSemVer("0.1.1-ballot1"));
+    assertFalse(VersionUtilities.isSemVer("0.1.a"));
+  }
+
+  @Test
   public void isThisOrLater_Simple() {
     assertTrue(VersionUtilities.isThisOrLater("0.1", "0.2"));
     assertFalse(VersionUtilities.isThisOrLater("0.2", "0.1"));

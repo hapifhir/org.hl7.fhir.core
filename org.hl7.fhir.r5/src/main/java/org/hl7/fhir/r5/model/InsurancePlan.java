@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -4232,17 +4232,17 @@ public class InsurancePlan extends DomainResource {
    * <p>
    * Description: <b>A portion of the organization's name or alias</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>name | alias</b><br>
+   * Path: <b>InsurancePlan.name | InsurancePlan.alias</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="name", path="name | alias", description="A portion of the organization's name or alias", type="string" )
+  @SearchParamDefinition(name="name", path="InsurancePlan.name | InsurancePlan.alias", description="A portion of the organization's name or alias", type="string" )
   public static final String SP_NAME = "name";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>name</b>
    * <p>
    * Description: <b>A portion of the organization's name or alias</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>name | alias</b><br>
+   * Path: <b>InsurancePlan.name | InsurancePlan.alias</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -57,11 +57,23 @@ public class EvidenceVariable extends MetadataResource {
         /**
          * Combine characteristics with AND.
          */
-        INTERSECTION, 
+        ALLOF, 
         /**
          * Combine characteristics with OR.
          */
-        UNION, 
+        ANYOF, 
+        /**
+         * Meet at least the threshold number of characteristics for definition.
+         */
+        ATLEAST, 
+        /**
+         * Meet at most the threshold number of characteristics for definition.
+         */
+        ATMOST, 
+        /**
+         *  Combine characteristics statistically.
+         */
+        NETEFFECT, 
         /**
          * added to help the parsers with the generic types
          */
@@ -69,10 +81,16 @@ public class EvidenceVariable extends MetadataResource {
         public static CharacteristicCombination fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("intersection".equals(codeString))
-          return INTERSECTION;
-        if ("union".equals(codeString))
-          return UNION;
+        if ("all-of".equals(codeString))
+          return ALLOF;
+        if ("any-of".equals(codeString))
+          return ANYOF;
+        if ("at-least".equals(codeString))
+          return ATLEAST;
+        if ("at-most".equals(codeString))
+          return ATMOST;
+        if ("net-effect".equals(codeString))
+          return NETEFFECT;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
@@ -80,33 +98,41 @@ public class EvidenceVariable extends MetadataResource {
         }
         public String toCode() {
           switch (this) {
-            case INTERSECTION: return "intersection";
-            case UNION: return "union";
-            case NULL: return null;
+            case ALLOF: return "all-of";
+            case ANYOF: return "any-of";
+            case ATLEAST: return "at-least";
+            case ATMOST: return "at-most";
+            case NETEFFECT: return "net-effect";
             default: return "?";
           }
         }
         public String getSystem() {
           switch (this) {
-            case INTERSECTION: return "http://hl7.org/fhir/characteristic-combination";
-            case UNION: return "http://hl7.org/fhir/characteristic-combination";
-            case NULL: return null;
+            case ALLOF: return "http://hl7.org/fhir/characteristic-combination";
+            case ANYOF: return "http://hl7.org/fhir/characteristic-combination";
+            case ATLEAST: return "http://hl7.org/fhir/characteristic-combination";
+            case ATMOST: return "http://hl7.org/fhir/characteristic-combination";
+            case NETEFFECT: return "http://hl7.org/fhir/characteristic-combination";
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
-            case INTERSECTION: return "Combine characteristics with AND.";
-            case UNION: return "Combine characteristics with OR.";
-            case NULL: return null;
+            case ALLOF: return "Combine characteristics with AND.";
+            case ANYOF: return "Combine characteristics with OR.";
+            case ATLEAST: return "Meet at least the threshold number of characteristics for definition.";
+            case ATMOST: return "Meet at most the threshold number of characteristics for definition.";
+            case NETEFFECT: return " Combine characteristics statistically.";
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
-            case INTERSECTION: return "intersection";
-            case UNION: return "union";
-            case NULL: return null;
+            case ALLOF: return "All of";
+            case ANYOF: return "Any of";
+            case ATLEAST: return "At least";
+            case ATMOST: return "At most";
+            case NETEFFECT: return "Net effect";
             default: return "?";
           }
         }
@@ -117,10 +143,16 @@ public class EvidenceVariable extends MetadataResource {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("intersection".equals(codeString))
-          return CharacteristicCombination.INTERSECTION;
-        if ("union".equals(codeString))
-          return CharacteristicCombination.UNION;
+        if ("all-of".equals(codeString))
+          return CharacteristicCombination.ALLOF;
+        if ("any-of".equals(codeString))
+          return CharacteristicCombination.ANYOF;
+        if ("at-least".equals(codeString))
+          return CharacteristicCombination.ATLEAST;
+        if ("at-most".equals(codeString))
+          return CharacteristicCombination.ATMOST;
+        if ("net-effect".equals(codeString))
+          return CharacteristicCombination.NETEFFECT;
         throw new IllegalArgumentException("Unknown CharacteristicCombination code '"+codeString+"'");
         }
         public Enumeration<CharacteristicCombination> fromType(Base code) throws FHIRException {
@@ -131,17 +163,29 @@ public class EvidenceVariable extends MetadataResource {
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
-        if ("intersection".equals(codeString))
-          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.INTERSECTION);
-        if ("union".equals(codeString))
-          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.UNION);
+        if ("all-of".equals(codeString))
+          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.ALLOF);
+        if ("any-of".equals(codeString))
+          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.ANYOF);
+        if ("at-least".equals(codeString))
+          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.ATLEAST);
+        if ("at-most".equals(codeString))
+          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.ATMOST);
+        if ("net-effect".equals(codeString))
+          return new Enumeration<CharacteristicCombination>(this, CharacteristicCombination.NETEFFECT);
         throw new FHIRException("Unknown CharacteristicCombination code '"+codeString+"'");
         }
     public String toCode(CharacteristicCombination code) {
-      if (code == CharacteristicCombination.INTERSECTION)
-        return "intersection";
-      if (code == CharacteristicCombination.UNION)
-        return "union";
+      if (code == CharacteristicCombination.ALLOF)
+        return "all-of";
+      if (code == CharacteristicCombination.ANYOF)
+        return "any-of";
+      if (code == CharacteristicCombination.ATLEAST)
+        return "at-least";
+      if (code == CharacteristicCombination.ATMOST)
+        return "at-most";
+      if (code == CharacteristicCombination.NETEFFECT)
+        return "net-effect";
       return "?";
       }
     public String toSystem(CharacteristicCombination code) {
@@ -206,7 +250,6 @@ public class EvidenceVariable extends MetadataResource {
             case MEANOFMEDIAN: return "mean-of-median";
             case MEDIANOFMEAN: return "median-of-mean";
             case MEDIANOFMEDIAN: return "median-of-median";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -218,7 +261,6 @@ public class EvidenceVariable extends MetadataResource {
             case MEANOFMEDIAN: return "http://hl7.org/fhir/group-measure";
             case MEDIANOFMEAN: return "http://hl7.org/fhir/group-measure";
             case MEDIANOFMEDIAN: return "http://hl7.org/fhir/group-measure";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -230,7 +272,6 @@ public class EvidenceVariable extends MetadataResource {
             case MEANOFMEDIAN: return "Aggregated using Mean of study median values.";
             case MEDIANOFMEAN: return "Aggregated using Median of study mean values.";
             case MEDIANOFMEDIAN: return "Aggregated using Median of study median values.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -242,7 +283,6 @@ public class EvidenceVariable extends MetadataResource {
             case MEANOFMEDIAN: return "Mean of Study Medins";
             case MEDIANOFMEAN: return "Median of Study Means";
             case MEDIANOFMEDIAN: return "Median of Study Medians";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -310,6 +350,258 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     @Block()
+    public static class EvidenceVariableCharacteristicCombinationComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Used to specify if two or more characteristics are combined with OR or AND.
+         */
+        @Child(name = "code", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="all-of | any-of | at-least | at-most | net-effect", formalDefinition="Used to specify if two or more characteristics are combined with OR or AND." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/characteristic-combination")
+        protected Enumeration<CharacteristicCombination> code;
+
+        /**
+         * Provides the value of "n" when "at-least" or "at-most" codes are used.
+         */
+        @Child(name = "threshold", type = {PositiveIntType.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Provides the value of \"n\" when \"at-least\" or \"at-most\" codes are used", formalDefinition="Provides the value of \"n\" when \"at-least\" or \"at-most\" codes are used." )
+        protected PositiveIntType threshold;
+
+        private static final long serialVersionUID = 1699440811L;
+
+    /**
+     * Constructor
+     */
+      public EvidenceVariableCharacteristicCombinationComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public EvidenceVariableCharacteristicCombinationComponent(CharacteristicCombination code) {
+        super();
+        this.setCode(code);
+      }
+
+        /**
+         * @return {@link #code} (Used to specify if two or more characteristics are combined with OR or AND.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
+         */
+        public Enumeration<CharacteristicCombination> getCodeElement() { 
+          if (this.code == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceVariableCharacteristicCombinationComponent.code");
+            else if (Configuration.doAutoCreate())
+              this.code = new Enumeration<CharacteristicCombination>(new CharacteristicCombinationEnumFactory()); // bb
+          return this.code;
+        }
+
+        public boolean hasCodeElement() { 
+          return this.code != null && !this.code.isEmpty();
+        }
+
+        public boolean hasCode() { 
+          return this.code != null && !this.code.isEmpty();
+        }
+
+        /**
+         * @param value {@link #code} (Used to specify if two or more characteristics are combined with OR or AND.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
+         */
+        public EvidenceVariableCharacteristicCombinationComponent setCodeElement(Enumeration<CharacteristicCombination> value) { 
+          this.code = value;
+          return this;
+        }
+
+        /**
+         * @return Used to specify if two or more characteristics are combined with OR or AND.
+         */
+        public CharacteristicCombination getCode() { 
+          return this.code == null ? null : this.code.getValue();
+        }
+
+        /**
+         * @param value Used to specify if two or more characteristics are combined with OR or AND.
+         */
+        public EvidenceVariableCharacteristicCombinationComponent setCode(CharacteristicCombination value) { 
+            if (this.code == null)
+              this.code = new Enumeration<CharacteristicCombination>(new CharacteristicCombinationEnumFactory());
+            this.code.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #threshold} (Provides the value of "n" when "at-least" or "at-most" codes are used.). This is the underlying object with id, value and extensions. The accessor "getThreshold" gives direct access to the value
+         */
+        public PositiveIntType getThresholdElement() { 
+          if (this.threshold == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceVariableCharacteristicCombinationComponent.threshold");
+            else if (Configuration.doAutoCreate())
+              this.threshold = new PositiveIntType(); // bb
+          return this.threshold;
+        }
+
+        public boolean hasThresholdElement() { 
+          return this.threshold != null && !this.threshold.isEmpty();
+        }
+
+        public boolean hasThreshold() { 
+          return this.threshold != null && !this.threshold.isEmpty();
+        }
+
+        /**
+         * @param value {@link #threshold} (Provides the value of "n" when "at-least" or "at-most" codes are used.). This is the underlying object with id, value and extensions. The accessor "getThreshold" gives direct access to the value
+         */
+        public EvidenceVariableCharacteristicCombinationComponent setThresholdElement(PositiveIntType value) { 
+          this.threshold = value;
+          return this;
+        }
+
+        /**
+         * @return Provides the value of "n" when "at-least" or "at-most" codes are used.
+         */
+        public int getThreshold() { 
+          return this.threshold == null || this.threshold.isEmpty() ? 0 : this.threshold.getValue();
+        }
+
+        /**
+         * @param value Provides the value of "n" when "at-least" or "at-most" codes are used.
+         */
+        public EvidenceVariableCharacteristicCombinationComponent setThreshold(int value) { 
+            if (this.threshold == null)
+              this.threshold = new PositiveIntType();
+            this.threshold.setValue(value);
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("code", "code", "Used to specify if two or more characteristics are combined with OR or AND.", 0, 1, code));
+          children.add(new Property("threshold", "positiveInt", "Provides the value of \"n\" when \"at-least\" or \"at-most\" codes are used.", 0, 1, threshold));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3059181: /*code*/  return new Property("code", "code", "Used to specify if two or more characteristics are combined with OR or AND.", 0, 1, code);
+          case -1545477013: /*threshold*/  return new Property("threshold", "positiveInt", "Provides the value of \"n\" when \"at-least\" or \"at-most\" codes are used.", 0, 1, threshold);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // Enumeration<CharacteristicCombination>
+        case -1545477013: /*threshold*/ return this.threshold == null ? new Base[0] : new Base[] {this.threshold}; // PositiveIntType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3059181: // code
+          value = new CharacteristicCombinationEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.code = (Enumeration) value; // Enumeration<CharacteristicCombination>
+          return value;
+        case -1545477013: // threshold
+          this.threshold = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          value = new CharacteristicCombinationEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.code = (Enumeration) value; // Enumeration<CharacteristicCombination>
+        } else if (name.equals("threshold")) {
+          this.threshold = TypeConvertor.castToPositiveInt(value); // PositiveIntType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3059181:  return getCodeElement();
+        case -1545477013:  return getThresholdElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3059181: /*code*/ return new String[] {"code"};
+        case -1545477013: /*threshold*/ return new String[] {"positiveInt"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("code")) {
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.characteristicCombination.code");
+        }
+        else if (name.equals("threshold")) {
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.characteristicCombination.threshold");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public EvidenceVariableCharacteristicCombinationComponent copy() {
+        EvidenceVariableCharacteristicCombinationComponent dst = new EvidenceVariableCharacteristicCombinationComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EvidenceVariableCharacteristicCombinationComponent dst) {
+        super.copyValues(dst);
+        dst.code = code == null ? null : code.copy();
+        dst.threshold = threshold == null ? null : threshold.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof EvidenceVariableCharacteristicCombinationComponent))
+          return false;
+        EvidenceVariableCharacteristicCombinationComponent o = (EvidenceVariableCharacteristicCombinationComponent) other_;
+        return compareDeep(code, o.code, true) && compareDeep(threshold, o.threshold, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof EvidenceVariableCharacteristicCombinationComponent))
+          return false;
+        EvidenceVariableCharacteristicCombinationComponent o = (EvidenceVariableCharacteristicCombinationComponent) other_;
+        return compareValues(code, o.code, true) && compareValues(threshold, o.threshold, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, threshold);
+      }
+
+  public String fhirType() {
+    return "EvidenceVariable.characteristicCombination";
+
+  }
+
+  }
+
+    @Block()
     public static class EvidenceVariableCharacteristicComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * A short, natural language description of the characteristic that could be used to communicate the criteria to an end-user.
@@ -319,16 +611,24 @@ public class EvidenceVariable extends MetadataResource {
         protected StringType description;
 
         /**
+         * Used to expressing the type of characteristic.
+         */
+        @Child(name = "type", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Expresses the type of characteristic", formalDefinition="Used to expressing the type of characteristic." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/usage-context-type")
+        protected CodeableConcept type;
+
+        /**
          * Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).
          */
-        @Child(name = "definition", type = {Group.class, EvidenceVariable.class, CanonicalType.class, CodeableConcept.class, Expression.class}, order=2, min=1, max=1, modifier=false, summary=true)
+        @Child(name = "definition", type = {Group.class, EvidenceVariable.class, CanonicalType.class, CodeableConcept.class, Expression.class}, order=3, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="What code or expression defines members?", formalDefinition="Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year)." )
         protected DataType definition;
 
         /**
          * Method used for describing characteristic.
          */
-        @Child(name = "method", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "method", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Method used for describing characteristic", formalDefinition="Method used for describing characteristic." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/characteristic-method")
         protected CodeableConcept method;
@@ -336,33 +636,33 @@ public class EvidenceVariable extends MetadataResource {
         /**
          * Device used for determining characteristic.
          */
-        @Child(name = "device", type = {Device.class, DeviceMetric.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "device", type = {Device.class, DeviceMetric.class}, order=5, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Device used for determining characteristic", formalDefinition="Device used for determining characteristic." )
         protected Reference device;
 
         /**
          * When true, members with this characteristic are excluded from the element.
          */
-        @Child(name = "exclude", type = {BooleanType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "exclude", type = {BooleanType.class}, order=6, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Whether the characteristic includes or excludes members", formalDefinition="When true, members with this characteristic are excluded from the element." )
         protected BooleanType exclude;
 
         /**
-         * Indicates duration, period, or point of observation from the participant's study entry.
+         * Observation time from study specified event.
          */
-        @Child(name = "timeFromStart", type = {}, order=6, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Observation time from study start", formalDefinition="Indicates duration, period, or point of observation from the participant's study entry." )
-        protected EvidenceVariableCharacteristicTimeFromStartComponent timeFromStart;
+        @Child(name = "timeFromEvent", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Observation time from study specified event", formalDefinition="Observation time from study specified event." )
+        protected List<EvidenceVariableCharacteristicTimeFromEventComponent> timeFromEvent;
 
         /**
-         * Indicates how elements are aggregated within the study effective period.
+         * Value or set of values that define the grouping.
          */
-        @Child(name = "groupMeasure", type = {CodeType.class}, order=7, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="mean | median | mean-of-mean | mean-of-median | median-of-mean | median-of-median", formalDefinition="Indicates how elements are aggregated within the study effective period." )
+        @Child(name = "groupMeasure", type = {CodeType.class}, order=8, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="mean | median | mean-of-mean | mean-of-median | median-of-mean | median-of-median", formalDefinition="Value or set of values that define the grouping." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/group-measure")
         protected Enumeration<GroupMeasure> groupMeasure;
 
-        private static final long serialVersionUID = 173999603L;
+        private static final long serialVersionUID = 1870376402L;
 
     /**
      * Constructor
@@ -425,6 +725,30 @@ public class EvidenceVariable extends MetadataResource {
               this.description = new StringType();
             this.description.setValue(value);
           }
+          return this;
+        }
+
+        /**
+         * @return {@link #type} (Used to expressing the type of characteristic.)
+         */
+        public CodeableConcept getType() { 
+          if (this.type == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceVariableCharacteristicComponent.type");
+            else if (Configuration.doAutoCreate())
+              this.type = new CodeableConcept(); // cc
+          return this.type;
+        }
+
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        /**
+         * @param value {@link #type} (Used to expressing the type of characteristic.)
+         */
+        public EvidenceVariableCharacteristicComponent setType(CodeableConcept value) { 
+          this.type = value;
           return this;
         }
 
@@ -603,31 +927,60 @@ public class EvidenceVariable extends MetadataResource {
         }
 
         /**
-         * @return {@link #timeFromStart} (Indicates duration, period, or point of observation from the participant's study entry.)
+         * @return {@link #timeFromEvent} (Observation time from study specified event.)
          */
-        public EvidenceVariableCharacteristicTimeFromStartComponent getTimeFromStart() { 
-          if (this.timeFromStart == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create EvidenceVariableCharacteristicComponent.timeFromStart");
-            else if (Configuration.doAutoCreate())
-              this.timeFromStart = new EvidenceVariableCharacteristicTimeFromStartComponent(); // cc
-          return this.timeFromStart;
-        }
-
-        public boolean hasTimeFromStart() { 
-          return this.timeFromStart != null && !this.timeFromStart.isEmpty();
+        public List<EvidenceVariableCharacteristicTimeFromEventComponent> getTimeFromEvent() { 
+          if (this.timeFromEvent == null)
+            this.timeFromEvent = new ArrayList<EvidenceVariableCharacteristicTimeFromEventComponent>();
+          return this.timeFromEvent;
         }
 
         /**
-         * @param value {@link #timeFromStart} (Indicates duration, period, or point of observation from the participant's study entry.)
+         * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public EvidenceVariableCharacteristicComponent setTimeFromStart(EvidenceVariableCharacteristicTimeFromStartComponent value) { 
-          this.timeFromStart = value;
+        public EvidenceVariableCharacteristicComponent setTimeFromEvent(List<EvidenceVariableCharacteristicTimeFromEventComponent> theTimeFromEvent) { 
+          this.timeFromEvent = theTimeFromEvent;
+          return this;
+        }
+
+        public boolean hasTimeFromEvent() { 
+          if (this.timeFromEvent == null)
+            return false;
+          for (EvidenceVariableCharacteristicTimeFromEventComponent item : this.timeFromEvent)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public EvidenceVariableCharacteristicTimeFromEventComponent addTimeFromEvent() { //3
+          EvidenceVariableCharacteristicTimeFromEventComponent t = new EvidenceVariableCharacteristicTimeFromEventComponent();
+          if (this.timeFromEvent == null)
+            this.timeFromEvent = new ArrayList<EvidenceVariableCharacteristicTimeFromEventComponent>();
+          this.timeFromEvent.add(t);
+          return t;
+        }
+
+        public EvidenceVariableCharacteristicComponent addTimeFromEvent(EvidenceVariableCharacteristicTimeFromEventComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.timeFromEvent == null)
+            this.timeFromEvent = new ArrayList<EvidenceVariableCharacteristicTimeFromEventComponent>();
+          this.timeFromEvent.add(t);
           return this;
         }
 
         /**
-         * @return {@link #groupMeasure} (Indicates how elements are aggregated within the study effective period.). This is the underlying object with id, value and extensions. The accessor "getGroupMeasure" gives direct access to the value
+         * @return The first repetition of repeating field {@link #timeFromEvent}, creating it if it does not already exist {3}
+         */
+        public EvidenceVariableCharacteristicTimeFromEventComponent getTimeFromEventFirstRep() { 
+          if (getTimeFromEvent().isEmpty()) {
+            addTimeFromEvent();
+          }
+          return getTimeFromEvent().get(0);
+        }
+
+        /**
+         * @return {@link #groupMeasure} (Value or set of values that define the grouping.). This is the underlying object with id, value and extensions. The accessor "getGroupMeasure" gives direct access to the value
          */
         public Enumeration<GroupMeasure> getGroupMeasureElement() { 
           if (this.groupMeasure == null)
@@ -647,7 +1000,7 @@ public class EvidenceVariable extends MetadataResource {
         }
 
         /**
-         * @param value {@link #groupMeasure} (Indicates how elements are aggregated within the study effective period.). This is the underlying object with id, value and extensions. The accessor "getGroupMeasure" gives direct access to the value
+         * @param value {@link #groupMeasure} (Value or set of values that define the grouping.). This is the underlying object with id, value and extensions. The accessor "getGroupMeasure" gives direct access to the value
          */
         public EvidenceVariableCharacteristicComponent setGroupMeasureElement(Enumeration<GroupMeasure> value) { 
           this.groupMeasure = value;
@@ -655,14 +1008,14 @@ public class EvidenceVariable extends MetadataResource {
         }
 
         /**
-         * @return Indicates how elements are aggregated within the study effective period.
+         * @return Value or set of values that define the grouping.
          */
         public GroupMeasure getGroupMeasure() { 
           return this.groupMeasure == null ? null : this.groupMeasure.getValue();
         }
 
         /**
-         * @param value Indicates how elements are aggregated within the study effective period.
+         * @param value Value or set of values that define the grouping.
          */
         public EvidenceVariableCharacteristicComponent setGroupMeasure(GroupMeasure value) { 
           if (value == null)
@@ -678,18 +1031,20 @@ public class EvidenceVariable extends MetadataResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("description", "string", "A short, natural language description of the characteristic that could be used to communicate the criteria to an end-user.", 0, 1, description));
+          children.add(new Property("type", "CodeableConcept", "Used to expressing the type of characteristic.", 0, 1, type));
           children.add(new Property("definition[x]", "Reference(Group|EvidenceVariable)|canonical(Any)|CodeableConcept|Expression", "Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).", 0, 1, definition));
           children.add(new Property("method", "CodeableConcept", "Method used for describing characteristic.", 0, 1, method));
           children.add(new Property("device", "Reference(Device|DeviceMetric)", "Device used for determining characteristic.", 0, 1, device));
           children.add(new Property("exclude", "boolean", "When true, members with this characteristic are excluded from the element.", 0, 1, exclude));
-          children.add(new Property("timeFromStart", "", "Indicates duration, period, or point of observation from the participant's study entry.", 0, 1, timeFromStart));
-          children.add(new Property("groupMeasure", "code", "Indicates how elements are aggregated within the study effective period.", 0, 1, groupMeasure));
+          children.add(new Property("timeFromEvent", "", "Observation time from study specified event.", 0, java.lang.Integer.MAX_VALUE, timeFromEvent));
+          children.add(new Property("groupMeasure", "code", "Value or set of values that define the grouping.", 0, 1, groupMeasure));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case -1724546052: /*description*/  return new Property("description", "string", "A short, natural language description of the characteristic that could be used to communicate the criteria to an end-user.", 0, 1, description);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Used to expressing the type of characteristic.", 0, 1, type);
           case -1139422643: /*definition[x]*/  return new Property("definition[x]", "Reference(Group|EvidenceVariable)|canonical(Any)|CodeableConcept|Expression", "Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).", 0, 1, definition);
           case -1014418093: /*definition*/  return new Property("definition[x]", "Reference(Group|EvidenceVariable)|canonical(Any)|CodeableConcept|Expression", "Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).", 0, 1, definition);
           case -820021448: /*definitionReference*/  return new Property("definition[x]", "Reference(Group|EvidenceVariable)", "Define members of the evidence element using Codes (such as condition, medication, or observation), Expressions ( using an expression language such as FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the last year).", 0, 1, definition);
@@ -699,8 +1054,8 @@ public class EvidenceVariable extends MetadataResource {
           case -1077554975: /*method*/  return new Property("method", "CodeableConcept", "Method used for describing characteristic.", 0, 1, method);
           case -1335157162: /*device*/  return new Property("device", "Reference(Device|DeviceMetric)", "Device used for determining characteristic.", 0, 1, device);
           case -1321148966: /*exclude*/  return new Property("exclude", "boolean", "When true, members with this characteristic are excluded from the element.", 0, 1, exclude);
-          case 2100140683: /*timeFromStart*/  return new Property("timeFromStart", "", "Indicates duration, period, or point of observation from the participant's study entry.", 0, 1, timeFromStart);
-          case 588892639: /*groupMeasure*/  return new Property("groupMeasure", "code", "Indicates how elements are aggregated within the study effective period.", 0, 1, groupMeasure);
+          case 2087274691: /*timeFromEvent*/  return new Property("timeFromEvent", "", "Observation time from study specified event.", 0, java.lang.Integer.MAX_VALUE, timeFromEvent);
+          case 588892639: /*groupMeasure*/  return new Property("groupMeasure", "code", "Value or set of values that define the grouping.", 0, 1, groupMeasure);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -710,11 +1065,12 @@ public class EvidenceVariable extends MetadataResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case -1014418093: /*definition*/ return this.definition == null ? new Base[0] : new Base[] {this.definition}; // DataType
         case -1077554975: /*method*/ return this.method == null ? new Base[0] : new Base[] {this.method}; // CodeableConcept
         case -1335157162: /*device*/ return this.device == null ? new Base[0] : new Base[] {this.device}; // Reference
         case -1321148966: /*exclude*/ return this.exclude == null ? new Base[0] : new Base[] {this.exclude}; // BooleanType
-        case 2100140683: /*timeFromStart*/ return this.timeFromStart == null ? new Base[0] : new Base[] {this.timeFromStart}; // EvidenceVariableCharacteristicTimeFromStartComponent
+        case 2087274691: /*timeFromEvent*/ return this.timeFromEvent == null ? new Base[0] : this.timeFromEvent.toArray(new Base[this.timeFromEvent.size()]); // EvidenceVariableCharacteristicTimeFromEventComponent
         case 588892639: /*groupMeasure*/ return this.groupMeasure == null ? new Base[0] : new Base[] {this.groupMeasure}; // Enumeration<GroupMeasure>
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -726,6 +1082,9 @@ public class EvidenceVariable extends MetadataResource {
         switch (hash) {
         case -1724546052: // description
           this.description = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 3575610: // type
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1014418093: // definition
           this.definition = TypeConvertor.castToType(value); // DataType
@@ -739,8 +1098,8 @@ public class EvidenceVariable extends MetadataResource {
         case -1321148966: // exclude
           this.exclude = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
-        case 2100140683: // timeFromStart
-          this.timeFromStart = (EvidenceVariableCharacteristicTimeFromStartComponent) value; // EvidenceVariableCharacteristicTimeFromStartComponent
+        case 2087274691: // timeFromEvent
+          this.getTimeFromEvent().add((EvidenceVariableCharacteristicTimeFromEventComponent) value); // EvidenceVariableCharacteristicTimeFromEventComponent
           return value;
         case 588892639: // groupMeasure
           value = new GroupMeasureEnumFactory().fromType(TypeConvertor.castToCode(value));
@@ -755,6 +1114,8 @@ public class EvidenceVariable extends MetadataResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("description")) {
           this.description = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("type")) {
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("definition[x]")) {
           this.definition = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("method")) {
@@ -763,8 +1124,8 @@ public class EvidenceVariable extends MetadataResource {
           this.device = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("exclude")) {
           this.exclude = TypeConvertor.castToBoolean(value); // BooleanType
-        } else if (name.equals("timeFromStart")) {
-          this.timeFromStart = (EvidenceVariableCharacteristicTimeFromStartComponent) value; // EvidenceVariableCharacteristicTimeFromStartComponent
+        } else if (name.equals("timeFromEvent")) {
+          this.getTimeFromEvent().add((EvidenceVariableCharacteristicTimeFromEventComponent) value);
         } else if (name.equals("groupMeasure")) {
           value = new GroupMeasureEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.groupMeasure = (Enumeration) value; // Enumeration<GroupMeasure>
@@ -777,12 +1138,13 @@ public class EvidenceVariable extends MetadataResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1724546052:  return getDescriptionElement();
+        case 3575610:  return getType();
         case -1139422643:  return getDefinition();
         case -1014418093:  return getDefinition();
         case -1077554975:  return getMethod();
         case -1335157162:  return getDevice();
         case -1321148966:  return getExcludeElement();
-        case 2100140683:  return getTimeFromStart();
+        case 2087274691:  return addTimeFromEvent(); 
         case 588892639:  return getGroupMeasureElement();
         default: return super.makeProperty(hash, name);
         }
@@ -793,11 +1155,12 @@ public class EvidenceVariable extends MetadataResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1724546052: /*description*/ return new String[] {"string"};
+        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case -1014418093: /*definition*/ return new String[] {"Reference", "canonical", "CodeableConcept", "Expression"};
         case -1077554975: /*method*/ return new String[] {"CodeableConcept"};
         case -1335157162: /*device*/ return new String[] {"Reference"};
         case -1321148966: /*exclude*/ return new String[] {"boolean"};
-        case 2100140683: /*timeFromStart*/ return new String[] {};
+        case 2087274691: /*timeFromEvent*/ return new String[] {};
         case 588892639: /*groupMeasure*/ return new String[] {"code"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -808,6 +1171,10 @@ public class EvidenceVariable extends MetadataResource {
       public Base addChild(String name) throws FHIRException {
         if (name.equals("description")) {
           throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.characteristic.description");
+        }
+        else if (name.equals("type")) {
+          this.type = new CodeableConcept();
+          return this.type;
         }
         else if (name.equals("definitionReference")) {
           this.definition = new Reference();
@@ -836,9 +1203,8 @@ public class EvidenceVariable extends MetadataResource {
         else if (name.equals("exclude")) {
           throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.characteristic.exclude");
         }
-        else if (name.equals("timeFromStart")) {
-          this.timeFromStart = new EvidenceVariableCharacteristicTimeFromStartComponent();
-          return this.timeFromStart;
+        else if (name.equals("timeFromEvent")) {
+          return addTimeFromEvent();
         }
         else if (name.equals("groupMeasure")) {
           throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.characteristic.groupMeasure");
@@ -856,11 +1222,16 @@ public class EvidenceVariable extends MetadataResource {
       public void copyValues(EvidenceVariableCharacteristicComponent dst) {
         super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
+        dst.type = type == null ? null : type.copy();
         dst.definition = definition == null ? null : definition.copy();
         dst.method = method == null ? null : method.copy();
         dst.device = device == null ? null : device.copy();
         dst.exclude = exclude == null ? null : exclude.copy();
-        dst.timeFromStart = timeFromStart == null ? null : timeFromStart.copy();
+        if (timeFromEvent != null) {
+          dst.timeFromEvent = new ArrayList<EvidenceVariableCharacteristicTimeFromEventComponent>();
+          for (EvidenceVariableCharacteristicTimeFromEventComponent i : timeFromEvent)
+            dst.timeFromEvent.add(i.copy());
+        };
         dst.groupMeasure = groupMeasure == null ? null : groupMeasure.copy();
       }
 
@@ -871,9 +1242,9 @@ public class EvidenceVariable extends MetadataResource {
         if (!(other_ instanceof EvidenceVariableCharacteristicComponent))
           return false;
         EvidenceVariableCharacteristicComponent o = (EvidenceVariableCharacteristicComponent) other_;
-        return compareDeep(description, o.description, true) && compareDeep(definition, o.definition, true)
+        return compareDeep(description, o.description, true) && compareDeep(type, o.type, true) && compareDeep(definition, o.definition, true)
            && compareDeep(method, o.method, true) && compareDeep(device, o.device, true) && compareDeep(exclude, o.exclude, true)
-           && compareDeep(timeFromStart, o.timeFromStart, true) && compareDeep(groupMeasure, o.groupMeasure, true)
+           && compareDeep(timeFromEvent, o.timeFromEvent, true) && compareDeep(groupMeasure, o.groupMeasure, true)
           ;
       }
 
@@ -889,8 +1260,8 @@ public class EvidenceVariable extends MetadataResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, definition, method
-          , device, exclude, timeFromStart, groupMeasure);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, type, definition
+          , method, device, exclude, timeFromEvent, groupMeasure);
       }
 
   public String fhirType() {
@@ -901,51 +1272,59 @@ public class EvidenceVariable extends MetadataResource {
   }
 
     @Block()
-    public static class EvidenceVariableCharacteristicTimeFromStartComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class EvidenceVariableCharacteristicTimeFromEventComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * A short, natural language description.
+         * Human readable description.
          */
         @Child(name = "description", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Human readable description", formalDefinition="A short, natural language description." )
+        @Description(shortDefinition="Human readable description", formalDefinition="Human readable description." )
         protected StringType description;
+
+        /**
+         * The event used as a base point (reference point) in time.
+         */
+        @Child(name = "event", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The event used as a base point (reference point) in time", formalDefinition="The event used as a base point (reference point) in time." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/evidence-variable-event")
+        protected CodeableConcept event;
 
         /**
          * Used to express the observation at a defined amount of time after the study start.
          */
-        @Child(name = "quantity", type = {Quantity.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "quantity", type = {Quantity.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Used to express the observation at a defined amount of time after the study start", formalDefinition="Used to express the observation at a defined amount of time after the study start." )
         protected Quantity quantity;
 
         /**
          * Used to express the observation within a period after the study start.
          */
-        @Child(name = "range", type = {Range.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "range", type = {Range.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Used to express the observation within a period after the study start", formalDefinition="Used to express the observation within a period after the study start." )
         protected Range range;
 
         /**
          * A human-readable string to clarify or explain concepts about the resource.
          */
-        @Child(name = "note", type = {Annotation.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "note", type = {Annotation.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Used for footnotes or explanatory notes", formalDefinition="A human-readable string to clarify or explain concepts about the resource." )
         protected List<Annotation> note;
 
-        private static final long serialVersionUID = 949972898L;
+        private static final long serialVersionUID = 1217037073L;
 
     /**
      * Constructor
      */
-      public EvidenceVariableCharacteristicTimeFromStartComponent() {
+      public EvidenceVariableCharacteristicTimeFromEventComponent() {
         super();
       }
 
         /**
-         * @return {@link #description} (A short, natural language description.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         * @return {@link #description} (Human readable description.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
          */
         public StringType getDescriptionElement() { 
           if (this.description == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create EvidenceVariableCharacteristicTimeFromStartComponent.description");
+              throw new Error("Attempt to auto-create EvidenceVariableCharacteristicTimeFromEventComponent.description");
             else if (Configuration.doAutoCreate())
               this.description = new StringType(); // bb
           return this.description;
@@ -960,24 +1339,24 @@ public class EvidenceVariable extends MetadataResource {
         }
 
         /**
-         * @param value {@link #description} (A short, natural language description.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         * @param value {@link #description} (Human readable description.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
          */
-        public EvidenceVariableCharacteristicTimeFromStartComponent setDescriptionElement(StringType value) { 
+        public EvidenceVariableCharacteristicTimeFromEventComponent setDescriptionElement(StringType value) { 
           this.description = value;
           return this;
         }
 
         /**
-         * @return A short, natural language description.
+         * @return Human readable description.
          */
         public String getDescription() { 
           return this.description == null ? null : this.description.getValue();
         }
 
         /**
-         * @param value A short, natural language description.
+         * @param value Human readable description.
          */
-        public EvidenceVariableCharacteristicTimeFromStartComponent setDescription(String value) { 
+        public EvidenceVariableCharacteristicTimeFromEventComponent setDescription(String value) { 
           if (Utilities.noString(value))
             this.description = null;
           else {
@@ -989,12 +1368,36 @@ public class EvidenceVariable extends MetadataResource {
         }
 
         /**
+         * @return {@link #event} (The event used as a base point (reference point) in time.)
+         */
+        public CodeableConcept getEvent() { 
+          if (this.event == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceVariableCharacteristicTimeFromEventComponent.event");
+            else if (Configuration.doAutoCreate())
+              this.event = new CodeableConcept(); // cc
+          return this.event;
+        }
+
+        public boolean hasEvent() { 
+          return this.event != null && !this.event.isEmpty();
+        }
+
+        /**
+         * @param value {@link #event} (The event used as a base point (reference point) in time.)
+         */
+        public EvidenceVariableCharacteristicTimeFromEventComponent setEvent(CodeableConcept value) { 
+          this.event = value;
+          return this;
+        }
+
+        /**
          * @return {@link #quantity} (Used to express the observation at a defined amount of time after the study start.)
          */
         public Quantity getQuantity() { 
           if (this.quantity == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create EvidenceVariableCharacteristicTimeFromStartComponent.quantity");
+              throw new Error("Attempt to auto-create EvidenceVariableCharacteristicTimeFromEventComponent.quantity");
             else if (Configuration.doAutoCreate())
               this.quantity = new Quantity(); // cc
           return this.quantity;
@@ -1007,7 +1410,7 @@ public class EvidenceVariable extends MetadataResource {
         /**
          * @param value {@link #quantity} (Used to express the observation at a defined amount of time after the study start.)
          */
-        public EvidenceVariableCharacteristicTimeFromStartComponent setQuantity(Quantity value) { 
+        public EvidenceVariableCharacteristicTimeFromEventComponent setQuantity(Quantity value) { 
           this.quantity = value;
           return this;
         }
@@ -1018,7 +1421,7 @@ public class EvidenceVariable extends MetadataResource {
         public Range getRange() { 
           if (this.range == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create EvidenceVariableCharacteristicTimeFromStartComponent.range");
+              throw new Error("Attempt to auto-create EvidenceVariableCharacteristicTimeFromEventComponent.range");
             else if (Configuration.doAutoCreate())
               this.range = new Range(); // cc
           return this.range;
@@ -1031,7 +1434,7 @@ public class EvidenceVariable extends MetadataResource {
         /**
          * @param value {@link #range} (Used to express the observation within a period after the study start.)
          */
-        public EvidenceVariableCharacteristicTimeFromStartComponent setRange(Range value) { 
+        public EvidenceVariableCharacteristicTimeFromEventComponent setRange(Range value) { 
           this.range = value;
           return this;
         }
@@ -1048,7 +1451,7 @@ public class EvidenceVariable extends MetadataResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public EvidenceVariableCharacteristicTimeFromStartComponent setNote(List<Annotation> theNote) { 
+        public EvidenceVariableCharacteristicTimeFromEventComponent setNote(List<Annotation> theNote) { 
           this.note = theNote;
           return this;
         }
@@ -1070,7 +1473,7 @@ public class EvidenceVariable extends MetadataResource {
           return t;
         }
 
-        public EvidenceVariableCharacteristicTimeFromStartComponent addNote(Annotation t) { //3
+        public EvidenceVariableCharacteristicTimeFromEventComponent addNote(Annotation t) { //3
           if (t == null)
             return this;
           if (this.note == null)
@@ -1091,7 +1494,8 @@ public class EvidenceVariable extends MetadataResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("description", "string", "A short, natural language description.", 0, 1, description));
+          children.add(new Property("description", "string", "Human readable description.", 0, 1, description));
+          children.add(new Property("event", "CodeableConcept", "The event used as a base point (reference point) in time.", 0, 1, event));
           children.add(new Property("quantity", "Quantity", "Used to express the observation at a defined amount of time after the study start.", 0, 1, quantity));
           children.add(new Property("range", "Range", "Used to express the observation within a period after the study start.", 0, 1, range));
           children.add(new Property("note", "Annotation", "A human-readable string to clarify or explain concepts about the resource.", 0, java.lang.Integer.MAX_VALUE, note));
@@ -1100,7 +1504,8 @@ public class EvidenceVariable extends MetadataResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1724546052: /*description*/  return new Property("description", "string", "A short, natural language description.", 0, 1, description);
+          case -1724546052: /*description*/  return new Property("description", "string", "Human readable description.", 0, 1, description);
+          case 96891546: /*event*/  return new Property("event", "CodeableConcept", "The event used as a base point (reference point) in time.", 0, 1, event);
           case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "Used to express the observation at a defined amount of time after the study start.", 0, 1, quantity);
           case 108280125: /*range*/  return new Property("range", "Range", "Used to express the observation within a period after the study start.", 0, 1, range);
           case 3387378: /*note*/  return new Property("note", "Annotation", "A human-readable string to clarify or explain concepts about the resource.", 0, java.lang.Integer.MAX_VALUE, note);
@@ -1113,6 +1518,7 @@ public class EvidenceVariable extends MetadataResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
+        case 96891546: /*event*/ return this.event == null ? new Base[0] : new Base[] {this.event}; // CodeableConcept
         case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
         case 108280125: /*range*/ return this.range == null ? new Base[0] : new Base[] {this.range}; // Range
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
@@ -1126,6 +1532,9 @@ public class EvidenceVariable extends MetadataResource {
         switch (hash) {
         case -1724546052: // description
           this.description = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 96891546: // event
+          this.event = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1285004149: // quantity
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
@@ -1145,6 +1554,8 @@ public class EvidenceVariable extends MetadataResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("description")) {
           this.description = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("event")) {
+          this.event = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("quantity")) {
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("range")) {
@@ -1160,6 +1571,7 @@ public class EvidenceVariable extends MetadataResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1724546052:  return getDescriptionElement();
+        case 96891546:  return getEvent();
         case -1285004149:  return getQuantity();
         case 108280125:  return getRange();
         case 3387378:  return addNote(); 
@@ -1172,6 +1584,7 @@ public class EvidenceVariable extends MetadataResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1724546052: /*description*/ return new String[] {"string"};
+        case 96891546: /*event*/ return new String[] {"CodeableConcept"};
         case -1285004149: /*quantity*/ return new String[] {"Quantity"};
         case 108280125: /*range*/ return new String[] {"Range"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
@@ -1183,7 +1596,11 @@ public class EvidenceVariable extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.characteristic.timeFromStart.description");
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.characteristic.timeFromEvent.description");
+        }
+        else if (name.equals("event")) {
+          this.event = new CodeableConcept();
+          return this.event;
         }
         else if (name.equals("quantity")) {
           this.quantity = new Quantity();
@@ -1200,15 +1617,16 @@ public class EvidenceVariable extends MetadataResource {
           return super.addChild(name);
       }
 
-      public EvidenceVariableCharacteristicTimeFromStartComponent copy() {
-        EvidenceVariableCharacteristicTimeFromStartComponent dst = new EvidenceVariableCharacteristicTimeFromStartComponent();
+      public EvidenceVariableCharacteristicTimeFromEventComponent copy() {
+        EvidenceVariableCharacteristicTimeFromEventComponent dst = new EvidenceVariableCharacteristicTimeFromEventComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(EvidenceVariableCharacteristicTimeFromStartComponent dst) {
+      public void copyValues(EvidenceVariableCharacteristicTimeFromEventComponent dst) {
         super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
+        dst.event = event == null ? null : event.copy();
         dst.quantity = quantity == null ? null : quantity.copy();
         dst.range = range == null ? null : range.copy();
         if (note != null) {
@@ -1222,10 +1640,10 @@ public class EvidenceVariable extends MetadataResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof EvidenceVariableCharacteristicTimeFromStartComponent))
+        if (!(other_ instanceof EvidenceVariableCharacteristicTimeFromEventComponent))
           return false;
-        EvidenceVariableCharacteristicTimeFromStartComponent o = (EvidenceVariableCharacteristicTimeFromStartComponent) other_;
-        return compareDeep(description, o.description, true) && compareDeep(quantity, o.quantity, true)
+        EvidenceVariableCharacteristicTimeFromEventComponent o = (EvidenceVariableCharacteristicTimeFromEventComponent) other_;
+        return compareDeep(description, o.description, true) && compareDeep(event, o.event, true) && compareDeep(quantity, o.quantity, true)
            && compareDeep(range, o.range, true) && compareDeep(note, o.note, true);
       }
 
@@ -1233,19 +1651,19 @@ public class EvidenceVariable extends MetadataResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof EvidenceVariableCharacteristicTimeFromStartComponent))
+        if (!(other_ instanceof EvidenceVariableCharacteristicTimeFromEventComponent))
           return false;
-        EvidenceVariableCharacteristicTimeFromStartComponent o = (EvidenceVariableCharacteristicTimeFromStartComponent) other_;
+        EvidenceVariableCharacteristicTimeFromEventComponent o = (EvidenceVariableCharacteristicTimeFromEventComponent) other_;
         return compareValues(description, o.description, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, quantity, range
-          , note);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, event, quantity
+          , range, note);
       }
 
   public String fhirType() {
-    return "EvidenceVariable.characteristic.timeFromStart";
+    return "EvidenceVariable.characteristic.timeFromEvent";
 
   }
 
@@ -1254,17 +1672,17 @@ public class EvidenceVariable extends MetadataResource {
     @Block()
     public static class EvidenceVariableCategoryComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * A human-readable title or representation of the grouping.
+         * Description of the grouping.
          */
         @Child(name = "name", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Description of the grouping", formalDefinition="A human-readable title or representation of the grouping." )
+        @Description(shortDefinition="Description of the grouping", formalDefinition="Description of the grouping." )
         protected StringType name;
 
         /**
-         * Value or set of values that define the grouping.
+         * Definition of the grouping.
          */
         @Child(name = "value", type = {CodeableConcept.class, Quantity.class, Range.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Definition of the grouping", formalDefinition="Value or set of values that define the grouping." )
+        @Description(shortDefinition="Definition of the grouping", formalDefinition="Definition of the grouping." )
         protected DataType value;
 
         private static final long serialVersionUID = 1839679495L;
@@ -1277,7 +1695,7 @@ public class EvidenceVariable extends MetadataResource {
       }
 
         /**
-         * @return {@link #name} (A human-readable title or representation of the grouping.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+         * @return {@link #name} (Description of the grouping.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
          */
         public StringType getNameElement() { 
           if (this.name == null)
@@ -1297,7 +1715,7 @@ public class EvidenceVariable extends MetadataResource {
         }
 
         /**
-         * @param value {@link #name} (A human-readable title or representation of the grouping.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+         * @param value {@link #name} (Description of the grouping.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
          */
         public EvidenceVariableCategoryComponent setNameElement(StringType value) { 
           this.name = value;
@@ -1305,14 +1723,14 @@ public class EvidenceVariable extends MetadataResource {
         }
 
         /**
-         * @return A human-readable title or representation of the grouping.
+         * @return Description of the grouping.
          */
         public String getName() { 
           return this.name == null ? null : this.name.getValue();
         }
 
         /**
-         * @param value A human-readable title or representation of the grouping.
+         * @param value Description of the grouping.
          */
         public EvidenceVariableCategoryComponent setName(String value) { 
           if (Utilities.noString(value))
@@ -1326,14 +1744,14 @@ public class EvidenceVariable extends MetadataResource {
         }
 
         /**
-         * @return {@link #value} (Value or set of values that define the grouping.)
+         * @return {@link #value} (Definition of the grouping.)
          */
         public DataType getValue() { 
           return this.value;
         }
 
         /**
-         * @return {@link #value} (Value or set of values that define the grouping.)
+         * @return {@link #value} (Definition of the grouping.)
          */
         public CodeableConcept getValueCodeableConcept() throws FHIRException { 
           if (this.value == null)
@@ -1348,7 +1766,7 @@ public class EvidenceVariable extends MetadataResource {
         }
 
         /**
-         * @return {@link #value} (Value or set of values that define the grouping.)
+         * @return {@link #value} (Definition of the grouping.)
          */
         public Quantity getValueQuantity() throws FHIRException { 
           if (this.value == null)
@@ -1363,7 +1781,7 @@ public class EvidenceVariable extends MetadataResource {
         }
 
         /**
-         * @return {@link #value} (Value or set of values that define the grouping.)
+         * @return {@link #value} (Definition of the grouping.)
          */
         public Range getValueRange() throws FHIRException { 
           if (this.value == null)
@@ -1382,7 +1800,7 @@ public class EvidenceVariable extends MetadataResource {
         }
 
         /**
-         * @param value {@link #value} (Value or set of values that define the grouping.)
+         * @param value {@link #value} (Definition of the grouping.)
          */
         public EvidenceVariableCategoryComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity || value instanceof Range))
@@ -1393,19 +1811,19 @@ public class EvidenceVariable extends MetadataResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("name", "string", "A human-readable title or representation of the grouping.", 0, 1, name));
-          children.add(new Property("value[x]", "CodeableConcept|Quantity|Range", "Value or set of values that define the grouping.", 0, 1, value));
+          children.add(new Property("name", "string", "Description of the grouping.", 0, 1, name));
+          children.add(new Property("value[x]", "CodeableConcept|Quantity|Range", "Definition of the grouping.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3373707: /*name*/  return new Property("name", "string", "A human-readable title or representation of the grouping.", 0, 1, name);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "CodeableConcept|Quantity|Range", "Value or set of values that define the grouping.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "CodeableConcept|Quantity|Range", "Value or set of values that define the grouping.", 0, 1, value);
-          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "Value or set of values that define the grouping.", 0, 1, value);
-          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "Value or set of values that define the grouping.", 0, 1, value);
-          case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "Value or set of values that define the grouping.", 0, 1, value);
+          case 3373707: /*name*/  return new Property("name", "string", "Description of the grouping.", 0, 1, name);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "CodeableConcept|Quantity|Range", "Definition of the grouping.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "CodeableConcept|Quantity|Range", "Definition of the grouping.", 0, 1, value);
+          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "Definition of the grouping.", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "Definition of the grouping.", 0, 1, value);
+          case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "Definition of the grouping.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1673,12 +2091,11 @@ public class EvidenceVariable extends MetadataResource {
     protected BooleanType actual;
 
     /**
-     * Used to specify if two or more characteristics are combined with OR or AND.
+     * Used to specify how two or more characteristics are combined.
      */
-    @Child(name = "characteristicCombination", type = {CodeType.class}, order=20, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="intersection | union", formalDefinition="Used to specify if two or more characteristics are combined with OR or AND." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/characteristic-combination")
-    protected Enumeration<CharacteristicCombination> characteristicCombination;
+    @Child(name = "characteristicCombination", type = {}, order=20, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Used to specify how two or more characteristics are combined", formalDefinition="Used to specify how two or more characteristics are combined." )
+    protected EvidenceVariableCharacteristicCombinationComponent characteristicCombination;
 
     /**
      * A characteristic that defines the members of the evidence element. Multiple characteristics are applied with "and" semantics.
@@ -1688,21 +2105,21 @@ public class EvidenceVariable extends MetadataResource {
     protected List<EvidenceVariableCharacteristicComponent> characteristic;
 
     /**
-     * Used for an outcome to classify.
+     * continuous | dichotomous | ordinal | polychotomous.
      */
-    @Child(name = "handling", type = {CodeType.class}, order=22, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="continuous | dichotomous | ordinal | polychotomous", formalDefinition="Used for an outcome to classify." )
+    @Child(name = "handling", type = {CodeType.class}, order=22, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="continuous | dichotomous | ordinal | polychotomous", formalDefinition="continuous | dichotomous | ordinal | polychotomous." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/variable-handling")
     protected Enumeration<EvidenceVariableHandling> handling;
 
     /**
-     * A grouping (or set of values) described along with other groupings to specify the set of groupings allowed for the variable.
+     * A grouping for ordinal or polychotomous variables.
      */
     @Child(name = "category", type = {}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="A grouping for ordinal or polychotomous variables", formalDefinition="A grouping (or set of values) described along with other groupings to specify the set of groupings allowed for the variable." )
+    @Description(shortDefinition="A grouping for ordinal or polychotomous variables", formalDefinition="A grouping for ordinal or polychotomous variables." )
     protected List<EvidenceVariableCategoryComponent> category;
 
-    private static final long serialVersionUID = 449375263L;
+    private static final long serialVersionUID = -208109028L;
 
   /**
    * Constructor
@@ -2728,19 +3145,15 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     /**
-     * @return {@link #characteristicCombination} (Used to specify if two or more characteristics are combined with OR or AND.). This is the underlying object with id, value and extensions. The accessor "getCharacteristicCombination" gives direct access to the value
+     * @return {@link #characteristicCombination} (Used to specify how two or more characteristics are combined.)
      */
-    public Enumeration<CharacteristicCombination> getCharacteristicCombinationElement() { 
+    public EvidenceVariableCharacteristicCombinationComponent getCharacteristicCombination() { 
       if (this.characteristicCombination == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create EvidenceVariable.characteristicCombination");
         else if (Configuration.doAutoCreate())
-          this.characteristicCombination = new Enumeration<CharacteristicCombination>(new CharacteristicCombinationEnumFactory()); // bb
+          this.characteristicCombination = new EvidenceVariableCharacteristicCombinationComponent(); // cc
       return this.characteristicCombination;
-    }
-
-    public boolean hasCharacteristicCombinationElement() { 
-      return this.characteristicCombination != null && !this.characteristicCombination.isEmpty();
     }
 
     public boolean hasCharacteristicCombination() { 
@@ -2748,31 +3161,10 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     /**
-     * @param value {@link #characteristicCombination} (Used to specify if two or more characteristics are combined with OR or AND.). This is the underlying object with id, value and extensions. The accessor "getCharacteristicCombination" gives direct access to the value
+     * @param value {@link #characteristicCombination} (Used to specify how two or more characteristics are combined.)
      */
-    public EvidenceVariable setCharacteristicCombinationElement(Enumeration<CharacteristicCombination> value) { 
+    public EvidenceVariable setCharacteristicCombination(EvidenceVariableCharacteristicCombinationComponent value) { 
       this.characteristicCombination = value;
-      return this;
-    }
-
-    /**
-     * @return Used to specify if two or more characteristics are combined with OR or AND.
-     */
-    public CharacteristicCombination getCharacteristicCombination() { 
-      return this.characteristicCombination == null ? null : this.characteristicCombination.getValue();
-    }
-
-    /**
-     * @param value Used to specify if two or more characteristics are combined with OR or AND.
-     */
-    public EvidenceVariable setCharacteristicCombination(CharacteristicCombination value) { 
-      if (value == null)
-        this.characteristicCombination = null;
-      else {
-        if (this.characteristicCombination == null)
-          this.characteristicCombination = new Enumeration<CharacteristicCombination>(new CharacteristicCombinationEnumFactory());
-        this.characteristicCombination.setValue(value);
-      }
       return this;
     }
 
@@ -2830,7 +3222,7 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     /**
-     * @return {@link #handling} (Used for an outcome to classify.). This is the underlying object with id, value and extensions. The accessor "getHandling" gives direct access to the value
+     * @return {@link #handling} (continuous | dichotomous | ordinal | polychotomous.). This is the underlying object with id, value and extensions. The accessor "getHandling" gives direct access to the value
      */
     public Enumeration<EvidenceVariableHandling> getHandlingElement() { 
       if (this.handling == null)
@@ -2850,7 +3242,7 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     /**
-     * @param value {@link #handling} (Used for an outcome to classify.). This is the underlying object with id, value and extensions. The accessor "getHandling" gives direct access to the value
+     * @param value {@link #handling} (continuous | dichotomous | ordinal | polychotomous.). This is the underlying object with id, value and extensions. The accessor "getHandling" gives direct access to the value
      */
     public EvidenceVariable setHandlingElement(Enumeration<EvidenceVariableHandling> value) { 
       this.handling = value;
@@ -2858,14 +3250,14 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     /**
-     * @return Used for an outcome to classify.
+     * @return continuous | dichotomous | ordinal | polychotomous.
      */
     public EvidenceVariableHandling getHandling() { 
       return this.handling == null ? null : this.handling.getValue();
     }
 
     /**
-     * @param value Used for an outcome to classify.
+     * @param value continuous | dichotomous | ordinal | polychotomous.
      */
     public EvidenceVariable setHandling(EvidenceVariableHandling value) { 
       if (value == null)
@@ -2879,7 +3271,7 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     /**
-     * @return {@link #category} (A grouping (or set of values) described along with other groupings to specify the set of groupings allowed for the variable.)
+     * @return {@link #category} (A grouping for ordinal or polychotomous variables.)
      */
     public List<EvidenceVariableCategoryComponent> getCategory() { 
       if (this.category == null)
@@ -3169,6 +3561,41 @@ public class EvidenceVariable extends MetadataResource {
       throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"effectivePeriod\"");
     }
 
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getTopicMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #topic} (Descriptive topics related to the content of the library. Topics provide a high-level categorization of the library that can be useful for filtering and searching.)
+     */
+    public List<CodeableConcept> getTopic() { 
+      return new ArrayList<>();
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public EvidenceVariable setTopic(List<CodeableConcept> theTopic) { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"topic\"");
+    }
+    public boolean hasTopic() { 
+      return false;
+    }
+
+    public CodeableConcept addTopic() { //3
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"topic\"");
+    }
+    public EvidenceVariable addTopic(CodeableConcept t) { //3
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"topic\"");
+    }
+    /**
+     * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist {2}
+     */
+    public CodeableConcept getTopicFirstRep() { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"topic\"");
+    }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("url", "uri", "An absolute URI that is used to identify this evidence variable when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this evidence variable is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the evidence variable is stored on different servers.", 0, 1, url));
@@ -3191,10 +3618,10 @@ public class EvidenceVariable extends MetadataResource {
         children.add(new Property("endorser", "ContactDetail", "An individual or organization responsible for officially endorsing the content for use in some setting.", 0, java.lang.Integer.MAX_VALUE, endorser));
         children.add(new Property("relatedArtifact", "RelatedArtifact", "Related artifacts such as additional documentation, justification, or bibliographic references.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact));
         children.add(new Property("actual", "boolean", "True if the actual variable measured, false if a conceptual representation of the intended variable.", 0, 1, actual));
-        children.add(new Property("characteristicCombination", "code", "Used to specify if two or more characteristics are combined with OR or AND.", 0, 1, characteristicCombination));
+        children.add(new Property("characteristicCombination", "", "Used to specify how two or more characteristics are combined.", 0, 1, characteristicCombination));
         children.add(new Property("characteristic", "", "A characteristic that defines the members of the evidence element. Multiple characteristics are applied with \"and\" semantics.", 0, java.lang.Integer.MAX_VALUE, characteristic));
-        children.add(new Property("handling", "code", "Used for an outcome to classify.", 0, 1, handling));
-        children.add(new Property("category", "", "A grouping (or set of values) described along with other groupings to specify the set of groupings allowed for the variable.", 0, java.lang.Integer.MAX_VALUE, category));
+        children.add(new Property("handling", "code", "continuous | dichotomous | ordinal | polychotomous.", 0, 1, handling));
+        children.add(new Property("category", "", "A grouping for ordinal or polychotomous variables.", 0, java.lang.Integer.MAX_VALUE, category));
       }
 
       @Override
@@ -3220,10 +3647,10 @@ public class EvidenceVariable extends MetadataResource {
         case 1740277666: /*endorser*/  return new Property("endorser", "ContactDetail", "An individual or organization responsible for officially endorsing the content for use in some setting.", 0, java.lang.Integer.MAX_VALUE, endorser);
         case 666807069: /*relatedArtifact*/  return new Property("relatedArtifact", "RelatedArtifact", "Related artifacts such as additional documentation, justification, or bibliographic references.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact);
         case -1422939762: /*actual*/  return new Property("actual", "boolean", "True if the actual variable measured, false if a conceptual representation of the intended variable.", 0, 1, actual);
-        case -861347276: /*characteristicCombination*/  return new Property("characteristicCombination", "code", "Used to specify if two or more characteristics are combined with OR or AND.", 0, 1, characteristicCombination);
+        case -861347276: /*characteristicCombination*/  return new Property("characteristicCombination", "", "Used to specify how two or more characteristics are combined.", 0, 1, characteristicCombination);
         case 366313883: /*characteristic*/  return new Property("characteristic", "", "A characteristic that defines the members of the evidence element. Multiple characteristics are applied with \"and\" semantics.", 0, java.lang.Integer.MAX_VALUE, characteristic);
-        case 2072805: /*handling*/  return new Property("handling", "code", "Used for an outcome to classify.", 0, 1, handling);
-        case 50511102: /*category*/  return new Property("category", "", "A grouping (or set of values) described along with other groupings to specify the set of groupings allowed for the variable.", 0, java.lang.Integer.MAX_VALUE, category);
+        case 2072805: /*handling*/  return new Property("handling", "code", "continuous | dichotomous | ordinal | polychotomous.", 0, 1, handling);
+        case 50511102: /*category*/  return new Property("category", "", "A grouping for ordinal or polychotomous variables.", 0, java.lang.Integer.MAX_VALUE, category);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -3252,7 +3679,7 @@ public class EvidenceVariable extends MetadataResource {
         case 1740277666: /*endorser*/ return this.endorser == null ? new Base[0] : this.endorser.toArray(new Base[this.endorser.size()]); // ContactDetail
         case 666807069: /*relatedArtifact*/ return this.relatedArtifact == null ? new Base[0] : this.relatedArtifact.toArray(new Base[this.relatedArtifact.size()]); // RelatedArtifact
         case -1422939762: /*actual*/ return this.actual == null ? new Base[0] : new Base[] {this.actual}; // BooleanType
-        case -861347276: /*characteristicCombination*/ return this.characteristicCombination == null ? new Base[0] : new Base[] {this.characteristicCombination}; // Enumeration<CharacteristicCombination>
+        case -861347276: /*characteristicCombination*/ return this.characteristicCombination == null ? new Base[0] : new Base[] {this.characteristicCombination}; // EvidenceVariableCharacteristicCombinationComponent
         case 366313883: /*characteristic*/ return this.characteristic == null ? new Base[0] : this.characteristic.toArray(new Base[this.characteristic.size()]); // EvidenceVariableCharacteristicComponent
         case 2072805: /*handling*/ return this.handling == null ? new Base[0] : new Base[] {this.handling}; // Enumeration<EvidenceVariableHandling>
         case 50511102: /*category*/ return this.category == null ? new Base[0] : this.category.toArray(new Base[this.category.size()]); // EvidenceVariableCategoryComponent
@@ -3326,8 +3753,7 @@ public class EvidenceVariable extends MetadataResource {
           this.actual = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -861347276: // characteristicCombination
-          value = new CharacteristicCombinationEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.characteristicCombination = (Enumeration) value; // Enumeration<CharacteristicCombination>
+          this.characteristicCombination = (EvidenceVariableCharacteristicCombinationComponent) value; // EvidenceVariableCharacteristicCombinationComponent
           return value;
         case 366313883: // characteristic
           this.getCharacteristic().add((EvidenceVariableCharacteristicComponent) value); // EvidenceVariableCharacteristicComponent
@@ -3388,8 +3814,7 @@ public class EvidenceVariable extends MetadataResource {
         } else if (name.equals("actual")) {
           this.actual = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("characteristicCombination")) {
-          value = new CharacteristicCombinationEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.characteristicCombination = (Enumeration) value; // Enumeration<CharacteristicCombination>
+          this.characteristicCombination = (EvidenceVariableCharacteristicCombinationComponent) value; // EvidenceVariableCharacteristicCombinationComponent
         } else if (name.equals("characteristic")) {
           this.getCharacteristic().add((EvidenceVariableCharacteristicComponent) value);
         } else if (name.equals("handling")) {
@@ -3425,7 +3850,7 @@ public class EvidenceVariable extends MetadataResource {
         case 1740277666:  return addEndorser(); 
         case 666807069:  return addRelatedArtifact(); 
         case -1422939762:  return getActualElement();
-        case -861347276:  return getCharacteristicCombinationElement();
+        case -861347276:  return getCharacteristicCombination();
         case 366313883:  return addCharacteristic(); 
         case 2072805:  return getHandlingElement();
         case 50511102:  return addCategory(); 
@@ -3457,7 +3882,7 @@ public class EvidenceVariable extends MetadataResource {
         case 1740277666: /*endorser*/ return new String[] {"ContactDetail"};
         case 666807069: /*relatedArtifact*/ return new String[] {"RelatedArtifact"};
         case -1422939762: /*actual*/ return new String[] {"boolean"};
-        case -861347276: /*characteristicCombination*/ return new String[] {"code"};
+        case -861347276: /*characteristicCombination*/ return new String[] {};
         case 366313883: /*characteristic*/ return new String[] {};
         case 2072805: /*handling*/ return new String[] {"code"};
         case 50511102: /*category*/ return new String[] {};
@@ -3529,7 +3954,8 @@ public class EvidenceVariable extends MetadataResource {
           throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.actual");
         }
         else if (name.equals("characteristicCombination")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.characteristicCombination");
+          this.characteristicCombination = new EvidenceVariableCharacteristicCombinationComponent();
+          return this.characteristicCombination;
         }
         else if (name.equals("characteristic")) {
           return addCharacteristic();
@@ -3659,8 +4085,8 @@ public class EvidenceVariable extends MetadataResource {
         return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(name, o.name, true)
            && compareValues(title, o.title, true) && compareValues(shortTitle, o.shortTitle, true) && compareValues(subtitle, o.subtitle, true)
            && compareValues(status, o.status, true) && compareValues(date, o.date, true) && compareValues(description, o.description, true)
-           && compareValues(publisher, o.publisher, true) && compareValues(actual, o.actual, true) && compareValues(characteristicCombination, o.characteristicCombination, true)
-           && compareValues(handling, o.handling, true);
+           && compareValues(publisher, o.publisher, true) && compareValues(actual, o.actual, true) && compareValues(handling, o.handling, true)
+          ;
       }
 
       public boolean isEmpty() {
@@ -3683,7 +4109,7 @@ public class EvidenceVariable extends MetadataResource {
    * Path: <b>EvidenceVariable.relatedArtifact.where(type='composed-of').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="composed-of", path="EvidenceVariable.relatedArtifact.where(type='composed-of').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="composed-of", path="EvidenceVariable.relatedArtifact.where(type='composed-of').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_COMPOSED_OF = "composed-of";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>composed-of</b>
@@ -3829,7 +4255,7 @@ public class EvidenceVariable extends MetadataResource {
    * Path: <b>EvidenceVariable.relatedArtifact.where(type='depends-on').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="depends-on", path="EvidenceVariable.relatedArtifact.where(type='depends-on').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="depends-on", path="EvidenceVariable.relatedArtifact.where(type='depends-on').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_DEPENDS_ON = "depends-on";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>depends-on</b>
@@ -3855,7 +4281,7 @@ public class EvidenceVariable extends MetadataResource {
    * Path: <b>EvidenceVariable.relatedArtifact.where(type='derived-from').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="derived-from", path="EvidenceVariable.relatedArtifact.where(type='derived-from').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="derived-from", path="EvidenceVariable.relatedArtifact.where(type='derived-from').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_DERIVED_FROM = "derived-from";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>derived-from</b>
@@ -3941,7 +4367,7 @@ public class EvidenceVariable extends MetadataResource {
    * Path: <b>EvidenceVariable.relatedArtifact.where(type='predecessor').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="predecessor", path="EvidenceVariable.relatedArtifact.where(type='predecessor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="predecessor", path="EvidenceVariable.relatedArtifact.where(type='predecessor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_PREDECESSOR = "predecessor";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>predecessor</b>
@@ -4007,7 +4433,7 @@ public class EvidenceVariable extends MetadataResource {
    * Path: <b>EvidenceVariable.relatedArtifact.where(type='successor').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="successor", path="EvidenceVariable.relatedArtifact.where(type='successor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="successor", path="EvidenceVariable.relatedArtifact.where(type='successor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_SUCCESSOR = "successor";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>successor</b>

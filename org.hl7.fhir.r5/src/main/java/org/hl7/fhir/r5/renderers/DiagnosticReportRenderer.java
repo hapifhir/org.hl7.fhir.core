@@ -189,9 +189,9 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
         ObservationNode obs = new ObservationNode();
         obs.ref = b.get("reference").primitiveValue();
         obs.obs = resolveReference(rw, obs.ref);
-        if (obs.obs.getResource() != null) {
+        if (obs.obs != null && obs.obs.getResource() != null) {
           PropertyWrapper t = getProperty(obs.obs.getResource(), "contained");
-          if (t.hasValues()) {
+          if (t != null && t.hasValues()) {
             obs.contained = fetchObservations(t.getValues(), rw);
           }
         }
@@ -239,7 +239,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
 
   private boolean scanObsForRefRange(List<ObservationNode> observations) {
     for (ObservationNode o : observations) {
-      if (o.obs.getResource() != null) {
+      if (o.obs != null && o.obs.getResource() != null) {
         PropertyWrapper pw = getProperty(o.obs.getResource(), "referenceRange");
         if (valued(pw)) {
           return true;
@@ -256,7 +256,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
 
   private boolean scanObsForNote(List<ObservationNode> observations) {
     for (ObservationNode o : observations) {
-      if (o.obs.getResource() != null) {
+      if (o.obs != null && o.obs.getResource() != null) {
         PropertyWrapper pw = getProperty(o.obs.getResource(), "note");
         if (valued(pw)) {
           return true;
@@ -273,7 +273,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
 
   private boolean scanObsForIssued(List<ObservationNode> observations, DataType iss) throws UnsupportedEncodingException, FHIRException, IOException {
     for (ObservationNode o : observations) {
-      if (o.obs.getResource() != null) {
+      if (o.obs != null && o.obs.getResource() != null) {
         PropertyWrapper pw = getProperty(o.obs.getResource(), "issued");
         if (valued(pw)) {
           if (!Base.compareDeep(pw.value().getBase(), iss, true)) {
@@ -292,7 +292,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
 
   private boolean scanObsForEffective(List<ObservationNode> observations, DataType eff) throws UnsupportedEncodingException, FHIRException, IOException {
     for (ObservationNode o : observations) {
-      if (o.obs.getResource() != null) {
+      if (o.obs != null && o.obs.getResource() != null) {
         PropertyWrapper pw = getProperty(o.obs.getResource(), "effective[x]");
         if (valued(pw)) {
           if (!Base.compareDeep(pw.value().getBase(), eff, true)) {
@@ -311,7 +311,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
 
   private boolean scanObsForFlags(List<ObservationNode> observations) throws UnsupportedEncodingException, FHIRException, IOException {
     for (ObservationNode o : observations) {
-      if (o.obs.getResource() != null) {
+      if (o.obs != null && o.obs.getResource() != null) {
         PropertyWrapper pw = getProperty(o.obs.getResource(), "interpretation");
         if (valued(pw)) {
           return true;
@@ -335,15 +335,15 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
 
   private void addObservationToTable(XhtmlNode tbl, ObservationNode o, int i, String cs, boolean refRange, boolean flags, boolean note, boolean effectiveTime, boolean issued, DataType eff, DataType iss) throws UnsupportedEncodingException, FHIRException, IOException {
     XhtmlNode tr = tbl.tr();
-    if (o.obs.getReference()  == null) {
+    if (o.obs != null && o.obs.getReference()  == null) {
       XhtmlNode td = tr.td().colspan(cs);
       td.i().tx("This Observation could not be resolved");
     } else {
-      if (o.obs.getResource() != null) {
+      if (o.obs != null && o.obs.getResource() != null) {
         addObservationToTable(tr, o.obs.getResource(), i, o.obs.getReference(), refRange, flags, note, effectiveTime, issued, eff, iss);
       } else {
         XhtmlNode td = tr.td().colspan(cs);
-        td.i().ah(o.obs.getReference()).tx("Observation");
+        td.i().tx("Observation");
       }
       if (o.contained != null) {
         for (ObservationNode c : o.contained) {

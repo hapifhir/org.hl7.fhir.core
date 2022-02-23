@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -302,7 +302,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(id, extension);
       }
 
-// Manual code (from Configuration.txt)t:
+// Manual code (from Configuration.txt):
  @Override
   public String getIdBase() {
     return getId();

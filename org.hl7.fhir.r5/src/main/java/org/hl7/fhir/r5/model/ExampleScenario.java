@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,7 +82,6 @@ public class ExampleScenario extends CanonicalResource {
           switch (this) {
             case PERSON: return "person";
             case ENTITY: return "entity";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,7 +89,6 @@ public class ExampleScenario extends CanonicalResource {
           switch (this) {
             case PERSON: return "http://hl7.org/fhir/examplescenario-actor-type";
             case ENTITY: return "http://hl7.org/fhir/examplescenario-actor-type";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,7 +96,6 @@ public class ExampleScenario extends CanonicalResource {
           switch (this) {
             case PERSON: return "A person.";
             case ENTITY: return "A system.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,7 +103,6 @@ public class ExampleScenario extends CanonicalResource {
           switch (this) {
             case PERSON: return "Person";
             case ENTITY: return "System";
-            case NULL: return null;
             default: return "?";
           }
         }

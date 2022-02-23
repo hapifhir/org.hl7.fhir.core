@@ -48,6 +48,7 @@ import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemEnableWhenComponent;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemOperator;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
+import org.hl7.fhir.validation.instance.type.QuestionnaireValidator.QuestionnaireWithContext;
 import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
 
 import ca.uhn.fhir.rest.server.exceptions.UnprocessableEntityException;
@@ -85,17 +86,17 @@ public class EnableWhenEvaluator {
   public static class QStack extends ArrayList<QuestionnaireAnswerPair> {
 
     private static final long serialVersionUID = 1L;
-    private Questionnaire q;
+    private QuestionnaireWithContext q;
     private Element a;
 
-    public QStack(Questionnaire q, Element a) {
+    public QStack(QuestionnaireWithContext q, Element a) {
       super();
       this.q = q;
       this.a = a;
     }
 
 
-    public Questionnaire getQ() {
+    public QuestionnaireWithContext getQ() {
       return q;
     }
 
@@ -155,10 +156,10 @@ public class EnableWhenEvaluator {
       return true;
     }
 
-    List<EnableWhenResult> evaluationResults = qitem.getEnableWhen()
-      .stream()
-      .map(enableCondition -> evaluateCondition(enableCondition, qitem, qstack))
-      .collect(Collectors.toList());
+    List<EnableWhenResult> evaluationResults = new ArrayList<>();
+    for (QuestionnaireItemEnableWhenComponent enableCondition : qitem.getEnableWhen()) {
+      evaluationResults.add(evaluateCondition(enableCondition, qitem, qstack));
+    }
     return checkConditionResults(evaluationResults, qitem);
   }
 
@@ -205,9 +206,10 @@ public class EnableWhenEvaluator {
       }
       return new EnableWhenResult(((BooleanType) answer).booleanValue() != answerItems.isEmpty(), enableCondition);
     }
-    boolean result = answerItems
-      .stream()
-      .anyMatch(answer -> evaluateAnswer(answer, enableCondition.getAnswer(), enableCondition.getOperator()));
+    boolean result = false;
+    for (Element answer : answerItems) {
+      result = result || evaluateAnswer(answer, enableCondition.getAnswer(), enableCondition.getOperator());
+    }
     return new EnableWhenResult(result, enableCondition);
   }
 
@@ -311,9 +313,9 @@ public class EnableWhenEvaluator {
    * - any targetA in groupA are input for the enableWhen decision
    */
   private List<Element> findQuestionAnswers(QStack qstack, QuestionnaireItemComponent sourceQ, QuestionnaireItemEnableWhenComponent ew) {
-    QuestionnaireItemComponent targetQ = qstack.getQ().getQuestion(ew.getQuestion());
+    QuestionnaireItemComponent targetQ = qstack.getQ().q().getQuestion(ew.getQuestion());
     if (targetQ != null) {
-      QuestionnaireItemComponent groupQ = qstack.getQ().getCommonGroup(sourceQ, targetQ);
+      QuestionnaireItemComponent groupQ = qstack.getQ().q().getCommonGroup(sourceQ, targetQ);
       if (groupQ == null) { // root is Q itself
         return findOnItem(qstack.getA(), ew.getQuestion());
       } else {
@@ -337,6 +339,11 @@ public class EnableWhenEvaluator {
         retVal.addAll(answers);
       }
       retVal.addAll(findOnItem(item, question));
+    }
+    // didn't find it? look inside the items on the answers too
+    List<Element> answerChildren = focus.getChildren(ANSWER_ELEMENT);
+    for (Element answer : answerChildren) {
+      retVal.addAll(findOnItem(answer, question));
     }
 
     // In case the question with the enableWhen is a direct child of the question with

@@ -29,12 +29,11 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.math.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -49,8 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * A material substance originating from a biological entity intended to be transplanted or infused
-into another (possibly the same) biological entity.
+ * A biological material originating from a biological entity intended to be transplanted or infused into another (possibly the same) biological entity.
  */
 @ResourceDef(name="BiologicallyDerivedProduct", profile="http://hl7.org/fhir/StructureDefinition/BiologicallyDerivedProduct")
 public class BiologicallyDerivedProduct extends DomainResource {
@@ -105,7 +103,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
             case FLUID: return "fluid";
             case CELLS: return "cells";
             case BIOLOGICALAGENT: return "biologicalAgent";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -116,7 +113,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
             case FLUID: return "http://hl7.org/fhir/product-category";
             case CELLS: return "http://hl7.org/fhir/product-category";
             case BIOLOGICALAGENT: return "http://hl7.org/fhir/product-category";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -127,7 +123,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
             case FLUID: return "Body fluid.";
             case CELLS: return "Collection of cells.";
             case BIOLOGICALAGENT: return "Biological agent of unspecified type.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,7 +133,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
             case FLUID: return "Fluid";
             case CELLS: return "Cells";
             case BIOLOGICALAGENT: return "BiologicalAgent";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -228,15 +222,13 @@ public class BiologicallyDerivedProduct extends DomainResource {
           switch (this) {
             case AVAILABLE: return "available";
             case UNAVAILABLE: return "unavailable";
-            case NULL: return null;
             default: return "?";
           }
         }
         public String getSystem() {
           switch (this) {
-            case AVAILABLE: return "http://hl7.org/fhir/product-status";
-            case UNAVAILABLE: return "http://hl7.org/fhir/product-status";
-            case NULL: return null;
+            case AVAILABLE: return "http://hl7.org/fhir/biological-product-status";
+            case UNAVAILABLE: return "http://hl7.org/fhir/biological-product-status";
             default: return "?";
           }
         }
@@ -244,7 +236,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
           switch (this) {
             case AVAILABLE: return "Product is currently available for use.";
             case UNAVAILABLE: return "Product is not currently available for use.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -252,7 +243,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
           switch (this) {
             case AVAILABLE: return "Available";
             case UNAVAILABLE: return "Unavailable";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -291,118 +281,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
       return "?";
       }
     public String toSystem(BiologicallyDerivedProductStatus code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum BiologicallyDerivedProductStorageScale {
-        /**
-         * Fahrenheit temperature scale.
-         */
-        FARENHEIT, 
-        /**
-         * Celsius or centigrade temperature scale.
-         */
-        CELSIUS, 
-        /**
-         * Kelvin absolute thermodynamic temperature scale.
-         */
-        KELVIN, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static BiologicallyDerivedProductStorageScale fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("farenheit".equals(codeString))
-          return FARENHEIT;
-        if ("celsius".equals(codeString))
-          return CELSIUS;
-        if ("kelvin".equals(codeString))
-          return KELVIN;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown BiologicallyDerivedProductStorageScale code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case FARENHEIT: return "farenheit";
-            case CELSIUS: return "celsius";
-            case KELVIN: return "kelvin";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case FARENHEIT: return "http://hl7.org/fhir/product-storage-scale";
-            case CELSIUS: return "http://hl7.org/fhir/product-storage-scale";
-            case KELVIN: return "http://hl7.org/fhir/product-storage-scale";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case FARENHEIT: return "Fahrenheit temperature scale.";
-            case CELSIUS: return "Celsius or centigrade temperature scale.";
-            case KELVIN: return "Kelvin absolute thermodynamic temperature scale.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case FARENHEIT: return "Fahrenheit";
-            case CELSIUS: return "Celsius";
-            case KELVIN: return "Kelvin";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-    }
-
-  public static class BiologicallyDerivedProductStorageScaleEnumFactory implements EnumFactory<BiologicallyDerivedProductStorageScale> {
-    public BiologicallyDerivedProductStorageScale fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("farenheit".equals(codeString))
-          return BiologicallyDerivedProductStorageScale.FARENHEIT;
-        if ("celsius".equals(codeString))
-          return BiologicallyDerivedProductStorageScale.CELSIUS;
-        if ("kelvin".equals(codeString))
-          return BiologicallyDerivedProductStorageScale.KELVIN;
-        throw new IllegalArgumentException("Unknown BiologicallyDerivedProductStorageScale code '"+codeString+"'");
-        }
-        public Enumeration<BiologicallyDerivedProductStorageScale> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<BiologicallyDerivedProductStorageScale>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("farenheit".equals(codeString))
-          return new Enumeration<BiologicallyDerivedProductStorageScale>(this, BiologicallyDerivedProductStorageScale.FARENHEIT);
-        if ("celsius".equals(codeString))
-          return new Enumeration<BiologicallyDerivedProductStorageScale>(this, BiologicallyDerivedProductStorageScale.CELSIUS);
-        if ("kelvin".equals(codeString))
-          return new Enumeration<BiologicallyDerivedProductStorageScale>(this, BiologicallyDerivedProductStorageScale.KELVIN);
-        throw new FHIRException("Unknown BiologicallyDerivedProductStorageScale code '"+codeString+"'");
-        }
-    public String toCode(BiologicallyDerivedProductStorageScale code) {
-      if (code == BiologicallyDerivedProductStorageScale.FARENHEIT)
-        return "farenheit";
-      if (code == BiologicallyDerivedProductStorageScale.CELSIUS)
-        return "celsius";
-      if (code == BiologicallyDerivedProductStorageScale.KELVIN)
-        return "kelvin";
-      return "?";
-      }
-    public String toSystem(BiologicallyDerivedProductStorageScale code) {
       return code.getSystem();
       }
     }
@@ -692,211 +570,209 @@ public class BiologicallyDerivedProduct extends DomainResource {
   }
 
     @Block()
-    public static class BiologicallyDerivedProductProcessingComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class BiologicallyDerivedProductPropertyComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Description of of processing.
+         * Code that specifies the property.
          */
-        @Child(name = "description", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Description of of processing", formalDefinition="Description of of processing." )
-        protected StringType description;
+        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Code that specifies the property", formalDefinition="Code that specifies the property." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/NamingSystem/ib")
+        protected CodeableConcept type;
 
         /**
-         * Procesing code.
+         * Property values.
          */
-        @Child(name = "procedure", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Procesing code", formalDefinition="Procesing code." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/procedure-code")
-        protected CodeableConcept procedure;
+        @Child(name = "value", type = {BooleanType.class, IntegerType.class, CodeableConcept.class, Quantity.class, Range.class, StringType.class, Attachment.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Property values", formalDefinition="Property values." )
+        protected DataType value;
 
-        /**
-         * Substance added during processing.
-         */
-        @Child(name = "additive", type = {Substance.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Substance added during processing", formalDefinition="Substance added during processing." )
-        protected Reference additive;
-
-        /**
-         * Time of processing.
-         */
-        @Child(name = "time", type = {DateTimeType.class, Period.class}, order=4, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Time of processing", formalDefinition="Time of processing." )
-        protected DataType time;
-
-        private static final long serialVersionUID = 1871947569L;
+        private static final long serialVersionUID = -1659186716L;
 
     /**
      * Constructor
      */
-      public BiologicallyDerivedProductProcessingComponent() {
+      public BiologicallyDerivedProductPropertyComponent() {
         super();
       }
 
+    /**
+     * Constructor
+     */
+      public BiologicallyDerivedProductPropertyComponent(CodeableConcept type, DataType value) {
+        super();
+        this.setType(type);
+        this.setValue(value);
+      }
+
         /**
-         * @return {@link #description} (Description of of processing.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         * @return {@link #type} (Code that specifies the property.)
          */
-        public StringType getDescriptionElement() { 
-          if (this.description == null)
+        public CodeableConcept getType() { 
+          if (this.type == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create BiologicallyDerivedProductProcessingComponent.description");
+              throw new Error("Attempt to auto-create BiologicallyDerivedProductPropertyComponent.type");
             else if (Configuration.doAutoCreate())
-              this.description = new StringType(); // bb
-          return this.description;
+              this.type = new CodeableConcept(); // cc
+          return this.type;
         }
 
-        public boolean hasDescriptionElement() { 
-          return this.description != null && !this.description.isEmpty();
-        }
-
-        public boolean hasDescription() { 
-          return this.description != null && !this.description.isEmpty();
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
         }
 
         /**
-         * @param value {@link #description} (Description of of processing.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+         * @param value {@link #type} (Code that specifies the property.)
          */
-        public BiologicallyDerivedProductProcessingComponent setDescriptionElement(StringType value) { 
-          this.description = value;
+        public BiologicallyDerivedProductPropertyComponent setType(CodeableConcept value) { 
+          this.type = value;
           return this;
         }
 
         /**
-         * @return Description of of processing.
+         * @return {@link #value} (Property values.)
          */
-        public String getDescription() { 
-          return this.description == null ? null : this.description.getValue();
+        public DataType getValue() { 
+          return this.value;
         }
 
         /**
-         * @param value Description of of processing.
+         * @return {@link #value} (Property values.)
          */
-        public BiologicallyDerivedProductProcessingComponent setDescription(String value) { 
-          if (Utilities.noString(value))
-            this.description = null;
-          else {
-            if (this.description == null)
-              this.description = new StringType();
-            this.description.setValue(value);
-          }
-          return this;
+        public BooleanType getValueBooleanType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new BooleanType();
+          if (!(this.value instanceof BooleanType))
+            throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (BooleanType) this.value;
+        }
+
+        public boolean hasValueBooleanType() { 
+          return this != null && this.value instanceof BooleanType;
         }
 
         /**
-         * @return {@link #procedure} (Procesing code.)
+         * @return {@link #value} (Property values.)
          */
-        public CodeableConcept getProcedure() { 
-          if (this.procedure == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create BiologicallyDerivedProductProcessingComponent.procedure");
-            else if (Configuration.doAutoCreate())
-              this.procedure = new CodeableConcept(); // cc
-          return this.procedure;
+        public IntegerType getValueIntegerType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new IntegerType();
+          if (!(this.value instanceof IntegerType))
+            throw new FHIRException("Type mismatch: the type IntegerType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (IntegerType) this.value;
         }
 
-        public boolean hasProcedure() { 
-          return this.procedure != null && !this.procedure.isEmpty();
+        public boolean hasValueIntegerType() { 
+          return this != null && this.value instanceof IntegerType;
         }
 
         /**
-         * @param value {@link #procedure} (Procesing code.)
+         * @return {@link #value} (Property values.)
          */
-        public BiologicallyDerivedProductProcessingComponent setProcedure(CodeableConcept value) { 
-          this.procedure = value;
-          return this;
+        public CodeableConcept getValueCodeableConcept() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CodeableConcept();
+          if (!(this.value instanceof CodeableConcept))
+            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CodeableConcept) this.value;
+        }
+
+        public boolean hasValueCodeableConcept() { 
+          return this != null && this.value instanceof CodeableConcept;
         }
 
         /**
-         * @return {@link #additive} (Substance added during processing.)
+         * @return {@link #value} (Property values.)
          */
-        public Reference getAdditive() { 
-          if (this.additive == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create BiologicallyDerivedProductProcessingComponent.additive");
-            else if (Configuration.doAutoCreate())
-              this.additive = new Reference(); // cc
-          return this.additive;
+        public Quantity getValueQuantity() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Quantity();
+          if (!(this.value instanceof Quantity))
+            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Quantity) this.value;
         }
 
-        public boolean hasAdditive() { 
-          return this.additive != null && !this.additive.isEmpty();
+        public boolean hasValueQuantity() { 
+          return this != null && this.value instanceof Quantity;
         }
 
         /**
-         * @param value {@link #additive} (Substance added during processing.)
+         * @return {@link #value} (Property values.)
          */
-        public BiologicallyDerivedProductProcessingComponent setAdditive(Reference value) { 
-          this.additive = value;
-          return this;
+        public Range getValueRange() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Range();
+          if (!(this.value instanceof Range))
+            throw new FHIRException("Type mismatch: the type Range was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Range) this.value;
+        }
+
+        public boolean hasValueRange() { 
+          return this != null && this.value instanceof Range;
         }
 
         /**
-         * @return {@link #time} (Time of processing.)
+         * @return {@link #value} (Property values.)
          */
-        public DataType getTime() { 
-          return this.time;
+        public StringType getValueStringType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new StringType();
+          if (!(this.value instanceof StringType))
+            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (StringType) this.value;
+        }
+
+        public boolean hasValueStringType() { 
+          return this != null && this.value instanceof StringType;
         }
 
         /**
-         * @return {@link #time} (Time of processing.)
+         * @return {@link #value} (Property values.)
          */
-        public DateTimeType getTimeDateTimeType() throws FHIRException { 
-          if (this.time == null)
-            this.time = new DateTimeType();
-          if (!(this.time instanceof DateTimeType))
-            throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.time.getClass().getName()+" was encountered");
-          return (DateTimeType) this.time;
+        public Attachment getValueAttachment() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Attachment();
+          if (!(this.value instanceof Attachment))
+            throw new FHIRException("Type mismatch: the type Attachment was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Attachment) this.value;
         }
 
-        public boolean hasTimeDateTimeType() { 
-          return this != null && this.time instanceof DateTimeType;
+        public boolean hasValueAttachment() { 
+          return this != null && this.value instanceof Attachment;
+        }
+
+        public boolean hasValue() { 
+          return this.value != null && !this.value.isEmpty();
         }
 
         /**
-         * @return {@link #time} (Time of processing.)
+         * @param value {@link #value} (Property values.)
          */
-        public Period getTimePeriod() throws FHIRException { 
-          if (this.time == null)
-            this.time = new Period();
-          if (!(this.time instanceof Period))
-            throw new FHIRException("Type mismatch: the type Period was expected, but "+this.time.getClass().getName()+" was encountered");
-          return (Period) this.time;
-        }
-
-        public boolean hasTimePeriod() { 
-          return this != null && this.time instanceof Period;
-        }
-
-        public boolean hasTime() { 
-          return this.time != null && !this.time.isEmpty();
-        }
-
-        /**
-         * @param value {@link #time} (Time of processing.)
-         */
-        public BiologicallyDerivedProductProcessingComponent setTime(DataType value) { 
-          if (value != null && !(value instanceof DateTimeType || value instanceof Period))
-            throw new Error("Not the right type for BiologicallyDerivedProduct.processing.time[x]: "+value.fhirType());
-          this.time = value;
+        public BiologicallyDerivedProductPropertyComponent setValue(DataType value) { 
+          if (value != null && !(value instanceof BooleanType || value instanceof IntegerType || value instanceof CodeableConcept || value instanceof Quantity || value instanceof Range || value instanceof StringType || value instanceof Attachment))
+            throw new Error("Not the right type for BiologicallyDerivedProduct.property.value[x]: "+value.fhirType());
+          this.value = value;
           return this;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("description", "string", "Description of of processing.", 0, 1, description));
-          children.add(new Property("procedure", "CodeableConcept", "Procesing code.", 0, 1, procedure));
-          children.add(new Property("additive", "Reference(Substance)", "Substance added during processing.", 0, 1, additive));
-          children.add(new Property("time[x]", "dateTime|Period", "Time of processing.", 0, 1, time));
+          children.add(new Property("type", "CodeableConcept", "Code that specifies the property.", 0, 1, type));
+          children.add(new Property("value[x]", "boolean|integer|CodeableConcept|Quantity|Range|string|Attachment", "Property values.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1724546052: /*description*/  return new Property("description", "string", "Description of of processing.", 0, 1, description);
-          case -1095204141: /*procedure*/  return new Property("procedure", "CodeableConcept", "Procesing code.", 0, 1, procedure);
-          case -1226589236: /*additive*/  return new Property("additive", "Reference(Substance)", "Substance added during processing.", 0, 1, additive);
-          case -1313930605: /*time[x]*/  return new Property("time[x]", "dateTime|Period", "Time of processing.", 0, 1, time);
-          case 3560141: /*time*/  return new Property("time[x]", "dateTime|Period", "Time of processing.", 0, 1, time);
-          case 2135345544: /*timeDateTime*/  return new Property("time[x]", "dateTime", "Time of processing.", 0, 1, time);
-          case 693544686: /*timePeriod*/  return new Property("time[x]", "Period", "Time of processing.", 0, 1, time);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Code that specifies the property.", 0, 1, type);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "boolean|integer|CodeableConcept|Quantity|Range|string|Attachment", "Property values.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "boolean|integer|CodeableConcept|Quantity|Range|string|Attachment", "Property values.", 0, 1, value);
+          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "Property values.", 0, 1, value);
+          case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "Property values.", 0, 1, value);
+          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "Property values.", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "Property values.", 0, 1, value);
+          case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "Property values.", 0, 1, value);
+          case -1424603934: /*valueString*/  return new Property("value[x]", "string", "Property values.", 0, 1, value);
+          case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "Property values.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -905,10 +781,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
-        case -1095204141: /*procedure*/ return this.procedure == null ? new Base[0] : new Base[] {this.procedure}; // CodeableConcept
-        case -1226589236: /*additive*/ return this.additive == null ? new Base[0] : new Base[] {this.additive}; // Reference
-        case 3560141: /*time*/ return this.time == null ? new Base[0] : new Base[] {this.time}; // DataType
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -917,17 +791,11 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case -1724546052: // description
-          this.description = TypeConvertor.castToString(value); // StringType
+        case 3575610: // type
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
-        case -1095204141: // procedure
-          this.procedure = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case -1226589236: // additive
-          this.additive = TypeConvertor.castToReference(value); // Reference
-          return value;
-        case 3560141: // time
-          this.time = TypeConvertor.castToType(value); // DataType
+        case 111972721: // value
+          this.value = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -936,14 +804,10 @@ public class BiologicallyDerivedProduct extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("description")) {
-          this.description = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("procedure")) {
-          this.procedure = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("additive")) {
-          this.additive = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("time[x]")) {
-          this.time = TypeConvertor.castToType(value); // DataType
+        if (name.equals("type")) {
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("value[x]")) {
+          this.value = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -952,11 +816,9 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1724546052:  return getDescriptionElement();
-        case -1095204141:  return getProcedure();
-        case -1226589236:  return getAdditive();
-        case -1313930605:  return getTime();
-        case 3560141:  return getTime();
+        case 3575610:  return getType();
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
         default: return super.makeProperty(hash, name);
         }
 
@@ -965,10 +827,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1724546052: /*description*/ return new String[] {"string"};
-        case -1095204141: /*procedure*/ return new String[] {"CodeableConcept"};
-        case -1226589236: /*additive*/ return new String[] {"Reference"};
-        case 3560141: /*time*/ return new String[] {"dateTime", "Period"};
+        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case 111972721: /*value*/ return new String[] {"boolean", "integer", "CodeableConcept", "Quantity", "Range", "string", "Attachment"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -976,736 +836,89 @@ public class BiologicallyDerivedProduct extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.processing.description");
+        if (name.equals("type")) {
+          this.type = new CodeableConcept();
+          return this.type;
         }
-        else if (name.equals("procedure")) {
-          this.procedure = new CodeableConcept();
-          return this.procedure;
+        else if (name.equals("valueBoolean")) {
+          this.value = new BooleanType();
+          return this.value;
         }
-        else if (name.equals("additive")) {
-          this.additive = new Reference();
-          return this.additive;
+        else if (name.equals("valueInteger")) {
+          this.value = new IntegerType();
+          return this.value;
         }
-        else if (name.equals("timeDateTime")) {
-          this.time = new DateTimeType();
-          return this.time;
+        else if (name.equals("valueCodeableConcept")) {
+          this.value = new CodeableConcept();
+          return this.value;
         }
-        else if (name.equals("timePeriod")) {
-          this.time = new Period();
-          return this.time;
+        else if (name.equals("valueQuantity")) {
+          this.value = new Quantity();
+          return this.value;
+        }
+        else if (name.equals("valueRange")) {
+          this.value = new Range();
+          return this.value;
+        }
+        else if (name.equals("valueString")) {
+          this.value = new StringType();
+          return this.value;
+        }
+        else if (name.equals("valueAttachment")) {
+          this.value = new Attachment();
+          return this.value;
         }
         else
           return super.addChild(name);
       }
 
-      public BiologicallyDerivedProductProcessingComponent copy() {
-        BiologicallyDerivedProductProcessingComponent dst = new BiologicallyDerivedProductProcessingComponent();
+      public BiologicallyDerivedProductPropertyComponent copy() {
+        BiologicallyDerivedProductPropertyComponent dst = new BiologicallyDerivedProductPropertyComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(BiologicallyDerivedProductProcessingComponent dst) {
+      public void copyValues(BiologicallyDerivedProductPropertyComponent dst) {
         super.copyValues(dst);
-        dst.description = description == null ? null : description.copy();
-        dst.procedure = procedure == null ? null : procedure.copy();
-        dst.additive = additive == null ? null : additive.copy();
-        dst.time = time == null ? null : time.copy();
+        dst.type = type == null ? null : type.copy();
+        dst.value = value == null ? null : value.copy();
       }
 
       @Override
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof BiologicallyDerivedProductProcessingComponent))
+        if (!(other_ instanceof BiologicallyDerivedProductPropertyComponent))
           return false;
-        BiologicallyDerivedProductProcessingComponent o = (BiologicallyDerivedProductProcessingComponent) other_;
-        return compareDeep(description, o.description, true) && compareDeep(procedure, o.procedure, true)
-           && compareDeep(additive, o.additive, true) && compareDeep(time, o.time, true);
+        BiologicallyDerivedProductPropertyComponent o = (BiologicallyDerivedProductPropertyComponent) other_;
+        return compareDeep(type, o.type, true) && compareDeep(value, o.value, true);
       }
 
       @Override
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof BiologicallyDerivedProductProcessingComponent))
+        if (!(other_ instanceof BiologicallyDerivedProductPropertyComponent))
           return false;
-        BiologicallyDerivedProductProcessingComponent o = (BiologicallyDerivedProductProcessingComponent) other_;
-        return compareValues(description, o.description, true);
+        BiologicallyDerivedProductPropertyComponent o = (BiologicallyDerivedProductPropertyComponent) other_;
+        return true;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, procedure, additive
-          , time);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, value);
       }
 
   public String fhirType() {
-    return "BiologicallyDerivedProduct.processing";
+    return "BiologicallyDerivedProduct.property";
 
   }
 
   }
-
-    @Block()
-    public static class BiologicallyDerivedProductManipulationComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * Description of manipulation.
-         */
-        @Child(name = "description", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Description of manipulation", formalDefinition="Description of manipulation." )
-        protected StringType description;
-
-        /**
-         * Time of manipulation.
-         */
-        @Child(name = "time", type = {DateTimeType.class, Period.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Time of manipulation", formalDefinition="Time of manipulation." )
-        protected DataType time;
-
-        private static final long serialVersionUID = -1507978496L;
-
-    /**
-     * Constructor
-     */
-      public BiologicallyDerivedProductManipulationComponent() {
-        super();
-      }
-
-        /**
-         * @return {@link #description} (Description of manipulation.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
-         */
-        public StringType getDescriptionElement() { 
-          if (this.description == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create BiologicallyDerivedProductManipulationComponent.description");
-            else if (Configuration.doAutoCreate())
-              this.description = new StringType(); // bb
-          return this.description;
-        }
-
-        public boolean hasDescriptionElement() { 
-          return this.description != null && !this.description.isEmpty();
-        }
-
-        public boolean hasDescription() { 
-          return this.description != null && !this.description.isEmpty();
-        }
-
-        /**
-         * @param value {@link #description} (Description of manipulation.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
-         */
-        public BiologicallyDerivedProductManipulationComponent setDescriptionElement(StringType value) { 
-          this.description = value;
-          return this;
-        }
-
-        /**
-         * @return Description of manipulation.
-         */
-        public String getDescription() { 
-          return this.description == null ? null : this.description.getValue();
-        }
-
-        /**
-         * @param value Description of manipulation.
-         */
-        public BiologicallyDerivedProductManipulationComponent setDescription(String value) { 
-          if (Utilities.noString(value))
-            this.description = null;
-          else {
-            if (this.description == null)
-              this.description = new StringType();
-            this.description.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #time} (Time of manipulation.)
-         */
-        public DataType getTime() { 
-          return this.time;
-        }
-
-        /**
-         * @return {@link #time} (Time of manipulation.)
-         */
-        public DateTimeType getTimeDateTimeType() throws FHIRException { 
-          if (this.time == null)
-            this.time = new DateTimeType();
-          if (!(this.time instanceof DateTimeType))
-            throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.time.getClass().getName()+" was encountered");
-          return (DateTimeType) this.time;
-        }
-
-        public boolean hasTimeDateTimeType() { 
-          return this != null && this.time instanceof DateTimeType;
-        }
-
-        /**
-         * @return {@link #time} (Time of manipulation.)
-         */
-        public Period getTimePeriod() throws FHIRException { 
-          if (this.time == null)
-            this.time = new Period();
-          if (!(this.time instanceof Period))
-            throw new FHIRException("Type mismatch: the type Period was expected, but "+this.time.getClass().getName()+" was encountered");
-          return (Period) this.time;
-        }
-
-        public boolean hasTimePeriod() { 
-          return this != null && this.time instanceof Period;
-        }
-
-        public boolean hasTime() { 
-          return this.time != null && !this.time.isEmpty();
-        }
-
-        /**
-         * @param value {@link #time} (Time of manipulation.)
-         */
-        public BiologicallyDerivedProductManipulationComponent setTime(DataType value) { 
-          if (value != null && !(value instanceof DateTimeType || value instanceof Period))
-            throw new Error("Not the right type for BiologicallyDerivedProduct.manipulation.time[x]: "+value.fhirType());
-          this.time = value;
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("description", "string", "Description of manipulation.", 0, 1, description));
-          children.add(new Property("time[x]", "dateTime|Period", "Time of manipulation.", 0, 1, time));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case -1724546052: /*description*/  return new Property("description", "string", "Description of manipulation.", 0, 1, description);
-          case -1313930605: /*time[x]*/  return new Property("time[x]", "dateTime|Period", "Time of manipulation.", 0, 1, time);
-          case 3560141: /*time*/  return new Property("time[x]", "dateTime|Period", "Time of manipulation.", 0, 1, time);
-          case 2135345544: /*timeDateTime*/  return new Property("time[x]", "dateTime", "Time of manipulation.", 0, 1, time);
-          case 693544686: /*timePeriod*/  return new Property("time[x]", "Period", "Time of manipulation.", 0, 1, time);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
-        case 3560141: /*time*/ return this.time == null ? new Base[0] : new Base[] {this.time}; // DataType
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case -1724546052: // description
-          this.description = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 3560141: // time
-          this.time = TypeConvertor.castToType(value); // DataType
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("description")) {
-          this.description = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("time[x]")) {
-          this.time = TypeConvertor.castToType(value); // DataType
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1724546052:  return getDescriptionElement();
-        case -1313930605:  return getTime();
-        case 3560141:  return getTime();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1724546052: /*description*/ return new String[] {"string"};
-        case 3560141: /*time*/ return new String[] {"dateTime", "Period"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.manipulation.description");
-        }
-        else if (name.equals("timeDateTime")) {
-          this.time = new DateTimeType();
-          return this.time;
-        }
-        else if (name.equals("timePeriod")) {
-          this.time = new Period();
-          return this.time;
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public BiologicallyDerivedProductManipulationComponent copy() {
-        BiologicallyDerivedProductManipulationComponent dst = new BiologicallyDerivedProductManipulationComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(BiologicallyDerivedProductManipulationComponent dst) {
-        super.copyValues(dst);
-        dst.description = description == null ? null : description.copy();
-        dst.time = time == null ? null : time.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof BiologicallyDerivedProductManipulationComponent))
-          return false;
-        BiologicallyDerivedProductManipulationComponent o = (BiologicallyDerivedProductManipulationComponent) other_;
-        return compareDeep(description, o.description, true) && compareDeep(time, o.time, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof BiologicallyDerivedProductManipulationComponent))
-          return false;
-        BiologicallyDerivedProductManipulationComponent o = (BiologicallyDerivedProductManipulationComponent) other_;
-        return compareValues(description, o.description, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, time);
-      }
-
-  public String fhirType() {
-    return "BiologicallyDerivedProduct.manipulation";
-
-  }
-
-  }
-
-    @Block()
-    public static class BiologicallyDerivedProductStorageComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * Description of storage.
-         */
-        @Child(name = "description", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Description of storage", formalDefinition="Description of storage." )
-        protected StringType description;
-
-        /**
-         * Storage temperature.
-         */
-        @Child(name = "temperature", type = {DecimalType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Storage temperature", formalDefinition="Storage temperature." )
-        protected DecimalType temperature;
-
-        /**
-         * Temperature scale used.
-         */
-        @Child(name = "scale", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="farenheit | celsius | kelvin", formalDefinition="Temperature scale used." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/product-storage-scale")
-        protected Enumeration<BiologicallyDerivedProductStorageScale> scale;
-
-        /**
-         * Storage timeperiod.
-         */
-        @Child(name = "duration", type = {Period.class}, order=4, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Storage timeperiod", formalDefinition="Storage timeperiod." )
-        protected Period duration;
-
-        private static final long serialVersionUID = 1509141319L;
-
-    /**
-     * Constructor
-     */
-      public BiologicallyDerivedProductStorageComponent() {
-        super();
-      }
-
-        /**
-         * @return {@link #description} (Description of storage.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
-         */
-        public StringType getDescriptionElement() { 
-          if (this.description == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create BiologicallyDerivedProductStorageComponent.description");
-            else if (Configuration.doAutoCreate())
-              this.description = new StringType(); // bb
-          return this.description;
-        }
-
-        public boolean hasDescriptionElement() { 
-          return this.description != null && !this.description.isEmpty();
-        }
-
-        public boolean hasDescription() { 
-          return this.description != null && !this.description.isEmpty();
-        }
-
-        /**
-         * @param value {@link #description} (Description of storage.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
-         */
-        public BiologicallyDerivedProductStorageComponent setDescriptionElement(StringType value) { 
-          this.description = value;
-          return this;
-        }
-
-        /**
-         * @return Description of storage.
-         */
-        public String getDescription() { 
-          return this.description == null ? null : this.description.getValue();
-        }
-
-        /**
-         * @param value Description of storage.
-         */
-        public BiologicallyDerivedProductStorageComponent setDescription(String value) { 
-          if (Utilities.noString(value))
-            this.description = null;
-          else {
-            if (this.description == null)
-              this.description = new StringType();
-            this.description.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #temperature} (Storage temperature.). This is the underlying object with id, value and extensions. The accessor "getTemperature" gives direct access to the value
-         */
-        public DecimalType getTemperatureElement() { 
-          if (this.temperature == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create BiologicallyDerivedProductStorageComponent.temperature");
-            else if (Configuration.doAutoCreate())
-              this.temperature = new DecimalType(); // bb
-          return this.temperature;
-        }
-
-        public boolean hasTemperatureElement() { 
-          return this.temperature != null && !this.temperature.isEmpty();
-        }
-
-        public boolean hasTemperature() { 
-          return this.temperature != null && !this.temperature.isEmpty();
-        }
-
-        /**
-         * @param value {@link #temperature} (Storage temperature.). This is the underlying object with id, value and extensions. The accessor "getTemperature" gives direct access to the value
-         */
-        public BiologicallyDerivedProductStorageComponent setTemperatureElement(DecimalType value) { 
-          this.temperature = value;
-          return this;
-        }
-
-        /**
-         * @return Storage temperature.
-         */
-        public BigDecimal getTemperature() { 
-          return this.temperature == null ? null : this.temperature.getValue();
-        }
-
-        /**
-         * @param value Storage temperature.
-         */
-        public BiologicallyDerivedProductStorageComponent setTemperature(BigDecimal value) { 
-          if (value == null)
-            this.temperature = null;
-          else {
-            if (this.temperature == null)
-              this.temperature = new DecimalType();
-            this.temperature.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @param value Storage temperature.
-         */
-        public BiologicallyDerivedProductStorageComponent setTemperature(long value) { 
-              this.temperature = new DecimalType();
-            this.temperature.setValue(value);
-          return this;
-        }
-
-        /**
-         * @param value Storage temperature.
-         */
-        public BiologicallyDerivedProductStorageComponent setTemperature(double value) { 
-              this.temperature = new DecimalType();
-            this.temperature.setValue(value);
-          return this;
-        }
-
-        /**
-         * @return {@link #scale} (Temperature scale used.). This is the underlying object with id, value and extensions. The accessor "getScale" gives direct access to the value
-         */
-        public Enumeration<BiologicallyDerivedProductStorageScale> getScaleElement() { 
-          if (this.scale == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create BiologicallyDerivedProductStorageComponent.scale");
-            else if (Configuration.doAutoCreate())
-              this.scale = new Enumeration<BiologicallyDerivedProductStorageScale>(new BiologicallyDerivedProductStorageScaleEnumFactory()); // bb
-          return this.scale;
-        }
-
-        public boolean hasScaleElement() { 
-          return this.scale != null && !this.scale.isEmpty();
-        }
-
-        public boolean hasScale() { 
-          return this.scale != null && !this.scale.isEmpty();
-        }
-
-        /**
-         * @param value {@link #scale} (Temperature scale used.). This is the underlying object with id, value and extensions. The accessor "getScale" gives direct access to the value
-         */
-        public BiologicallyDerivedProductStorageComponent setScaleElement(Enumeration<BiologicallyDerivedProductStorageScale> value) { 
-          this.scale = value;
-          return this;
-        }
-
-        /**
-         * @return Temperature scale used.
-         */
-        public BiologicallyDerivedProductStorageScale getScale() { 
-          return this.scale == null ? null : this.scale.getValue();
-        }
-
-        /**
-         * @param value Temperature scale used.
-         */
-        public BiologicallyDerivedProductStorageComponent setScale(BiologicallyDerivedProductStorageScale value) { 
-          if (value == null)
-            this.scale = null;
-          else {
-            if (this.scale == null)
-              this.scale = new Enumeration<BiologicallyDerivedProductStorageScale>(new BiologicallyDerivedProductStorageScaleEnumFactory());
-            this.scale.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #duration} (Storage timeperiod.)
-         */
-        public Period getDuration() { 
-          if (this.duration == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create BiologicallyDerivedProductStorageComponent.duration");
-            else if (Configuration.doAutoCreate())
-              this.duration = new Period(); // cc
-          return this.duration;
-        }
-
-        public boolean hasDuration() { 
-          return this.duration != null && !this.duration.isEmpty();
-        }
-
-        /**
-         * @param value {@link #duration} (Storage timeperiod.)
-         */
-        public BiologicallyDerivedProductStorageComponent setDuration(Period value) { 
-          this.duration = value;
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("description", "string", "Description of storage.", 0, 1, description));
-          children.add(new Property("temperature", "decimal", "Storage temperature.", 0, 1, temperature));
-          children.add(new Property("scale", "code", "Temperature scale used.", 0, 1, scale));
-          children.add(new Property("duration", "Period", "Storage timeperiod.", 0, 1, duration));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case -1724546052: /*description*/  return new Property("description", "string", "Description of storage.", 0, 1, description);
-          case 321701236: /*temperature*/  return new Property("temperature", "decimal", "Storage temperature.", 0, 1, temperature);
-          case 109250890: /*scale*/  return new Property("scale", "code", "Temperature scale used.", 0, 1, scale);
-          case -1992012396: /*duration*/  return new Property("duration", "Period", "Storage timeperiod.", 0, 1, duration);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
-        case 321701236: /*temperature*/ return this.temperature == null ? new Base[0] : new Base[] {this.temperature}; // DecimalType
-        case 109250890: /*scale*/ return this.scale == null ? new Base[0] : new Base[] {this.scale}; // Enumeration<BiologicallyDerivedProductStorageScale>
-        case -1992012396: /*duration*/ return this.duration == null ? new Base[0] : new Base[] {this.duration}; // Period
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case -1724546052: // description
-          this.description = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 321701236: // temperature
-          this.temperature = TypeConvertor.castToDecimal(value); // DecimalType
-          return value;
-        case 109250890: // scale
-          value = new BiologicallyDerivedProductStorageScaleEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.scale = (Enumeration) value; // Enumeration<BiologicallyDerivedProductStorageScale>
-          return value;
-        case -1992012396: // duration
-          this.duration = TypeConvertor.castToPeriod(value); // Period
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("description")) {
-          this.description = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("temperature")) {
-          this.temperature = TypeConvertor.castToDecimal(value); // DecimalType
-        } else if (name.equals("scale")) {
-          value = new BiologicallyDerivedProductStorageScaleEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.scale = (Enumeration) value; // Enumeration<BiologicallyDerivedProductStorageScale>
-        } else if (name.equals("duration")) {
-          this.duration = TypeConvertor.castToPeriod(value); // Period
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1724546052:  return getDescriptionElement();
-        case 321701236:  return getTemperatureElement();
-        case 109250890:  return getScaleElement();
-        case -1992012396:  return getDuration();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1724546052: /*description*/ return new String[] {"string"};
-        case 321701236: /*temperature*/ return new String[] {"decimal"};
-        case 109250890: /*scale*/ return new String[] {"code"};
-        case -1992012396: /*duration*/ return new String[] {"Period"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.storage.description");
-        }
-        else if (name.equals("temperature")) {
-          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.storage.temperature");
-        }
-        else if (name.equals("scale")) {
-          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.storage.scale");
-        }
-        else if (name.equals("duration")) {
-          this.duration = new Period();
-          return this.duration;
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public BiologicallyDerivedProductStorageComponent copy() {
-        BiologicallyDerivedProductStorageComponent dst = new BiologicallyDerivedProductStorageComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(BiologicallyDerivedProductStorageComponent dst) {
-        super.copyValues(dst);
-        dst.description = description == null ? null : description.copy();
-        dst.temperature = temperature == null ? null : temperature.copy();
-        dst.scale = scale == null ? null : scale.copy();
-        dst.duration = duration == null ? null : duration.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof BiologicallyDerivedProductStorageComponent))
-          return false;
-        BiologicallyDerivedProductStorageComponent o = (BiologicallyDerivedProductStorageComponent) other_;
-        return compareDeep(description, o.description, true) && compareDeep(temperature, o.temperature, true)
-           && compareDeep(scale, o.scale, true) && compareDeep(duration, o.duration, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof BiologicallyDerivedProductStorageComponent))
-          return false;
-        BiologicallyDerivedProductStorageComponent o = (BiologicallyDerivedProductStorageComponent) other_;
-        return compareValues(description, o.description, true) && compareValues(temperature, o.temperature, true)
-           && compareValues(scale, o.scale, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, temperature, scale
-          , duration);
-      }
-
-  public String fhirType() {
-    return "BiologicallyDerivedProduct.storage";
-
-  }
-
-  }
-
-    /**
-     * This records identifiers associated with this biologically derived product instance that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation).
-     */
-    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="External ids for this item", formalDefinition="This records identifiers associated with this biologically derived product instance that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation)." )
-    protected List<Identifier> identifier;
 
     /**
      * Broad category of this product.
      */
-    @Child(name = "productCategory", type = {CodeType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "productCategory", type = {CodeType.class}, order=0, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="organ | tissue | fluid | cells | biologicalAgent", formalDefinition="Broad category of this product." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/product-category")
     protected Enumeration<BiologicallyDerivedProductCategory> productCategory;
@@ -1713,127 +926,95 @@ public class BiologicallyDerivedProduct extends DomainResource {
     /**
      * A code that identifies the kind of this biologically derived product (SNOMED Ctcode).
      */
-    @Child(name = "productCode", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "productCode", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="What this biologically derived product is", formalDefinition="A code that identifies the kind of this biologically derived product (SNOMED Ctcode)." )
     protected CodeableConcept productCode;
 
     /**
-     * Whether the product is currently available.
-     */
-    @Child(name = "status", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="available | unavailable", formalDefinition="Whether the product is currently available." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/product-status")
-    protected Enumeration<BiologicallyDerivedProductStatus> status;
-
-    /**
-     * Procedure request to obtain this biologically derived product.
-     */
-    @Child(name = "request", type = {ServiceRequest.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Procedure request", formalDefinition="Procedure request to obtain this biologically derived product." )
-    protected List<Reference> request;
-
-    /**
-     * Number of discrete units within this product.
-     */
-    @Child(name = "quantity", type = {IntegerType.class}, order=5, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="The amount of this biologically derived product", formalDefinition="Number of discrete units within this product." )
-    protected IntegerType quantity;
-
-    /**
      * Parent product (if any).
      */
-    @Child(name = "parent", type = {BiologicallyDerivedProduct.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "parent", type = {BiologicallyDerivedProduct.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="BiologicallyDerivedProduct parent", formalDefinition="Parent product (if any)." )
     protected List<Reference> parent;
 
     /**
+     * Procedure request to obtain this biologically derived product.
+     */
+    @Child(name = "request", type = {ServiceRequest.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Procedure request", formalDefinition="Procedure request to obtain this biologically derived product." )
+    protected List<Reference> request;
+
+    /**
+     * This records identifiers associated with this biologically derived product instance that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation).
+     */
+    @Child(name = "identifier", type = {Identifier.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="External ids for this item", formalDefinition="This records identifiers associated with this biologically derived product instance that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation)." )
+    protected List<Identifier> identifier;
+
+    /**
+     * An identifier that supports traceability to the biological entity that is the source of biological material in the product.
+     */
+    @Child(name = "biologicalSource", type = {Identifier.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="An identifier that supports traceability to the biological entity that is the source of biological material in the product", formalDefinition="An identifier that supports traceability to the biological entity that is the source of biological material in the product." )
+    protected Identifier biologicalSource;
+
+    /**
+     * Processing facilities for this biologically derived product.
+     */
+    @Child(name = "processingFacility", type = {Organization.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Processing facility", formalDefinition="Processing facilities for this biologically derived product." )
+    protected List<Reference> processingFacility;
+
+    /**
+     * Description of division.
+     */
+    @Child(name = "division", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Description of division", formalDefinition="Description of division." )
+    protected StringType division;
+
+    /**
+     * Whether the product is currently available.
+     */
+    @Child(name = "status", type = {CodeType.class}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="available | unavailable", formalDefinition="Whether the product is currently available." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/biological-product-status")
+    protected Enumeration<BiologicallyDerivedProductStatus> status;
+
+    /**
+     * Date of expiration.
+     */
+    @Child(name = "expirationDate", type = {DateTimeType.class}, order=9, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Date of expiration", formalDefinition="Date of expiration." )
+    protected DateTimeType expirationDate;
+
+    /**
      * How this product was collected.
      */
-    @Child(name = "collection", type = {}, order=7, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "collection", type = {}, order=10, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="How this product was collected", formalDefinition="How this product was collected." )
     protected BiologicallyDerivedProductCollectionComponent collection;
 
     /**
-     * Any processing of the product during collection that does not change the fundamental nature of the product. For example adding anti-coagulants during the collection of Peripheral Blood Stem Cells.
+     * Product storage temp requirements.
      */
-    @Child(name = "processing", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Any processing of the product during collection", formalDefinition="Any processing of the product during collection that does not change the fundamental nature of the product. For example adding anti-coagulants during the collection of Peripheral Blood Stem Cells." )
-    protected List<BiologicallyDerivedProductProcessingComponent> processing;
+    @Child(name = "storageTempRequirements", type = {Range.class}, order=11, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Product storage temp requirements", formalDefinition="Product storage temp requirements." )
+    protected Range storageTempRequirements;
 
     /**
-     * Any manipulation of product post-collection that is intended to alter the product.  For example a buffy-coat enrichment or CD8 reduction of Peripheral Blood Stem Cells to make it more suitable for infusion.
+     * A property that is specific to this BiologicallyDerviedProduct instance.
      */
-    @Child(name = "manipulation", type = {}, order=9, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Any manipulation of product post-collection", formalDefinition="Any manipulation of product post-collection that is intended to alter the product.  For example a buffy-coat enrichment or CD8 reduction of Peripheral Blood Stem Cells to make it more suitable for infusion." )
-    protected BiologicallyDerivedProductManipulationComponent manipulation;
+    @Child(name = "property", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="A property that is specific to this BiologicallyDerviedProduct instance", formalDefinition="A property that is specific to this BiologicallyDerviedProduct instance." )
+    protected List<BiologicallyDerivedProductPropertyComponent> property;
 
-    /**
-     * Product storage.
-     */
-    @Child(name = "storage", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Product storage", formalDefinition="Product storage." )
-    protected List<BiologicallyDerivedProductStorageComponent> storage;
-
-    private static final long serialVersionUID = 921278650L;
+    private static final long serialVersionUID = -2109673989L;
 
   /**
    * Constructor
    */
     public BiologicallyDerivedProduct() {
       super();
-    }
-
-    /**
-     * @return {@link #identifier} (This records identifiers associated with this biologically derived product instance that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation).)
-     */
-    public List<Identifier> getIdentifier() { 
-      if (this.identifier == null)
-        this.identifier = new ArrayList<Identifier>();
-      return this.identifier;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public BiologicallyDerivedProduct setIdentifier(List<Identifier> theIdentifier) { 
-      this.identifier = theIdentifier;
-      return this;
-    }
-
-    public boolean hasIdentifier() { 
-      if (this.identifier == null)
-        return false;
-      for (Identifier item : this.identifier)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public Identifier addIdentifier() { //3
-      Identifier t = new Identifier();
-      if (this.identifier == null)
-        this.identifier = new ArrayList<Identifier>();
-      this.identifier.add(t);
-      return t;
-    }
-
-    public BiologicallyDerivedProduct addIdentifier(Identifier t) { //3
-      if (t == null)
-        return this;
-      if (this.identifier == null)
-        this.identifier = new ArrayList<Identifier>();
-      this.identifier.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
-     */
-    public Identifier getIdentifierFirstRep() { 
-      if (getIdentifier().isEmpty()) {
-        addIdentifier();
-      }
-      return getIdentifier().get(0);
     }
 
     /**
@@ -1910,52 +1091,56 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @return {@link #status} (Whether the product is currently available.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @return {@link #parent} (Parent product (if any).)
      */
-    public Enumeration<BiologicallyDerivedProductStatus> getStatusElement() { 
-      if (this.status == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create BiologicallyDerivedProduct.status");
-        else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<BiologicallyDerivedProductStatus>(new BiologicallyDerivedProductStatusEnumFactory()); // bb
-      return this.status;
-    }
-
-    public boolean hasStatusElement() { 
-      return this.status != null && !this.status.isEmpty();
-    }
-
-    public boolean hasStatus() { 
-      return this.status != null && !this.status.isEmpty();
+    public List<Reference> getParent() { 
+      if (this.parent == null)
+        this.parent = new ArrayList<Reference>();
+      return this.parent;
     }
 
     /**
-     * @param value {@link #status} (Whether the product is currently available.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public BiologicallyDerivedProduct setStatusElement(Enumeration<BiologicallyDerivedProductStatus> value) { 
-      this.status = value;
+    public BiologicallyDerivedProduct setParent(List<Reference> theParent) { 
+      this.parent = theParent;
+      return this;
+    }
+
+    public boolean hasParent() { 
+      if (this.parent == null)
+        return false;
+      for (Reference item : this.parent)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Reference addParent() { //3
+      Reference t = new Reference();
+      if (this.parent == null)
+        this.parent = new ArrayList<Reference>();
+      this.parent.add(t);
+      return t;
+    }
+
+    public BiologicallyDerivedProduct addParent(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.parent == null)
+        this.parent = new ArrayList<Reference>();
+      this.parent.add(t);
       return this;
     }
 
     /**
-     * @return Whether the product is currently available.
+     * @return The first repetition of repeating field {@link #parent}, creating it if it does not already exist {3}
      */
-    public BiologicallyDerivedProductStatus getStatus() { 
-      return this.status == null ? null : this.status.getValue();
-    }
-
-    /**
-     * @param value Whether the product is currently available.
-     */
-    public BiologicallyDerivedProduct setStatus(BiologicallyDerivedProductStatus value) { 
-      if (value == null)
-        this.status = null;
-      else {
-        if (this.status == null)
-          this.status = new Enumeration<BiologicallyDerivedProductStatus>(new BiologicallyDerivedProductStatusEnumFactory());
-        this.status.setValue(value);
+    public Reference getParentFirstRep() { 
+      if (getParent().isEmpty()) {
+        addParent();
       }
-      return this;
+      return getParent().get(0);
     }
 
     /**
@@ -2012,101 +1197,280 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @return {@link #quantity} (Number of discrete units within this product.). This is the underlying object with id, value and extensions. The accessor "getQuantity" gives direct access to the value
+     * @return {@link #identifier} (This records identifiers associated with this biologically derived product instance that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation).)
      */
-    public IntegerType getQuantityElement() { 
-      if (this.quantity == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create BiologicallyDerivedProduct.quantity");
-        else if (Configuration.doAutoCreate())
-          this.quantity = new IntegerType(); // bb
-      return this.quantity;
-    }
-
-    public boolean hasQuantityElement() { 
-      return this.quantity != null && !this.quantity.isEmpty();
-    }
-
-    public boolean hasQuantity() { 
-      return this.quantity != null && !this.quantity.isEmpty();
-    }
-
-    /**
-     * @param value {@link #quantity} (Number of discrete units within this product.). This is the underlying object with id, value and extensions. The accessor "getQuantity" gives direct access to the value
-     */
-    public BiologicallyDerivedProduct setQuantityElement(IntegerType value) { 
-      this.quantity = value;
-      return this;
-    }
-
-    /**
-     * @return Number of discrete units within this product.
-     */
-    public int getQuantity() { 
-      return this.quantity == null || this.quantity.isEmpty() ? 0 : this.quantity.getValue();
-    }
-
-    /**
-     * @param value Number of discrete units within this product.
-     */
-    public BiologicallyDerivedProduct setQuantity(int value) { 
-        if (this.quantity == null)
-          this.quantity = new IntegerType();
-        this.quantity.setValue(value);
-      return this;
-    }
-
-    /**
-     * @return {@link #parent} (Parent product (if any).)
-     */
-    public List<Reference> getParent() { 
-      if (this.parent == null)
-        this.parent = new ArrayList<Reference>();
-      return this.parent;
+    public List<Identifier> getIdentifier() { 
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      return this.identifier;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public BiologicallyDerivedProduct setParent(List<Reference> theParent) { 
-      this.parent = theParent;
+    public BiologicallyDerivedProduct setIdentifier(List<Identifier> theIdentifier) { 
+      this.identifier = theIdentifier;
       return this;
     }
 
-    public boolean hasParent() { 
-      if (this.parent == null)
+    public boolean hasIdentifier() { 
+      if (this.identifier == null)
         return false;
-      for (Reference item : this.parent)
+      for (Identifier item : this.identifier)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public Reference addParent() { //3
-      Reference t = new Reference();
-      if (this.parent == null)
-        this.parent = new ArrayList<Reference>();
-      this.parent.add(t);
+    public Identifier addIdentifier() { //3
+      Identifier t = new Identifier();
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
       return t;
     }
 
-    public BiologicallyDerivedProduct addParent(Reference t) { //3
+    public BiologicallyDerivedProduct addIdentifier(Identifier t) { //3
       if (t == null)
         return this;
-      if (this.parent == null)
-        this.parent = new ArrayList<Reference>();
-      this.parent.add(t);
+      if (this.identifier == null)
+        this.identifier = new ArrayList<Identifier>();
+      this.identifier.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #parent}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
      */
-    public Reference getParentFirstRep() { 
-      if (getParent().isEmpty()) {
-        addParent();
+    public Identifier getIdentifierFirstRep() { 
+      if (getIdentifier().isEmpty()) {
+        addIdentifier();
       }
-      return getParent().get(0);
+      return getIdentifier().get(0);
+    }
+
+    /**
+     * @return {@link #biologicalSource} (An identifier that supports traceability to the biological entity that is the source of biological material in the product.)
+     */
+    public Identifier getBiologicalSource() { 
+      if (this.biologicalSource == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create BiologicallyDerivedProduct.biologicalSource");
+        else if (Configuration.doAutoCreate())
+          this.biologicalSource = new Identifier(); // cc
+      return this.biologicalSource;
+    }
+
+    public boolean hasBiologicalSource() { 
+      return this.biologicalSource != null && !this.biologicalSource.isEmpty();
+    }
+
+    /**
+     * @param value {@link #biologicalSource} (An identifier that supports traceability to the biological entity that is the source of biological material in the product.)
+     */
+    public BiologicallyDerivedProduct setBiologicalSource(Identifier value) { 
+      this.biologicalSource = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #processingFacility} (Processing facilities for this biologically derived product.)
+     */
+    public List<Reference> getProcessingFacility() { 
+      if (this.processingFacility == null)
+        this.processingFacility = new ArrayList<Reference>();
+      return this.processingFacility;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public BiologicallyDerivedProduct setProcessingFacility(List<Reference> theProcessingFacility) { 
+      this.processingFacility = theProcessingFacility;
+      return this;
+    }
+
+    public boolean hasProcessingFacility() { 
+      if (this.processingFacility == null)
+        return false;
+      for (Reference item : this.processingFacility)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Reference addProcessingFacility() { //3
+      Reference t = new Reference();
+      if (this.processingFacility == null)
+        this.processingFacility = new ArrayList<Reference>();
+      this.processingFacility.add(t);
+      return t;
+    }
+
+    public BiologicallyDerivedProduct addProcessingFacility(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.processingFacility == null)
+        this.processingFacility = new ArrayList<Reference>();
+      this.processingFacility.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #processingFacility}, creating it if it does not already exist {3}
+     */
+    public Reference getProcessingFacilityFirstRep() { 
+      if (getProcessingFacility().isEmpty()) {
+        addProcessingFacility();
+      }
+      return getProcessingFacility().get(0);
+    }
+
+    /**
+     * @return {@link #division} (Description of division.). This is the underlying object with id, value and extensions. The accessor "getDivision" gives direct access to the value
+     */
+    public StringType getDivisionElement() { 
+      if (this.division == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create BiologicallyDerivedProduct.division");
+        else if (Configuration.doAutoCreate())
+          this.division = new StringType(); // bb
+      return this.division;
+    }
+
+    public boolean hasDivisionElement() { 
+      return this.division != null && !this.division.isEmpty();
+    }
+
+    public boolean hasDivision() { 
+      return this.division != null && !this.division.isEmpty();
+    }
+
+    /**
+     * @param value {@link #division} (Description of division.). This is the underlying object with id, value and extensions. The accessor "getDivision" gives direct access to the value
+     */
+    public BiologicallyDerivedProduct setDivisionElement(StringType value) { 
+      this.division = value;
+      return this;
+    }
+
+    /**
+     * @return Description of division.
+     */
+    public String getDivision() { 
+      return this.division == null ? null : this.division.getValue();
+    }
+
+    /**
+     * @param value Description of division.
+     */
+    public BiologicallyDerivedProduct setDivision(String value) { 
+      if (Utilities.noString(value))
+        this.division = null;
+      else {
+        if (this.division == null)
+          this.division = new StringType();
+        this.division.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #status} (Whether the product is currently available.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     */
+    public Enumeration<BiologicallyDerivedProductStatus> getStatusElement() { 
+      if (this.status == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create BiologicallyDerivedProduct.status");
+        else if (Configuration.doAutoCreate())
+          this.status = new Enumeration<BiologicallyDerivedProductStatus>(new BiologicallyDerivedProductStatusEnumFactory()); // bb
+      return this.status;
+    }
+
+    public boolean hasStatusElement() { 
+      return this.status != null && !this.status.isEmpty();
+    }
+
+    public boolean hasStatus() { 
+      return this.status != null && !this.status.isEmpty();
+    }
+
+    /**
+     * @param value {@link #status} (Whether the product is currently available.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     */
+    public BiologicallyDerivedProduct setStatusElement(Enumeration<BiologicallyDerivedProductStatus> value) { 
+      this.status = value;
+      return this;
+    }
+
+    /**
+     * @return Whether the product is currently available.
+     */
+    public BiologicallyDerivedProductStatus getStatus() { 
+      return this.status == null ? null : this.status.getValue();
+    }
+
+    /**
+     * @param value Whether the product is currently available.
+     */
+    public BiologicallyDerivedProduct setStatus(BiologicallyDerivedProductStatus value) { 
+      if (value == null)
+        this.status = null;
+      else {
+        if (this.status == null)
+          this.status = new Enumeration<BiologicallyDerivedProductStatus>(new BiologicallyDerivedProductStatusEnumFactory());
+        this.status.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #expirationDate} (Date of expiration.). This is the underlying object with id, value and extensions. The accessor "getExpirationDate" gives direct access to the value
+     */
+    public DateTimeType getExpirationDateElement() { 
+      if (this.expirationDate == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create BiologicallyDerivedProduct.expirationDate");
+        else if (Configuration.doAutoCreate())
+          this.expirationDate = new DateTimeType(); // bb
+      return this.expirationDate;
+    }
+
+    public boolean hasExpirationDateElement() { 
+      return this.expirationDate != null && !this.expirationDate.isEmpty();
+    }
+
+    public boolean hasExpirationDate() { 
+      return this.expirationDate != null && !this.expirationDate.isEmpty();
+    }
+
+    /**
+     * @param value {@link #expirationDate} (Date of expiration.). This is the underlying object with id, value and extensions. The accessor "getExpirationDate" gives direct access to the value
+     */
+    public BiologicallyDerivedProduct setExpirationDateElement(DateTimeType value) { 
+      this.expirationDate = value;
+      return this;
+    }
+
+    /**
+     * @return Date of expiration.
+     */
+    public Date getExpirationDate() { 
+      return this.expirationDate == null ? null : this.expirationDate.getValue();
+    }
+
+    /**
+     * @param value Date of expiration.
+     */
+    public BiologicallyDerivedProduct setExpirationDate(Date value) { 
+      if (value == null)
+        this.expirationDate = null;
+      else {
+        if (this.expirationDate == null)
+          this.expirationDate = new DateTimeType();
+        this.expirationDate.setValue(value);
+      }
+      return this;
     }
 
     /**
@@ -2134,164 +1498,115 @@ public class BiologicallyDerivedProduct extends DomainResource {
     }
 
     /**
-     * @return {@link #processing} (Any processing of the product during collection that does not change the fundamental nature of the product. For example adding anti-coagulants during the collection of Peripheral Blood Stem Cells.)
+     * @return {@link #storageTempRequirements} (Product storage temp requirements.)
      */
-    public List<BiologicallyDerivedProductProcessingComponent> getProcessing() { 
-      if (this.processing == null)
-        this.processing = new ArrayList<BiologicallyDerivedProductProcessingComponent>();
-      return this.processing;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public BiologicallyDerivedProduct setProcessing(List<BiologicallyDerivedProductProcessingComponent> theProcessing) { 
-      this.processing = theProcessing;
-      return this;
-    }
-
-    public boolean hasProcessing() { 
-      if (this.processing == null)
-        return false;
-      for (BiologicallyDerivedProductProcessingComponent item : this.processing)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public BiologicallyDerivedProductProcessingComponent addProcessing() { //3
-      BiologicallyDerivedProductProcessingComponent t = new BiologicallyDerivedProductProcessingComponent();
-      if (this.processing == null)
-        this.processing = new ArrayList<BiologicallyDerivedProductProcessingComponent>();
-      this.processing.add(t);
-      return t;
-    }
-
-    public BiologicallyDerivedProduct addProcessing(BiologicallyDerivedProductProcessingComponent t) { //3
-      if (t == null)
-        return this;
-      if (this.processing == null)
-        this.processing = new ArrayList<BiologicallyDerivedProductProcessingComponent>();
-      this.processing.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #processing}, creating it if it does not already exist {3}
-     */
-    public BiologicallyDerivedProductProcessingComponent getProcessingFirstRep() { 
-      if (getProcessing().isEmpty()) {
-        addProcessing();
-      }
-      return getProcessing().get(0);
-    }
-
-    /**
-     * @return {@link #manipulation} (Any manipulation of product post-collection that is intended to alter the product.  For example a buffy-coat enrichment or CD8 reduction of Peripheral Blood Stem Cells to make it more suitable for infusion.)
-     */
-    public BiologicallyDerivedProductManipulationComponent getManipulation() { 
-      if (this.manipulation == null)
+    public Range getStorageTempRequirements() { 
+      if (this.storageTempRequirements == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create BiologicallyDerivedProduct.manipulation");
+          throw new Error("Attempt to auto-create BiologicallyDerivedProduct.storageTempRequirements");
         else if (Configuration.doAutoCreate())
-          this.manipulation = new BiologicallyDerivedProductManipulationComponent(); // cc
-      return this.manipulation;
+          this.storageTempRequirements = new Range(); // cc
+      return this.storageTempRequirements;
     }
 
-    public boolean hasManipulation() { 
-      return this.manipulation != null && !this.manipulation.isEmpty();
+    public boolean hasStorageTempRequirements() { 
+      return this.storageTempRequirements != null && !this.storageTempRequirements.isEmpty();
     }
 
     /**
-     * @param value {@link #manipulation} (Any manipulation of product post-collection that is intended to alter the product.  For example a buffy-coat enrichment or CD8 reduction of Peripheral Blood Stem Cells to make it more suitable for infusion.)
+     * @param value {@link #storageTempRequirements} (Product storage temp requirements.)
      */
-    public BiologicallyDerivedProduct setManipulation(BiologicallyDerivedProductManipulationComponent value) { 
-      this.manipulation = value;
+    public BiologicallyDerivedProduct setStorageTempRequirements(Range value) { 
+      this.storageTempRequirements = value;
       return this;
     }
 
     /**
-     * @return {@link #storage} (Product storage.)
+     * @return {@link #property} (A property that is specific to this BiologicallyDerviedProduct instance.)
      */
-    public List<BiologicallyDerivedProductStorageComponent> getStorage() { 
-      if (this.storage == null)
-        this.storage = new ArrayList<BiologicallyDerivedProductStorageComponent>();
-      return this.storage;
+    public List<BiologicallyDerivedProductPropertyComponent> getProperty() { 
+      if (this.property == null)
+        this.property = new ArrayList<BiologicallyDerivedProductPropertyComponent>();
+      return this.property;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public BiologicallyDerivedProduct setStorage(List<BiologicallyDerivedProductStorageComponent> theStorage) { 
-      this.storage = theStorage;
+    public BiologicallyDerivedProduct setProperty(List<BiologicallyDerivedProductPropertyComponent> theProperty) { 
+      this.property = theProperty;
       return this;
     }
 
-    public boolean hasStorage() { 
-      if (this.storage == null)
+    public boolean hasProperty() { 
+      if (this.property == null)
         return false;
-      for (BiologicallyDerivedProductStorageComponent item : this.storage)
+      for (BiologicallyDerivedProductPropertyComponent item : this.property)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public BiologicallyDerivedProductStorageComponent addStorage() { //3
-      BiologicallyDerivedProductStorageComponent t = new BiologicallyDerivedProductStorageComponent();
-      if (this.storage == null)
-        this.storage = new ArrayList<BiologicallyDerivedProductStorageComponent>();
-      this.storage.add(t);
+    public BiologicallyDerivedProductPropertyComponent addProperty() { //3
+      BiologicallyDerivedProductPropertyComponent t = new BiologicallyDerivedProductPropertyComponent();
+      if (this.property == null)
+        this.property = new ArrayList<BiologicallyDerivedProductPropertyComponent>();
+      this.property.add(t);
       return t;
     }
 
-    public BiologicallyDerivedProduct addStorage(BiologicallyDerivedProductStorageComponent t) { //3
+    public BiologicallyDerivedProduct addProperty(BiologicallyDerivedProductPropertyComponent t) { //3
       if (t == null)
         return this;
-      if (this.storage == null)
-        this.storage = new ArrayList<BiologicallyDerivedProductStorageComponent>();
-      this.storage.add(t);
+      if (this.property == null)
+        this.property = new ArrayList<BiologicallyDerivedProductPropertyComponent>();
+      this.property.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #storage}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #property}, creating it if it does not already exist {3}
      */
-    public BiologicallyDerivedProductStorageComponent getStorageFirstRep() { 
-      if (getStorage().isEmpty()) {
-        addStorage();
+    public BiologicallyDerivedProductPropertyComponent getPropertyFirstRep() { 
+      if (getProperty().isEmpty()) {
+        addProperty();
       }
-      return getStorage().get(0);
+      return getProperty().get(0);
     }
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("identifier", "Identifier", "This records identifiers associated with this biologically derived product instance that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation).", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("productCategory", "code", "Broad category of this product.", 0, 1, productCategory));
         children.add(new Property("productCode", "CodeableConcept", "A code that identifies the kind of this biologically derived product (SNOMED Ctcode).", 0, 1, productCode));
-        children.add(new Property("status", "code", "Whether the product is currently available.", 0, 1, status));
-        children.add(new Property("request", "Reference(ServiceRequest)", "Procedure request to obtain this biologically derived product.", 0, java.lang.Integer.MAX_VALUE, request));
-        children.add(new Property("quantity", "integer", "Number of discrete units within this product.", 0, 1, quantity));
         children.add(new Property("parent", "Reference(BiologicallyDerivedProduct)", "Parent product (if any).", 0, java.lang.Integer.MAX_VALUE, parent));
+        children.add(new Property("request", "Reference(ServiceRequest)", "Procedure request to obtain this biologically derived product.", 0, java.lang.Integer.MAX_VALUE, request));
+        children.add(new Property("identifier", "Identifier", "This records identifiers associated with this biologically derived product instance that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation).", 0, java.lang.Integer.MAX_VALUE, identifier));
+        children.add(new Property("biologicalSource", "Identifier", "An identifier that supports traceability to the biological entity that is the source of biological material in the product.", 0, 1, biologicalSource));
+        children.add(new Property("processingFacility", "Reference(Organization)", "Processing facilities for this biologically derived product.", 0, java.lang.Integer.MAX_VALUE, processingFacility));
+        children.add(new Property("division", "string", "Description of division.", 0, 1, division));
+        children.add(new Property("status", "code", "Whether the product is currently available.", 0, 1, status));
+        children.add(new Property("expirationDate", "dateTime", "Date of expiration.", 0, 1, expirationDate));
         children.add(new Property("collection", "", "How this product was collected.", 0, 1, collection));
-        children.add(new Property("processing", "", "Any processing of the product during collection that does not change the fundamental nature of the product. For example adding anti-coagulants during the collection of Peripheral Blood Stem Cells.", 0, java.lang.Integer.MAX_VALUE, processing));
-        children.add(new Property("manipulation", "", "Any manipulation of product post-collection that is intended to alter the product.  For example a buffy-coat enrichment or CD8 reduction of Peripheral Blood Stem Cells to make it more suitable for infusion.", 0, 1, manipulation));
-        children.add(new Property("storage", "", "Product storage.", 0, java.lang.Integer.MAX_VALUE, storage));
+        children.add(new Property("storageTempRequirements", "Range", "Product storage temp requirements.", 0, 1, storageTempRequirements));
+        children.add(new Property("property", "", "A property that is specific to this BiologicallyDerviedProduct instance.", 0, java.lang.Integer.MAX_VALUE, property));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "This records identifiers associated with this biologically derived product instance that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation).", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 197299981: /*productCategory*/  return new Property("productCategory", "code", "Broad category of this product.", 0, 1, productCategory);
         case -1492131972: /*productCode*/  return new Property("productCode", "CodeableConcept", "A code that identifies the kind of this biologically derived product (SNOMED Ctcode).", 0, 1, productCode);
-        case -892481550: /*status*/  return new Property("status", "code", "Whether the product is currently available.", 0, 1, status);
-        case 1095692943: /*request*/  return new Property("request", "Reference(ServiceRequest)", "Procedure request to obtain this biologically derived product.", 0, java.lang.Integer.MAX_VALUE, request);
-        case -1285004149: /*quantity*/  return new Property("quantity", "integer", "Number of discrete units within this product.", 0, 1, quantity);
         case -995424086: /*parent*/  return new Property("parent", "Reference(BiologicallyDerivedProduct)", "Parent product (if any).", 0, java.lang.Integer.MAX_VALUE, parent);
+        case 1095692943: /*request*/  return new Property("request", "Reference(ServiceRequest)", "Procedure request to obtain this biologically derived product.", 0, java.lang.Integer.MAX_VALUE, request);
+        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "This records identifiers associated with this biologically derived product instance that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate (e.g. in CDA documents, or in written / printed documentation).", 0, java.lang.Integer.MAX_VALUE, identifier);
+        case -883952260: /*biologicalSource*/  return new Property("biologicalSource", "Identifier", "An identifier that supports traceability to the biological entity that is the source of biological material in the product.", 0, 1, biologicalSource);
+        case 39337686: /*processingFacility*/  return new Property("processingFacility", "Reference(Organization)", "Processing facilities for this biologically derived product.", 0, java.lang.Integer.MAX_VALUE, processingFacility);
+        case 364720301: /*division*/  return new Property("division", "string", "Description of division.", 0, 1, division);
+        case -892481550: /*status*/  return new Property("status", "code", "Whether the product is currently available.", 0, 1, status);
+        case -668811523: /*expirationDate*/  return new Property("expirationDate", "dateTime", "Date of expiration.", 0, 1, expirationDate);
         case -1741312354: /*collection*/  return new Property("collection", "", "How this product was collected.", 0, 1, collection);
-        case 422194963: /*processing*/  return new Property("processing", "", "Any processing of the product during collection that does not change the fundamental nature of the product. For example adding anti-coagulants during the collection of Peripheral Blood Stem Cells.", 0, java.lang.Integer.MAX_VALUE, processing);
-        case -696214627: /*manipulation*/  return new Property("manipulation", "", "Any manipulation of product post-collection that is intended to alter the product.  For example a buffy-coat enrichment or CD8 reduction of Peripheral Blood Stem Cells to make it more suitable for infusion.", 0, 1, manipulation);
-        case -1884274053: /*storage*/  return new Property("storage", "", "Product storage.", 0, java.lang.Integer.MAX_VALUE, storage);
+        case 1643599647: /*storageTempRequirements*/  return new Property("storageTempRequirements", "Range", "Product storage temp requirements.", 0, 1, storageTempRequirements);
+        case -993141291: /*property*/  return new Property("property", "", "A property that is specific to this BiologicallyDerviedProduct instance.", 0, java.lang.Integer.MAX_VALUE, property);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -2300,17 +1615,19 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case 197299981: /*productCategory*/ return this.productCategory == null ? new Base[0] : new Base[] {this.productCategory}; // Enumeration<BiologicallyDerivedProductCategory>
         case -1492131972: /*productCode*/ return this.productCode == null ? new Base[0] : new Base[] {this.productCode}; // CodeableConcept
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<BiologicallyDerivedProductStatus>
-        case 1095692943: /*request*/ return this.request == null ? new Base[0] : this.request.toArray(new Base[this.request.size()]); // Reference
-        case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // IntegerType
         case -995424086: /*parent*/ return this.parent == null ? new Base[0] : this.parent.toArray(new Base[this.parent.size()]); // Reference
+        case 1095692943: /*request*/ return this.request == null ? new Base[0] : this.request.toArray(new Base[this.request.size()]); // Reference
+        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
+        case -883952260: /*biologicalSource*/ return this.biologicalSource == null ? new Base[0] : new Base[] {this.biologicalSource}; // Identifier
+        case 39337686: /*processingFacility*/ return this.processingFacility == null ? new Base[0] : this.processingFacility.toArray(new Base[this.processingFacility.size()]); // Reference
+        case 364720301: /*division*/ return this.division == null ? new Base[0] : new Base[] {this.division}; // StringType
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<BiologicallyDerivedProductStatus>
+        case -668811523: /*expirationDate*/ return this.expirationDate == null ? new Base[0] : new Base[] {this.expirationDate}; // DateTimeType
         case -1741312354: /*collection*/ return this.collection == null ? new Base[0] : new Base[] {this.collection}; // BiologicallyDerivedProductCollectionComponent
-        case 422194963: /*processing*/ return this.processing == null ? new Base[0] : this.processing.toArray(new Base[this.processing.size()]); // BiologicallyDerivedProductProcessingComponent
-        case -696214627: /*manipulation*/ return this.manipulation == null ? new Base[0] : new Base[] {this.manipulation}; // BiologicallyDerivedProductManipulationComponent
-        case -1884274053: /*storage*/ return this.storage == null ? new Base[0] : this.storage.toArray(new Base[this.storage.size()]); // BiologicallyDerivedProductStorageComponent
+        case 1643599647: /*storageTempRequirements*/ return this.storageTempRequirements == null ? new Base[0] : new Base[] {this.storageTempRequirements}; // Range
+        case -993141291: /*property*/ return this.property == null ? new Base[0] : this.property.toArray(new Base[this.property.size()]); // BiologicallyDerivedProductPropertyComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -2319,9 +1636,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case -1618432855: // identifier
-          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
-          return value;
         case 197299981: // productCategory
           value = new BiologicallyDerivedProductCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.productCategory = (Enumeration) value; // Enumeration<BiologicallyDerivedProductCategory>
@@ -2329,30 +1643,39 @@ public class BiologicallyDerivedProduct extends DomainResource {
         case -1492131972: // productCode
           this.productCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
-        case -892481550: // status
-          value = new BiologicallyDerivedProductStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<BiologicallyDerivedProductStatus>
+        case -995424086: // parent
+          this.getParent().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1095692943: // request
           this.getRequest().add(TypeConvertor.castToReference(value)); // Reference
           return value;
-        case -1285004149: // quantity
-          this.quantity = TypeConvertor.castToInteger(value); // IntegerType
+        case -1618432855: // identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
-        case -995424086: // parent
-          this.getParent().add(TypeConvertor.castToReference(value)); // Reference
+        case -883952260: // biologicalSource
+          this.biologicalSource = TypeConvertor.castToIdentifier(value); // Identifier
+          return value;
+        case 39337686: // processingFacility
+          this.getProcessingFacility().add(TypeConvertor.castToReference(value)); // Reference
+          return value;
+        case 364720301: // division
+          this.division = TypeConvertor.castToString(value); // StringType
+          return value;
+        case -892481550: // status
+          value = new BiologicallyDerivedProductStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<BiologicallyDerivedProductStatus>
+          return value;
+        case -668811523: // expirationDate
+          this.expirationDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -1741312354: // collection
           this.collection = (BiologicallyDerivedProductCollectionComponent) value; // BiologicallyDerivedProductCollectionComponent
           return value;
-        case 422194963: // processing
-          this.getProcessing().add((BiologicallyDerivedProductProcessingComponent) value); // BiologicallyDerivedProductProcessingComponent
+        case 1643599647: // storageTempRequirements
+          this.storageTempRequirements = TypeConvertor.castToRange(value); // Range
           return value;
-        case -696214627: // manipulation
-          this.manipulation = (BiologicallyDerivedProductManipulationComponent) value; // BiologicallyDerivedProductManipulationComponent
-          return value;
-        case -1884274053: // storage
-          this.getStorage().add((BiologicallyDerivedProductStorageComponent) value); // BiologicallyDerivedProductStorageComponent
+        case -993141291: // property
+          this.getProperty().add((BiologicallyDerivedProductPropertyComponent) value); // BiologicallyDerivedProductPropertyComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2361,30 +1684,34 @@ public class BiologicallyDerivedProduct extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("identifier")) {
-          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
-        } else if (name.equals("productCategory")) {
+        if (name.equals("productCategory")) {
           value = new BiologicallyDerivedProductCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.productCategory = (Enumeration) value; // Enumeration<BiologicallyDerivedProductCategory>
         } else if (name.equals("productCode")) {
           this.productCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("parent")) {
+          this.getParent().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("request")) {
+          this.getRequest().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
+        } else if (name.equals("biologicalSource")) {
+          this.biologicalSource = TypeConvertor.castToIdentifier(value); // Identifier
+        } else if (name.equals("processingFacility")) {
+          this.getProcessingFacility().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("division")) {
+          this.division = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
           value = new BiologicallyDerivedProductStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<BiologicallyDerivedProductStatus>
-        } else if (name.equals("request")) {
-          this.getRequest().add(TypeConvertor.castToReference(value));
-        } else if (name.equals("quantity")) {
-          this.quantity = TypeConvertor.castToInteger(value); // IntegerType
-        } else if (name.equals("parent")) {
-          this.getParent().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("expirationDate")) {
+          this.expirationDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("collection")) {
           this.collection = (BiologicallyDerivedProductCollectionComponent) value; // BiologicallyDerivedProductCollectionComponent
-        } else if (name.equals("processing")) {
-          this.getProcessing().add((BiologicallyDerivedProductProcessingComponent) value);
-        } else if (name.equals("manipulation")) {
-          this.manipulation = (BiologicallyDerivedProductManipulationComponent) value; // BiologicallyDerivedProductManipulationComponent
-        } else if (name.equals("storage")) {
-          this.getStorage().add((BiologicallyDerivedProductStorageComponent) value);
+        } else if (name.equals("storageTempRequirements")) {
+          this.storageTempRequirements = TypeConvertor.castToRange(value); // Range
+        } else if (name.equals("property")) {
+          this.getProperty().add((BiologicallyDerivedProductPropertyComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -2393,17 +1720,19 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1618432855:  return addIdentifier(); 
         case 197299981:  return getProductCategoryElement();
         case -1492131972:  return getProductCode();
-        case -892481550:  return getStatusElement();
-        case 1095692943:  return addRequest(); 
-        case -1285004149:  return getQuantityElement();
         case -995424086:  return addParent(); 
+        case 1095692943:  return addRequest(); 
+        case -1618432855:  return addIdentifier(); 
+        case -883952260:  return getBiologicalSource();
+        case 39337686:  return addProcessingFacility(); 
+        case 364720301:  return getDivisionElement();
+        case -892481550:  return getStatusElement();
+        case -668811523:  return getExpirationDateElement();
         case -1741312354:  return getCollection();
-        case 422194963:  return addProcessing(); 
-        case -696214627:  return getManipulation();
-        case -1884274053:  return addStorage(); 
+        case 1643599647:  return getStorageTempRequirements();
+        case -993141291:  return addProperty(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -2412,17 +1741,19 @@ public class BiologicallyDerivedProduct extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case 197299981: /*productCategory*/ return new String[] {"code"};
         case -1492131972: /*productCode*/ return new String[] {"CodeableConcept"};
-        case -892481550: /*status*/ return new String[] {"code"};
-        case 1095692943: /*request*/ return new String[] {"Reference"};
-        case -1285004149: /*quantity*/ return new String[] {"integer"};
         case -995424086: /*parent*/ return new String[] {"Reference"};
+        case 1095692943: /*request*/ return new String[] {"Reference"};
+        case -1618432855: /*identifier*/ return new String[] {"Identifier"};
+        case -883952260: /*biologicalSource*/ return new String[] {"Identifier"};
+        case 39337686: /*processingFacility*/ return new String[] {"Reference"};
+        case 364720301: /*division*/ return new String[] {"string"};
+        case -892481550: /*status*/ return new String[] {"code"};
+        case -668811523: /*expirationDate*/ return new String[] {"dateTime"};
         case -1741312354: /*collection*/ return new String[] {};
-        case 422194963: /*processing*/ return new String[] {};
-        case -696214627: /*manipulation*/ return new String[] {};
-        case -1884274053: /*storage*/ return new String[] {};
+        case 1643599647: /*storageTempRequirements*/ return new String[] {"Range"};
+        case -993141291: /*property*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -2430,41 +1761,48 @@ public class BiologicallyDerivedProduct extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("identifier")) {
-          return addIdentifier();
-        }
-        else if (name.equals("productCategory")) {
+        if (name.equals("productCategory")) {
           throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.productCategory");
         }
         else if (name.equals("productCode")) {
           this.productCode = new CodeableConcept();
           return this.productCode;
         }
-        else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.status");
+        else if (name.equals("parent")) {
+          return addParent();
         }
         else if (name.equals("request")) {
           return addRequest();
         }
-        else if (name.equals("quantity")) {
-          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.quantity");
+        else if (name.equals("identifier")) {
+          return addIdentifier();
         }
-        else if (name.equals("parent")) {
-          return addParent();
+        else if (name.equals("biologicalSource")) {
+          this.biologicalSource = new Identifier();
+          return this.biologicalSource;
+        }
+        else if (name.equals("processingFacility")) {
+          return addProcessingFacility();
+        }
+        else if (name.equals("division")) {
+          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.division");
+        }
+        else if (name.equals("status")) {
+          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.status");
+        }
+        else if (name.equals("expirationDate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.expirationDate");
         }
         else if (name.equals("collection")) {
           this.collection = new BiologicallyDerivedProductCollectionComponent();
           return this.collection;
         }
-        else if (name.equals("processing")) {
-          return addProcessing();
+        else if (name.equals("storageTempRequirements")) {
+          this.storageTempRequirements = new Range();
+          return this.storageTempRequirements;
         }
-        else if (name.equals("manipulation")) {
-          this.manipulation = new BiologicallyDerivedProductManipulationComponent();
-          return this.manipulation;
-        }
-        else if (name.equals("storage")) {
-          return addStorage();
+        else if (name.equals("property")) {
+          return addProperty();
         }
         else
           return super.addChild(name);
@@ -2483,36 +1821,38 @@ public class BiologicallyDerivedProduct extends DomainResource {
 
       public void copyValues(BiologicallyDerivedProduct dst) {
         super.copyValues(dst);
-        if (identifier != null) {
-          dst.identifier = new ArrayList<Identifier>();
-          for (Identifier i : identifier)
-            dst.identifier.add(i.copy());
-        };
         dst.productCategory = productCategory == null ? null : productCategory.copy();
         dst.productCode = productCode == null ? null : productCode.copy();
-        dst.status = status == null ? null : status.copy();
-        if (request != null) {
-          dst.request = new ArrayList<Reference>();
-          for (Reference i : request)
-            dst.request.add(i.copy());
-        };
-        dst.quantity = quantity == null ? null : quantity.copy();
         if (parent != null) {
           dst.parent = new ArrayList<Reference>();
           for (Reference i : parent)
             dst.parent.add(i.copy());
         };
-        dst.collection = collection == null ? null : collection.copy();
-        if (processing != null) {
-          dst.processing = new ArrayList<BiologicallyDerivedProductProcessingComponent>();
-          for (BiologicallyDerivedProductProcessingComponent i : processing)
-            dst.processing.add(i.copy());
+        if (request != null) {
+          dst.request = new ArrayList<Reference>();
+          for (Reference i : request)
+            dst.request.add(i.copy());
         };
-        dst.manipulation = manipulation == null ? null : manipulation.copy();
-        if (storage != null) {
-          dst.storage = new ArrayList<BiologicallyDerivedProductStorageComponent>();
-          for (BiologicallyDerivedProductStorageComponent i : storage)
-            dst.storage.add(i.copy());
+        if (identifier != null) {
+          dst.identifier = new ArrayList<Identifier>();
+          for (Identifier i : identifier)
+            dst.identifier.add(i.copy());
+        };
+        dst.biologicalSource = biologicalSource == null ? null : biologicalSource.copy();
+        if (processingFacility != null) {
+          dst.processingFacility = new ArrayList<Reference>();
+          for (Reference i : processingFacility)
+            dst.processingFacility.add(i.copy());
+        };
+        dst.division = division == null ? null : division.copy();
+        dst.status = status == null ? null : status.copy();
+        dst.expirationDate = expirationDate == null ? null : expirationDate.copy();
+        dst.collection = collection == null ? null : collection.copy();
+        dst.storageTempRequirements = storageTempRequirements == null ? null : storageTempRequirements.copy();
+        if (property != null) {
+          dst.property = new ArrayList<BiologicallyDerivedProductPropertyComponent>();
+          for (BiologicallyDerivedProductPropertyComponent i : property)
+            dst.property.add(i.copy());
         };
       }
 
@@ -2527,11 +1867,12 @@ public class BiologicallyDerivedProduct extends DomainResource {
         if (!(other_ instanceof BiologicallyDerivedProduct))
           return false;
         BiologicallyDerivedProduct o = (BiologicallyDerivedProduct) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(productCategory, o.productCategory, true)
-           && compareDeep(productCode, o.productCode, true) && compareDeep(status, o.status, true) && compareDeep(request, o.request, true)
-           && compareDeep(quantity, o.quantity, true) && compareDeep(parent, o.parent, true) && compareDeep(collection, o.collection, true)
-           && compareDeep(processing, o.processing, true) && compareDeep(manipulation, o.manipulation, true)
-           && compareDeep(storage, o.storage, true);
+        return compareDeep(productCategory, o.productCategory, true) && compareDeep(productCode, o.productCode, true)
+           && compareDeep(parent, o.parent, true) && compareDeep(request, o.request, true) && compareDeep(identifier, o.identifier, true)
+           && compareDeep(biologicalSource, o.biologicalSource, true) && compareDeep(processingFacility, o.processingFacility, true)
+           && compareDeep(division, o.division, true) && compareDeep(status, o.status, true) && compareDeep(expirationDate, o.expirationDate, true)
+           && compareDeep(collection, o.collection, true) && compareDeep(storageTempRequirements, o.storageTempRequirements, true)
+           && compareDeep(property, o.property, true);
       }
 
       @Override
@@ -2541,20 +1882,40 @@ public class BiologicallyDerivedProduct extends DomainResource {
         if (!(other_ instanceof BiologicallyDerivedProduct))
           return false;
         BiologicallyDerivedProduct o = (BiologicallyDerivedProduct) other_;
-        return compareValues(productCategory, o.productCategory, true) && compareValues(status, o.status, true)
-           && compareValues(quantity, o.quantity, true);
+        return compareValues(productCategory, o.productCategory, true) && compareValues(division, o.division, true)
+           && compareValues(status, o.status, true) && compareValues(expirationDate, o.expirationDate, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, productCategory
-          , productCode, status, request, quantity, parent, collection, processing, manipulation
-          , storage);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(productCategory, productCode
+          , parent, request, identifier, biologicalSource, processingFacility, division, status
+          , expirationDate, collection, storageTempRequirements, property);
       }
 
   @Override
   public ResourceType getResourceType() {
     return ResourceType.BiologicallyDerivedProduct;
    }
+
+ /**
+   * Search parameter: <b>biological-source</b>
+   * <p>
+   * Description: <b>The biological source for the biologically derived product</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.biologicalSource</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="biological-source", path="BiologicallyDerivedProduct.biologicalSource", description="The biological source for the biologically derived product", type="token" )
+  public static final String SP_BIOLOGICAL_SOURCE = "biological-source";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>biological-source</b>
+   * <p>
+   * Description: <b>The biological source for the biologically derived product</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.biologicalSource</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam BIOLOGICAL_SOURCE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_BIOLOGICAL_SOURCE);
 
 
 }

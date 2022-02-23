@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,7 +82,6 @@ public class OperationDefinition extends CanonicalResource {
           switch (this) {
             case OPERATION: return "operation";
             case QUERY: return "query";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,7 +89,6 @@ public class OperationDefinition extends CanonicalResource {
           switch (this) {
             case OPERATION: return "http://hl7.org/fhir/operation-kind";
             case QUERY: return "http://hl7.org/fhir/operation-kind";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,7 +96,6 @@ public class OperationDefinition extends CanonicalResource {
           switch (this) {
             case OPERATION: return "This operation is invoked as an operation.";
             case QUERY: return "This operation is a named query, invoked using the search mechanism.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,7 +103,6 @@ public class OperationDefinition extends CanonicalResource {
           switch (this) {
             case OPERATION: return "Operation";
             case QUERY: return "Query";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -4782,12 +4778,12 @@ public class OperationDefinition extends CanonicalResource {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
-
-
-//Manual code (from Configuration.txt)t:
+// Manual code (from Configuration.txt):
   public boolean supportsCopyright() {
     return false;
   }
-  // end
+
+// end addition
+
 }
 

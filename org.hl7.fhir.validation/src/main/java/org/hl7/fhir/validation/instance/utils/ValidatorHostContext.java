@@ -16,6 +16,7 @@ public class ValidatorHostContext {
     private Element resource; 
     // the resource that is the scope of id resolution - either the same as resource, or the resource the contains that resource. This can only be one level deep.
     private Element rootResource;
+    private Element groupingResource; // either a bundle or a parameters that holds the rootResource (for reference resolution)
     
     private StructureDefinition profile; // the profile that contains the content being validated
     private boolean checkSpecials = true;
@@ -26,11 +27,28 @@ public class ValidatorHostContext {
     }
 
     public ValidatorHostContext(Object appContext, Element element) {
-        this.appContext = appContext;
-        this.resource = element;
-        this.rootResource = element;
-        // no container
-    }
+      this.appContext = appContext;
+      this.resource = element;
+      this.rootResource = element;
+      // no groupingResource (Bundle or Parameters)
+      dump("creating");
+  }
+
+    public ValidatorHostContext(Object appContext, Element element, Element root) {
+      this.appContext = appContext;
+      this.resource = element;
+      this.rootResource = root;
+      // no groupingResource (Bundle or Parameters)
+      dump("creating");
+  }
+
+    public ValidatorHostContext(Object appContext, Element element, Element root, Element groupingResource) {
+      this.appContext = appContext;
+      this.resource = element;
+      this.rootResource = root;
+      this.groupingResource = groupingResource;
+      dump("creating");
+  }
 
     public Object getAppContext() {
         return appContext;
@@ -52,7 +70,12 @@ public class ValidatorHostContext {
 
     public ValidatorHostContext setRootResource(Element rootResource) {
         this.rootResource = rootResource;
+        dump("setting root resource");
         return this;
+    }
+
+    public Element getGroupingResource() {
+      return groupingResource;
     }
 
     public StructureDefinition getProfile() {
@@ -96,14 +119,18 @@ public class ValidatorHostContext {
         res.rootResource = resource;
         res.resource = element;
         res.profile = profile;
+        res.groupingResource = groupingResource;
+        res.dump("forContained");
         return res;
     }
 
-    public ValidatorHostContext forEntry(Element element) {
+    public ValidatorHostContext forEntry(Element element, Element groupingResource) {
         ValidatorHostContext res = new ValidatorHostContext(appContext);
         res.rootResource = element;
         res.resource = element;
         res.profile = profile;
+        res.groupingResource = groupingResource;
+        res.dump("forEntry");
         return res;
     }
 
@@ -112,7 +139,9 @@ public class ValidatorHostContext {
         res.resource = resource;
         res.rootResource = rootResource;
         res.profile = profile;
+        res.groupingResource = groupingResource;
         res.sliceRecords = sliceRecords != null ? sliceRecords : new HashMap<String, List<ValidationMessage>>();
+        res.dump("forProfile "+profile.getUrl());
         return res;
     }
 
@@ -121,8 +150,17 @@ public class ValidatorHostContext {
         res.resource = resource;
         res.rootResource = resource;
         res.profile = profile;
+        res.groupingResource = groupingResource;
         res.checkSpecials = false;
+        res.dump("forLocalReference "+profile.getUrl());
         return res;
+    }
+
+    private void dump(String ctxt) {
+//      System.out.println("** app = "+(appContext == null ? "(null)" : appContext.toString())+", res = "+resource.toString()+", root = "+rootResource.toString()+" ("+ctxt+")");
+//      if (rootResource.getName().equals("contained")) {
+//        System.out.println("** something is wrong!");        
+//      }
     }
 
     public ValidatorHostContext forRemoteReference(StructureDefinition profile, Element resource) {
@@ -130,7 +168,9 @@ public class ValidatorHostContext {
         res.resource = resource;
         res.rootResource = resource;
         res.profile = profile;
+        res.groupingResource = null;
         res.checkSpecials = false;
+        res.dump("forRemoteReference "+profile.getUrl());
         return res;
     }
 
@@ -138,9 +178,11 @@ public class ValidatorHostContext {
         ValidatorHostContext res = new ValidatorHostContext(appContext);
         res.resource = resource;
         res.rootResource = resource;
+        res.groupingResource = groupingResource;
         res.profile = profile;
         res.checkSpecials = false;
         res.sliceRecords = new HashMap<String, List<ValidationMessage>>();
+        res.dump("forSlicing");
         return res;
     }
 

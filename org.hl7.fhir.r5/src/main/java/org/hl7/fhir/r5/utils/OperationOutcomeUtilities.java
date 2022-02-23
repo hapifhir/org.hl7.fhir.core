@@ -54,9 +54,9 @@ public class OperationOutcomeUtilities {
       issue.addExpression(message.getLocation());
     }
     // pass through line/col if they're present
-    if (message.getLine() != 0)
+    if (message.getLine() >= 0)
       issue.addExtension().setUrl(ToolingExtensions.EXT_ISSUE_LINE).setValue(new IntegerType(message.getLine()));
-    if (message.getCol() != 0)
+    if (message.getCol() >= 0)
       issue.addExtension().setUrl(ToolingExtensions.EXT_ISSUE_COL).setValue(new IntegerType(message.getCol()));
     issue.setSeverity(convert(message.getLevel()));
     CodeableConcept c = new CodeableConcept();
@@ -65,6 +65,7 @@ public class OperationOutcomeUtilities {
     if (message.getSource() != null) {
       issue.getExtension().add(ToolingExtensions.makeIssueSource(message.getSource()));
     }
+    issue.setUserData("source.msg", message);
     return issue;
   }
 

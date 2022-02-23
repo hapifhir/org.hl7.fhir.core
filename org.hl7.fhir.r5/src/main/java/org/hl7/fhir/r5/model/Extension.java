@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -64,7 +64,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
     /**
      * Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).
      */
-    @Child(name = "value", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=1, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "value", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, CodeableReference.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, RatioRange.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=1, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Value of extension", formalDefinition="Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list)." )
     protected DataType value;
 
@@ -523,6 +523,21 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
     /**
      * @return {@link #value} (Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).)
      */
+    public CodeableReference getValueCodeableReference() throws FHIRException { 
+      if (this.value == null)
+        this.value = new CodeableReference();
+      if (!(this.value instanceof CodeableReference))
+        throw new FHIRException("Type mismatch: the type CodeableReference was expected, but "+this.value.getClass().getName()+" was encountered");
+      return (CodeableReference) this.value;
+    }
+
+    public boolean hasValueCodeableReference() { 
+      return this != null && this.value instanceof CodeableReference;
+    }
+
+    /**
+     * @return {@link #value} (Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).)
+     */
     public Coding getValueCoding() throws FHIRException { 
       if (this.value == null)
         this.value = new Coding();
@@ -698,6 +713,21 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
 
     public boolean hasValueRatio() { 
       return this != null && this.value instanceof Ratio;
+    }
+
+    /**
+     * @return {@link #value} (Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).)
+     */
+    public RatioRange getValueRatioRange() throws FHIRException { 
+      if (this.value == null)
+        this.value = new RatioRange();
+      if (!(this.value instanceof RatioRange))
+        throw new FHIRException("Type mismatch: the type RatioRange was expected, but "+this.value.getClass().getName()+" was encountered");
+      return (RatioRange) this.value;
+    }
+
+    public boolean hasValueRatioRange() { 
+      return this != null && this.value instanceof RatioRange;
     }
 
     /**
@@ -918,7 +948,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
      * @param value {@link #value} (Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).)
      */
     public Extension setValue(DataType value) { 
-      if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
+      if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof CodeableReference || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof RatioRange || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
         throw new Error("Not the right type for Extension.value[x]: "+value.fhirType());
       this.value = value;
       return this;
@@ -927,15 +957,15 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("url", "uri", "Source of the definition for the extension code - a logical name or a URL.", 0, 1, url));
-        children.add(new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value));
+        children.add(new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case 116079: /*url*/  return new Property("url", "uri", "Source of the definition for the extension code - a logical name or a URL.", 0, 1, url);
-        case -1410166417: /*value[x]*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
-        case 111972721: /*value*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
+        case -1410166417: /*value[x]*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
+        case 111972721: /*value*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
         case -1535024575: /*valueBase64Binary*/  return new Property("value[x]", "base64Binary", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
         case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
         case -786218365: /*valueCanonical*/  return new Property("value[x]", "canonical", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
@@ -961,6 +991,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
         case -67108992: /*valueAnnotation*/  return new Property("value[x]", "Annotation", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
         case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
         case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
+        case -257955629: /*valueCodeableReference*/  return new Property("value[x]", "CodeableReference", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
         case -1887705029: /*valueCoding*/  return new Property("value[x]", "Coding", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
         case 944904545: /*valueContactPoint*/  return new Property("value[x]", "ContactPoint", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
         case 2017332766: /*valueCount*/  return new Property("value[x]", "Count", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
@@ -973,6 +1004,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
         case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
         case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
         case 2030767386: /*valueRatio*/  return new Property("value[x]", "Ratio", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
+        case -706454461: /*valueRatioRange*/  return new Property("value[x]", "RatioRange", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
         case 1755241690: /*valueReference*/  return new Property("value[x]", "Reference", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
         case -962229101: /*valueSampledData*/  return new Property("value[x]", "SampledData", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
         case -540985785: /*valueSignature*/  return new Property("value[x]", "Signature", "Value of extension - must be one of a constrained set of the data types (see [Extensibility](extensibility.html) for a list).", 0, 1, value);
@@ -1042,7 +1074,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 116079: /*url*/ return new String[] {"uri"};
-        case 111972721: /*value*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
+        case 111972721: /*value*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "CodeableReference", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "RatioRange", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1153,6 +1185,10 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
           this.value = new CodeableConcept();
           return this.value;
         }
+        else if (name.equals("valueCodeableReference")) {
+          this.value = new CodeableReference();
+          return this.value;
+        }
         else if (name.equals("valueCoding")) {
           this.value = new Coding();
           return this.value;
@@ -1199,6 +1235,10 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
         }
         else if (name.equals("valueRatio")) {
           this.value = new Ratio();
+          return this.value;
+        }
+        else if (name.equals("valueRatioRange")) {
+          this.value = new RatioRange();
           return this.value;
         }
         else if (name.equals("valueReference")) {

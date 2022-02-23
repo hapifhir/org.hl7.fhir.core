@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,7 +82,6 @@ public class AdverseEvent extends DomainResource {
           switch (this) {
             case ACTUAL: return "actual";
             case POTENTIAL: return "potential";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,7 +89,6 @@ public class AdverseEvent extends DomainResource {
           switch (this) {
             case ACTUAL: return "http://hl7.org/fhir/adverse-event-actuality";
             case POTENTIAL: return "http://hl7.org/fhir/adverse-event-actuality";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,7 +96,6 @@ public class AdverseEvent extends DomainResource {
           switch (this) {
             case ACTUAL: return "The adverse event actually happened regardless of whether anyone was affected or harmed.";
             case POTENTIAL: return "A potential adverse event.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,7 +103,6 @@ public class AdverseEvent extends DomainResource {
           switch (this) {
             case ACTUAL: return "Adverse Event";
             case POTENTIAL: return "Potential Adverse Event";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -192,7 +188,6 @@ public class AdverseEvent extends DomainResource {
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -202,7 +197,6 @@ public class AdverseEvent extends DomainResource {
             case COMPLETED: return "http://hl7.org/fhir/event-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/event-status";
             case UNKNOWN: return "http://hl7.org/fhir/event-status";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -212,7 +206,6 @@ public class AdverseEvent extends DomainResource {
             case COMPLETED: return "The event has now concluded.";
             case ENTEREDINERROR: return "This electronic record should never have existed, though it is possible that real-world decisions were based on it.  (If real-world activity has occurred, the status should be \"stopped\" rather than \"entered-in-error\".).";
             case UNKNOWN: return "The authoring/source system does not know which of the status values currently applies for this event.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply,  but the authoring/source system does not know which.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -222,7 +215,6 @@ public class AdverseEvent extends DomainResource {
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in Error";
             case UNKNOWN: return "Unknown";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -1853,10 +1845,10 @@ public class AdverseEvent extends DomainResource {
     protected DateTimeType recordedDate;
 
     /**
-     * Includes information about the reaction that occurred as a result of exposure to a substance (for example, a drug or a chemical).
+     * Information about the condition that occurred as a result of the adverse event, such as hives due to the exposure to a substance (for example, a drug or a chemical) or a broken leg as a result of the fall.
      */
     @Child(name = "resultingCondition", type = {Condition.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Effect on the subject due to this event", formalDefinition="Includes information about the reaction that occurred as a result of exposure to a substance (for example, a drug or a chemical)." )
+    @Description(shortDefinition="Effect on the subject due to this event", formalDefinition="Information about the condition that occurred as a result of the adverse event, such as hives due to the exposure to a substance (for example, a drug or a chemical) or a broken leg as a result of the fall." )
     protected List<Reference> resultingCondition;
 
     /**
@@ -1877,10 +1869,10 @@ public class AdverseEvent extends DomainResource {
     /**
      * Describes the type of outcome from the adverse event, such as resolved, recovering, ongoing, resolved-with-sequelae, or fatal.
      */
-    @Child(name = "outcome", type = {CodeableConcept.class}, order=13, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "outcome", type = {CodeableConcept.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Type of outcome from the adverse event", formalDefinition="Describes the type of outcome from the adverse event, such as resolved, recovering, ongoing, resolved-with-sequelae, or fatal." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/adverse-event-outcome")
-    protected CodeableConcept outcome;
+    protected List<CodeableConcept> outcome;
 
     /**
      * Information on who recorded the adverse event.  May be the patient or a practitioner.
@@ -1938,7 +1930,7 @@ public class AdverseEvent extends DomainResource {
     @Description(shortDefinition="Research study that the subject is enrolled in", formalDefinition="The research study that the subject is enrolled in." )
     protected List<Reference> study;
 
-    private static final long serialVersionUID = -162346876L;
+    private static final long serialVersionUID = 1528004510L;
 
   /**
    * Constructor
@@ -2390,7 +2382,7 @@ public class AdverseEvent extends DomainResource {
     }
 
     /**
-     * @return {@link #resultingCondition} (Includes information about the reaction that occurred as a result of exposure to a substance (for example, a drug or a chemical).)
+     * @return {@link #resultingCondition} (Information about the condition that occurred as a result of the adverse event, such as hives due to the exposure to a substance (for example, a drug or a chemical) or a broken leg as a result of the fall.)
      */
     public List<Reference> getResultingCondition() { 
       if (this.resultingCondition == null)
@@ -2493,25 +2485,54 @@ public class AdverseEvent extends DomainResource {
     /**
      * @return {@link #outcome} (Describes the type of outcome from the adverse event, such as resolved, recovering, ongoing, resolved-with-sequelae, or fatal.)
      */
-    public CodeableConcept getOutcome() { 
+    public List<CodeableConcept> getOutcome() { 
       if (this.outcome == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create AdverseEvent.outcome");
-        else if (Configuration.doAutoCreate())
-          this.outcome = new CodeableConcept(); // cc
+        this.outcome = new ArrayList<CodeableConcept>();
       return this.outcome;
     }
 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public AdverseEvent setOutcome(List<CodeableConcept> theOutcome) { 
+      this.outcome = theOutcome;
+      return this;
+    }
+
     public boolean hasOutcome() { 
-      return this.outcome != null && !this.outcome.isEmpty();
+      if (this.outcome == null)
+        return false;
+      for (CodeableConcept item : this.outcome)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableConcept addOutcome() { //3
+      CodeableConcept t = new CodeableConcept();
+      if (this.outcome == null)
+        this.outcome = new ArrayList<CodeableConcept>();
+      this.outcome.add(t);
+      return t;
+    }
+
+    public AdverseEvent addOutcome(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.outcome == null)
+        this.outcome = new ArrayList<CodeableConcept>();
+      this.outcome.add(t);
+      return this;
     }
 
     /**
-     * @param value {@link #outcome} (Describes the type of outcome from the adverse event, such as resolved, recovering, ongoing, resolved-with-sequelae, or fatal.)
+     * @return The first repetition of repeating field {@link #outcome}, creating it if it does not already exist {3}
      */
-    public AdverseEvent setOutcome(CodeableConcept value) { 
-      this.outcome = value;
-      return this;
+    public CodeableConcept getOutcomeFirstRep() { 
+      if (getOutcome().isEmpty()) {
+        addOutcome();
+      }
+      return getOutcome().get(0);
     }
 
     /**
@@ -2921,10 +2942,10 @@ public class AdverseEvent extends DomainResource {
         children.add(new Property("occurrence[x]", "dateTime|Period|Timing", "The date (and perhaps time) when the adverse event occurred.", 0, 1, occurrence));
         children.add(new Property("detected", "dateTime", "Estimated or actual date the AdverseEvent began, in the opinion of the reporter.", 0, 1, detected));
         children.add(new Property("recordedDate", "dateTime", "The date on which the existence of the AdverseEvent was first recorded.", 0, 1, recordedDate));
-        children.add(new Property("resultingCondition", "Reference(Condition)", "Includes information about the reaction that occurred as a result of exposure to a substance (for example, a drug or a chemical).", 0, java.lang.Integer.MAX_VALUE, resultingCondition));
+        children.add(new Property("resultingCondition", "Reference(Condition)", "Information about the condition that occurred as a result of the adverse event, such as hives due to the exposure to a substance (for example, a drug or a chemical) or a broken leg as a result of the fall.", 0, java.lang.Integer.MAX_VALUE, resultingCondition));
         children.add(new Property("location", "Reference(Location)", "The information about where the adverse event occurred.", 0, 1, location));
         children.add(new Property("seriousness", "CodeableConcept", "Assessment whether this event, or averted event, was of clinical importance.", 0, 1, seriousness));
-        children.add(new Property("outcome", "CodeableConcept", "Describes the type of outcome from the adverse event, such as resolved, recovering, ongoing, resolved-with-sequelae, or fatal.", 0, 1, outcome));
+        children.add(new Property("outcome", "CodeableConcept", "Describes the type of outcome from the adverse event, such as resolved, recovering, ongoing, resolved-with-sequelae, or fatal.", 0, java.lang.Integer.MAX_VALUE, outcome));
         children.add(new Property("recorder", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson)", "Information on who recorded the adverse event.  May be the patient or a practitioner.", 0, 1, recorder));
         children.add(new Property("participant", "", "Indicates who or what participated in the adverse event and how they were involved.", 0, java.lang.Integer.MAX_VALUE, participant));
         children.add(new Property("suspectEntity", "", "Describes the entity that is suspected to have caused the adverse event.", 0, java.lang.Integer.MAX_VALUE, suspectEntity));
@@ -2952,10 +2973,10 @@ public class AdverseEvent extends DomainResource {
         case 1515218299: /*occurrenceTiming*/  return new Property("occurrence[x]", "Timing", "The date (and perhaps time) when the adverse event occurred.", 0, 1, occurrence);
         case 1048254082: /*detected*/  return new Property("detected", "dateTime", "Estimated or actual date the AdverseEvent began, in the opinion of the reporter.", 0, 1, detected);
         case -1952893826: /*recordedDate*/  return new Property("recordedDate", "dateTime", "The date on which the existence of the AdverseEvent was first recorded.", 0, 1, recordedDate);
-        case -830261258: /*resultingCondition*/  return new Property("resultingCondition", "Reference(Condition)", "Includes information about the reaction that occurred as a result of exposure to a substance (for example, a drug or a chemical).", 0, java.lang.Integer.MAX_VALUE, resultingCondition);
+        case -830261258: /*resultingCondition*/  return new Property("resultingCondition", "Reference(Condition)", "Information about the condition that occurred as a result of the adverse event, such as hives due to the exposure to a substance (for example, a drug or a chemical) or a broken leg as a result of the fall.", 0, java.lang.Integer.MAX_VALUE, resultingCondition);
         case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "The information about where the adverse event occurred.", 0, 1, location);
         case -1551003909: /*seriousness*/  return new Property("seriousness", "CodeableConcept", "Assessment whether this event, or averted event, was of clinical importance.", 0, 1, seriousness);
-        case -1106507950: /*outcome*/  return new Property("outcome", "CodeableConcept", "Describes the type of outcome from the adverse event, such as resolved, recovering, ongoing, resolved-with-sequelae, or fatal.", 0, 1, outcome);
+        case -1106507950: /*outcome*/  return new Property("outcome", "CodeableConcept", "Describes the type of outcome from the adverse event, such as resolved, recovering, ongoing, resolved-with-sequelae, or fatal.", 0, java.lang.Integer.MAX_VALUE, outcome);
         case -799233858: /*recorder*/  return new Property("recorder", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson)", "Information on who recorded the adverse event.  May be the patient or a practitioner.", 0, 1, recorder);
         case 767422259: /*participant*/  return new Property("participant", "", "Indicates who or what participated in the adverse event and how they were involved.", 0, java.lang.Integer.MAX_VALUE, participant);
         case -1957422662: /*suspectEntity*/  return new Property("suspectEntity", "", "Describes the entity that is suspected to have caused the adverse event.", 0, java.lang.Integer.MAX_VALUE, suspectEntity);
@@ -2985,7 +3006,7 @@ public class AdverseEvent extends DomainResource {
         case -830261258: /*resultingCondition*/ return this.resultingCondition == null ? new Base[0] : this.resultingCondition.toArray(new Base[this.resultingCondition.size()]); // Reference
         case 1901043637: /*location*/ return this.location == null ? new Base[0] : new Base[] {this.location}; // Reference
         case -1551003909: /*seriousness*/ return this.seriousness == null ? new Base[0] : new Base[] {this.seriousness}; // CodeableConcept
-        case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : new Base[] {this.outcome}; // CodeableConcept
+        case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : this.outcome.toArray(new Base[this.outcome.size()]); // CodeableConcept
         case -799233858: /*recorder*/ return this.recorder == null ? new Base[0] : new Base[] {this.recorder}; // Reference
         case 767422259: /*participant*/ return this.participant == null ? new Base[0] : this.participant.toArray(new Base[this.participant.size()]); // AdverseEventParticipantComponent
         case -1957422662: /*suspectEntity*/ return this.suspectEntity == null ? new Base[0] : this.suspectEntity.toArray(new Base[this.suspectEntity.size()]); // AdverseEventSuspectEntityComponent
@@ -3044,7 +3065,7 @@ public class AdverseEvent extends DomainResource {
           this.seriousness = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1106507950: // outcome
-          this.outcome = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.getOutcome().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -799233858: // recorder
           this.recorder = TypeConvertor.castToReference(value); // Reference
@@ -3106,7 +3127,7 @@ public class AdverseEvent extends DomainResource {
         } else if (name.equals("seriousness")) {
           this.seriousness = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("outcome")) {
-          this.outcome = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.getOutcome().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("recorder")) {
           this.recorder = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("participant")) {
@@ -3145,7 +3166,7 @@ public class AdverseEvent extends DomainResource {
         case -830261258:  return addResultingCondition(); 
         case 1901043637:  return getLocation();
         case -1551003909:  return getSeriousness();
-        case -1106507950:  return getOutcome();
+        case -1106507950:  return addOutcome(); 
         case -799233858:  return getRecorder();
         case 767422259:  return addParticipant(); 
         case -1957422662:  return addSuspectEntity(); 
@@ -3245,8 +3266,7 @@ public class AdverseEvent extends DomainResource {
           return this.seriousness;
         }
         else if (name.equals("outcome")) {
-          this.outcome = new CodeableConcept();
-          return this.outcome;
+          return addOutcome();
         }
         else if (name.equals("recorder")) {
           this.recorder = new Reference();
@@ -3315,7 +3335,11 @@ public class AdverseEvent extends DomainResource {
         };
         dst.location = location == null ? null : location.copy();
         dst.seriousness = seriousness == null ? null : seriousness.copy();
-        dst.outcome = outcome == null ? null : outcome.copy();
+        if (outcome != null) {
+          dst.outcome = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : outcome)
+            dst.outcome.add(i.copy());
+        };
         dst.recorder = recorder == null ? null : recorder.copy();
         if (participant != null) {
           dst.participant = new ArrayList<AdverseEventParticipantComponent>();

@@ -29,13 +29,12 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r5.model.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -46,6 +45,7 @@ import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
+import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
 /**
  * Base StructureDefinition for ContactDetail Type: Specifies contact information for a person or organization.
  */
@@ -309,6 +309,7 @@ public class ContactDetail extends DataType implements ICompositeType {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, telecom);
       }
 
+// Manual code (from Configuration.txt):
       public ContactPoint getEmail() {
         for (ContactPoint cp : getTelecom()) {
           if (cp.getSystem() == ContactPointSystem.EMAIL) {
@@ -335,6 +336,8 @@ public class ContactDetail extends DataType implements ICompositeType {
         }
         return null;
       }
+
+// end addition
 
 }
 

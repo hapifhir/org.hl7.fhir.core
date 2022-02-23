@@ -34,26 +34,21 @@ package org.hl7.fhir.dstu3.utils.client;
 */
 
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
 import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.dstu3.model.ResourceType;
 import org.hl7.fhir.utilities.Utilities;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 //Make resources address subclass of URI
+
 /**
  * Helper class to manage FHIR Resource URIs
  * 
@@ -217,23 +212,19 @@ public class ResourceAddress {
 			return res;
 	}
 	
-	public URI resolveMetadataUri(boolean quick) {
-		return baseServiceUri.resolve(quick ? "metadata?_summary=true" : "metadata");
-	}
-	
+  public URI resolveMetadataUri(boolean quick) {
+    return baseServiceUri.resolve(quick ? "metadata?_summary=true" : "metadata");
+  }
+  
   public URI resolveMetadataTxCaps() {
     return baseServiceUri.resolve("metadata?mode=terminology");
   }
-
   
 	/**
 	 * For now, assume this type of location header structure.
 	 * Generalize later: http://hl7connect.healthintersections.com.au/svc/fhir/318/_history/1
-	 * 
-	 * @param serviceBase
-	 * @param locationHeader
 	 */
-	public static ResourceAddress.ResourceVersionedIdentifier parseCreateLocation(String locationResponseHeader) {
+	public static ResourceVersionedIdentifier parseCreateLocation(String locationResponseHeader) {
 		Pattern pattern = Pattern.compile(REGEX_ID_WITH_HISTORY);
 		Matcher matcher = pattern.matcher(locationResponseHeader);
 		ResourceVersionedIdentifier parsedHeader = null;
@@ -430,5 +421,4 @@ public class ResourceAddress {
         }
     }
 	
-
 }

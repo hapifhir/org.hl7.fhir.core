@@ -164,6 +164,9 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
     public boolean isError() {
       return this == FATAL || this == ERROR;
     }
+    public boolean isHint() {
+      return this == INFORMATION;
+    }
   }
 
   public enum IssueType {
@@ -508,8 +511,10 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   private String locationLink;
   private String txLink;
   public String sliceHtml;
+  public String[] sliceText;
   private boolean slicingHint;
   private boolean signpost;
+  private boolean criticalSignpost;
 
 
   /**
@@ -768,8 +773,10 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
     return sliceHtml;
   }
 
-  public void setSliceHtml(String sliceHtml) {
+  public ValidationMessage setSliceHtml(String sliceHtml, String[] text) {
     this.sliceHtml = sliceHtml;
+    this.sliceText = text;
+    return this;
   }
 
   public String getMessageId() {
@@ -785,8 +792,18 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
     return signpost;
   }
 
-  public void setSignpost(boolean signpost) {
+  public ValidationMessage setSignpost(boolean signpost) {
     this.signpost = signpost;
+    return this;
+  }
+
+  public boolean isCriticalSignpost() {
+    return criticalSignpost;
+  }
+
+  public ValidationMessage setCriticalSignpost(boolean criticalSignpost) {
+    this.criticalSignpost = criticalSignpost;
+    return this;
   }
 
 

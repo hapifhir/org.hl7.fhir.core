@@ -11,6 +11,8 @@ import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
+import org.hl7.fhir.utilities.SimpleHTTPClient;
+import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -19,8 +21,6 @@ import org.hl7.fhir.validation.cli.model.ScanOutputItem;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 
 import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
@@ -240,7 +240,7 @@ public class Scanner {
   }
 
   protected void genScanOutputItem(ScanOutputItem item, String filename) throws IOException, FHIRException, EOperationOutcome {
-    RenderingContext rc = new RenderingContext(getContext(), null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.RESOURCE);
+    RenderingContext rc = new RenderingContext(getContext(), null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.END_USER);
     rc.setNoSlowLookup(true);
     RendererFactory.factory(item.getOutcome(), rc).render(item.getOutcome());
     String s = new XhtmlComposer(XhtmlComposer.HTML).compose(item.getOutcome().getText().getDiv());
@@ -294,18 +294,16 @@ public class Scanner {
   protected OperationOutcome exceptionToOutcome(Exception ex) throws IOException, FHIRException, EOperationOutcome {
     OperationOutcome op = new OperationOutcome();
     op.addIssue().setCode(OperationOutcome.IssueType.EXCEPTION).setSeverity(OperationOutcome.IssueSeverity.FATAL).getDetails().setText(ex.getMessage());
-    RenderingContext rc = new RenderingContext(getContext(), null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.RESOURCE);
+    RenderingContext rc = new RenderingContext(getContext(), null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.END_USER);
     RendererFactory.factory(op, rc).render(op);
     return op;
   }
 
   protected void download(String address, String filename) throws IOException {
-    URL url = new URL(address);
-    URLConnection c = url.openConnection();
-    InputStream s = c.getInputStream();
-    FileOutputStream f = new FileOutputStream(filename);
-    transfer(s, f, 1024);
-    f.close();
+    SimpleHTTPClient http = new SimpleHTTPClient();
+    HTTPResult res = http.get(address);
+    res.checkThrowException();
+    TextFile.bytesToFile(res.getContent(), filename);
   }
 
   protected void transfer(InputStream in, OutputStream out, int buffer) throws IOException {

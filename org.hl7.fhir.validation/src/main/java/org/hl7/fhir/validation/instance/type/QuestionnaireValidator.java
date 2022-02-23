@@ -10,10 +10,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_50;
-import org.hl7.fhir.convertors.VersionConvertor_14_50;
-import org.hl7.fhir.convertors.VersionConvertor_30_50;
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.attoparser.config.ParseConfiguration.ElementBalancing;
+import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
+import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
@@ -23,6 +27,7 @@ import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DateType;
+import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.IntegerType;
@@ -36,6 +41,8 @@ import org.hl7.fhir.r5.model.TimeType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
+import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -48,12 +55,65 @@ import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.TimeTracker;
 import org.hl7.fhir.validation.instance.EnableWhenEvaluator;
 import org.hl7.fhir.validation.instance.EnableWhenEvaluator.QStack;
+import org.hl7.fhir.validation.instance.type.QuestionnaireValidator.ElementWithIndex;
+import org.hl7.fhir.validation.instance.type.QuestionnaireValidator.QuestionnaireWithContext;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
 
 import ca.uhn.fhir.util.ObjectUtil;
 
 public class QuestionnaireValidator extends BaseValidator {
+
+  public class ElementWithIndex {
+
+    private Element element;
+    private int index;
+
+    public ElementWithIndex(Element element, int index) {
+      this.element = element;
+      this.index = index;
+    }
+
+    public Element getElement() {
+      return element;
+    }
+
+    public int getIndex() {
+      return index;
+    }
+
+  }
+
+  public static class QuestionnaireWithContext {
+    private Questionnaire q;
+    private Element container;
+    private String containerPath;
+
+    public static QuestionnaireWithContext fromQuestionnaire(Questionnaire q) {
+      if (q == null) {
+        return null;
+      }
+      QuestionnaireWithContext res = new QuestionnaireWithContext();
+      res.q = q;
+      return res;
+    }
+
+    public static QuestionnaireWithContext fromContainedResource(String path, Element e, Questionnaire q) {
+      if (q == null) {
+        return null;
+      }
+      QuestionnaireWithContext res = new QuestionnaireWithContext();
+      res.q = q;
+      res.container = e;
+      res.containerPath = path;
+      return res;
+    }
+    
+    public Questionnaire q() {
+      return q;
+    }
+
+  }
 
   private EnableWhenEvaluator myEnableWhenEvaluator;
   private FHIRPathEngine fpe;
@@ -188,72 +248,27 @@ public class QuestionnaireValidator extends BaseValidator {
         rule(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), questionnaire != null, I18nConstants.QUESTIONNAIRE_QR_Q_NONE) :
           hint(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), questionnaire != null, I18nConstants.QUESTIONNAIRE_QR_Q_NONE);
     if (ok) {
-      Questionnaire qsrc = questionnaire.startsWith("#") ? loadQuestionnaire(element, questionnaire.substring(1)) : context.fetchResource(Questionnaire.class, questionnaire);
-      ok = questionnaireMode == QuestionnaireMode.REQUIRED ?
-          rule(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire) :
-          warning(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire);
+      QuestionnaireWithContext qsrc = null;
+      if (questionnaire.startsWith("#")) {
+        qsrc = QuestionnaireWithContext.fromContainedResource(stack.getLiteralPath(), element, (Questionnaire) loadContainedResource(errors, stack.getLiteralPath(), element, questionnaire.substring(1), Questionnaire.class));        
+      } else {
+        qsrc = QuestionnaireWithContext.fromQuestionnaire(context.fetchResource(Questionnaire.class, questionnaire));          
+      }
+      if (questionnaireMode == QuestionnaireMode.REQUIRED) {
+        ok = rule(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire);
+      } else if (questionnaire.startsWith("http://example.org")) {
+        ok = hint(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire);
+      } else {
+        ok = warning(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire);
+      }
       if (ok) {
         boolean inProgress = "in-progress".equals(element.getNamedChildValue("status"));
-        validateQuestionannaireResponseItems(hostContext, qsrc, qsrc.getItem(), errors, element, stack, inProgress, element, new QStack(qsrc, element));
+        validateQuestionannaireResponseItems(hostContext, qsrc, qsrc.q().getItem(), errors, element, stack, inProgress, element, new QStack(qsrc, element));
       }
     }
   }
 
-  private Questionnaire loadQuestionnaire(Element resource, String id) throws FHIRException {
-    try {
-      for (Element contained : resource.getChildren("contained")) {
-        if (contained.getIdBase().equals(id)) {
-          FhirPublication v = FhirPublication.fromCode(context.getVersion());
-          ByteArrayOutputStream bs = new ByteArrayOutputStream();
-          new JsonParser(context).compose(contained, bs, OutputStyle.NORMAL, id);
-          byte[] json = bs.toByteArray();
-          switch (v) {
-            case DSTU1:
-              throw new FHIRException(context.formatMessage(I18nConstants.UNSUPPORTED_VERSION_R1));
-            case DSTU2:
-              org.hl7.fhir.dstu2.model.Resource r2 = new org.hl7.fhir.dstu2.formats.JsonParser().parse(json);
-              Resource r5 = VersionConvertor_10_50.convertResource(r2);
-              if (r5 instanceof Questionnaire)
-                return (Questionnaire) r5;
-              else
-                return null;
-            case DSTU2016May:
-              org.hl7.fhir.dstu2016may.model.Resource r2a = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(json);
-              r5 = VersionConvertor_14_50.convertResource(r2a);
-              if (r5 instanceof Questionnaire)
-                return (Questionnaire) r5;
-              else
-                return null;
-            case STU3:
-              org.hl7.fhir.dstu3.model.Resource r3 = new org.hl7.fhir.dstu3.formats.JsonParser().parse(json);
-              r5 = VersionConvertor_30_50.convertResource(r3, false);
-              if (r5 instanceof Questionnaire)
-                return (Questionnaire) r5;
-              else
-                return null;
-            case R4:
-              org.hl7.fhir.r4.model.Resource r4 = new org.hl7.fhir.r4.formats.JsonParser().parse(json);
-              r5 = VersionConvertor_40_50.convertResource(r4);
-              if (r5 instanceof Questionnaire)
-                return (Questionnaire) r5;
-              else
-                return null;
-            case R5:
-              r5 = new org.hl7.fhir.r5.formats.JsonParser().parse(json);
-              if (r5 instanceof Questionnaire)
-                return (Questionnaire) r5;
-              else
-                return null;
-          }
-        }
-      }
-      return null;
-    } catch (IOException e) {
-      throw new FHIRException(e);
-    }
-  }
-
-  private void validateQuestionnaireResponseItem(ValidatorHostContext hostContext, Questionnaire qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
+  private void validateQuestionnaireResponseItem(ValidatorHostContext hostContext, QuestionnaireWithContext qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
     String text = element.getNamedChildValue("text");
     rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), Utilities.noString(text) || text.equals(qItem.getText()), I18nConstants.QUESTIONNAIRE_QR_ITEM_TEXT, qItem.getLinkId());
 
@@ -272,8 +287,9 @@ public class QuestionnaireValidator extends BaseValidator {
     if (answers.size() > 1)
       rule(errors, IssueType.INVALID, answers.get(1).line(), answers.get(1).col(), stack.getLiteralPath(), qItem.getRepeats(), I18nConstants.QUESTIONNAIRE_QR_ITEM_ONLYONEA);
 
+    int i = 0;
     for (Element answer : answers) {
-      NodeStack ns = stack.push(answer, -1, null, null);
+      NodeStack ns = stack.push(answer, i, null, null);
       if (qItem.getType() != null) {
         switch (qItem.getType()) {
           case GROUP:
@@ -319,7 +335,7 @@ public class QuestionnaireValidator extends BaseValidator {
               if (qItem.hasExtension("???"))
                 validateQuestionnaireResponseItemQuantity(errors, answer, ns);
             break;
-          case CHOICE:
+          case CODING:
             String itemType = validateQuestionnaireResponseItemType(errors, answer, ns, "Coding", "date", "time", "integer", "string");
             if (itemType != null) {
               if (itemType.equals("Coding")) validateAnswerCode(errors, answer, ns, qsrc, qItem, false);
@@ -330,28 +346,31 @@ public class QuestionnaireValidator extends BaseValidator {
               else if (itemType.equals("string")) checkOption(errors, answer, ns, qsrc, qItem, "string");
             }
             break;
-          case OPENCHOICE:
-            itemType = validateQuestionnaireResponseItemType(errors, answer, ns, "Coding", "date", "time", "integer", "string");
-            if (itemType != null) {
-              if (itemType.equals("Coding")) validateAnswerCode(errors, answer, ns, qsrc, qItem, true);
-              else if (itemType.equals("date")) checkOption(errors, answer, ns, qsrc, qItem, "date");
-              else if (itemType.equals("time")) checkOption(errors, answer, ns, qsrc, qItem, "time");
-              else if (itemType.equals("integer"))
-                checkOption(errors, answer, ns, qsrc, qItem, "integer");
-              else if (itemType.equals("string"))
-                checkOption(errors, answer, ns, qsrc, qItem, "string", true);
-            }
-            break;
+//          case OPENCHOICE:
+//            itemType = validateQuestionnaireResponseItemType(errors, answer, ns, "Coding", "date", "time", "integer", "string");
+//            if (itemType != null) {
+//              if (itemType.equals("Coding")) validateAnswerCode(errors, answer, ns, qsrc, qItem, true);
+//              else if (itemType.equals("date")) checkOption(errors, answer, ns, qsrc, qItem, "date");
+//              else if (itemType.equals("time")) checkOption(errors, answer, ns, qsrc, qItem, "time");
+//              else if (itemType.equals("integer"))
+//                checkOption(errors, answer, ns, qsrc, qItem, "integer");
+//              else if (itemType.equals("string"))
+//                checkOption(errors, answer, ns, qsrc, qItem, "string", true);
+//            }
+//            break;
 //          case QUESTION:
           case NULL:
             // no validation
             break;
+        case QUESTION:
+          throw new Error("Shouldn't get here?");
         }
       }
       if (qItem.getType() != QuestionnaireItemType.GROUP) {
         // if it's a group, we already have an error before getting here, so no need to hammer away on that 
         validateQuestionannaireResponseItems(hostContext, qsrc, qItem.getItem(), errors, answer, stack, inProgress, questionnaireResponseRoot, qstack);
       }
+      i++;
     }
     if (qItem.getType() == null) {
       fail(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOTYPE, qItem.getLinkId());
@@ -372,14 +391,13 @@ public class QuestionnaireValidator extends BaseValidator {
     return !answers.isEmpty() || !qItem.getRequired() || qItem.getType() == QuestionnaireItemType.GROUP;
   }
 
-  private void validateQuestionnaireResponseItem(ValidatorHostContext hostcontext, Questionnaire qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, List<Element> elements, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
-    if (elements.size() > 1)
-      rule(errors, IssueType.INVALID, elements.get(1).line(), elements.get(1).col(), stack.getLiteralPath(), qItem.getRepeats(), I18nConstants.QUESTIONNAIRE_QR_ITEM_ONLYONEI, qItem.getLinkId());
-    int i = 0;
-    for (Element element : elements) {
-      NodeStack ns = stack.push(element, i, null, null);
-      validateQuestionnaireResponseItem(hostcontext, qsrc, qItem, errors, element, ns, inProgress, questionnaireResponseRoot, qstack.push(qItem, element));
-      i++;
+  private void validateQuestionnaireResponseItem(ValidatorHostContext hostcontext, QuestionnaireWithContext qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, List<ElementWithIndex> elements, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
+    if (elements.size() > 1) {
+      rule(errors, IssueType.INVALID, elements.get(1).getElement().line(), elements.get(1).getElement().col(), stack.getLiteralPath(), qItem.getRepeats(), I18nConstants.QUESTIONNAIRE_QR_ITEM_ONLYONEI, qItem.getLinkId());
+    }
+    for (ElementWithIndex element : elements) {
+      NodeStack ns = stack.push(element.getElement(), element.getIndex(), null, null);
+      validateQuestionnaireResponseItem(hostcontext, qsrc, qItem, errors, element.getElement(), ns, inProgress, questionnaireResponseRoot, qstack.push(qItem, element.getElement()));
     }
   }
 
@@ -391,12 +409,13 @@ public class QuestionnaireValidator extends BaseValidator {
     return -1;
   }
 
-  private void validateQuestionannaireResponseItems(ValidatorHostContext hostContext, Questionnaire qsrc, List<QuestionnaireItemComponent> qItems, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
+  private void validateQuestionannaireResponseItems(ValidatorHostContext hostContext, QuestionnaireWithContext qsrc, List<QuestionnaireItemComponent> qItems, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
     List<Element> items = new ArrayList<Element>();
     element.getNamedChildren("item", items);
     // now, sort into stacks
-    Map<String, List<Element>> map = new HashMap<String, List<Element>>();
+    Map<String, List<ElementWithIndex>> map = new HashMap<String, List<ElementWithIndex>>();
     int lastIndex = -1;
+    int counter = 0;
     for (Element item : items) {
       String linkId = item.getNamedChildValue("linkId");
       if (rule(errors, IssueType.REQUIRED, item.line(), item.col(), stack.getLiteralPath(), !Utilities.noString(linkId), I18nConstants.QUESTIONNAIRE_QR_ITEM_NOLINKID)) {
@@ -405,7 +424,7 @@ public class QuestionnaireValidator extends BaseValidator {
           QuestionnaireItemComponent qItem = findQuestionnaireItem(qsrc, linkId);
           if (qItem != null) {
             rule(errors, IssueType.STRUCTURE, item.line(), item.col(), stack.getLiteralPath(), index > -1, misplacedItemError(qItem));
-            NodeStack ns = stack.push(item, -1, null, null);
+            NodeStack ns = stack.push(item, counter, null, null);
             validateQuestionnaireResponseItem(hostContext, qsrc, qItem, errors, item, ns, inProgress, questionnaireResponseRoot, qstack.push(qItem, item));
           } else
             rule(errors, IssueType.NOTFOUND, item.line(), item.col(), stack.getLiteralPath(), index > -1, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOTFOUND, linkId);
@@ -416,29 +435,28 @@ public class QuestionnaireValidator extends BaseValidator {
           // If an item has a child called "linkId" but no child called "answer",
           // we'll treat it as not existing for the purposes of enableWhen validation
           if (item.hasChildren("answer") || item.hasChildren("item")) {
-            List<Element> mapItem = map.computeIfAbsent(linkId, key -> new ArrayList<>());
-            mapItem.add(item);
+            List<ElementWithIndex> mapItem = map.computeIfAbsent(linkId, key -> new ArrayList<>());
+            mapItem.add(new ElementWithIndex(item, counter));
           }
         }
       }
+      counter++;
     }
 
     // ok, now we have a list of known items, grouped by linkId. We've made an error for anything out of order
     for (QuestionnaireItemComponent qItem : qItems) {
-      List<Element> mapItem = map.get(qItem.getLinkId());
+      List<ElementWithIndex> mapItem = map.get(qItem.getLinkId());
       validateQuestionnaireResponseItem(hostContext, qsrc, errors, element, stack, inProgress, questionnaireResponseRoot, qItem, mapItem, qstack);
     }
   }
 
-  public void validateQuestionnaireResponseItem(ValidatorHostContext hostContext, Questionnaire qsrc, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QuestionnaireItemComponent qItem, List<Element> mapItem, QStack qstack) {
+  public void validateQuestionnaireResponseItem(ValidatorHostContext hostContext, QuestionnaireWithContext qsrc, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QuestionnaireItemComponent qItem, List<ElementWithIndex> mapItem, QStack qstack) {
     boolean enabled = myEnableWhenEvaluator.isQuestionEnabled(hostContext, qItem, qstack, fpe);
     if (mapItem != null) {
       if (!enabled) {
-        int i = 0;
-        for (Element e : mapItem) {
-          NodeStack ns = stack.push(e, i, e.getProperty().getDefinition(), e.getProperty().getDefinition());
-          rule(errors, IssueType.INVALID, e.line(), e.col(), ns.getLiteralPath(), enabled, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOTENABLED2, qItem.getLinkId());
-          i++;
+        for (ElementWithIndex e : mapItem) {
+          NodeStack ns = stack.push(e.getElement(), e.getElement().getIndex(), e.getElement().getProperty().getDefinition(), e.getElement().getProperty().getDefinition());
+          rule(errors, IssueType.INVALID, e.getElement().line(), e.getElement().col(), ns.getLiteralPath(), enabled, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOTENABLED2, qItem.getLinkId());
         }
       }
 
@@ -493,8 +511,8 @@ public class QuestionnaireValidator extends BaseValidator {
     return null;
   }
 
-  private QuestionnaireItemComponent findQuestionnaireItem(Questionnaire qSrc, String linkId) {
-    return findItem(qSrc.getItem(), linkId);
+  private QuestionnaireItemComponent findQuestionnaireItem(QuestionnaireWithContext qSrc, String linkId) {
+    return findItem(qSrc.q.getItem(), linkId);
   }
 
   private QuestionnaireItemComponent findItem(List<QuestionnaireItemComponent> list, String linkId) {
@@ -508,8 +526,13 @@ public class QuestionnaireValidator extends BaseValidator {
     return null;
   }
 
-  private void validateAnswerCode(List<ValidationMessage> errors, Element value, NodeStack stack, Questionnaire qSrc, String ref, boolean theOpenChoice) {
-    ValueSet vs = resolveBindingReference(qSrc, ref, qSrc.getUrl());
+  private void validateAnswerCode(List<ValidationMessage> errors, Element value, NodeStack stack, QuestionnaireWithContext qSrc, String ref, boolean theOpenChoice) {
+    ValueSet vs = null;
+    if (ref.startsWith("#") && qSrc.container != null) {
+      vs = (ValueSet) loadContainedResource(errors, qSrc.containerPath, qSrc.container, ref.substring(1), ValueSet.class);
+    } else {
+      vs = resolveBindingReference(qSrc.q(), ref, qSrc.q().getUrl());
+    }
     if (warning(errors, IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), vs != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(ref))) {
       try {
         Coding c = ObjectConverter.readAsCoding(value);
@@ -520,8 +543,9 @@ public class QuestionnaireValidator extends BaseValidator {
         }
 
         long t = System.nanoTime();
-        ValidationResult res = context.validateCode(new ValidationOptions(stack.getWorkingLang()), c, vs);
-        timeTracker.tx(t);
+        ValidationContextCarrier vc = makeValidationContext(errors, qSrc);
+        ValidationResult res = context.validateCode(new ValidationOptions(stack.getWorkingLang()), c, vs, vc);
+        timeTracker.tx(t, "vc "+c.getSystem()+"#"+c.getCode()+" '"+c.getDisplay()+"'");
         if (!res.isOk()) {
           txRule(errors, res.getTxLink(), IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_BADOPTION, c.getSystem(), c.getCode());
         } else if (res.getSeverity() != null) {
@@ -533,7 +557,17 @@ public class QuestionnaireValidator extends BaseValidator {
     }
   }
 
-  private void validateAnswerCode(List<ValidationMessage> errors, Element answer, NodeStack stack, Questionnaire qSrc, QuestionnaireItemComponent qItem, boolean theOpenChoice) {
+  private ValidationContextCarrier makeValidationContext(List<ValidationMessage> errors, QuestionnaireWithContext qSrc) {
+    ValidationContextCarrier vc = new ValidationContextCarrier();
+    if (qSrc.container == null) {
+      vc.getResources().add(new ValidationContextResourceProxy(qSrc.q));
+    } else {
+      vc.getResources().add(new ValidationContextResourceProxy(errors, qSrc.containerPath, qSrc.container, this));
+    }
+    return vc;
+  }
+
+  private void validateAnswerCode(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, boolean theOpenChoice) {
     Element v = answer.getNamedChild("valueCoding");
     NodeStack ns = stack.push(v, -1, null, null);
     if (qItem.getAnswerOption().size() > 0)
@@ -545,11 +579,11 @@ public class QuestionnaireValidator extends BaseValidator {
       hint(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOOPTIONS);
   }
 
-  private void checkOption(List<ValidationMessage> errors, Element answer, NodeStack stack, Questionnaire qSrc, QuestionnaireItemComponent qItem, String type) {
+  private void checkOption(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, String type) {
     checkOption(errors, answer, stack, qSrc, qItem, type, false);
   }
 
-  private void checkOption(List<ValidationMessage> errors, Element answer, NodeStack stack, Questionnaire qSrc, QuestionnaireItemComponent qItem, String type, boolean openChoice) {
+  private void checkOption(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, String type, boolean openChoice) {
     if (type.equals("integer")) checkIntegerOption(errors, answer, stack, qSrc, qItem, openChoice);
     else if (type.equals("date")) checkDateOption(errors, answer, stack, qSrc, qItem, openChoice);
     else if (type.equals("time")) checkTimeOption(errors, answer, stack, qSrc, qItem, openChoice);
@@ -557,7 +591,7 @@ public class QuestionnaireValidator extends BaseValidator {
     else if (type.equals("Coding")) checkCodingOption(errors, answer, stack, qSrc, qItem, openChoice);
   }
 
-  private void checkIntegerOption(List<ValidationMessage> errors, Element answer, NodeStack stack, Questionnaire qSrc, QuestionnaireItemComponent qItem, boolean openChoice) {
+  private void checkIntegerOption(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, boolean openChoice) {
     Element v = answer.getNamedChild("valueInteger");
     NodeStack ns = stack.push(v, -1, null, null);
     if (qItem.getAnswerOption().size() > 0) {
@@ -587,7 +621,7 @@ public class QuestionnaireValidator extends BaseValidator {
       hint(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_INTNOOPTIONS);
   }
 
-  private void checkDateOption(List<ValidationMessage> errors, Element answer, NodeStack stack, Questionnaire qSrc, QuestionnaireItemComponent qItem, boolean openChoice) {
+  private void checkDateOption(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, boolean openChoice) {
     Element v = answer.getNamedChild("valueDate");
     NodeStack ns = stack.push(v, -1, null, null);
     if (qItem.getAnswerOption().size() > 0) {
@@ -617,7 +651,7 @@ public class QuestionnaireValidator extends BaseValidator {
       hint(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DATENOOPTIONS);
   }
 
-  private void checkTimeOption(List<ValidationMessage> errors, Element answer, NodeStack stack, Questionnaire qSrc, QuestionnaireItemComponent qItem, boolean openChoice) {
+  private void checkTimeOption(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, boolean openChoice) {
     Element v = answer.getNamedChild("valueTime");
     NodeStack ns = stack.push(v, -1, null, null);
     if (qItem.getAnswerOption().size() > 0) {
@@ -647,7 +681,7 @@ public class QuestionnaireValidator extends BaseValidator {
       hint(errors, IssueType.STRUCTURE, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_TIMENOOPTIONS);
   }
 
-  private void checkStringOption(List<ValidationMessage> errors, Element answer, NodeStack stack, Questionnaire qSrc, QuestionnaireItemComponent qItem, boolean openChoice) {
+  private void checkStringOption(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, boolean openChoice) {
     Element v = answer.getNamedChild("valueString");
     NodeStack ns = stack.push(v, -1, null, null);
     if (qItem.getAnswerOption().size() > 0) {
@@ -682,7 +716,7 @@ public class QuestionnaireValidator extends BaseValidator {
     }
   }
 
-  private void checkCodingOption(List<ValidationMessage> errors, Element answer, NodeStack stack, Questionnaire qSrc, QuestionnaireItemComponent qItem, boolean openChoice) {
+  private void checkCodingOption(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, boolean openChoice) {
     Element v = answer.getNamedChild("valueCoding");
     String system = v.getNamedChildValue("system");
     String code = v.getNamedChildValue("code");

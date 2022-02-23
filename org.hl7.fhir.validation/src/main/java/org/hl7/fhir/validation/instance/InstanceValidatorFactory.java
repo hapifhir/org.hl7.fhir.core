@@ -35,7 +35,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext.IValidatorFactory;
-import org.hl7.fhir.r5.utils.IResourceValidator;
+import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 
 public class InstanceValidatorFactory implements IValidatorFactory {

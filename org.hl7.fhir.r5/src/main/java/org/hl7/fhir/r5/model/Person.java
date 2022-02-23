@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,7 +96,6 @@ public class Person extends DomainResource {
             case LEVEL2: return "level2";
             case LEVEL3: return "level3";
             case LEVEL4: return "level4";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,7 +105,6 @@ public class Person extends DomainResource {
             case LEVEL2: return "http://hl7.org/fhir/identity-assuranceLevel";
             case LEVEL3: return "http://hl7.org/fhir/identity-assuranceLevel";
             case LEVEL4: return "http://hl7.org/fhir/identity-assuranceLevel";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -116,7 +114,6 @@ public class Person extends DomainResource {
             case LEVEL2: return "Some confidence in the asserted identity's accuracy.";
             case LEVEL3: return "High confidence in the asserted identity's accuracy.";
             case LEVEL4: return "Very high confidence in the asserted identity's accuracy.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,7 +123,6 @@ public class Person extends DomainResource {
             case LEVEL2: return "Level 2";
             case LEVEL3: return "Level 3";
             case LEVEL4: return "Level 4";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -180,6 +176,236 @@ public class Person extends DomainResource {
       return code.getSystem();
       }
     }
+
+    @Block()
+    public static class PersonCommunicationComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. "en" for English, or "en-US" for American English versus "en-EN" for England English.
+         */
+        @Child(name = "language", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The language which can be used to communicate with the person about his or her health", formalDefinition="The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. \"en\" for English, or \"en-US\" for American English versus \"en-EN\" for England English." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/languages")
+        protected CodeableConcept language;
+
+        /**
+         * Indicates whether or not the person prefers this language (over other languages he masters up a certain level).
+         */
+        @Child(name = "preferred", type = {BooleanType.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Language preference indicator", formalDefinition="Indicates whether or not the person prefers this language (over other languages he masters up a certain level)." )
+        protected BooleanType preferred;
+
+        private static final long serialVersionUID = 633792918L;
+
+    /**
+     * Constructor
+     */
+      public PersonCommunicationComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public PersonCommunicationComponent(CodeableConcept language) {
+        super();
+        this.setLanguage(language);
+      }
+
+        /**
+         * @return {@link #language} (The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. "en" for English, or "en-US" for American English versus "en-EN" for England English.)
+         */
+        public CodeableConcept getLanguage() { 
+          if (this.language == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PersonCommunicationComponent.language");
+            else if (Configuration.doAutoCreate())
+              this.language = new CodeableConcept(); // cc
+          return this.language;
+        }
+
+        public boolean hasLanguage() { 
+          return this.language != null && !this.language.isEmpty();
+        }
+
+        /**
+         * @param value {@link #language} (The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. "en" for English, or "en-US" for American English versus "en-EN" for England English.)
+         */
+        public PersonCommunicationComponent setLanguage(CodeableConcept value) { 
+          this.language = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #preferred} (Indicates whether or not the person prefers this language (over other languages he masters up a certain level).). This is the underlying object with id, value and extensions. The accessor "getPreferred" gives direct access to the value
+         */
+        public BooleanType getPreferredElement() { 
+          if (this.preferred == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create PersonCommunicationComponent.preferred");
+            else if (Configuration.doAutoCreate())
+              this.preferred = new BooleanType(); // bb
+          return this.preferred;
+        }
+
+        public boolean hasPreferredElement() { 
+          return this.preferred != null && !this.preferred.isEmpty();
+        }
+
+        public boolean hasPreferred() { 
+          return this.preferred != null && !this.preferred.isEmpty();
+        }
+
+        /**
+         * @param value {@link #preferred} (Indicates whether or not the person prefers this language (over other languages he masters up a certain level).). This is the underlying object with id, value and extensions. The accessor "getPreferred" gives direct access to the value
+         */
+        public PersonCommunicationComponent setPreferredElement(BooleanType value) { 
+          this.preferred = value;
+          return this;
+        }
+
+        /**
+         * @return Indicates whether or not the person prefers this language (over other languages he masters up a certain level).
+         */
+        public boolean getPreferred() { 
+          return this.preferred == null || this.preferred.isEmpty() ? false : this.preferred.getValue();
+        }
+
+        /**
+         * @param value Indicates whether or not the person prefers this language (over other languages he masters up a certain level).
+         */
+        public PersonCommunicationComponent setPreferred(boolean value) { 
+            if (this.preferred == null)
+              this.preferred = new BooleanType();
+            this.preferred.setValue(value);
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("language", "CodeableConcept", "The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. \"en\" for English, or \"en-US\" for American English versus \"en-EN\" for England English.", 0, 1, language));
+          children.add(new Property("preferred", "boolean", "Indicates whether or not the person prefers this language (over other languages he masters up a certain level).", 0, 1, preferred));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case -1613589672: /*language*/  return new Property("language", "CodeableConcept", "The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. \"en\" for English, or \"en-US\" for American English versus \"en-EN\" for England English.", 0, 1, language);
+          case -1294005119: /*preferred*/  return new Property("preferred", "boolean", "Indicates whether or not the person prefers this language (over other languages he masters up a certain level).", 0, 1, preferred);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case -1613589672: /*language*/ return this.language == null ? new Base[0] : new Base[] {this.language}; // CodeableConcept
+        case -1294005119: /*preferred*/ return this.preferred == null ? new Base[0] : new Base[] {this.preferred}; // BooleanType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case -1613589672: // language
+          this.language = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -1294005119: // preferred
+          this.preferred = TypeConvertor.castToBoolean(value); // BooleanType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("language")) {
+          this.language = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("preferred")) {
+          this.preferred = TypeConvertor.castToBoolean(value); // BooleanType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1613589672:  return getLanguage();
+        case -1294005119:  return getPreferredElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -1613589672: /*language*/ return new String[] {"CodeableConcept"};
+        case -1294005119: /*preferred*/ return new String[] {"boolean"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("language")) {
+          this.language = new CodeableConcept();
+          return this.language;
+        }
+        else if (name.equals("preferred")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Person.communication.preferred");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public PersonCommunicationComponent copy() {
+        PersonCommunicationComponent dst = new PersonCommunicationComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PersonCommunicationComponent dst) {
+        super.copyValues(dst);
+        dst.language = language == null ? null : language.copy();
+        dst.preferred = preferred == null ? null : preferred.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof PersonCommunicationComponent))
+          return false;
+        PersonCommunicationComponent o = (PersonCommunicationComponent) other_;
+        return compareDeep(language, o.language, true) && compareDeep(preferred, o.preferred, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof PersonCommunicationComponent))
+          return false;
+        PersonCommunicationComponent o = (PersonCommunicationComponent) other_;
+        return compareValues(preferred, o.preferred, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(language, preferred);
+      }
+
+  public String fhirType() {
+    return "Person.communication";
+
+  }
+
+  }
 
     @Block()
     public static class PersonLinkComponent extends BackboneElement implements IBaseBackboneElement {
@@ -425,23 +651,30 @@ public class Person extends DomainResource {
     protected List<Identifier> identifier;
 
     /**
+     * Whether this person's record is in active use.
+     */
+    @Child(name = "active", type = {BooleanType.class}, order=1, min=0, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="This person's record is in active use", formalDefinition="Whether this person's record is in active use." )
+    protected BooleanType active;
+
+    /**
      * A name associated with the person.
      */
-    @Child(name = "name", type = {HumanName.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "name", type = {HumanName.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A name associated with the person", formalDefinition="A name associated with the person." )
     protected List<HumanName> name;
 
     /**
      * A contact detail for the person, e.g. a telephone number or an email address.
      */
-    @Child(name = "telecom", type = {ContactPoint.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "telecom", type = {ContactPoint.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A contact detail for the person", formalDefinition="A contact detail for the person, e.g. a telephone number or an email address." )
     protected List<ContactPoint> telecom;
 
     /**
      * Administrative Gender.
      */
-    @Child(name = "gender", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "gender", type = {CodeType.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="male | female | other | unknown", formalDefinition="Administrative Gender." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/administrative-gender")
     protected Enumeration<AdministrativeGender> gender;
@@ -449,46 +682,61 @@ public class Person extends DomainResource {
     /**
      * The birth date for the person.
      */
-    @Child(name = "birthDate", type = {DateType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "birthDate", type = {DateType.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The date on which the person was born", formalDefinition="The birth date for the person." )
     protected DateType birthDate;
 
     /**
+     * Indicates if the individual is deceased or not.
+     */
+    @Child(name = "deceased", type = {BooleanType.class, DateTimeType.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Indicates if the individual is deceased or not", formalDefinition="Indicates if the individual is deceased or not." )
+    protected DataType deceased;
+
+    /**
      * One or more addresses for the person.
      */
-    @Child(name = "address", type = {Address.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "address", type = {Address.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="One or more addresses for the person", formalDefinition="One or more addresses for the person." )
     protected List<Address> address;
 
     /**
+     * This field contains a person's most recent marital (civil) status.
+     */
+    @Child(name = "maritalStatus", type = {CodeableConcept.class}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Marital (civil) status of a person", formalDefinition="This field contains a person's most recent marital (civil) status." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/marital-status")
+    protected CodeableConcept maritalStatus;
+
+    /**
      * An image that can be displayed as a thumbnail of the person to enhance the identification of the individual.
      */
-    @Child(name = "photo", type = {Attachment.class}, order=6, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "photo", type = {Attachment.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Image of the person", formalDefinition="An image that can be displayed as a thumbnail of the person to enhance the identification of the individual." )
-    protected Attachment photo;
+    protected List<Attachment> photo;
 
     /**
      * The organization that is the custodian of the person record.
      */
-    @Child(name = "managingOrganization", type = {Organization.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "managingOrganization", type = {Organization.class}, order=10, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The organization that is the custodian of the person record", formalDefinition="The organization that is the custodian of the person record." )
     protected Reference managingOrganization;
 
     /**
-     * Whether this person's record is in active use.
+     * A language which may be used to communicate with the person about his or her health.
      */
-    @Child(name = "active", type = {BooleanType.class}, order=8, min=0, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="This person's record is in active use", formalDefinition="Whether this person's record is in active use." )
-    protected BooleanType active;
+    @Child(name = "communication", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="A language which may be used to communicate with the person about his or her health", formalDefinition="A language which may be used to communicate with the person about his or her health." )
+    protected List<PersonCommunicationComponent> communication;
 
     /**
      * Link to a resource that concerns the same actual person.
      */
-    @Child(name = "link", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "link", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Link to a resource that concerns the same actual person", formalDefinition="Link to a resource that concerns the same actual person." )
     protected List<PersonLinkComponent> link;
 
-    private static final long serialVersionUID = -237141861L;
+    private static final long serialVersionUID = -1013247270L;
 
   /**
    * Constructor
@@ -548,6 +796,51 @@ public class Person extends DomainResource {
         addIdentifier();
       }
       return getIdentifier().get(0);
+    }
+
+    /**
+     * @return {@link #active} (Whether this person's record is in active use.). This is the underlying object with id, value and extensions. The accessor "getActive" gives direct access to the value
+     */
+    public BooleanType getActiveElement() { 
+      if (this.active == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Person.active");
+        else if (Configuration.doAutoCreate())
+          this.active = new BooleanType(); // bb
+      return this.active;
+    }
+
+    public boolean hasActiveElement() { 
+      return this.active != null && !this.active.isEmpty();
+    }
+
+    public boolean hasActive() { 
+      return this.active != null && !this.active.isEmpty();
+    }
+
+    /**
+     * @param value {@link #active} (Whether this person's record is in active use.). This is the underlying object with id, value and extensions. The accessor "getActive" gives direct access to the value
+     */
+    public Person setActiveElement(BooleanType value) { 
+      this.active = value;
+      return this;
+    }
+
+    /**
+     * @return Whether this person's record is in active use.
+     */
+    public boolean getActive() { 
+      return this.active == null || this.active.isEmpty() ? false : this.active.getValue();
+    }
+
+    /**
+     * @param value Whether this person's record is in active use.
+     */
+    public Person setActive(boolean value) { 
+        if (this.active == null)
+          this.active = new BooleanType();
+        this.active.setValue(value);
+      return this;
     }
 
     /**
@@ -755,6 +1048,57 @@ public class Person extends DomainResource {
     }
 
     /**
+     * @return {@link #deceased} (Indicates if the individual is deceased or not.)
+     */
+    public DataType getDeceased() { 
+      return this.deceased;
+    }
+
+    /**
+     * @return {@link #deceased} (Indicates if the individual is deceased or not.)
+     */
+    public BooleanType getDeceasedBooleanType() throws FHIRException { 
+      if (this.deceased == null)
+        this.deceased = new BooleanType();
+      if (!(this.deceased instanceof BooleanType))
+        throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.deceased.getClass().getName()+" was encountered");
+      return (BooleanType) this.deceased;
+    }
+
+    public boolean hasDeceasedBooleanType() { 
+      return this != null && this.deceased instanceof BooleanType;
+    }
+
+    /**
+     * @return {@link #deceased} (Indicates if the individual is deceased or not.)
+     */
+    public DateTimeType getDeceasedDateTimeType() throws FHIRException { 
+      if (this.deceased == null)
+        this.deceased = new DateTimeType();
+      if (!(this.deceased instanceof DateTimeType))
+        throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.deceased.getClass().getName()+" was encountered");
+      return (DateTimeType) this.deceased;
+    }
+
+    public boolean hasDeceasedDateTimeType() { 
+      return this != null && this.deceased instanceof DateTimeType;
+    }
+
+    public boolean hasDeceased() { 
+      return this.deceased != null && !this.deceased.isEmpty();
+    }
+
+    /**
+     * @param value {@link #deceased} (Indicates if the individual is deceased or not.)
+     */
+    public Person setDeceased(DataType value) { 
+      if (value != null && !(value instanceof BooleanType || value instanceof DateTimeType))
+        throw new Error("Not the right type for Person.deceased[x]: "+value.fhirType());
+      this.deceased = value;
+      return this;
+    }
+
+    /**
      * @return {@link #address} (One or more addresses for the person.)
      */
     public List<Address> getAddress() { 
@@ -808,27 +1152,80 @@ public class Person extends DomainResource {
     }
 
     /**
-     * @return {@link #photo} (An image that can be displayed as a thumbnail of the person to enhance the identification of the individual.)
+     * @return {@link #maritalStatus} (This field contains a person's most recent marital (civil) status.)
      */
-    public Attachment getPhoto() { 
-      if (this.photo == null)
+    public CodeableConcept getMaritalStatus() { 
+      if (this.maritalStatus == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Person.photo");
+          throw new Error("Attempt to auto-create Person.maritalStatus");
         else if (Configuration.doAutoCreate())
-          this.photo = new Attachment(); // cc
-      return this.photo;
+          this.maritalStatus = new CodeableConcept(); // cc
+      return this.maritalStatus;
     }
 
-    public boolean hasPhoto() { 
-      return this.photo != null && !this.photo.isEmpty();
+    public boolean hasMaritalStatus() { 
+      return this.maritalStatus != null && !this.maritalStatus.isEmpty();
     }
 
     /**
-     * @param value {@link #photo} (An image that can be displayed as a thumbnail of the person to enhance the identification of the individual.)
+     * @param value {@link #maritalStatus} (This field contains a person's most recent marital (civil) status.)
      */
-    public Person setPhoto(Attachment value) { 
-      this.photo = value;
+    public Person setMaritalStatus(CodeableConcept value) { 
+      this.maritalStatus = value;
       return this;
+    }
+
+    /**
+     * @return {@link #photo} (An image that can be displayed as a thumbnail of the person to enhance the identification of the individual.)
+     */
+    public List<Attachment> getPhoto() { 
+      if (this.photo == null)
+        this.photo = new ArrayList<Attachment>();
+      return this.photo;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Person setPhoto(List<Attachment> thePhoto) { 
+      this.photo = thePhoto;
+      return this;
+    }
+
+    public boolean hasPhoto() { 
+      if (this.photo == null)
+        return false;
+      for (Attachment item : this.photo)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Attachment addPhoto() { //3
+      Attachment t = new Attachment();
+      if (this.photo == null)
+        this.photo = new ArrayList<Attachment>();
+      this.photo.add(t);
+      return t;
+    }
+
+    public Person addPhoto(Attachment t) { //3
+      if (t == null)
+        return this;
+      if (this.photo == null)
+        this.photo = new ArrayList<Attachment>();
+      this.photo.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #photo}, creating it if it does not already exist {3}
+     */
+    public Attachment getPhotoFirstRep() { 
+      if (getPhoto().isEmpty()) {
+        addPhoto();
+      }
+      return getPhoto().get(0);
     }
 
     /**
@@ -856,48 +1253,56 @@ public class Person extends DomainResource {
     }
 
     /**
-     * @return {@link #active} (Whether this person's record is in active use.). This is the underlying object with id, value and extensions. The accessor "getActive" gives direct access to the value
+     * @return {@link #communication} (A language which may be used to communicate with the person about his or her health.)
      */
-    public BooleanType getActiveElement() { 
-      if (this.active == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Person.active");
-        else if (Configuration.doAutoCreate())
-          this.active = new BooleanType(); // bb
-      return this.active;
-    }
-
-    public boolean hasActiveElement() { 
-      return this.active != null && !this.active.isEmpty();
-    }
-
-    public boolean hasActive() { 
-      return this.active != null && !this.active.isEmpty();
+    public List<PersonCommunicationComponent> getCommunication() { 
+      if (this.communication == null)
+        this.communication = new ArrayList<PersonCommunicationComponent>();
+      return this.communication;
     }
 
     /**
-     * @param value {@link #active} (Whether this person's record is in active use.). This is the underlying object with id, value and extensions. The accessor "getActive" gives direct access to the value
+     * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Person setActiveElement(BooleanType value) { 
-      this.active = value;
+    public Person setCommunication(List<PersonCommunicationComponent> theCommunication) { 
+      this.communication = theCommunication;
+      return this;
+    }
+
+    public boolean hasCommunication() { 
+      if (this.communication == null)
+        return false;
+      for (PersonCommunicationComponent item : this.communication)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public PersonCommunicationComponent addCommunication() { //3
+      PersonCommunicationComponent t = new PersonCommunicationComponent();
+      if (this.communication == null)
+        this.communication = new ArrayList<PersonCommunicationComponent>();
+      this.communication.add(t);
+      return t;
+    }
+
+    public Person addCommunication(PersonCommunicationComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.communication == null)
+        this.communication = new ArrayList<PersonCommunicationComponent>();
+      this.communication.add(t);
       return this;
     }
 
     /**
-     * @return Whether this person's record is in active use.
+     * @return The first repetition of repeating field {@link #communication}, creating it if it does not already exist {3}
      */
-    public boolean getActive() { 
-      return this.active == null || this.active.isEmpty() ? false : this.active.getValue();
-    }
-
-    /**
-     * @param value Whether this person's record is in active use.
-     */
-    public Person setActive(boolean value) { 
-        if (this.active == null)
-          this.active = new BooleanType();
-        this.active.setValue(value);
-      return this;
+    public PersonCommunicationComponent getCommunicationFirstRep() { 
+      if (getCommunication().isEmpty()) {
+        addCommunication();
+      }
+      return getCommunication().get(0);
     }
 
     /**
@@ -956,14 +1361,17 @@ public class Person extends DomainResource {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Identifier for a person within a particular scope.", 0, java.lang.Integer.MAX_VALUE, identifier));
+        children.add(new Property("active", "boolean", "Whether this person's record is in active use.", 0, 1, active));
         children.add(new Property("name", "HumanName", "A name associated with the person.", 0, java.lang.Integer.MAX_VALUE, name));
         children.add(new Property("telecom", "ContactPoint", "A contact detail for the person, e.g. a telephone number or an email address.", 0, java.lang.Integer.MAX_VALUE, telecom));
         children.add(new Property("gender", "code", "Administrative Gender.", 0, 1, gender));
         children.add(new Property("birthDate", "date", "The birth date for the person.", 0, 1, birthDate));
+        children.add(new Property("deceased[x]", "boolean|dateTime", "Indicates if the individual is deceased or not.", 0, 1, deceased));
         children.add(new Property("address", "Address", "One or more addresses for the person.", 0, java.lang.Integer.MAX_VALUE, address));
-        children.add(new Property("photo", "Attachment", "An image that can be displayed as a thumbnail of the person to enhance the identification of the individual.", 0, 1, photo));
+        children.add(new Property("maritalStatus", "CodeableConcept", "This field contains a person's most recent marital (civil) status.", 0, 1, maritalStatus));
+        children.add(new Property("photo", "Attachment", "An image that can be displayed as a thumbnail of the person to enhance the identification of the individual.", 0, java.lang.Integer.MAX_VALUE, photo));
         children.add(new Property("managingOrganization", "Reference(Organization)", "The organization that is the custodian of the person record.", 0, 1, managingOrganization));
-        children.add(new Property("active", "boolean", "Whether this person's record is in active use.", 0, 1, active));
+        children.add(new Property("communication", "", "A language which may be used to communicate with the person about his or her health.", 0, java.lang.Integer.MAX_VALUE, communication));
         children.add(new Property("link", "", "Link to a resource that concerns the same actual person.", 0, java.lang.Integer.MAX_VALUE, link));
       }
 
@@ -971,14 +1379,20 @@ public class Person extends DomainResource {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifier for a person within a particular scope.", 0, java.lang.Integer.MAX_VALUE, identifier);
+        case -1422950650: /*active*/  return new Property("active", "boolean", "Whether this person's record is in active use.", 0, 1, active);
         case 3373707: /*name*/  return new Property("name", "HumanName", "A name associated with the person.", 0, java.lang.Integer.MAX_VALUE, name);
         case -1429363305: /*telecom*/  return new Property("telecom", "ContactPoint", "A contact detail for the person, e.g. a telephone number or an email address.", 0, java.lang.Integer.MAX_VALUE, telecom);
         case -1249512767: /*gender*/  return new Property("gender", "code", "Administrative Gender.", 0, 1, gender);
         case -1210031859: /*birthDate*/  return new Property("birthDate", "date", "The birth date for the person.", 0, 1, birthDate);
+        case -1311442804: /*deceased[x]*/  return new Property("deceased[x]", "boolean|dateTime", "Indicates if the individual is deceased or not.", 0, 1, deceased);
+        case 561497972: /*deceased*/  return new Property("deceased[x]", "boolean|dateTime", "Indicates if the individual is deceased or not.", 0, 1, deceased);
+        case 497463828: /*deceasedBoolean*/  return new Property("deceased[x]", "boolean", "Indicates if the individual is deceased or not.", 0, 1, deceased);
+        case -1971804369: /*deceasedDateTime*/  return new Property("deceased[x]", "dateTime", "Indicates if the individual is deceased or not.", 0, 1, deceased);
         case -1147692044: /*address*/  return new Property("address", "Address", "One or more addresses for the person.", 0, java.lang.Integer.MAX_VALUE, address);
-        case 106642994: /*photo*/  return new Property("photo", "Attachment", "An image that can be displayed as a thumbnail of the person to enhance the identification of the individual.", 0, 1, photo);
+        case 1756919302: /*maritalStatus*/  return new Property("maritalStatus", "CodeableConcept", "This field contains a person's most recent marital (civil) status.", 0, 1, maritalStatus);
+        case 106642994: /*photo*/  return new Property("photo", "Attachment", "An image that can be displayed as a thumbnail of the person to enhance the identification of the individual.", 0, java.lang.Integer.MAX_VALUE, photo);
         case -2058947787: /*managingOrganization*/  return new Property("managingOrganization", "Reference(Organization)", "The organization that is the custodian of the person record.", 0, 1, managingOrganization);
-        case -1422950650: /*active*/  return new Property("active", "boolean", "Whether this person's record is in active use.", 0, 1, active);
+        case -1035284522: /*communication*/  return new Property("communication", "", "A language which may be used to communicate with the person about his or her health.", 0, java.lang.Integer.MAX_VALUE, communication);
         case 3321850: /*link*/  return new Property("link", "", "Link to a resource that concerns the same actual person.", 0, java.lang.Integer.MAX_VALUE, link);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -989,14 +1403,17 @@ public class Person extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
+        case -1422950650: /*active*/ return this.active == null ? new Base[0] : new Base[] {this.active}; // BooleanType
         case 3373707: /*name*/ return this.name == null ? new Base[0] : this.name.toArray(new Base[this.name.size()]); // HumanName
         case -1429363305: /*telecom*/ return this.telecom == null ? new Base[0] : this.telecom.toArray(new Base[this.telecom.size()]); // ContactPoint
         case -1249512767: /*gender*/ return this.gender == null ? new Base[0] : new Base[] {this.gender}; // Enumeration<AdministrativeGender>
         case -1210031859: /*birthDate*/ return this.birthDate == null ? new Base[0] : new Base[] {this.birthDate}; // DateType
+        case 561497972: /*deceased*/ return this.deceased == null ? new Base[0] : new Base[] {this.deceased}; // DataType
         case -1147692044: /*address*/ return this.address == null ? new Base[0] : this.address.toArray(new Base[this.address.size()]); // Address
-        case 106642994: /*photo*/ return this.photo == null ? new Base[0] : new Base[] {this.photo}; // Attachment
+        case 1756919302: /*maritalStatus*/ return this.maritalStatus == null ? new Base[0] : new Base[] {this.maritalStatus}; // CodeableConcept
+        case 106642994: /*photo*/ return this.photo == null ? new Base[0] : this.photo.toArray(new Base[this.photo.size()]); // Attachment
         case -2058947787: /*managingOrganization*/ return this.managingOrganization == null ? new Base[0] : new Base[] {this.managingOrganization}; // Reference
-        case -1422950650: /*active*/ return this.active == null ? new Base[0] : new Base[] {this.active}; // BooleanType
+        case -1035284522: /*communication*/ return this.communication == null ? new Base[0] : this.communication.toArray(new Base[this.communication.size()]); // PersonCommunicationComponent
         case 3321850: /*link*/ return this.link == null ? new Base[0] : this.link.toArray(new Base[this.link.size()]); // PersonLinkComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -1008,6 +1425,9 @@ public class Person extends DomainResource {
         switch (hash) {
         case -1618432855: // identifier
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
+          return value;
+        case -1422950650: // active
+          this.active = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3373707: // name
           this.getName().add(TypeConvertor.castToHumanName(value)); // HumanName
@@ -1022,17 +1442,23 @@ public class Person extends DomainResource {
         case -1210031859: // birthDate
           this.birthDate = TypeConvertor.castToDate(value); // DateType
           return value;
+        case 561497972: // deceased
+          this.deceased = TypeConvertor.castToType(value); // DataType
+          return value;
         case -1147692044: // address
           this.getAddress().add(TypeConvertor.castToAddress(value)); // Address
           return value;
+        case 1756919302: // maritalStatus
+          this.maritalStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         case 106642994: // photo
-          this.photo = TypeConvertor.castToAttachment(value); // Attachment
+          this.getPhoto().add(TypeConvertor.castToAttachment(value)); // Attachment
           return value;
         case -2058947787: // managingOrganization
           this.managingOrganization = TypeConvertor.castToReference(value); // Reference
           return value;
-        case -1422950650: // active
-          this.active = TypeConvertor.castToBoolean(value); // BooleanType
+        case -1035284522: // communication
+          this.getCommunication().add((PersonCommunicationComponent) value); // PersonCommunicationComponent
           return value;
         case 3321850: // link
           this.getLink().add((PersonLinkComponent) value); // PersonLinkComponent
@@ -1046,6 +1472,8 @@ public class Person extends DomainResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
+        } else if (name.equals("active")) {
+          this.active = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("name")) {
           this.getName().add(TypeConvertor.castToHumanName(value));
         } else if (name.equals("telecom")) {
@@ -1055,14 +1483,18 @@ public class Person extends DomainResource {
           this.gender = (Enumeration) value; // Enumeration<AdministrativeGender>
         } else if (name.equals("birthDate")) {
           this.birthDate = TypeConvertor.castToDate(value); // DateType
+        } else if (name.equals("deceased[x]")) {
+          this.deceased = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("address")) {
           this.getAddress().add(TypeConvertor.castToAddress(value));
+        } else if (name.equals("maritalStatus")) {
+          this.maritalStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("photo")) {
-          this.photo = TypeConvertor.castToAttachment(value); // Attachment
+          this.getPhoto().add(TypeConvertor.castToAttachment(value));
         } else if (name.equals("managingOrganization")) {
           this.managingOrganization = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("active")) {
-          this.active = TypeConvertor.castToBoolean(value); // BooleanType
+        } else if (name.equals("communication")) {
+          this.getCommunication().add((PersonCommunicationComponent) value);
         } else if (name.equals("link")) {
           this.getLink().add((PersonLinkComponent) value);
         } else
@@ -1074,14 +1506,18 @@ public class Person extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
+        case -1422950650:  return getActiveElement();
         case 3373707:  return addName(); 
         case -1429363305:  return addTelecom(); 
         case -1249512767:  return getGenderElement();
         case -1210031859:  return getBirthDateElement();
+        case -1311442804:  return getDeceased();
+        case 561497972:  return getDeceased();
         case -1147692044:  return addAddress(); 
-        case 106642994:  return getPhoto();
+        case 1756919302:  return getMaritalStatus();
+        case 106642994:  return addPhoto(); 
         case -2058947787:  return getManagingOrganization();
-        case -1422950650:  return getActiveElement();
+        case -1035284522:  return addCommunication(); 
         case 3321850:  return addLink(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1092,14 +1528,17 @@ public class Person extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
+        case -1422950650: /*active*/ return new String[] {"boolean"};
         case 3373707: /*name*/ return new String[] {"HumanName"};
         case -1429363305: /*telecom*/ return new String[] {"ContactPoint"};
         case -1249512767: /*gender*/ return new String[] {"code"};
         case -1210031859: /*birthDate*/ return new String[] {"date"};
+        case 561497972: /*deceased*/ return new String[] {"boolean", "dateTime"};
         case -1147692044: /*address*/ return new String[] {"Address"};
+        case 1756919302: /*maritalStatus*/ return new String[] {"CodeableConcept"};
         case 106642994: /*photo*/ return new String[] {"Attachment"};
         case -2058947787: /*managingOrganization*/ return new String[] {"Reference"};
-        case -1422950650: /*active*/ return new String[] {"boolean"};
+        case -1035284522: /*communication*/ return new String[] {};
         case 3321850: /*link*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -1110,6 +1549,9 @@ public class Person extends DomainResource {
       public Base addChild(String name) throws FHIRException {
         if (name.equals("identifier")) {
           return addIdentifier();
+        }
+        else if (name.equals("active")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Person.active");
         }
         else if (name.equals("name")) {
           return addName();
@@ -1123,19 +1565,30 @@ public class Person extends DomainResource {
         else if (name.equals("birthDate")) {
           throw new FHIRException("Cannot call addChild on a primitive type Person.birthDate");
         }
+        else if (name.equals("deceasedBoolean")) {
+          this.deceased = new BooleanType();
+          return this.deceased;
+        }
+        else if (name.equals("deceasedDateTime")) {
+          this.deceased = new DateTimeType();
+          return this.deceased;
+        }
         else if (name.equals("address")) {
           return addAddress();
         }
+        else if (name.equals("maritalStatus")) {
+          this.maritalStatus = new CodeableConcept();
+          return this.maritalStatus;
+        }
         else if (name.equals("photo")) {
-          this.photo = new Attachment();
-          return this.photo;
+          return addPhoto();
         }
         else if (name.equals("managingOrganization")) {
           this.managingOrganization = new Reference();
           return this.managingOrganization;
         }
-        else if (name.equals("active")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Person.active");
+        else if (name.equals("communication")) {
+          return addCommunication();
         }
         else if (name.equals("link")) {
           return addLink();
@@ -1162,6 +1615,7 @@ public class Person extends DomainResource {
           for (Identifier i : identifier)
             dst.identifier.add(i.copy());
         };
+        dst.active = active == null ? null : active.copy();
         if (name != null) {
           dst.name = new ArrayList<HumanName>();
           for (HumanName i : name)
@@ -1174,14 +1628,24 @@ public class Person extends DomainResource {
         };
         dst.gender = gender == null ? null : gender.copy();
         dst.birthDate = birthDate == null ? null : birthDate.copy();
+        dst.deceased = deceased == null ? null : deceased.copy();
         if (address != null) {
           dst.address = new ArrayList<Address>();
           for (Address i : address)
             dst.address.add(i.copy());
         };
-        dst.photo = photo == null ? null : photo.copy();
+        dst.maritalStatus = maritalStatus == null ? null : maritalStatus.copy();
+        if (photo != null) {
+          dst.photo = new ArrayList<Attachment>();
+          for (Attachment i : photo)
+            dst.photo.add(i.copy());
+        };
         dst.managingOrganization = managingOrganization == null ? null : managingOrganization.copy();
-        dst.active = active == null ? null : active.copy();
+        if (communication != null) {
+          dst.communication = new ArrayList<PersonCommunicationComponent>();
+          for (PersonCommunicationComponent i : communication)
+            dst.communication.add(i.copy());
+        };
         if (link != null) {
           dst.link = new ArrayList<PersonLinkComponent>();
           for (PersonLinkComponent i : link)
@@ -1200,10 +1664,11 @@ public class Person extends DomainResource {
         if (!(other_ instanceof Person))
           return false;
         Person o = (Person) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(name, o.name, true) && compareDeep(telecom, o.telecom, true)
-           && compareDeep(gender, o.gender, true) && compareDeep(birthDate, o.birthDate, true) && compareDeep(address, o.address, true)
+        return compareDeep(identifier, o.identifier, true) && compareDeep(active, o.active, true) && compareDeep(name, o.name, true)
+           && compareDeep(telecom, o.telecom, true) && compareDeep(gender, o.gender, true) && compareDeep(birthDate, o.birthDate, true)
+           && compareDeep(deceased, o.deceased, true) && compareDeep(address, o.address, true) && compareDeep(maritalStatus, o.maritalStatus, true)
            && compareDeep(photo, o.photo, true) && compareDeep(managingOrganization, o.managingOrganization, true)
-           && compareDeep(active, o.active, true) && compareDeep(link, o.link, true);
+           && compareDeep(communication, o.communication, true) && compareDeep(link, o.link, true);
       }
 
       @Override
@@ -1213,19 +1678,100 @@ public class Person extends DomainResource {
         if (!(other_ instanceof Person))
           return false;
         Person o = (Person) other_;
-        return compareValues(gender, o.gender, true) && compareValues(birthDate, o.birthDate, true) && compareValues(active, o.active, true)
+        return compareValues(active, o.active, true) && compareValues(gender, o.gender, true) && compareValues(birthDate, o.birthDate, true)
           ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, name, telecom
-          , gender, birthDate, address, photo, managingOrganization, active, link);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, active, name
+          , telecom, gender, birthDate, deceased, address, maritalStatus, photo, managingOrganization
+          , communication, link);
       }
 
   @Override
   public ResourceType getResourceType() {
     return ResourceType.Person;
    }
+
+ /**
+   * Search parameter: <b>death-date</b>
+   * <p>
+   * Description: <b>The date of death has been provided and satisfies this search value</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>(Person.deceased as dateTime)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="death-date", path="(Person.deceased as dateTime)", description="The date of death has been provided and satisfies this search value", type="date" )
+  public static final String SP_DEATH_DATE = "death-date";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>death-date</b>
+   * <p>
+   * Description: <b>The date of death has been provided and satisfies this search value</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>(Person.deceased as dateTime)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam DEATH_DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DEATH_DATE);
+
+ /**
+   * Search parameter: <b>deceased</b>
+   * <p>
+   * Description: <b>This person has been marked as deceased, or has a death date entered</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Person.deceased.exists() and Person.deceased != false</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="deceased", path="Person.deceased.exists() and Person.deceased != false", description="This person has been marked as deceased, or has a death date entered", type="token" )
+  public static final String SP_DECEASED = "deceased";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>deceased</b>
+   * <p>
+   * Description: <b>This person has been marked as deceased, or has a death date entered</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Person.deceased.exists() and Person.deceased != false</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam DECEASED = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_DECEASED);
+
+ /**
+   * Search parameter: <b>family</b>
+   * <p>
+   * Description: <b>A portion of the family name of the person</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Person.name.family</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="family", path="Person.name.family", description="A portion of the family name of the person", type="string" )
+  public static final String SP_FAMILY = "family";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>family</b>
+   * <p>
+   * Description: <b>A portion of the family name of the person</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Person.name.family</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam FAMILY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_FAMILY);
+
+ /**
+   * Search parameter: <b>given</b>
+   * <p>
+   * Description: <b>A portion of the given name of the person</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Person.name.given</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="given", path="Person.name.given", description="A portion of the given name of the person", type="string" )
+  public static final String SP_GIVEN = "given";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>given</b>
+   * <p>
+   * Description: <b>A portion of the given name of the person</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Person.name.given</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam GIVEN = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_GIVEN);
 
  /**
    * Search parameter: <b>identifier</b>
@@ -1327,7 +1873,7 @@ public class Person extends DomainResource {
    * Path: <b>Person.link.target.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="Person.link.target.where(resolve() is Patient)", description="The Person links to this Patient", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="Person.link.target.where(resolve() is Patient)", description="The Person links to this Patient", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class, Person.class, Practitioner.class, RelatedPerson.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -1353,7 +1899,7 @@ public class Person extends DomainResource {
    * Path: <b>Person.link.target.where(resolve() is Practitioner)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="practitioner", path="Person.link.target.where(resolve() is Practitioner)", description="The Person links to this Practitioner", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Practitioner.class } )
+  @SearchParamDefinition(name="practitioner", path="Person.link.target.where(resolve() is Practitioner)", description="The Person links to this Practitioner", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Patient.class, Person.class, Practitioner.class, RelatedPerson.class } )
   public static final String SP_PRACTITIONER = "practitioner";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>practitioner</b>
@@ -1379,7 +1925,7 @@ public class Person extends DomainResource {
    * Path: <b>Person.link.target.where(resolve() is RelatedPerson)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="relatedperson", path="Person.link.target.where(resolve() is RelatedPerson)", description="The Person links to this RelatedPerson", type="reference", target={RelatedPerson.class } )
+  @SearchParamDefinition(name="relatedperson", path="Person.link.target.where(resolve() is RelatedPerson)", description="The Person links to this RelatedPerson", type="reference", target={Patient.class, Person.class, Practitioner.class, RelatedPerson.class } )
   public static final String SP_RELATEDPERSON = "relatedperson";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>relatedperson</b>

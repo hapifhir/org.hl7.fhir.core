@@ -17,12 +17,15 @@ import org.apache.commons.codec.binary.Base64;
 import org.fhir.ucum.UcumEssenceService;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.context.TerminologyCache;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.ToolGlobalSettings;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
 import org.w3c.dom.Document;
@@ -89,16 +92,29 @@ public class TestingUtilities extends BaseTestingUtilities {
       FilesystemPackageCacheManager pcm;
       try {
         pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-        IWorkerContext fcontext = SimpleWorkerContext.fromPackage(pcm.loadPackage(VersionUtilities.packageForVersion(version), version));
+        IWorkerContext fcontext = getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(version), version));
         fcontext.setUcumService(new UcumEssenceService(TestingUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
         fcontext.setExpansionProfile(new Parameters());
 //        ((SimpleWorkerContext) fcontext).connectToTSServer(new TerminologyClientR5("http://tx.fhir.org/r4"), null);
         fcontexts.put(v, fcontext);
       } catch (Exception e) {
+        e.printStackTrace();
         throw new Error(e);
       }
     }
     return fcontexts.get(v);
+  }
+
+  public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage) throws Exception {
+    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withUserAgent(TestConstants.USER_AGENT).withTerminologyCachePath(TestConstants.TX_CACHE).fromPackage(npmPackage);
+    TerminologyCache.setCacheErrors(true);
+    return swc;
+  }
+
+  public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage, IWorkerContext.IContextResourceLoader loader) throws Exception {
+    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withUserAgent(TestConstants.USER_AGENT).withTerminologyCachePath(TestConstants.TX_CACHE).fromPackage(npmPackage, loader);
+    TerminologyCache.setCacheErrors(true);
+    return swc;
   }
 
   static public String fixedpath;
@@ -149,14 +165,11 @@ public class TestingUtilities extends BaseTestingUtilities {
   public static String checkXMLIsSame(String f1, String f2) throws Exception {
     String result = compareXml(f1, f2);
     if (result != null && SHOW_DIFF) {
-      String diff = Utilities.path(System.getenv("ProgramFiles"), "WinMerge", "WinMergeU.exe");
-      List<String> command = new ArrayList<String>();
-      command.add("\"" + diff + "\" \"" + f1 + "\" \"" + f2 + "\"");
-
-      ProcessBuilder builder = new ProcessBuilder(command);
-      builder.directory(new CSFile("c:\\temp"));
-      builder.start();
-
+      String diff = ToolGlobalSettings.hasComparePath() ? ToolGlobalSettings.getComparePath() : Utilities.path(System.getenv("ProgramFiles"), "WinMerge", "WinMergeU.exe");
+      if (new File(diff).exists() || Utilities.isToken(diff)) {
+        List<String> command = new ArrayList<String>();
+        Process p = Runtime.getRuntime().exec(new String[]{diff, f1, f2});
+      }
     }
     return result;
   }
@@ -170,7 +183,7 @@ public class TestingUtilities extends BaseTestingUtilities {
   }
 
   private static String compareElements(String path, Element e1, Element e2) {
-    if (!e1.getNamespaceURI().equals(e2.getNamespaceURI()))
+    if (!namespacesMatch(e1.getNamespaceURI(), e2.getNamespaceURI()))
       return "Namespaces differ at " + path + ": " + e1.getNamespaceURI() + "/" + e2.getNamespaceURI();
     if (!e1.getLocalName().equals(e2.getLocalName()))
       return "Names differ at " + path + ": " + e1.getLocalName() + "/" + e2.getLocalName();
@@ -206,6 +219,10 @@ public class TestingUtilities extends BaseTestingUtilities {
     if (c2 != null)
       return "node mismatch - more nodes in target in children of " + path;
     return null;
+  }
+
+  private static boolean namespacesMatch(String ns1, String ns2) {
+    return ns1 == null ? ns2 == null : ns1.equals(ns2);
   }
 
   private static Object normalise(String text) {
@@ -470,6 +487,8 @@ public class TestingUtilities extends BaseTestingUtilities {
       String path = Utilities.path("C:\\temp", name);
       Utilities.createDirectory(path);
       return path;
+    } else if (ToolGlobalSettings.hasTempPath()) {
+      return ToolGlobalSettings.getTempPath();
     } else if (new File("/tmp").exists()) {
       String path = Utilities.path("/tmp", name);
       Utilities.createDirectory(path);

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+package org.hl7.fhir.{{jid}}.model;
 
 {{license}}
 
@@ -20,7 +20,7 @@ public enum ResourceType {
 
     public static ResourceType fromCode(String code) throws FHIRException {;
 {{types-fromCode}}
-    throw new FHIRException("Unknown resource type"+code);
+    throw new FHIRException("Unknown resource type "+code);
   }
 
 }

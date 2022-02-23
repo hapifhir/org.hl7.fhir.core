@@ -30,13 +30,10 @@ package org.hl7.fhir.convertors.misc;
  */
 
 
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
-import org.hl7.fhir.r4.formats.XmlParser;
+import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.model.CodeSystem;
 import org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode;
 import org.hl7.fhir.r4.model.CodeSystem.CodeSystemHierarchyMeaning;
@@ -45,21 +42,20 @@ import org.hl7.fhir.r4.model.CodeSystem.PropertyType;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r4.model.StringType;
-import org.hl7.fhir.r4.terminologies.CodeSystemUtilities;
-import org.hl7.fhir.r4.utils.ToolingExtensions;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.Utilities;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class NUCCConvertor {
-  
+
   public static void main(String[] args) throws Exception {
     new NUCCConvertor().execute();
   }
-  
-  public void execute() throws IOException, FHIRException {    
+
+  public void execute() throws IOException, FHIRException {
     CSVReader csv = new CSVReader(new FileInputStream("c:\\temp\\nucc.csv"));
     CodeSystem cs = new CodeSystem();
     cs.setId("nucc-provider-taxonomy");
@@ -71,7 +67,7 @@ public class NUCCConvertor {
     cs.setStatus(PublicationStatus.ACTIVE);
     cs.setContent(CodeSystemContentMode.COMPLETE);
     cs.setExperimental(false);
-    cs.setValueSet("http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy"); 
+    cs.setValueSet("http://hl7.org/fhir/ValueSet/nucc-provider-taxonomy");
     cs.setHierarchyMeaning(CodeSystemHierarchyMeaning.CLASSIFIEDWITH);
     cs.addProperty().setCode("grouping").setType(PropertyType.STRING).setDescription("A major grouping of service(s) or occupation(s) of health care providers. For example: Allopathic & Osteopathic Physicians, Dental Providers, Hospitals, etc");
     cs.addProperty().setCode("classification").setType(PropertyType.STRING).setDescription("A more specific service or occupation related to the Provider Grouping.e");
@@ -80,7 +76,7 @@ public class NUCCConvertor {
     while (csv.ready()) {
       String[] values = csv.parseLine();
       processLine(cs, values);
-    }     
+    }
     csv.close();
     cs.sort();
     new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("c:\\temp\\nucc.json"), cs);

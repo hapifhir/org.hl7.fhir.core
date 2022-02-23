@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -619,7 +619,7 @@ public class Meta extends DataType implements IBaseMetaType {
           , profile, security, tag);
       }
 
-// Manual code (from Configuration.txt)t:
+// Manual code (from Configuration.txt):
 /** 
      * Convenience method which adds a tag 
      *  

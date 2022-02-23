@@ -44,8 +44,8 @@ import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
-import org.hl7.fhir.r5.context.IWorkerContext.CodingValidationRequest;
 import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
+import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.ParserType;
 import org.hl7.fhir.r5.model.Bundle;
@@ -64,12 +64,14 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.utils.IResourceValidator;
+import org.hl7.fhir.r5.utils.validation.IResourceValidator;
+import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import com.google.gson.JsonSyntaxException;
@@ -168,11 +170,46 @@ public interface IWorkerContext {
     public String getVersion() {
       return version;
     }
+    public boolean isExamplesPackage() {
+      boolean b = id.startsWith("hl7.fhir.") && id.endsWith(".examples");
+      return b;
+    }
+    @Override
+    public String toString() {
+      return id+"#"+version;
+    }
+    
   }
 
+  public class PackageDetails extends PackageVersion {
+    private String name;
+    private String canonical;
+    private String web;
+    public PackageDetails(String id, String version, String name, String canonical, String web) {
+      super(id, version);
+      this.name = name;
+      this.canonical = canonical;
+      this.web = web;
+    }
+    public String getName() {
+      return name;
+    }
+    public String getCanonical() {
+      return canonical;
+    }
+    public String getWeb() {
+      return web;
+    }
+    
+  }
+
+  public interface ICanonicalResourceLocator {
+    void findResource(Object caller, String url); // if it can be found, put it in the context
+  }
+  
   public interface IContextResourceLoader {
     /** 
-     * @return List of the resource types that shoud be loaded
+     * @return List of the resource types that should be loaded
      */
     String[] getTypes();
     
@@ -216,7 +253,6 @@ public interface IWorkerContext {
      */
     IContextResourceLoader getNewLoader(NpmPackage npm) throws JsonSyntaxException, IOException;   
   }
-
 
   /**
    * Get the versions of the definitions loaded in context
@@ -310,6 +346,7 @@ public interface IWorkerContext {
    */
   public <T extends Resource> T fetchResource(Class<T> class_, String uri);
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException;
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version);
 
   /** has the same functionality as fetchResource, but passes in information about the source of the 
    * reference (this may affect resolution of version)
@@ -383,7 +420,7 @@ public interface IWorkerContext {
    *  
    * @param packageInfo
    */
-  public void cachePackage(PackageVersion packageDetails, List<PackageVersion> dependencies);
+  public void cachePackage(PackageDetails packageDetails, List<PackageVersion> dependencies);
   
   // -- profile services ---------------------------------------------------------
   
@@ -451,6 +488,7 @@ public interface IWorkerContext {
    * @return
    */
   public CodeSystem fetchCodeSystem(String system);
+  public CodeSystem fetchCodeSystem(String system, String version);
 
   /**
    * True if the underlying terminology service provider will do 
@@ -484,6 +522,14 @@ public interface IWorkerContext {
   public ValueSetExpansionOutcome expandVS(ValueSet source, boolean cacheOk, boolean heiarchical);
   
   /**
+   * ValueSet Expansion - see $expand
+   *  
+   * @param source
+   * @return
+   */
+  public ValueSetExpansionOutcome expandVS(ValueSet source, boolean cacheOk, boolean heiarchical, boolean incompleteOk);
+  
+  /**
    * ValueSet Expansion - see $expand, but resolves the binding first
    *  
    * @param source
@@ -513,23 +559,32 @@ public interface IWorkerContext {
 
   class ValidationResult {
     private ConceptDefinitionComponent definition;
+    private String system;
     private IssueSeverity severity;
     private String message;
     private TerminologyServiceErrorClass errorClass;
     private String txLink;
     
+    @Override
+    public String toString() {
+      return "ValidationResult [definition=" + definition + ", system=" + system + ", severity=" + severity + ", message=" + message + ", errorClass="
+          + errorClass + ", txLink=" + txLink + "]";
+    }
+
     public ValidationResult(IssueSeverity severity, String message) {
       this.severity = severity;
       this.message = message;
     }
     
-    public ValidationResult(ConceptDefinitionComponent definition) {
+    public ValidationResult(String system, ConceptDefinitionComponent definition) {
+      this.system = system;
       this.definition = definition;
     }
 
-    public ValidationResult(IssueSeverity severity, String message, ConceptDefinitionComponent definition) {
+    public ValidationResult(IssueSeverity severity, String message, String system, ConceptDefinitionComponent definition) {
       this.severity = severity;
       this.message = message;
+      this.system = system;
       this.definition = definition;
     }
     
@@ -543,10 +598,20 @@ public interface IWorkerContext {
       return severity == null || severity == IssueSeverity.INFORMATION || severity == IssueSeverity.WARNING;
     }
 
+    public String getSystem() {
+      return system;
+    }
+
     public String getDisplay() {
-// We don't want to return question-marks because that prevents something more useful from being displayed (e.g. the code) if there's no display value
-//      return definition == null ? "??" : definition.getDisplay();
       return definition == null ? null : definition.getDisplay();
+    }
+
+    public String getCode() {
+      return definition == null ? null : definition.getCode();
+    }
+
+    public String getDefinition() {
+      return definition == null ? null : definition.getDefinition();
     }
 
     public ConceptDefinitionComponent asConceptDefinition() {
@@ -579,6 +644,11 @@ public interface IWorkerContext {
       return this;
     }
 
+    public ValidationResult setErrorClass(TerminologyServiceErrorClass errorClass) {
+      this.errorClass = errorClass;
+      return this;
+    }
+
     public String getTxLink() {
       return txLink;
     }
@@ -592,7 +662,13 @@ public interface IWorkerContext {
       return message != null;
     }
     
-    
+    public Coding asCoding() {
+      if (isOk() && definition != null && definition.getCode() != null) {
+        return new Coding(system, definition.getCode(), definition.getDisplay());
+      } else {
+        return null;
+      }
+    }
   }
 
   /**
@@ -626,7 +702,7 @@ public interface IWorkerContext {
    * @param display - equals Coding.display (optional)
    * @return
    */
-  public ValidationResult validateCode(ValidationOptions options, String system, String code, String display);
+  public ValidationResult validateCode(ValidationOptions options, String system, String version, String code, String display);
   
   /**
    * Validation of a code - consult the terminology infrstructure and/or service 
@@ -643,7 +719,7 @@ public interface IWorkerContext {
    * @param vs the applicable valueset (optional)
    * @return
    */
-  public ValidationResult validateCode(ValidationOptions options, String system, String code, String display, ValueSet vs);
+  public ValidationResult validateCode(ValidationOptions options, String system, String version, String code, String display, ValueSet vs);
 
   /**
    * Validation of a code - consult the terminology infrstructure and/or service 
@@ -678,6 +754,8 @@ public interface IWorkerContext {
    * @return
    */
   public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs);
+  
+  public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs, ValidationContextCarrier ctxt);
 
   public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs);
   
@@ -775,10 +853,14 @@ public interface IWorkerContext {
    */
    int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException;
 
-  public boolean hasPackage(String id, String ver);
+   public boolean hasPackage(String id, String ver);
+   public boolean hasPackage(PackageVersion pack);
+   public PackageDetails getPackage(PackageVersion pack);
 
   public int getClientRetryCount();
   public IWorkerContext setClientRetryCount(int value);
   
   public TimeTracker clock();
+
+  public PackageVersion getPackageForUrl(String url);
 }

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1150,7 +1150,7 @@ public class ChargeItemDefinition extends MetadataResource {
      * The defined billing details in this resource pertain to the given billing code.
      */
     @Child(name = "code", type = {CodeableConcept.class}, order=19, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Billing codes or product types this definition applies to", formalDefinition="The defined billing details in this resource pertain to the given billing code." )
+    @Description(shortDefinition="Billing code or product type this definition applies to", formalDefinition="The defined billing details in this resource pertain to the given billing code." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/chargeitem-billingcodes")
     protected CodeableConcept code;
 
@@ -2393,6 +2393,216 @@ public class ChargeItemDefinition extends MetadataResource {
      */
     public ChargeItemDefinition setPurpose(String value) { 
       throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"purpose\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getTopicMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #topic} (Descriptive topics related to the content of the library. Topics provide a high-level categorization of the library that can be useful for filtering and searching.)
+     */
+    public List<CodeableConcept> getTopic() { 
+      return new ArrayList<>();
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ChargeItemDefinition setTopic(List<CodeableConcept> theTopic) { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"topic\"");
+    }
+    public boolean hasTopic() { 
+      return false;
+    }
+
+    public CodeableConcept addTopic() { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"topic\"");
+    }
+    public ChargeItemDefinition addTopic(CodeableConcept t) { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"topic\"");
+    }
+    /**
+     * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist {2}
+     */
+    public CodeableConcept getTopicFirstRep() { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"topic\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getAuthorMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #author} (An individiual or organization primarily involved in the creation and maintenance of the charge item definition.)
+     */
+    public List<ContactDetail> getAuthor() { 
+      return new ArrayList<>();
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ChargeItemDefinition setAuthor(List<ContactDetail> theAuthor) { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"author\"");
+    }
+    public boolean hasAuthor() { 
+      return false;
+    }
+
+    public ContactDetail addAuthor() { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"author\"");
+    }
+    public ChargeItemDefinition addAuthor(ContactDetail t) { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"author\"");
+    }
+    /**
+     * @return The first repetition of repeating field {@link #author}, creating it if it does not already exist {2}
+     */
+    public ContactDetail getAuthorFirstRep() { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"author\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getEditorMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #editor} (An individual or organization primarily responsible for internal coherence of the charge item definition.)
+     */
+    public List<ContactDetail> getEditor() { 
+      return new ArrayList<>();
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ChargeItemDefinition setEditor(List<ContactDetail> theEditor) { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"editor\"");
+    }
+    public boolean hasEditor() { 
+      return false;
+    }
+
+    public ContactDetail addEditor() { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"editor\"");
+    }
+    public ChargeItemDefinition addEditor(ContactDetail t) { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"editor\"");
+    }
+    /**
+     * @return The first repetition of repeating field {@link #editor}, creating it if it does not already exist {2}
+     */
+    public ContactDetail getEditorFirstRep() { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"editor\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getReviewerMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #reviewer} (An individual or organization primarily responsible for review of some aspect of the charge item definition.)
+     */
+    public List<ContactDetail> getReviewer() { 
+      return new ArrayList<>();
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ChargeItemDefinition setReviewer(List<ContactDetail> theReviewer) { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"reviewer\"");
+    }
+    public boolean hasReviewer() { 
+      return false;
+    }
+
+    public ContactDetail addReviewer() { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"reviewer\"");
+    }
+    public ChargeItemDefinition addReviewer(ContactDetail t) { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"reviewer\"");
+    }
+    /**
+     * @return The first repetition of repeating field {@link #reviewer}, creating it if it does not already exist {2}
+     */
+    public ContactDetail getReviewerFirstRep() { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"reviewer\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getEndorserMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #endorser} (An individual or organization responsible for officially endorsing the charge item definition for use in some setting.)
+     */
+    public List<ContactDetail> getEndorser() { 
+      return new ArrayList<>();
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ChargeItemDefinition setEndorser(List<ContactDetail> theEndorser) { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"endorser\"");
+    }
+    public boolean hasEndorser() { 
+      return false;
+    }
+
+    public ContactDetail addEndorser() { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"endorser\"");
+    }
+    public ChargeItemDefinition addEndorser(ContactDetail t) { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"endorser\"");
+    }
+    /**
+     * @return The first repetition of repeating field {@link #endorser}, creating it if it does not already exist {2}
+     */
+    public ContactDetail getEndorserFirstRep() { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"endorser\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getRelatedArtifactMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #relatedArtifact} (Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts.)
+     */
+    public List<RelatedArtifact> getRelatedArtifact() { 
+      return new ArrayList<>();
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ChargeItemDefinition setRelatedArtifact(List<RelatedArtifact> theRelatedArtifact) { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"relatedArtifact\"");
+    }
+    public boolean hasRelatedArtifact() { 
+      return false;
+    }
+
+    public RelatedArtifact addRelatedArtifact() { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"relatedArtifact\"");
+    }
+    public ChargeItemDefinition addRelatedArtifact(RelatedArtifact t) { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"relatedArtifact\"");
+    }
+    /**
+     * @return The first repetition of repeating field {@link #relatedArtifact}, creating it if it does not already exist {2}
+     */
+    public RelatedArtifact getRelatedArtifactFirstRep() { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"relatedArtifact\"");
     }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);

@@ -9,7 +9,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
-import org.hl7.fhir.r5.utils.IResourceValidator;
+import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 import java.util.ArrayList;
@@ -23,12 +23,15 @@ public class FFHIRPathHostServices implements FHIRPathEngine.IEvaluationContext 
     this.structureMapUtilities = structureMapUtilities;
   }
 
-  public Base resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+  public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
     Variables vars = (Variables) appContext;
     Base res = vars.get(VariableMode.INPUT, name);
     if (res == null)
       res = vars.get(VariableMode.OUTPUT, name);
-    return res;
+    List<Base> result = new ArrayList<Base>();
+    if (res != null)
+      result.add(res);
+    return result;
   }
 
   @Override
@@ -85,7 +88,7 @@ public class FFHIRPathHostServices implements FHIRPathEngine.IEvaluationContext 
       return noErrorValidationMessages(valerrors);
     }
     if (item instanceof Element) {
-      val.validate(appContext, valerrors, (Element) item, url);
+      val.validate(appContext, valerrors, null, (Element) item, url);
       return noErrorValidationMessages(valerrors);
     }
     throw new NotImplementedException("Not done yet (FFHIRPathHostServices.conformsToProfile), when item is not element or not resource");

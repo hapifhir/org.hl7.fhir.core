@@ -53,6 +53,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
+import org.hl7.fhir.r5.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.DateTimeType;
@@ -86,6 +87,16 @@ public class XmlParser extends ParserBase {
   public XmlParser(IWorkerContext context) {
     super(context);
   }
+  
+  private String schemaPath;
+  
+  public String getSchemaPath() {
+    return schemaPath;
+  }
+  public void setSchemaPath(String schemaPath) {
+    this.schemaPath = schemaPath;
+  }
+
 
   
   public boolean isAllowXsiLocation() {
@@ -96,7 +107,8 @@ public class XmlParser extends ParserBase {
     this.allowXsiLocation = allowXsiLocation;
   }
 
-  public Element parse(InputStream stream) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
+  public List<NamedElement> parse(InputStream stream) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
+    List<NamedElement> res = new ArrayList<>();
 		Document doc = null;
   	try {
   		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -147,10 +159,13 @@ public class XmlParser extends ParserBase {
       logError(0, 0, "(syntax)", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
       doc = null;
   	}
-  	if (doc == null)
-  		return null;
-  	else
-      return parse(doc);
+  	if (doc != null) {
+  	  Element e = parse(doc);
+      if (e != null) {
+        res.add(new NamedElement(null, e));
+      }
+  	}
+  	return res;
   }
 
 
@@ -193,6 +208,7 @@ public class XmlParser extends ParserBase {
       return null;
 
     Element result = new Element(element.getLocalName(), new Property(context, sd.getSnapshot().getElement().get(0), sd));
+    result.setPath(element.getLocalName());
     checkElement(element, path, result.getProperty());
     result.markLocation(line(element), col(element));
     result.setType(element.getLocalName());
@@ -252,6 +268,7 @@ public class XmlParser extends ParserBase {
   public Element parse(org.w3c.dom.Element base, String type) throws Exception {
     StructureDefinition sd = getDefinition(0, 0, FormatUtilities.FHIR_NS, type);
     Element result = new Element(base.getLocalName(), new Property(context, sd.getSnapshot().getElement().get(0), sd));
+    result.setPath(base.getLocalName());
     String path = "/"+pathPrefix(base.getNamespaceURI())+base.getLocalName();
     checkElement(base, path, result.getProperty());
     result.setType(base.getLocalName());
@@ -273,13 +290,18 @@ public class XmlParser extends ParserBase {
     	if (property != null) {
         if ("ED.data[x]".equals(property.getDefinition().getId()) || (property.getDefinition()!=null && property.getDefinition().getBase()!=null && "ED.data[x]".equals(property.getDefinition().getBase().getPath()))) {
           if ("B64".equals(node.getAttribute("representation"))) {
-            element.getChildren().add(new Element("dataBase64Binary", property, "base64Binary", text).markLocation(line, col));
+            Element n = new Element("dataBase64Binary", property, "base64Binary", text).markLocation(line, col);
+            n.setPath(element.getPath()+"."+property.getName());
+            element.getChildren().add(n);
           } else {
-            element.getChildren().add(new Element("dataString", property, "string", text).markLocation(line, col));
+            Element n = new Element("dataString", property, "string", text).markLocation(line, col);
+            n.setPath(element.getPath()+"."+property.getName());
+            element.getChildren().add(n);
           }
         } else {
-          element.getChildren().add(
-              new Element(property.getName(), property, property.getType(), text).markLocation(line, col));
+          Element n = new Element(property.getName(), property, property.getType(), text).markLocation(line, col);
+          n.setPath(element.getPath()+"."+property.getName());
+          element.getChildren().add(n);
         }
       } 
     	else {
@@ -315,8 +337,11 @@ public class XmlParser extends ParserBase {
 	    	  	av = convertForDateFormatFromExternal(ToolingExtensions.readStringExtension(property.getDefinition(), "http://www.healthintersections.com.au/fhir/StructureDefinition/elementdefinition-dateformat"), av);
 	    		if (property.getName().equals("value") && element.isPrimitive())
 	    			element.setValue(av);
-	    		else
-	    	    element.getChildren().add(new Element(property.getName(), property, property.getType(), av).markLocation(line, col));
+	    		else {
+	    	    Element n = new Element(property.getName(), property, property.getType(), av).markLocation(line, col);
+            n.setPath(element.getPath()+"."+property.getName());
+            element.getChildren().add(n);
+	    		}
         } else {
           boolean ok = false;
           if (FormatUtilities.FHIR_NS.equals(node.getNamespaceURI())) {
@@ -332,21 +357,36 @@ public class XmlParser extends ParserBase {
     	}
     }
     
+    String lastName = null;
+    int repeatCount = 0;
     Node child = node.getFirstChild();
     while (child != null) {
     	if (child.getNodeType() == Node.ELEMENT_NODE) {
     		Property property = getElementProp(properties, child.getLocalName(), child.getNamespaceURI());
     		if (property != null) {
+    		  if (property.getName().equals(lastName)) {
+    		    repeatCount++;
+    		  } else {
+    		    lastName = property.getName();
+    		    repeatCount = 0;
+    		  }
     			if (!property.isChoice() && "xhtml".equals(property.getType())) {
     			  XhtmlNode xhtml;
     			  if (property.getDefinition().hasRepresentation(PropertyRepresentation.CDATEXT))
     			    xhtml = new CDANarrativeFormat().convert((org.w3c.dom.Element) child);
           	else 
               xhtml = new XhtmlParser().setValidatorMode(true).parseHtmlNode((org.w3c.dom.Element) child);
-						element.getChildren().add(new Element(property.getName(), property, "xhtml", new XhtmlComposer(XhtmlComposer.XML, false).compose(xhtml)).setXhtml(xhtml).markLocation(line(child), col(child)));
+						Element n = new Element(property.getName(), property, "xhtml", new XhtmlComposer(XhtmlComposer.XML, false).compose(xhtml)).setXhtml(xhtml).markLocation(line(child), col(child));
+            n.setPath(element.getPath()+"."+property.getName());
+            element.getChildren().add(n);
     			} else {
     			  String npath = path+"/"+pathPrefix(child.getNamespaceURI())+child.getLocalName();
     				Element n = new Element(child.getLocalName(), property).markLocation(line(child), col(child));
+    				if (property.isList()) {
+              n.setPath(element.getPath()+"."+property.getName()+"["+repeatCount+"]");    				  
+    				} else {
+              n.setPath(element.getPath()+"."+property.getName());
+    				}
     				checkElement((org.w3c.dom.Element) child, npath, n.getProperty());
     				boolean ok = true;
     				if (property.isChoice()) {
@@ -458,8 +498,12 @@ public class XmlParser extends ParserBase {
 
 	private String convertForDateFormatFromExternal(String fmt, String av) throws FHIRException {
   	if ("v3".equals(fmt)) {
-  		DateTimeType d = DateTimeType.parseV3(av);
-  		return d.asStringValue();
+  	  try {
+    		DateTimeType d = DateTimeType.parseV3(av);
+    		return d.asStringValue();
+  	  } catch (Exception e) {
+  	    return av; // not at all clear what to do in this case.
+  	  }
   	} else
       throw new FHIRException(context.formatMessage(I18nConstants.UNKNOWN_DATA_FORMAT_, fmt));
 	}
@@ -597,6 +641,9 @@ public class XmlParser extends ParserBase {
   public void compose(Element e, IXMLWriter xml) throws Exception {
     xml.start();
     xml.setDefaultNamespace(e.getProperty().getXmlNamespace());
+    if (schemaPath != null) {
+      xml.setSchemaLocation(FormatUtilities.FHIR_NS, Utilities.pathURL(schemaPath, e.fhirType()+".xsd"));
+    }
     composeElement(xml, e, e.getType(), true);
     xml.end();
   }

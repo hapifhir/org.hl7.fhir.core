@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,9 +38,12 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
@@ -50,102 +53,6 @@ import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
  */
 @ResourceDef(name="StructureMap", profile="http://hl7.org/fhir/StructureDefinition/StructureMap")
 public class StructureMap extends CanonicalResource {
-
-    public enum StructureMapContextType {
-        /**
-         * The context specifies a type.
-         */
-        TYPE, 
-        /**
-         * The context specifies a variable.
-         */
-        VARIABLE, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static StructureMapContextType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("type".equals(codeString))
-          return TYPE;
-        if ("variable".equals(codeString))
-          return VARIABLE;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown StructureMapContextType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case TYPE: return "type";
-            case VARIABLE: return "variable";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case TYPE: return "http://hl7.org/fhir/map-context-type";
-            case VARIABLE: return "http://hl7.org/fhir/map-context-type";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case TYPE: return "The context specifies a type.";
-            case VARIABLE: return "The context specifies a variable.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case TYPE: return "Type";
-            case VARIABLE: return "Variable";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-    }
-
-  public static class StructureMapContextTypeEnumFactory implements EnumFactory<StructureMapContextType> {
-    public StructureMapContextType fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("type".equals(codeString))
-          return StructureMapContextType.TYPE;
-        if ("variable".equals(codeString))
-          return StructureMapContextType.VARIABLE;
-        throw new IllegalArgumentException("Unknown StructureMapContextType code '"+codeString+"'");
-        }
-        public Enumeration<StructureMapContextType> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<StructureMapContextType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("type".equals(codeString))
-          return new Enumeration<StructureMapContextType>(this, StructureMapContextType.TYPE);
-        if ("variable".equals(codeString))
-          return new Enumeration<StructureMapContextType>(this, StructureMapContextType.VARIABLE);
-        throw new FHIRException("Unknown StructureMapContextType code '"+codeString+"'");
-        }
-    public String toCode(StructureMapContextType code) {
-      if (code == StructureMapContextType.TYPE)
-        return "type";
-      if (code == StructureMapContextType.VARIABLE)
-        return "variable";
-      return "?";
-      }
-    public String toSystem(StructureMapContextType code) {
-      return code.getSystem();
-      }
-    }
 
     public enum StructureMapGroupTypeMode {
         /**
@@ -176,7 +83,6 @@ public class StructureMap extends CanonicalResource {
           switch (this) {
             case TYPES: return "types";
             case TYPEANDTYPES: return "type-and-types";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -184,7 +90,6 @@ public class StructureMap extends CanonicalResource {
           switch (this) {
             case TYPES: return "http://hl7.org/fhir/map-group-type-mode";
             case TYPEANDTYPES: return "http://hl7.org/fhir/map-group-type-mode";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -192,7 +97,6 @@ public class StructureMap extends CanonicalResource {
           switch (this) {
             case TYPES: return "This group is a default mapping group for the specified types and for the primary source type.";
             case TYPEANDTYPES: return "This group is a default mapping group for the specified types.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -200,7 +104,6 @@ public class StructureMap extends CanonicalResource {
           switch (this) {
             case TYPES: return "Default for Type Combination";
             case TYPEANDTYPES: return "Default for type + combination";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -272,7 +175,6 @@ public class StructureMap extends CanonicalResource {
           switch (this) {
             case SOURCE: return "source";
             case TARGET: return "target";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -280,7 +182,6 @@ public class StructureMap extends CanonicalResource {
           switch (this) {
             case SOURCE: return "http://hl7.org/fhir/map-input-mode";
             case TARGET: return "http://hl7.org/fhir/map-input-mode";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -288,7 +189,6 @@ public class StructureMap extends CanonicalResource {
           switch (this) {
             case SOURCE: return "Names an input instance used a source for mapping.";
             case TARGET: return "Names an instance that is being populated.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -296,7 +196,6 @@ public class StructureMap extends CanonicalResource {
           switch (this) {
             case SOURCE: return "Source Instance";
             case TARGET: return "Target Instance";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -382,7 +281,6 @@ public class StructureMap extends CanonicalResource {
             case QUERIED: return "queried";
             case TARGET: return "target";
             case PRODUCED: return "produced";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -392,7 +290,6 @@ public class StructureMap extends CanonicalResource {
             case QUERIED: return "http://hl7.org/fhir/map-model-mode";
             case TARGET: return "http://hl7.org/fhir/map-model-mode";
             case PRODUCED: return "http://hl7.org/fhir/map-model-mode";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -402,7 +299,6 @@ public class StructureMap extends CanonicalResource {
             case QUERIED: return "This structure describes an instance that the mapping engine may ask for that is used a source of data.";
             case TARGET: return "This structure describes an instance passed to the mapping engine that is used a target of data.";
             case PRODUCED: return "This structure describes an instance that the mapping engine may ask to create that is used a target of data.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -412,7 +308,6 @@ public class StructureMap extends CanonicalResource {
             case QUERIED: return "Queried Structure Definition";
             case TARGET: return "Target Structure Definition";
             case PRODUCED: return "Produced Structure Definition";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -517,7 +412,6 @@ public class StructureMap extends CanonicalResource {
             case LAST: return "last";
             case NOTLAST: return "not_last";
             case ONLYONE: return "only_one";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -528,7 +422,6 @@ public class StructureMap extends CanonicalResource {
             case LAST: return "http://hl7.org/fhir/map-source-list-mode";
             case NOTLAST: return "http://hl7.org/fhir/map-source-list-mode";
             case ONLYONE: return "http://hl7.org/fhir/map-source-list-mode";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -539,7 +432,6 @@ public class StructureMap extends CanonicalResource {
             case LAST: return "Only process this rule for the last in the list.";
             case NOTLAST: return "Process this rule for all but the last.";
             case ONLYONE: return "Only process this rule is there is only item.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -550,7 +442,6 @@ public class StructureMap extends CanonicalResource {
             case LAST: return "Last";
             case NOTLAST: return "All but the last";
             case ONLYONE: return "Enforce only one";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -654,7 +545,6 @@ public class StructureMap extends CanonicalResource {
             case SHARE: return "share";
             case LAST: return "last";
             case COLLATE: return "collate";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -664,7 +554,6 @@ public class StructureMap extends CanonicalResource {
             case SHARE: return "http://hl7.org/fhir/map-target-list-mode";
             case LAST: return "http://hl7.org/fhir/map-target-list-mode";
             case COLLATE: return "http://hl7.org/fhir/map-target-list-mode";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -674,7 +563,6 @@ public class StructureMap extends CanonicalResource {
             case SHARE: return "the target instance is shared with the target instances generated by another rule (up to the first common n items, then create new ones).";
             case LAST: return "when the target list is being assembled, the items for this rule go last. If more than one rule defines a last item (for a given instance of mapping) then this is an error.";
             case COLLATE: return "re-use the first item in the list, and keep adding content to it.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -684,7 +572,6 @@ public class StructureMap extends CanonicalResource {
             case SHARE: return "Share";
             case LAST: return "Last";
             case COLLATE: return "Collate";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -873,7 +760,6 @@ public class StructureMap extends CanonicalResource {
             case QTY: return "qty";
             case ID: return "id";
             case CP: return "cp";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -896,7 +782,6 @@ public class StructureMap extends CanonicalResource {
             case QTY: return "http://hl7.org/fhir/map-transform";
             case ID: return "http://hl7.org/fhir/map-transform";
             case CP: return "http://hl7.org/fhir/map-transform";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -919,7 +804,6 @@ public class StructureMap extends CanonicalResource {
             case QTY: return "Create a quantity. Parameters = (text) or (value, unit, [system, code]) where text is the natural representation e.g. [comparator]value[space]unit.";
             case ID: return "Create an identifier. Parameters = (system, value[, type]) where type is a code from the identifier type value set.";
             case CP: return "Create a contact details. Parameters = (value) or (system, value). If no system is provided, the system should be inferred from the content of the value.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -942,7 +826,6 @@ public class StructureMap extends CanonicalResource {
             case QTY: return "qty";
             case ID: return "id";
             case CP: return "cp";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -3039,9 +2922,9 @@ public String toString() {
         /**
          * A value to use if there is no existing value in the source object.
          */
-        @Child(name = "defaultValue", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=5, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "defaultValue", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Default value if no value exists", formalDefinition="A value to use if there is no existing value in the source object." )
-        protected DataType defaultValue;
+        protected StringType defaultValue;
 
         /**
          * Optional field for this source.
@@ -3086,7 +2969,7 @@ public String toString() {
         @Description(shortDefinition="Message to put in log if source exists (FHIRPath)", formalDefinition="A FHIRPath expression which specifies a message to put in the transform log when content matching the source rule is found." )
         protected StringType logMessage;
 
-        private static final long serialVersionUID = 1708673504L;
+        private static final long serialVersionUID = 214178119L;
 
     /**
      * Constructor
@@ -3292,775 +3175,19 @@ public String toString() {
         }
 
         /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
+         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.). This is the underlying object with id, value and extensions. The accessor "getDefaultValue" gives direct access to the value
          */
-        public DataType getDefaultValue() { 
+        public StringType getDefaultValueElement() { 
+          if (this.defaultValue == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create StructureMapGroupRuleSourceComponent.defaultValue");
+            else if (Configuration.doAutoCreate())
+              this.defaultValue = new StringType(); // bb
           return this.defaultValue;
         }
 
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Base64BinaryType getDefaultValueBase64BinaryType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Base64BinaryType();
-          if (!(this.defaultValue instanceof Base64BinaryType))
-            throw new FHIRException("Type mismatch: the type Base64BinaryType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Base64BinaryType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueBase64BinaryType() { 
-          return this != null && this.defaultValue instanceof Base64BinaryType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public BooleanType getDefaultValueBooleanType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new BooleanType();
-          if (!(this.defaultValue instanceof BooleanType))
-            throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (BooleanType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueBooleanType() { 
-          return this != null && this.defaultValue instanceof BooleanType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public CanonicalType getDefaultValueCanonicalType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new CanonicalType();
-          if (!(this.defaultValue instanceof CanonicalType))
-            throw new FHIRException("Type mismatch: the type CanonicalType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (CanonicalType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueCanonicalType() { 
-          return this != null && this.defaultValue instanceof CanonicalType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public CodeType getDefaultValueCodeType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new CodeType();
-          if (!(this.defaultValue instanceof CodeType))
-            throw new FHIRException("Type mismatch: the type CodeType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (CodeType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueCodeType() { 
-          return this != null && this.defaultValue instanceof CodeType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public DateType getDefaultValueDateType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new DateType();
-          if (!(this.defaultValue instanceof DateType))
-            throw new FHIRException("Type mismatch: the type DateType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (DateType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueDateType() { 
-          return this != null && this.defaultValue instanceof DateType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public DateTimeType getDefaultValueDateTimeType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new DateTimeType();
-          if (!(this.defaultValue instanceof DateTimeType))
-            throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (DateTimeType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueDateTimeType() { 
-          return this != null && this.defaultValue instanceof DateTimeType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public DecimalType getDefaultValueDecimalType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new DecimalType();
-          if (!(this.defaultValue instanceof DecimalType))
-            throw new FHIRException("Type mismatch: the type DecimalType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (DecimalType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueDecimalType() { 
-          return this != null && this.defaultValue instanceof DecimalType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public IdType getDefaultValueIdType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new IdType();
-          if (!(this.defaultValue instanceof IdType))
-            throw new FHIRException("Type mismatch: the type IdType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (IdType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueIdType() { 
-          return this != null && this.defaultValue instanceof IdType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public InstantType getDefaultValueInstantType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new InstantType();
-          if (!(this.defaultValue instanceof InstantType))
-            throw new FHIRException("Type mismatch: the type InstantType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (InstantType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueInstantType() { 
-          return this != null && this.defaultValue instanceof InstantType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public IntegerType getDefaultValueIntegerType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new IntegerType();
-          if (!(this.defaultValue instanceof IntegerType))
-            throw new FHIRException("Type mismatch: the type IntegerType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (IntegerType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueIntegerType() { 
-          return this != null && this.defaultValue instanceof IntegerType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Integer64Type getDefaultValueInteger64Type() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Integer64Type();
-          if (!(this.defaultValue instanceof Integer64Type))
-            throw new FHIRException("Type mismatch: the type Integer64Type was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Integer64Type) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueInteger64Type() { 
-          return this != null && this.defaultValue instanceof Integer64Type;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public MarkdownType getDefaultValueMarkdownType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new MarkdownType();
-          if (!(this.defaultValue instanceof MarkdownType))
-            throw new FHIRException("Type mismatch: the type MarkdownType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (MarkdownType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueMarkdownType() { 
-          return this != null && this.defaultValue instanceof MarkdownType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public OidType getDefaultValueOidType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new OidType();
-          if (!(this.defaultValue instanceof OidType))
-            throw new FHIRException("Type mismatch: the type OidType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (OidType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueOidType() { 
-          return this != null && this.defaultValue instanceof OidType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public PositiveIntType getDefaultValuePositiveIntType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new PositiveIntType();
-          if (!(this.defaultValue instanceof PositiveIntType))
-            throw new FHIRException("Type mismatch: the type PositiveIntType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (PositiveIntType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValuePositiveIntType() { 
-          return this != null && this.defaultValue instanceof PositiveIntType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public StringType getDefaultValueStringType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new StringType();
-          if (!(this.defaultValue instanceof StringType))
-            throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (StringType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueStringType() { 
-          return this != null && this.defaultValue instanceof StringType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public TimeType getDefaultValueTimeType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new TimeType();
-          if (!(this.defaultValue instanceof TimeType))
-            throw new FHIRException("Type mismatch: the type TimeType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (TimeType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueTimeType() { 
-          return this != null && this.defaultValue instanceof TimeType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public UnsignedIntType getDefaultValueUnsignedIntType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new UnsignedIntType();
-          if (!(this.defaultValue instanceof UnsignedIntType))
-            throw new FHIRException("Type mismatch: the type UnsignedIntType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (UnsignedIntType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueUnsignedIntType() { 
-          return this != null && this.defaultValue instanceof UnsignedIntType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public UriType getDefaultValueUriType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new UriType();
-          if (!(this.defaultValue instanceof UriType))
-            throw new FHIRException("Type mismatch: the type UriType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (UriType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueUriType() { 
-          return this != null && this.defaultValue instanceof UriType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public UrlType getDefaultValueUrlType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new UrlType();
-          if (!(this.defaultValue instanceof UrlType))
-            throw new FHIRException("Type mismatch: the type UrlType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (UrlType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueUrlType() { 
-          return this != null && this.defaultValue instanceof UrlType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public UuidType getDefaultValueUuidType() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new UuidType();
-          if (!(this.defaultValue instanceof UuidType))
-            throw new FHIRException("Type mismatch: the type UuidType was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (UuidType) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueUuidType() { 
-          return this != null && this.defaultValue instanceof UuidType;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Address getDefaultValueAddress() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Address();
-          if (!(this.defaultValue instanceof Address))
-            throw new FHIRException("Type mismatch: the type Address was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Address) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueAddress() { 
-          return this != null && this.defaultValue instanceof Address;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Age getDefaultValueAge() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Age();
-          if (!(this.defaultValue instanceof Age))
-            throw new FHIRException("Type mismatch: the type Age was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Age) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueAge() { 
-          return this != null && this.defaultValue instanceof Age;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Annotation getDefaultValueAnnotation() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Annotation();
-          if (!(this.defaultValue instanceof Annotation))
-            throw new FHIRException("Type mismatch: the type Annotation was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Annotation) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueAnnotation() { 
-          return this != null && this.defaultValue instanceof Annotation;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Attachment getDefaultValueAttachment() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Attachment();
-          if (!(this.defaultValue instanceof Attachment))
-            throw new FHIRException("Type mismatch: the type Attachment was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Attachment) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueAttachment() { 
-          return this != null && this.defaultValue instanceof Attachment;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public CodeableConcept getDefaultValueCodeableConcept() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new CodeableConcept();
-          if (!(this.defaultValue instanceof CodeableConcept))
-            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (CodeableConcept) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueCodeableConcept() { 
-          return this != null && this.defaultValue instanceof CodeableConcept;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Coding getDefaultValueCoding() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Coding();
-          if (!(this.defaultValue instanceof Coding))
-            throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Coding) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueCoding() { 
-          return this != null && this.defaultValue instanceof Coding;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public ContactPoint getDefaultValueContactPoint() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new ContactPoint();
-          if (!(this.defaultValue instanceof ContactPoint))
-            throw new FHIRException("Type mismatch: the type ContactPoint was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (ContactPoint) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueContactPoint() { 
-          return this != null && this.defaultValue instanceof ContactPoint;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Count getDefaultValueCount() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Count();
-          if (!(this.defaultValue instanceof Count))
-            throw new FHIRException("Type mismatch: the type Count was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Count) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueCount() { 
-          return this != null && this.defaultValue instanceof Count;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Distance getDefaultValueDistance() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Distance();
-          if (!(this.defaultValue instanceof Distance))
-            throw new FHIRException("Type mismatch: the type Distance was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Distance) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueDistance() { 
-          return this != null && this.defaultValue instanceof Distance;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Duration getDefaultValueDuration() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Duration();
-          if (!(this.defaultValue instanceof Duration))
-            throw new FHIRException("Type mismatch: the type Duration was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Duration) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueDuration() { 
-          return this != null && this.defaultValue instanceof Duration;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public HumanName getDefaultValueHumanName() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new HumanName();
-          if (!(this.defaultValue instanceof HumanName))
-            throw new FHIRException("Type mismatch: the type HumanName was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (HumanName) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueHumanName() { 
-          return this != null && this.defaultValue instanceof HumanName;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Identifier getDefaultValueIdentifier() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Identifier();
-          if (!(this.defaultValue instanceof Identifier))
-            throw new FHIRException("Type mismatch: the type Identifier was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Identifier) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueIdentifier() { 
-          return this != null && this.defaultValue instanceof Identifier;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Money getDefaultValueMoney() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Money();
-          if (!(this.defaultValue instanceof Money))
-            throw new FHIRException("Type mismatch: the type Money was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Money) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueMoney() { 
-          return this != null && this.defaultValue instanceof Money;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Period getDefaultValuePeriod() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Period();
-          if (!(this.defaultValue instanceof Period))
-            throw new FHIRException("Type mismatch: the type Period was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Period) this.defaultValue;
-        }
-
-        public boolean hasDefaultValuePeriod() { 
-          return this != null && this.defaultValue instanceof Period;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Quantity getDefaultValueQuantity() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Quantity();
-          if (!(this.defaultValue instanceof Quantity))
-            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Quantity) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueQuantity() { 
-          return this != null && this.defaultValue instanceof Quantity;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Range getDefaultValueRange() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Range();
-          if (!(this.defaultValue instanceof Range))
-            throw new FHIRException("Type mismatch: the type Range was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Range) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueRange() { 
-          return this != null && this.defaultValue instanceof Range;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Ratio getDefaultValueRatio() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Ratio();
-          if (!(this.defaultValue instanceof Ratio))
-            throw new FHIRException("Type mismatch: the type Ratio was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Ratio) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueRatio() { 
-          return this != null && this.defaultValue instanceof Ratio;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Reference getDefaultValueReference() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Reference();
-          if (!(this.defaultValue instanceof Reference))
-            throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Reference) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueReference() { 
-          return this != null && this.defaultValue instanceof Reference;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public SampledData getDefaultValueSampledData() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new SampledData();
-          if (!(this.defaultValue instanceof SampledData))
-            throw new FHIRException("Type mismatch: the type SampledData was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (SampledData) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueSampledData() { 
-          return this != null && this.defaultValue instanceof SampledData;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Signature getDefaultValueSignature() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Signature();
-          if (!(this.defaultValue instanceof Signature))
-            throw new FHIRException("Type mismatch: the type Signature was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Signature) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueSignature() { 
-          return this != null && this.defaultValue instanceof Signature;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Timing getDefaultValueTiming() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Timing();
-          if (!(this.defaultValue instanceof Timing))
-            throw new FHIRException("Type mismatch: the type Timing was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Timing) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueTiming() { 
-          return this != null && this.defaultValue instanceof Timing;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public ContactDetail getDefaultValueContactDetail() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new ContactDetail();
-          if (!(this.defaultValue instanceof ContactDetail))
-            throw new FHIRException("Type mismatch: the type ContactDetail was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (ContactDetail) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueContactDetail() { 
-          return this != null && this.defaultValue instanceof ContactDetail;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Contributor getDefaultValueContributor() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Contributor();
-          if (!(this.defaultValue instanceof Contributor))
-            throw new FHIRException("Type mismatch: the type Contributor was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Contributor) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueContributor() { 
-          return this != null && this.defaultValue instanceof Contributor;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public DataRequirement getDefaultValueDataRequirement() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new DataRequirement();
-          if (!(this.defaultValue instanceof DataRequirement))
-            throw new FHIRException("Type mismatch: the type DataRequirement was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (DataRequirement) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueDataRequirement() { 
-          return this != null && this.defaultValue instanceof DataRequirement;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Expression getDefaultValueExpression() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Expression();
-          if (!(this.defaultValue instanceof Expression))
-            throw new FHIRException("Type mismatch: the type Expression was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Expression) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueExpression() { 
-          return this != null && this.defaultValue instanceof Expression;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public ParameterDefinition getDefaultValueParameterDefinition() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new ParameterDefinition();
-          if (!(this.defaultValue instanceof ParameterDefinition))
-            throw new FHIRException("Type mismatch: the type ParameterDefinition was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (ParameterDefinition) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueParameterDefinition() { 
-          return this != null && this.defaultValue instanceof ParameterDefinition;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public RelatedArtifact getDefaultValueRelatedArtifact() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new RelatedArtifact();
-          if (!(this.defaultValue instanceof RelatedArtifact))
-            throw new FHIRException("Type mismatch: the type RelatedArtifact was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (RelatedArtifact) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueRelatedArtifact() { 
-          return this != null && this.defaultValue instanceof RelatedArtifact;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public TriggerDefinition getDefaultValueTriggerDefinition() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new TriggerDefinition();
-          if (!(this.defaultValue instanceof TriggerDefinition))
-            throw new FHIRException("Type mismatch: the type TriggerDefinition was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (TriggerDefinition) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueTriggerDefinition() { 
-          return this != null && this.defaultValue instanceof TriggerDefinition;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public UsageContext getDefaultValueUsageContext() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new UsageContext();
-          if (!(this.defaultValue instanceof UsageContext))
-            throw new FHIRException("Type mismatch: the type UsageContext was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (UsageContext) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueUsageContext() { 
-          return this != null && this.defaultValue instanceof UsageContext;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Dosage getDefaultValueDosage() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Dosage();
-          if (!(this.defaultValue instanceof Dosage))
-            throw new FHIRException("Type mismatch: the type Dosage was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Dosage) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueDosage() { 
-          return this != null && this.defaultValue instanceof Dosage;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A value to use if there is no existing value in the source object.)
-         */
-        public Meta getDefaultValueMeta() throws FHIRException { 
-          if (this.defaultValue == null)
-            this.defaultValue = new Meta();
-          if (!(this.defaultValue instanceof Meta))
-            throw new FHIRException("Type mismatch: the type Meta was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
-          return (Meta) this.defaultValue;
-        }
-
-        public boolean hasDefaultValueMeta() { 
-          return this != null && this.defaultValue instanceof Meta;
+        public boolean hasDefaultValueElement() { 
+          return this.defaultValue != null && !this.defaultValue.isEmpty();
         }
 
         public boolean hasDefaultValue() { 
@@ -4068,12 +3195,31 @@ public String toString() {
         }
 
         /**
-         * @param value {@link #defaultValue} (A value to use if there is no existing value in the source object.)
+         * @param value {@link #defaultValue} (A value to use if there is no existing value in the source object.). This is the underlying object with id, value and extensions. The accessor "getDefaultValue" gives direct access to the value
          */
-        public StructureMapGroupRuleSourceComponent setDefaultValue(DataType value) { 
-          if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
-            throw new Error("Not the right type for StructureMap.group.rule.source.defaultValue[x]: "+value.fhirType());
+        public StructureMapGroupRuleSourceComponent setDefaultValueElement(StringType value) { 
           this.defaultValue = value;
+          return this;
+        }
+
+        /**
+         * @return A value to use if there is no existing value in the source object.
+         */
+        public String getDefaultValue() { 
+          return this.defaultValue == null ? null : this.defaultValue.getValue();
+        }
+
+        /**
+         * @param value A value to use if there is no existing value in the source object.
+         */
+        public StructureMapGroupRuleSourceComponent setDefaultValue(String value) { 
+          if (Utilities.noString(value))
+            this.defaultValue = null;
+          else {
+            if (this.defaultValue == null)
+              this.defaultValue = new StringType();
+            this.defaultValue.setValue(value);
+          }
           return this;
         }
 
@@ -4377,7 +3523,7 @@ public String toString() {
           children.add(new Property("min", "integer", "Specified minimum cardinality for the element. This is optional; if present, it acts an implicit check on the input content.", 0, 1, min));
           children.add(new Property("max", "string", "Specified maximum cardinality for the element - a number or a \"*\". This is optional; if present, it acts an implicit check on the input content (* just serves as documentation; it's the default value).", 0, 1, max));
           children.add(new Property("type", "string", "Specified type for the element. This works as a condition on the mapping - use for polymorphic elements.", 0, 1, type));
-          children.add(new Property("defaultValue[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue));
+          children.add(new Property("defaultValue", "string", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue));
           children.add(new Property("element", "string", "Optional field for this source.", 0, 1, element));
           children.add(new Property("listMode", "code", "How to handle the list mode for this element.", 0, 1, listMode));
           children.add(new Property("variable", "id", "Named context for field, if a field is specified.", 0, 1, variable));
@@ -4393,59 +3539,7 @@ public String toString() {
           case 108114: /*min*/  return new Property("min", "integer", "Specified minimum cardinality for the element. This is optional; if present, it acts an implicit check on the input content.", 0, 1, min);
           case 107876: /*max*/  return new Property("max", "string", "Specified maximum cardinality for the element - a number or a \"*\". This is optional; if present, it acts an implicit check on the input content (* just serves as documentation; it's the default value).", 0, 1, max);
           case 3575610: /*type*/  return new Property("type", "string", "Specified type for the element. This works as a condition on the mapping - use for polymorphic elements.", 0, 1, type);
-          case 587922128: /*defaultValue[x]*/  return new Property("defaultValue[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -659125328: /*defaultValue*/  return new Property("defaultValue[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 1470297600: /*defaultValueBase64Binary*/  return new Property("defaultValue[x]", "base64Binary", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 600437336: /*defaultValueBoolean*/  return new Property("defaultValue[x]", "boolean", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 264593188: /*defaultValueCanonical*/  return new Property("defaultValue[x]", "canonical", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 1044993469: /*defaultValueCode*/  return new Property("defaultValue[x]", "code", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 1045010302: /*defaultValueDate*/  return new Property("defaultValue[x]", "date", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 1220374379: /*defaultValueDateTime*/  return new Property("defaultValue[x]", "dateTime", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 2077989249: /*defaultValueDecimal*/  return new Property("defaultValue[x]", "decimal", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -2059245333: /*defaultValueId*/  return new Property("defaultValue[x]", "id", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -1801671663: /*defaultValueInstant*/  return new Property("defaultValue[x]", "instant", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -1801189522: /*defaultValueInteger*/  return new Property("defaultValue[x]", "integer", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -71308628: /*defaultValueInteger64*/  return new Property("defaultValue[x]", "integer64", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -325436225: /*defaultValueMarkdown*/  return new Property("defaultValue[x]", "markdown", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 587910138: /*defaultValueOid*/  return new Property("defaultValue[x]", "oid", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -737344154: /*defaultValuePositiveInt*/  return new Property("defaultValue[x]", "positiveInt", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -320515103: /*defaultValueString*/  return new Property("defaultValue[x]", "string", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 1045494429: /*defaultValueTime*/  return new Property("defaultValue[x]", "time", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 539117290: /*defaultValueUnsignedInt*/  return new Property("defaultValue[x]", "unsignedInt", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 587916188: /*defaultValueUri*/  return new Property("defaultValue[x]", "uri", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 587916191: /*defaultValueUrl*/  return new Property("defaultValue[x]", "url", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 1045535627: /*defaultValueUuid*/  return new Property("defaultValue[x]", "uuid", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -611966428: /*defaultValueAddress*/  return new Property("defaultValue[x]", "Address", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 587896623: /*defaultValueAge*/  return new Property("defaultValue[x]", "Age", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -1851689217: /*defaultValueAnnotation*/  return new Property("defaultValue[x]", "Annotation", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 2034820339: /*defaultValueAttachment*/  return new Property("defaultValue[x]", "Attachment", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -410434095: /*defaultValueCodeableConcept*/  return new Property("defaultValue[x]", "CodeableConcept", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -783616198: /*defaultValueCoding*/  return new Property("defaultValue[x]", "Coding", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -344740576: /*defaultValueContactPoint*/  return new Property("defaultValue[x]", "ContactPoint", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -1964924097: /*defaultValueCount*/  return new Property("defaultValue[x]", "Count", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -283915323: /*defaultValueDistance*/  return new Property("defaultValue[x]", "Distance", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 1730579812: /*defaultValueDuration*/  return new Property("defaultValue[x]", "Duration", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -975393912: /*defaultValueHumanName*/  return new Property("defaultValue[x]", "HumanName", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -1915078535: /*defaultValueIdentifier*/  return new Property("defaultValue[x]", "Identifier", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -1955695888: /*defaultValueMoney*/  return new Property("defaultValue[x]", "Money", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -420255343: /*defaultValuePeriod*/  return new Property("defaultValue[x]", "Period", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -1857379237: /*defaultValueQuantity*/  return new Property("defaultValue[x]", "Quantity", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -1951495315: /*defaultValueRange*/  return new Property("defaultValue[x]", "Range", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -1951489477: /*defaultValueRatio*/  return new Property("defaultValue[x]", "Ratio", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -1488914053: /*defaultValueReference*/  return new Property("defaultValue[x]", "Reference", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -449641228: /*defaultValueSampledData*/  return new Property("defaultValue[x]", "SampledData", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 509825768: /*defaultValueSignature*/  return new Property("defaultValue[x]", "Signature", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -302193638: /*defaultValueTiming*/  return new Property("defaultValue[x]", "Timing", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 1845473985: /*defaultValueContactDetail*/  return new Property("defaultValue[x]", "ContactDetail", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 1793609483: /*defaultValueContributor*/  return new Property("defaultValue[x]", "Contributor", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 375217257: /*defaultValueDataRequirement*/  return new Property("defaultValue[x]", "DataRequirement", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -2092097944: /*defaultValueExpression*/  return new Property("defaultValue[x]", "Expression", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -701053940: /*defaultValueParameterDefinition*/  return new Property("defaultValue[x]", "ParameterDefinition", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 412877133: /*defaultValueRelatedArtifact*/  return new Property("defaultValue[x]", "RelatedArtifact", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 1913203547: /*defaultValueTriggerDefinition*/  return new Property("defaultValue[x]", "TriggerDefinition", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -701644642: /*defaultValueUsageContext*/  return new Property("defaultValue[x]", "UsageContext", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case -754548089: /*defaultValueDosage*/  return new Property("defaultValue[x]", "Dosage", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
-          case 1045282261: /*defaultValueMeta*/  return new Property("defaultValue[x]", "Meta", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
+          case -659125328: /*defaultValue*/  return new Property("defaultValue", "string", "A value to use if there is no existing value in the source object.", 0, 1, defaultValue);
           case -1662836996: /*element*/  return new Property("element", "string", "Optional field for this source.", 0, 1, element);
           case 1345445729: /*listMode*/  return new Property("listMode", "code", "How to handle the list mode for this element.", 0, 1, listMode);
           case -1249586564: /*variable*/  return new Property("variable", "id", "Named context for field, if a field is specified.", 0, 1, variable);
@@ -4464,7 +3558,7 @@ public String toString() {
         case 108114: /*min*/ return this.min == null ? new Base[0] : new Base[] {this.min}; // IntegerType
         case 107876: /*max*/ return this.max == null ? new Base[0] : new Base[] {this.max}; // StringType
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // StringType
-        case -659125328: /*defaultValue*/ return this.defaultValue == null ? new Base[0] : new Base[] {this.defaultValue}; // DataType
+        case -659125328: /*defaultValue*/ return this.defaultValue == null ? new Base[0] : new Base[] {this.defaultValue}; // StringType
         case -1662836996: /*element*/ return this.element == null ? new Base[0] : new Base[] {this.element}; // StringType
         case 1345445729: /*listMode*/ return this.listMode == null ? new Base[0] : new Base[] {this.listMode}; // Enumeration<StructureMapSourceListMode>
         case -1249586564: /*variable*/ return this.variable == null ? new Base[0] : new Base[] {this.variable}; // IdType
@@ -4492,7 +3586,7 @@ public String toString() {
           this.type = TypeConvertor.castToString(value); // StringType
           return value;
         case -659125328: // defaultValue
-          this.defaultValue = TypeConvertor.castToType(value); // DataType
+          this.defaultValue = TypeConvertor.castToString(value); // StringType
           return value;
         case -1662836996: // element
           this.element = TypeConvertor.castToString(value); // StringType
@@ -4528,8 +3622,8 @@ public String toString() {
           this.max = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("type")) {
           this.type = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("defaultValue[x]")) {
-          this.defaultValue = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("defaultValue")) {
+          this.defaultValue = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("element")) {
           this.element = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("listMode")) {
@@ -4555,8 +3649,7 @@ public String toString() {
         case 108114:  return getMinElement();
         case 107876:  return getMaxElement();
         case 3575610:  return getTypeElement();
-        case 587922128:  return getDefaultValue();
-        case -659125328:  return getDefaultValue();
+        case -659125328:  return getDefaultValueElement();
         case -1662836996:  return getElementElement();
         case 1345445729:  return getListModeElement();
         case -1249586564:  return getVariableElement();
@@ -4575,7 +3668,7 @@ public String toString() {
         case 108114: /*min*/ return new String[] {"integer"};
         case 107876: /*max*/ return new String[] {"string"};
         case 3575610: /*type*/ return new String[] {"string"};
-        case -659125328: /*defaultValue*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
+        case -659125328: /*defaultValue*/ return new String[] {"string"};
         case -1662836996: /*element*/ return new String[] {"string"};
         case 1345445729: /*listMode*/ return new String[] {"code"};
         case -1249586564: /*variable*/ return new String[] {"id"};
@@ -4601,209 +3694,8 @@ public String toString() {
         else if (name.equals("type")) {
           throw new FHIRException("Cannot call addChild on a primitive type StructureMap.group.rule.source.type");
         }
-        else if (name.equals("defaultValueBase64Binary")) {
-          this.defaultValue = new Base64BinaryType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueBoolean")) {
-          this.defaultValue = new BooleanType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueCanonical")) {
-          this.defaultValue = new CanonicalType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueCode")) {
-          this.defaultValue = new CodeType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueDate")) {
-          this.defaultValue = new DateType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueDateTime")) {
-          this.defaultValue = new DateTimeType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueDecimal")) {
-          this.defaultValue = new DecimalType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueId")) {
-          this.defaultValue = new IdType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueInstant")) {
-          this.defaultValue = new InstantType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueInteger")) {
-          this.defaultValue = new IntegerType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueInteger64")) {
-          this.defaultValue = new Integer64Type();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueMarkdown")) {
-          this.defaultValue = new MarkdownType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueOid")) {
-          this.defaultValue = new OidType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValuePositiveInt")) {
-          this.defaultValue = new PositiveIntType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueString")) {
-          this.defaultValue = new StringType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueTime")) {
-          this.defaultValue = new TimeType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueUnsignedInt")) {
-          this.defaultValue = new UnsignedIntType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueUri")) {
-          this.defaultValue = new UriType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueUrl")) {
-          this.defaultValue = new UrlType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueUuid")) {
-          this.defaultValue = new UuidType();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueAddress")) {
-          this.defaultValue = new Address();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueAge")) {
-          this.defaultValue = new Age();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueAnnotation")) {
-          this.defaultValue = new Annotation();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueAttachment")) {
-          this.defaultValue = new Attachment();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueCodeableConcept")) {
-          this.defaultValue = new CodeableConcept();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueCoding")) {
-          this.defaultValue = new Coding();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueContactPoint")) {
-          this.defaultValue = new ContactPoint();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueCount")) {
-          this.defaultValue = new Count();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueDistance")) {
-          this.defaultValue = new Distance();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueDuration")) {
-          this.defaultValue = new Duration();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueHumanName")) {
-          this.defaultValue = new HumanName();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueIdentifier")) {
-          this.defaultValue = new Identifier();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueMoney")) {
-          this.defaultValue = new Money();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValuePeriod")) {
-          this.defaultValue = new Period();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueQuantity")) {
-          this.defaultValue = new Quantity();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueRange")) {
-          this.defaultValue = new Range();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueRatio")) {
-          this.defaultValue = new Ratio();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueReference")) {
-          this.defaultValue = new Reference();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueSampledData")) {
-          this.defaultValue = new SampledData();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueSignature")) {
-          this.defaultValue = new Signature();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueTiming")) {
-          this.defaultValue = new Timing();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueContactDetail")) {
-          this.defaultValue = new ContactDetail();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueContributor")) {
-          this.defaultValue = new Contributor();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueDataRequirement")) {
-          this.defaultValue = new DataRequirement();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueExpression")) {
-          this.defaultValue = new Expression();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueParameterDefinition")) {
-          this.defaultValue = new ParameterDefinition();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueRelatedArtifact")) {
-          this.defaultValue = new RelatedArtifact();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueTriggerDefinition")) {
-          this.defaultValue = new TriggerDefinition();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueUsageContext")) {
-          this.defaultValue = new UsageContext();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueDosage")) {
-          this.defaultValue = new Dosage();
-          return this.defaultValue;
-        }
-        else if (name.equals("defaultValueMeta")) {
-          this.defaultValue = new Meta();
-          return this.defaultValue;
+        else if (name.equals("defaultValue")) {
+          throw new FHIRException("Cannot call addChild on a primitive type StructureMap.group.rule.source.defaultValue");
         }
         else if (name.equals("element")) {
           throw new FHIRException("Cannot call addChild on a primitive type StructureMap.group.rule.source.element");
@@ -4869,9 +3761,9 @@ public String toString() {
           return false;
         StructureMapGroupRuleSourceComponent o = (StructureMapGroupRuleSourceComponent) other_;
         return compareValues(context, o.context, true) && compareValues(min, o.min, true) && compareValues(max, o.max, true)
-           && compareValues(type, o.type, true) && compareValues(element, o.element, true) && compareValues(listMode, o.listMode, true)
-           && compareValues(variable, o.variable, true) && compareValues(condition, o.condition, true) && compareValues(check, o.check, true)
-           && compareValues(logMessage, o.logMessage, true);
+           && compareValues(type, o.type, true) && compareValues(defaultValue, o.defaultValue, true) && compareValues(element, o.element, true)
+           && compareValues(listMode, o.listMode, true) && compareValues(variable, o.variable, true) && compareValues(condition, o.condition, true)
+           && compareValues(check, o.check, true) && compareValues(logMessage, o.logMessage, true);
       }
 
       public boolean isEmpty() {
@@ -4894,38 +3786,30 @@ public String toString() {
     @Block()
     public static class StructureMapGroupRuleTargetComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Type or variable this rule applies to.
+         * Variable this rule applies to.
          */
         @Child(name = "context", type = {IdType.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Type or variable this rule applies to", formalDefinition="Type or variable this rule applies to." )
+        @Description(shortDefinition="Variable this rule applies to", formalDefinition="Variable this rule applies to." )
         protected IdType context;
-
-        /**
-         * How to interpret the context.
-         */
-        @Child(name = "contextType", type = {CodeType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="type | variable", formalDefinition="How to interpret the context." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/map-context-type")
-        protected Enumeration<StructureMapContextType> contextType;
 
         /**
          * Field to create in the context.
          */
-        @Child(name = "element", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "element", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Field to create in the context", formalDefinition="Field to create in the context." )
         protected StringType element;
 
         /**
          * Named context for field, if desired, and a field is specified.
          */
-        @Child(name = "variable", type = {IdType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "variable", type = {IdType.class}, order=3, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Named context for field, if desired, and a field is specified", formalDefinition="Named context for field, if desired, and a field is specified." )
         protected IdType variable;
 
         /**
          * If field is a list, how to manage the list.
          */
-        @Child(name = "listMode", type = {CodeType.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Child(name = "listMode", type = {CodeType.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="first | share | last | collate", formalDefinition="If field is a list, how to manage the list." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/map-target-list-mode")
         protected List<Enumeration<StructureMapTargetListMode>> listMode;
@@ -4933,14 +3817,14 @@ public String toString() {
         /**
          * Internal rule reference for shared list items.
          */
-        @Child(name = "listRuleId", type = {IdType.class}, order=6, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "listRuleId", type = {IdType.class}, order=5, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Internal rule reference for shared list items", formalDefinition="Internal rule reference for shared list items." )
         protected IdType listRuleId;
 
         /**
          * How the data is copied / created.
          */
-        @Child(name = "transform", type = {CodeType.class}, order=7, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "transform", type = {CodeType.class}, order=6, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="create | copy +", formalDefinition="How the data is copied / created." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/map-transform")
         protected Enumeration<StructureMapTransform> transform;
@@ -4948,11 +3832,11 @@ public String toString() {
         /**
          * Parameters to the transform.
          */
-        @Child(name = "parameter", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Child(name = "parameter", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Parameters to the transform", formalDefinition="Parameters to the transform." )
         protected List<StructureMapGroupRuleTargetParameterComponent> parameter;
 
-        private static final long serialVersionUID = -1441766429L;
+        private static final long serialVersionUID = 1225668521L;
 
     /**
      * Constructor
@@ -4962,7 +3846,7 @@ public String toString() {
       }
 
         /**
-         * @return {@link #context} (Type or variable this rule applies to.). This is the underlying object with id, value and extensions. The accessor "getContext" gives direct access to the value
+         * @return {@link #context} (Variable this rule applies to.). This is the underlying object with id, value and extensions. The accessor "getContext" gives direct access to the value
          */
         public IdType getContextElement() { 
           if (this.context == null)
@@ -4982,7 +3866,7 @@ public String toString() {
         }
 
         /**
-         * @param value {@link #context} (Type or variable this rule applies to.). This is the underlying object with id, value and extensions. The accessor "getContext" gives direct access to the value
+         * @param value {@link #context} (Variable this rule applies to.). This is the underlying object with id, value and extensions. The accessor "getContext" gives direct access to the value
          */
         public StructureMapGroupRuleTargetComponent setContextElement(IdType value) { 
           this.context = value;
@@ -4990,14 +3874,14 @@ public String toString() {
         }
 
         /**
-         * @return Type or variable this rule applies to.
+         * @return Variable this rule applies to.
          */
         public String getContext() { 
           return this.context == null ? null : this.context.getValue();
         }
 
         /**
-         * @param value Type or variable this rule applies to.
+         * @param value Variable this rule applies to.
          */
         public StructureMapGroupRuleTargetComponent setContext(String value) { 
           if (Utilities.noString(value))
@@ -5006,55 +3890,6 @@ public String toString() {
             if (this.context == null)
               this.context = new IdType();
             this.context.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #contextType} (How to interpret the context.). This is the underlying object with id, value and extensions. The accessor "getContextType" gives direct access to the value
-         */
-        public Enumeration<StructureMapContextType> getContextTypeElement() { 
-          if (this.contextType == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapGroupRuleTargetComponent.contextType");
-            else if (Configuration.doAutoCreate())
-              this.contextType = new Enumeration<StructureMapContextType>(new StructureMapContextTypeEnumFactory()); // bb
-          return this.contextType;
-        }
-
-        public boolean hasContextTypeElement() { 
-          return this.contextType != null && !this.contextType.isEmpty();
-        }
-
-        public boolean hasContextType() { 
-          return this.contextType != null && !this.contextType.isEmpty();
-        }
-
-        /**
-         * @param value {@link #contextType} (How to interpret the context.). This is the underlying object with id, value and extensions. The accessor "getContextType" gives direct access to the value
-         */
-        public StructureMapGroupRuleTargetComponent setContextTypeElement(Enumeration<StructureMapContextType> value) { 
-          this.contextType = value;
-          return this;
-        }
-
-        /**
-         * @return How to interpret the context.
-         */
-        public StructureMapContextType getContextType() { 
-          return this.contextType == null ? null : this.contextType.getValue();
-        }
-
-        /**
-         * @param value How to interpret the context.
-         */
-        public StructureMapGroupRuleTargetComponent setContextType(StructureMapContextType value) { 
-          if (value == null)
-            this.contextType = null;
-          else {
-            if (this.contextType == null)
-              this.contextType = new Enumeration<StructureMapContextType>(new StructureMapContextTypeEnumFactory());
-            this.contextType.setValue(value);
           }
           return this;
         }
@@ -5371,8 +4206,7 @@ public String toString() {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("context", "id", "Type or variable this rule applies to.", 0, 1, context));
-          children.add(new Property("contextType", "code", "How to interpret the context.", 0, 1, contextType));
+          children.add(new Property("context", "id", "Variable this rule applies to.", 0, 1, context));
           children.add(new Property("element", "string", "Field to create in the context.", 0, 1, element));
           children.add(new Property("variable", "id", "Named context for field, if desired, and a field is specified.", 0, 1, variable));
           children.add(new Property("listMode", "code", "If field is a list, how to manage the list.", 0, java.lang.Integer.MAX_VALUE, listMode));
@@ -5384,8 +4218,7 @@ public String toString() {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 951530927: /*context*/  return new Property("context", "id", "Type or variable this rule applies to.", 0, 1, context);
-          case -102839927: /*contextType*/  return new Property("contextType", "code", "How to interpret the context.", 0, 1, contextType);
+          case 951530927: /*context*/  return new Property("context", "id", "Variable this rule applies to.", 0, 1, context);
           case -1662836996: /*element*/  return new Property("element", "string", "Field to create in the context.", 0, 1, element);
           case -1249586564: /*variable*/  return new Property("variable", "id", "Named context for field, if desired, and a field is specified.", 0, 1, variable);
           case 1345445729: /*listMode*/  return new Property("listMode", "code", "If field is a list, how to manage the list.", 0, java.lang.Integer.MAX_VALUE, listMode);
@@ -5401,7 +4234,6 @@ public String toString() {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 951530927: /*context*/ return this.context == null ? new Base[0] : new Base[] {this.context}; // IdType
-        case -102839927: /*contextType*/ return this.contextType == null ? new Base[0] : new Base[] {this.contextType}; // Enumeration<StructureMapContextType>
         case -1662836996: /*element*/ return this.element == null ? new Base[0] : new Base[] {this.element}; // StringType
         case -1249586564: /*variable*/ return this.variable == null ? new Base[0] : new Base[] {this.variable}; // IdType
         case 1345445729: /*listMode*/ return this.listMode == null ? new Base[0] : this.listMode.toArray(new Base[this.listMode.size()]); // Enumeration<StructureMapTargetListMode>
@@ -5418,10 +4250,6 @@ public String toString() {
         switch (hash) {
         case 951530927: // context
           this.context = TypeConvertor.castToId(value); // IdType
-          return value;
-        case -102839927: // contextType
-          value = new StructureMapContextTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.contextType = (Enumeration) value; // Enumeration<StructureMapContextType>
           return value;
         case -1662836996: // element
           this.element = TypeConvertor.castToString(value); // StringType
@@ -5452,9 +4280,6 @@ public String toString() {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("context")) {
           this.context = TypeConvertor.castToId(value); // IdType
-        } else if (name.equals("contextType")) {
-          value = new StructureMapContextTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.contextType = (Enumeration) value; // Enumeration<StructureMapContextType>
         } else if (name.equals("element")) {
           this.element = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("variable")) {
@@ -5478,7 +4303,6 @@ public String toString() {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 951530927:  return getContextElement();
-        case -102839927:  return getContextTypeElement();
         case -1662836996:  return getElementElement();
         case -1249586564:  return getVariableElement();
         case 1345445729:  return addListModeElement();
@@ -5494,7 +4318,6 @@ public String toString() {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 951530927: /*context*/ return new String[] {"id"};
-        case -102839927: /*contextType*/ return new String[] {"code"};
         case -1662836996: /*element*/ return new String[] {"string"};
         case -1249586564: /*variable*/ return new String[] {"id"};
         case 1345445729: /*listMode*/ return new String[] {"code"};
@@ -5510,9 +4333,6 @@ public String toString() {
       public Base addChild(String name) throws FHIRException {
         if (name.equals("context")) {
           throw new FHIRException("Cannot call addChild on a primitive type StructureMap.group.rule.target.context");
-        }
-        else if (name.equals("contextType")) {
-          throw new FHIRException("Cannot call addChild on a primitive type StructureMap.group.rule.target.contextType");
         }
         else if (name.equals("element")) {
           throw new FHIRException("Cannot call addChild on a primitive type StructureMap.group.rule.target.element");
@@ -5545,7 +4365,6 @@ public String toString() {
       public void copyValues(StructureMapGroupRuleTargetComponent dst) {
         super.copyValues(dst);
         dst.context = context == null ? null : context.copy();
-        dst.contextType = contextType == null ? null : contextType.copy();
         dst.element = element == null ? null : element.copy();
         dst.variable = variable == null ? null : variable.copy();
         if (listMode != null) {
@@ -5569,9 +4388,9 @@ public String toString() {
         if (!(other_ instanceof StructureMapGroupRuleTargetComponent))
           return false;
         StructureMapGroupRuleTargetComponent o = (StructureMapGroupRuleTargetComponent) other_;
-        return compareDeep(context, o.context, true) && compareDeep(contextType, o.contextType, true) && compareDeep(element, o.element, true)
-           && compareDeep(variable, o.variable, true) && compareDeep(listMode, o.listMode, true) && compareDeep(listRuleId, o.listRuleId, true)
-           && compareDeep(transform, o.transform, true) && compareDeep(parameter, o.parameter, true);
+        return compareDeep(context, o.context, true) && compareDeep(element, o.element, true) && compareDeep(variable, o.variable, true)
+           && compareDeep(listMode, o.listMode, true) && compareDeep(listRuleId, o.listRuleId, true) && compareDeep(transform, o.transform, true)
+           && compareDeep(parameter, o.parameter, true);
       }
 
       @Override
@@ -5581,14 +4400,14 @@ public String toString() {
         if (!(other_ instanceof StructureMapGroupRuleTargetComponent))
           return false;
         StructureMapGroupRuleTargetComponent o = (StructureMapGroupRuleTargetComponent) other_;
-        return compareValues(context, o.context, true) && compareValues(contextType, o.contextType, true) && compareValues(element, o.element, true)
-           && compareValues(variable, o.variable, true) && compareValues(listMode, o.listMode, true) && compareValues(listRuleId, o.listRuleId, true)
-           && compareValues(transform, o.transform, true);
+        return compareValues(context, o.context, true) && compareValues(element, o.element, true) && compareValues(variable, o.variable, true)
+           && compareValues(listMode, o.listMode, true) && compareValues(listRuleId, o.listRuleId, true) && compareValues(transform, o.transform, true)
+          ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(context, contextType, element
-          , variable, listMode, listRuleId, transform, parameter);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(context, element, variable
+          , listMode, listRuleId, transform, parameter);
       }
 
   public String fhirType() {
@@ -5608,7 +4427,7 @@ public String toString() {
         /**
          * Parameter value - variable or literal.
          */
-        @Child(name = "value", type = {IdType.class, StringType.class, BooleanType.class, IntegerType.class, DecimalType.class}, order=1, min=1, max=1, modifier=false, summary=true)
+        @Child(name = "value", type = {IdType.class, StringType.class, BooleanType.class, IntegerType.class, DecimalType.class, DateType.class, TimeType.class, DateTimeType.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Parameter value - variable or literal", formalDefinition="Parameter value - variable or literal." )
         protected DataType value;
 
@@ -5711,6 +4530,51 @@ public String toString() {
           return this != null && this.value instanceof DecimalType;
         }
 
+        /**
+         * @return {@link #value} (Parameter value - variable or literal.)
+         */
+        public DateType getValueDateType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DateType();
+          if (!(this.value instanceof DateType))
+            throw new FHIRException("Type mismatch: the type DateType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DateType) this.value;
+        }
+
+        public boolean hasValueDateType() { 
+          return this != null && this.value instanceof DateType;
+        }
+
+        /**
+         * @return {@link #value} (Parameter value - variable or literal.)
+         */
+        public TimeType getValueTimeType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new TimeType();
+          if (!(this.value instanceof TimeType))
+            throw new FHIRException("Type mismatch: the type TimeType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (TimeType) this.value;
+        }
+
+        public boolean hasValueTimeType() { 
+          return this != null && this.value instanceof TimeType;
+        }
+
+        /**
+         * @return {@link #value} (Parameter value - variable or literal.)
+         */
+        public DateTimeType getValueDateTimeType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DateTimeType();
+          if (!(this.value instanceof DateTimeType))
+            throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DateTimeType) this.value;
+        }
+
+        public boolean hasValueDateTimeType() { 
+          return this != null && this.value instanceof DateTimeType;
+        }
+
         public boolean hasValue() { 
           return this.value != null && !this.value.isEmpty();
         }
@@ -5719,7 +4583,7 @@ public String toString() {
          * @param value {@link #value} (Parameter value - variable or literal.)
          */
         public StructureMapGroupRuleTargetParameterComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof IdType || value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof DecimalType))
+          if (value != null && !(value instanceof IdType || value instanceof StringType || value instanceof BooleanType || value instanceof IntegerType || value instanceof DecimalType || value instanceof DateType || value instanceof TimeType || value instanceof DateTimeType))
             throw new Error("Not the right type for StructureMap.group.rule.target.parameter.value[x]: "+value.fhirType());
           this.value = value;
           return this;
@@ -5727,19 +4591,22 @@ public String toString() {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("value[x]", "id|string|boolean|integer|decimal", "Parameter value - variable or literal.", 0, 1, value));
+          children.add(new Property("value[x]", "id|string|boolean|integer|decimal|date|time|dateTime", "Parameter value - variable or literal.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "id|string|boolean|integer|decimal", "Parameter value - variable or literal.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "id|string|boolean|integer|decimal", "Parameter value - variable or literal.", 0, 1, value);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "id|string|boolean|integer|decimal|date|time|dateTime", "Parameter value - variable or literal.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "id|string|boolean|integer|decimal|date|time|dateTime", "Parameter value - variable or literal.", 0, 1, value);
           case 231604844: /*valueId*/  return new Property("value[x]", "id", "Parameter value - variable or literal.", 0, 1, value);
           case -1424603934: /*valueString*/  return new Property("value[x]", "string", "Parameter value - variable or literal.", 0, 1, value);
           case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "Parameter value - variable or literal.", 0, 1, value);
           case -1668204915: /*valueInteger*/  return new Property("value[x]", "integer", "Parameter value - variable or literal.", 0, 1, value);
           case -2083993440: /*valueDecimal*/  return new Property("value[x]", "decimal", "Parameter value - variable or literal.", 0, 1, value);
+          case -766192449: /*valueDate*/  return new Property("value[x]", "date", "Parameter value - variable or literal.", 0, 1, value);
+          case -765708322: /*valueTime*/  return new Property("value[x]", "time", "Parameter value - variable or literal.", 0, 1, value);
+          case 1047929900: /*valueDateTime*/  return new Property("value[x]", "dateTime", "Parameter value - variable or literal.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -5787,7 +4654,7 @@ public String toString() {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 111972721: /*value*/ return new String[] {"id", "string", "boolean", "integer", "decimal"};
+        case 111972721: /*value*/ return new String[] {"id", "string", "boolean", "integer", "decimal", "date", "time", "dateTime"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -5813,6 +4680,18 @@ public String toString() {
         }
         else if (name.equals("valueDecimal")) {
           this.value = new DecimalType();
+          return this.value;
+        }
+        else if (name.equals("valueDate")) {
+          this.value = new DateType();
+          return this.value;
+        }
+        else if (name.equals("valueTime")) {
+          this.value = new TimeType();
+          return this.value;
+        }
+        else if (name.equals("valueDateTime")) {
+          this.value = new DateTimeType();
           return this.value;
         }
         else
@@ -5876,13 +4755,13 @@ public String toString() {
         protected IdType name;
 
         /**
-         * Variable to pass to the rule or group.
+         * Parameter to pass to the rule or group.
          */
-        @Child(name = "variable", type = {StringType.class}, order=2, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Variable to pass to the rule or group", formalDefinition="Variable to pass to the rule or group." )
-        protected List<StringType> variable;
+        @Child(name = "parameter", type = {StructureMapGroupRuleTargetParameterComponent.class}, order=2, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Description(shortDefinition="Parameter to pass to the rule or group", formalDefinition="Parameter to pass to the rule or group." )
+        protected List<StructureMapGroupRuleTargetParameterComponent> parameter;
 
-        private static final long serialVersionUID = 1021661591L;
+        private static final long serialVersionUID = -290346576L;
 
     /**
      * Constructor
@@ -5894,10 +4773,10 @@ public String toString() {
     /**
      * Constructor
      */
-      public StructureMapGroupRuleDependentComponent(String name, String variable) {
+      public StructureMapGroupRuleDependentComponent(String name, StructureMapGroupRuleTargetParameterComponent parameter) {
         super();
         this.setName(name);
-        this.addVariable(variable);
+        this.addParameter(parameter);
       }
 
         /**
@@ -5946,77 +4825,69 @@ public String toString() {
         }
 
         /**
-         * @return {@link #variable} (Variable to pass to the rule or group.)
+         * @return {@link #parameter} (Parameter to pass to the rule or group.)
          */
-        public List<StringType> getVariable() { 
-          if (this.variable == null)
-            this.variable = new ArrayList<StringType>();
-          return this.variable;
+        public List<StructureMapGroupRuleTargetParameterComponent> getParameter() { 
+          if (this.parameter == null)
+            this.parameter = new ArrayList<StructureMapGroupRuleTargetParameterComponent>();
+          return this.parameter;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public StructureMapGroupRuleDependentComponent setVariable(List<StringType> theVariable) { 
-          this.variable = theVariable;
+        public StructureMapGroupRuleDependentComponent setParameter(List<StructureMapGroupRuleTargetParameterComponent> theParameter) { 
+          this.parameter = theParameter;
           return this;
         }
 
-        public boolean hasVariable() { 
-          if (this.variable == null)
+        public boolean hasParameter() { 
+          if (this.parameter == null)
             return false;
-          for (StringType item : this.variable)
+          for (StructureMapGroupRuleTargetParameterComponent item : this.parameter)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        /**
-         * @return {@link #variable} (Variable to pass to the rule or group.)
-         */
-        public StringType addVariableElement() {//2 
-          StringType t = new StringType();
-          if (this.variable == null)
-            this.variable = new ArrayList<StringType>();
-          this.variable.add(t);
+        public StructureMapGroupRuleTargetParameterComponent addParameter() { //3
+          StructureMapGroupRuleTargetParameterComponent t = new StructureMapGroupRuleTargetParameterComponent();
+          if (this.parameter == null)
+            this.parameter = new ArrayList<StructureMapGroupRuleTargetParameterComponent>();
+          this.parameter.add(t);
           return t;
         }
 
-        /**
-         * @param value {@link #variable} (Variable to pass to the rule or group.)
-         */
-        public StructureMapGroupRuleDependentComponent addVariable(String value) { //1
-          StringType t = new StringType();
-          t.setValue(value);
-          if (this.variable == null)
-            this.variable = new ArrayList<StringType>();
-          this.variable.add(t);
+        public StructureMapGroupRuleDependentComponent addParameter(StructureMapGroupRuleTargetParameterComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.parameter == null)
+            this.parameter = new ArrayList<StructureMapGroupRuleTargetParameterComponent>();
+          this.parameter.add(t);
           return this;
         }
 
         /**
-         * @param value {@link #variable} (Variable to pass to the rule or group.)
+         * @return The first repetition of repeating field {@link #parameter}, creating it if it does not already exist {3}
          */
-        public boolean hasVariable(String value) { 
-          if (this.variable == null)
-            return false;
-          for (StringType v : this.variable)
-            if (v.getValue().equals(value)) // string
-              return true;
-          return false;
+        public StructureMapGroupRuleTargetParameterComponent getParameterFirstRep() { 
+          if (getParameter().isEmpty()) {
+            addParameter();
+          }
+          return getParameter().get(0);
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("name", "id", "Name of a rule or group to apply.", 0, 1, name));
-          children.add(new Property("variable", "string", "Variable to pass to the rule or group.", 0, java.lang.Integer.MAX_VALUE, variable));
+          children.add(new Property("parameter", "@StructureMap.group.rule.target.parameter", "Parameter to pass to the rule or group.", 0, java.lang.Integer.MAX_VALUE, parameter));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3373707: /*name*/  return new Property("name", "id", "Name of a rule or group to apply.", 0, 1, name);
-          case -1249586564: /*variable*/  return new Property("variable", "string", "Variable to pass to the rule or group.", 0, java.lang.Integer.MAX_VALUE, variable);
+          case 1954460585: /*parameter*/  return new Property("parameter", "@StructureMap.group.rule.target.parameter", "Parameter to pass to the rule or group.", 0, java.lang.Integer.MAX_VALUE, parameter);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -6026,7 +4897,7 @@ public String toString() {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // IdType
-        case -1249586564: /*variable*/ return this.variable == null ? new Base[0] : this.variable.toArray(new Base[this.variable.size()]); // StringType
+        case 1954460585: /*parameter*/ return this.parameter == null ? new Base[0] : this.parameter.toArray(new Base[this.parameter.size()]); // StructureMapGroupRuleTargetParameterComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -6038,8 +4909,8 @@ public String toString() {
         case 3373707: // name
           this.name = TypeConvertor.castToId(value); // IdType
           return value;
-        case -1249586564: // variable
-          this.getVariable().add(TypeConvertor.castToString(value)); // StringType
+        case 1954460585: // parameter
+          this.getParameter().add((StructureMapGroupRuleTargetParameterComponent) value); // StructureMapGroupRuleTargetParameterComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -6050,8 +4921,8 @@ public String toString() {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("name")) {
           this.name = TypeConvertor.castToId(value); // IdType
-        } else if (name.equals("variable")) {
-          this.getVariable().add(TypeConvertor.castToString(value));
+        } else if (name.equals("parameter")) {
+          this.getParameter().add((StructureMapGroupRuleTargetParameterComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -6061,7 +4932,7 @@ public String toString() {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3373707:  return getNameElement();
-        case -1249586564:  return addVariableElement();
+        case 1954460585:  return addParameter(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -6071,7 +4942,7 @@ public String toString() {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3373707: /*name*/ return new String[] {"id"};
-        case -1249586564: /*variable*/ return new String[] {"string"};
+        case 1954460585: /*parameter*/ return new String[] {"@StructureMap.group.rule.target.parameter"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -6082,8 +4953,8 @@ public String toString() {
         if (name.equals("name")) {
           throw new FHIRException("Cannot call addChild on a primitive type StructureMap.group.rule.dependent.name");
         }
-        else if (name.equals("variable")) {
-          throw new FHIRException("Cannot call addChild on a primitive type StructureMap.group.rule.dependent.variable");
+        else if (name.equals("parameter")) {
+          return addParameter();
         }
         else
           return super.addChild(name);
@@ -6098,10 +4969,10 @@ public String toString() {
       public void copyValues(StructureMapGroupRuleDependentComponent dst) {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
-        if (variable != null) {
-          dst.variable = new ArrayList<StringType>();
-          for (StringType i : variable)
-            dst.variable.add(i.copy());
+        if (parameter != null) {
+          dst.parameter = new ArrayList<StructureMapGroupRuleTargetParameterComponent>();
+          for (StructureMapGroupRuleTargetParameterComponent i : parameter)
+            dst.parameter.add(i.copy());
         };
       }
 
@@ -6112,7 +4983,7 @@ public String toString() {
         if (!(other_ instanceof StructureMapGroupRuleDependentComponent))
           return false;
         StructureMapGroupRuleDependentComponent o = (StructureMapGroupRuleDependentComponent) other_;
-        return compareDeep(name, o.name, true) && compareDeep(variable, o.variable, true);
+        return compareDeep(name, o.name, true) && compareDeep(parameter, o.parameter, true);
       }
 
       @Override
@@ -6122,11 +4993,11 @@ public String toString() {
         if (!(other_ instanceof StructureMapGroupRuleDependentComponent))
           return false;
         StructureMapGroupRuleDependentComponent o = (StructureMapGroupRuleDependentComponent) other_;
-        return compareValues(name, o.name, true) && compareValues(variable, o.variable, true);
+        return compareValues(name, o.name, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, variable);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, parameter);
       }
 
   public String fhirType() {
@@ -8341,7 +7212,7 @@ public String toString() {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
-// Manual code (from Configuration.txt)t:
+// Manual code (from Configuration.txt):
 public String toString() {
     return StructureMapUtilities.render(this);
   }

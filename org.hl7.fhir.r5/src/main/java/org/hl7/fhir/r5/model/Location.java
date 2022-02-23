@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -83,7 +83,6 @@ public class Location extends DomainResource {
           switch (this) {
             case INSTANCE: return "instance";
             case KIND: return "kind";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -91,7 +90,6 @@ public class Location extends DomainResource {
           switch (this) {
             case INSTANCE: return "http://hl7.org/fhir/location-mode";
             case KIND: return "http://hl7.org/fhir/location-mode";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,7 +97,6 @@ public class Location extends DomainResource {
           switch (this) {
             case INSTANCE: return "The Location resource represents a specific instance of a location (e.g. Operating Theatre 1A).";
             case KIND: return "The Location represents a class of locations (e.g. Any Operating Theatre) although this class of locations could be constrained within a specific boundary (such as organization, or parent location, address etc.).";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -107,7 +104,6 @@ public class Location extends DomainResource {
           switch (this) {
             case INSTANCE: return "Instance";
             case KIND: return "Kind";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -186,7 +182,6 @@ public class Location extends DomainResource {
             case ACTIVE: return "active";
             case SUSPENDED: return "suspended";
             case INACTIVE: return "inactive";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -195,7 +190,6 @@ public class Location extends DomainResource {
             case ACTIVE: return "http://hl7.org/fhir/location-status";
             case SUSPENDED: return "http://hl7.org/fhir/location-status";
             case INACTIVE: return "http://hl7.org/fhir/location-status";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -204,7 +198,6 @@ public class Location extends DomainResource {
             case ACTIVE: return "The location is operational.";
             case SUSPENDED: return "The location is temporarily closed.";
             case INACTIVE: return "The location is no longer used.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -213,7 +206,6 @@ public class Location extends DomainResource {
             case ACTIVE: return "Active";
             case SUSPENDED: return "Suspended";
             case INACTIVE: return "Inactive";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -2474,14 +2466,12 @@ public class Location extends DomainResource {
    * Description: <b>Search for locations where the location.position is near to, or within a specified distance of, the provided coordinates expressed as [latitude]|[longitude]|[distance]|[units] (using the WGS84 datum, see notes).
 If the units are omitted, then kms should be assumed. If the distance is omitted, then the server can use its own discretion as to what distances should be considered near (and units are irrelevant)
 
-Servers may search using various techniques that might have differing accuracies, depending on implementation efficiency.
-
-Requires the near-distance parameter to be provided also</b><br>
+Servers may search using various techniques that might have differing accuracies, depending on implementation efficiency.</b><br>
    * Type: <b>special</b><br>
    * Path: <b>Location.position</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="near", path="Location.position", description="Search for locations where the location.position is near to, or within a specified distance of, the provided coordinates expressed as [latitude]|[longitude]|[distance]|[units] (using the WGS84 datum, see notes).\nIf the units are omitted, then kms should be assumed. If the distance is omitted, then the server can use its own discretion as to what distances should be considered near (and units are irrelevant)\n\nServers may search using various techniques that might have differing accuracies, depending on implementation efficiency.\n\nRequires the near-distance parameter to be provided also", type="special" )
+  @SearchParamDefinition(name="near", path="Location.position", description="Search for locations where the location.position is near to, or within a specified distance of, the provided coordinates expressed as [latitude]|[longitude]|[distance]|[units] (using the WGS84 datum, see notes).\nIf the units are omitted, then kms should be assumed. If the distance is omitted, then the server can use its own discretion as to what distances should be considered near (and units are irrelevant)\n\nServers may search using various techniques that might have differing accuracies, depending on implementation efficiency.", type="special" )
   public static final String SP_NEAR = "near";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>near</b>
@@ -2489,9 +2479,7 @@ Requires the near-distance parameter to be provided also</b><br>
    * Description: <b>Search for locations where the location.position is near to, or within a specified distance of, the provided coordinates expressed as [latitude]|[longitude]|[distance]|[units] (using the WGS84 datum, see notes).
 If the units are omitted, then kms should be assumed. If the distance is omitted, then the server can use its own discretion as to what distances should be considered near (and units are irrelevant)
 
-Servers may search using various techniques that might have differing accuracies, depending on implementation efficiency.
-
-Requires the near-distance parameter to be provided also</b><br>
+Servers may search using various techniques that might have differing accuracies, depending on implementation efficiency.</b><br>
    * Type: <b>special</b><br>
    * Path: <b>Location.position</b><br>
    * </p>

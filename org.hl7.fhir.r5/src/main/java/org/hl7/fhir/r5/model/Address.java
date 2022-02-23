@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -87,7 +87,6 @@ public class Address extends DataType implements ICompositeType {
             case POSTAL: return "postal";
             case PHYSICAL: return "physical";
             case BOTH: return "both";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -96,7 +95,6 @@ public class Address extends DataType implements ICompositeType {
             case POSTAL: return "http://hl7.org/fhir/address-type";
             case PHYSICAL: return "http://hl7.org/fhir/address-type";
             case BOTH: return "http://hl7.org/fhir/address-type";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,7 +103,6 @@ public class Address extends DataType implements ICompositeType {
             case POSTAL: return "Mailing addresses - PO Boxes and care-of addresses.";
             case PHYSICAL: return "A physical address that can be visited.";
             case BOTH: return "An address that is both physical and postal.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,7 +111,6 @@ public class Address extends DataType implements ICompositeType {
             case POSTAL: return "Postal";
             case PHYSICAL: return "Physical";
             case BOTH: return "Postal & Physical";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -213,7 +209,6 @@ public class Address extends DataType implements ICompositeType {
             case TEMP: return "temp";
             case OLD: return "old";
             case BILLING: return "billing";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -224,7 +219,6 @@ public class Address extends DataType implements ICompositeType {
             case TEMP: return "http://hl7.org/fhir/address-use";
             case OLD: return "http://hl7.org/fhir/address-use";
             case BILLING: return "http://hl7.org/fhir/address-use";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -235,7 +229,6 @@ public class Address extends DataType implements ICompositeType {
             case TEMP: return "A temporary address. The period can provide more detailed information.";
             case OLD: return "This address is no longer in use (or was never correct but retained for records).";
             case BILLING: return "An address to be used to send bills, invoices, receipts etc.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -246,7 +239,6 @@ public class Address extends DataType implements ICompositeType {
             case TEMP: return "Temporary";
             case OLD: return "Old / Incorrect";
             case BILLING: return "Billing";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -369,7 +361,7 @@ public class Address extends DataType implements ICompositeType {
      * Country - a nation as commonly understood or generally accepted.
      */
     @Child(name = "country", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Country (e.g. can be ISO 3166 2 or 3 letter code)", formalDefinition="Country - a nation as commonly understood or generally accepted." )
+    @Description(shortDefinition="Country (e.g. may be ISO 3166 2 or 3 letter code)", formalDefinition="Country - a nation as commonly understood or generally accepted." )
     protected StringType country;
 
     /**

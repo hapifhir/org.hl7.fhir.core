@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -93,7 +93,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
             case CONTAINED: return "contained";
             case REFERENCED: return "referenced";
             case BUNDLED: return "bundled";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -102,7 +101,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
             case CONTAINED: return "http://hl7.org/fhir/resource-aggregation-mode";
             case REFERENCED: return "http://hl7.org/fhir/resource-aggregation-mode";
             case BUNDLED: return "http://hl7.org/fhir/resource-aggregation-mode";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -111,7 +109,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
             case CONTAINED: return "The reference is a local reference to a contained resource.";
             case REFERENCED: return "The reference to a resource that has to be resolved externally to the resource that includes the reference.";
             case BUNDLED: return "The resource the reference points to will be found in the same bundle as the resource that includes the reference.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -120,7 +117,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
             case CONTAINED: return "Contained";
             case REFERENCED: return "Referenced";
             case BUNDLED: return "Bundled";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -198,7 +194,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           switch (this) {
             case ERROR: return "error";
             case WARNING: return "warning";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -206,7 +201,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           switch (this) {
             case ERROR: return "http://hl7.org/fhir/constraint-severity";
             case WARNING: return "http://hl7.org/fhir/constraint-severity";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -214,7 +208,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           switch (this) {
             case ERROR: return "If the constraint is violated, the resource is not conformant.";
             case WARNING: return "If the constraint is violated, the resource is conformant, but it is not necessarily following best practice.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -222,7 +215,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           switch (this) {
             case ERROR: return "Error";
             case WARNING: return "Warning";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -315,7 +307,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
             case PATTERN: return "pattern";
             case TYPE: return "type";
             case PROFILE: return "profile";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -326,7 +317,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
             case PATTERN: return "http://hl7.org/fhir/discriminator-type";
             case TYPE: return "http://hl7.org/fhir/discriminator-type";
             case PROFILE: return "http://hl7.org/fhir/discriminator-type";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -337,7 +327,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
             case PATTERN: return "The slices have different values in the nominated element, as determined by testing them against the applicable ElementDefinition.pattern[x].";
             case TYPE: return "The slices are differentiated by type of the nominated element.";
             case PROFILE: return "The slices are differentiated by conformance of the nominated element to a specified profile. Note that if the path specifies .resolve() then the profile is the target profile on the reference. In this case, validation by the possible profiles is required to differentiate the slices.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -348,7 +337,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
             case PATTERN: return "Pattern";
             case TYPE: return "Type";
             case PROFILE: return "Profile";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -459,7 +447,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
             case TYPEATTR: return "typeAttr";
             case CDATEXT: return "cdaText";
             case XHTML: return "xhtml";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -470,7 +457,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
             case TYPEATTR: return "http://hl7.org/fhir/property-representation";
             case CDATEXT: return "http://hl7.org/fhir/property-representation";
             case XHTML: return "http://hl7.org/fhir/property-representation";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -481,7 +467,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
             case TYPEATTR: return "The type of this element is indicated using xsi:type.";
             case CDATEXT: return "Use CDA narrative instead of XHTML.";
             case XHTML: return "The property is represented using XHTML.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -492,7 +477,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
             case TYPEATTR: return "Type Attribute";
             case CDATEXT: return "CDA Text Format";
             case XHTML: return "XHTML";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -589,7 +573,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
             case EITHER: return "either";
             case INDEPENDENT: return "independent";
             case SPECIFIC: return "specific";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -598,7 +581,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
             case EITHER: return "http://hl7.org/fhir/reference-version-rules";
             case INDEPENDENT: return "http://hl7.org/fhir/reference-version-rules";
             case SPECIFIC: return "http://hl7.org/fhir/reference-version-rules";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -607,7 +589,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
             case EITHER: return "The reference may be either version independent or version specific.";
             case INDEPENDENT: return "The reference must be version independent.";
             case SPECIFIC: return "The reference must be version specific.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -616,7 +597,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
             case EITHER: return "Either Specific or independent";
             case INDEPENDENT: return "Version independent";
             case SPECIFIC: return "Version Specific";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -701,7 +681,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
             case CLOSED: return "closed";
             case OPEN: return "open";
             case OPENATEND: return "openAtEnd";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -710,7 +689,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
             case CLOSED: return "http://hl7.org/fhir/resource-slicing-rules";
             case OPEN: return "http://hl7.org/fhir/resource-slicing-rules";
             case OPENATEND: return "http://hl7.org/fhir/resource-slicing-rules";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -719,7 +697,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
             case CLOSED: return "No additional content is allowed other than that described by the slices in this profile.";
             case OPEN: return "Additional content is allowed anywhere in the list.";
             case OPENATEND: return "Additional content is allowed, but only at the end of the list. Note that using this requires that the slices be ordered, which makes it hard to share uses. This should only be done where absolutely required.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -728,7 +705,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
             case CLOSED: return "Closed";
             case OPEN: return "Open";
             case OPENATEND: return "Open at End";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -2370,7 +2346,7 @@ public boolean hasTarget() {
         /**
          * The actual value for the element, which must be one of the types allowed for this element.
          */
-        @Child(name = "value", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=2, min=1, max=1, modifier=false, summary=true)
+        @Child(name = "value", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, CodeableReference.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, RatioRange.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=2, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Value of Example (one of allowed types)", formalDefinition="The actual value for the element, which must be one of the types allowed for this element." )
         protected DataType value;
 
@@ -2822,6 +2798,21 @@ public boolean hasTarget() {
         /**
          * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
          */
+        public CodeableReference getValueCodeableReference() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CodeableReference();
+          if (!(this.value instanceof CodeableReference))
+            throw new FHIRException("Type mismatch: the type CodeableReference was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CodeableReference) this.value;
+        }
+
+        public boolean hasValueCodeableReference() { 
+          return this != null && this.value instanceof CodeableReference;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
         public Coding getValueCoding() throws FHIRException { 
           if (this.value == null)
             this.value = new Coding();
@@ -2997,6 +2988,21 @@ public boolean hasTarget() {
 
         public boolean hasValueRatio() { 
           return this != null && this.value instanceof Ratio;
+        }
+
+        /**
+         * @return {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
+         */
+        public RatioRange getValueRatioRange() throws FHIRException { 
+          if (this.value == null)
+            this.value = new RatioRange();
+          if (!(this.value instanceof RatioRange))
+            throw new FHIRException("Type mismatch: the type RatioRange was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (RatioRange) this.value;
+        }
+
+        public boolean hasValueRatioRange() { 
+          return this != null && this.value instanceof RatioRange;
         }
 
         /**
@@ -3217,7 +3223,7 @@ public boolean hasTarget() {
          * @param value {@link #value} (The actual value for the element, which must be one of the types allowed for this element.)
          */
         public ElementDefinitionExampleComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
+          if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof CodeableReference || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof RatioRange || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
             throw new Error("Not the right type for ElementDefinition.example.value[x]: "+value.fhirType());
           this.value = value;
           return this;
@@ -3226,15 +3232,15 @@ public boolean hasTarget() {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("label", "string", "Describes the purpose of this example amoung the set of examples.", 0, 1, label));
-          children.add(new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value));
+          children.add(new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 102727412: /*label*/  return new Property("label", "string", "Describes the purpose of this example amoung the set of examples.", 0, 1, label);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
           case -1535024575: /*valueBase64Binary*/  return new Property("value[x]", "base64Binary", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
           case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
           case -786218365: /*valueCanonical*/  return new Property("value[x]", "canonical", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
@@ -3260,6 +3266,7 @@ public boolean hasTarget() {
           case -67108992: /*valueAnnotation*/  return new Property("value[x]", "Annotation", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
           case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
           case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -257955629: /*valueCodeableReference*/  return new Property("value[x]", "CodeableReference", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
           case -1887705029: /*valueCoding*/  return new Property("value[x]", "Coding", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
           case 944904545: /*valueContactPoint*/  return new Property("value[x]", "ContactPoint", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
           case 2017332766: /*valueCount*/  return new Property("value[x]", "Count", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
@@ -3272,6 +3279,7 @@ public boolean hasTarget() {
           case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
           case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
           case 2030767386: /*valueRatio*/  return new Property("value[x]", "Ratio", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
+          case -706454461: /*valueRatioRange*/  return new Property("value[x]", "RatioRange", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
           case 1755241690: /*valueReference*/  return new Property("value[x]", "Reference", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
           case -962229101: /*valueSampledData*/  return new Property("value[x]", "SampledData", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
           case -540985785: /*valueSignature*/  return new Property("value[x]", "Signature", "The actual value for the element, which must be one of the types allowed for this element.", 0, 1, value);
@@ -3341,7 +3349,7 @@ public boolean hasTarget() {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 102727412: /*label*/ return new String[] {"string"};
-        case 111972721: /*value*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
+        case 111972721: /*value*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "CodeableReference", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "RatioRange", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -3452,6 +3460,10 @@ public boolean hasTarget() {
           this.value = new CodeableConcept();
           return this.value;
         }
+        else if (name.equals("valueCodeableReference")) {
+          this.value = new CodeableReference();
+          return this.value;
+        }
         else if (name.equals("valueCoding")) {
           this.value = new Coding();
           return this.value;
@@ -3498,6 +3510,10 @@ public boolean hasTarget() {
         }
         else if (name.equals("valueRatio")) {
           this.value = new Ratio();
+          return this.value;
+        }
+        else if (name.equals("valueRatioRange")) {
+          this.value = new RatioRange();
           return this.value;
         }
         else if (name.equals("valueReference")) {
@@ -5055,7 +5071,7 @@ public boolean hasTarget() {
     /**
      * The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').
      */
-    @Child(name = "defaultValue", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=17, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "defaultValue", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, CodeableReference.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, RatioRange.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=17, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Specified value if missing from instance", formalDefinition="The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false')." )
     protected DataType defaultValue;
 
@@ -5076,7 +5092,7 @@ public boolean hasTarget() {
     /**
      * Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.
      */
-    @Child(name = "fixed", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=20, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "fixed", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, CodeableReference.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, RatioRange.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=20, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Value must be exactly this", formalDefinition="Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing." )
     protected DataType fixed;
 
@@ -5093,7 +5109,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
 2. If a complex object: it must match (recursively) the pattern value
 3. If an array: it must match (recursively) the pattern value.
      */
-    @Child(name = "pattern", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=21, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "pattern", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, CodeableReference.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, RatioRange.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=21, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Value must have at least these property values", formalDefinition="Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value." )
     protected DataType pattern;
 
@@ -6386,6 +6402,21 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     /**
      * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
      */
+    public CodeableReference getDefaultValueCodeableReference() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new CodeableReference();
+      if (!(this.defaultValue instanceof CodeableReference))
+        throw new FHIRException("Type mismatch: the type CodeableReference was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (CodeableReference) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueCodeableReference() { 
+      return this != null && this.defaultValue instanceof CodeableReference;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
     public Coding getDefaultValueCoding() throws FHIRException { 
       if (this.defaultValue == null)
         this.defaultValue = new Coding();
@@ -6561,6 +6592,21 @@ When pattern[x] is used to constrain a complex object, it means that each proper
 
     public boolean hasDefaultValueRatio() { 
       return this != null && this.defaultValue instanceof Ratio;
+    }
+
+    /**
+     * @return {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
+     */
+    public RatioRange getDefaultValueRatioRange() throws FHIRException { 
+      if (this.defaultValue == null)
+        this.defaultValue = new RatioRange();
+      if (!(this.defaultValue instanceof RatioRange))
+        throw new FHIRException("Type mismatch: the type RatioRange was expected, but "+this.defaultValue.getClass().getName()+" was encountered");
+      return (RatioRange) this.defaultValue;
+    }
+
+    public boolean hasDefaultValueRatioRange() { 
+      return this != null && this.defaultValue instanceof RatioRange;
     }
 
     /**
@@ -6781,7 +6827,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
      * @param value {@link #defaultValue} (The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').)
      */
     public ElementDefinition setDefaultValue(DataType value) { 
-      if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
+      if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof CodeableReference || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof RatioRange || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
         throw new Error("Not the right type for ElementDefinition.defaultValue[x]: "+value.fhirType());
       this.defaultValue = value;
       return this;
@@ -7270,6 +7316,21 @@ When pattern[x] is used to constrain a complex object, it means that each proper
     /**
      * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
      */
+    public CodeableReference getFixedCodeableReference() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new CodeableReference();
+      if (!(this.fixed instanceof CodeableReference))
+        throw new FHIRException("Type mismatch: the type CodeableReference was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (CodeableReference) this.fixed;
+    }
+
+    public boolean hasFixedCodeableReference() { 
+      return this != null && this.fixed instanceof CodeableReference;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
     public Coding getFixedCoding() throws FHIRException { 
       if (this.fixed == null)
         this.fixed = new Coding();
@@ -7445,6 +7506,21 @@ When pattern[x] is used to constrain a complex object, it means that each proper
 
     public boolean hasFixedRatio() { 
       return this != null && this.fixed instanceof Ratio;
+    }
+
+    /**
+     * @return {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
+     */
+    public RatioRange getFixedRatioRange() throws FHIRException { 
+      if (this.fixed == null)
+        this.fixed = new RatioRange();
+      if (!(this.fixed instanceof RatioRange))
+        throw new FHIRException("Type mismatch: the type RatioRange was expected, but "+this.fixed.getClass().getName()+" was encountered");
+      return (RatioRange) this.fixed;
+    }
+
+    public boolean hasFixedRatioRange() { 
+      return this != null && this.fixed instanceof RatioRange;
     }
 
     /**
@@ -7665,7 +7741,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
      * @param value {@link #fixed} (Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.)
      */
     public ElementDefinition setFixed(DataType value) { 
-      if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
+      if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof CodeableReference || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof RatioRange || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
         throw new Error("Not the right type for ElementDefinition.fixed[x]: "+value.fhirType());
       this.fixed = value;
       return this;
@@ -8326,6 +8402,31 @@ When pattern[x] is used to constrain a complex object, it means that each proper
 2. If a complex object: it must match (recursively) the pattern value
 3. If an array: it must match (recursively) the pattern value.)
      */
+    public CodeableReference getPatternCodeableReference() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new CodeableReference();
+      if (!(this.pattern instanceof CodeableReference))
+        throw new FHIRException("Type mismatch: the type CodeableReference was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (CodeableReference) this.pattern;
+    }
+
+    public boolean hasPatternCodeableReference() { 
+      return this != null && this.pattern instanceof CodeableReference;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
     public Coding getPatternCoding() throws FHIRException { 
       if (this.pattern == null)
         this.pattern = new Coding();
@@ -8611,6 +8712,31 @@ When pattern[x] is used to constrain a complex object, it means that each proper
 
     public boolean hasPatternRatio() { 
       return this != null && this.pattern instanceof Ratio;
+    }
+
+    /**
+     * @return {@link #pattern} (Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  
+
+When pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.
+
+When pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.
+
+When pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,
+
+1. If primitive: it must match exactly the pattern value
+2. If a complex object: it must match (recursively) the pattern value
+3. If an array: it must match (recursively) the pattern value.)
+     */
+    public RatioRange getPatternRatioRange() throws FHIRException { 
+      if (this.pattern == null)
+        this.pattern = new RatioRange();
+      if (!(this.pattern instanceof RatioRange))
+        throw new FHIRException("Type mismatch: the type RatioRange was expected, but "+this.pattern.getClass().getName()+" was encountered");
+      return (RatioRange) this.pattern;
+    }
+
+    public boolean hasPatternRatioRange() { 
+      return this != null && this.pattern instanceof RatioRange;
     }
 
     /**
@@ -8981,7 +9107,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
 3. If an array: it must match (recursively) the pattern value.)
      */
     public ElementDefinition setPattern(DataType value) { 
-      if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
+      if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof CodeableReference || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof RatioRange || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
         throw new Error("Not the right type for ElementDefinition.pattern[x]: "+value.fhirType());
       this.pattern = value;
       return this;
@@ -9821,11 +9947,11 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         children.add(new Property("base", "", "Information about the base definition of the element, provided to make it unnecessary for tools to trace the deviation of the element through the derived and related profiles. When the element definition is not the original definition of an element - i.g. either in a constraint on another type, or for elements from a super type in a snap shot - then the information in provided in the element definition may be different to the base definition. On the original definition of the element, it will be same.", 0, 1, base));
         children.add(new Property("contentReference", "uri", "Identifies an element defined elsewhere in the definition whose content rules should be applied to the current element. ContentReferences bring across all the rules that are in the ElementDefinition for the element, including definitions, cardinality constraints, bindings, invariants etc.", 0, 1, contentReference));
         children.add(new Property("type", "", "The data type or resource that the value of this element is permitted to be.", 0, java.lang.Integer.MAX_VALUE, type));
-        children.add(new Property("defaultValue[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue));
+        children.add(new Property("defaultValue[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue));
         children.add(new Property("meaningWhenMissing", "markdown", "The Implicit meaning that is to be understood when this element is missing (e.g. 'when this element is missing, the period is ongoing').", 0, 1, meaningWhenMissing));
         children.add(new Property("orderMeaning", "string", "If present, indicates that the order of the repeating element has meaning and describes what that meaning is.  If absent, it means that the order of the element has no meaning.", 0, 1, orderMeaning));
-        children.add(new Property("fixed[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed));
-        children.add(new Property("pattern[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern));
+        children.add(new Property("fixed[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed));
+        children.add(new Property("pattern[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern));
         children.add(new Property("example", "", "A sample value for this element demonstrating the type of information that would typically be found in the element.", 0, java.lang.Integer.MAX_VALUE, example));
         children.add(new Property("minValue[x]", "date|dateTime|instant|time|decimal|integer|integer64|positiveInt|unsignedInt|Quantity", "The minimum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, minValue));
         children.add(new Property("maxValue[x]", "date|dateTime|instant|time|decimal|integer|integer64|positiveInt|unsignedInt|Quantity", "The maximum allowed value for the element. The value is inclusive. This is allowed for the types date, dateTime, instant, time, decimal, integer, and Quantity.", 0, 1, maxValue));
@@ -9860,8 +9986,8 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         case 3016401: /*base*/  return new Property("base", "", "Information about the base definition of the element, provided to make it unnecessary for tools to trace the deviation of the element through the derived and related profiles. When the element definition is not the original definition of an element - i.g. either in a constraint on another type, or for elements from a super type in a snap shot - then the information in provided in the element definition may be different to the base definition. On the original definition of the element, it will be same.", 0, 1, base);
         case 1193747154: /*contentReference*/  return new Property("contentReference", "uri", "Identifies an element defined elsewhere in the definition whose content rules should be applied to the current element. ContentReferences bring across all the rules that are in the ElementDefinition for the element, including definitions, cardinality constraints, bindings, invariants etc.", 0, 1, contentReference);
         case 3575610: /*type*/  return new Property("type", "", "The data type or resource that the value of this element is permitted to be.", 0, java.lang.Integer.MAX_VALUE, type);
-        case 587922128: /*defaultValue[x]*/  return new Property("defaultValue[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
-        case -659125328: /*defaultValue*/  return new Property("defaultValue[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 587922128: /*defaultValue[x]*/  return new Property("defaultValue[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case -659125328: /*defaultValue*/  return new Property("defaultValue[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
         case 1470297600: /*defaultValueBase64Binary*/  return new Property("defaultValue[x]", "base64Binary", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
         case 600437336: /*defaultValueBoolean*/  return new Property("defaultValue[x]", "boolean", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
         case 264593188: /*defaultValueCanonical*/  return new Property("defaultValue[x]", "canonical", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
@@ -9887,6 +10013,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         case -1851689217: /*defaultValueAnnotation*/  return new Property("defaultValue[x]", "Annotation", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
         case 2034820339: /*defaultValueAttachment*/  return new Property("defaultValue[x]", "Attachment", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
         case -410434095: /*defaultValueCodeableConcept*/  return new Property("defaultValue[x]", "CodeableConcept", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 678417524: /*defaultValueCodeableReference*/  return new Property("defaultValue[x]", "CodeableReference", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
         case -783616198: /*defaultValueCoding*/  return new Property("defaultValue[x]", "Coding", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
         case -344740576: /*defaultValueContactPoint*/  return new Property("defaultValue[x]", "ContactPoint", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
         case -1964924097: /*defaultValueCount*/  return new Property("defaultValue[x]", "Count", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
@@ -9899,6 +10026,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         case -1857379237: /*defaultValueQuantity*/  return new Property("defaultValue[x]", "Quantity", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
         case -1951495315: /*defaultValueRange*/  return new Property("defaultValue[x]", "Range", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
         case -1951489477: /*defaultValueRatio*/  return new Property("defaultValue[x]", "Ratio", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
+        case 1803932610: /*defaultValueRatioRange*/  return new Property("defaultValue[x]", "RatioRange", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
         case -1488914053: /*defaultValueReference*/  return new Property("defaultValue[x]", "Reference", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
         case -449641228: /*defaultValueSampledData*/  return new Property("defaultValue[x]", "SampledData", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
         case 509825768: /*defaultValueSignature*/  return new Property("defaultValue[x]", "Signature", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
@@ -9915,8 +10043,8 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         case 1045282261: /*defaultValueMeta*/  return new Property("defaultValue[x]", "Meta", "The value that should be used if there is no value stated in the instance (e.g. 'if not otherwise specified, the abstract is false').", 0, 1, defaultValue);
         case 1857257103: /*meaningWhenMissing*/  return new Property("meaningWhenMissing", "markdown", "The Implicit meaning that is to be understood when this element is missing (e.g. 'when this element is missing, the period is ongoing').", 0, 1, meaningWhenMissing);
         case 1828196047: /*orderMeaning*/  return new Property("orderMeaning", "string", "If present, indicates that the order of the repeating element has meaning and describes what that meaning is.  If absent, it means that the order of the element has no meaning.", 0, 1, orderMeaning);
-        case -391522164: /*fixed[x]*/  return new Property("fixed[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case 97445748: /*fixed*/  return new Property("fixed[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case -391522164: /*fixed[x]*/  return new Property("fixed[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 97445748: /*fixed*/  return new Property("fixed[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
         case -799290428: /*fixedBase64Binary*/  return new Property("fixed[x]", "base64Binary", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
         case 520851988: /*fixedBoolean*/  return new Property("fixed[x]", "boolean", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
         case 1092485088: /*fixedCanonical*/  return new Property("fixed[x]", "canonical", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
@@ -9942,6 +10070,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         case -1956844093: /*fixedAnnotation*/  return new Property("fixed[x]", "Annotation", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
         case 1929665463: /*fixedAttachment*/  return new Property("fixed[x]", "Attachment", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
         case 1962764685: /*fixedCodeableConcept*/  return new Property("fixed[x]", "CodeableConcept", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 694810928: /*fixedCodeableReference*/  return new Property("fixed[x]", "CodeableReference", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
         case 599289854: /*fixedCoding*/  return new Property("fixed[x]", "Coding", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
         case 1680638692: /*fixedContactPoint*/  return new Property("fixed[x]", "ContactPoint", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
         case 1681916411: /*fixedCount*/  return new Property("fixed[x]", "Count", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
@@ -9954,6 +10083,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         case -29557729: /*fixedQuantity*/  return new Property("fixed[x]", "Quantity", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
         case 1695345193: /*fixedRange*/  return new Property("fixed[x]", "Range", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
         case 1695351031: /*fixedRatio*/  return new Property("fixed[x]", "Ratio", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
+        case 1698777734: /*fixedRatioRange*/  return new Property("fixed[x]", "RatioRange", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
         case -661022153: /*fixedReference*/  return new Property("fixed[x]", "Reference", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
         case 585524912: /*fixedSampledData*/  return new Property("fixed[x]", "SampledData", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
         case 1337717668: /*fixedSignature*/  return new Property("fixed[x]", "Signature", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
@@ -9968,8 +10098,8 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         case 1323734626: /*fixedUsageContext*/  return new Property("fixed[x]", "UsageContext", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
         case 628357963: /*fixedDosage*/  return new Property("fixed[x]", "Dosage", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
         case 747280281: /*fixedMeta*/  return new Property("fixed[x]", "Meta", "Specifies a value that SHALL be exactly the value  for this element in the instance. For purposes of comparison, non-significant whitespace is ignored, and all values must be an exact match (case and accent sensitive). Missing elements/attributes must also be missing.", 0, 1, fixed);
-        case -885125392: /*pattern[x]*/  return new Property("pattern[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
-        case -791090288: /*pattern*/  return new Property("pattern[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -885125392: /*pattern[x]*/  return new Property("pattern[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case -791090288: /*pattern*/  return new Property("pattern[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
         case 2127857120: /*patternBase64Binary*/  return new Property("pattern[x]", "base64Binary", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
         case -1776945544: /*patternBoolean*/  return new Property("pattern[x]", "boolean", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
         case 522246980: /*patternCanonical*/  return new Property("pattern[x]", "canonical", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
@@ -9995,6 +10125,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         case 1840611039: /*patternAnnotation*/  return new Property("pattern[x]", "Annotation", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
         case 1432153299: /*patternAttachment*/  return new Property("pattern[x]", "Attachment", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
         case -400610831: /*patternCodeableConcept*/  return new Property("pattern[x]", "CodeableConcept", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 1528639636: /*patternCodeableReference*/  return new Property("pattern[x]", "CodeableReference", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
         case 1633546010: /*patternCoding*/  return new Property("pattern[x]", "Coding", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
         case 312818944: /*patternContactPoint*/  return new Property("pattern[x]", "ContactPoint", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
         case -224383137: /*patternCount*/  return new Property("pattern[x]", "Count", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
@@ -10007,6 +10138,7 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         case 1753162811: /*patternQuantity*/  return new Property("pattern[x]", "Quantity", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
         case -210954355: /*patternRange*/  return new Property("pattern[x]", "Range", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
         case -210948517: /*patternRatio*/  return new Property("pattern[x]", "Ratio", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
+        case 1201265570: /*patternRatioRange*/  return new Property("pattern[x]", "RatioRange", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
         case -1231260261: /*patternReference*/  return new Property("pattern[x]", "Reference", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
         case -1952450284: /*patternSampledData*/  return new Property("pattern[x]", "SampledData", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
         case 767479560: /*patternSignature*/  return new Property("pattern[x]", "Signature", "Specifies a value that the value in the instance SHALL follow - that is, any value in the pattern must be found in the instance. Other additional values may be found too. This is effectively constraint by example.  \n\nWhen pattern[x] is used to constrain a primitive, it means that the value provided in the pattern[x] must match the instance value exactly.\n\nWhen pattern[x] is used to constrain an array, it means that each element provided in the pattern[x] array must (recursively) match at least one element from the instance array.\n\nWhen pattern[x] is used to constrain a complex object, it means that each property in the pattern must be present in the complex object, and its value must recursively match -- i.e.,\n\n1. If primitive: it must match exactly the pattern value\n2. If a complex object: it must match (recursively) the pattern value\n3. If an array: it must match (recursively) the pattern value.", 0, 1, pattern);
@@ -10356,11 +10488,11 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         case 3016401: /*base*/ return new String[] {};
         case 1193747154: /*contentReference*/ return new String[] {"uri"};
         case 3575610: /*type*/ return new String[] {};
-        case -659125328: /*defaultValue*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
+        case -659125328: /*defaultValue*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "CodeableReference", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "RatioRange", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
         case 1857257103: /*meaningWhenMissing*/ return new String[] {"markdown"};
         case 1828196047: /*orderMeaning*/ return new String[] {"string"};
-        case 97445748: /*fixed*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
-        case -791090288: /*pattern*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
+        case 97445748: /*fixed*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "CodeableReference", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "RatioRange", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
+        case -791090288: /*pattern*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "CodeableReference", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "RatioRange", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
         case -1322970774: /*example*/ return new String[] {};
         case -1376969153: /*minValue*/ return new String[] {"date", "dateTime", "instant", "time", "decimal", "integer", "integer64", "positiveInt", "unsignedInt", "Quantity"};
         case 399227501: /*maxValue*/ return new String[] {"date", "dateTime", "instant", "time", "decimal", "integer", "integer64", "positiveInt", "unsignedInt", "Quantity"};
@@ -10533,6 +10665,10 @@ When pattern[x] is used to constrain a complex object, it means that each proper
           this.defaultValue = new CodeableConcept();
           return this.defaultValue;
         }
+        else if (name.equals("defaultValueCodeableReference")) {
+          this.defaultValue = new CodeableReference();
+          return this.defaultValue;
+        }
         else if (name.equals("defaultValueCoding")) {
           this.defaultValue = new Coding();
           return this.defaultValue;
@@ -10579,6 +10715,10 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         }
         else if (name.equals("defaultValueRatio")) {
           this.defaultValue = new Ratio();
+          return this.defaultValue;
+        }
+        else if (name.equals("defaultValueRatioRange")) {
+          this.defaultValue = new RatioRange();
           return this.defaultValue;
         }
         else if (name.equals("defaultValueReference")) {
@@ -10743,6 +10883,10 @@ When pattern[x] is used to constrain a complex object, it means that each proper
           this.fixed = new CodeableConcept();
           return this.fixed;
         }
+        else if (name.equals("fixedCodeableReference")) {
+          this.fixed = new CodeableReference();
+          return this.fixed;
+        }
         else if (name.equals("fixedCoding")) {
           this.fixed = new Coding();
           return this.fixed;
@@ -10789,6 +10933,10 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         }
         else if (name.equals("fixedRatio")) {
           this.fixed = new Ratio();
+          return this.fixed;
+        }
+        else if (name.equals("fixedRatioRange")) {
+          this.fixed = new RatioRange();
           return this.fixed;
         }
         else if (name.equals("fixedReference")) {
@@ -10947,6 +11095,10 @@ When pattern[x] is used to constrain a complex object, it means that each proper
           this.pattern = new CodeableConcept();
           return this.pattern;
         }
+        else if (name.equals("patternCodeableReference")) {
+          this.pattern = new CodeableReference();
+          return this.pattern;
+        }
         else if (name.equals("patternCoding")) {
           this.pattern = new Coding();
           return this.pattern;
@@ -10993,6 +11145,10 @@ When pattern[x] is used to constrain a complex object, it means that each proper
         }
         else if (name.equals("patternRatio")) {
           this.pattern = new Ratio();
+          return this.pattern;
+        }
+        else if (name.equals("patternRatioRange")) {
+          this.pattern = new RatioRange();
           return this.pattern;
         }
         else if (name.equals("patternReference")) {
@@ -11300,120 +11456,119 @@ When pattern[x] is used to constrain a complex object, it means that each proper
           );
       }
 
-// Manual code (from Configuration.txt)t:
+// Manual code (from Configuration.txt):
 
-
-      public String toString() {
-        if (hasId())
-          return getId();
-        if (hasSliceName())
-          return getPath()+":"+getSliceName();
-        else
-          return getPath();
-      }
-        
-      public void makeBase(String path, int min, String max) {
-        ElementDefinitionBaseComponent self = getBase();
-        self.setPath(path);
-        self.setMin(min);
-        self.setMax(max);
-      }
-      
-      public void makeBase() {
-        ElementDefinitionBaseComponent self = getBase();
-        self.setPath(getPath());
-        self.setMin(getMin());
-        self.setMax(getMax());
-      }
-     
-      
-      public String typeSummary() {
-        CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-        for (TypeRefComponent tr : getType()) {
-          if (tr.hasCode())
-            b.append(tr.getWorkingCode());
-        }
-        return b.toString();
-      }
-      
-      public String typeSummaryVB() {
-        CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("|");
-        for (TypeRefComponent tr : getType()) {
-          if (tr.hasCode())
-            b.append(tr.getWorkingCode());
-        }
-        return b.toString().replace(" ", "");
-      }
-      
-      public TypeRefComponent getType(String code) {
-        for (TypeRefComponent tr : getType()) 
-          if (tr.getCode().equals(code))
-            return tr;
-        TypeRefComponent tr = new TypeRefComponent();
-        tr.setCode(code);
-        type.add(tr);
+  public String toString() {
+    if (hasId())
+      return getId();
+    if (hasSliceName())
+      return getPath()+":"+getSliceName();
+    else
+      return getPath();
+  }
+    
+  public void makeBase(String path, int min, String max) {
+    ElementDefinitionBaseComponent self = getBase();
+    self.setPath(path);
+    self.setMin(min);
+    self.setMax(max);
+  }
+  
+  public void makeBase() {
+    ElementDefinitionBaseComponent self = getBase();
+    self.setPath(getPath());
+    self.setMin(getMin());
+    self.setMax(getMax());
+  }
+ 
+  
+  public String typeSummary() {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    for (TypeRefComponent tr : getType()) {
+      if (tr.hasCode())
+        b.append(tr.getWorkingCode());
+    }
+    return b.toString();
+  }
+  
+  public String typeSummaryVB() {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("|");
+    for (TypeRefComponent tr : getType()) {
+      if (tr.hasCode())
+        b.append(tr.getWorkingCode());
+    }
+    return b.toString().replace(" ", "");
+  }
+  
+  public TypeRefComponent getType(String code) {
+    for (TypeRefComponent tr : getType()) 
+      if (tr.getCode().equals(code))
         return tr;
-      }
+    TypeRefComponent tr = new TypeRefComponent();
+    tr.setCode(code);
+    type.add(tr);
+    return tr;
+  }
 
-      public static final boolean NOT_MODIFIER = false;
-      public static final boolean NOT_IN_SUMMARY = false;
-      public static final boolean IS_MODIFIER = true;
-      public static final boolean IS_IN_SUMMARY = true;
-      public ElementDefinition(boolean defaults, boolean modifier, boolean inSummary) {
-        super();
-        if (defaults) {
-          setIsModifier(modifier);
-          setIsSummary(inSummary);
-        }
-      }  
+  public static final boolean NOT_MODIFIER = false;
+  public static final boolean NOT_IN_SUMMARY = false;
+  public static final boolean IS_MODIFIER = true;
+  public static final boolean IS_IN_SUMMARY = true;
+  public ElementDefinition(boolean defaults, boolean modifier, boolean inSummary) {
+    super();
+    if (defaults) {
+      setIsModifier(modifier);
+      setIsSummary(inSummary);
+    }
+  }  
 
-     public String present() {
-        return hasId() ? getId() : getPath();
-      }
+ public String present() {
+    return hasId() ? getId() : getPath();
+  }
 
-      public boolean hasCondition(IdType id) {
-        for (IdType c : getCondition()) {
-          if (c.primitiveValue().equals(id.primitiveValue()))
-            return true;
-        }
-        return false;
-      }
+  public boolean hasCondition(IdType id) {
+    for (IdType c : getCondition()) {
+      if (c.primitiveValue().equals(id.primitiveValue()))
+        return true;
+    }
+    return false;
+  }
 
-      public boolean hasConstraint(String key) {
-        for (ElementDefinitionConstraintComponent c : getConstraint()) {
-          if (c.getKey().equals(key))
-            return true;
-        }
-        return false;
-      }
+  public boolean hasConstraint(String key) {
+    for (ElementDefinitionConstraintComponent c : getConstraint()) {
+      if (c.getKey().equals(key))
+        return true;
+    }
+    return false;
+  }
 
-      public boolean hasCode(Coding c) {
-        for (Coding t : getCode()) {
-          if (t.getSystem().equals(c.getSystem()) && t.getCode().equals(c.getCode()))
-            return true;
-        }
-        return false;
-      }  
+  public boolean hasCode(Coding c) {
+    for (Coding t : getCode()) {
+      if (t.getSystem().equals(c.getSystem()) && t.getCode().equals(c.getCode()))
+        return true;
+    }
+    return false;
+  }  
 
-      public boolean isChoice() {
-        return getPath().endsWith("[x]");
-      }  
+  public boolean isChoice() {
+    return getPath().endsWith("[x]");
+  }  
 
-      public String getName() {
-        return hasPath() ? getPath().contains(".") ? getPath().substring(getPath().lastIndexOf(".")+1) : getPath() : null;
-      }
+  public String getName() {
+    return hasPath() ? getPath().contains(".") ? getPath().substring(getPath().lastIndexOf(".")+1) : getPath() : null;
+  }
 
-      public boolean unbounded() {
-        return getMax().equals("*") || Integer.parseInt(getMax()) > 1;
-      }
+  public boolean unbounded() {
+    return getMax().equals("*") || Integer.parseInt(getMax()) > 1;
+  }
 
-      public boolean isMandatory() {
-        return getMin() > 0;
-      }
+  public boolean isMandatory() {
+    return getMin() > 0;
+  }
 
-      public boolean isInlineType() {
-        return getType().size() == 1 && Utilities.existsInList(getType().get(0).getCode(), "Element", "BackboneElement");
-      }  
+  public boolean isInlineType() {
+    return getType().size() == 1 && Utilities.existsInList(getType().get(0).getCode(), "Element", "BackboneElement");
+  }  
 
 
 // end addition

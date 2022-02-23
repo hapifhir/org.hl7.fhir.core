@@ -108,7 +108,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 
-public class ValueSetExpanderSimple implements ValueSetExpander {
+public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetExpander {
 
   public class PropertyFilter implements IConceptFilter {
 
@@ -510,8 +510,29 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
       if (!existsInParams(exp.getParameter(), p.getName(), p.getValue()))
         exp.getParameter().add(p);
     }
+    copyExpansion(vso.getValueset().getExpansion().getContains());
     canBeHeirarchy = false; // if we're importing a value set, we have to be combining, so we won't try for a heirarchy
     return vso.getValueset();
+  }
+
+  public void copyExpansion(List<ValueSetExpansionContainsComponent> list) {
+    for (ValueSetExpansionContainsComponent cc : list) {
+       ValueSetExpansionContainsComponent n = new ValueSet.ValueSetExpansionContainsComponent();
+       n.setSystem(cc.getSystem());
+       n.setCode(cc.getCode());
+       n.setAbstract(cc.getAbstract());
+       n.setInactive(cc.getInactive());
+       n.setDisplay(cc.getDisplay());
+       n.getDesignation().addAll(cc.getDesignation());
+
+       String s = key(n);
+       if (!map.containsKey(s) && !excludeKeys.contains(s)) {
+         codes.add(n);
+         map.put(s, n);
+         total++;
+       }
+       copyExpansion(cc.getContains());
+    }
   }
 
   private void addErrors(List<String> errs) {
@@ -546,7 +567,7 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
       copyImportContains(base.getExpansion().getContains(), null, expParams, imports);
     } else {
       CodeSystem cs = context.fetchCodeSystem(inc.getSystem());
-      if ((cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT))) {
+      if (isServerSide(inc.getSystem()) || (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT))) {
         doServerIncludeCodes(inc, heirarchical, exp, imports, expParams, extensions);
       } else {
         doInternalIncludeCodes(inc, exp, expParams, imports, cs);
@@ -613,6 +634,9 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
       if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
         addFragmentWarning(exp, cs);
       }
+      if (cs.getContent() == CodeSystemContentMode.EXAMPLE) {
+        addExampleWarning(exp, cs);
+      }      
     }
 
     if (!inc.getConcept().isEmpty()) {
@@ -624,6 +648,8 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
         if (def == null) {
           if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
             addFragmentWarning(exp, cs);
+          } else if (cs.getContent() == CodeSystemContentMode.EXAMPLE) {
+              addExampleWarning(exp, cs);
           } else {
             if (checkCodesWhenExpanding) {
               throw failTSE("Unable to find code '" + c.getCode() + "' in code system " + cs.getUrl());
@@ -712,14 +738,25 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
   }
 
   private void addFragmentWarning(ValueSetExpansionComponent exp, CodeSystem cs) {
-    for (Extension ex : cs.getExtensionsByUrl(ToolingExtensions.EXT_EXP_FRAGMENT)) {
-      if (ex.getValue().primitiveValue().equals(cs.getUrl())) {
+    String url = cs.getVersionedUrl();
+    for (ValueSetExpansionParameterComponent p : exp.getParameter()) {
+      if ("fragment".equals(p.getName()) && p.hasValueUriType() && url.equals(p.getValue().primitiveValue())) { 
         return;
-      }
+      }     
     }
-    exp.addExtension(new Extension(ToolingExtensions.EXT_EXP_FRAGMENT).setValue(new UriType(cs.getUrl())));
+    exp.addParameter().setName("fragment").setValue(new UriType(url));
   }
 
+  private void addExampleWarning(ValueSetExpansionComponent exp, CodeSystem cs) {
+    String url = cs.getVersionedUrl();
+    for (ValueSetExpansionParameterComponent p : exp.getParameter()) {
+      if ("example".equals(p.getName()) && p.hasValueUriType() && url.equals(p.getValue().primitiveValue())) { 
+        return;
+      }     
+    }
+    exp.addParameter().setName("example").setValue(new UriType(url));
+  }
+  
   private List<ConceptDefinitionDesignationComponent> convertDesignations(List<ConceptReferenceDesignationComponent> list) {
     List<ConceptDefinitionDesignationComponent> res = new ArrayList<CodeSystem.ConceptDefinitionDesignationComponent>();
     for (ConceptReferenceDesignationComponent t : list) {

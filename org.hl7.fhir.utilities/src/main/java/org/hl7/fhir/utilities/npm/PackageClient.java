@@ -4,17 +4,19 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.SimpleHTTPClient;
+import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JSONUtil;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -22,6 +24,9 @@ import java.util.List;
 import java.util.Set;
 
 public class PackageClient {
+
+  public static final String PRIMARY_SERVER = "http://packages.fhir.org";
+  public static final String SECONDARY_SERVER = "https://packages2.fhir.org/packages";
 
   private String address;
   private String cacheFolder;
@@ -86,7 +91,7 @@ public class PackageClient {
             address));
         }
       }
-    } catch (FileNotFoundException e) {
+    } catch (Exception e) {
     }
     return res;    
   }
@@ -135,12 +140,10 @@ public class PackageClient {
   }
  
   private InputStream fetchUrl(String source, String accept) throws IOException {
-    URL url = new URL(source);
-    URLConnection c = url.openConnection();
-    if (accept != null) {
-      c.setRequestProperty("accept", accept);
-    }
-    return c.getInputStream();
+    SimpleHTTPClient http = new SimpleHTTPClient();
+    HTTPResult res = http.get(source, accept);
+    res.checkThrowException();
+    return new ByteArrayInputStream(res.getContent());
   }
   
   private JsonObject fetchJson(String source) throws IOException {

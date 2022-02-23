@@ -1,5 +1,37 @@
 package org.hl7.fhir.utilities;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,41 +65,9 @@ package org.hl7.fhir.utilities;
 import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.channels.FileChannel;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
-import static org.apache.commons.lang3.StringUtils.isBlank;
-
 public class Utilities {
 
+  private static final String UUID_REGEX = "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}";
   private static final String OID_REGEX = "[0-2](\\.(0|[1-9][0-9]*))+";
 
   /**
@@ -596,6 +596,8 @@ public class Utilities {
         if ("[tmp]".equals(a)) {
           if (hasCTempDir()) {
             a = "c:\\temp";
+          } else if (ToolGlobalSettings.hasTempPath()) {            
+            a = ToolGlobalSettings.getTempPath();
           } else {
             a = System.getProperty("java.io.tmpdir");
           }
@@ -649,22 +651,16 @@ public class Utilities {
     StringBuilder s = new StringBuilder();
     boolean d = false;
     for (String arg : args) {
-      if (!d)
-        d = !noString(arg);
-      else if (!s.toString().endsWith("/") && !arg.startsWith("/"))
-        s.append("/");
-      s.append(arg);
+      if (arg != null) {
+        if (!d)
+          d = !noString(arg);
+        else if (s.toString() != null && !s.toString().endsWith("/") && !arg.startsWith("/"))
+          s.append("/");
+        s.append(arg);
+      }
     }
     return s.toString();
   }
-
-
-//  public static void checkCase(String filename) {
-//    File f = new CSFile(filename);
-//    if (!f.getName().equals(filename))
-//      throw new FHIRException("Filename  ")
-//    
-//  }
 
   public static String nmtokenize(String cs) {
     if (cs == null)
@@ -1001,7 +997,6 @@ public class Utilities {
     return s.substring(0, 1).toLowerCase() + s.substring(1);
   }
 
-
   public static int charCount(String s, char c) {
     int res = 0;
     for (char ch : s.toCharArray())
@@ -1010,11 +1005,9 @@ public class Utilities {
     return res;
   }
 
-
   public static boolean isOid(String cc) {
-    return cc.matches(OID_REGEX) && cc.lastIndexOf('.') >= 5;
+    return cc.matches(OID_REGEX);
   }
-
 
   public static boolean equals(String one, String two) {
     if (one == null && two == null)
@@ -1093,10 +1086,24 @@ public class Utilities {
 
 
   public static boolean isAbsoluteUrl(String ref) {
-    return ref != null && (ref.startsWith("http:") || ref.startsWith("https:") || ref.startsWith("urn:uuid:") || ref.startsWith("urn:oid:") || 
-        Utilities.startsWithInList(ref, "urn:iso:", "urn:iso-iec:", "urn:iso-cie:", "urn:iso-astm:", "urn:iso-ieee:", "urn:iec:")); // rfc5141
+    if (ref != null && ref.contains(":")) {
+      String scheme = ref.substring(0, ref.indexOf(":"));
+      String details = ref.substring(ref.indexOf(":")+1);
+      return (existsInList(scheme, "http", "https", "urn") || (isToken(scheme) && scheme.equals(scheme.toLowerCase())) || Utilities.startsWithInList(ref, "urn:iso:", "urn:iso-iec:", "urn:iso-cie:", "urn:iso-astm:", "urn:iso-ieee:", "urn:iec:"))
+          && details != null && details.length() > 0 && !details.contains(" "); // rfc5141
+    }
+    return false; 
   }
-
+  
+  public static boolean isAbsoluteUrlLinkable(String ref) {
+    if (ref != null && ref.contains(":")) {
+      String scheme = ref.substring(0, ref.indexOf(":"));
+      String details = ref.substring(ref.indexOf(":")+1);
+      return (existsInList(scheme, "http", "https", "ftp"))
+          && details != null && details.length() > 0 && !details.contains(" "); // rfc5141
+    }
+    return false; 
+  }
 
   public static boolean equivalent(String l, String r) {
     if (Utilities.noString(l) && Utilities.noString(r))
@@ -1346,6 +1353,21 @@ public class Utilities {
     return length + BT;
   }
 
+  public static String describeSize(long length) {
+    if (length < 0) throw new IllegalArgumentException("File length of < 0  passed in...");
+
+    if (length > Math.pow(ONE_MB, 3)) {
+      return length / ((long) Math.pow(ONE_MB, 3)) + GB;
+    }
+    if (length > Math.pow(ONE_MB, 2)) {
+      return length / ((long) Math.pow(ONE_MB, 2)) + MB;
+    }
+    if (length > ONE_MB) {
+      return length / (ONE_MB) + KB;
+    }
+    return length + BT;
+  }
+
   public static List<byte[]> splitBytes(byte[] array, byte[] delimiter) {
     List<byte[]> byteArrays = new LinkedList<byte[]>();
     if (delimiter.length == 0)
@@ -1444,6 +1466,44 @@ public class Utilities {
     return normalizePath;
   }
 
+  final static int[] illegalChars = {34, 60, 62, 124, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 58, 42, 63, 92, 47};
+  
+  static {
+    Arrays.sort(illegalChars);
+  }
+
+  public static String cleanFileName(String badFileName) {
+    StringBuilder cleanName = new StringBuilder();
+    int len = badFileName.codePointCount(0, badFileName.length());
+    for (int i=0; i<len; i++) {
+      int c = badFileName.codePointAt(i);
+      if (Arrays.binarySearch(illegalChars, c) < 0) {
+        cleanName.appendCodePoint(c);
+      }
+    }
+    return cleanName.toString();
+  }
+
+  public static boolean isValidUUID(String uuid) {
+    return uuid.matches(UUID_REGEX);
+  }
+
+  public static boolean isValidOID(String oid) {
+    return oid.matches(OID_REGEX);
+  }
+
+  public static int findinList(String[] list, String val) {
+    for (int i = 0; i < list.length; i++) {
+      if (val.equals(list[i])) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  public static String toString(String[] expected) {
+    return "['"+String.join("' | '", expected)+"']";
+  }
 
 
 }

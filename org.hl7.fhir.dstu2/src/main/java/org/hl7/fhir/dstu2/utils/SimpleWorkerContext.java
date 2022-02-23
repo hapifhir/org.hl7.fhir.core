@@ -59,6 +59,7 @@ import org.hl7.fhir.dstu2.model.ValueSet;
 import org.hl7.fhir.dstu2.terminologies.ValueSetExpansionCache;
 import org.hl7.fhir.dstu2.utils.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.dstu2.utils.client.FHIRToolingClient;
+import org.hl7.fhir.dstu2.utils.validation.IResourceValidator;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CSFileInputStream;
@@ -111,8 +112,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 		return res;
 	}
 
-	public void connectToTSServer(String url) throws URISyntaxException {
-	  txServer = new FHIRToolingClient(url);
+	public void connectToTSServer(String url, String userAgent) throws URISyntaxException {
+	  txServer = new FHIRToolingClient(url, userAgent);
 	}
 
 	private void loadFromFile(InputStream stream, String name) throws IOException, FHIRException {

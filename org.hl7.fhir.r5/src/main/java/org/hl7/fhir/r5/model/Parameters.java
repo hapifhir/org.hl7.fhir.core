@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -67,7 +67,7 @@ public class Parameters extends Resource implements IBaseParameters {
         /**
          * Conveys the content if the parameter is a data type.
          */
-        @Child(name = "value", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "value", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, CodeableReference.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, RatioRange.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="If parameter is a data type", formalDefinition="Conveys the content if the parameter is a data type." )
         protected DataType value;
 
@@ -532,6 +532,21 @@ public class Parameters extends Resource implements IBaseParameters {
         /**
          * @return {@link #value} (Conveys the content if the parameter is a data type.)
          */
+        public CodeableReference getValueCodeableReference() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CodeableReference();
+          if (!(this.value instanceof CodeableReference))
+            throw new FHIRException("Type mismatch: the type CodeableReference was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CodeableReference) this.value;
+        }
+
+        public boolean hasValueCodeableReference() { 
+          return this != null && this.value instanceof CodeableReference;
+        }
+
+        /**
+         * @return {@link #value} (Conveys the content if the parameter is a data type.)
+         */
         public Coding getValueCoding() throws FHIRException { 
           if (this.value == null)
             this.value = new Coding();
@@ -707,6 +722,21 @@ public class Parameters extends Resource implements IBaseParameters {
 
         public boolean hasValueRatio() { 
           return this != null && this.value instanceof Ratio;
+        }
+
+        /**
+         * @return {@link #value} (Conveys the content if the parameter is a data type.)
+         */
+        public RatioRange getValueRatioRange() throws FHIRException { 
+          if (this.value == null)
+            this.value = new RatioRange();
+          if (!(this.value instanceof RatioRange))
+            throw new FHIRException("Type mismatch: the type RatioRange was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (RatioRange) this.value;
+        }
+
+        public boolean hasValueRatioRange() { 
+          return this != null && this.value instanceof RatioRange;
         }
 
         /**
@@ -927,7 +957,7 @@ public class Parameters extends Resource implements IBaseParameters {
          * @param value {@link #value} (Conveys the content if the parameter is a data type.)
          */
         public ParametersParameterComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
+          if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof CodeableReference || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof RatioRange || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
             throw new Error("Not the right type for Parameters.parameter.value[x]: "+value.fhirType());
           this.value = value;
           return this;
@@ -1008,7 +1038,7 @@ public class Parameters extends Resource implements IBaseParameters {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("name", "string", "The name of the parameter (reference to the operation definition).", 0, 1, name));
-          children.add(new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Conveys the content if the parameter is a data type.", 0, 1, value));
+          children.add(new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Conveys the content if the parameter is a data type.", 0, 1, value));
           children.add(new Property("resource", "Resource", "Conveys the content if the parameter is a whole resource.", 0, 1, resource));
           children.add(new Property("part", "@Parameters.parameter", "A named part of a multi-part parameter.", 0, java.lang.Integer.MAX_VALUE, part));
         }
@@ -1017,8 +1047,8 @@ public class Parameters extends Resource implements IBaseParameters {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3373707: /*name*/  return new Property("name", "string", "The name of the parameter (reference to the operation definition).", 0, 1, name);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Conveys the content if the parameter is a data type.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Conveys the content if the parameter is a data type.", 0, 1, value);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Conveys the content if the parameter is a data type.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "Conveys the content if the parameter is a data type.", 0, 1, value);
           case -1535024575: /*valueBase64Binary*/  return new Property("value[x]", "base64Binary", "Conveys the content if the parameter is a data type.", 0, 1, value);
           case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "Conveys the content if the parameter is a data type.", 0, 1, value);
           case -786218365: /*valueCanonical*/  return new Property("value[x]", "canonical", "Conveys the content if the parameter is a data type.", 0, 1, value);
@@ -1044,6 +1074,7 @@ public class Parameters extends Resource implements IBaseParameters {
           case -67108992: /*valueAnnotation*/  return new Property("value[x]", "Annotation", "Conveys the content if the parameter is a data type.", 0, 1, value);
           case -475566732: /*valueAttachment*/  return new Property("value[x]", "Attachment", "Conveys the content if the parameter is a data type.", 0, 1, value);
           case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "Conveys the content if the parameter is a data type.", 0, 1, value);
+          case -257955629: /*valueCodeableReference*/  return new Property("value[x]", "CodeableReference", "Conveys the content if the parameter is a data type.", 0, 1, value);
           case -1887705029: /*valueCoding*/  return new Property("value[x]", "Coding", "Conveys the content if the parameter is a data type.", 0, 1, value);
           case 944904545: /*valueContactPoint*/  return new Property("value[x]", "ContactPoint", "Conveys the content if the parameter is a data type.", 0, 1, value);
           case 2017332766: /*valueCount*/  return new Property("value[x]", "Count", "Conveys the content if the parameter is a data type.", 0, 1, value);
@@ -1056,6 +1087,7 @@ public class Parameters extends Resource implements IBaseParameters {
           case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "Conveys the content if the parameter is a data type.", 0, 1, value);
           case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "Conveys the content if the parameter is a data type.", 0, 1, value);
           case 2030767386: /*valueRatio*/  return new Property("value[x]", "Ratio", "Conveys the content if the parameter is a data type.", 0, 1, value);
+          case -706454461: /*valueRatioRange*/  return new Property("value[x]", "RatioRange", "Conveys the content if the parameter is a data type.", 0, 1, value);
           case 1755241690: /*valueReference*/  return new Property("value[x]", "Reference", "Conveys the content if the parameter is a data type.", 0, 1, value);
           case -962229101: /*valueSampledData*/  return new Property("value[x]", "SampledData", "Conveys the content if the parameter is a data type.", 0, 1, value);
           case -540985785: /*valueSignature*/  return new Property("value[x]", "Signature", "Conveys the content if the parameter is a data type.", 0, 1, value);
@@ -1141,7 +1173,7 @@ public class Parameters extends Resource implements IBaseParameters {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3373707: /*name*/ return new String[] {"string"};
-        case 111972721: /*value*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
+        case 111972721: /*value*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "CodeableReference", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "RatioRange", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
         case -341064690: /*resource*/ return new String[] {"Resource"};
         case 3433459: /*part*/ return new String[] {"@Parameters.parameter"};
         default: return super.getTypesForProperty(hash, name);
@@ -1254,6 +1286,10 @@ public class Parameters extends Resource implements IBaseParameters {
           this.value = new CodeableConcept();
           return this.value;
         }
+        else if (name.equals("valueCodeableReference")) {
+          this.value = new CodeableReference();
+          return this.value;
+        }
         else if (name.equals("valueCoding")) {
           this.value = new Coding();
           return this.value;
@@ -1300,6 +1336,10 @@ public class Parameters extends Resource implements IBaseParameters {
         }
         else if (name.equals("valueRatio")) {
           this.value = new Ratio();
+          return this.value;
+        }
+        else if (name.equals("valueRatioRange")) {
+          this.value = new RatioRange();
           return this.value;
         }
         else if (name.equals("valueReference")) {
@@ -1632,7 +1672,7 @@ public String toString() {
     return ResourceType.Parameters;
    }
 
-// Manual code (from Configuration.txt)t:
+// Manual code (from Configuration.txt):
 public Parameters addParameter(String name, boolean b) {
     addParameter().setName(name).setValue(new BooleanType(b));
     return this;

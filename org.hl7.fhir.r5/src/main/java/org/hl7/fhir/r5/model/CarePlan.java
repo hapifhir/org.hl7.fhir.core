@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,7 +63,7 @@ public class CarePlan extends DomainResource {
          */
         COMMUNICATIONREQUEST, 
         /**
-         * Represents a request for a patient to employ a medical device. The device may be an implantable device, or an external assistive device, such as a walker.
+         * Represents a request a device to be provided to a specific patient. The device may be an implantable device to be subsequently implanted, or an external assistive device, such as a walker, to be delivered and subsequently be used.
          */
         DEVICEREQUEST, 
         /**
@@ -124,7 +124,6 @@ public class CarePlan extends DomainResource {
             case TASK: return "Task";
             case SERVICEREQUEST: return "ServiceRequest";
             case VISIONPRESCRIPTION: return "VisionPrescription";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,7 +137,6 @@ public class CarePlan extends DomainResource {
             case TASK: return "http://hl7.org/fhir/resource-types";
             case SERVICEREQUEST: return "http://hl7.org/fhir/resource-types";
             case VISIONPRESCRIPTION: return "http://hl7.org/fhir/resource-types";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -146,13 +144,12 @@ public class CarePlan extends DomainResource {
           switch (this) {
             case APPOINTMENT: return "A booking of a healthcare event among patient(s), practitioner(s), related person(s) and/or device(s) for a specific date/time. This may result in one or more Encounter(s).";
             case COMMUNICATIONREQUEST: return "A request to convey information; e.g. the CDS system proposes that an alert be sent to a responsible provider, the CDS system proposes that the public health agency be notified about a reportable condition.";
-            case DEVICEREQUEST: return "Represents a request for a patient to employ a medical device. The device may be an implantable device, or an external assistive device, such as a walker.";
+            case DEVICEREQUEST: return "Represents a request a device to be provided to a specific patient. The device may be an implantable device to be subsequently implanted, or an external assistive device, such as a walker, to be delivered and subsequently be used.";
             case MEDICATIONREQUEST: return "An order or request for both supply of the medication and the instructions for administration of the medication to a patient. The resource is called \"MedicationRequest\" rather than \"MedicationPrescription\" or \"MedicationOrder\" to generalize the use across inpatient and outpatient settings, including care plans, etc., and to harmonize with workflow patterns.";
             case NUTRITIONORDER: return "A request to supply a diet, formula feeding (enteral) or oral nutritional supplement to a patient/resident.";
             case TASK: return "A task to be performed.";
             case SERVICEREQUEST: return "A record of a request for service such as diagnostic investigations, treatments, or operations to be performed.";
             case VISIONPRESCRIPTION: return "An authorization for the provision of glasses and/or contact lenses to a patient.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -166,7 +163,6 @@ public class CarePlan extends DomainResource {
             case TASK: return "Task";
             case SERVICEREQUEST: return "ServiceRequest";
             case VISIONPRESCRIPTION: return "VisionPrescription";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -323,7 +319,6 @@ public class CarePlan extends DomainResource {
             case STOPPED: return "stopped";
             case UNKNOWN: return "unknown";
             case ENTEREDINERROR: return "entered-in-error";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -338,7 +333,6 @@ public class CarePlan extends DomainResource {
             case STOPPED: return "http://hl7.org/fhir/care-plan-activity-status";
             case UNKNOWN: return "http://hl7.org/fhir/care-plan-activity-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/care-plan-activity-status";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -353,7 +347,6 @@ public class CarePlan extends DomainResource {
             case STOPPED: return "The planned care plan activity has been ended prior to completion after the activity was started.";
             case UNKNOWN: return "The current state of the care plan activity is not known.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply, but the authoring/source system does not know which one.";
             case ENTEREDINERROR: return "Care plan activity was entered in error and voided.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -368,7 +361,6 @@ public class CarePlan extends DomainResource {
             case STOPPED: return "Stopped";
             case UNKNOWN: return "Unknown";
             case ENTEREDINERROR: return "Entered in Error";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -503,7 +495,6 @@ public class CarePlan extends DomainResource {
             case ORDER: return "order";
             case OPTION: return "option";
             case DIRECTIVE: return "directive";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -514,7 +505,6 @@ public class CarePlan extends DomainResource {
             case ORDER: return "http://hl7.org/fhir/request-intent";
             case OPTION: return "http://hl7.org/fhir/request-intent";
             case DIRECTIVE: return "http://hl7.org/fhir/request-intent";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -525,7 +515,6 @@ public class CarePlan extends DomainResource {
             case ORDER: return "The request represents a request/demand and authorization for action by a Practitioner.";
             case OPTION: return "The request represents a component or option for a RequestGroup that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestGroup]]] for additional information on how this status is used.";
             case DIRECTIVE: return "The request represents a legally binding instruction authored by a Patient or RelatedPerson.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -536,7 +525,6 @@ public class CarePlan extends DomainResource {
             case ORDER: return "Order";
             case OPTION: return "Option";
             case DIRECTIVE: return "Directive";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -600,12 +588,12 @@ public class CarePlan extends DomainResource {
     @Block()
     public static class CarePlanActivityComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Identifies the outcome at the point when the status of the activity is assessed.  For example, the outcome of an education activity could be patient understands (or not).  The reference to an "event" resource, such as Procedure or Encounter or Observation, is the result/outcome of the activity itself.  The activity can be conveyed using CarePlan.activity.detail OR using the CarePlan.activity.reference (a reference to a “request” resource).
+         * Identifies the activity that was performed. For example, an activity could be patient education, exercise, or a medication administration. The reference to an "event" resource, such as Procedure or Encounter or Observation, represents the activity that was performed. The requested activity can be conveyed using CarePlan.activity.plannedActivityDetail OR using the CarePlan.activity.plannedActivityReference (a reference to a “request” resource).
          */
-        @Child(name = "outcome", type = {CodeableReference.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Results of the activity (concept, or Appointment, Encounter, Procedure, etc)", formalDefinition="Identifies the outcome at the point when the status of the activity is assessed.  For example, the outcome of an education activity could be patient understands (or not).  The reference to an \"event\" resource, such as Procedure or Encounter or Observation, is the result/outcome of the activity itself.  The activity can be conveyed using CarePlan.activity.detail OR using the CarePlan.activity.reference (a reference to a “request” resource)." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/care-plan-activity-outcome")
-        protected List<CodeableReference> outcome;
+        @Child(name = "performedActivity", type = {CodeableReference.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Results of the activity (concept, or Appointment, Encounter, Procedure, etc)", formalDefinition="Identifies the activity that was performed. For example, an activity could be patient education, exercise, or a medication administration. The reference to an \"event\" resource, such as Procedure or Encounter or Observation, represents the activity that was performed. The requested activity can be conveyed using CarePlan.activity.plannedActivityDetail OR using the CarePlan.activity.plannedActivityReference (a reference to a “request” resource)." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/care-plan-activity-performed")
+        protected List<CodeableReference> performedActivity;
 
         /**
          * Notes about the adherence/status/progress of the activity.
@@ -617,18 +605,18 @@ public class CarePlan extends DomainResource {
         /**
          * The details of the proposed activity represented in a specific resource.
          */
-        @Child(name = "reference", type = {Appointment.class, CommunicationRequest.class, DeviceRequest.class, MedicationRequest.class, NutritionOrder.class, Task.class, ServiceRequest.class, VisionPrescription.class, RequestGroup.class, ImmunizationRecommendation.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Activity details defined in specific resource", formalDefinition="The details of the proposed activity represented in a specific resource." )
-        protected Reference reference;
+        @Child(name = "plannedActivityReference", type = {Appointment.class, CommunicationRequest.class, DeviceRequest.class, MedicationRequest.class, NutritionOrder.class, Task.class, ServiceRequest.class, VisionPrescription.class, RequestGroup.class, ImmunizationRecommendation.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Activity that is intended to be part of the care plan", formalDefinition="The details of the proposed activity represented in a specific resource." )
+        protected Reference plannedActivityReference;
 
         /**
          * A simple summary of a planned activity suitable for a general care plan system (e.g. form driven) that doesn't know about specific resources such as procedure etc.
          */
-        @Child(name = "detail", type = {}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "plannedActivityDetail", type = {}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="In-line definition of activity", formalDefinition="A simple summary of a planned activity suitable for a general care plan system (e.g. form driven) that doesn't know about specific resources such as procedure etc." )
-        protected CarePlanActivityDetailComponent detail;
+        protected CarePlanActivityPlannedActivityDetailComponent plannedActivityDetail;
 
-        private static final long serialVersionUID = -673901898L;
+        private static final long serialVersionUID = 1513409624L;
 
     /**
      * Constructor
@@ -638,56 +626,56 @@ public class CarePlan extends DomainResource {
       }
 
         /**
-         * @return {@link #outcome} (Identifies the outcome at the point when the status of the activity is assessed.  For example, the outcome of an education activity could be patient understands (or not).  The reference to an "event" resource, such as Procedure or Encounter or Observation, is the result/outcome of the activity itself.  The activity can be conveyed using CarePlan.activity.detail OR using the CarePlan.activity.reference (a reference to a “request” resource).)
+         * @return {@link #performedActivity} (Identifies the activity that was performed. For example, an activity could be patient education, exercise, or a medication administration. The reference to an "event" resource, such as Procedure or Encounter or Observation, represents the activity that was performed. The requested activity can be conveyed using CarePlan.activity.plannedActivityDetail OR using the CarePlan.activity.plannedActivityReference (a reference to a “request” resource).)
          */
-        public List<CodeableReference> getOutcome() { 
-          if (this.outcome == null)
-            this.outcome = new ArrayList<CodeableReference>();
-          return this.outcome;
+        public List<CodeableReference> getPerformedActivity() { 
+          if (this.performedActivity == null)
+            this.performedActivity = new ArrayList<CodeableReference>();
+          return this.performedActivity;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public CarePlanActivityComponent setOutcome(List<CodeableReference> theOutcome) { 
-          this.outcome = theOutcome;
+        public CarePlanActivityComponent setPerformedActivity(List<CodeableReference> thePerformedActivity) { 
+          this.performedActivity = thePerformedActivity;
           return this;
         }
 
-        public boolean hasOutcome() { 
-          if (this.outcome == null)
+        public boolean hasPerformedActivity() { 
+          if (this.performedActivity == null)
             return false;
-          for (CodeableReference item : this.outcome)
+          for (CodeableReference item : this.performedActivity)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public CodeableReference addOutcome() { //3
+        public CodeableReference addPerformedActivity() { //3
           CodeableReference t = new CodeableReference();
-          if (this.outcome == null)
-            this.outcome = new ArrayList<CodeableReference>();
-          this.outcome.add(t);
+          if (this.performedActivity == null)
+            this.performedActivity = new ArrayList<CodeableReference>();
+          this.performedActivity.add(t);
           return t;
         }
 
-        public CarePlanActivityComponent addOutcome(CodeableReference t) { //3
+        public CarePlanActivityComponent addPerformedActivity(CodeableReference t) { //3
           if (t == null)
             return this;
-          if (this.outcome == null)
-            this.outcome = new ArrayList<CodeableReference>();
-          this.outcome.add(t);
+          if (this.performedActivity == null)
+            this.performedActivity = new ArrayList<CodeableReference>();
+          this.performedActivity.add(t);
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #outcome}, creating it if it does not already exist {3}
+         * @return The first repetition of repeating field {@link #performedActivity}, creating it if it does not already exist {3}
          */
-        public CodeableReference getOutcomeFirstRep() { 
-          if (getOutcome().isEmpty()) {
-            addOutcome();
+        public CodeableReference getPerformedActivityFirstRep() { 
+          if (getPerformedActivity().isEmpty()) {
+            addPerformedActivity();
           }
-          return getOutcome().get(0);
+          return getPerformedActivity().get(0);
         }
 
         /**
@@ -744,68 +732,68 @@ public class CarePlan extends DomainResource {
         }
 
         /**
-         * @return {@link #reference} (The details of the proposed activity represented in a specific resource.)
+         * @return {@link #plannedActivityReference} (The details of the proposed activity represented in a specific resource.)
          */
-        public Reference getReference() { 
-          if (this.reference == null)
+        public Reference getPlannedActivityReference() { 
+          if (this.plannedActivityReference == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CarePlanActivityComponent.reference");
+              throw new Error("Attempt to auto-create CarePlanActivityComponent.plannedActivityReference");
             else if (Configuration.doAutoCreate())
-              this.reference = new Reference(); // cc
-          return this.reference;
+              this.plannedActivityReference = new Reference(); // cc
+          return this.plannedActivityReference;
         }
 
-        public boolean hasReference() { 
-          return this.reference != null && !this.reference.isEmpty();
+        public boolean hasPlannedActivityReference() { 
+          return this.plannedActivityReference != null && !this.plannedActivityReference.isEmpty();
         }
 
         /**
-         * @param value {@link #reference} (The details of the proposed activity represented in a specific resource.)
+         * @param value {@link #plannedActivityReference} (The details of the proposed activity represented in a specific resource.)
          */
-        public CarePlanActivityComponent setReference(Reference value) { 
-          this.reference = value;
+        public CarePlanActivityComponent setPlannedActivityReference(Reference value) { 
+          this.plannedActivityReference = value;
           return this;
         }
 
         /**
-         * @return {@link #detail} (A simple summary of a planned activity suitable for a general care plan system (e.g. form driven) that doesn't know about specific resources such as procedure etc.)
+         * @return {@link #plannedActivityDetail} (A simple summary of a planned activity suitable for a general care plan system (e.g. form driven) that doesn't know about specific resources such as procedure etc.)
          */
-        public CarePlanActivityDetailComponent getDetail() { 
-          if (this.detail == null)
+        public CarePlanActivityPlannedActivityDetailComponent getPlannedActivityDetail() { 
+          if (this.plannedActivityDetail == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CarePlanActivityComponent.detail");
+              throw new Error("Attempt to auto-create CarePlanActivityComponent.plannedActivityDetail");
             else if (Configuration.doAutoCreate())
-              this.detail = new CarePlanActivityDetailComponent(); // cc
-          return this.detail;
+              this.plannedActivityDetail = new CarePlanActivityPlannedActivityDetailComponent(); // cc
+          return this.plannedActivityDetail;
         }
 
-        public boolean hasDetail() { 
-          return this.detail != null && !this.detail.isEmpty();
+        public boolean hasPlannedActivityDetail() { 
+          return this.plannedActivityDetail != null && !this.plannedActivityDetail.isEmpty();
         }
 
         /**
-         * @param value {@link #detail} (A simple summary of a planned activity suitable for a general care plan system (e.g. form driven) that doesn't know about specific resources such as procedure etc.)
+         * @param value {@link #plannedActivityDetail} (A simple summary of a planned activity suitable for a general care plan system (e.g. form driven) that doesn't know about specific resources such as procedure etc.)
          */
-        public CarePlanActivityComponent setDetail(CarePlanActivityDetailComponent value) { 
-          this.detail = value;
+        public CarePlanActivityComponent setPlannedActivityDetail(CarePlanActivityPlannedActivityDetailComponent value) { 
+          this.plannedActivityDetail = value;
           return this;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("outcome", "CodeableReference(Any)", "Identifies the outcome at the point when the status of the activity is assessed.  For example, the outcome of an education activity could be patient understands (or not).  The reference to an \"event\" resource, such as Procedure or Encounter or Observation, is the result/outcome of the activity itself.  The activity can be conveyed using CarePlan.activity.detail OR using the CarePlan.activity.reference (a reference to a “request” resource).", 0, java.lang.Integer.MAX_VALUE, outcome));
+          children.add(new Property("performedActivity", "CodeableReference(Any)", "Identifies the activity that was performed. For example, an activity could be patient education, exercise, or a medication administration. The reference to an \"event\" resource, such as Procedure or Encounter or Observation, represents the activity that was performed. The requested activity can be conveyed using CarePlan.activity.plannedActivityDetail OR using the CarePlan.activity.plannedActivityReference (a reference to a “request” resource).", 0, java.lang.Integer.MAX_VALUE, performedActivity));
           children.add(new Property("progress", "Annotation", "Notes about the adherence/status/progress of the activity.", 0, java.lang.Integer.MAX_VALUE, progress));
-          children.add(new Property("reference", "Reference(Appointment|CommunicationRequest|DeviceRequest|MedicationRequest|NutritionOrder|Task|ServiceRequest|VisionPrescription|RequestGroup|ImmunizationRecommendation)", "The details of the proposed activity represented in a specific resource.", 0, 1, reference));
-          children.add(new Property("detail", "", "A simple summary of a planned activity suitable for a general care plan system (e.g. form driven) that doesn't know about specific resources such as procedure etc.", 0, 1, detail));
+          children.add(new Property("plannedActivityReference", "Reference(Appointment|CommunicationRequest|DeviceRequest|MedicationRequest|NutritionOrder|Task|ServiceRequest|VisionPrescription|RequestGroup|ImmunizationRecommendation)", "The details of the proposed activity represented in a specific resource.", 0, 1, plannedActivityReference));
+          children.add(new Property("plannedActivityDetail", "", "A simple summary of a planned activity suitable for a general care plan system (e.g. form driven) that doesn't know about specific resources such as procedure etc.", 0, 1, plannedActivityDetail));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1106507950: /*outcome*/  return new Property("outcome", "CodeableReference(Any)", "Identifies the outcome at the point when the status of the activity is assessed.  For example, the outcome of an education activity could be patient understands (or not).  The reference to an \"event\" resource, such as Procedure or Encounter or Observation, is the result/outcome of the activity itself.  The activity can be conveyed using CarePlan.activity.detail OR using the CarePlan.activity.reference (a reference to a “request” resource).", 0, java.lang.Integer.MAX_VALUE, outcome);
+          case 1964521199: /*performedActivity*/  return new Property("performedActivity", "CodeableReference(Any)", "Identifies the activity that was performed. For example, an activity could be patient education, exercise, or a medication administration. The reference to an \"event\" resource, such as Procedure or Encounter or Observation, represents the activity that was performed. The requested activity can be conveyed using CarePlan.activity.plannedActivityDetail OR using the CarePlan.activity.plannedActivityReference (a reference to a “request” resource).", 0, java.lang.Integer.MAX_VALUE, performedActivity);
           case -1001078227: /*progress*/  return new Property("progress", "Annotation", "Notes about the adherence/status/progress of the activity.", 0, java.lang.Integer.MAX_VALUE, progress);
-          case -925155509: /*reference*/  return new Property("reference", "Reference(Appointment|CommunicationRequest|DeviceRequest|MedicationRequest|NutritionOrder|Task|ServiceRequest|VisionPrescription|RequestGroup|ImmunizationRecommendation)", "The details of the proposed activity represented in a specific resource.", 0, 1, reference);
-          case -1335224239: /*detail*/  return new Property("detail", "", "A simple summary of a planned activity suitable for a general care plan system (e.g. form driven) that doesn't know about specific resources such as procedure etc.", 0, 1, detail);
+          case -1114371176: /*plannedActivityReference*/  return new Property("plannedActivityReference", "Reference(Appointment|CommunicationRequest|DeviceRequest|MedicationRequest|NutritionOrder|Task|ServiceRequest|VisionPrescription|RequestGroup|ImmunizationRecommendation)", "The details of the proposed activity represented in a specific resource.", 0, 1, plannedActivityReference);
+          case 2072803108: /*plannedActivityDetail*/  return new Property("plannedActivityDetail", "", "A simple summary of a planned activity suitable for a general care plan system (e.g. form driven) that doesn't know about specific resources such as procedure etc.", 0, 1, plannedActivityDetail);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -814,10 +802,10 @@ public class CarePlan extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : this.outcome.toArray(new Base[this.outcome.size()]); // CodeableReference
+        case 1964521199: /*performedActivity*/ return this.performedActivity == null ? new Base[0] : this.performedActivity.toArray(new Base[this.performedActivity.size()]); // CodeableReference
         case -1001078227: /*progress*/ return this.progress == null ? new Base[0] : this.progress.toArray(new Base[this.progress.size()]); // Annotation
-        case -925155509: /*reference*/ return this.reference == null ? new Base[0] : new Base[] {this.reference}; // Reference
-        case -1335224239: /*detail*/ return this.detail == null ? new Base[0] : new Base[] {this.detail}; // CarePlanActivityDetailComponent
+        case -1114371176: /*plannedActivityReference*/ return this.plannedActivityReference == null ? new Base[0] : new Base[] {this.plannedActivityReference}; // Reference
+        case 2072803108: /*plannedActivityDetail*/ return this.plannedActivityDetail == null ? new Base[0] : new Base[] {this.plannedActivityDetail}; // CarePlanActivityPlannedActivityDetailComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -826,17 +814,17 @@ public class CarePlan extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case -1106507950: // outcome
-          this.getOutcome().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
+        case 1964521199: // performedActivity
+          this.getPerformedActivity().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case -1001078227: // progress
           this.getProgress().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
-        case -925155509: // reference
-          this.reference = TypeConvertor.castToReference(value); // Reference
+        case -1114371176: // plannedActivityReference
+          this.plannedActivityReference = TypeConvertor.castToReference(value); // Reference
           return value;
-        case -1335224239: // detail
-          this.detail = (CarePlanActivityDetailComponent) value; // CarePlanActivityDetailComponent
+        case 2072803108: // plannedActivityDetail
+          this.plannedActivityDetail = (CarePlanActivityPlannedActivityDetailComponent) value; // CarePlanActivityPlannedActivityDetailComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -845,14 +833,14 @@ public class CarePlan extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("outcome")) {
-          this.getOutcome().add(TypeConvertor.castToCodeableReference(value));
+        if (name.equals("performedActivity")) {
+          this.getPerformedActivity().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("progress")) {
           this.getProgress().add(TypeConvertor.castToAnnotation(value));
-        } else if (name.equals("reference")) {
-          this.reference = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("detail")) {
-          this.detail = (CarePlanActivityDetailComponent) value; // CarePlanActivityDetailComponent
+        } else if (name.equals("plannedActivityReference")) {
+          this.plannedActivityReference = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("plannedActivityDetail")) {
+          this.plannedActivityDetail = (CarePlanActivityPlannedActivityDetailComponent) value; // CarePlanActivityPlannedActivityDetailComponent
         } else
           return super.setProperty(name, value);
         return value;
@@ -861,10 +849,10 @@ public class CarePlan extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1106507950:  return addOutcome(); 
+        case 1964521199:  return addPerformedActivity(); 
         case -1001078227:  return addProgress(); 
-        case -925155509:  return getReference();
-        case -1335224239:  return getDetail();
+        case -1114371176:  return getPlannedActivityReference();
+        case 2072803108:  return getPlannedActivityDetail();
         default: return super.makeProperty(hash, name);
         }
 
@@ -873,10 +861,10 @@ public class CarePlan extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1106507950: /*outcome*/ return new String[] {"CodeableReference"};
+        case 1964521199: /*performedActivity*/ return new String[] {"CodeableReference"};
         case -1001078227: /*progress*/ return new String[] {"Annotation"};
-        case -925155509: /*reference*/ return new String[] {"Reference"};
-        case -1335224239: /*detail*/ return new String[] {};
+        case -1114371176: /*plannedActivityReference*/ return new String[] {"Reference"};
+        case 2072803108: /*plannedActivityDetail*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -884,19 +872,19 @@ public class CarePlan extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("outcome")) {
-          return addOutcome();
+        if (name.equals("performedActivity")) {
+          return addPerformedActivity();
         }
         else if (name.equals("progress")) {
           return addProgress();
         }
-        else if (name.equals("reference")) {
-          this.reference = new Reference();
-          return this.reference;
+        else if (name.equals("plannedActivityReference")) {
+          this.plannedActivityReference = new Reference();
+          return this.plannedActivityReference;
         }
-        else if (name.equals("detail")) {
-          this.detail = new CarePlanActivityDetailComponent();
-          return this.detail;
+        else if (name.equals("plannedActivityDetail")) {
+          this.plannedActivityDetail = new CarePlanActivityPlannedActivityDetailComponent();
+          return this.plannedActivityDetail;
         }
         else
           return super.addChild(name);
@@ -910,18 +898,18 @@ public class CarePlan extends DomainResource {
 
       public void copyValues(CarePlanActivityComponent dst) {
         super.copyValues(dst);
-        if (outcome != null) {
-          dst.outcome = new ArrayList<CodeableReference>();
-          for (CodeableReference i : outcome)
-            dst.outcome.add(i.copy());
+        if (performedActivity != null) {
+          dst.performedActivity = new ArrayList<CodeableReference>();
+          for (CodeableReference i : performedActivity)
+            dst.performedActivity.add(i.copy());
         };
         if (progress != null) {
           dst.progress = new ArrayList<Annotation>();
           for (Annotation i : progress)
             dst.progress.add(i.copy());
         };
-        dst.reference = reference == null ? null : reference.copy();
-        dst.detail = detail == null ? null : detail.copy();
+        dst.plannedActivityReference = plannedActivityReference == null ? null : plannedActivityReference.copy();
+        dst.plannedActivityDetail = plannedActivityDetail == null ? null : plannedActivityDetail.copy();
       }
 
       @Override
@@ -931,8 +919,9 @@ public class CarePlan extends DomainResource {
         if (!(other_ instanceof CarePlanActivityComponent))
           return false;
         CarePlanActivityComponent o = (CarePlanActivityComponent) other_;
-        return compareDeep(outcome, o.outcome, true) && compareDeep(progress, o.progress, true) && compareDeep(reference, o.reference, true)
-           && compareDeep(detail, o.detail, true);
+        return compareDeep(performedActivity, o.performedActivity, true) && compareDeep(progress, o.progress, true)
+           && compareDeep(plannedActivityReference, o.plannedActivityReference, true) && compareDeep(plannedActivityDetail, o.plannedActivityDetail, true)
+          ;
       }
 
       @Override
@@ -946,8 +935,8 @@ public class CarePlan extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(outcome, progress, reference
-          , detail);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(performedActivity, progress
+          , plannedActivityReference, plannedActivityDetail);
       }
 
   public String fhirType() {
@@ -958,7 +947,7 @@ public class CarePlan extends DomainResource {
   }
 
     @Block()
-    public static class CarePlanActivityDetailComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class CarePlanActivityPlannedActivityDetailComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * A description of the kind of resource the in-line definition of a care plan activity is representing.  The CarePlan.activity.detail is an in-line definition when a resource is not referenced using CarePlan.activity.reference.  For example, a MedicationRequest, a ServiceRequest, or a CommunicationRequest.
          */
@@ -1090,14 +1079,14 @@ public class CarePlan extends DomainResource {
     /**
      * Constructor
      */
-      public CarePlanActivityDetailComponent() {
+      public CarePlanActivityPlannedActivityDetailComponent() {
         super();
       }
 
     /**
      * Constructor
      */
-      public CarePlanActivityDetailComponent(CarePlanActivityStatus status) {
+      public CarePlanActivityPlannedActivityDetailComponent(CarePlanActivityStatus status) {
         super();
         this.setStatus(status);
       }
@@ -1108,7 +1097,7 @@ public class CarePlan extends DomainResource {
         public Enumeration<CarePlanActivityKind> getKindElement() { 
           if (this.kind == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CarePlanActivityDetailComponent.kind");
+              throw new Error("Attempt to auto-create CarePlanActivityPlannedActivityDetailComponent.kind");
             else if (Configuration.doAutoCreate())
               this.kind = new Enumeration<CarePlanActivityKind>(new CarePlanActivityKindEnumFactory()); // bb
           return this.kind;
@@ -1125,7 +1114,7 @@ public class CarePlan extends DomainResource {
         /**
          * @param value {@link #kind} (A description of the kind of resource the in-line definition of a care plan activity is representing.  The CarePlan.activity.detail is an in-line definition when a resource is not referenced using CarePlan.activity.reference.  For example, a MedicationRequest, a ServiceRequest, or a CommunicationRequest.). This is the underlying object with id, value and extensions. The accessor "getKind" gives direct access to the value
          */
-        public CarePlanActivityDetailComponent setKindElement(Enumeration<CarePlanActivityKind> value) { 
+        public CarePlanActivityPlannedActivityDetailComponent setKindElement(Enumeration<CarePlanActivityKind> value) { 
           this.kind = value;
           return this;
         }
@@ -1140,7 +1129,7 @@ public class CarePlan extends DomainResource {
         /**
          * @param value A description of the kind of resource the in-line definition of a care plan activity is representing.  The CarePlan.activity.detail is an in-line definition when a resource is not referenced using CarePlan.activity.reference.  For example, a MedicationRequest, a ServiceRequest, or a CommunicationRequest.
          */
-        public CarePlanActivityDetailComponent setKind(CarePlanActivityKind value) { 
+        public CarePlanActivityPlannedActivityDetailComponent setKind(CarePlanActivityKind value) { 
           if (value == null)
             this.kind = null;
           else {
@@ -1163,7 +1152,7 @@ public class CarePlan extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public CarePlanActivityDetailComponent setInstantiatesCanonical(List<CanonicalType> theInstantiatesCanonical) { 
+        public CarePlanActivityPlannedActivityDetailComponent setInstantiatesCanonical(List<CanonicalType> theInstantiatesCanonical) { 
           this.instantiatesCanonical = theInstantiatesCanonical;
           return this;
         }
@@ -1191,7 +1180,7 @@ public class CarePlan extends DomainResource {
         /**
          * @param value {@link #instantiatesCanonical} (The URL pointing to a FHIR-defined protocol, guideline, questionnaire or other definition that is adhered to in whole or in part by this CarePlan activity.)
          */
-        public CarePlanActivityDetailComponent addInstantiatesCanonical(String value) { //1
+        public CarePlanActivityPlannedActivityDetailComponent addInstantiatesCanonical(String value) { //1
           CanonicalType t = new CanonicalType();
           t.setValue(value);
           if (this.instantiatesCanonical == null)
@@ -1224,7 +1213,7 @@ public class CarePlan extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public CarePlanActivityDetailComponent setInstantiatesUri(List<UriType> theInstantiatesUri) { 
+        public CarePlanActivityPlannedActivityDetailComponent setInstantiatesUri(List<UriType> theInstantiatesUri) { 
           this.instantiatesUri = theInstantiatesUri;
           return this;
         }
@@ -1252,7 +1241,7 @@ public class CarePlan extends DomainResource {
         /**
          * @param value {@link #instantiatesUri} (The URL pointing to an externally maintained protocol, guideline, questionnaire or other definition that is adhered to in whole or in part by this CarePlan activity.)
          */
-        public CarePlanActivityDetailComponent addInstantiatesUri(String value) { //1
+        public CarePlanActivityPlannedActivityDetailComponent addInstantiatesUri(String value) { //1
           UriType t = new UriType();
           t.setValue(value);
           if (this.instantiatesUri == null)
@@ -1279,7 +1268,7 @@ public class CarePlan extends DomainResource {
         public CodeableConcept getCode() { 
           if (this.code == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CarePlanActivityDetailComponent.code");
+              throw new Error("Attempt to auto-create CarePlanActivityPlannedActivityDetailComponent.code");
             else if (Configuration.doAutoCreate())
               this.code = new CodeableConcept(); // cc
           return this.code;
@@ -1292,7 +1281,7 @@ public class CarePlan extends DomainResource {
         /**
          * @param value {@link #code} (Detailed description of the type of planned activity; e.g. what lab test, what procedure, what kind of encounter.)
          */
-        public CarePlanActivityDetailComponent setCode(CodeableConcept value) { 
+        public CarePlanActivityPlannedActivityDetailComponent setCode(CodeableConcept value) { 
           this.code = value;
           return this;
         }
@@ -1309,7 +1298,7 @@ public class CarePlan extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public CarePlanActivityDetailComponent setReason(List<CodeableReference> theReason) { 
+        public CarePlanActivityPlannedActivityDetailComponent setReason(List<CodeableReference> theReason) { 
           this.reason = theReason;
           return this;
         }
@@ -1331,7 +1320,7 @@ public class CarePlan extends DomainResource {
           return t;
         }
 
-        public CarePlanActivityDetailComponent addReason(CodeableReference t) { //3
+        public CarePlanActivityPlannedActivityDetailComponent addReason(CodeableReference t) { //3
           if (t == null)
             return this;
           if (this.reason == null)
@@ -1362,7 +1351,7 @@ public class CarePlan extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public CarePlanActivityDetailComponent setGoal(List<Reference> theGoal) { 
+        public CarePlanActivityPlannedActivityDetailComponent setGoal(List<Reference> theGoal) { 
           this.goal = theGoal;
           return this;
         }
@@ -1384,7 +1373,7 @@ public class CarePlan extends DomainResource {
           return t;
         }
 
-        public CarePlanActivityDetailComponent addGoal(Reference t) { //3
+        public CarePlanActivityPlannedActivityDetailComponent addGoal(Reference t) { //3
           if (t == null)
             return this;
           if (this.goal == null)
@@ -1409,7 +1398,7 @@ public class CarePlan extends DomainResource {
         public Enumeration<CarePlanActivityStatus> getStatusElement() { 
           if (this.status == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CarePlanActivityDetailComponent.status");
+              throw new Error("Attempt to auto-create CarePlanActivityPlannedActivityDetailComponent.status");
             else if (Configuration.doAutoCreate())
               this.status = new Enumeration<CarePlanActivityStatus>(new CarePlanActivityStatusEnumFactory()); // bb
           return this.status;
@@ -1426,7 +1415,7 @@ public class CarePlan extends DomainResource {
         /**
          * @param value {@link #status} (Identifies what progress is being made for the specific activity.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
          */
-        public CarePlanActivityDetailComponent setStatusElement(Enumeration<CarePlanActivityStatus> value) { 
+        public CarePlanActivityPlannedActivityDetailComponent setStatusElement(Enumeration<CarePlanActivityStatus> value) { 
           this.status = value;
           return this;
         }
@@ -1441,7 +1430,7 @@ public class CarePlan extends DomainResource {
         /**
          * @param value Identifies what progress is being made for the specific activity.
          */
-        public CarePlanActivityDetailComponent setStatus(CarePlanActivityStatus value) { 
+        public CarePlanActivityPlannedActivityDetailComponent setStatus(CarePlanActivityStatus value) { 
             if (this.status == null)
               this.status = new Enumeration<CarePlanActivityStatus>(new CarePlanActivityStatusEnumFactory());
             this.status.setValue(value);
@@ -1454,7 +1443,7 @@ public class CarePlan extends DomainResource {
         public CodeableConcept getStatusReason() { 
           if (this.statusReason == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CarePlanActivityDetailComponent.statusReason");
+              throw new Error("Attempt to auto-create CarePlanActivityPlannedActivityDetailComponent.statusReason");
             else if (Configuration.doAutoCreate())
               this.statusReason = new CodeableConcept(); // cc
           return this.statusReason;
@@ -1467,7 +1456,7 @@ public class CarePlan extends DomainResource {
         /**
          * @param value {@link #statusReason} (Provides reason why the activity isn't yet started, is on hold, was cancelled, etc.)
          */
-        public CarePlanActivityDetailComponent setStatusReason(CodeableConcept value) { 
+        public CarePlanActivityPlannedActivityDetailComponent setStatusReason(CodeableConcept value) { 
           this.statusReason = value;
           return this;
         }
@@ -1478,7 +1467,7 @@ public class CarePlan extends DomainResource {
         public BooleanType getDoNotPerformElement() { 
           if (this.doNotPerform == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CarePlanActivityDetailComponent.doNotPerform");
+              throw new Error("Attempt to auto-create CarePlanActivityPlannedActivityDetailComponent.doNotPerform");
             else if (Configuration.doAutoCreate())
               this.doNotPerform = new BooleanType(); // bb
           return this.doNotPerform;
@@ -1495,7 +1484,7 @@ public class CarePlan extends DomainResource {
         /**
          * @param value {@link #doNotPerform} (If true, indicates that the described activity is one that must NOT be engaged in when following the plan.  If false, or missing, indicates that the described activity is one that should be engaged in when following the plan.). This is the underlying object with id, value and extensions. The accessor "getDoNotPerform" gives direct access to the value
          */
-        public CarePlanActivityDetailComponent setDoNotPerformElement(BooleanType value) { 
+        public CarePlanActivityPlannedActivityDetailComponent setDoNotPerformElement(BooleanType value) { 
           this.doNotPerform = value;
           return this;
         }
@@ -1510,7 +1499,7 @@ public class CarePlan extends DomainResource {
         /**
          * @param value If true, indicates that the described activity is one that must NOT be engaged in when following the plan.  If false, or missing, indicates that the described activity is one that should be engaged in when following the plan.
          */
-        public CarePlanActivityDetailComponent setDoNotPerform(boolean value) { 
+        public CarePlanActivityPlannedActivityDetailComponent setDoNotPerform(boolean value) { 
             if (this.doNotPerform == null)
               this.doNotPerform = new BooleanType();
             this.doNotPerform.setValue(value);
@@ -1576,9 +1565,9 @@ public class CarePlan extends DomainResource {
         /**
          * @param value {@link #scheduled} (The period, timing or frequency upon which the described activity is to occur.)
          */
-        public CarePlanActivityDetailComponent setScheduled(DataType value) { 
+        public CarePlanActivityPlannedActivityDetailComponent setScheduled(DataType value) { 
           if (value != null && !(value instanceof Timing || value instanceof Period || value instanceof StringType))
-            throw new Error("Not the right type for CarePlan.activity.detail.scheduled[x]: "+value.fhirType());
+            throw new Error("Not the right type for CarePlan.activity.plannedActivityDetail.scheduled[x]: "+value.fhirType());
           this.scheduled = value;
           return this;
         }
@@ -1589,7 +1578,7 @@ public class CarePlan extends DomainResource {
         public CodeableReference getLocation() { 
           if (this.location == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CarePlanActivityDetailComponent.location");
+              throw new Error("Attempt to auto-create CarePlanActivityPlannedActivityDetailComponent.location");
             else if (Configuration.doAutoCreate())
               this.location = new CodeableReference(); // cc
           return this.location;
@@ -1602,7 +1591,7 @@ public class CarePlan extends DomainResource {
         /**
          * @param value {@link #location} (Identifies the facility where the activity will occur; e.g. home, hospital, specific clinic, etc.)
          */
-        public CarePlanActivityDetailComponent setLocation(CodeableReference value) { 
+        public CarePlanActivityPlannedActivityDetailComponent setLocation(CodeableReference value) { 
           this.location = value;
           return this;
         }
@@ -1651,9 +1640,9 @@ public class CarePlan extends DomainResource {
         /**
          * @param value {@link #reported} (Indicates if this record was captured as a secondary 'reported' record rather than as an original primary source-of-truth record.  It may also indicate the source of the report.)
          */
-        public CarePlanActivityDetailComponent setReported(DataType value) { 
+        public CarePlanActivityPlannedActivityDetailComponent setReported(DataType value) { 
           if (value != null && !(value instanceof BooleanType || value instanceof Reference))
-            throw new Error("Not the right type for CarePlan.activity.detail.reported[x]: "+value.fhirType());
+            throw new Error("Not the right type for CarePlan.activity.plannedActivityDetail.reported[x]: "+value.fhirType());
           this.reported = value;
           return this;
         }
@@ -1670,7 +1659,7 @@ public class CarePlan extends DomainResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public CarePlanActivityDetailComponent setPerformer(List<Reference> thePerformer) { 
+        public CarePlanActivityPlannedActivityDetailComponent setPerformer(List<Reference> thePerformer) { 
           this.performer = thePerformer;
           return this;
         }
@@ -1692,7 +1681,7 @@ public class CarePlan extends DomainResource {
           return t;
         }
 
-        public CarePlanActivityDetailComponent addPerformer(Reference t) { //3
+        public CarePlanActivityPlannedActivityDetailComponent addPerformer(Reference t) { //3
           if (t == null)
             return this;
           if (this.performer == null)
@@ -1755,9 +1744,9 @@ public class CarePlan extends DomainResource {
         /**
          * @param value {@link #product} (Identifies the food, drug or other product to be consumed or supplied in the activity.)
          */
-        public CarePlanActivityDetailComponent setProduct(DataType value) { 
+        public CarePlanActivityPlannedActivityDetailComponent setProduct(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
-            throw new Error("Not the right type for CarePlan.activity.detail.product[x]: "+value.fhirType());
+            throw new Error("Not the right type for CarePlan.activity.plannedActivityDetail.product[x]: "+value.fhirType());
           this.product = value;
           return this;
         }
@@ -1768,7 +1757,7 @@ public class CarePlan extends DomainResource {
         public Quantity getDailyAmount() { 
           if (this.dailyAmount == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CarePlanActivityDetailComponent.dailyAmount");
+              throw new Error("Attempt to auto-create CarePlanActivityPlannedActivityDetailComponent.dailyAmount");
             else if (Configuration.doAutoCreate())
               this.dailyAmount = new Quantity(); // cc
           return this.dailyAmount;
@@ -1781,7 +1770,7 @@ public class CarePlan extends DomainResource {
         /**
          * @param value {@link #dailyAmount} (Identifies the quantity expected to be consumed in a given day.)
          */
-        public CarePlanActivityDetailComponent setDailyAmount(Quantity value) { 
+        public CarePlanActivityPlannedActivityDetailComponent setDailyAmount(Quantity value) { 
           this.dailyAmount = value;
           return this;
         }
@@ -1792,7 +1781,7 @@ public class CarePlan extends DomainResource {
         public Quantity getQuantity() { 
           if (this.quantity == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CarePlanActivityDetailComponent.quantity");
+              throw new Error("Attempt to auto-create CarePlanActivityPlannedActivityDetailComponent.quantity");
             else if (Configuration.doAutoCreate())
               this.quantity = new Quantity(); // cc
           return this.quantity;
@@ -1805,7 +1794,7 @@ public class CarePlan extends DomainResource {
         /**
          * @param value {@link #quantity} (Identifies the quantity expected to be supplied, administered or consumed by the subject.)
          */
-        public CarePlanActivityDetailComponent setQuantity(Quantity value) { 
+        public CarePlanActivityPlannedActivityDetailComponent setQuantity(Quantity value) { 
           this.quantity = value;
           return this;
         }
@@ -1816,7 +1805,7 @@ public class CarePlan extends DomainResource {
         public StringType getDescriptionElement() { 
           if (this.description == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CarePlanActivityDetailComponent.description");
+              throw new Error("Attempt to auto-create CarePlanActivityPlannedActivityDetailComponent.description");
             else if (Configuration.doAutoCreate())
               this.description = new StringType(); // bb
           return this.description;
@@ -1833,7 +1822,7 @@ public class CarePlan extends DomainResource {
         /**
          * @param value {@link #description} (This provides a textual description of constraints on the intended activity occurrence, including relation to other activities.  It may also include objectives, pre-conditions and end-conditions.  Finally, it may convey specifics about the activity such as body site, method, route, etc.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
          */
-        public CarePlanActivityDetailComponent setDescriptionElement(StringType value) { 
+        public CarePlanActivityPlannedActivityDetailComponent setDescriptionElement(StringType value) { 
           this.description = value;
           return this;
         }
@@ -1848,7 +1837,7 @@ public class CarePlan extends DomainResource {
         /**
          * @param value This provides a textual description of constraints on the intended activity occurrence, including relation to other activities.  It may also include objectives, pre-conditions and end-conditions.  Finally, it may convey specifics about the activity such as body site, method, route, etc.
          */
-        public CarePlanActivityDetailComponent setDescription(String value) { 
+        public CarePlanActivityPlannedActivityDetailComponent setDescription(String value) { 
           if (Utilities.noString(value))
             this.description = null;
           else {
@@ -2100,13 +2089,13 @@ public class CarePlan extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("kind")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.activity.detail.kind");
+          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.activity.plannedActivityDetail.kind");
         }
         else if (name.equals("instantiatesCanonical")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.activity.detail.instantiatesCanonical");
+          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.activity.plannedActivityDetail.instantiatesCanonical");
         }
         else if (name.equals("instantiatesUri")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.activity.detail.instantiatesUri");
+          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.activity.plannedActivityDetail.instantiatesUri");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
@@ -2119,14 +2108,14 @@ public class CarePlan extends DomainResource {
           return addGoal();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.activity.detail.status");
+          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.activity.plannedActivityDetail.status");
         }
         else if (name.equals("statusReason")) {
           this.statusReason = new CodeableConcept();
           return this.statusReason;
         }
         else if (name.equals("doNotPerform")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.activity.detail.doNotPerform");
+          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.activity.plannedActivityDetail.doNotPerform");
         }
         else if (name.equals("scheduledTiming")) {
           this.scheduled = new Timing();
@@ -2172,19 +2161,19 @@ public class CarePlan extends DomainResource {
           return this.quantity;
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.activity.detail.description");
+          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.activity.plannedActivityDetail.description");
         }
         else
           return super.addChild(name);
       }
 
-      public CarePlanActivityDetailComponent copy() {
-        CarePlanActivityDetailComponent dst = new CarePlanActivityDetailComponent();
+      public CarePlanActivityPlannedActivityDetailComponent copy() {
+        CarePlanActivityPlannedActivityDetailComponent dst = new CarePlanActivityPlannedActivityDetailComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(CarePlanActivityDetailComponent dst) {
+      public void copyValues(CarePlanActivityPlannedActivityDetailComponent dst) {
         super.copyValues(dst);
         dst.kind = kind == null ? null : kind.copy();
         if (instantiatesCanonical != null) {
@@ -2229,9 +2218,9 @@ public class CarePlan extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof CarePlanActivityDetailComponent))
+        if (!(other_ instanceof CarePlanActivityPlannedActivityDetailComponent))
           return false;
-        CarePlanActivityDetailComponent o = (CarePlanActivityDetailComponent) other_;
+        CarePlanActivityPlannedActivityDetailComponent o = (CarePlanActivityPlannedActivityDetailComponent) other_;
         return compareDeep(kind, o.kind, true) && compareDeep(instantiatesCanonical, o.instantiatesCanonical, true)
            && compareDeep(instantiatesUri, o.instantiatesUri, true) && compareDeep(code, o.code, true) && compareDeep(reason, o.reason, true)
            && compareDeep(goal, o.goal, true) && compareDeep(status, o.status, true) && compareDeep(statusReason, o.statusReason, true)
@@ -2245,9 +2234,9 @@ public class CarePlan extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof CarePlanActivityDetailComponent))
+        if (!(other_ instanceof CarePlanActivityPlannedActivityDetailComponent))
           return false;
-        CarePlanActivityDetailComponent o = (CarePlanActivityDetailComponent) other_;
+        CarePlanActivityPlannedActivityDetailComponent o = (CarePlanActivityPlannedActivityDetailComponent) other_;
         return compareValues(kind, o.kind, true) && compareValues(instantiatesCanonical, o.instantiatesCanonical, true)
            && compareValues(instantiatesUri, o.instantiatesUri, true) && compareValues(status, o.status, true)
            && compareValues(doNotPerform, o.doNotPerform, true) && compareValues(description, o.description, true)
@@ -2261,7 +2250,7 @@ public class CarePlan extends DomainResource {
       }
 
   public String fhirType() {
-    return "CarePlan.activity.detail";
+    return "CarePlan.activity.plannedActivityDetail";
 
   }
 
@@ -4051,17 +4040,17 @@ public class CarePlan extends DomainResource {
    * <p>
    * Description: <b>Detail type of activity</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>CarePlan.activity.detail.code</b><br>
+   * Path: <b>CarePlan.activity.plannedActivityDetail.code</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="activity-code", path="CarePlan.activity.detail.code", description="Detail type of activity", type="token" )
+  @SearchParamDefinition(name="activity-code", path="CarePlan.activity.plannedActivityDetail.code", description="Detail type of activity", type="token" )
   public static final String SP_ACTIVITY_CODE = "activity-code";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>activity-code</b>
    * <p>
    * Description: <b>Detail type of activity</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>CarePlan.activity.detail.code</b><br>
+   * Path: <b>CarePlan.activity.plannedActivityDetail.code</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam ACTIVITY_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ACTIVITY_CODE);
@@ -4069,19 +4058,19 @@ public class CarePlan extends DomainResource {
  /**
    * Search parameter: <b>activity-reference</b>
    * <p>
-   * Description: <b>Activity details defined in specific resource</b><br>
+   * Description: <b>Activity that is intended to be part of the care plan</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>CarePlan.activity.reference</b><br>
+   * Path: <b>CarePlan.activity.plannedActivityReference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="activity-reference", path="CarePlan.activity.reference", description="Activity details defined in specific resource", type="reference", target={Appointment.class, CommunicationRequest.class, DeviceRequest.class, ImmunizationRecommendation.class, MedicationRequest.class, NutritionOrder.class, RequestGroup.class, ServiceRequest.class, Task.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="activity-reference", path="CarePlan.activity.plannedActivityReference", description="Activity that is intended to be part of the care plan", type="reference", target={Appointment.class, CommunicationRequest.class, DeviceRequest.class, ImmunizationRecommendation.class, MedicationRequest.class, NutritionOrder.class, RequestGroup.class, ServiceRequest.class, Task.class, VisionPrescription.class } )
   public static final String SP_ACTIVITY_REFERENCE = "activity-reference";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>activity-reference</b>
    * <p>
-   * Description: <b>Activity details defined in specific resource</b><br>
+   * Description: <b>Activity that is intended to be part of the care plan</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>CarePlan.activity.reference</b><br>
+   * Path: <b>CarePlan.activity.plannedActivityReference</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ACTIVITY_REFERENCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ACTIVITY_REFERENCE);
@@ -4095,19 +4084,19 @@ public class CarePlan extends DomainResource {
  /**
    * Search parameter: <b>activity-scheduled-date</b>
    * <p>
-   * Description: <b>Specified date occurs within period specified by CarePlan.activity.detail.scheduled[x]</b><br>
+   * Description: <b>Specified date occurs within period specified by CarePlan.activity.plannedActivityDetail.scheduled[x]</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>CarePlan.activity.detail.scheduled.as(Timing) | CarePlan.activity.detail.scheduled.as(Period)</b><br>
+   * Path: <b>CarePlan.activity.plannedActivityDetail.scheduled.as(Timing) | CarePlan.activity.plannedActivityDetail.scheduled.as(Period)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="activity-scheduled-date", path="CarePlan.activity.detail.scheduled.as(Timing) | CarePlan.activity.detail.scheduled.as(Period)", description="Specified date occurs within period specified by CarePlan.activity.detail.scheduled[x]", type="date" )
+  @SearchParamDefinition(name="activity-scheduled-date", path="CarePlan.activity.plannedActivityDetail.scheduled.as(Timing) | CarePlan.activity.plannedActivityDetail.scheduled.as(Period)", description="Specified date occurs within period specified by CarePlan.activity.plannedActivityDetail.scheduled[x]", type="date" )
   public static final String SP_ACTIVITY_SCHEDULED_DATE = "activity-scheduled-date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>activity-scheduled-date</b>
    * <p>
-   * Description: <b>Specified date occurs within period specified by CarePlan.activity.detail.scheduled[x]</b><br>
+   * Description: <b>Specified date occurs within period specified by CarePlan.activity.plannedActivityDetail.scheduled[x]</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>CarePlan.activity.detail.scheduled.as(Timing) | CarePlan.activity.detail.scheduled.as(Period)</b><br>
+   * Path: <b>CarePlan.activity.plannedActivityDetail.scheduled.as(Timing) | CarePlan.activity.plannedActivityDetail.scheduled.as(Period)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam ACTIVITY_SCHEDULED_DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_ACTIVITY_SCHEDULED_DATE);
@@ -4117,17 +4106,17 @@ public class CarePlan extends DomainResource {
    * <p>
    * Description: <b>When activity is to occur</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>CarePlan.activity.detail.scheduled.as(string)</b><br>
+   * Path: <b>CarePlan.activity.plannedActivityDetail.scheduled.as(string)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="activity-scheduled-string", path="CarePlan.activity.detail.scheduled.as(string)", description="When activity is to occur", type="string" )
+  @SearchParamDefinition(name="activity-scheduled-string", path="CarePlan.activity.plannedActivityDetail.scheduled.as(string)", description="When activity is to occur", type="string" )
   public static final String SP_ACTIVITY_SCHEDULED_STRING = "activity-scheduled-string";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>activity-scheduled-string</b>
    * <p>
    * Description: <b>When activity is to occur</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>CarePlan.activity.detail.scheduled.as(string)</b><br>
+   * Path: <b>CarePlan.activity.plannedActivityDetail.scheduled.as(string)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam ACTIVITY_SCHEDULED_STRING = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ACTIVITY_SCHEDULED_STRING);
@@ -4379,17 +4368,17 @@ public class CarePlan extends DomainResource {
    * <p>
    * Description: <b>Matches if the practitioner is listed as a performer in any of the "simple" activities.  (For performers of the detailed activities, chain through the activitydetail search parameter.)</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>CarePlan.activity.detail.performer</b><br>
+   * Path: <b>CarePlan.activity.plannedActivityDetail.performer</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="performer", path="CarePlan.activity.detail.performer", description="Matches if the practitioner is listed as a performer in any of the \"simple\" activities.  (For performers of the detailed activities, chain through the activitydetail search parameter.)", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={CareTeam.class, Device.class, HealthcareService.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  @SearchParamDefinition(name="performer", path="CarePlan.activity.plannedActivityDetail.performer", description="Matches if the practitioner is listed as a performer in any of the \"simple\" activities.  (For performers of the detailed activities, chain through the activitydetail search parameter.)", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={CareTeam.class, Device.class, HealthcareService.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_PERFORMER = "performer";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>performer</b>
    * <p>
    * Description: <b>Matches if the practitioner is listed as a performer in any of the "simple" activities.  (For performers of the detailed activities, chain through the activitydetail search parameter.)</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>CarePlan.activity.detail.performer</b><br>
+   * Path: <b>CarePlan.activity.plannedActivityDetail.performer</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PERFORMER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PERFORMER);
@@ -4484,7 +4473,7 @@ public class CarePlan extends DomainResource {
 * [Composition](composition.html): Composition editing time
 * [Consent](consent.html): When consent was agreed to
 * [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report
-* [Encounter](encounter.html): A date within the period the Encounter lasted
+* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted
 * [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period
 * [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated
 * [Flag](flag.html): Time period when flag is active
@@ -4496,10 +4485,10 @@ public class CarePlan extends DomainResource {
 * [SupplyRequest](supplyrequest.html): When the request was made
 </b><br>
    * Type: <b>date</b><br>
-   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
+   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="date", path="AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [Encounter](encounter.html): A date within the period the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [List](list.html): When the list was prepared\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
+  @SearchParamDefinition(name="date", path="AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Date first version of the resource instance was recorded\r\n* [CarePlan](careplan.html): Time period plan covers\r\n* [CareTeam](careteam.html): A date within the coverage time period.\r\n* [ClinicalImpression](clinicalimpression.html): When the assessment was documented\r\n* [Composition](composition.html): Composition editing time\r\n* [Consent](consent.html): When consent was agreed to\r\n* [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report\r\n* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted\r\n* [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period\r\n* [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated\r\n* [Flag](flag.html): Time period when flag is active\r\n* [Immunization](immunization.html): Vaccination  (non)-Administration Date\r\n* [List](list.html): When the list was prepared\r\n* [Observation](observation.html): Obtained date/time. If the obtained element is a period, a date that falls in the period\r\n* [Procedure](procedure.html): When the procedure occurred or is occurring\r\n* [RiskAssessment](riskassessment.html): When was assessment made?\r\n* [SupplyRequest](supplyrequest.html): When the request was made\r\n", type="date" )
   public static final String SP_DATE = "date";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>date</b>
@@ -4513,7 +4502,7 @@ public class CarePlan extends DomainResource {
 * [Composition](composition.html): Composition editing time
 * [Consent](consent.html): When consent was agreed to
 * [DiagnosticReport](diagnosticreport.html): The clinically relevant time of the report
-* [Encounter](encounter.html): A date within the period the Encounter lasted
+* [Encounter](encounter.html): A date within the actualPeriod the Encounter lasted
 * [EpisodeOfCare](episodeofcare.html): The provided date search value falls within the episode of care's period
 * [FamilyMemberHistory](familymemberhistory.html): When history was recorded or last updated
 * [Flag](flag.html): Time period when flag is active
@@ -4525,7 +4514,7 @@ public class CarePlan extends DomainResource {
 * [SupplyRequest](supplyrequest.html): When the request was made
 </b><br>
    * Type: <b>date</b><br>
-   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.period | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
+   * Path: <b>AllergyIntolerance.recordedDate | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.dateTime | DiagnosticReport.effective | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence as dateTime) | List.date | Observation.effective | Procedure.occurrence | (RiskAssessment.occurrence as dateTime) | SupplyRequest.authoredOn</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
@@ -4550,7 +4539,7 @@ public class CarePlan extends DomainResource {
 * [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
 * [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
 * [Goal](goal.html): External Ids for this goal
-* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number
+* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID
 * [Immunization](immunization.html): Business identifier
 * [List](list.html): Business identifier
 * [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier
@@ -4570,7 +4559,7 @@ public class CarePlan extends DomainResource {
    * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): External ids for this item\r\n* [CarePlan](careplan.html): External Ids for this plan\r\n* [CareTeam](careteam.html): External Ids for this team\r\n* [Composition](composition.html): Version-independent identifier for the Composition\r\n* [Condition](condition.html): A unique identifier of the condition record\r\n* [Consent](consent.html): Identifier for this record (external references)\r\n* [DetectedIssue](detectedissue.html): Unique id for the detected issue\r\n* [DeviceRequest](devicerequest.html): Business identifier for request/order\r\n* [DiagnosticReport](diagnosticreport.html): An identifier for the report\r\n* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents\r\n* [DocumentReference](documentreference.html): Identifier of the attachment binary\r\n* [Encounter](encounter.html): Identifier(s) by which this encounter is known\r\n* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier\r\n* [Goal](goal.html): External Ids for this goal\r\n* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number\r\n* [Immunization](immunization.html): Business identifier\r\n* [List](list.html): Business identifier\r\n* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier\r\n* [MedicationUsage](medicationusage.html): Return statements with this external identifier\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier\r\n* [Observation](observation.html): The unique id for a particular observation\r\n* [Procedure](procedure.html): A unique identifier for a procedure\r\n* [RiskAssessment](riskassessment.html): Unique identifier for the assessment\r\n* [ServiceRequest](servicerequest.html): Identifiers assigned to this order\r\n* [SupplyDelivery](supplydelivery.html): External identifier\r\n* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier\r\n", type="token" )
+  @SearchParamDefinition(name="identifier", path="AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): External ids for this item\r\n* [CarePlan](careplan.html): External Ids for this plan\r\n* [CareTeam](careteam.html): External Ids for this team\r\n* [Composition](composition.html): Version-independent identifier for the Composition\r\n* [Condition](condition.html): A unique identifier of the condition record\r\n* [Consent](consent.html): Identifier for this record (external references)\r\n* [DetectedIssue](detectedissue.html): Unique id for the detected issue\r\n* [DeviceRequest](devicerequest.html): Business identifier for request/order\r\n* [DiagnosticReport](diagnosticreport.html): An identifier for the report\r\n* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents\r\n* [DocumentReference](documentreference.html): Identifier of the attachment binary\r\n* [Encounter](encounter.html): Identifier(s) by which this encounter is known\r\n* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier\r\n* [Goal](goal.html): External Ids for this goal\r\n* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID\r\n* [Immunization](immunization.html): Business identifier\r\n* [List](list.html): Business identifier\r\n* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier\r\n* [MedicationUsage](medicationusage.html): Return statements with this external identifier\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier\r\n* [Observation](observation.html): The unique id for a particular observation\r\n* [Procedure](procedure.html): A unique identifier for a procedure\r\n* [RiskAssessment](riskassessment.html): Unique identifier for the assessment\r\n* [ServiceRequest](servicerequest.html): Identifiers assigned to this order\r\n* [SupplyDelivery](supplydelivery.html): External identifier\r\n* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier\r\n", type="token" )
   public static final String SP_IDENTIFIER = "identifier";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
@@ -4592,7 +4581,7 @@ public class CarePlan extends DomainResource {
 * [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
 * [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
 * [Goal](goal.html): External Ids for this goal
-* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number
+* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID
 * [Immunization](immunization.html): Business identifier
 * [List](list.html): Business identifier
 * [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier
@@ -4622,17 +4611,17 @@ public class CarePlan extends DomainResource {
 * [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
 * [CarePlan](careplan.html): Who the care plan is for
 * [CareTeam](careteam.html): Who care team is for
-* [ClinicalImpression](clinicalimpression.html): Patient or group assessed
+* [ClinicalImpression](clinicalimpression.html): Patient assessed
 * [Composition](composition.html): Who and/or what the composition is about
 * [Condition](condition.html): Who has the condition?
 * [Consent](consent.html): Who the consent applies to
 * [DetectedIssue](detectedissue.html): Associated patient
 * [DeviceRequest](devicerequest.html): Individual the service is ordered for
-* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient
+* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device
 * [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
 * [DocumentManifest](documentmanifest.html): The subject of the set of documents
 * [DocumentReference](documentreference.html): Who/what is the subject of the document
-* [Encounter](encounter.html): The patient or group present at the encounter
+* [Encounter](encounter.html): The patient present at the encounter
 * [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
 * [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
 * [Flag](flag.html): The identity of a subject to list flags for
@@ -4653,10 +4642,10 @@ public class CarePlan extends DomainResource {
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient or group assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient or group present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Group.class, Patient.class } )
+  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -4666,17 +4655,17 @@ public class CarePlan extends DomainResource {
 * [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
 * [CarePlan](careplan.html): Who the care plan is for
 * [CareTeam](careteam.html): Who care team is for
-* [ClinicalImpression](clinicalimpression.html): Patient or group assessed
+* [ClinicalImpression](clinicalimpression.html): Patient assessed
 * [Composition](composition.html): Who and/or what the composition is about
 * [Condition](condition.html): Who has the condition?
 * [Consent](consent.html): Who the consent applies to
 * [DetectedIssue](detectedissue.html): Associated patient
 * [DeviceRequest](devicerequest.html): Individual the service is ordered for
-* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient
+* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device
 * [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
 * [DocumentManifest](documentmanifest.html): The subject of the set of documents
 * [DocumentReference](documentreference.html): Who/what is the subject of the document
-* [Encounter](encounter.html): The patient or group present at the encounter
+* [Encounter](encounter.html): The patient present at the encounter
 * [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
 * [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
 * [Flag](flag.html): The identity of a subject to list flags for
@@ -4697,7 +4686,7 @@ public class CarePlan extends DomainResource {
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);

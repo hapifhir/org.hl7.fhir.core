@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -103,7 +103,6 @@ public class ImagingStudy extends DomainResource {
             case CANCELLED: return "cancelled";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,7 +113,6 @@ public class ImagingStudy extends DomainResource {
             case CANCELLED: return "http://hl7.org/fhir/imagingstudy-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/imagingstudy-status";
             case UNKNOWN: return "http://hl7.org/fhir/imagingstudy-status";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -125,7 +123,6 @@ public class ImagingStudy extends DomainResource {
             case CANCELLED: return "The imaging study is unavailable because the imaging study was not started or not completed (also sometimes called \"aborted\").";
             case ENTEREDINERROR: return "The imaging study has been withdrawn following a previous final release.  This electronic record should never have existed, though it is possible that real-world decisions were based on it. (If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".).";
             case UNKNOWN: return "The system does not know which of the status values currently applies for this request. Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply, it's just not known which one.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -136,7 +133,6 @@ public class ImagingStudy extends DomainResource {
             case CANCELLED: return "Cancelled";
             case ENTEREDINERROR: return "Entered in Error";
             case UNKNOWN: return "Unknown";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -198,205 +194,6 @@ public class ImagingStudy extends DomainResource {
     }
 
     @Block()
-    public static class ImagingStudyProcedureComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * The procedure which this ImagingStudy was part of.
-         */
-        @Child(name = "value", type = {Procedure.class, CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The performed Procedure", formalDefinition="The procedure which this ImagingStudy was part of." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://loinc.org/download/loincrsna-radiology-playbook-file/")
-        protected DataType value;
-
-        private static final long serialVersionUID = -1135414639L;
-
-    /**
-     * Constructor
-     */
-      public ImagingStudyProcedureComponent() {
-        super();
-      }
-
-    /**
-     * Constructor
-     */
-      public ImagingStudyProcedureComponent(DataType value) {
-        super();
-        this.setValue(value);
-      }
-
-        /**
-         * @return {@link #value} (The procedure which this ImagingStudy was part of.)
-         */
-        public DataType getValue() { 
-          return this.value;
-        }
-
-        /**
-         * @return {@link #value} (The procedure which this ImagingStudy was part of.)
-         */
-        public Reference getValueReference() throws FHIRException { 
-          if (this.value == null)
-            this.value = new Reference();
-          if (!(this.value instanceof Reference))
-            throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (Reference) this.value;
-        }
-
-        public boolean hasValueReference() { 
-          return this != null && this.value instanceof Reference;
-        }
-
-        /**
-         * @return {@link #value} (The procedure which this ImagingStudy was part of.)
-         */
-        public CodeableConcept getValueCodeableConcept() throws FHIRException { 
-          if (this.value == null)
-            this.value = new CodeableConcept();
-          if (!(this.value instanceof CodeableConcept))
-            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (CodeableConcept) this.value;
-        }
-
-        public boolean hasValueCodeableConcept() { 
-          return this != null && this.value instanceof CodeableConcept;
-        }
-
-        public boolean hasValue() { 
-          return this.value != null && !this.value.isEmpty();
-        }
-
-        /**
-         * @param value {@link #value} (The procedure which this ImagingStudy was part of.)
-         */
-        public ImagingStudyProcedureComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof Reference || value instanceof CodeableConcept))
-            throw new Error("Not the right type for ImagingStudy.procedure.value[x]: "+value.fhirType());
-          this.value = value;
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("value[x]", "Reference(Procedure)|CodeableConcept", "The procedure which this ImagingStudy was part of.", 0, 1, value));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "Reference(Procedure)|CodeableConcept", "The procedure which this ImagingStudy was part of.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "Reference(Procedure)|CodeableConcept", "The procedure which this ImagingStudy was part of.", 0, 1, value);
-          case 1755241690: /*valueReference*/  return new Property("value[x]", "Reference(Procedure)", "The procedure which this ImagingStudy was part of.", 0, 1, value);
-          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "The procedure which this ImagingStudy was part of.", 0, 1, value);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case 111972721: // value
-          this.value = TypeConvertor.castToType(value); // DataType
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("value[x]")) {
-          this.value = TypeConvertor.castToType(value); // DataType
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1410166417:  return getValue();
-        case 111972721:  return getValue();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 111972721: /*value*/ return new String[] {"Reference", "CodeableConcept"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("valueReference")) {
-          this.value = new Reference();
-          return this.value;
-        }
-        else if (name.equals("valueCodeableConcept")) {
-          this.value = new CodeableConcept();
-          return this.value;
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public ImagingStudyProcedureComponent copy() {
-        ImagingStudyProcedureComponent dst = new ImagingStudyProcedureComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(ImagingStudyProcedureComponent dst) {
-        super.copyValues(dst);
-        dst.value = value == null ? null : value.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof ImagingStudyProcedureComponent))
-          return false;
-        ImagingStudyProcedureComponent o = (ImagingStudyProcedureComponent) other_;
-        return compareDeep(value, o.value, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof ImagingStudyProcedureComponent))
-          return false;
-        ImagingStudyProcedureComponent o = (ImagingStudyProcedureComponent) other_;
-        return true;
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(value);
-      }
-
-  public String fhirType() {
-    return "ImagingStudy.procedure";
-
-  }
-
-  }
-
-    @Block()
     public static class ImagingStudySeriesComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * The DICOM Series Instance UID for the series.
@@ -413,10 +210,10 @@ public class ImagingStudy extends DomainResource {
         protected UnsignedIntType number;
 
         /**
-         * The distinct modality for this series. This may include both aquisition and non-aquisition modalities.
+         * The distinct modality for this series. This may include both acquisition and non-acquisition modalities.
          */
         @Child(name = "modality", type = {Coding.class}, order=3, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The modality used for this series", formalDefinition="The distinct modality for this series. This may include both aquisition and non-aquisition modalities." )
+        @Description(shortDefinition="The modality used for this series", formalDefinition="The distinct modality for this series. This may include both acquisition and non-acquisition modalities." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://dicom.nema.org/medical/dicom/current/output/chtml/part16/sect_CID_33.html")
         protected Coding modality;
 
@@ -594,7 +391,7 @@ public class ImagingStudy extends DomainResource {
         }
 
         /**
-         * @return {@link #modality} (The distinct modality for this series. This may include both aquisition and non-aquisition modalities.)
+         * @return {@link #modality} (The distinct modality for this series. This may include both acquisition and non-acquisition modalities.)
          */
         public Coding getModality() { 
           if (this.modality == null)
@@ -610,7 +407,7 @@ public class ImagingStudy extends DomainResource {
         }
 
         /**
-         * @param value {@link #modality} (The distinct modality for this series. This may include both aquisition and non-aquisition modalities.)
+         * @param value {@link #modality} (The distinct modality for this series. This may include both acquisition and non-acquisition modalities.)
          */
         public ImagingStudySeriesComponent setModality(Coding value) { 
           this.modality = value;
@@ -1024,7 +821,7 @@ public class ImagingStudy extends DomainResource {
           super.listChildren(children);
           children.add(new Property("uid", "id", "The DICOM Series Instance UID for the series.", 0, 1, uid));
           children.add(new Property("number", "unsignedInt", "The numeric identifier of this series in the study.", 0, 1, number));
-          children.add(new Property("modality", "Coding", "The distinct modality for this series. This may include both aquisition and non-aquisition modalities.", 0, 1, modality));
+          children.add(new Property("modality", "Coding", "The distinct modality for this series. This may include both acquisition and non-acquisition modalities.", 0, 1, modality));
           children.add(new Property("description", "string", "A description of the series.", 0, 1, description));
           children.add(new Property("numberOfInstances", "unsignedInt", "Number of SOP Instances in the Study. The value given may be larger than the number of instance elements this resource contains due to resource availability, security, or other factors. This element should be present if any instance elements are present.", 0, 1, numberOfInstances));
           children.add(new Property("endpoint", "Reference(Endpoint)", "The network service providing access (e.g., query, view, or retrieval) for this series. See implementation notes for information about using DICOM endpoints. A series-level endpoint, if present, has precedence over a study-level endpoint with the same Endpoint.connectionType.", 0, java.lang.Integer.MAX_VALUE, endpoint));
@@ -1041,7 +838,7 @@ public class ImagingStudy extends DomainResource {
           switch (_hash) {
           case 115792: /*uid*/  return new Property("uid", "id", "The DICOM Series Instance UID for the series.", 0, 1, uid);
           case -1034364087: /*number*/  return new Property("number", "unsignedInt", "The numeric identifier of this series in the study.", 0, 1, number);
-          case -622722335: /*modality*/  return new Property("modality", "Coding", "The distinct modality for this series. This may include both aquisition and non-aquisition modalities.", 0, 1, modality);
+          case -622722335: /*modality*/  return new Property("modality", "Coding", "The distinct modality for this series. This may include both acquisition and non-acquisition modalities.", 0, 1, modality);
           case -1724546052: /*description*/  return new Property("description", "string", "A description of the series.", 0, 1, description);
           case -1043544226: /*numberOfInstances*/  return new Property("numberOfInstances", "unsignedInt", "Number of SOP Instances in the Study. The value given may be larger than the number of instance elements this resource contains due to resource availability, security, or other factors. This element should be present if any instance elements are present.", 0, 1, numberOfInstances);
           case 1741102485: /*endpoint*/  return new Property("endpoint", "Reference(Endpoint)", "The network service providing access (e.g., query, view, or retrieval) for this series. See implementation notes for information about using DICOM endpoints. A series-level endpoint, if present, has precedence over a study-level endpoint with the same Endpoint.connectionType.", 0, java.lang.Integer.MAX_VALUE, endpoint);
@@ -1894,25 +1691,25 @@ public class ImagingStudy extends DomainResource {
   }
 
     /**
-     * Identifiers for the ImagingStudy such as DICOM Study Instance UID, and Accession Number.
+     * Identifiers for the ImagingStudy such as DICOM Study Instance UID.
      */
     @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Identifiers for the whole study", formalDefinition="Identifiers for the ImagingStudy such as DICOM Study Instance UID, and Accession Number." )
+    @Description(shortDefinition="Identifiers for the whole study", formalDefinition="Identifiers for the ImagingStudy such as DICOM Study Instance UID." )
     protected List<Identifier> identifier;
 
     /**
-     * The current state of the ImagingStudy.
+     * The current state of the ImagingStudy resource. This is not the status of any ServiceRequest or Task resources associated with the ImagingStudy.
      */
     @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="registered | available | cancelled | entered-in-error | unknown", formalDefinition="The current state of the ImagingStudy." )
+    @Description(shortDefinition="registered | available | cancelled | entered-in-error | unknown", formalDefinition="The current state of the ImagingStudy resource. This is not the status of any ServiceRequest or Task resources associated with the ImagingStudy." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/imagingstudy-status")
     protected Enumeration<ImagingStudyStatus> status;
 
     /**
-     * A list of all the distinct values of series.modality. This may include both aquisition and non-aquisition modalities.
+     * A list of all the distinct values of series.modality. This may include both acquisition and non-acquisition modalities.
      */
     @Child(name = "modality", type = {Coding.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="All of the distinct values for series' modalities", formalDefinition="A list of all the distinct values of series.modality. This may include both aquisition and non-aquisition modalities." )
+    @Description(shortDefinition="All of the distinct values for series' modalities", formalDefinition="A list of all the distinct values of series.modality. This may include both acquisition and non-acquisition modalities." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://dicom.nema.org/medical/dicom/current/output/chtml/part16/sect_CID_33.html")
     protected List<Coding> modality;
 
@@ -1982,9 +1779,10 @@ public class ImagingStudy extends DomainResource {
     /**
      * The procedure or code from which this ImagingStudy was part of.
      */
-    @Child(name = "procedure", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "procedure", type = {CodeableReference.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The performed procedure or code", formalDefinition="The procedure or code from which this ImagingStudy was part of." )
-    protected List<ImagingStudyProcedureComponent> procedure;
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://loinc.org/download/loincrsna-radiology-playbook-file/")
+    protected List<CodeableReference> procedure;
 
     /**
      * The principal physical location where the ImagingStudy was performed.
@@ -2022,7 +1820,7 @@ public class ImagingStudy extends DomainResource {
     @Description(shortDefinition="Each study has one or more series of instances", formalDefinition="Each study has one or more series of images or other content." )
     protected List<ImagingStudySeriesComponent> series;
 
-    private static final long serialVersionUID = -564369223L;
+    private static final long serialVersionUID = -1816373424L;
 
   /**
    * Constructor
@@ -2041,7 +1839,7 @@ public class ImagingStudy extends DomainResource {
     }
 
     /**
-     * @return {@link #identifier} (Identifiers for the ImagingStudy such as DICOM Study Instance UID, and Accession Number.)
+     * @return {@link #identifier} (Identifiers for the ImagingStudy such as DICOM Study Instance UID.)
      */
     public List<Identifier> getIdentifier() { 
       if (this.identifier == null)
@@ -2094,7 +1892,7 @@ public class ImagingStudy extends DomainResource {
     }
 
     /**
-     * @return {@link #status} (The current state of the ImagingStudy.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @return {@link #status} (The current state of the ImagingStudy resource. This is not the status of any ServiceRequest or Task resources associated with the ImagingStudy.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public Enumeration<ImagingStudyStatus> getStatusElement() { 
       if (this.status == null)
@@ -2114,7 +1912,7 @@ public class ImagingStudy extends DomainResource {
     }
 
     /**
-     * @param value {@link #status} (The current state of the ImagingStudy.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @param value {@link #status} (The current state of the ImagingStudy resource. This is not the status of any ServiceRequest or Task resources associated with the ImagingStudy.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public ImagingStudy setStatusElement(Enumeration<ImagingStudyStatus> value) { 
       this.status = value;
@@ -2122,14 +1920,14 @@ public class ImagingStudy extends DomainResource {
     }
 
     /**
-     * @return The current state of the ImagingStudy.
+     * @return The current state of the ImagingStudy resource. This is not the status of any ServiceRequest or Task resources associated with the ImagingStudy.
      */
     public ImagingStudyStatus getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
-     * @param value The current state of the ImagingStudy.
+     * @param value The current state of the ImagingStudy resource. This is not the status of any ServiceRequest or Task resources associated with the ImagingStudy.
      */
     public ImagingStudy setStatus(ImagingStudyStatus value) { 
         if (this.status == null)
@@ -2139,7 +1937,7 @@ public class ImagingStudy extends DomainResource {
     }
 
     /**
-     * @return {@link #modality} (A list of all the distinct values of series.modality. This may include both aquisition and non-aquisition modalities.)
+     * @return {@link #modality} (A list of all the distinct values of series.modality. This may include both acquisition and non-acquisition modalities.)
      */
     public List<Coding> getModality() { 
       if (this.modality == null)
@@ -2564,16 +2362,16 @@ public class ImagingStudy extends DomainResource {
     /**
      * @return {@link #procedure} (The procedure or code from which this ImagingStudy was part of.)
      */
-    public List<ImagingStudyProcedureComponent> getProcedure() { 
+    public List<CodeableReference> getProcedure() { 
       if (this.procedure == null)
-        this.procedure = new ArrayList<ImagingStudyProcedureComponent>();
+        this.procedure = new ArrayList<CodeableReference>();
       return this.procedure;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public ImagingStudy setProcedure(List<ImagingStudyProcedureComponent> theProcedure) { 
+    public ImagingStudy setProcedure(List<CodeableReference> theProcedure) { 
       this.procedure = theProcedure;
       return this;
     }
@@ -2581,25 +2379,25 @@ public class ImagingStudy extends DomainResource {
     public boolean hasProcedure() { 
       if (this.procedure == null)
         return false;
-      for (ImagingStudyProcedureComponent item : this.procedure)
+      for (CodeableReference item : this.procedure)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public ImagingStudyProcedureComponent addProcedure() { //3
-      ImagingStudyProcedureComponent t = new ImagingStudyProcedureComponent();
+    public CodeableReference addProcedure() { //3
+      CodeableReference t = new CodeableReference();
       if (this.procedure == null)
-        this.procedure = new ArrayList<ImagingStudyProcedureComponent>();
+        this.procedure = new ArrayList<CodeableReference>();
       this.procedure.add(t);
       return t;
     }
 
-    public ImagingStudy addProcedure(ImagingStudyProcedureComponent t) { //3
+    public ImagingStudy addProcedure(CodeableReference t) { //3
       if (t == null)
         return this;
       if (this.procedure == null)
-        this.procedure = new ArrayList<ImagingStudyProcedureComponent>();
+        this.procedure = new ArrayList<CodeableReference>();
       this.procedure.add(t);
       return this;
     }
@@ -2607,7 +2405,7 @@ public class ImagingStudy extends DomainResource {
     /**
      * @return The first repetition of repeating field {@link #procedure}, creating it if it does not already exist {3}
      */
-    public ImagingStudyProcedureComponent getProcedureFirstRep() { 
+    public CodeableReference getProcedureFirstRep() { 
       if (getProcedure().isEmpty()) {
         addProcedure();
       }
@@ -2848,9 +2646,9 @@ public class ImagingStudy extends DomainResource {
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("identifier", "Identifier", "Identifiers for the ImagingStudy such as DICOM Study Instance UID, and Accession Number.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("status", "code", "The current state of the ImagingStudy.", 0, 1, status));
-        children.add(new Property("modality", "Coding", "A list of all the distinct values of series.modality. This may include both aquisition and non-aquisition modalities.", 0, java.lang.Integer.MAX_VALUE, modality));
+        children.add(new Property("identifier", "Identifier", "Identifiers for the ImagingStudy such as DICOM Study Instance UID.", 0, java.lang.Integer.MAX_VALUE, identifier));
+        children.add(new Property("status", "code", "The current state of the ImagingStudy resource. This is not the status of any ServiceRequest or Task resources associated with the ImagingStudy.", 0, 1, status));
+        children.add(new Property("modality", "Coding", "A list of all the distinct values of series.modality. This may include both acquisition and non-acquisition modalities.", 0, java.lang.Integer.MAX_VALUE, modality));
         children.add(new Property("subject", "Reference(Patient|Device|Group)", "The subject, typically a patient, of the imaging study.", 0, 1, subject));
         children.add(new Property("encounter", "Reference(Encounter)", "The healthcare event (e.g. a patient and healthcare provider interaction) during which this ImagingStudy is made.", 0, 1, encounter));
         children.add(new Property("started", "dateTime", "Date and time the study started.", 0, 1, started));
@@ -2860,7 +2658,7 @@ public class ImagingStudy extends DomainResource {
         children.add(new Property("endpoint", "Reference(Endpoint)", "The network service providing access (e.g., query, view, or retrieval) for the study. See implementation notes for information about using DICOM endpoints. A study-level endpoint applies to each series in the study, unless overridden by a series-level endpoint with the same Endpoint.connectionType.", 0, java.lang.Integer.MAX_VALUE, endpoint));
         children.add(new Property("numberOfSeries", "unsignedInt", "Number of Series in the Study. This value given may be larger than the number of series elements this Resource contains due to resource availability, security, or other factors. This element should be present if any series elements are present.", 0, 1, numberOfSeries));
         children.add(new Property("numberOfInstances", "unsignedInt", "Number of SOP Instances in Study. This value given may be larger than the number of instance elements this resource contains due to resource availability, security, or other factors. This element should be present if any instance elements are present.", 0, 1, numberOfInstances));
-        children.add(new Property("procedure", "", "The procedure or code from which this ImagingStudy was part of.", 0, java.lang.Integer.MAX_VALUE, procedure));
+        children.add(new Property("procedure", "CodeableReference(Procedure)", "The procedure or code from which this ImagingStudy was part of.", 0, java.lang.Integer.MAX_VALUE, procedure));
         children.add(new Property("location", "Reference(Location)", "The principal physical location where the ImagingStudy was performed.", 0, 1, location));
         children.add(new Property("reason", "CodeableReference(Condition|Observation|DiagnosticReport|DocumentReference)", "Description of clinical condition indicating why the ImagingStudy was requested, and/or Indicates another resource whose existence justifies this Study.", 0, java.lang.Integer.MAX_VALUE, reason));
         children.add(new Property("note", "Annotation", "Per the recommended DICOM mapping, this element is derived from the Study Description attribute (0008,1030). Observations or findings about the imaging study should be recorded in another resource, e.g. Observation, and not in this element.", 0, java.lang.Integer.MAX_VALUE, note));
@@ -2871,9 +2669,9 @@ public class ImagingStudy extends DomainResource {
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifiers for the ImagingStudy such as DICOM Study Instance UID, and Accession Number.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case -892481550: /*status*/  return new Property("status", "code", "The current state of the ImagingStudy.", 0, 1, status);
-        case -622722335: /*modality*/  return new Property("modality", "Coding", "A list of all the distinct values of series.modality. This may include both aquisition and non-aquisition modalities.", 0, java.lang.Integer.MAX_VALUE, modality);
+        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifiers for the ImagingStudy such as DICOM Study Instance UID.", 0, java.lang.Integer.MAX_VALUE, identifier);
+        case -892481550: /*status*/  return new Property("status", "code", "The current state of the ImagingStudy resource. This is not the status of any ServiceRequest or Task resources associated with the ImagingStudy.", 0, 1, status);
+        case -622722335: /*modality*/  return new Property("modality", "Coding", "A list of all the distinct values of series.modality. This may include both acquisition and non-acquisition modalities.", 0, java.lang.Integer.MAX_VALUE, modality);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Device|Group)", "The subject, typically a patient, of the imaging study.", 0, 1, subject);
         case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The healthcare event (e.g. a patient and healthcare provider interaction) during which this ImagingStudy is made.", 0, 1, encounter);
         case -1897185151: /*started*/  return new Property("started", "dateTime", "Date and time the study started.", 0, 1, started);
@@ -2883,7 +2681,7 @@ public class ImagingStudy extends DomainResource {
         case 1741102485: /*endpoint*/  return new Property("endpoint", "Reference(Endpoint)", "The network service providing access (e.g., query, view, or retrieval) for the study. See implementation notes for information about using DICOM endpoints. A study-level endpoint applies to each series in the study, unless overridden by a series-level endpoint with the same Endpoint.connectionType.", 0, java.lang.Integer.MAX_VALUE, endpoint);
         case 1920000407: /*numberOfSeries*/  return new Property("numberOfSeries", "unsignedInt", "Number of Series in the Study. This value given may be larger than the number of series elements this Resource contains due to resource availability, security, or other factors. This element should be present if any series elements are present.", 0, 1, numberOfSeries);
         case -1043544226: /*numberOfInstances*/  return new Property("numberOfInstances", "unsignedInt", "Number of SOP Instances in Study. This value given may be larger than the number of instance elements this resource contains due to resource availability, security, or other factors. This element should be present if any instance elements are present.", 0, 1, numberOfInstances);
-        case -1095204141: /*procedure*/  return new Property("procedure", "", "The procedure or code from which this ImagingStudy was part of.", 0, java.lang.Integer.MAX_VALUE, procedure);
+        case -1095204141: /*procedure*/  return new Property("procedure", "CodeableReference(Procedure)", "The procedure or code from which this ImagingStudy was part of.", 0, java.lang.Integer.MAX_VALUE, procedure);
         case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "The principal physical location where the ImagingStudy was performed.", 0, 1, location);
         case -934964668: /*reason*/  return new Property("reason", "CodeableReference(Condition|Observation|DiagnosticReport|DocumentReference)", "Description of clinical condition indicating why the ImagingStudy was requested, and/or Indicates another resource whose existence justifies this Study.", 0, java.lang.Integer.MAX_VALUE, reason);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Per the recommended DICOM mapping, this element is derived from the Study Description attribute (0008,1030). Observations or findings about the imaging study should be recorded in another resource, e.g. Observation, and not in this element.", 0, java.lang.Integer.MAX_VALUE, note);
@@ -2909,7 +2707,7 @@ public class ImagingStudy extends DomainResource {
         case 1741102485: /*endpoint*/ return this.endpoint == null ? new Base[0] : this.endpoint.toArray(new Base[this.endpoint.size()]); // Reference
         case 1920000407: /*numberOfSeries*/ return this.numberOfSeries == null ? new Base[0] : new Base[] {this.numberOfSeries}; // UnsignedIntType
         case -1043544226: /*numberOfInstances*/ return this.numberOfInstances == null ? new Base[0] : new Base[] {this.numberOfInstances}; // UnsignedIntType
-        case -1095204141: /*procedure*/ return this.procedure == null ? new Base[0] : this.procedure.toArray(new Base[this.procedure.size()]); // ImagingStudyProcedureComponent
+        case -1095204141: /*procedure*/ return this.procedure == null ? new Base[0] : this.procedure.toArray(new Base[this.procedure.size()]); // CodeableReference
         case 1901043637: /*location*/ return this.location == null ? new Base[0] : new Base[] {this.location}; // Reference
         case -934964668: /*reason*/ return this.reason == null ? new Base[0] : this.reason.toArray(new Base[this.reason.size()]); // CodeableReference
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
@@ -2961,7 +2759,7 @@ public class ImagingStudy extends DomainResource {
           this.numberOfInstances = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
           return value;
         case -1095204141: // procedure
-          this.getProcedure().add((ImagingStudyProcedureComponent) value); // ImagingStudyProcedureComponent
+          this.getProcedure().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case 1901043637: // location
           this.location = TypeConvertor.castToReference(value); // Reference
@@ -3011,7 +2809,7 @@ public class ImagingStudy extends DomainResource {
         } else if (name.equals("numberOfInstances")) {
           this.numberOfInstances = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else if (name.equals("procedure")) {
-          this.getProcedure().add((ImagingStudyProcedureComponent) value);
+          this.getProcedure().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("location")) {
           this.location = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("reason")) {
@@ -3068,7 +2866,7 @@ public class ImagingStudy extends DomainResource {
         case 1741102485: /*endpoint*/ return new String[] {"Reference"};
         case 1920000407: /*numberOfSeries*/ return new String[] {"unsignedInt"};
         case -1043544226: /*numberOfInstances*/ return new String[] {"unsignedInt"};
-        case -1095204141: /*procedure*/ return new String[] {};
+        case -1095204141: /*procedure*/ return new String[] {"CodeableReference"};
         case 1901043637: /*location*/ return new String[] {"Reference"};
         case -934964668: /*reason*/ return new String[] {"CodeableReference"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
@@ -3189,8 +2987,8 @@ public class ImagingStudy extends DomainResource {
         dst.numberOfSeries = numberOfSeries == null ? null : numberOfSeries.copy();
         dst.numberOfInstances = numberOfInstances == null ? null : numberOfInstances.copy();
         if (procedure != null) {
-          dst.procedure = new ArrayList<ImagingStudyProcedureComponent>();
-          for (ImagingStudyProcedureComponent i : procedure)
+          dst.procedure = new ArrayList<CodeableReference>();
+          for (CodeableReference i : procedure)
             dst.procedure.add(i.copy());
         };
         dst.location = location == null ? null : location.copy();
@@ -3258,17 +3056,17 @@ public class ImagingStudy extends DomainResource {
  /**
    * Search parameter: <b>basedon</b>
    * <p>
-   * Description: <b>The order for the image</b><br>
+   * Description: <b>The order for the image, such as Accession Number associated with a ServiceRequest</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>ImagingStudy.basedOn</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="basedon", path="ImagingStudy.basedOn", description="The order for the image", type="reference", target={Appointment.class, AppointmentResponse.class, CarePlan.class, ServiceRequest.class, Task.class } )
+  @SearchParamDefinition(name="basedon", path="ImagingStudy.basedOn", description="The order for the image, such as Accession Number associated with a ServiceRequest", type="reference", target={Appointment.class, AppointmentResponse.class, CarePlan.class, ServiceRequest.class, Task.class } )
   public static final String SP_BASEDON = "basedon";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>basedon</b>
    * <p>
-   * Description: <b>The order for the image</b><br>
+   * Description: <b>The order for the image, such as Accession Number associated with a ServiceRequest</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>ImagingStudy.basedOn</b><br>
    * </p>
@@ -3617,7 +3415,7 @@ public class ImagingStudy extends DomainResource {
 * [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
 * [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
 * [Goal](goal.html): External Ids for this goal
-* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number
+* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID
 * [Immunization](immunization.html): Business identifier
 * [List](list.html): Business identifier
 * [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier
@@ -3637,7 +3435,7 @@ public class ImagingStudy extends DomainResource {
    * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): External ids for this item\r\n* [CarePlan](careplan.html): External Ids for this plan\r\n* [CareTeam](careteam.html): External Ids for this team\r\n* [Composition](composition.html): Version-independent identifier for the Composition\r\n* [Condition](condition.html): A unique identifier of the condition record\r\n* [Consent](consent.html): Identifier for this record (external references)\r\n* [DetectedIssue](detectedissue.html): Unique id for the detected issue\r\n* [DeviceRequest](devicerequest.html): Business identifier for request/order\r\n* [DiagnosticReport](diagnosticreport.html): An identifier for the report\r\n* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents\r\n* [DocumentReference](documentreference.html): Identifier of the attachment binary\r\n* [Encounter](encounter.html): Identifier(s) by which this encounter is known\r\n* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier\r\n* [Goal](goal.html): External Ids for this goal\r\n* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number\r\n* [Immunization](immunization.html): Business identifier\r\n* [List](list.html): Business identifier\r\n* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier\r\n* [MedicationUsage](medicationusage.html): Return statements with this external identifier\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier\r\n* [Observation](observation.html): The unique id for a particular observation\r\n* [Procedure](procedure.html): A unique identifier for a procedure\r\n* [RiskAssessment](riskassessment.html): Unique identifier for the assessment\r\n* [ServiceRequest](servicerequest.html): Identifiers assigned to this order\r\n* [SupplyDelivery](supplydelivery.html): External identifier\r\n* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier\r\n", type="token" )
+  @SearchParamDefinition(name="identifier", path="AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): External ids for this item\r\n* [CarePlan](careplan.html): External Ids for this plan\r\n* [CareTeam](careteam.html): External Ids for this team\r\n* [Composition](composition.html): Version-independent identifier for the Composition\r\n* [Condition](condition.html): A unique identifier of the condition record\r\n* [Consent](consent.html): Identifier for this record (external references)\r\n* [DetectedIssue](detectedissue.html): Unique id for the detected issue\r\n* [DeviceRequest](devicerequest.html): Business identifier for request/order\r\n* [DiagnosticReport](diagnosticreport.html): An identifier for the report\r\n* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents\r\n* [DocumentReference](documentreference.html): Identifier of the attachment binary\r\n* [Encounter](encounter.html): Identifier(s) by which this encounter is known\r\n* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier\r\n* [Goal](goal.html): External Ids for this goal\r\n* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID\r\n* [Immunization](immunization.html): Business identifier\r\n* [List](list.html): Business identifier\r\n* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier\r\n* [MedicationUsage](medicationusage.html): Return statements with this external identifier\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier\r\n* [Observation](observation.html): The unique id for a particular observation\r\n* [Procedure](procedure.html): A unique identifier for a procedure\r\n* [RiskAssessment](riskassessment.html): Unique identifier for the assessment\r\n* [ServiceRequest](servicerequest.html): Identifiers assigned to this order\r\n* [SupplyDelivery](supplydelivery.html): External identifier\r\n* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier\r\n", type="token" )
   public static final String SP_IDENTIFIER = "identifier";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
@@ -3659,7 +3457,7 @@ public class ImagingStudy extends DomainResource {
 * [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
 * [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
 * [Goal](goal.html): External Ids for this goal
-* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number
+* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID
 * [Immunization](immunization.html): Business identifier
 * [List](list.html): Business identifier
 * [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier
@@ -3689,17 +3487,17 @@ public class ImagingStudy extends DomainResource {
 * [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
 * [CarePlan](careplan.html): Who the care plan is for
 * [CareTeam](careteam.html): Who care team is for
-* [ClinicalImpression](clinicalimpression.html): Patient or group assessed
+* [ClinicalImpression](clinicalimpression.html): Patient assessed
 * [Composition](composition.html): Who and/or what the composition is about
 * [Condition](condition.html): Who has the condition?
 * [Consent](consent.html): Who the consent applies to
 * [DetectedIssue](detectedissue.html): Associated patient
 * [DeviceRequest](devicerequest.html): Individual the service is ordered for
-* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient
+* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device
 * [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
 * [DocumentManifest](documentmanifest.html): The subject of the set of documents
 * [DocumentReference](documentreference.html): Who/what is the subject of the document
-* [Encounter](encounter.html): The patient or group present at the encounter
+* [Encounter](encounter.html): The patient present at the encounter
 * [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
 * [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
 * [Flag](flag.html): The identity of a subject to list flags for
@@ -3720,10 +3518,10 @@ public class ImagingStudy extends DomainResource {
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient or group assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient or group present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Group.class, Patient.class } )
+  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -3733,17 +3531,17 @@ public class ImagingStudy extends DomainResource {
 * [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
 * [CarePlan](careplan.html): Who the care plan is for
 * [CareTeam](careteam.html): Who care team is for
-* [ClinicalImpression](clinicalimpression.html): Patient or group assessed
+* [ClinicalImpression](clinicalimpression.html): Patient assessed
 * [Composition](composition.html): Who and/or what the composition is about
 * [Condition](condition.html): Who has the condition?
 * [Consent](consent.html): Who the consent applies to
 * [DetectedIssue](detectedissue.html): Associated patient
 * [DeviceRequest](devicerequest.html): Individual the service is ordered for
-* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient
+* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device
 * [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
 * [DocumentManifest](documentmanifest.html): The subject of the set of documents
 * [DocumentReference](documentreference.html): Who/what is the subject of the document
-* [Encounter](encounter.html): The patient or group present at the encounter
+* [Encounter](encounter.html): The patient present at the encounter
 * [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
 * [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
 * [Flag](flag.html): The identity of a subject to list flags for
@@ -3764,7 +3562,7 @@ public class ImagingStudy extends DomainResource {
 * [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
 </b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);

@@ -1,6 +1,6 @@
 package org.hl7.fhir.validation;
 
-import org.hl7.fhir.convertors.loaders.*;
+import org.hl7.fhir.convertors.loaders.loaderR5.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
@@ -11,6 +11,7 @@ import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.cli.utils.AsteriskFilter;
@@ -39,18 +40,27 @@ public class ValidatorUtils {
   }
 
   protected static IWorkerContext.IContextResourceLoader loaderForVersion(String version) {
-    if (Utilities.noString(version))
+    if (Utilities.noString(version)) {
       return null;
-    if (version.startsWith("1.0"))
-      return new R2ToR5Loader(new String[]{"Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"}, new BaseLoaderR5.NullLoaderKnowledgeProvider());
-    if (version.startsWith("1.4"))
-      return new R2016MayToR5Loader(new String[]{"Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"}, new BaseLoaderR5.NullLoaderKnowledgeProvider()); // special case
-    if (version.startsWith("3.0"))
-      return new R3ToR5Loader(new String[]{"CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"}, new BaseLoaderR5.NullLoaderKnowledgeProvider());
-    if (version.startsWith("4.0"))
-      return new R4ToR5Loader(new String[]{"CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"}, new BaseLoaderR5.NullLoaderKnowledgeProvider());
-    if (version.startsWith("5.0"))
-      return new R5ToR5Loader(new String[]{"CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"}, new BaseLoaderR5.NullLoaderKnowledgeProvider());
+    }
+    if (VersionUtilities.isR2Ver(version)) {
+      return new R2ToR5Loader(new String[]{"Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProviderR5());
+    } 
+    if (VersionUtilities.isR2BVer(version)) {
+      return new R2016MayToR5Loader(new String[]{"Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProviderR5()); // special case
+    }
+    if (VersionUtilities.isR3Ver(version)) {
+      return new R3ToR5Loader(new String[]{"CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProviderR5());
+    }
+    if (VersionUtilities.isR4Ver(version)) {
+      return new R4ToR5Loader(new String[]{"CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProviderR5(), version);
+    }
+    if (VersionUtilities.isR4BVer(version)) {
+      return new R4BToR5Loader(new String[]{"CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProviderR5(), version);
+    }
+    if (VersionUtilities.isR5Ver(version)) {
+      return new R5ToR5Loader(new String[]{"CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProviderR5());
+    }
     return null;
   }
 
@@ -91,7 +101,7 @@ public class ValidatorUtils {
     if (!op.hasIssue()) {
       op.addIssue().setSeverity(OperationOutcome.IssueSeverity.INFORMATION).setCode(OperationOutcome.IssueType.INFORMATIONAL).getDetails().setText(context.formatMessage(I18nConstants.ALL_OK));
     }
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.RESOURCE);
+    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.END_USER);
     RendererFactory.factory(op, rc).render(op);
     return op;
   }

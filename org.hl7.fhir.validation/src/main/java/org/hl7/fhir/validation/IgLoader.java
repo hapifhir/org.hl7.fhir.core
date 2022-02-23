@@ -2,7 +2,13 @@ package org.hl7.fhir.validation;
 
 import com.google.gson.JsonObject;
 import lombok.Getter;
-import org.hl7.fhir.convertors.*;
+import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
+import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -12,6 +18,8 @@ import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
+import org.hl7.fhir.utilities.SimpleHTTPClient;
+import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -27,9 +35,7 @@ import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
 import org.w3c.dom.Document;
 
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -133,6 +139,8 @@ public class IgLoader {
         res.cntType = Manager.FhirFormat.XML;
       else if (t.getKey().endsWith(".ttl"))
         res.cntType = Manager.FhirFormat.TURTLE;
+      else if (t.getKey().endsWith(".shc"))
+        res.cntType = Manager.FhirFormat.SHC;
       else if (t.getKey().endsWith(".txt") || t.getKey().endsWith(".map"))
         res.cntType = Manager.FhirFormat.TEXT;
       else
@@ -183,7 +191,7 @@ public class IgLoader {
         return readZip(new FileInputStream(src));
       if (src.endsWith("igpack.zip"))
         return readZip(new FileInputStream(src));
-      Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), src);
+      Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), TextFile.fileToBytes(f), src, true);
       if (fmt != null) {
         Map<String, byte[]> res = new HashMap<String, byte[]>();
         res.put(Utilities.changeFileExt(src, "." + fmt.getExtension()), TextFile.fileToBytesNCS(src));
@@ -265,9 +273,10 @@ public class IgLoader {
 
   private InputStream fetchFromUrlSpecific(String source, boolean optional) throws FHIRException, IOException {
     try {
-      URL url = new URL(source + "?nocache=" + System.currentTimeMillis());
-      URLConnection c = url.openConnection();
-      return c.getInputStream();
+      SimpleHTTPClient http = new SimpleHTTPClient();
+      HTTPResult res = http.get(source + "?nocache=" + System.currentTimeMillis());
+      res.checkThrowException();
+      return new ByteArrayInputStream(res.getContent());
     } catch (IOException e) {
       if (optional)
         return null;
@@ -315,7 +324,7 @@ public class IgLoader {
         return readZip(new FileInputStream(src));
       if (src.endsWith("igpack.zip"))
         return readZip(new FileInputStream(src));
-      Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), src);
+      Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), TextFile.fileToBytes(f), src, true);
       if (fmt != null) {
         Map<String, byte[]> res = new HashMap<String, byte[]>();
         res.put(Utilities.changeFileExt(src, "." + fmt.getExtension()), TextFile.fileToBytesNCS(src));
@@ -404,17 +413,16 @@ public class IgLoader {
 
   private byte[] fetchFromUrlSpecific(String source, String contentType, boolean optional, List<String> errors) throws FHIRException, IOException {
     try {
+      SimpleHTTPClient http = new SimpleHTTPClient();
       try {
         // try with cache-busting option and then try withhout in case the server doesn't support that
-        URL url = new URL(source + "?nocache=" + System.currentTimeMillis());
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestProperty("Accept", contentType);
-        return TextFile.streamToBytes(conn.getInputStream());
+        HTTPResult res = http.get(source + "?nocache=" + System.currentTimeMillis(), contentType);
+        res.checkThrowException();
+        return res.getContent();
       } catch (Exception e) {
-        URL url = new URL(source);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestProperty("Accept", contentType);
-        return TextFile.streamToBytes(conn.getInputStream());
+        HTTPResult res = http.get(source, contentType);
+        res.checkThrowException();
+        return res.getContent();
       }
     } catch (IOException e) {
       if (errors != null) {
@@ -464,7 +472,7 @@ public class IgLoader {
     else
       cnt = TextFile.streamToBytes(stream);
 
-    Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), cnt, src);
+    Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), cnt, src, true);
     if (fmt != null) {
       Map<String, byte[]> res = new HashMap<String, byte[]>();
       res.put(Utilities.changeFileExt(src, "." + fmt.getExtension()), cnt);
@@ -563,7 +571,7 @@ public class IgLoader {
       if (ff.isDirectory() && recursive) {
         res.putAll(scanDirectory(ff, true));
       } else if (!ff.isDirectory() && !isIgnoreFile(ff)) {
-        Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), ff.getAbsolutePath());
+        Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), TextFile.fileToBytes(ff), ff.getAbsolutePath(), true);
         if (fmt != null) {
           res.put(Utilities.changeFileExt(ff.getName(), "." + fmt.getExtension()), TextFile.fileToBytes(ff.getAbsolutePath()));
         }
@@ -649,7 +657,7 @@ public class IgLoader {
         res = new org.hl7.fhir.dstu3.utils.StructureMapUtilities(null).parse(new String(content));
       else
         throw new FHIRException("Unsupported format for " + fn);
-      r = VersionConvertor_30_50.convertResource(res, false);
+      r = VersionConvertorFactory_30_50.convertResource(res);
     } else if (fhirVersion.startsWith("4.0")) {
       org.hl7.fhir.r4.model.Resource res;
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
@@ -660,7 +668,7 @@ public class IgLoader {
         res = new org.hl7.fhir.r4.utils.StructureMapUtilities(null).parse(new String(content), fn);
       else
         throw new FHIRException("Unsupported format for " + fn);
-      r = VersionConvertor_40_50.convertResource(res);
+      r = VersionConvertorFactory_40_50.convertResource(res);
     } else if (fhirVersion.startsWith("1.4")) {
       org.hl7.fhir.dstu2016may.model.Resource res;
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
@@ -669,7 +677,7 @@ public class IgLoader {
         res = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(new ByteArrayInputStream(content));
       else
         throw new FHIRException("Unsupported format for " + fn);
-      r = VersionConvertor_14_50.convertResource(res);
+      r = VersionConvertorFactory_14_50.convertResource(res);
     } else if (fhirVersion.startsWith("1.0")) {
       org.hl7.fhir.dstu2.model.Resource res;
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
@@ -678,8 +686,7 @@ public class IgLoader {
         res = new org.hl7.fhir.dstu2.formats.JsonParser().parse(new ByteArrayInputStream(content));
       else
         throw new FHIRException("Unsupported format for " + fn);
-      VersionConvertorAdvisor50 advisor = new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5();
-      r = VersionConvertor_10_50.convertResource(res, advisor);
+      r = VersionConvertorFactory_10_50.convertResource(res, new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5());
     } else if (fhirVersion.equals(Constants.VERSION) || "current".equals(fhirVersion)) {
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
         r = new XmlParser().parse(new ByteArrayInputStream(content));

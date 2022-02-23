@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -67,6 +67,10 @@ public class NamingSystem extends CanonicalResource {
          */
         URI, 
         /**
+         * A short string published by HL7 for use in the V2 family of standsrds to idenfify a code system in the V12 coded data types CWE, CNE, and CF. The code values are also published by HL7 at http://www.hl7.org/Special/committees/vocab/table_0396/index.cfm
+         */
+        V2CSMNEMONIC, 
+        /**
          * Some other type of unique identifier; e.g. HL7-assigned reserved string such as LN for LOINC.
          */
         OTHER, 
@@ -83,6 +87,8 @@ public class NamingSystem extends CanonicalResource {
           return UUID;
         if ("uri".equals(codeString))
           return URI;
+        if ("v2csmnemonic".equals(codeString))
+          return V2CSMNEMONIC;
         if ("other".equals(codeString))
           return OTHER;
         if (Configuration.isAcceptInvalidEnums())
@@ -95,8 +101,8 @@ public class NamingSystem extends CanonicalResource {
             case OID: return "oid";
             case UUID: return "uuid";
             case URI: return "uri";
+            case V2CSMNEMONIC: return "v2csmnemonic";
             case OTHER: return "other";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,8 +111,8 @@ public class NamingSystem extends CanonicalResource {
             case OID: return "http://hl7.org/fhir/namingsystem-identifier-type";
             case UUID: return "http://hl7.org/fhir/namingsystem-identifier-type";
             case URI: return "http://hl7.org/fhir/namingsystem-identifier-type";
+            case V2CSMNEMONIC: return "http://hl7.org/fhir/namingsystem-identifier-type";
             case OTHER: return "http://hl7.org/fhir/namingsystem-identifier-type";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -115,8 +121,8 @@ public class NamingSystem extends CanonicalResource {
             case OID: return "An ISO object identifier; e.g. 1.2.3.4.5.";
             case UUID: return "A universally unique identifier of the form a5afddf4-e880-459b-876e-e4591b0acc11.";
             case URI: return "A uniform resource identifier (ideally a URL - uniform resource locator); e.g. http://unitsofmeasure.org.";
+            case V2CSMNEMONIC: return "A short string published by HL7 for use in the V2 family of standsrds to idenfify a code system in the V12 coded data types CWE, CNE, and CF. The code values are also published by HL7 at http://www.hl7.org/Special/committees/vocab/table_0396/index.cfm";
             case OTHER: return "Some other type of unique identifier; e.g. HL7-assigned reserved string such as LN for LOINC.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -125,8 +131,8 @@ public class NamingSystem extends CanonicalResource {
             case OID: return "OID";
             case UUID: return "UUID";
             case URI: return "URI";
+            case V2CSMNEMONIC: return "V2CSMNemonic";
             case OTHER: return "Other";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -143,6 +149,8 @@ public class NamingSystem extends CanonicalResource {
           return NamingSystemIdentifierType.UUID;
         if ("uri".equals(codeString))
           return NamingSystemIdentifierType.URI;
+        if ("v2csmnemonic".equals(codeString))
+          return NamingSystemIdentifierType.V2CSMNEMONIC;
         if ("other".equals(codeString))
           return NamingSystemIdentifierType.OTHER;
         throw new IllegalArgumentException("Unknown NamingSystemIdentifierType code '"+codeString+"'");
@@ -161,6 +169,8 @@ public class NamingSystem extends CanonicalResource {
           return new Enumeration<NamingSystemIdentifierType>(this, NamingSystemIdentifierType.UUID);
         if ("uri".equals(codeString))
           return new Enumeration<NamingSystemIdentifierType>(this, NamingSystemIdentifierType.URI);
+        if ("v2csmnemonic".equals(codeString))
+          return new Enumeration<NamingSystemIdentifierType>(this, NamingSystemIdentifierType.V2CSMNEMONIC);
         if ("other".equals(codeString))
           return new Enumeration<NamingSystemIdentifierType>(this, NamingSystemIdentifierType.OTHER);
         throw new FHIRException("Unknown NamingSystemIdentifierType code '"+codeString+"'");
@@ -172,6 +182,8 @@ public class NamingSystem extends CanonicalResource {
         return "uuid";
       if (code == NamingSystemIdentifierType.URI)
         return "uri";
+      if (code == NamingSystemIdentifierType.V2CSMNEMONIC)
+        return "v2csmnemonic";
       if (code == NamingSystemIdentifierType.OTHER)
         return "other";
       return "?";
@@ -217,7 +229,6 @@ public class NamingSystem extends CanonicalResource {
             case CODESYSTEM: return "codesystem";
             case IDENTIFIER: return "identifier";
             case ROOT: return "root";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -226,7 +237,6 @@ public class NamingSystem extends CanonicalResource {
             case CODESYSTEM: return "http://hl7.org/fhir/namingsystem-type";
             case IDENTIFIER: return "http://hl7.org/fhir/namingsystem-type";
             case ROOT: return "http://hl7.org/fhir/namingsystem-type";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -235,7 +245,6 @@ public class NamingSystem extends CanonicalResource {
             case CODESYSTEM: return "The naming system is used to define concepts and symbols to represent those concepts; e.g. UCUM, LOINC, NDC code, local lab codes, etc.";
             case IDENTIFIER: return "The naming system is used to manage identifiers (e.g. license numbers, order numbers, etc.).";
             case ROOT: return "The naming system is used as the root for other identifiers and naming systems.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -244,7 +253,6 @@ public class NamingSystem extends CanonicalResource {
             case CODESYSTEM: return "Code System";
             case IDENTIFIER: return "Identifier";
             case ROOT: return "Root";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -299,7 +307,7 @@ public class NamingSystem extends CanonicalResource {
          * Identifies the unique identifier scheme used for this particular identifier.
          */
         @Child(name = "type", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="oid | uuid | uri | other", formalDefinition="Identifies the unique identifier scheme used for this particular identifier." )
+        @Description(shortDefinition="oid | uuid | uri | v2csmnemonic | other", formalDefinition="Identifies the unique identifier scheme used for this particular identifier." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/namingsystem-identifier-type")
         protected Enumeration<NamingSystemIdentifierType> type;
 
@@ -331,7 +339,14 @@ public class NamingSystem extends CanonicalResource {
         @Description(shortDefinition="When is identifier valid?", formalDefinition="Identifies the period of time over which this identifier is considered appropriate to refer to the naming system.  Outside of this window, the identifier might be non-deterministic." )
         protected Period period;
 
-        private static final long serialVersionUID = -1458889328L;
+        /**
+         * Indicates whether this identifier ie endorsed by the official owner of the associated naming system.
+         */
+        @Child(name = "authoritative", type = {BooleanType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Whether the identifier is authoritative", formalDefinition="Indicates whether this identifier ie endorsed by the official owner of the associated naming system." )
+        protected BooleanType authoritative;
+
+        private static final long serialVersionUID = -166953751L;
 
     /**
      * Constructor
@@ -557,6 +572,51 @@ public class NamingSystem extends CanonicalResource {
           return this;
         }
 
+        /**
+         * @return {@link #authoritative} (Indicates whether this identifier ie endorsed by the official owner of the associated naming system.). This is the underlying object with id, value and extensions. The accessor "getAuthoritative" gives direct access to the value
+         */
+        public BooleanType getAuthoritativeElement() { 
+          if (this.authoritative == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create NamingSystemUniqueIdComponent.authoritative");
+            else if (Configuration.doAutoCreate())
+              this.authoritative = new BooleanType(); // bb
+          return this.authoritative;
+        }
+
+        public boolean hasAuthoritativeElement() { 
+          return this.authoritative != null && !this.authoritative.isEmpty();
+        }
+
+        public boolean hasAuthoritative() { 
+          return this.authoritative != null && !this.authoritative.isEmpty();
+        }
+
+        /**
+         * @param value {@link #authoritative} (Indicates whether this identifier ie endorsed by the official owner of the associated naming system.). This is the underlying object with id, value and extensions. The accessor "getAuthoritative" gives direct access to the value
+         */
+        public NamingSystemUniqueIdComponent setAuthoritativeElement(BooleanType value) { 
+          this.authoritative = value;
+          return this;
+        }
+
+        /**
+         * @return Indicates whether this identifier ie endorsed by the official owner of the associated naming system.
+         */
+        public boolean getAuthoritative() { 
+          return this.authoritative == null || this.authoritative.isEmpty() ? false : this.authoritative.getValue();
+        }
+
+        /**
+         * @param value Indicates whether this identifier ie endorsed by the official owner of the associated naming system.
+         */
+        public NamingSystemUniqueIdComponent setAuthoritative(boolean value) { 
+            if (this.authoritative == null)
+              this.authoritative = new BooleanType();
+            this.authoritative.setValue(value);
+          return this;
+        }
+
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "code", "Identifies the unique identifier scheme used for this particular identifier.", 0, 1, type));
@@ -564,6 +624,7 @@ public class NamingSystem extends CanonicalResource {
           children.add(new Property("preferred", "boolean", "Indicates whether this identifier is the \"preferred\" identifier of this type.", 0, 1, preferred));
           children.add(new Property("comment", "string", "Notes about the past or intended usage of this identifier.", 0, 1, comment));
           children.add(new Property("period", "Period", "Identifies the period of time over which this identifier is considered appropriate to refer to the naming system.  Outside of this window, the identifier might be non-deterministic.", 0, 1, period));
+          children.add(new Property("authoritative", "boolean", "Indicates whether this identifier ie endorsed by the official owner of the associated naming system.", 0, 1, authoritative));
         }
 
         @Override
@@ -574,6 +635,7 @@ public class NamingSystem extends CanonicalResource {
           case -1294005119: /*preferred*/  return new Property("preferred", "boolean", "Indicates whether this identifier is the \"preferred\" identifier of this type.", 0, 1, preferred);
           case 950398559: /*comment*/  return new Property("comment", "string", "Notes about the past or intended usage of this identifier.", 0, 1, comment);
           case -991726143: /*period*/  return new Property("period", "Period", "Identifies the period of time over which this identifier is considered appropriate to refer to the naming system.  Outside of this window, the identifier might be non-deterministic.", 0, 1, period);
+          case -1557344881: /*authoritative*/  return new Property("authoritative", "boolean", "Indicates whether this identifier ie endorsed by the official owner of the associated naming system.", 0, 1, authoritative);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -587,6 +649,7 @@ public class NamingSystem extends CanonicalResource {
         case -1294005119: /*preferred*/ return this.preferred == null ? new Base[0] : new Base[] {this.preferred}; // BooleanType
         case 950398559: /*comment*/ return this.comment == null ? new Base[0] : new Base[] {this.comment}; // StringType
         case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // Period
+        case -1557344881: /*authoritative*/ return this.authoritative == null ? new Base[0] : new Base[] {this.authoritative}; // BooleanType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -611,6 +674,9 @@ public class NamingSystem extends CanonicalResource {
         case -991726143: // period
           this.period = TypeConvertor.castToPeriod(value); // Period
           return value;
+        case -1557344881: // authoritative
+          this.authoritative = TypeConvertor.castToBoolean(value); // BooleanType
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -629,6 +695,8 @@ public class NamingSystem extends CanonicalResource {
           this.comment = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("period")) {
           this.period = TypeConvertor.castToPeriod(value); // Period
+        } else if (name.equals("authoritative")) {
+          this.authoritative = TypeConvertor.castToBoolean(value); // BooleanType
         } else
           return super.setProperty(name, value);
         return value;
@@ -642,6 +710,7 @@ public class NamingSystem extends CanonicalResource {
         case -1294005119:  return getPreferredElement();
         case 950398559:  return getCommentElement();
         case -991726143:  return getPeriod();
+        case -1557344881:  return getAuthoritativeElement();
         default: return super.makeProperty(hash, name);
         }
 
@@ -655,6 +724,7 @@ public class NamingSystem extends CanonicalResource {
         case -1294005119: /*preferred*/ return new String[] {"boolean"};
         case 950398559: /*comment*/ return new String[] {"string"};
         case -991726143: /*period*/ return new String[] {"Period"};
+        case -1557344881: /*authoritative*/ return new String[] {"boolean"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -678,6 +748,9 @@ public class NamingSystem extends CanonicalResource {
           this.period = new Period();
           return this.period;
         }
+        else if (name.equals("authoritative")) {
+          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.uniqueId.authoritative");
+        }
         else
           return super.addChild(name);
       }
@@ -695,6 +768,7 @@ public class NamingSystem extends CanonicalResource {
         dst.preferred = preferred == null ? null : preferred.copy();
         dst.comment = comment == null ? null : comment.copy();
         dst.period = period == null ? null : period.copy();
+        dst.authoritative = authoritative == null ? null : authoritative.copy();
       }
 
       @Override
@@ -705,7 +779,8 @@ public class NamingSystem extends CanonicalResource {
           return false;
         NamingSystemUniqueIdComponent o = (NamingSystemUniqueIdComponent) other_;
         return compareDeep(type, o.type, true) && compareDeep(value, o.value, true) && compareDeep(preferred, o.preferred, true)
-           && compareDeep(comment, o.comment, true) && compareDeep(period, o.period, true);
+           && compareDeep(comment, o.comment, true) && compareDeep(period, o.period, true) && compareDeep(authoritative, o.authoritative, true)
+          ;
       }
 
       @Override
@@ -716,12 +791,12 @@ public class NamingSystem extends CanonicalResource {
           return false;
         NamingSystemUniqueIdComponent o = (NamingSystemUniqueIdComponent) other_;
         return compareValues(type, o.type, true) && compareValues(value, o.value, true) && compareValues(preferred, o.preferred, true)
-           && compareValues(comment, o.comment, true);
+           && compareValues(comment, o.comment, true) && compareValues(authoritative, o.authoritative, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, value, preferred, comment
-          , period);
+          , period, authoritative);
       }
 
   public String fhirType() {
@@ -753,9 +828,16 @@ public class NamingSystem extends CanonicalResource {
     protected StringType name;
 
     /**
+     * A short, descriptive, user-friendly title for the naming system.
+     */
+    @Child(name = "title", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Title for this naming system (human friendly)", formalDefinition="A short, descriptive, user-friendly title for the naming system." )
+    protected StringType title;
+
+    /**
      * The status of this naming system. Enables tracking the life-cycle of the content.
      */
-    @Child(name = "status", type = {CodeType.class}, order=3, min=1, max=1, modifier=true, summary=true)
+    @Child(name = "status", type = {CodeType.class}, order=4, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this naming system. Enables tracking the life-cycle of the content." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
     protected Enumeration<PublicationStatus> status;
@@ -763,7 +845,7 @@ public class NamingSystem extends CanonicalResource {
     /**
      * Indicates the purpose for the naming system - what kinds of things does it make unique?
      */
-    @Child(name = "kind", type = {CodeType.class}, order=4, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "kind", type = {CodeType.class}, order=5, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="codesystem | identifier | root", formalDefinition="Indicates the purpose for the naming system - what kinds of things does it make unique?" )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/namingsystem-type")
     protected Enumeration<NamingSystemType> kind;
@@ -771,35 +853,35 @@ public class NamingSystem extends CanonicalResource {
     /**
      * The date  (and optionally time) when the naming system was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the naming system changes.
      */
-    @Child(name = "date", type = {DateTimeType.class}, order=5, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "date", type = {DateTimeType.class}, order=6, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Date last changed", formalDefinition="The date  (and optionally time) when the naming system was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the naming system changes." )
     protected DateTimeType date;
 
     /**
      * The name of the organization or individual that published the naming system.
      */
-    @Child(name = "publisher", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "publisher", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the naming system." )
     protected StringType publisher;
 
     /**
      * Contact details to assist a user in finding and communicating with the publisher.
      */
-    @Child(name = "contact", type = {ContactDetail.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "contact", type = {ContactDetail.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
     protected List<ContactDetail> contact;
 
     /**
      * The name of the organization that is responsible for issuing identifiers or codes for this namespace and ensuring their non-collision.
      */
-    @Child(name = "responsible", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "responsible", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Who maintains system namespace?", formalDefinition="The name of the organization that is responsible for issuing identifiers or codes for this namespace and ensuring their non-collision." )
     protected StringType responsible;
 
     /**
      * Categorizes a naming system for easier search by grouping related naming systems.
      */
-    @Child(name = "type", type = {CodeableConcept.class}, order=9, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "type", type = {CodeableConcept.class}, order=10, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="e.g. driver,  provider,  patient, bank etc.", formalDefinition="Categorizes a naming system for easier search by grouping related naming systems." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/identifier-type")
     protected CodeableConcept type;
@@ -807,21 +889,21 @@ public class NamingSystem extends CanonicalResource {
     /**
      * A free text natural language description of the naming system from a consumer's perspective. Details about what the namespace identifies including scope, granularity, version labeling, etc.
      */
-    @Child(name = "description", type = {MarkdownType.class}, order=10, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "description", type = {MarkdownType.class}, order=11, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Natural language description of the naming system", formalDefinition="A free text natural language description of the naming system from a consumer's perspective. Details about what the namespace identifies including scope, granularity, version labeling, etc." )
     protected MarkdownType description;
 
     /**
      * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate naming system instances.
      */
-    @Child(name = "useContext", type = {UsageContext.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "useContext", type = {UsageContext.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The context that the content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate naming system instances." )
     protected List<UsageContext> useContext;
 
     /**
      * A legal or geographic region in which the naming system is intended to be used.
      */
-    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Intended jurisdiction for naming system (if applicable)", formalDefinition="A legal or geographic region in which the naming system is intended to be used." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/jurisdiction")
     protected List<CodeableConcept> jurisdiction;
@@ -829,18 +911,18 @@ public class NamingSystem extends CanonicalResource {
     /**
      * Provides guidance on the use of the namespace, including the handling of formatting characters, use of upper vs. lower case, etc.
      */
-    @Child(name = "usage", type = {StringType.class}, order=13, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "usage", type = {StringType.class}, order=14, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="How/where is it used", formalDefinition="Provides guidance on the use of the namespace, including the handling of formatting characters, use of upper vs. lower case, etc." )
     protected StringType usage;
 
     /**
      * Indicates how the system may be identified when referenced in electronic exchange.
      */
-    @Child(name = "uniqueId", type = {}, order=14, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "uniqueId", type = {}, order=15, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Unique identifiers used for system", formalDefinition="Indicates how the system may be identified when referenced in electronic exchange." )
     protected List<NamingSystemUniqueIdComponent> uniqueId;
 
-    private static final long serialVersionUID = -277112355L;
+    private static final long serialVersionUID = 329180848L;
 
   /**
    * Constructor
@@ -1001,6 +1083,55 @@ public class NamingSystem extends CanonicalResource {
         if (this.name == null)
           this.name = new StringType();
         this.name.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #title} (A short, descriptive, user-friendly title for the naming system.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
+     */
+    public StringType getTitleElement() { 
+      if (this.title == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create NamingSystem.title");
+        else if (Configuration.doAutoCreate())
+          this.title = new StringType(); // bb
+      return this.title;
+    }
+
+    public boolean hasTitleElement() { 
+      return this.title != null && !this.title.isEmpty();
+    }
+
+    public boolean hasTitle() { 
+      return this.title != null && !this.title.isEmpty();
+    }
+
+    /**
+     * @param value {@link #title} (A short, descriptive, user-friendly title for the naming system.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
+     */
+    public NamingSystem setTitleElement(StringType value) { 
+      this.title = value;
+      return this;
+    }
+
+    /**
+     * @return A short, descriptive, user-friendly title for the naming system.
+     */
+    public String getTitle() { 
+      return this.title == null ? null : this.title.getValue();
+    }
+
+    /**
+     * @param value A short, descriptive, user-friendly title for the naming system.
+     */
+    public NamingSystem setTitle(String value) { 
+      if (Utilities.noString(value))
+        this.title = null;
+      else {
+        if (this.title == null)
+          this.title = new StringType();
+        this.title.setValue(value);
+      }
       return this;
     }
 
@@ -1610,42 +1741,6 @@ public class NamingSystem extends CanonicalResource {
      * not supported on this implementation
      */
     @Override
-    public int getTitleMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #title} (A short, descriptive, user-friendly title for the naming system.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
-     */
-    public StringType getTitleElement() { 
-      throw new Error("The resource type \"NamingSystem\" does not implement the property \"title\"");
-    }
-
-    public boolean hasTitleElement() { 
-      return false;
-    }
-    public boolean hasTitle() {
-      return false;
-    }
-
-    /**
-     * @param value {@link #title} (A short, descriptive, user-friendly title for the naming system.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
-     */
-    public NamingSystem setTitleElement(StringType value) { 
-      throw new Error("The resource type \"NamingSystem\" does not implement the property \"title\"");
-    }
-    public String getTitle() { 
-      throw new Error("The resource type \"NamingSystem\" does not implement the property \"title\"");
-    }
-    /**
-     * @param value A short, descriptive, user-friendly title for the naming system.
-     */
-    public NamingSystem setTitle(String value) { 
-      throw new Error("The resource type \"NamingSystem\" does not implement the property \"title\"");
-    }
-    /**
-     * not supported on this implementation
-     */
-    @Override
     public int getExperimentalMax() { 
       return 0;
     }
@@ -1755,6 +1850,7 @@ public class NamingSystem extends CanonicalResource {
         children.add(new Property("url", "uri", "An absolute URI that is used to identify this naming system when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this naming system is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the naming system is stored on different servers.", 0, 1, url));
         children.add(new Property("version", "string", "The identifier that is used to identify this version of the naming system when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the naming system author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version));
         children.add(new Property("name", "string", "A natural language name identifying the naming system. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name));
+        children.add(new Property("title", "string", "A short, descriptive, user-friendly title for the naming system.", 0, 1, title));
         children.add(new Property("status", "code", "The status of this naming system. Enables tracking the life-cycle of the content.", 0, 1, status));
         children.add(new Property("kind", "code", "Indicates the purpose for the naming system - what kinds of things does it make unique?", 0, 1, kind));
         children.add(new Property("date", "dateTime", "The date  (and optionally time) when the naming system was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the naming system changes.", 0, 1, date));
@@ -1775,6 +1871,7 @@ public class NamingSystem extends CanonicalResource {
         case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this naming system when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this naming system is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the naming system is stored on different servers.", 0, 1, url);
         case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the naming system when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the naming system author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version);
         case 3373707: /*name*/  return new Property("name", "string", "A natural language name identifying the naming system. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name);
+        case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive, user-friendly title for the naming system.", 0, 1, title);
         case -892481550: /*status*/  return new Property("status", "code", "The status of this naming system. Enables tracking the life-cycle of the content.", 0, 1, status);
         case 3292052: /*kind*/  return new Property("kind", "code", "Indicates the purpose for the naming system - what kinds of things does it make unique?", 0, 1, kind);
         case 3076014: /*date*/  return new Property("date", "dateTime", "The date  (and optionally time) when the naming system was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the naming system changes.", 0, 1, date);
@@ -1798,6 +1895,7 @@ public class NamingSystem extends CanonicalResource {
         case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
         case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
+        case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
         case 3292052: /*kind*/ return this.kind == null ? new Base[0] : new Base[] {this.kind}; // Enumeration<NamingSystemType>
         case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
@@ -1826,6 +1924,9 @@ public class NamingSystem extends CanonicalResource {
           return value;
         case 3373707: // name
           this.name = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 110371416: // title
+          this.title = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
           value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
@@ -1878,6 +1979,8 @@ public class NamingSystem extends CanonicalResource {
           this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("name")) {
           this.name = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("title")) {
+          this.title = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
           value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
@@ -1915,6 +2018,7 @@ public class NamingSystem extends CanonicalResource {
         case 116079:  return getUrlElement();
         case 351608024:  return getVersionElement();
         case 3373707:  return getNameElement();
+        case 110371416:  return getTitleElement();
         case -892481550:  return getStatusElement();
         case 3292052:  return getKindElement();
         case 3076014:  return getDateElement();
@@ -1938,6 +2042,7 @@ public class NamingSystem extends CanonicalResource {
         case 116079: /*url*/ return new String[] {"uri"};
         case 351608024: /*version*/ return new String[] {"string"};
         case 3373707: /*name*/ return new String[] {"string"};
+        case 110371416: /*title*/ return new String[] {"string"};
         case -892481550: /*status*/ return new String[] {"code"};
         case 3292052: /*kind*/ return new String[] {"code"};
         case 3076014: /*date*/ return new String[] {"dateTime"};
@@ -1965,6 +2070,9 @@ public class NamingSystem extends CanonicalResource {
         }
         else if (name.equals("name")) {
           throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.name");
+        }
+        else if (name.equals("title")) {
+          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.title");
         }
         else if (name.equals("status")) {
           throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.status");
@@ -2023,6 +2131,7 @@ public class NamingSystem extends CanonicalResource {
         dst.url = url == null ? null : url.copy();
         dst.version = version == null ? null : version.copy();
         dst.name = name == null ? null : name.copy();
+        dst.title = title == null ? null : title.copy();
         dst.status = status == null ? null : status.copy();
         dst.kind = kind == null ? null : kind.copy();
         dst.date = date == null ? null : date.copy();
@@ -2065,11 +2174,11 @@ public class NamingSystem extends CanonicalResource {
           return false;
         NamingSystem o = (NamingSystem) other_;
         return compareDeep(url, o.url, true) && compareDeep(version, o.version, true) && compareDeep(name, o.name, true)
-           && compareDeep(status, o.status, true) && compareDeep(kind, o.kind, true) && compareDeep(date, o.date, true)
-           && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true) && compareDeep(responsible, o.responsible, true)
-           && compareDeep(type, o.type, true) && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
-           && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(usage, o.usage, true) && compareDeep(uniqueId, o.uniqueId, true)
-          ;
+           && compareDeep(title, o.title, true) && compareDeep(status, o.status, true) && compareDeep(kind, o.kind, true)
+           && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true)
+           && compareDeep(responsible, o.responsible, true) && compareDeep(type, o.type, true) && compareDeep(description, o.description, true)
+           && compareDeep(useContext, o.useContext, true) && compareDeep(jurisdiction, o.jurisdiction, true)
+           && compareDeep(usage, o.usage, true) && compareDeep(uniqueId, o.uniqueId, true);
       }
 
       @Override
@@ -2080,14 +2189,14 @@ public class NamingSystem extends CanonicalResource {
           return false;
         NamingSystem o = (NamingSystem) other_;
         return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(name, o.name, true)
-           && compareValues(status, o.status, true) && compareValues(kind, o.kind, true) && compareValues(date, o.date, true)
-           && compareValues(publisher, o.publisher, true) && compareValues(responsible, o.responsible, true) && compareValues(description, o.description, true)
-           && compareValues(usage, o.usage, true);
+           && compareValues(title, o.title, true) && compareValues(status, o.status, true) && compareValues(kind, o.kind, true)
+           && compareValues(date, o.date, true) && compareValues(publisher, o.publisher, true) && compareValues(responsible, o.responsible, true)
+           && compareValues(description, o.description, true) && compareValues(usage, o.usage, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, version, name, status
-          , kind, date, publisher, contact, responsible, type, description, useContext
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, version, name, title
+          , status, kind, date, publisher, contact, responsible, type, description, useContext
           , jurisdiction, usage, uniqueId);
       }
 
@@ -2930,9 +3039,16 @@ public class NamingSystem extends CanonicalResource {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
+// Manual code (from Configuration.txt):
   public boolean supportsCopyright() {
     return false;
   }
+
+  public boolean supportsExperimental() {
+    return false;
+  }
+  
+// end addition
 
 }
 

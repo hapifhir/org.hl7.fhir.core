@@ -1,8 +1,13 @@
 package org.hl7.fhir.r5.test;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -56,7 +61,6 @@ public class NarrativeGenerationTests {
     public Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException {
       return new org.hl7.fhir.r5.formats.XmlParser().parseType(xml, type); 
     }
-
   }
 
   public static final String WINDOWS = "WINDOWS";
@@ -77,12 +81,14 @@ public class NarrativeGenerationTests {
     private String id;
     private boolean header;
     private boolean meta;
+    private boolean technical;
 
     public TestDetails(Element test) {
       super();
       id = test.getAttribute("id");
       header = "true".equals(test.getAttribute("header"));
       meta = "true".equals(test.getAttribute("meta"));
+      technical = "technical".equals(test.getAttribute("mode"));
     }
 
     public String getId() {
@@ -105,15 +111,7 @@ public class NarrativeGenerationTests {
     List<Arguments> objects = new ArrayList<>();
     while (test != null && test.getNodeName().equals("test")) {
       TestDetails t = new TestDetails(test);
-      if (t.getId().equals("sdc")) {
-        if (SystemUtils.OS_NAME.contains(WINDOWS)) {
-          objects.add(Arguments.of(t.getId(), t));
-        } else {
-          System.out.println("sdc test not being adding because the current OS will not pass the test...");
-        }
-      } else {
-        objects.add(Arguments.of(t.getId(), t));
-      }
+      objects.add(Arguments.of(t.getId(), t));
       test = XMLUtil.getNextSibling(test);
     }
     return objects.stream();
@@ -127,12 +125,21 @@ public class NarrativeGenerationTests {
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
   public void test(String id, TestDetails test) throws Exception {
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.RESOURCE);
+    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER);
     rc.setDestDir("");
     rc.setHeader(test.isHeader());
     rc.setDefinitionsTarget("test.html");
     rc.setTerminologyServiceOptions(TerminologyServiceOptions.defaults());
     rc.setParser(new TestTypeParser());
+    
+    // getting timezones correct (well, at least consistent, so tests pass on any computer)
+    rc.setLocale(new java.util.Locale("en", "AU"));
+    rc.setTimeZoneId(ZoneId.of("Australia/Sydney"));
+    rc.setDateTimeFormatString("yyyy-MM-dd'T'HH:mm:ssZZZZZ"); 
+    rc.setDateFormatString("yyyy-MM-dd"); 
+    rc.setMode(test.technical ? ResourceRendererMode.TECHNICAL : ResourceRendererMode.END_USER);
+        
+    
     Resource source;
     if (TestingUtilities.findTestResource("r5", "narrative", test.getId() + ".json")) {
       source = (Resource) new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".json"));
@@ -143,18 +150,23 @@ public class NarrativeGenerationTests {
     XhtmlNode x = RendererFactory.factory(source, rc).build(source);
     String target = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".html"));
     String output = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
-    TextFile.stringToFile(target, TestingUtilities.tempFile("narrative", test.getId() + ".target.html"));
-    TextFile.stringToFile(output, TestingUtilities.tempFile("narrative", test.getId() + ".output.html"));
-    Assertions.assertTrue(output.equals(target), "Output does not match expected");
+    String tfn = TestingUtilities.tempFile("narrative", test.getId() + ".target.html");
+    String ofn = TestingUtilities.tempFile("narrative", test.getId() + ".output.html");
+    TextFile.stringToFile(target, tfn);
+    TextFile.stringToFile(output, ofn);
+    String msg = TestingUtilities.checkXMLIsSame(ofn, tfn);
+    Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
     
     if (test.isMeta()) {
-      org.hl7.fhir.r5.elementmodel.Element e = Manager.parse(context, TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"), FhirFormat.XML); 
+      org.hl7.fhir.r5.elementmodel.Element e = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"), FhirFormat.XML); 
       x = RendererFactory.factory(source, rc).render(new ElementWrappers.ResourceWrapperMetaElement(rc, e));
 
       target = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-meta.html"));
       output = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
-      TextFile.stringToFile(output, TestingUtilities.tempFile("narrative", test.getId() + "-meta.output.html"));
-      Assertions.assertTrue(output.equals(target), "Output does not match expected (meta)");     
+      ofn = TestingUtilities.tempFile("narrative", test.getId() + "-meta.output.html");
+      TextFile.stringToFile(output, ofn);
+      msg = TestingUtilities.checkXMLIsSame(ofn, tfn);
+      Assertions.assertTrue(msg == null, "Meta output does not match expected: "+msg);
     }
   }
   

@@ -76,6 +76,7 @@ import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.test.utils.ClassesLoadedFlags;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -83,6 +84,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 import org.hl7.fhir.utilities.xml.IXMLWriter;
 import org.hl7.fhir.utilities.xml.XMLWriter;
+import org.slf4j.LoggerFactory;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -95,14 +97,20 @@ import org.xmlpull.v1.XmlPullParserFactory;
  */
 public abstract class XmlParserBase extends ParserBase implements IParser {
 
+  static {
+    LoggerFactory.getLogger("org.hl7.fhir.r5.formats.XmlParserBase").debug("XML Parser is being loaded");
+    ClassesLoadedFlags.ourXmlParserBaseLoaded = true;
+  }
+
 	@Override
 	public ParserType getType() {
 		return ParserType.XML;
 	}
-
+	
+	
 	// -- in descendent generated code --------------------------------------
 
-	abstract protected Resource parseResource(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError ;
+  abstract protected Resource parseResource(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError ;
   abstract protected DataType parseType(XmlPullParser xml, String type) throws XmlPullParserException, IOException, FHIRFormatError ;
   abstract protected DataType parseAnyType(XmlPullParser xml, String type) throws XmlPullParserException, IOException, FHIRFormatError ;
 	abstract protected void composeType(String prefix, DataType type) throws IOException ;
@@ -268,6 +276,14 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 
 	protected IXMLWriter xml;
 	protected boolean htmlPretty;
+  private String schemaPath;
+  
+  public String getSchemaPath() {
+    return schemaPath;
+  }
+  public void setSchemaPath(String schemaPath) {
+    this.schemaPath = schemaPath;
+  }
 
 
 
@@ -382,6 +398,9 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 		this.htmlPretty = htmlPretty;
 		xml = writer;
 		xml.setDefaultNamespace(FHIR_NS);
+		if (schemaPath != null) {
+		  xml.setSchemaLocation(FHIR_NS, Utilities.pathURL(schemaPath, resource.fhirType()+".xsd"));
+		}
 		composeResource(resource);
 	}
 

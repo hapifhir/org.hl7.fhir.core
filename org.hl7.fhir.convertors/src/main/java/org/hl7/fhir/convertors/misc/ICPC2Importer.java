@@ -30,7 +30,20 @@ package org.hl7.fhir.convertors.misc;
  */
 
 
+import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
+import org.hl7.fhir.dstu3.formats.XmlParser;
+import org.hl7.fhir.dstu3.model.*;
+import org.hl7.fhir.dstu3.model.CodeSystem.CodeSystemHierarchyMeaning;
+import org.hl7.fhir.dstu3.model.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.dstu3.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.dstu3.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -38,34 +51,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
-import org.hl7.fhir.dstu3.formats.XmlParser;
-import org.hl7.fhir.dstu3.model.CodeSystem;
-import org.hl7.fhir.dstu3.model.CodeSystem.CodeSystemHierarchyMeaning;
-import org.hl7.fhir.dstu3.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.dstu3.model.Coding;
-import org.hl7.fhir.dstu3.model.DateTimeType;
-import org.hl7.fhir.dstu3.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.dstu3.model.Identifier;
-import org.hl7.fhir.dstu3.model.ValueSet;
-import org.hl7.fhir.dstu3.terminologies.CodeSystemUtilities;
-import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.utilities.xml.XMLUtil;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
 
 /**
  * This is defined as a prototype ClaML importer
- * 
- * @author Grahame
  *
+ * @author Grahame
  */
 
 public class ICPC2Importer {
+
+  private String sourceFileName; // the ICPC2 ClaML file
+  private String targetFileNameVS; // the value set to produce
+  private String targetFileNameCS; // the value set to produce
+
+  public ICPC2Importer() {
+    super();
+  }
+
+  public ICPC2Importer(String sourceFileName, String targetFileNameCS, String targetFileNameVS) {
+    super();
+    this.sourceFileName = sourceFileName;
+    this.targetFileNameCS = targetFileNameCS;
+    this.targetFileNameVS = targetFileNameVS;
+  }
 
   public static void main(String[] args) {
     try {
@@ -80,28 +88,18 @@ public class ICPC2Importer {
     }
   }
 
-  private String sourceFileName; // the ICPC2 ClaML file
-  private String targetFileNameVS; // the value set to produce
-  private String targetFileNameCS; // the value set to produce
-  
-  public ICPC2Importer() {
-    super();
-  }
-  public ICPC2Importer(String sourceFileName, String targetFileNameCS, String targetFileNameVS) {
-    super();
-    this.sourceFileName = sourceFileName;
-    this.targetFileNameCS = targetFileNameCS;
-    this.targetFileNameVS = targetFileNameVS;
-  }
   public String getSourceFileName() {
     return sourceFileName;
   }
+
   public void setSourceFileName(String sourceFileName) {
     this.sourceFileName = sourceFileName;
   }
+
   public String getTargetFileNameCS() {
     return targetFileNameCS;
   }
+
   public void setTargetFileNameCS(String targetFileName) {
     this.targetFileNameCS = targetFileName;
   }
@@ -109,6 +107,7 @@ public class ICPC2Importer {
   public String getTargetFileNameVS() {
     return targetFileNameVS;
   }
+
   public void setTargetFileNameVS(String targetFileName) {
     this.targetFileNameVS = targetFileName;
   }
@@ -128,7 +127,7 @@ public class ICPC2Importer {
     Element identifier = XMLUtil.getNamedChild(doc.getDocumentElement(), "Identifier");
     vs.setPublisher(identifier.getAttribute("authority"));
     vs.addIdentifier(new Identifier().setValue(identifier.getAttribute("uid")));
-    List<Element> authors = new ArrayList<Element>(); 
+    List<Element> authors = new ArrayList<Element>();
     XMLUtil.getNamedChildren(XMLUtil.getNamedChild(doc.getDocumentElement(), "Authors"), "Author", authors);
     for (Element a : authors)
       if (!a.getAttribute("name").contains("+"))
@@ -136,7 +135,7 @@ public class ICPC2Importer {
     vs.setCopyright("The copyright of ICPC, both in hard copy and in electronic form, is owned by Wonca. See http://www.kith.no/templates/kith_WebPage____1110.aspx");
     vs.setStatus(PublicationStatus.ACTIVE);
     vs.setDateElement(new DateTimeType(title.getAttribute("date")));
-    
+
     vs.getCompose().addInclude().setSystem("http://hl7.org/fhir/sid/icpc2");
     CodeSystem cs = new CodeSystem();
     cs.setUrl("http://hl7.org/fhir/sid/icpc2");
@@ -146,7 +145,7 @@ public class ICPC2Importer {
     cs.setPublisher(identifier.getAttribute("authority"));
     cs.setIdentifier(new Identifier().setValue(identifier.getAttribute("uid")));
     cs.setHierarchyMeaning(CodeSystemHierarchyMeaning.CLASSIFIEDWITH);
-    authors = new ArrayList<Element>(); 
+    authors = new ArrayList<Element>();
     XMLUtil.getNamedChildren(XMLUtil.getNamedChild(doc.getDocumentElement(), "Authors"), "Author", authors);
     for (Element a : authors)
       if (!a.getAttribute("name").contains("+"))
@@ -155,20 +154,20 @@ public class ICPC2Importer {
     cs.setStatus(PublicationStatus.ACTIVE);
     cs.setDateElement(new DateTimeType(title.getAttribute("date")));
     cs.setValueSet(vs.getUrl());
-    
+
     Map<String, ConceptDefinitionComponent> concepts = new HashMap<String, ConceptDefinitionComponent>();
-    List<Element> classes = new ArrayList<Element>(); 
+    List<Element> classes = new ArrayList<Element>();
     XMLUtil.getNamedChildren(doc.getDocumentElement(), "Class", classes);
     for (Element cls : classes) {
       processClass(cls, concepts, cs);
     }
-    
+
     XmlParser xml = new XmlParser();
     xml.setOutputStyle(OutputStyle.PRETTY);
     xml.compose(new FileOutputStream(targetFileNameVS), vs);
     xml.compose(new FileOutputStream(targetFileNameCS), cs);
   }
-  
+
   private void processClass(Element cls, Map<String, ConceptDefinitionComponent> concepts, CodeSystem define) throws FHIRFormatError {
     ConceptDefinitionComponent concept = new ConceptDefinitionComponent();
     concept.setCode(cls.getAttribute("code"));
@@ -191,13 +190,13 @@ public class ICPC2Importer {
     s = getRubric(cls, "note");
     if (s != null)
       concept.addDesignation().setUse(new Coding().setSystem("http://hl7.org/fhir/sid/icpc2/rubrics").setCode("note")).setValue(s);
-    
+
     concepts.put(concept.getCode(), concept);
-    List<Element> children = new ArrayList<Element>(); 
+    List<Element> children = new ArrayList<Element>();
     XMLUtil.getNamedChildren(cls, "SubClass", children);
     if (children.size() > 0)
       CodeSystemUtilities.setNotSelectable(define, concept);
-    
+
     Element parent = XMLUtil.getNamedChild(cls, "SuperClass");
     if (parent == null) {
       define.addConcept(concept);
@@ -206,15 +205,15 @@ public class ICPC2Importer {
       p.getConcept().add(concept);
     }
   }
-  
+
   private String getRubric(Element cls, String kind) {
-    List<Element> rubrics = new ArrayList<Element>(); 
+    List<Element> rubrics = new ArrayList<Element>();
     XMLUtil.getNamedChildren(cls, "Rubric", rubrics);
     for (Element r : rubrics) {
       if (r.getAttribute("kind").equals(kind))
-        return XMLUtil.getNamedChild(r,  "Label").getTextContent();
+        return XMLUtil.getNamedChild(r, "Label").getTextContent();
     }
     return null;
   }
-  
+
 }

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.formats;
+package org.hl7.fhir.{{jid}}.formats;
 
 
 // generated
@@ -7,11 +7,12 @@ package org.hl7.fhir.r5.formats;
 
 {{startMark}}
 
-import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.{{jid}}.model.*;
+import org.hl7.fhir.{{jid}}.model.StringType;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.utils.formats.Turtle.Complex;
+import org.hl7.fhir.utilities.turtle.Turtle.*;
 import java.io.IOException;
 
 public class RdfParser extends RdfParserBase {

@@ -20,6 +20,7 @@ import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
+import org.hl7.fhir.utilities.npm.PackageHacker;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -39,10 +40,18 @@ public class XVerExtensionManager {
     this.context = context;
   }
 
+  public boolean isR5(String url) {
+    String v = url.substring(20, 23);
+    return "5.0".equals(v);    
+  }
+  
   public XVerExtensionStatus status(String url) throws FHIRException {
+    if (url.length() < 24) {
+      return XVerExtensionStatus.Invalid;
+    }
     String v = url.substring(20, 23);
     if ("5.0".equals(v)) {
-      v = Constants.VERSION_MM;
+      v = "4.6"; // for now
     }
     String e = url.substring(54);
     if (!lists.containsKey(v)) {
@@ -58,6 +67,9 @@ public class XVerExtensionManager {
     }
     JsonObject root = lists.get(v);
     JsonObject path = root.getAsJsonObject(e);
+    if (path == null) {
+      path = root.getAsJsonObject(e+"[x]");      
+    }
     if (path == null) {
       return XVerExtensionStatus.Unknown;
     }
@@ -75,16 +87,19 @@ public class XVerExtensionManager {
   public StructureDefinition makeDefinition(String url) {
     String verSource = url.substring(20, 23);
     if ("5.0".equals(verSource)) {
-      verSource = Constants.VERSION_MM;
+      verSource = "4.6"; // for now
     }
     String verTarget = VersionUtilities.getMajMin(context.getVersion());
     String e = url.substring(54);
     JsonObject root = lists.get(verSource);
     JsonObject path = root.getAsJsonObject(e);
+    if (path == null) {
+      path = root.getAsJsonObject(e+"[x]");
+    }
     
     StructureDefinition sd = new StructureDefinition();
     sd.setUserData(XVER_EXT_MARKER, "true");
-    sd.setUserData("path", "http://hl7.org/fhir/versions.html#extensions");
+    sd.setUserData("path", PackageHacker.fixPackageUrl("https://hl7.org/fhir/versions.html#extensions"));
     sd.setUrl(url);
     sd.setVersion(context.getVersion());
     sd.setFhirVersion(FHIRVersion.fromCode(context.getVersion()));
@@ -124,6 +139,11 @@ public class XVerExtensionManager {
     } else {
       throw new FHIRException("Internal error - attempt to define extension for "+url+" when it is invalid");
     }
+    if (path.has("modifier") && path.get("modifier").getAsBoolean()) {
+      ElementDefinition baseDef = new ElementDefinition("Extension");
+      sd.getDifferential().getElement().add(0, baseDef);
+      baseDef.setIsModifier(true);
+    }
     return sd;
   }
 
@@ -138,7 +158,11 @@ public class XVerExtensionManager {
           for (String p : s.substring(0, s.length()-1).split("\\|")) {
             if ("Any".equals(p)) {
               tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/Resource");
-            } else {
+            } else if (p.contains(",")) {
+              for (String pp : p.split("\\,")) {
+                tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/"+pp);                              
+              }
+            } else  {
               tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/"+p);              
             }
           }

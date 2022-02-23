@@ -204,11 +204,13 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
 
   public void see(T r, PackageVersion packgeInfo) {
-    if (!r.hasId()) {
-      r.setId(UUID.randomUUID().toString());
+    if (r != null) {
+      if (!r.hasId()) {
+        r.setId(UUID.randomUUID().toString());
+      }
+      CanonicalResourceManager<T>.CachedCanonicalResource<T> cr = new CachedCanonicalResource<T>(r, packgeInfo);
+      see(cr);
     }
-    CanonicalResourceManager<T>.CachedCanonicalResource<T> cr = new CachedCanonicalResource<T>(r, packgeInfo);
-    see(cr);
   }
 
   public void see(CachedCanonicalResource<T> cr) {
@@ -216,7 +218,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     if (cr.getPackageInfo() != null && cr.getPackageInfo().getId() != null && cr.getPackageInfo().getId().startsWith("hl7.terminology") && "http://nucc.org/provider-taxonomy".equals(cr.getUrl())) {
       return;
     }
-    
+        
     if (enforceUniqueId && map.containsKey(cr.getId())) {
       drop(cr.getId());      
     }
@@ -234,12 +236,16 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       }
     }
     CachedCanonicalResource<T> existing = cr.hasVersion() ? map.get(cr.getUrl()+"|"+cr.getVersion()) : map.get(cr.getUrl()+"|#0");
+    if (map.get(cr.getUrl()) != null && (cr.getPackageInfo() != null && cr.getPackageInfo().isExamplesPackage())) {
+      return;
+    }
     if (existing != null) {
       list.remove(existing);
     }
     
     list.add(cr);
     map.put(cr.getId(), cr); // we do this so we can drop by id
+    map.put(cr.getUrl(), cr);
 
     if (cr.getUrl() != null) {
       // first, this is the correct reosurce for this version (if it has a version)
@@ -288,6 +294,20 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 
   public T get(String url) {
     return map.containsKey(url) ? map.get(url).getResource() : null;
+  }
+  
+  public PackageVersion getPackageInfo(String system, String version) {
+    if (version == null) {
+      return map.containsKey(system) ? map.get(system).getPackageInfo() : null;
+    } else {
+      if (map.containsKey(system+"|"+version))
+        return map.get(system+"|"+version).getPackageInfo();
+      String mm = VersionUtilities.getMajMin(version);
+      if (mm != null && map.containsKey(system+"|"+mm))
+        return map.get(system+"|"+mm).getPackageInfo();
+      else
+        return null;
+    }
   }
   
   public boolean has(String url) {

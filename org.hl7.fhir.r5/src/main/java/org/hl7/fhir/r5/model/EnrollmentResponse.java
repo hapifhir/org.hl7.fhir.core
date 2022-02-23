@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,6 +52,130 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="EnrollmentResponse", profile="http://hl7.org/fhir/StructureDefinition/EnrollmentResponse")
 public class EnrollmentResponse extends DomainResource {
+
+    public enum EnrollmentOutcome {
+        /**
+         * The Claim/Pre-authorization/Pre-determination has been received but processing has not begun.
+         */
+        QUEUED, 
+        /**
+         * The processing has completed without errors
+         */
+        COMPLETE, 
+        /**
+         * One or more errors have been detected in the Claim
+         */
+        ERROR, 
+        /**
+         * No errors have been detected in the Claim and some of the adjudication has been performed.
+         */
+        PARTIAL, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static EnrollmentOutcome fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("queued".equals(codeString))
+          return QUEUED;
+        if ("complete".equals(codeString))
+          return COMPLETE;
+        if ("error".equals(codeString))
+          return ERROR;
+        if ("partial".equals(codeString))
+          return PARTIAL;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown EnrollmentOutcome code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case QUEUED: return "queued";
+            case COMPLETE: return "complete";
+            case ERROR: return "error";
+            case PARTIAL: return "partial";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case QUEUED: return "http://hl7.org/fhir/enrollment-outcome";
+            case COMPLETE: return "http://hl7.org/fhir/enrollment-outcome";
+            case ERROR: return "http://hl7.org/fhir/enrollment-outcome";
+            case PARTIAL: return "http://hl7.org/fhir/enrollment-outcome";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case QUEUED: return "The Claim/Pre-authorization/Pre-determination has been received but processing has not begun.";
+            case COMPLETE: return "The processing has completed without errors";
+            case ERROR: return "One or more errors have been detected in the Claim";
+            case PARTIAL: return "No errors have been detected in the Claim and some of the adjudication has been performed.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case QUEUED: return "Queued";
+            case COMPLETE: return "Processing Complete";
+            case ERROR: return "Error";
+            case PARTIAL: return "Partial Processing";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class EnrollmentOutcomeEnumFactory implements EnumFactory<EnrollmentOutcome> {
+    public EnrollmentOutcome fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("queued".equals(codeString))
+          return EnrollmentOutcome.QUEUED;
+        if ("complete".equals(codeString))
+          return EnrollmentOutcome.COMPLETE;
+        if ("error".equals(codeString))
+          return EnrollmentOutcome.ERROR;
+        if ("partial".equals(codeString))
+          return EnrollmentOutcome.PARTIAL;
+        throw new IllegalArgumentException("Unknown EnrollmentOutcome code '"+codeString+"'");
+        }
+        public Enumeration<EnrollmentOutcome> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<EnrollmentOutcome>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("queued".equals(codeString))
+          return new Enumeration<EnrollmentOutcome>(this, EnrollmentOutcome.QUEUED);
+        if ("complete".equals(codeString))
+          return new Enumeration<EnrollmentOutcome>(this, EnrollmentOutcome.COMPLETE);
+        if ("error".equals(codeString))
+          return new Enumeration<EnrollmentOutcome>(this, EnrollmentOutcome.ERROR);
+        if ("partial".equals(codeString))
+          return new Enumeration<EnrollmentOutcome>(this, EnrollmentOutcome.PARTIAL);
+        throw new FHIRException("Unknown EnrollmentOutcome code '"+codeString+"'");
+        }
+    public String toCode(EnrollmentOutcome code) {
+      if (code == EnrollmentOutcome.QUEUED)
+        return "queued";
+      if (code == EnrollmentOutcome.COMPLETE)
+        return "complete";
+      if (code == EnrollmentOutcome.ERROR)
+        return "error";
+      if (code == EnrollmentOutcome.PARTIAL)
+        return "partial";
+      return "?";
+      }
+    public String toSystem(EnrollmentOutcome code) {
+      return code.getSystem();
+      }
+    }
 
     /**
      * The Response business identifier.
@@ -80,8 +204,8 @@ public class EnrollmentResponse extends DomainResource {
      */
     @Child(name = "outcome", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="queued | complete | error | partial", formalDefinition="Processing status: error, complete." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/remittance-outcome")
-    protected Enumeration<ClaimProcessingCodes> outcome;
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/enrollment-outcome")
+    protected Enumeration<EnrollmentOutcome> outcome;
 
     /**
      * A description of the status of the adjudication.
@@ -111,7 +235,7 @@ public class EnrollmentResponse extends DomainResource {
     @Description(shortDefinition="Responsible practitioner", formalDefinition="The practitioner who is responsible for the services rendered to the patient." )
     protected Reference requestProvider;
 
-    private static final long serialVersionUID = -1692369510L;
+    private static final long serialVersionUID = -1503790623L;
 
   /**
    * Constructor
@@ -249,12 +373,12 @@ public class EnrollmentResponse extends DomainResource {
     /**
      * @return {@link #outcome} (Processing status: error, complete.). This is the underlying object with id, value and extensions. The accessor "getOutcome" gives direct access to the value
      */
-    public Enumeration<ClaimProcessingCodes> getOutcomeElement() { 
+    public Enumeration<EnrollmentOutcome> getOutcomeElement() { 
       if (this.outcome == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create EnrollmentResponse.outcome");
         else if (Configuration.doAutoCreate())
-          this.outcome = new Enumeration<ClaimProcessingCodes>(new ClaimProcessingCodesEnumFactory()); // bb
+          this.outcome = new Enumeration<EnrollmentOutcome>(new EnrollmentOutcomeEnumFactory()); // bb
       return this.outcome;
     }
 
@@ -269,7 +393,7 @@ public class EnrollmentResponse extends DomainResource {
     /**
      * @param value {@link #outcome} (Processing status: error, complete.). This is the underlying object with id, value and extensions. The accessor "getOutcome" gives direct access to the value
      */
-    public EnrollmentResponse setOutcomeElement(Enumeration<ClaimProcessingCodes> value) { 
+    public EnrollmentResponse setOutcomeElement(Enumeration<EnrollmentOutcome> value) { 
       this.outcome = value;
       return this;
     }
@@ -277,19 +401,19 @@ public class EnrollmentResponse extends DomainResource {
     /**
      * @return Processing status: error, complete.
      */
-    public ClaimProcessingCodes getOutcome() { 
+    public EnrollmentOutcome getOutcome() { 
       return this.outcome == null ? null : this.outcome.getValue();
     }
 
     /**
      * @param value Processing status: error, complete.
      */
-    public EnrollmentResponse setOutcome(ClaimProcessingCodes value) { 
+    public EnrollmentResponse setOutcome(EnrollmentOutcome value) { 
       if (value == null)
         this.outcome = null;
       else {
         if (this.outcome == null)
-          this.outcome = new Enumeration<ClaimProcessingCodes>(new ClaimProcessingCodesEnumFactory());
+          this.outcome = new Enumeration<EnrollmentOutcome>(new EnrollmentOutcomeEnumFactory());
         this.outcome.setValue(value);
       }
       return this;
@@ -475,7 +599,7 @@ public class EnrollmentResponse extends DomainResource {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<FinancialResourceStatusCodes>
         case 1095692943: /*request*/ return this.request == null ? new Base[0] : new Base[] {this.request}; // Reference
-        case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : new Base[] {this.outcome}; // Enumeration<ClaimProcessingCodes>
+        case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : new Base[] {this.outcome}; // Enumeration<EnrollmentOutcome>
         case 583380919: /*disposition*/ return this.disposition == null ? new Base[0] : new Base[] {this.disposition}; // StringType
         case 1028554472: /*created*/ return this.created == null ? new Base[0] : new Base[] {this.created}; // DateTimeType
         case 1178922291: /*organization*/ return this.organization == null ? new Base[0] : new Base[] {this.organization}; // Reference
@@ -499,8 +623,8 @@ public class EnrollmentResponse extends DomainResource {
           this.request = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1106507950: // outcome
-          value = new ClaimProcessingCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.outcome = (Enumeration) value; // Enumeration<ClaimProcessingCodes>
+          value = new EnrollmentOutcomeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.outcome = (Enumeration) value; // Enumeration<EnrollmentOutcome>
           return value;
         case 583380919: // disposition
           this.disposition = TypeConvertor.castToString(value); // StringType
@@ -529,8 +653,8 @@ public class EnrollmentResponse extends DomainResource {
         } else if (name.equals("request")) {
           this.request = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("outcome")) {
-          value = new ClaimProcessingCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.outcome = (Enumeration) value; // Enumeration<ClaimProcessingCodes>
+          value = new EnrollmentOutcomeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.outcome = (Enumeration) value; // Enumeration<EnrollmentOutcome>
         } else if (name.equals("disposition")) {
           this.disposition = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("created")) {

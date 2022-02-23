@@ -221,7 +221,8 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     private String cellStyle;
     protected int span = 1;
     private TextAlignment alignment = TextAlignment.LEFT;
-
+    private String id;
+ 
     public Cell() {
       
     }
@@ -241,6 +242,8 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       return this;
     }
 
+
+    
     public Cell addMarkdown(String md) {
       if (!Utilities.noString(md)) {
         try {
@@ -428,7 +431,13 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       return this;
     }
     
-    
+    public String getId() {
+      return id;
+    }
+    public void setId(String id) {
+      this.id = id;
+    }
+
   }
 
   public class Title extends Cell {
@@ -598,7 +607,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     TableModel model = new TableModel(id, isActive);
     
     model.setAlternating(alternating);
-    model.setDocoImg(prefix+"help16.png");
+    model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
     model.setDocoRef(Utilities.pathURL(prefix, "formats.html#table"));
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Name"), translate("sd.hint", "The logical name of the element"), null, 0));
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Flags"), translate("sd.hint", "Information about the use of the element"), null, 0));
@@ -615,7 +624,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     TableModel model = new TableModel(id, true);
     
     model.setAlternating(true);
-    model.setDocoImg(prefix+"help16.png");
+    model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
     model.setDocoRef(Utilities.pathURL(prefix, "formats.html#table"));    
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Name"), translate("sd.hint", "The logical name of the element"), null, 0));
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "L Flags"), translate("sd.hint", "Information about the use of the element - Left Structure"), null, 0).setStyle("border-left: 1px grey solid"));
@@ -725,6 +734,10 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     if (c.span > 1) {
       tc.colspan(Integer.toString(c.span));
     }
+    if (c.getId() != null) {
+      tc.setAttribute("id", c.getId());
+    }
+
     if (indents != null) {
       tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_spacer.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
       tc.setAttribute("style", "vertical-align: top; text-align : left; "+(c.cellStyle != null  && c.cellStyle.contains("background-color") ? "" : "background-color: "+color+"; ")+"border: "+ border +"px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url("+imagePath+checkExists(indents, hasChildren, lineColor, outputTracker)+")"+(c.cellStyle != null ? ";"+c.cellStyle : ""));
@@ -795,8 +808,9 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
         if (p.getHint() != null)
           tag.setAttribute("title", p.getHint());
         addStyle(tag, p);
-        if (p.hasChildren())
+        if (p.hasChildren()) {
           tag.getChildNodes().addAll(p.getChildren());
+        }
       } else if (!Utilities.noString(p.getReference())) {
         XhtmlNode a = addStyle(tc.addTag("a"), p);
         a.setAttribute("href", p.getReference());
@@ -818,6 +832,9 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
           s.addText(p.getText());
         } else
           tc.addText(p.getText());
+        if (p.hasChildren()) {
+          tc.getChildNodes().addAll(p.getChildren());
+        }
       }
     }
     if (makeTargets && !Utilities.noString(anchor))
@@ -857,7 +874,6 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
 
 
   private void checkModel(TableModel model) throws FHIRException  {
-    check(!model.getRows().isEmpty(), "Must have rows");
     check(!model.getTitles().isEmpty(), "Must have titles");
     int tc = 0;
     for (Cell c : model.getTitles()) {

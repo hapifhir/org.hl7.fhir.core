@@ -3,6 +3,7 @@ package org.hl7.fhir.utilities.tests;
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.ToolGlobalSettings;
 import org.hl7.fhir.utilities.Utilities;
 
 import java.io.*;
@@ -22,7 +23,11 @@ public class BaseTestingUtilities {
      * the name of the project directory to something other than 'fhir-test-cases', or move it to another location, not
      * at the same directory level as the core project.
      */
+
     String dir = System.getenv("FHIR-TEST-CASES");
+    if (dir == null && ToolGlobalSettings.hasTestsPath()) {
+      dir = ToolGlobalSettings.getTestsPath();
+    }
     if (dir != null && new CSFile(dir).exists()) {
       String n = Utilities.path(dir, Utilities.path(paths));
       // ok, we'll resolve this locally
@@ -44,6 +49,9 @@ public class BaseTestingUtilities {
   
   public static InputStream loadTestResourceStream(String... paths) throws IOException {
     String dir = System.getenv("FHIR-TEST-CASES");
+    if (dir == null && ToolGlobalSettings.hasTestsPath()) {
+      dir = ToolGlobalSettings.getTestsPath();
+    }
     if (dir != null && new File(dir).exists()) {
       String n = Utilities.path(dir, Utilities.path(paths));
       return new FileInputStream(n);
@@ -59,6 +67,9 @@ public class BaseTestingUtilities {
 
   public static byte[] loadTestResourceBytes(String... paths) throws IOException {
     String dir = System.getenv("FHIR-TEST-CASES");
+    if (dir == null && ToolGlobalSettings.hasTestsPath()) {
+      dir = ToolGlobalSettings.getTestsPath();
+    }
     if (dir != null && new File(dir).exists()) {
       String n = Utilities.path(dir, Utilities.path(paths));
       return TextFile.fileToBytes(n);
@@ -74,6 +85,9 @@ public class BaseTestingUtilities {
 
   public static boolean findTestResource(String... paths) throws IOException {
     String dir = System.getenv("FHIR-TEST-CASES");
+    if (dir == null && ToolGlobalSettings.hasTestsPath()) {
+      dir = ToolGlobalSettings.getTestsPath();
+    }
     if (dir != null && new File(dir).exists()) {
       String n = Utilities.path(dir, Utilities.path(paths));
       return new File(n).exists();

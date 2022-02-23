@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -94,7 +94,6 @@ public class Contributor extends DataType implements ICompositeType {
             case EDITOR: return "editor";
             case REVIEWER: return "reviewer";
             case ENDORSER: return "endorser";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -104,7 +103,6 @@ public class Contributor extends DataType implements ICompositeType {
             case EDITOR: return "http://hl7.org/fhir/contributor-type";
             case REVIEWER: return "http://hl7.org/fhir/contributor-type";
             case ENDORSER: return "http://hl7.org/fhir/contributor-type";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,7 +112,6 @@ public class Contributor extends DataType implements ICompositeType {
             case EDITOR: return "An editor of the content of the module.";
             case REVIEWER: return "A reviewer of the content of the module.";
             case ENDORSER: return "An endorser of the content of the module.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -124,7 +121,6 @@ public class Contributor extends DataType implements ICompositeType {
             case EDITOR: return "Editor";
             case REVIEWER: return "Reviewer";
             case ENDORSER: return "Endorser";
-            case NULL: return null;
             default: return "?";
           }
         }

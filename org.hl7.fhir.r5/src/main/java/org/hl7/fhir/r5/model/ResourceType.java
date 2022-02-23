@@ -28,7 +28,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 
 
@@ -42,6 +42,7 @@ Account,
     AllergyIntolerance,
     Appointment,
     AppointmentResponse,
+    ArtifactAssessment,
     AuditEvent,
     Basic,
     Binary,
@@ -52,13 +53,13 @@ Account,
     CapabilityStatement2,
     CarePlan,
     CareTeam,
-    CatalogEntry,
     ChargeItem,
     ChargeItemDefinition,
     Citation,
     Claim,
     ClaimResponse,
     ClinicalImpression,
+    ClinicalUseDefinition,
     ClinicalUseIssue,
     CodeSystem,
     Communication,
@@ -66,6 +67,7 @@ Account,
     CompartmentDefinition,
     Composition,
     ConceptMap,
+    ConceptMap2,
     Condition,
     ConditionDefinition,
     Consent,
@@ -76,9 +78,10 @@ Account,
     DetectedIssue,
     Device,
     DeviceDefinition,
+    DeviceDispense,
     DeviceMetric,
     DeviceRequest,
-    DeviceUseStatement,
+    DeviceUsage,
     DiagnosticReport,
     DocumentManifest,
     DocumentReference,
@@ -100,6 +103,7 @@ Account,
     Group,
     GuidanceResponse,
     HealthcareService,
+    ImagingSelection,
     ImagingStudy,
     Immunization,
     ImmunizationEvaluation,
@@ -107,6 +111,7 @@ Account,
     ImplementationGuide,
     Ingredient,
     InsurancePlan,
+    InventoryReport,
     Invoice,
     Library,
     Linkage,
@@ -200,6 +205,8 @@ Account,
       return "appointment";
     case AppointmentResponse:
       return "appointmentresponse";
+    case ArtifactAssessment:
+      return "artifactassessment";
     case AuditEvent:
       return "auditevent";
     case Basic:
@@ -220,8 +227,6 @@ Account,
       return "careplan";
     case CareTeam:
       return "careteam";
-    case CatalogEntry:
-      return "catalogentry";
     case ChargeItem:
       return "chargeitem";
     case ChargeItemDefinition:
@@ -234,6 +239,8 @@ Account,
       return "claimresponse";
     case ClinicalImpression:
       return "clinicalimpression";
+    case ClinicalUseDefinition:
+      return "clinicalusedefinition";
     case ClinicalUseIssue:
       return "clinicaluseissue";
     case CodeSystem:
@@ -248,6 +255,8 @@ Account,
       return "composition";
     case ConceptMap:
       return "conceptmap";
+    case ConceptMap2:
+      return "conceptmap2";
     case Condition:
       return "condition";
     case ConditionDefinition:
@@ -268,12 +277,14 @@ Account,
       return "device";
     case DeviceDefinition:
       return "devicedefinition";
+    case DeviceDispense:
+      return "devicedispense";
     case DeviceMetric:
       return "devicemetric";
     case DeviceRequest:
       return "devicerequest";
-    case DeviceUseStatement:
-      return "deviceusestatement";
+    case DeviceUsage:
+      return "deviceusage";
     case DiagnosticReport:
       return "diagnosticreport";
     case DocumentManifest:
@@ -316,6 +327,8 @@ Account,
       return "guidanceresponse";
     case HealthcareService:
       return "healthcareservice";
+    case ImagingSelection:
+      return "imagingselection";
     case ImagingStudy:
       return "imagingstudy";
     case Immunization:
@@ -330,6 +343,8 @@ Account,
       return "ingredient";
     case InsurancePlan:
       return "insuranceplan";
+    case InventoryReport:
+      return "inventoryreport";
     case Invoice:
       return "invoice";
     case Library:
@@ -501,6 +516,8 @@ Account,
       return Appointment;
     if ("AppointmentResponse".equals(code))
       return AppointmentResponse;
+    if ("ArtifactAssessment".equals(code))
+      return ArtifactAssessment;
     if ("AuditEvent".equals(code))
       return AuditEvent;
     if ("Basic".equals(code))
@@ -521,8 +538,6 @@ Account,
       return CarePlan;
     if ("CareTeam".equals(code))
       return CareTeam;
-    if ("CatalogEntry".equals(code))
-      return CatalogEntry;
     if ("ChargeItem".equals(code))
       return ChargeItem;
     if ("ChargeItemDefinition".equals(code))
@@ -535,6 +550,8 @@ Account,
       return ClaimResponse;
     if ("ClinicalImpression".equals(code))
       return ClinicalImpression;
+    if ("ClinicalUseDefinition".equals(code))
+      return ClinicalUseDefinition;
     if ("ClinicalUseIssue".equals(code))
       return ClinicalUseIssue;
     if ("CodeSystem".equals(code))
@@ -549,6 +566,8 @@ Account,
       return Composition;
     if ("ConceptMap".equals(code))
       return ConceptMap;
+    if ("ConceptMap2".equals(code))
+      return ConceptMap2;
     if ("Condition".equals(code))
       return Condition;
     if ("ConditionDefinition".equals(code))
@@ -569,12 +588,14 @@ Account,
       return Device;
     if ("DeviceDefinition".equals(code))
       return DeviceDefinition;
+    if ("DeviceDispense".equals(code))
+      return DeviceDispense;
     if ("DeviceMetric".equals(code))
       return DeviceMetric;
     if ("DeviceRequest".equals(code))
       return DeviceRequest;
-    if ("DeviceUseStatement".equals(code))
-      return DeviceUseStatement;
+    if ("DeviceUsage".equals(code))
+      return DeviceUsage;
     if ("DiagnosticReport".equals(code))
       return DiagnosticReport;
     if ("DocumentManifest".equals(code))
@@ -617,6 +638,8 @@ Account,
       return GuidanceResponse;
     if ("HealthcareService".equals(code))
       return HealthcareService;
+    if ("ImagingSelection".equals(code))
+      return ImagingSelection;
     if ("ImagingStudy".equals(code))
       return ImagingStudy;
     if ("Immunization".equals(code))
@@ -631,6 +654,8 @@ Account,
       return Ingredient;
     if ("InsurancePlan".equals(code))
       return InsurancePlan;
+    if ("InventoryReport".equals(code))
+      return InventoryReport;
     if ("Invoice".equals(code))
       return Invoice;
     if ("Library".equals(code))
@@ -782,7 +807,7 @@ Account,
     if ("VisionPrescription".equals(code))
       return VisionPrescription;
 
-    throw new FHIRException("Unknown resource type"+code);
+    throw new FHIRException("Unknown resource type "+code);
   }
 
 }
