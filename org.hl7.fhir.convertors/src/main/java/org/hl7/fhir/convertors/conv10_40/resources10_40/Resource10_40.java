@@ -150,6 +150,8 @@ public class Resource10_40 {
       return Procedure10_40.convertProcedure((org.hl7.fhir.dstu2.model.Procedure) src);
     if (src instanceof org.hl7.fhir.dstu2.model.Medication)
       return Medication10_40.convertMedication((org.hl7.fhir.dstu2.model.Medication) src);
+    if (src instanceof org.hl7.fhir.dstu2.model.Immunization)
+      return Immunization10_40.convertImmunization((org.hl7.fhir.dstu2.model.Immunization) src);
     if (advisor.failFastOnNullOrUnknownEntry()) {
       throw new FHIRException("Unknown resource " + src.fhirType());
     } else {

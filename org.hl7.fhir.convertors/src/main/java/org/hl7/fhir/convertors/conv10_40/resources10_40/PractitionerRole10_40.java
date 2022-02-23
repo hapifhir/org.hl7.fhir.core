@@ -1,7 +1,9 @@
-package org.hl7.fhir.convertors.conv10_40;
+package org.hl7.fhir.convertors.conv10_40.resources10_40;
 
 
-import org.hl7.fhir.convertors.VersionConvertor_10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Reference10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.CodeableConcept10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Period10_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 import java.util.ArrayList;
@@ -35,7 +37,7 @@ import java.util.List;
   POSSIBILITY OF SUCH DAMAGE.
   
 */
-public class PractitionerRole10_40 extends VersionConvertor_10_40 {
+public class PractitionerRole10_40 {
 
     public static List<org.hl7.fhir.r4.model.PractitionerRole> convertPractitionerRole(org.hl7.fhir.dstu2.model.Practitioner src) throws FHIRException {
         if (src == null || !src.hasPractitionerRole())
@@ -59,16 +61,16 @@ public class PractitionerRole10_40 extends VersionConvertor_10_40 {
         tgt.setId(src.getId());
         //copyDomainResource(src, tgt);
         if (src.hasPeriod())
-            tgt.setPeriod(convertPeriod(src.getPeriod()));
+            tgt.setPeriod(Period10_40.convertPeriod(src.getPeriod()));
         if (practitioner != null)
             tgt.setPractitioner(resourceToReference(practitioner));
         if (src.hasManagingOrganization())
-            tgt.setOrganization(convertReference(src.getManagingOrganization()));
+            tgt.setOrganization(Reference10_40.convertReference(src.getManagingOrganization()));
         if(src.hasRole())
-            tgt.addCode(convertCodeableConcept(src.getRole()));          
-        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getSpecialty()) tgt.addSpecialty(convertCodeableConcept(t));
-        for (org.hl7.fhir.dstu2.model.Reference t : src.getLocation()) tgt.addLocation(convertReference(t));
-        for (org.hl7.fhir.dstu2.model.Reference t : src.getHealthcareService()) tgt.addHealthcareService(convertReference(t));
+            tgt.addCode(CodeableConcept10_40.convertCodeableConcept(src.getRole()));
+        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getSpecialty()) tgt.addSpecialty(CodeableConcept10_40.convertCodeableConcept(t));
+        for (org.hl7.fhir.dstu2.model.Reference t : src.getLocation()) tgt.addLocation(Reference10_40.convertReference(t));
+        for (org.hl7.fhir.dstu2.model.Reference t : src.getHealthcareService()) tgt.addHealthcareService(Reference10_40.convertReference(t));
         return tgt;
     }
 
