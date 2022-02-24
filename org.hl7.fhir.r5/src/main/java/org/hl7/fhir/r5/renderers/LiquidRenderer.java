@@ -33,6 +33,10 @@ public class LiquidRenderer extends ResourceRenderer {
     this.liquidTemplate = liquidTemplate;
   }
 
+  /**
+   * This class provides an implementation of the ILiquidEngineIncludeResolver that makes use of the
+   * template provider available in the rendering context to support resolving includes.
+   */
   private class LiquidRendererIncludeResolver implements LiquidEngine.ILiquidEngineIncludeResolver {
     public LiquidRendererIncludeResolver(RenderingContext context) {
       this.context = context;
