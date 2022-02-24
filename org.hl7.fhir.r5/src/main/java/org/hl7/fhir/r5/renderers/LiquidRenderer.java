@@ -55,7 +55,7 @@ public class LiquidRenderer extends ResourceRenderer {
     LiquidEngine engine = new LiquidEngine(context.getWorker(), context.getServices());
     XhtmlNode xn;
     try {
-      engine.setIncludeResolver(new LiquidRendererIncludeResolver(context.getTemplateProvider()));
+      engine.setIncludeResolver(new LiquidRendererIncludeResolver(context));
       LiquidDocument doc = engine.parse(liquidTemplate, "template");
       String html = engine.evaluate(doc, r, rcontext);
       xn = new XhtmlParser().parseFragment(html);
