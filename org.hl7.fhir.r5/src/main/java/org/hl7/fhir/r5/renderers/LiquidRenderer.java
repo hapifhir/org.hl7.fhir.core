@@ -46,7 +46,7 @@ public class LiquidRenderer extends ResourceRenderer {
 
     @Override
     public String fetchInclude(LiquidEngine engine, String name) {
-      return context.getTemplateProvider().findTemplate(name);
+      return context.getTemplateProvider().findTemplate(context, name);
     }
   }
   
