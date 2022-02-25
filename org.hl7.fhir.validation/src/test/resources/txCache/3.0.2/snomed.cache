@@ -343,3 +343,12 @@ v: {
   "system" : "http://snomed.info/sct"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "11181000146103"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "Unable to find code 11181000146103 in http://snomed.info/sct (version http://snomed.info/sct/900000000000207008/version/20210731); The code \"11181000146103\" is not valid in the system http://snomed.info/sct; The code provided (http://snomed.info/sct#11181000146103) is not valid in the value set 'All codes known to the system' (from http://tx.fhir.org/r3)"
+}
+-------------------------------------------------------------------------------------
