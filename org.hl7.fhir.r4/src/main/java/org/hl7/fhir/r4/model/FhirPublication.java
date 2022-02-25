@@ -49,7 +49,7 @@ public enum FhirPublication {
   R4;
 
   public static FhirPublication fromCode(String v) {
-    if (VersionUtilities.isR4Ver(v))
+    if (VersionUtilities.isR2Ver(v))
       return FhirPublication.DSTU2;
     if ("1.0".equals(v))
       return FhirPublication.DSTU2;
