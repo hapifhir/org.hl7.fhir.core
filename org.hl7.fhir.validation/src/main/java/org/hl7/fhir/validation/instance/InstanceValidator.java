@@ -3405,13 +3405,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return elements;
     }
 
+    boolean dontFollowReference = false;
+    
     if (removeResolve) {  // if we're doing profile slicing, we don't want to walk into the last resolve.. we need the profile on the source not the target
       if (discriminator.equals("resolve()")) {
         elements.add(element);
         return elements;
       }
-      if (discriminator.endsWith(".resolve()"))
+      if (discriminator.endsWith(".resolve()")) {
         discriminator = discriminator.substring(0, discriminator.length() - 10);
+        dontFollowReference = true;
+      }
     }
 
     TypedElementDefinition ted = null;
@@ -3424,7 +3428,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       throw new FHIRException(context.formatMessage(I18nConstants.DISCRIMINATOR_BAD_PATH, e.getMessage(), fp), e);
     }
     long t2 = System.nanoTime();
-    ted = fpe.evaluateDefinition(expr, profile, new TypedElementDefinition(element), srcProfile);
+    ted = fpe.evaluateDefinition(expr, profile, new TypedElementDefinition(element), srcProfile, dontFollowReference);
     timeTracker.sd(t2);
     if (ted != null)
       elements.add(ted.getElement());
@@ -3449,7 +3453,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
         expr = fpe.parse(fp);
         t2 = System.nanoTime();
-        ted = fpe.evaluateDefinition(expr, profile, new TypedElementDefinition(element), srcProfile);
+        ted = fpe.evaluateDefinition(expr, profile, new TypedElementDefinition(element), srcProfile, dontFollowReference);
         timeTracker.sd(t2);
         if (ted != null)
           elements.add(ted.getElement());

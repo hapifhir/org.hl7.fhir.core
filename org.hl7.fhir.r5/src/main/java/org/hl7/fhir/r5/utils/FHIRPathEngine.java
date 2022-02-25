@@ -235,6 +235,13 @@ public class FHIRPathEngine {
       }
       return res;
     }
+    public boolean hasType(String tn) {
+      if (type != null) {
+        return tn.equals(type);
+      } else {
+        return element.hasType(tn);
+      }
+    }
   }
   private IWorkerContext worker;
   private IEvaluationContext hostServices;
@@ -5472,7 +5479,7 @@ public class FHIRPathEngine {
    * @throws PathEngineException 
    * @throws DefinitionException 
    */
-  public TypedElementDefinition evaluateDefinition(ExpressionNode expr, StructureDefinition profile, TypedElementDefinition element, StructureDefinition source) throws DefinitionException {
+  public TypedElementDefinition evaluateDefinition(ExpressionNode expr, StructureDefinition profile, TypedElementDefinition element, StructureDefinition source, boolean dontWalkIntoReferences) throws DefinitionException {
     StructureDefinition sd = profile;
     TypedElementDefinition focus = null;
     boolean okToNotResolve = false;
@@ -5584,10 +5591,19 @@ public class FHIRPathEngine {
       } else {
         throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_CANT_FIND, expr.toString(), source.getUrl(), element.getElement().getId(), profile.getUrl());
       }
-    } else if (expr.getInner() == null) {
-      return focus;
     } else {
-      return evaluateDefinition(expr.getInner(), sd, focus, profile);
+      // gdg 26-02-2022. If we're walking towards a resolve() and we're on a reference, and  we try to walk into the reference
+      // then we don't do that. .resolve() is allowed on the Reference.reference, but the target of the reference will be defined
+      // on the Reference, not the reference.reference.
+      ExpressionNode next = expr.getInner();
+      if (dontWalkIntoReferences && focus.hasType("Reference") && next != null && next.getKind() == Kind.Name && next.getName().equals("reference")) {
+        next = next.getInner();
+      }
+      if (next == null) {
+        return focus;
+      } else {
+        return evaluateDefinition(next, sd, focus, profile, dontWalkIntoReferences);
+      }
     }
   }
 
