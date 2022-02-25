@@ -30,6 +30,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.model.Address;
 import org.hl7.fhir.r5.model.Annotation;
+import org.hl7.fhir.r5.model.BackboneType;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BaseDateTimeType;
 import org.hl7.fhir.r5.model.CanonicalResource;
@@ -48,6 +49,7 @@ import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.DateType;
+import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Expression;
 import org.hl7.fhir.r5.model.Extension;
@@ -357,8 +359,78 @@ public class DataRenderer extends Renderer {
     return value.primitiveValue();
   }
   
+  // -- 6. General purpose extension rendering ---------------------------------------------- 
 
-  // -- 5. Data type Rendering ---------------------------------------------- 
+  public boolean hasRenderableExtensions(DataType element) {
+    for (Extension ext : element.getExtension()) {
+      if (canRender(ext)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  public boolean hasRenderableExtensions(BackboneType element) {
+    for (Extension ext : element.getExtension()) {
+      if (canRender(ext)) {
+        return true;
+      }
+    }
+    return element.hasModifierExtension();  
+  }
+  
+  private String getExtensionLabel(Extension ext) {
+    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, ext.getUrl());
+    if (sd != null && ext.getValue().isPrimitive() && sd.hasSnapshot()) {
+      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+        if (Utilities.existsInList(ed.getPath(), "Extension", "Extension.value") && ed.hasLabel()) {
+          return ed.getLabel();
+        }
+      }
+    }
+    return null;    
+  }
+  
+  private boolean canRender(Extension ext) {
+    return getExtensionLabel(ext) != null;
+  }
+
+  public void renderExtensionsInList(XhtmlNode ul, DataType element) throws FHIRFormatError, DefinitionException, IOException {
+    for (Extension ext : element.getExtension()) {
+      if (canRender(ext)) {
+        String lbl = getExtensionLabel(ext);
+        XhtmlNode li = ul.li();
+        li.tx(lbl);
+        render(li, ext.getValue());
+      }
+    }
+  }
+  
+  public void renderExtensionsInList(XhtmlNode ul, BackboneType element) throws FHIRFormatError, DefinitionException, IOException {
+    for (Extension ext : element.getModifierExtension()) {
+      if (canRender(ext)) {
+        String lbl = getExtensionLabel(ext);
+        XhtmlNode li = ul.li();
+        li = li.b();
+        li.tx(lbl);
+        render(li, ext.getValue());
+      } else {
+        // somehow have to do better than this 
+        XhtmlNode li = ul.li();
+        li.b().tx("WARNING: Unrenderable Modifier Extension!");
+      }
+    }
+    for (Extension ext : element.getExtension()) {
+      if (canRender(ext)) {
+        String lbl = getExtensionLabel(ext);
+        XhtmlNode li = ul.li();
+        li.tx(lbl);
+        render(li, ext.getValue());
+      }
+    }
+  }
+  
+  // -- 6. Data type Rendering ---------------------------------------------- 
 
   public static String display(IWorkerContext context, DataType type) {
     return new DataRenderer(new RenderingContext(context, null, null, "http://hl7.org/fhir/R4", "", null, ResourceRendererMode.END_USER)).display(type);
