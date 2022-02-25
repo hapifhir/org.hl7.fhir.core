@@ -213,7 +213,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     XhtmlNode t = x.table( "codes");
     XhtmlNode tr = t.tr();
     if (doLevel)
-      tr.td().b().tx("Lvl");
+      tr.td().b().tx("Level");
     tr.td().attribute("style", "white-space:nowrap").b().tx("Code");
     if (doSystem)
       tr.td().b().tx("System");
@@ -242,7 +242,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     
     addMapHeaders(tr, maps);
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
-      addExpansionRowToTable(t, c, 0, doLevel, doSystem, doDefinition, maps, allCS, langs, doLangs);
+      addExpansionRowToTable(t, c, 1, doLevel, doSystem, doDefinition, maps, allCS, langs, doLangs);
     }
 
     // now, build observed languages
