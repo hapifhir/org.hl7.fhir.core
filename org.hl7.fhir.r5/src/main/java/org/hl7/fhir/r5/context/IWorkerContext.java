@@ -547,7 +547,7 @@ public interface IWorkerContext {
    * @return
    * @throws FHIRException 
    */
-  ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical) throws TerminologyServiceException;
+  ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical, boolean noInactive) throws TerminologyServiceException;
 
   Locale getLocale();
 

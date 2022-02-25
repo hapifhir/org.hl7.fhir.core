@@ -1,15 +1,9 @@
 package org.hl7.fhir.r5.context;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import org.hl7.fhir.r5.formats.IParser;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.terminologies.ValueSetExpander;
-import org.hl7.fhir.utilities.validation.ValidationMessage;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,8 +19,22 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
+import org.hl7.fhir.r5.formats.IParser;
+import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CapabilityStatement;
+import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.TerminologyCapabilities;
+import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.terminologies.ValueSetExpander;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 public class TerminologyCacheTests {
 

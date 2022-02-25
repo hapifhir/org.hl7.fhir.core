@@ -1,20 +1,29 @@
 package org.hl7.fhir.r5.utils.client.network;
 
-import okhttp3.HttpUrl;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
-import okhttp3.mockwebserver.RecordedRequest;
-import org.hl7.fhir.r5.context.HTMLClientLogger;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.model.*;
-import org.junit.jupiter.api.*;
-import org.mockito.Mockito;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+
+import org.hl7.fhir.r5.context.HTMLClientLogger;
+import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.r5.model.Address;
+import org.hl7.fhir.r5.model.Enumerations;
+import org.hl7.fhir.r5.model.HumanName;
+import org.hl7.fhir.r5.model.Patient;
+import org.hl7.fhir.r5.model.Resource;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.mockito.Mockito;
+
+import okhttp3.HttpUrl;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ClientTest {

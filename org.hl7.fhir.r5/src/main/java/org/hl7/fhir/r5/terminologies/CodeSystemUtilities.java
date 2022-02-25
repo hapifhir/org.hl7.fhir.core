@@ -249,7 +249,7 @@ public class CodeSystemUtilities {
   public static boolean isInactive(CodeSystem cs, ConceptDefinitionComponent def) throws FHIRException {
     for (ConceptPropertyComponent p : def.getProperty()) {
       if ("status".equals(p.getCode()) && p.hasValueStringType()) 
-        return "inactive".equals(p.getValueStringType());
+        return "inactive".equals(p.getValueStringType().primitiveValue()) || "retired".equals(p.getValueStringType().primitiveValue());
     }
     return false;
   }
