@@ -108,12 +108,14 @@ public class TestingUtilities extends BaseTestingUtilities {
   public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage) throws Exception {
     SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withUserAgent(TestConstants.USER_AGENT).withTerminologyCachePath(TestConstants.TX_CACHE).fromPackage(npmPackage);
     TerminologyCache.setCacheErrors(true);
+    swc.setAllowLoadingDuplicates(true);
     return swc;
   }
 
   public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage, IWorkerContext.IContextResourceLoader loader) throws Exception {
     SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withUserAgent(TestConstants.USER_AGENT).withTerminologyCachePath(TestConstants.TX_CACHE).fromPackage(npmPackage, loader);
     TerminologyCache.setCacheErrors(true);
+    swc.setAllowLoadingDuplicates(true);
     return swc;
   }
 

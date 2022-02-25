@@ -1,5 +1,8 @@
 package org.hl7.fhir.r5.test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.model.Base;
@@ -12,9 +15,6 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ProfileUtilitiesTests {
 

@@ -1165,7 +1165,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     ValueSetExpansionComponent vse = null;
     if (!context.isNoSlowLookup() && !getContext().getWorker().hasCache()) {
       try {
-        ValueSetExpansionOutcome vso = getContext().getWorker().expandVS(inc, false);   
+        ValueSetExpansionOutcome vso = getContext().getWorker().expandVS(inc, false, false);   
         ValueSet valueset = vso.getValueset();
         if (valueset == null)
           throw new TerminologyServiceException("Error Expanding ValueSet: "+vso.getError());
