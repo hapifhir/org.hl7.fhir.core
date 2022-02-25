@@ -239,7 +239,12 @@ public class FHIRPathEngine {
       if (type != null) {
         return tn.equals(type);
       } else {
-        return element.hasType(tn);
+        for (TypeRefComponent t : element.getType()) {
+          if (tn.equals(t.getCode())) {
+            return true;
+          }
+        }
+        return false;
       }
     }
   }
