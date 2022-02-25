@@ -260,6 +260,7 @@ public class SimpleWorkerContextTests {
     ValueSet vs = new ValueSet();
     vs.setStatus(Enumerations.PublicationStatus.ACTIVE);
     vs.setCompose(new ValueSet.ValueSetComposeComponent());
+    vs.getCompose().setInactive(true);
     vs.getCompose().getInclude().add(inc);
 
     Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)),eq(true));
@@ -282,6 +283,7 @@ public class SimpleWorkerContextTests {
     ValueSet vs = new ValueSet();
     vs.setStatus(Enumerations.PublicationStatus.ACTIVE);
     vs.setCompose(new ValueSet.ValueSetComposeComponent());
+    vs.getCompose().setInactive(true);
     vs.getCompose().getInclude().add(inc);
 
     Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)),eq(true));
