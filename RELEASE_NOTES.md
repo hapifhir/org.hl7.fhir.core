@@ -1,7 +1,7 @@
 ## Validator Changes
 
-* no changes
+* No changes
 
 ## Other code changes
 
-* no changes
+* fix expansions where inactive = false (was wrongly including inactive codes)
