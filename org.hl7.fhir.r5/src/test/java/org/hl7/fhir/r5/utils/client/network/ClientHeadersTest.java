@@ -1,14 +1,15 @@
 package org.hl7.fhir.r5.utils.client.network;
 
-import okhttp3.internal.http2.Header;
+import java.util.Arrays;
+import java.util.List;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.List;
+import okhttp3.internal.http2.Header;
 
 class ClientHeadersTest {
 

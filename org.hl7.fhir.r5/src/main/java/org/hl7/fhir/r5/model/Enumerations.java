@@ -6924,9 +6924,9 @@ The primary difference between a medicationusage and a medicationadministration 
           return _4_1_0;
         if ("4.2.0".equals(codeString))
           return _4_2_0;
-        if ("4.3.0-snapshot1".equals(codeString))
+        if ("4.3.0-snapshot1".equalsIgnoreCase(codeString))
           return _4_3_0SNAPSHOT1;
-        if ("4.3.0-cibuild".equals(codeString))
+        if ("4.3.0-cibuild".equalsIgnoreCase(codeString))
           return _4_3_0CIBUILD;
         if ("4.4.0".equals(codeString))
           return _4_4_0;
@@ -6934,9 +6934,9 @@ The primary difference between a medicationusage and a medicationadministration 
           return _4_5_0;
         if ("4.6.0".equals(codeString))
           return _4_6_0;
-        if ("5.0.0-snapshot1".equals(codeString))
+        if ("5.0.0-snapshot1".equalsIgnoreCase(codeString))
           return _5_0_0SNAPSHOT1;
-        if ("5.0.0-cibuild".equals(codeString))
+        if ("5.0.0-cibuild".equalsIgnoreCase(codeString))
           return _5_0_0CIBUILD;
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
@@ -7158,7 +7158,7 @@ public String toCode(int len) {
         
         
         public boolean isR4B() {
-          return toCode().startsWith("4.1");
+          return toCode().startsWith("4.1") ||toCode().startsWith("4.3");
         }
         
 // end addition
@@ -7219,9 +7219,9 @@ public String toCode(int len) {
           return FHIRVersion._4_1_0;
         if ("4.2.0".equals(codeString))
           return FHIRVersion._4_2_0;
-        if ("4.3.0-snapshot1".equals(codeString))
+        if ("4.3.0-snapshot1".equalsIgnoreCase(codeString))
           return FHIRVersion._4_3_0SNAPSHOT1;
-        if ("4.3.0-cibuild".equals(codeString))
+        if ("4.3.0-cibuild".equalsIgnoreCase(codeString))
           return FHIRVersion._4_3_0CIBUILD;
         if ("4.4.0".equals(codeString))
           return FHIRVersion._4_4_0;
@@ -7229,9 +7229,9 @@ public String toCode(int len) {
           return FHIRVersion._4_5_0;
         if ("4.6.0".equals(codeString))
           return FHIRVersion._4_6_0;
-        if ("5.0.0-snapshot1".equals(codeString))
+        if ("5.0.0-snapshot1".equalsIgnoreCase(codeString))
           return FHIRVersion._5_0_0SNAPSHOT1;
-        if ("5.0.0-cibuild".equals(codeString))
+        if ("5.0.0-cibuild".equalsIgnoreCase(codeString))
           return FHIRVersion._5_0_0CIBUILD;
         throw new IllegalArgumentException("Unknown FHIRVersion code '"+codeString+"'");
         }
