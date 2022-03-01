@@ -222,6 +222,11 @@ public class PackageClient {
                 version = v;
                 fVersion = e.getAsJsonArray("fhir-version").get(0).getAsString();
                 url = JSONUtil.str(e, "url");
+
+                String npmPackage = JSONUtil.str(e, "package");
+                if (npmPackage != null && id == null) {
+                  id = npmPackage.substring(0, npmPackage.indexOf("#"));
+                }
               }
             }
           }
