@@ -123,12 +123,12 @@ public class XVerExtensionManager {
       populateTypes(path, val, verSource, verTarget);
     } else if (path.has("elements")) {
       for (JsonElement i : path.getAsJsonArray("elements")) {
-        String s = i.getAsString();
+        String s = i.getAsString().replace("[x]", "");
         sd.getDifferential().addElement().setPath("Extension.extension").setSliceName(s);
         sd.getDifferential().addElement().setPath("Extension.extension.extension").setMax("0");
         sd.getDifferential().addElement().setPath("Extension.extension.url").setFixed(new UriType(s));
         ElementDefinition val = sd.getDifferential().addElement().setPath("Extension.extension.value[x]").setMin(1);
-        JsonObject elt = root.getAsJsonObject(e+"."+s);
+        JsonObject elt = root.getAsJsonObject(e+"."+i.getAsString());
         if (!elt.has("types")) {
           throw new FHIRException("Internal error - nested elements not supported yet");
         }
