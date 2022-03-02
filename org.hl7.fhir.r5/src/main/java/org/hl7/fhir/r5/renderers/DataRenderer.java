@@ -383,7 +383,7 @@ public class DataRenderer extends Renderer {
     StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, ext.getUrl());
     if (sd != null && ext.getValue().isPrimitive() && sd.hasSnapshot()) {
       for (ElementDefinition ed : sd.getSnapshot().getElement()) {
-        if (Utilities.existsInList(ed.getPath(), "Extension", "Extension.value") && ed.hasLabel()) {
+        if (Utilities.existsInList(ed.getPath(), "Extension", "Extension.value[x]") && ed.hasLabel()) {
           return ed.getLabel();
         }
       }
@@ -401,6 +401,7 @@ public class DataRenderer extends Renderer {
         String lbl = getExtensionLabel(ext);
         XhtmlNode li = ul.li();
         li.tx(lbl);
+        li.tx(": ");
         render(li, ext.getValue());
       }
     }
@@ -413,6 +414,7 @@ public class DataRenderer extends Renderer {
         XhtmlNode li = ul.li();
         li = li.b();
         li.tx(lbl);
+        li.tx(": ");        
         render(li, ext.getValue());
       } else {
         // somehow have to do better than this 
@@ -425,9 +427,67 @@ public class DataRenderer extends Renderer {
         String lbl = getExtensionLabel(ext);
         XhtmlNode li = ul.li();
         li.tx(lbl);
+        li.tx(": ");
         render(li, ext.getValue());
       }
     }
+  }
+  
+  public void renderExtensionsInText(XhtmlNode div, DataType element, String sep) throws FHIRFormatError, DefinitionException, IOException {
+    boolean first = true;
+    for (Extension ext : element.getExtension()) {
+      if (canRender(ext)) {
+        if (first) {
+          first = false;
+        } else {
+          div.tx(sep);
+          div.tx(" ");
+        }
+         
+        String lbl = getExtensionLabel(ext);
+        div.tx(lbl);
+        div.tx(": ");
+        render(div, ext.getValue());
+      }
+    }
+  }
+  
+  public void renderExtensionsInList(XhtmlNode div, BackboneType element, String sep) throws FHIRFormatError, DefinitionException, IOException {
+    boolean first = true;
+    for (Extension ext : element.getModifierExtension()) {
+      if (first) {
+        first = false;
+      } else {
+        div.tx(sep);
+        div.tx(" ");
+      }
+      if (canRender(ext)) {
+        String lbl = getExtensionLabel(ext);
+        XhtmlNode b = div.b();
+        b.tx(lbl);
+        b.tx(": ");
+        render(div, ext.getValue());
+      } else {
+        // somehow have to do better than this 
+        div.b().tx("WARNING: Unrenderable Modifier Extension!");
+      }
+    }
+    for (Extension ext : element.getExtension()) {
+      if (canRender(ext)) {
+        if (first) {
+          first = false;
+        } else {
+          div.tx(sep);
+          div.tx(" ");
+        }
+         
+        String lbl = getExtensionLabel(ext);
+        div.tx(lbl);
+        div.tx(": ");
+        render(div, ext.getValue());
+      }
+    }
+
   }
   
   // -- 6. Data type Rendering ---------------------------------------------- 
@@ -938,11 +998,11 @@ public class DataRenderer extends Renderer {
     return s;
   }
 
-  protected void renderCodeableConcept(XhtmlNode x, CodeableConcept cc) {
+  protected void renderCodeableConcept(XhtmlNode x, CodeableConcept cc) throws FHIRFormatError, DefinitionException, IOException {
     renderCodeableConcept(x, cc, false);
   }
   
-  protected void renderCodeableReference(XhtmlNode x, CodeableReference e, boolean showCodeDetails) {
+  protected void renderCodeableReference(XhtmlNode x, CodeableReference e, boolean showCodeDetails) throws FHIRFormatError, DefinitionException, IOException {
     if (e.hasConcept()) {
       renderCodeableConcept(x, e.getConcept(), showCodeDetails);
     }
@@ -951,7 +1011,7 @@ public class DataRenderer extends Renderer {
     }
   }
 
-  protected void renderCodeableConcept(XhtmlNode x, CodeableConcept cc, boolean showCodeDetails) {
+  protected void renderCodeableConcept(XhtmlNode x, CodeableConcept cc, boolean showCodeDetails) throws FHIRFormatError, DefinitionException, IOException {
     if (cc.isEmpty()) {
       return;
     }
@@ -1006,6 +1066,12 @@ public class DataRenderer extends Renderer {
         if (c.hasDisplay() && !s.equals(c.getDisplay())) {
           sp.tx(" \""+c.getDisplay()+"\"");
         }
+      }
+      if (hasRenderableExtensions(cc)) {
+        if (!first) {
+          sp.tx("; ");
+        }
+        renderExtensionsInText(sp, cc, ";");
       }
       sp.tx(")");
     } else {
