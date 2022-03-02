@@ -403,6 +403,11 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       pieces.add(p);
       return p;
     }
+    public Piece addText(String text) {
+      Piece p = new Piece(null, text, null);
+      pieces.add(p);
+      return p;
+    }
     public String text() {
       StringBuilder b = new StringBuilder();
       for (Piece p : pieces)
