@@ -103,7 +103,7 @@ public class NarrativeGenerationTests {
 
   @BeforeAll
   public static void setUp() {
-    context = TestingUtilities.context();
+    context = TestingUtilities.getSharedWorkerContext();
   }
 
   @ParameterizedTest(name = "{index}: file {0}")
