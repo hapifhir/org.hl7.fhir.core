@@ -6058,6 +6058,11 @@ public class Evidence extends MetadataResource {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
+  // Manual code
+  public boolean supportsExperimental() {
+    return false;
+  }
 
+// end addition
 }
 
