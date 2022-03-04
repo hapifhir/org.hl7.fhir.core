@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Fix to r5 TestingUtilities to allow NarrativeGenerationTests to pass. 
