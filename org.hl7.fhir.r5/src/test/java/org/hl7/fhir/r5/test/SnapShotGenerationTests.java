@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -19,28 +18,27 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
-import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
+import org.hl7.fhir.r5.context.TestPackageLoader;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.r5.model.TypeDetails;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
-import org.hl7.fhir.r5.model.TypeDetails;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
-import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
@@ -59,41 +57,6 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 public class SnapShotGenerationTests {
-
-  public class TestLoader implements IContextResourceLoader {
-
-    private String[] types;
-
-    public TestLoader(String[] types) {
-      this.types = types;
-    }
-
-    @Override
-    public Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException {
-      return null;
-    }
-
-    @Override
-    public Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException {
-      return null;
-    }
-
-    @Override
-    public String[] getTypes() {
-      return types;
-    }
-
-    @Override
-    public String getResourcePath(Resource resource) {
-      return null;
-    }
-
-    @Override
-    public IContextResourceLoader getNewLoader(NpmPackage npm) {
-      return this;
-    }
-
-  }
 
   public enum TestFetchMode {
     INPUT,
@@ -549,7 +512,7 @@ public class SnapShotGenerationTests {
     pu.setIds(test.getSource(), false);
     if (!TestingUtilities.context().hasPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER)) {
       NpmPackage npm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER);
-      TestingUtilities.context().loadFromPackage(npm, new TestLoader(new String[]{"StructureDefinition"}), new String[]{"StructureDefinition"});
+      TestingUtilities.context().loadFromPackage(npm, new TestPackageLoader(new String[]{"StructureDefinition"}), new String[]{"StructureDefinition"});
     }
     pu.setXver(new XVerExtensionManager(TestingUtilities.context()));
     if (test.isSort()) {
