@@ -93,7 +93,7 @@ public class FHIRPathTests {
 
     @Override
     public ValueSet resolveValueSet(Object appContext, String url) {
-      return TestingUtilities.context().fetchResource(ValueSet.class, url);
+      return TestingUtilities.getSharedWorkerContext().fetchResource(ValueSet.class, url);
     }
 
   }
@@ -103,7 +103,7 @@ public class FHIRPathTests {
 
   @BeforeAll
   public static void setUp() {
-    fp = new FHIRPathEngine(TestingUtilities.context());
+    fp = new FHIRPathEngine(TestingUtilities.getSharedWorkerContext());
   }
 
   public static Stream<Arguments> data() throws ParserConfigurationException, SAXException, IOException {

@@ -257,7 +257,7 @@ public class CDARoundTripTests {
 	  value.setValue("öé");
 	  
 	  ByteArrayOutputStream baosXml = new ByteArrayOutputStream();
-	  Manager.compose(TestingUtilities.context(), xml, baosXml, FhirFormat.XML, OutputStyle.PRETTY, null);
+	  Manager.compose(TestingUtilities.getSharedWorkerContext(), xml, baosXml, FhirFormat.XML, OutputStyle.PRETTY, null);
 	  String cdaSerialised = baosXml.toString("UTF-8");
     Assertions.assertTrue(cdaSerialised.indexOf("öé") > 0);
 	}
