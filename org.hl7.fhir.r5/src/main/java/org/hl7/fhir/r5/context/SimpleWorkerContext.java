@@ -239,7 +239,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
     public SimpleWorkerContext fromPackage(NpmPackage pi, IContextResourceLoader loader) throws IOException, FHIRException {
       SimpleWorkerContext context = getSimpleWorkerContextInstance();
-      context.setAllowLoadingDuplicates(true);
+      context.setAllowLoadingDuplicates(allowLoadingDuplicates);
       context.version = pi.getNpm().get("version").getAsString();
       context.loadFromPackage(pi, loader);
       context.finishLoading();
@@ -813,7 +813,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       pu.setDebug(false);
       for (String err : errors)
         msgs.add(new ValidationMessage(Source.ProfileValidator, IssueType.EXCEPTION, p.getUserString("path"), "Error sorting Differential: "+err, ValidationMessage.IssueSeverity.ERROR));
-      pu.generateSnapshot(sd, p, p.getUrl(), Utilities.extractBaseUrl(sd.getUserString("path")), p.getName());
+      pu.generateSnapshot(sd, p, p.getUrl(), sd.getUserString("webroot"), p.getName());
       for (ValidationMessage msg : msgs) {
         if ((!ignoreProfileErrors && msg.getLevel() == ValidationMessage.IssueSeverity.ERROR) || msg.getLevel() == ValidationMessage.IssueSeverity.FATAL)
           throw new DefinitionException(formatMessage(I18nConstants.PROFILE___ELEMENT__ERROR_GENERATING_SNAPSHOT_, p.getName(), p.getUrl(), msg.getLocation(), msg.getMessage()));

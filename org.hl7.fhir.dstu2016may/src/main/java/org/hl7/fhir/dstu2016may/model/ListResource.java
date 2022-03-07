@@ -548,10 +548,10 @@ public class ListResource extends DomainResource {
           return this.flag;
         }
         else if (name.equals("deleted")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ListResource.deleted");
+          throw new FHIRException("Cannot call addChild on a primitive type List.deleted");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ListResource.date");
+          throw new FHIRException("Cannot call addChild on a primitive type List.date");
         }
         else if (name.equals("item")) {
           this.item = new Reference();
@@ -774,7 +774,7 @@ public class ListResource extends DomainResource {
     public Enumeration<ListStatus> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ListResource.status");
+          throw new Error("Attempt to auto-create List.status");
         else if (Configuration.doAutoCreate())
           this.status = new Enumeration<ListStatus>(new ListStatusEnumFactory()); // bb
       return this.status;
@@ -819,7 +819,7 @@ public class ListResource extends DomainResource {
     public Enumeration<ListMode> getModeElement() { 
       if (this.mode == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ListResource.mode");
+          throw new Error("Attempt to auto-create List.mode");
         else if (Configuration.doAutoCreate())
           this.mode = new Enumeration<ListMode>(new ListModeEnumFactory()); // bb
       return this.mode;
@@ -864,7 +864,7 @@ public class ListResource extends DomainResource {
     public StringType getTitleElement() { 
       if (this.title == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ListResource.title");
+          throw new Error("Attempt to auto-create List.title");
         else if (Configuration.doAutoCreate())
           this.title = new StringType(); // bb
       return this.title;
@@ -913,7 +913,7 @@ public class ListResource extends DomainResource {
     public CodeableConcept getCode() { 
       if (this.code == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ListResource.code");
+          throw new Error("Attempt to auto-create List.code");
         else if (Configuration.doAutoCreate())
           this.code = new CodeableConcept(); // cc
       return this.code;
@@ -937,7 +937,7 @@ public class ListResource extends DomainResource {
     public Reference getSubject() { 
       if (this.subject == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ListResource.subject");
+          throw new Error("Attempt to auto-create List.subject");
         else if (Configuration.doAutoCreate())
           this.subject = new Reference(); // cc
       return this.subject;
@@ -976,7 +976,7 @@ public class ListResource extends DomainResource {
     public Reference getEncounter() { 
       if (this.encounter == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ListResource.encounter");
+          throw new Error("Attempt to auto-create List.encounter");
         else if (Configuration.doAutoCreate())
           this.encounter = new Reference(); // cc
       return this.encounter;
@@ -1000,7 +1000,7 @@ public class ListResource extends DomainResource {
     public Encounter getEncounterTarget() { 
       if (this.encounterTarget == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ListResource.encounter");
+          throw new Error("Attempt to auto-create List.encounter");
         else if (Configuration.doAutoCreate())
           this.encounterTarget = new Encounter(); // aa
       return this.encounterTarget;
@@ -1020,7 +1020,7 @@ public class ListResource extends DomainResource {
     public DateTimeType getDateElement() { 
       if (this.date == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ListResource.date");
+          throw new Error("Attempt to auto-create List.date");
         else if (Configuration.doAutoCreate())
           this.date = new DateTimeType(); // bb
       return this.date;
@@ -1069,7 +1069,7 @@ public class ListResource extends DomainResource {
     public Reference getSource() { 
       if (this.source == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ListResource.source");
+          throw new Error("Attempt to auto-create List.source");
         else if (Configuration.doAutoCreate())
           this.source = new Reference(); // cc
       return this.source;
@@ -1108,7 +1108,7 @@ public class ListResource extends DomainResource {
     public CodeableConcept getOrderedBy() { 
       if (this.orderedBy == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ListResource.orderedBy");
+          throw new Error("Attempt to auto-create List.orderedBy");
         else if (Configuration.doAutoCreate())
           this.orderedBy = new CodeableConcept(); // cc
       return this.orderedBy;
@@ -1212,7 +1212,7 @@ public class ListResource extends DomainResource {
     public CodeableConcept getEmptyReason() { 
       if (this.emptyReason == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ListResource.emptyReason");
+          throw new Error("Attempt to auto-create List.emptyReason");
         else if (Configuration.doAutoCreate())
           this.emptyReason = new CodeableConcept(); // cc
       return this.emptyReason;
@@ -1374,13 +1374,13 @@ public class ListResource extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ListResource.status");
+          throw new FHIRException("Cannot call addChild on a primitive type List.status");
         }
         else if (name.equals("mode")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ListResource.mode");
+          throw new FHIRException("Cannot call addChild on a primitive type List.mode");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ListResource.title");
+          throw new FHIRException("Cannot call addChild on a primitive type List.title");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
@@ -1395,7 +1395,7 @@ public class ListResource extends DomainResource {
           return this.encounter;
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ListResource.date");
+          throw new FHIRException("Cannot call addChild on a primitive type List.date");
         }
         else if (name.equals("source")) {
           this.source = new Reference();
@@ -1539,9 +1539,9 @@ public class ListResource extends DomainResource {
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ListResource:patient</b>".
+   * the path value of "<b>List:patient</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("ListResource:patient").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("List:patient").toLocked();
 
  /**
    * Search parameter: <b>source</b>
@@ -1565,9 +1565,9 @@ public class ListResource extends DomainResource {
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ListResource:source</b>".
+   * the path value of "<b>List:source</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SOURCE = new ca.uhn.fhir.model.api.Include("ListResource:source").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SOURCE = new ca.uhn.fhir.model.api.Include("List:source").toLocked();
 
  /**
    * Search parameter: <b>status</b>
@@ -1611,9 +1611,9 @@ public class ListResource extends DomainResource {
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ListResource:subject</b>".
+   * the path value of "<b>List:subject</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("ListResource:subject").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("List:subject").toLocked();
 
  /**
    * Search parameter: <b>item</b>
@@ -1637,9 +1637,9 @@ public class ListResource extends DomainResource {
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ListResource:item</b>".
+   * the path value of "<b>List:item</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ITEM = new ca.uhn.fhir.model.api.Include("ListResource:item").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ITEM = new ca.uhn.fhir.model.api.Include("List:item").toLocked();
 
  /**
    * Search parameter: <b>encounter</b>
@@ -1663,9 +1663,9 @@ public class ListResource extends DomainResource {
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ListResource:encounter</b>".
+   * the path value of "<b>List:encounter</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("ListResource:encounter").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("List:encounter").toLocked();
 
  /**
    * Search parameter: <b>code</b>
