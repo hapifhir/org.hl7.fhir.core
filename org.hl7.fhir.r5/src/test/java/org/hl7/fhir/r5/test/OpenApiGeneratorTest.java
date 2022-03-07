@@ -32,7 +32,7 @@ public class OpenApiGeneratorTest {
   public void run(InputStream sfn, String dfn) throws IOException, FHIRFormatError, FileNotFoundException {
     CapabilityStatement cs = (CapabilityStatement) new JsonParser().parse(sfn);
     Writer oa = new Writer(new FileOutputStream(dfn));
-    OpenApiGenerator gen = new OpenApiGenerator(TestingUtilities.context(), cs, oa);
+    OpenApiGenerator gen = new OpenApiGenerator(TestingUtilities.getSharedWorkerContext(), cs, oa);
     gen.generate("test-lic", "http://spdx.org/licenses/test-lic.html");
     oa.commit();
   }

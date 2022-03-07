@@ -65,7 +65,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
         stream = TestingUtilities.loadTestResourceStream("r5", parts[0].toLowerCase()+"-"+parts[1].toLowerCase()+".xml");
     }
 
-    GraphQLEngine gql = new GraphQLEngine(TestingUtilities.context());
+    GraphQLEngine gql = new GraphQLEngine(TestingUtilities.getSharedWorkerContext());
     gql.setServices(this);
     if (stream != null)
       gql.setFocus(new XmlParser().parse(stream));
