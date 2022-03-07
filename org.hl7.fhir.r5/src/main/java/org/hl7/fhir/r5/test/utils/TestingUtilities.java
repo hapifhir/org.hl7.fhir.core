@@ -75,11 +75,23 @@ public class TestingUtilities extends BaseTestingUtilities {
 
   static public Map<String, IWorkerContext> fcontexts;
 
-  public static IWorkerContext context() {
-    return context("4.0.1");
+  final static public String DEFAULT_CONTEXT_VERSION = "4.0.1";
+
+  /** Get an existing instantiation of a WorkerContext if available
+   *
+   * This uses the DEFAULT_CONTEXT_VERSION
+   * */
+  public static IWorkerContext getSharedWorkerContext() {
+    return getSharedWorkerContext(DEFAULT_CONTEXT_VERSION);
   }
 
-  public static IWorkerContext context(String version) {
+  /**
+   * Get an existing instantiation of a WorkerContext if available
+   *
+   * @param version FHIR Version to get context for
+   * @return
+   */
+  public static IWorkerContext getSharedWorkerContext(String version) {
     if ("4.5.0".equals(version)) {
       version = "4.4.0"; // temporary work around
     }
@@ -89,33 +101,35 @@ public class TestingUtilities extends BaseTestingUtilities {
       fcontexts = new HashMap<>();
     }
     if (!fcontexts.containsKey(v)) {
-      FilesystemPackageCacheManager pcm;
-      try {
-        pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-        IWorkerContext fcontext = getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(version), version));
-        fcontext.setUcumService(new UcumEssenceService(TestingUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
-        fcontext.setExpansionProfile(new Parameters());
-//        ((SimpleWorkerContext) fcontext).connectToTSServer(new TerminologyClientR5("http://tx.fhir.org/r4"), null);
+        IWorkerContext fcontext = getWorkerContext(version);
         fcontexts.put(v, fcontext);
-      } catch (Exception e) {
-        e.printStackTrace();
-        throw new Error(e);
-      }
     }
     return fcontexts.get(v);
   }
 
+  public static IWorkerContext getWorkerContext(String version) {
+    FilesystemPackageCacheManager pcm;
+    try {
+      pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+      IWorkerContext fcontext = getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(version), version));
+      fcontext.setUcumService(new UcumEssenceService(TestingUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
+      fcontext.setExpansionProfile(new Parameters());
+      return fcontext;
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new Error(e);
+    }
+  }
+
   public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage) throws Exception {
-    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withUserAgent(TestConstants.USER_AGENT).withTerminologyCachePath(TestConstants.TX_CACHE).fromPackage(npmPackage);
+    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT).withTerminologyCachePath(TestConstants.TX_CACHE).fromPackage(npmPackage);
     TerminologyCache.setCacheErrors(true);
-    swc.setAllowLoadingDuplicates(true);
     return swc;
   }
 
   public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage, IWorkerContext.IContextResourceLoader loader) throws Exception {
-    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withUserAgent(TestConstants.USER_AGENT).withTerminologyCachePath(TestConstants.TX_CACHE).fromPackage(npmPackage, loader);
+    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT).withTerminologyCachePath(TestConstants.TX_CACHE).fromPackage(npmPackage, loader);
     TerminologyCache.setCacheErrors(true);
-    swc.setAllowLoadingDuplicates(true);
     return swc;
   }
 
