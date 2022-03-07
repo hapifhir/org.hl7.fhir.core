@@ -81,10 +81,10 @@ public class PackageClient {
       if (versions != null) {
         for (String v : sorted(versions.keySet())) {
           JsonObject obj = versions.getAsJsonObject(v);
-          res.add(new PackageInfo(JSONUtil.str(obj, "name"),
-            JSONUtil.str(obj, "version"),
-            JSONUtil.str(obj, "FhirVersion"),
-            JSONUtil.str(obj, "description"),
+          res.add(new PackageInfo(JSONUtil.str(obj, "Name", "name"),
+            JSONUtil.str(obj, "Version", "version"),
+            JSONUtil.str(obj, "FhirVersion", "fhirVersion"),
+            JSONUtil.str(obj, "Description", "description"),
             JSONUtil.str(obj, "url"),
             JSONUtil.str(obj, "canonical"),
             address));
