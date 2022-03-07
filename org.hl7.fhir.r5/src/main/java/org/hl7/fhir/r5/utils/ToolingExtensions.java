@@ -200,6 +200,7 @@ public class ToolingExtensions {
   public static final String EXT_VALUESET_SYSTEM = "http://hl7.org/fhir/StructureDefinition/valueset-system";
   public static final String EXT_EXPAND_RULES = "http://hl7.org/fhir/StructureDefinition/valueset-expand-rules";
   public static final String EXT_EXPAND_GROUP = "http://hl7.org/fhir/StructureDefinition/valueset-expand-group";
+  public static final String EXT_BINDING_ADDITIONAL = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding";
   
   // specific extension helpers
 

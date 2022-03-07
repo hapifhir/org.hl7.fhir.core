@@ -1,13 +1,13 @@
 package org.hl7.fhir.r5.test;
 
+import java.io.IOException;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Enumerations;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.Observation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
 
 public class ResourceCopyTests {
 

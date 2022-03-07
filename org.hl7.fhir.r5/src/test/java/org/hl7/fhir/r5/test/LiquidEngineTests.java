@@ -37,7 +37,7 @@ public class LiquidEngineTests implements ILiquidEngineIncludeResolver {
 
   @BeforeEach
   public void setUp() throws Exception {
-    engine = new LiquidEngine(TestingUtilities.context(), null);
+    engine = new LiquidEngine(TestingUtilities.getSharedWorkerContext(), null);
     engine.setIncludeResolver(this);
   }
 

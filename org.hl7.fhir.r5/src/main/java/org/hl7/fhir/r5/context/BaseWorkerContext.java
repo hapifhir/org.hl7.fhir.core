@@ -388,7 +388,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
         map.put(r.getId(), new ResourceProxy(r));
       } else {
-        System.out.println("Ignore "+r.fhirType()+"/"+r.getId()+" from package "+packageInfo.toString());
+        logger.logDebugMessage(LogCategory.PROGRESS,"Ignore "+r.fhirType()+"/"+r.getId()+" from package "+packageInfo.toString());
       }
 
       if (r instanceof CodeSystem || r instanceof NamingSystem) {
@@ -666,10 +666,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
 
   @Override
-  public ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical) throws TerminologyServiceException {
+  public ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical, boolean noInactive) throws TerminologyServiceException {
     ValueSet vs = new ValueSet();
     vs.setStatus(PublicationStatus.ACTIVE);
     vs.setCompose(new ValueSetComposeComponent());
+    vs.getCompose().setInactive(!noInactive);
     vs.getCompose().getInclude().add(inc);
     CacheToken cacheToken = txCache.generateExpandToken(vs, hierarchical);
     ValueSetExpansionOutcome res;
