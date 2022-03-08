@@ -24,6 +24,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.ITypeParser;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
@@ -104,8 +105,11 @@ public class VocabTests {
   }
 
   @BeforeAll
-  public static void setUp() throws FileNotFoundException, FHIRException, IOException {
-    context = TestingUtilities.context();
+  public static void setUp() throws FHIRException, IOException {
+    /* Do NOT get a shared worker context from Testing Utilities or else the terminology package loaded below
+       will appear in tests where it causes failures.
+     */
+    context = TestingUtilities.getWorkerContext(VersionUtilities.getMajMin(TestingUtilities.DEFAULT_CONTEXT_VERSION));
     if (!context.hasPackage("hl7.terminology", null)) {
   
       NpmPackage utg = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage("hl7.terminology");
