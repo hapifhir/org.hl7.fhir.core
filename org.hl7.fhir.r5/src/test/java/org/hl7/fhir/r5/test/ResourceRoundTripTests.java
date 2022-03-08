@@ -33,7 +33,7 @@ public class ResourceRoundTripTests {
   @Test
   public void test() throws IOException, FHIRException, EOperationOutcome {
     DomainResource res = (DomainResource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "unicode.xml"));
-    RenderingContext rc = new RenderingContext(TestingUtilities.context(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER);
+    RenderingContext rc = new RenderingContext(TestingUtilities.getSharedWorkerContext(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER);
     RendererFactory.factory(res, rc).render(res);
     IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "unicode.xml"), new FileOutputStream(TestingUtilities.tempFile("gen", "unicode.xml")));
     new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(TestingUtilities.tempFile("gen", "unicode.out.xml")), res);
@@ -64,7 +64,7 @@ public class ResourceRoundTripTests {
    * verify that umlaut like äö etc are not encoded in UTF-8 in attributes
    */
   public void testSerializeUmlaut() throws IOException {
-    Element xml = Manager.parseSingle(TestingUtilities.context(), TestingUtilities.loadTestResourceStream("r5", "unicode.xml"),
+    Element xml = Manager.parseSingle(TestingUtilities.getSharedWorkerContext(), TestingUtilities.loadTestResourceStream("r5", "unicode.xml"),
         FhirFormat.XML);
     List<Element> concept = xml.getChildrenByName("concept");
     assertTrue(concept!=null && concept.size()==1);
@@ -72,7 +72,7 @@ public class ResourceRoundTripTests {
     assertTrue(code!=null && code.size()==1);
     code.get(0).setValue("ö");
     ByteArrayOutputStream baosXml = new  ByteArrayOutputStream();
-    Manager.compose(TestingUtilities.context(), xml, baosXml, FhirFormat.XML, OutputStyle.PRETTY, null);
+    Manager.compose(TestingUtilities.getSharedWorkerContext(), xml, baosXml, FhirFormat.XML, OutputStyle.PRETTY, null);
     String cdaSerialised = baosXml.toString("UTF-8");
     assertTrue(cdaSerialised.indexOf("ö")>0); 
   }
