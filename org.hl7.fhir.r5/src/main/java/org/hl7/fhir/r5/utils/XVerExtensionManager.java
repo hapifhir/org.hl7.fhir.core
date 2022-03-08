@@ -50,9 +50,6 @@ public class XVerExtensionManager {
       return XVerExtensionStatus.Invalid;
     }
     String v = url.substring(20, 23);
-    if ("5.0".equals(v)) {
-      v = "4.6"; // for now
-    }
     String e = url.substring(54);
     if (!lists.containsKey(v)) {
       if (context.getBinaries().containsKey("xver-paths-"+v+".json")) {
@@ -86,9 +83,6 @@ public class XVerExtensionManager {
 
   public StructureDefinition makeDefinition(String url) {
     String verSource = url.substring(20, 23);
-    if ("5.0".equals(verSource)) {
-      verSource = "4.6"; // for now
-    }
     String verTarget = VersionUtilities.getMajMin(context.getVersion());
     String e = url.substring(54);
     JsonObject root = lists.get(verSource);
