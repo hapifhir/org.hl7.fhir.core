@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.soap.Text;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
@@ -49,6 +50,7 @@ import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -137,7 +139,8 @@ public class SnapShotGenerationTests {
     private boolean fail;
     private boolean newSliceProcessing;
     private boolean debug;
-
+    private boolean noR4b;
+    
     private List<Rule> rules = new ArrayList<>();
     private StructureDefinition source;
     private List<StructureDefinition> included = new ArrayList<>();
@@ -161,6 +164,7 @@ public class SnapShotGenerationTests {
         rules.add(new Rule(rule));
         rule = XMLUtil.getNextSibling(rule);
       }
+      noR4b = test.hasAttribute("r4b") && "false".equals(test.getAttribute("r4b"));
     }
 
     public String getId() {
@@ -466,33 +470,37 @@ public class SnapShotGenerationTests {
     fp.setHostServices(context);
     messages = new ArrayList<ValidationMessage>();
 
-    System.out.println("---- "+id+" -----------------------------------------");
-    if (test.isFail()) {
-      boolean failed = true;
-      try {
-        if (test.isGen())
-          testGen(true, test, context);
-        else
-          testSort(test, context);
-        failed = false;
-      } catch (Throwable e) {
-        System.out.println("Error running test: " + e.getMessage());
-        if (!Utilities.noString(test.regex)) {
-          Assertions.assertTrue(e.getMessage().matches(test.regex), "correct error message");
-        } else if ("Should have failed".equals(e.getMessage())) {
-          throw e;
-        } else {
+    if (test.noR4b) {
+      Assert.assertTrue(true);
+    } else {
+      System.out.println("---- "+id+" -----------------------------------------");
+      if (test.isFail()) {
+        boolean failed = true;
+        try {
+          if (test.isGen())
+            testGen(true, test, context);
+          else
+            testSort(test, context);
+          failed = false;
+        } catch (Throwable e) {
+          System.out.println("Error running test: " + e.getMessage());
+          if (!Utilities.noString(test.regex)) {
+            Assertions.assertTrue(e.getMessage().matches(test.regex), "correct error message");
+          } else if ("Should have failed".equals(e.getMessage())) {
+            throw e;
+          } else {
+          }
         }
+        Assertions.assertTrue(failed, "Should have failed");
+      } else if (test.isGen())
+        testGen(false, test, context);
+      else
+        testSort(test, context);
+      for (Rule r : test.getRules()) {
+        StructureDefinition sdn = new StructureDefinition();
+        boolean ok = fp.evaluateToBoolean(sdn, sdn, sdn, r.expression);
+        Assertions.assertTrue(ok, r.description);
       }
-      Assertions.assertTrue(failed, "Should have failed");
-    } else if (test.isGen())
-      testGen(false, test, context);
-    else
-      testSort(test, context);
-    for (Rule r : test.getRules()) {
-      StructureDefinition sdn = new StructureDefinition();
-      boolean ok = fp.evaluateToBoolean(sdn, sdn, sdn, r.expression);
-      Assertions.assertTrue(ok, r.description);
     }
   }
 
