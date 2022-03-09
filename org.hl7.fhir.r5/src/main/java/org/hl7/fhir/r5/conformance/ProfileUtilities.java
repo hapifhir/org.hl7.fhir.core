@@ -4329,12 +4329,12 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private boolean isBaseCondition(IdType c) {
     String key = c.asStringValue();
-    return key.startsWith("ele-") || key.startsWith("res-") || key.startsWith("ext-") || key.startsWith("dom-") || key.startsWith("dr-");
+    return key != null && key.startsWith("ele-") || key.startsWith("res-") || key.startsWith("ext-") || key.startsWith("dom-") || key.startsWith("dr-");
   }
 
   private boolean isBaseConstraint(ElementDefinitionConstraintComponent con) {
     String key = con.getKey();
-    return key.startsWith("ele-") || key.startsWith("res-") || key.startsWith("ext-") || key.startsWith("dom-") || key.startsWith("dr-");
+    return key != null && key.startsWith("ele-") || key.startsWith("res-") || key.startsWith("ext-") || key.startsWith("dom-") || key.startsWith("dr-");
   }
 
   private void makeChoiceRows(List<Row> subRows, ElementDefinition element, HierarchicalTableGenerator gen, String corePath, String profileBaseFileName, boolean mustSupportMode) {
