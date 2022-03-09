@@ -1091,6 +1091,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           ElementDefinition outcome = updateURLs(url, webUrl, currentBase.copy());
           outcome.setPath(fixedPathDest(contextPathDst, outcome.getPath(), redirector, contextPathSrc));
           updateFromBase(outcome, currentBase);
+          updateConstraintSources(outcome, srcSD.getUrl());
           markDerived(outcome);
           if (resultPathBase == null)
             resultPathBase = outcome.getPath();
@@ -1927,6 +1928,15 @@ public class ProfileUtilities extends TranslatingUtilities {
     return res;
   }
 
+  private void updateConstraintSources(ElementDefinition ed, String url) {
+    for (ElementDefinitionConstraintComponent c : ed.getConstraint()) {
+      if (!c.hasSource()) {
+        c.setSource(url);
+      }
+    }
+    
+  }
+
   private Set<String> getListOfTypes(ElementDefinition e) {
     Set<String> result = new HashSet<>();
     for (TypeRefComponent t : e.getType()) {
@@ -2422,6 +2432,11 @@ public class ProfileUtilities extends TranslatingUtilities {
     StructureDefinition sd = null;
     if (type.hasProfile()) {
       sd = context.fetchResource(StructureDefinition.class, type.getProfile().get(0).getValue());
+      if (sd == null) {
+        if (xver != null && xver.matchingUrl(type.getProfile().get(0).getValue()) && xver.status(type.getProfile().get(0).getValue()) == XVerExtensionStatus.Valid) {
+          sd = xver.makeDefinition(type.getProfile().get(0).getValue());              
+        }
+      }
       if (sd == null)
         System.out.println("Failed to find referenced profile: " + type.getProfile());
     }
