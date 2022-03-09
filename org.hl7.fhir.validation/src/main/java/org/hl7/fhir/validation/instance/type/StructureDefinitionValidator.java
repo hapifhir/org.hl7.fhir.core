@@ -294,6 +294,15 @@ public class StructureDefinitionValidator extends BaseValidator {
           rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
         } else {
           rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), isInstanceOf(t, code), I18nConstants.SD_ED_TYPE_PROFILE_WRONG, p, t, code, path);
+          if (t.getType().equals("Extension")) {
+            boolean isModifierDefinition = checkIsModifierExtension(sd);
+            boolean isModifierContext = path.endsWith(".modifierExtension");
+            if (isModifierDefinition) {
+              rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), isModifierContext, I18nConstants.SD_ED_TYPE_PROFILE_NOT_MODIFIER, p, t, code, path);            
+            } else {
+              rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), !isModifierContext, I18nConstants.SD_ED_TYPE_PROFILE_IS_MODIFIER, p, t, code, path);
+            }          
+          }
         }
       }      
     }
@@ -325,8 +334,22 @@ public class StructureDefinitionValidator extends BaseValidator {
         rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
       } else if (!isInstanceOf(t, code)) {
         rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_WRONG, p, t, code, path);
+      } else {
+        if (t.getType().equals("Extension")) {
+          boolean isModifierDefinition = checkIsModifierExtension(sd);
+          boolean isModifierContext = path.endsWith(".modifierExtension");
+          if (isModifierDefinition) {
+            rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), isModifierContext, I18nConstants.SD_ED_TYPE_PROFILE_NOT_MODIFIER, p, t, code, path);            
+          } else {
+            rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), !isModifierContext, I18nConstants.SD_ED_TYPE_PROFILE_IS_MODIFIER, p, t, code, path);
+          }          
+        }
       }
     }
+  }
+
+  private boolean checkIsModifierExtension(StructureDefinition t) {
+    return t.getSnapshot().getElementFirstRep().getIsModifier();
   }
 
   private void validateTargetProfile(List<ValidationMessage> errors, Element profile, String code, NodeStack stack, String path) {
