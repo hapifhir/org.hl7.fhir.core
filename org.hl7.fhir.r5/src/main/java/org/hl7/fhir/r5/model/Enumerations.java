@@ -6874,7 +6874,6 @@ The primary difference between a medicationusage and a medicationadministration 
         public static FHIRVersion fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-            codeString = codeString.toLowerCase();
             if ("0.01".equals(codeString))
               return _0_01;
             if ("0.05".equals(codeString))
@@ -7105,7 +7104,6 @@ public String toCode(int len) {
        public static boolean isValidCode(String codeString) {
           if (codeString == null || "".equals(codeString))
               return false;
-          codeString = codeString.toLowerCase();
           if ("0.01".equals(codeString))
             return true;
           if ("0.05".equals(codeString))
@@ -7171,7 +7169,6 @@ public String toCode(int len) {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
-            codeString = codeString.toLowerCase();
             if ("0.01".equals(codeString))
               return FHIRVersion._0_01;
             if ("0.05".equals(codeString))
