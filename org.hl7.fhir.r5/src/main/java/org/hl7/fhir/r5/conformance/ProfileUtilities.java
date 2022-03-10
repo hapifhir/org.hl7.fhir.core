@@ -621,180 +621,184 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (!base.getType().equals(derived.getType()) && derived.getDerivation() == TypeDerivationRule.CONSTRAINT) {
       throw new DefinitionException(context.formatMessage(I18nConstants.BASE__DERIVED_PROFILES_HAVE_DIFFERENT_TYPES____VS___, base.getUrl(), base.getType(), derived.getUrl(), derived.getType()));
     }
-    
+
     if (snapshotStack.contains(derived.getUrl())) {
       throw new DefinitionException(context.formatMessage(I18nConstants.CIRCULAR_SNAPSHOT_REFERENCES_DETECTED_CANNOT_GENERATE_SNAPSHOT_STACK__, snapshotStack.toString()));
     }
     derived.setUserData("profileutils.snapshot.generating", true);
     snapshotStack.add(derived.getUrl());
-
-    if (!Utilities.noString(webUrl) && !webUrl.endsWith("/"))
-      webUrl = webUrl + '/';
-
-    if (defWebRoot == null)
-      defWebRoot = webUrl;
-    derived.setSnapshot(new StructureDefinitionSnapshotComponent());
-
     try {
-      checkDifferential(derived.getDifferential().getElement(), typeName(derived.getType()), derived.getUrl());
-      checkDifferentialBaseType(derived);
-      
-      // so we have two lists - the base list, and the differential list
-      // the differential list is only allowed to include things that are in the base list, but
-      // is allowed to include them multiple times - thereby slicing them
 
-      // our approach is to walk through the base list, and see whether the differential
-      // says anything about them.
-      int baseCursor = 0;
-      int diffCursor = 0; // we need a diff cursor because we can only look ahead, in the bound scoped by longer paths
+      if (!Utilities.noString(webUrl) && !webUrl.endsWith("/"))
+        webUrl = webUrl + '/';
+
+      if (defWebRoot == null)
+        defWebRoot = webUrl;
+      derived.setSnapshot(new StructureDefinitionSnapshotComponent());
+
+      try {
+        checkDifferential(derived.getDifferential().getElement(), typeName(derived.getType()), derived.getUrl());
+        checkDifferentialBaseType(derived);
+
+        // so we have two lists - the base list, and the differential list
+        // the differential list is only allowed to include things that are in the base list, but
+        // is allowed to include them multiple times - thereby slicing them
+
+        // our approach is to walk through the base list, and see whether the differential
+        // says anything about them.
+        int baseCursor = 0;
+        int diffCursor = 0; // we need a diff cursor because we can only look ahead, in the bound scoped by longer paths
 
 
-      for (ElementDefinition e : derived.getDifferential().getElement()) 
-        e.clearUserData(GENERATED_IN_SNAPSHOT);
+        for (ElementDefinition e : derived.getDifferential().getElement()) 
+          e.clearUserData(GENERATED_IN_SNAPSHOT);
 
-      // we actually delegate the work to a subroutine so we can re-enter it with a different cursors
-      StructureDefinitionDifferentialComponent diff = cloneDiff(derived.getDifferential()); // we make a copy here because we're sometimes going to hack the differential while processing it. Have to migrate user data back afterwards
-      StructureDefinitionSnapshotComponent baseSnapshot  = base.getSnapshot(); 
-      if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
-        String derivedType = derived.getType();
-        if (StructureDefinitionKind.LOGICAL.equals(derived.getKind()) && derived.getType().contains("/")) {
-          derivedType = derivedType.substring(derivedType.lastIndexOf("/")+1);
+        // we actually delegate the work to a subroutine so we can re-enter it with a different cursors
+        StructureDefinitionDifferentialComponent diff = cloneDiff(derived.getDifferential()); // we make a copy here because we're sometimes going to hack the differential while processing it. Have to migrate user data back afterwards
+        StructureDefinitionSnapshotComponent baseSnapshot  = base.getSnapshot(); 
+        if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+          String derivedType = derived.getType();
+          if (StructureDefinitionKind.LOGICAL.equals(derived.getKind()) && derived.getType().contains("/")) {
+            derivedType = derivedType.substring(derivedType.lastIndexOf("/")+1);
+          }
+          baseSnapshot = cloneSnapshot(baseSnapshot, base.getType(), derivedType);
         }
-        baseSnapshot = cloneSnapshot(baseSnapshot, base.getType(), derivedType);
-      }
-//      if (derived.getId().equals("2.16.840.1.113883.10.20.22.2.1.1")) {
-//        debug = true;
-//      }
-      processPaths("", derived.getSnapshot(), baseSnapshot, diff, baseCursor, diffCursor, baseSnapshot.getElement().size()-1, 
-          derived.getDifferential().hasElement() ? derived.getDifferential().getElement().size()-1 : -1, url, webUrl, derived.present(), null, null, false, base.getUrl(), null, false, null, null, new ArrayList<ElementRedirection>(), base);
-      checkGroupConstraints(derived);
-      if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
-        for (ElementDefinition e : diff.getElement()) {
-          if (!e.hasUserData(GENERATED_IN_SNAPSHOT)) {
-            ElementDefinition outcome = updateURLs(url, webUrl, e.copy());
-            e.setUserData(GENERATED_IN_SNAPSHOT, outcome);
-            derived.getSnapshot().addElement(outcome);
+        //      if (derived.getId().equals("2.16.840.1.113883.10.20.22.2.1.1")) {
+        //        debug = true;
+        //      }
+        processPaths("", derived.getSnapshot(), baseSnapshot, diff, baseCursor, diffCursor, baseSnapshot.getElement().size()-1, 
+            derived.getDifferential().hasElement() ? derived.getDifferential().getElement().size()-1 : -1, url, webUrl, derived.present(), null, null, false, base.getUrl(), null, false, null, null, new ArrayList<ElementRedirection>(), base);
+        checkGroupConstraints(derived);
+        if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+          for (ElementDefinition e : diff.getElement()) {
+            if (!e.hasUserData(GENERATED_IN_SNAPSHOT)) {
+              ElementDefinition outcome = updateURLs(url, webUrl, e.copy());
+              e.setUserData(GENERATED_IN_SNAPSHOT, outcome);
+              derived.getSnapshot().addElement(outcome);
+            }
           }
         }
-      }
-      
-      if (derived.getKind() != StructureDefinitionKind.LOGICAL && !derived.getSnapshot().getElementFirstRep().getType().isEmpty())
-        throw new Error(context.formatMessage(I18nConstants.TYPE_ON_FIRST_SNAPSHOT_ELEMENT_FOR__IN__FROM_, derived.getSnapshot().getElementFirstRep().getPath(), derived.getUrl(), base.getUrl()));
-      updateMaps(base, derived);
 
-      setIds(derived, false);
-      if (debug) {
-        System.out.println("Differential: ");
-        for (ElementDefinition ed : derived.getDifferential().getElement())
-          System.out.println("  "+ed.getId()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
-        System.out.println("Snapshot: ");
-        for (ElementDefinition ed : derived.getSnapshot().getElement())
-          System.out.println("  "+ed.getId()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
-      }
-      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-      //Check that all differential elements have a corresponding snapshot element
-      int ce = 0;
-      for (ElementDefinition e : diff.getElement()) {
-        if (!e.hasUserData("diff-source"))
-          throw new Error(context.formatMessage(I18nConstants.UNXPECTED_INTERNAL_CONDITION__NO_SOURCE_ON_DIFF_ELEMENT));
-        else {
-          if (e.hasUserData(DERIVATION_EQUALS))
-            ((Base) e.getUserData("diff-source")).setUserData(DERIVATION_EQUALS, e.getUserData(DERIVATION_EQUALS));
-          if (e.hasUserData(DERIVATION_POINTER))
-            ((Base) e.getUserData("diff-source")).setUserData(DERIVATION_POINTER, e.getUserData(DERIVATION_POINTER));
-        }
-        if (!e.hasUserData(GENERATED_IN_SNAPSHOT)) {
-          b.append(e.hasId() ? "id: "+e.getId() : "path: "+e.getPath());
-          ce++;
-          if (e.hasId()) {
-            String msg = "No match found in the generated snapshot: check that the path and definitions are legal in the differential (including order)";
-            messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+e.getId(), msg, ValidationMessage.IssueSeverity.ERROR));
-          }
-        }
-      }
-      if (!Utilities.noString(b.toString())) {
-        String msg = "The profile "+derived.getUrl()+" has "+ce+" "+Utilities.pluralize("element", ce)+" in the differential ("+b.toString()+") that don't have a matching element in the snapshot: check that the path and definitions are legal in the differential (including order)";
-        System.out.println("Error in snapshot generation: "+msg);
-        if (!debug) {
+        if (derived.getKind() != StructureDefinitionKind.LOGICAL && !derived.getSnapshot().getElementFirstRep().getType().isEmpty())
+          throw new Error(context.formatMessage(I18nConstants.TYPE_ON_FIRST_SNAPSHOT_ELEMENT_FOR__IN__FROM_, derived.getSnapshot().getElementFirstRep().getPath(), derived.getUrl(), base.getUrl()));
+        updateMaps(base, derived);
+
+        setIds(derived, false);
+        if (debug) {
           System.out.println("Differential: ");
           for (ElementDefinition ed : derived.getDifferential().getElement())
-            System.out.println("  "+ed.getId()+" = "+ed.getPath()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
+            System.out.println("  "+ed.getId()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
           System.out.println("Snapshot: ");
           for (ElementDefinition ed : derived.getSnapshot().getElement())
-            System.out.println("  "+ed.getId()+" = "+ed.getPath()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
+            System.out.println("  "+ed.getId()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
         }
-        if (exception)
-          throw new DefinitionException(msg);
-        else
-          messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url, msg, ValidationMessage.IssueSeverity.ERROR));
-      }
-      // hack around a problem in R4 definitions (somewhere?)
-      for (ElementDefinition ed : derived.getSnapshot().getElement()) {
-        for (ElementDefinitionMappingComponent mm : ed.getMapping()) {
-          if (mm.hasMap()) {
-            mm.setMap(mm.getMap().trim());
+        CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+        //Check that all differential elements have a corresponding snapshot element
+        int ce = 0;
+        for (ElementDefinition e : diff.getElement()) {
+          if (!e.hasUserData("diff-source"))
+            throw new Error(context.formatMessage(I18nConstants.UNXPECTED_INTERNAL_CONDITION__NO_SOURCE_ON_DIFF_ELEMENT));
+          else {
+            if (e.hasUserData(DERIVATION_EQUALS))
+              ((Base) e.getUserData("diff-source")).setUserData(DERIVATION_EQUALS, e.getUserData(DERIVATION_EQUALS));
+            if (e.hasUserData(DERIVATION_POINTER))
+              ((Base) e.getUserData("diff-source")).setUserData(DERIVATION_POINTER, e.getUserData(DERIVATION_POINTER));
           }
-        }
-        for (ElementDefinitionConstraintComponent s : ed.getConstraint()) {
-          if (s.hasSource()) {
-            String ref = s.getSource();
-            if (!Utilities.isAbsoluteUrl(ref)) {
-              if (ref.contains(".")) {
-                s.setSource("http://hl7.org/fhir/StructureDefinition/"+ref.substring(0, ref.indexOf("."))+"#"+ref);
-              } else {
-                s.setSource("http://hl7.org/fhir/StructureDefinition/"+ref);
-              }
-            }  
-          }
-        }
-      }
-      if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
-        for (ElementDefinition ed : derived.getSnapshot().getElement()) {
-          if (!ed.hasBase()) {
-            ed.getBase().setPath(ed.getPath()).setMin(ed.getMin()).setMax(ed.getMax());
-          }
-        }
-      }
-      // last, check for wrong profiles or target profiles
-      for (ElementDefinition ed : derived.getSnapshot().getElement()) {
-        for (TypeRefComponent t : ed.getType()) {
-          for (UriType u : t.getProfile()) {
-            StructureDefinition sd = context.fetchResource(StructureDefinition.class, u.getValue());
-            if (sd == null) {
-              if (xver != null && xver.matchingUrl(u.getValue()) && xver.status(u.getValue()) == XVerExtensionStatus.Valid) {
-                sd = xver.makeDefinition(u.getValue());              
-              }
+          if (!e.hasUserData(GENERATED_IN_SNAPSHOT)) {
+            b.append(e.hasId() ? "id: "+e.getId() : "path: "+e.getPath());
+            ce++;
+            if (e.hasId()) {
+              String msg = "No match found in the generated snapshot: check that the path and definitions are legal in the differential (including order)";
+              messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+e.getId(), msg, ValidationMessage.IssueSeverity.ERROR));
             }
-            if (sd == null) {
-              if (messages != null) {
-                messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), "The type of profile "+u.getValue()+" cannot be checked as the profile is not known", IssueSeverity.WARNING));
+          }
+        }
+        if (!Utilities.noString(b.toString())) {
+          String msg = "The profile "+derived.getUrl()+" has "+ce+" "+Utilities.pluralize("element", ce)+" in the differential ("+b.toString()+") that don't have a matching element in the snapshot: check that the path and definitions are legal in the differential (including order)";
+          System.out.println("Error in snapshot generation: "+msg);
+          if (!debug) {
+            System.out.println("Differential: ");
+            for (ElementDefinition ed : derived.getDifferential().getElement())
+              System.out.println("  "+ed.getId()+" = "+ed.getPath()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
+            System.out.println("Snapshot: ");
+            for (ElementDefinition ed : derived.getSnapshot().getElement())
+              System.out.println("  "+ed.getId()+" = "+ed.getPath()+" : "+typeSummaryWithProfile(ed)+"["+ed.getMin()+".."+ed.getMax()+"]"+sliceSummary(ed)+"  "+constraintSummary(ed));
+          }
+          if (exception)
+            throw new DefinitionException(msg);
+          else
+            messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url, msg, ValidationMessage.IssueSeverity.ERROR));
+        }
+        // hack around a problem in R4 definitions (somewhere?)
+        for (ElementDefinition ed : derived.getSnapshot().getElement()) {
+          for (ElementDefinitionMappingComponent mm : ed.getMapping()) {
+            if (mm.hasMap()) {
+              mm.setMap(mm.getMap().trim());
+            }
+          }
+          for (ElementDefinitionConstraintComponent s : ed.getConstraint()) {
+            if (s.hasSource()) {
+              String ref = s.getSource();
+              if (!Utilities.isAbsoluteUrl(ref)) {
+                if (ref.contains(".")) {
+                  s.setSource("http://hl7.org/fhir/StructureDefinition/"+ref.substring(0, ref.indexOf("."))+"#"+ref);
+                } else {
+                  s.setSource("http://hl7.org/fhir/StructureDefinition/"+ref);
+                }
+              }  
+            }
+          }
+        }
+        if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+          for (ElementDefinition ed : derived.getSnapshot().getElement()) {
+            if (!ed.hasBase()) {
+              ed.getBase().setPath(ed.getPath()).setMin(ed.getMin()).setMax(ed.getMax());
+            }
+          }
+        }
+        // last, check for wrong profiles or target profiles
+        for (ElementDefinition ed : derived.getSnapshot().getElement()) {
+          for (TypeRefComponent t : ed.getType()) {
+            for (UriType u : t.getProfile()) {
+              StructureDefinition sd = context.fetchResource(StructureDefinition.class, u.getValue());
+              if (sd == null) {
+                if (xver != null && xver.matchingUrl(u.getValue()) && xver.status(u.getValue()) == XVerExtensionStatus.Valid) {
+                  sd = xver.makeDefinition(u.getValue());              
+                }
               }
-            } else {
-              String wt = t.getWorkingCode();
-              if (ed.getPath().equals("Bundle.entry.response.outcome")) {
-                wt = "OperationOutcome";
-              }
-              if (!sd.getType().equals(wt)) {
-                boolean ok = isCompatibleType(wt, sd);
-                if (!ok) {
-                  String smsg = "The profile "+u.getValue()+" has type "+sd.getType()+" which is not consistent with the stated type "+wt;
-                  if (exception)
-                    throw new DefinitionException(smsg);
-                  else
-                    messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), smsg, IssueSeverity.ERROR));
+              if (sd == null) {
+                if (messages != null) {
+                  messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), "The type of profile "+u.getValue()+" cannot be checked as the profile is not known", IssueSeverity.WARNING));
+                }
+              } else {
+                String wt = t.getWorkingCode();
+                if (ed.getPath().equals("Bundle.entry.response.outcome")) {
+                  wt = "OperationOutcome";
+                }
+                if (!sd.getType().equals(wt)) {
+                  boolean ok = isCompatibleType(wt, sd);
+                  if (!ok) {
+                    String smsg = "The profile "+u.getValue()+" has type "+sd.getType()+" which is not consistent with the stated type "+wt;
+                    if (exception)
+                      throw new DefinitionException(smsg);
+                    else
+                      messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.VALUE, url+"#"+ed.getId(), smsg, IssueSeverity.ERROR));
+                  }
                 }
               }
             }
           }
         }
+      } catch (Exception e) {
+        // if we had an exception generating the snapshot, make sure we don't leave any half generated snapshot behind
+        derived.setSnapshot(null);
+        derived.clearUserData("profileutils.snapshot.generating");
+        throw e;
       }
-    } catch (Exception e) {
-      // if we had an exception generating the snapshot, make sure we don't leave any half generated snapshot behind
-      derived.setSnapshot(null);
+    } finally {
       derived.clearUserData("profileutils.snapshot.generating");
-      throw e;
+      snapshotStack.remove(derived.getUrl());
     }
-    derived.clearUserData("profileutils.snapshot.generating");
   }
 
   public void checkDifferentialBaseType(StructureDefinition derived) throws Error {
@@ -1147,7 +1151,7 @@ public class ProfileUtilities extends TranslatingUtilities {
                   processPaths(indent+"  ", result, base, differential, nbc, start, nbl-1, diffCursor-1, url, webUrl, profileName, tgt.getElement().getPath(), outcome.getPath(), trimDifferential, contextName, resultPathBase, false, null, null, redirectorStack(redirector, outcome, cpath), srcSD);
                 }
               } else {
-                StructureDefinition dt = outcome.getType().size() > 1 ? context.fetchTypeDefinition("Element") : getProfileForDataType(outcome.getType().get(0));
+                StructureDefinition dt = outcome.getType().size() > 1 ? context.fetchTypeDefinition("Element") : getProfileForDataType(outcome.getType().get(0), webUrl);
                 if (dt == null) {
                   throw new DefinitionException(context.formatMessage(I18nConstants.UNKNOWN_TYPE__AT_, outcome.getType().get(0), cpath));
                 }
@@ -1300,7 +1304,7 @@ public class ProfileUtilities extends TranslatingUtilities {
                    processPaths(indent+"  ", result, base, differential, nbc, start - 1, nbl-1, diffCursor - 1, url, webUrl, profileName, tgt.getElement().getPath(), diffMatches.get(0).getPath(), trimDifferential, contextName, resultPathBase, false, null, null, redirectorStack(redirector, outcome, cpath), srcSD);
                 }
               } else {
-                StructureDefinition dt = outcome.getType().size() == 1 ? getProfileForDataType(outcome.getType().get(0)) : getProfileForDataType("Element");
+                StructureDefinition dt = outcome.getType().size() == 1 ? getProfileForDataType(outcome.getType().get(0), webUrl) : getProfileForDataType("Element");
                 if (dt == null)
                   throw new DefinitionException(context.formatMessage(I18nConstants._HAS_CHILDREN__FOR_TYPE__IN_PROFILE__BUT_CANT_FIND_TYPE, diffMatches.get(0).getPath(), differential.getElement().get(diffCursor).getPath(), typeCode(outcome.getType()), profileName));
                 contextName = dt.getUrl();
@@ -1511,7 +1515,7 @@ public class ProfileUtilities extends TranslatingUtilities {
                 if (baseHasChildren(base, currentBase)) { // not a new type here
                   throw new Error("This situation is not yet handled (constrain slicing to 1..1 and fix base slice for inline structure - please report issue to grahame@fhir.org along with a test case that reproduces this error (@ "+cpath+" | "+currentBase.getPath()+")");
                 } else {
-                  StructureDefinition dt = getTypeForElement(differential, diffCursor, profileName, diffMatches, outcome);
+                  StructureDefinition dt = getTypeForElement(differential, diffCursor, profileName, diffMatches, outcome, webUrl);
                   contextName = dt.getUrl();
                   diffCursor++;
                   start = diffCursor;
@@ -1577,7 +1581,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               processPaths(indent+"  ", result, base, differential, baseCursor+1, diffCursor, baseLimit, diffLimit, url, webUrl, profileName, contextPathSrc, contextPathDst, trimDifferential, contextName, resultPathBase, false, null, null, redirector, srcSD);
               baseCursor = indexOfFirstNonChild(base, currentBase, baseCursor, baseLimit);
             } else {
-              StructureDefinition dt = getTypeForElement(differential, diffCursor, profileName, diffMatches, outcome);
+              StructureDefinition dt = getTypeForElement(differential, diffCursor, profileName, diffMatches, outcome, webUrl);
               contextName = dt.getUrl();
               int start = diffCursor;
               while (differential.getElement().size() > diffCursor && pathStartsWith(differential.getElement().get(diffCursor).getPath(), cpath+"."))
@@ -1778,7 +1782,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               if (base.getElement().get(baseCursor).getType().size() != 1) {
                 throw new Error(context.formatMessage(I18nConstants.DIFFERENTIAL_WALKS_INTO____BUT_THE_BASE_DOES_NOT_AND_THERE_IS_NOT_A_SINGLE_FIXED_TYPE_THE_TYPE_IS__THIS_IS_NOT_HANDLED_YET, cpath, diffMatches.get(0).toString(), base.getElement().get(baseCursor).typeSummary()));
               }
-              StructureDefinition dt = getProfileForDataType(base.getElement().get(baseCursor).getType().get(0));
+              StructureDefinition dt = getProfileForDataType(base.getElement().get(baseCursor).getType().get(0), webUrl);
               if (dt == null) {
                 throw new DefinitionException(context.formatMessage(I18nConstants.UNKNOWN_TYPE__AT_, outcome.getType().get(0), diffMatches.get(0).getPath()));
               }
@@ -1894,7 +1898,7 @@ public class ProfileUtilities extends TranslatingUtilities {
                           diffCursor - 1, url, webUrl, profileName+pathTail(diffMatches, 0), base.getElement().get(0).getPath(), base.getElement().get(0).getPath(), trimDifferential, contextName, resultPathBase, false, null, null, redirector, srcSD);
                       
                     } else {
-                      StructureDefinition dt = getProfileForDataType(outcome.getType().get(0));
+                      StructureDefinition dt = getProfileForDataType(outcome.getType().get(0), webUrl);
                       //                if (t.getCode().equals("Extension") && t.hasProfile() && !t.getProfile().contains(":")) {
                       // lloydfix                  dt =
                       //                }
@@ -1946,7 +1950,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
   public StructureDefinition getTypeForElement(StructureDefinitionDifferentialComponent differential, int diffCursor, String profileName,
-      List<ElementDefinition> diffMatches, ElementDefinition outcome) {
+      List<ElementDefinition> diffMatches, ElementDefinition outcome, String webUrl) {
     if (outcome.getType().size() == 0) {
       throw new DefinitionException(context.formatMessage(I18nConstants._HAS_NO_CHILDREN__AND_NO_TYPES_IN_PROFILE_, diffMatches.get(0).getPath(), differential.getElement().get(diffCursor).getPath(), profileName));
     }
@@ -1956,7 +1960,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           throw new DefinitionException(context.formatMessage(I18nConstants._HAS_CHILDREN__AND_MULTIPLE_TYPES__IN_PROFILE_, diffMatches.get(0).getPath(), differential.getElement().get(diffCursor).getPath(), typeCode(outcome.getType()), profileName));
       }
     }
-    StructureDefinition dt = getProfileForDataType(outcome.getType().get(0));
+    StructureDefinition dt = getProfileForDataType(outcome.getType().get(0), webUrl);
     if (dt == null)
       throw new DefinitionException(context.formatMessage(I18nConstants.UNKNOWN_TYPE__AT_, outcome.getType().get(0), diffMatches.get(0).getPath()));
     return dt;
@@ -2428,13 +2432,14 @@ public class ProfileUtilities extends TranslatingUtilities {
     return s;
   }  
 
-  private StructureDefinition getProfileForDataType(TypeRefComponent type)  {
+  private StructureDefinition getProfileForDataType(TypeRefComponent type, String webUrl)  {
     StructureDefinition sd = null;
     if (type.hasProfile()) {
       sd = context.fetchResource(StructureDefinition.class, type.getProfile().get(0).getValue());
       if (sd == null) {
         if (xver != null && xver.matchingUrl(type.getProfile().get(0).getValue()) && xver.status(type.getProfile().get(0).getValue()) == XVerExtensionStatus.Valid) {
           sd = xver.makeDefinition(type.getProfile().get(0).getValue());              
+          generateSnapshot(context.fetchTypeDefinition("Extension"), sd, sd.getUrl(), webUrl, sd.getName());
         }
       }
       if (sd == null)
