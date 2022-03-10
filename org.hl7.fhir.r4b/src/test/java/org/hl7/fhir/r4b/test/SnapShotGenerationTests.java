@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.soap.Text;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
