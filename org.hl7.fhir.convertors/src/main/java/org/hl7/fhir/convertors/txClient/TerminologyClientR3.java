@@ -72,7 +72,7 @@ public class TerminologyClientR3 implements TerminologyClient {
   @Override
   public ValueSet expandValueset(ValueSet vs, Parameters p, Map<String, String> params) throws FHIRException {
     org.hl7.fhir.dstu3.model.ValueSet vs2 = (org.hl7.fhir.dstu3.model.ValueSet) VersionConvertorFactory_30_50.convertResource(vs);
-    org.hl7.fhir.dstu3.model.ExpansionProfile p2 = (org.hl7.fhir.dstu3.model.ExpansionProfile) VersionConvertorFactory_30_50.convertResource(p);
+    org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(p);
     vs2 = client.expandValueset(vs2, p2, params); // todo: second parameter
     return (ValueSet) VersionConvertorFactory_30_50.convertResource(vs2);
   }

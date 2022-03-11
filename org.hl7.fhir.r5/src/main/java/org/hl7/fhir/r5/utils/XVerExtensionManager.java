@@ -50,9 +50,6 @@ public class XVerExtensionManager {
       return XVerExtensionStatus.Invalid;
     }
     String v = url.substring(20, 23);
-    if ("5.0".equals(v)) {
-      v = "4.6"; // for now
-    }
     String e = url.substring(54);
     if (!lists.containsKey(v)) {
       if (context.getBinaries().containsKey("xver-paths-"+v+".json")) {
@@ -86,9 +83,6 @@ public class XVerExtensionManager {
 
   public StructureDefinition makeDefinition(String url) {
     String verSource = url.substring(20, 23);
-    if ("5.0".equals(verSource)) {
-      verSource = "4.6"; // for now
-    }
     String verTarget = VersionUtilities.getMajMin(context.getVersion());
     String e = url.substring(54);
     JsonObject root = lists.get(verSource);
@@ -123,16 +117,18 @@ public class XVerExtensionManager {
       populateTypes(path, val, verSource, verTarget);
     } else if (path.has("elements")) {
       for (JsonElement i : path.getAsJsonArray("elements")) {
-        String s = i.getAsString();
+        JsonObject elt = root.getAsJsonObject(e+"."+i.getAsString());
+        if (elt != null) {
+        String s = i.getAsString().replace("[x]", "");
         sd.getDifferential().addElement().setPath("Extension.extension").setSliceName(s);
         sd.getDifferential().addElement().setPath("Extension.extension.extension").setMax("0");
         sd.getDifferential().addElement().setPath("Extension.extension.url").setFixed(new UriType(s));
         ElementDefinition val = sd.getDifferential().addElement().setPath("Extension.extension.value[x]").setMin(1);
-        JsonObject elt = root.getAsJsonObject(e+"."+s);
         if (!elt.has("types")) {
           throw new FHIRException("Internal error - nested elements not supported yet");
         }
         populateTypes(elt, val, verSource, verTarget);
+        }
       }      
       sd.getDifferential().addElement().setPath("Extension.url").setFixed(new UriType(url));
       sd.getDifferential().addElement().setPath("Extension.value[x]").setMax("0");

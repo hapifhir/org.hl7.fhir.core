@@ -1,17 +1,15 @@
 package org.hl7.fhir.r5.utils.client.network;
 
-import okhttp3.Headers;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
+import java.util.List;
+import java.util.Map;
+
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import okhttp3.Headers;
+import okhttp3.Request;
 
 class FhirRequestBuilderTest {
 

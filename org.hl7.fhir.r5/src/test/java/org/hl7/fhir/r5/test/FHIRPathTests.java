@@ -25,7 +25,6 @@ import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.test.FHIRPathTests.TestResultType;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
@@ -94,7 +93,7 @@ public class FHIRPathTests {
 
     @Override
     public ValueSet resolveValueSet(Object appContext, String url) {
-      return TestingUtilities.context().fetchResource(ValueSet.class, url);
+      return TestingUtilities.getSharedWorkerContext().fetchResource(ValueSet.class, url);
     }
 
   }
@@ -104,7 +103,7 @@ public class FHIRPathTests {
 
   @BeforeAll
   public static void setUp() {
-    fp = new FHIRPathEngine(TestingUtilities.context());
+    fp = new FHIRPathEngine(TestingUtilities.getSharedWorkerContext());
   }
 
   public static Stream<Arguments> data() throws ParserConfigurationException, SAXException, IOException {

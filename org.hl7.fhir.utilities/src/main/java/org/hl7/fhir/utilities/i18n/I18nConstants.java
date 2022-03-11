@@ -366,6 +366,8 @@ public class I18nConstants {
   public static final String SD_ED_TYPE_PROFILE_UNKNOWN = "SD_ED_TYPE_PROFILE_UNKNOWN";
   public static final String SD_ED_TYPE_PROFILE_NOTYPE = "SD_ED_TYPE_PROFILE_NOTYPE";
   public static final String SD_ED_TYPE_PROFILE_WRONG = "SD_ED_TYPE_PROFILE_WRONG";
+  public static final String SD_ED_TYPE_PROFILE_IS_MODIFIER = "SD_ED_TYPE_PROFILE_IS_MODIFIER";
+  public static final String SD_ED_TYPE_PROFILE_NOT_MODIFIER = "SD_ED_TYPE_PROFILE_NOT_MODIFIER";
   public static final String SD_ED_TYPE_PROFILE_WRONG_TARGET = "SD_ED_TYPE_PROFILE_WRONG_TARGET";
   public static final String SD_ED_TYPE_NO_TARGET_PROFILE = "SD_ED_TYPE_NO_TARGET_PROFILE";
   public static final String SD_ED_SHOULD_BIND = "SD_ED_SHOULD_BIND";

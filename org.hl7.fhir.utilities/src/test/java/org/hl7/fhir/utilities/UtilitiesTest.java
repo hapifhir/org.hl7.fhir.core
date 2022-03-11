@@ -39,7 +39,11 @@ class UtilitiesTest {
   @Test
   @DisplayName("Test Utilities.path maps temp directory correctly")
   public void testTempDirPath() throws IOException {
-    Assertions.assertEquals(Utilities.path("[tmp]", TEST_TXT), getTempDirectory() + TEST_TXT);
+    if (ToolGlobalSettings.hasTempPath()) {
+      Assertions.assertEquals(Utilities.path("[tmp]", TEST_TXT), ToolGlobalSettings.getTempPath() +File.separator+ TEST_TXT);      
+    } else {
+      Assertions.assertEquals(Utilities.path("[tmp]", TEST_TXT), getTempDirectory() + TEST_TXT);
+    }
   }
 
   @Test
