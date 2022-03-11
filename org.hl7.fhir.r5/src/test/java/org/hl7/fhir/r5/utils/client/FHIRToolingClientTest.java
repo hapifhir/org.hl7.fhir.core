@@ -1,9 +1,22 @@
 package org.hl7.fhir.r5.utils.client;
 
-import okhttp3.Headers;
-import okhttp3.Request;
-import okhttp3.internal.http2.Header;
-import org.hl7.fhir.r5.model.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.CapabilityStatement;
+import org.hl7.fhir.r5.model.Enumerations;
+import org.hl7.fhir.r5.model.IdType;
+import org.hl7.fhir.r5.model.Observation;
+import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.model.Patient;
+import org.hl7.fhir.r5.model.Quantity;
+import org.hl7.fhir.r5.model.Reference;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.utils.client.network.Client;
 import org.hl7.fhir.r5.utils.client.network.ResourceRequest;
 import org.junit.jupiter.api.Assertions;
@@ -13,11 +26,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import okhttp3.Headers;
+import okhttp3.Request;
+import okhttp3.internal.http2.Header;
 
 class FHIRToolingClientTest {
 

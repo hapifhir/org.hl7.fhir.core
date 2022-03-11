@@ -273,9 +273,9 @@ public class XMLUtil {
 
 			for (int i = 0; i < rawContent.length(); i++) {
 				char ch = rawContent.charAt(i);
-				if (ch == '\'')
-					sb.append("&#39;");
-				else if (ch == '&')
+				// We don't escape ' because our code always spits out attributes surrounded by "", which means
+				// it's not necessary to escape ' - and it's *much* less ugly and more bandwidth-efficient when we don't.
+				if (ch == '&')
 					sb.append("&amp;");
 				else if (ch == '"')
 					sb.append("&quot;");

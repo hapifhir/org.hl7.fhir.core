@@ -1,51 +1,35 @@
 package org.hl7.fhir.r5.test;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.SystemUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.DomainResource;
-import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.RendererFactory;
-import org.hl7.fhir.r5.renderers.ResourceRenderer;
 import org.hl7.fhir.r5.renderers.utils.ElementWrappers;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ITypeParser;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext.QuestionnaireRendererMode;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
-import org.hl7.fhir.r5.test.NarrativeGenerationTests.TestTypeParser;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
-import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -119,7 +103,7 @@ public class NarrativeGenerationTests {
 
   @BeforeAll
   public static void setUp() {
-    context = TestingUtilities.context();
+    context = TestingUtilities.getSharedWorkerContext();
   }
 
   @ParameterizedTest(name = "{index}: file {0}")

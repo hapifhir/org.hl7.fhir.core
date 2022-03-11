@@ -124,6 +124,9 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       if (resource == null) {
         @SuppressWarnings("unchecked")
         T1 res = (T1) proxy.getResource();
+        if (res == null) {
+          throw new Error("Proxy loading a resource from "+packageInfo+" failed and returned null");
+        }
         synchronized (this) {
           resource = res;
         }

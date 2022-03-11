@@ -1,0 +1,17 @@
+{
+  "name": "Pan-Canadian Patient Summary",
+  "description": "Dummy description",
+  "canonical": "https://a.b.c",
+  "npm-name": "dummy.package",
+  "editions": [
+    {
+      "name": "Dummy name",
+      "ig-version": "1.2.3",
+      "package": "not.a.dummy.package#1.2.3",
+      "fhir-version": [
+        "4.5.6"
+      ],
+      "url": "https://d.e.f"
+    }
+  ]
+}

@@ -1,6 +1,5 @@
 package org.hl7.fhir.r5.model;
 
-import org.hl7.fhir.r5.model.UriType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

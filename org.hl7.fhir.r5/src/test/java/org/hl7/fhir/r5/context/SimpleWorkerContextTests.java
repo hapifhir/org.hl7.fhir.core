@@ -1,13 +1,31 @@
 package org.hl7.fhir.r5.context;
 
-import org.hl7.fhir.r5.model.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.hl7.fhir.r5.model.CapabilityStatement;
+import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.Enumerations;
+import org.hl7.fhir.r5.model.Parameters;
+import org.hl7.fhir.r5.model.TerminologyCapabilities;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.r5.terminologies.ValueSetCheckerSimple;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander;
 import org.hl7.fhir.r5.terminologies.ValueSetExpanderSimple;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.ToolingClientLogger;
-import org.hl7.fhir.utilities.graphql.Value;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,15 +35,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class SimpleWorkerContextTests {
@@ -251,12 +260,13 @@ public class SimpleWorkerContextTests {
     ValueSet vs = new ValueSet();
     vs.setStatus(Enumerations.PublicationStatus.ACTIVE);
     vs.setCompose(new ValueSet.ValueSetComposeComponent());
+    vs.getCompose().setInactive(true);
     vs.getCompose().getInclude().add(inc);
 
     Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)),eq(true));
     Mockito.doReturn(expectedExpansionResult).when(terminologyCache).getExpansion(cacheToken);
 
-    ValueSetExpander.ValueSetExpansionOutcome actualExpansionResult = context.expandVS(inc, true);
+    ValueSetExpander.ValueSetExpansionOutcome actualExpansionResult = context.expandVS(inc, true, false);
 
     assertEquals(expectedExpansionResult, actualExpansionResult);
 
@@ -273,6 +283,7 @@ public class SimpleWorkerContextTests {
     ValueSet vs = new ValueSet();
     vs.setStatus(Enumerations.PublicationStatus.ACTIVE);
     vs.setCompose(new ValueSet.ValueSetComposeComponent());
+    vs.getCompose().setInactive(true);
     vs.getCompose().getInclude().add(inc);
 
     Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)),eq(true));
@@ -285,7 +296,7 @@ public class SimpleWorkerContextTests {
     Mockito.doReturn(expectedValueSet).when(terminologyClient).expandValueset(argThat(new ValueSetMatcher(vs)),
       argThat(new ParametersMatcher(pInWithDependentResources)), eq(params));
 
-    ValueSetExpander.ValueSetExpansionOutcome actualExpansionResult = context.expandVS(inc, true);
+    ValueSetExpander.ValueSetExpansionOutcome actualExpansionResult = context.expandVS(inc, true, false);
 
     assertEquals(expectedValueSet, actualExpansionResult.getValueset());
 

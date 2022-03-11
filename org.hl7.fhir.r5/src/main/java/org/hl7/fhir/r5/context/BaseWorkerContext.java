@@ -666,10 +666,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
 
   @Override
-  public ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical) throws TerminologyServiceException {
+  public ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical, boolean noInactive) throws TerminologyServiceException {
     ValueSet vs = new ValueSet();
     vs.setStatus(PublicationStatus.ACTIVE);
     vs.setCompose(new ValueSetComposeComponent());
+    vs.getCompose().setInactive(!noInactive);
     vs.getCompose().getInclude().add(inc);
     CacheToken cacheToken = txCache.generateExpandToken(vs, hierarchical);
     ValueSetExpansionOutcome res;
