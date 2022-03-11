@@ -7243,71 +7243,71 @@ public String toCode(int len) {
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
-            if ("0.01".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._0_01);
-            if ("0.05".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._0_05);
-            if ("0.06".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._0_06);
-            if ("0.11".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._0_11);
-            if ("0.0.80".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_80);
-            if ("0.0.81".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_81);
-            if ("0.0.82".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_82);
-            if ("0.4.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._0_4_0);
-            if ("0.5.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._0_5_0);
-            if ("1.0.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_0);
-            if ("1.0.1".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_1);
-            if ("1.0.2".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_2);
-            if ("1.1.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._1_1_0);
-            if ("1.4.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._1_4_0);
-            if ("1.6.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._1_6_0);
-            if ("1.8.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._1_8_0);
-            if ("3.0.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_0);
-            if ("3.0.1".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_1);
-            if ("3.0.2".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_2);
-            if ("3.3.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._3_3_0);
-            if ("3.5.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._3_5_0);
-            if ("4.0.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0_0);
-            if ("4.0.1".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0_1);
-            if ("4.1.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._4_1_0);
-            if ("4.2.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._4_2_0);
-            if ("4.3.0-snapshot1".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0SNAPSHOT1);
-            if ("4.3.0-cibuild".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0CIBUILD);
-            if ("4.4.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._4_4_0);
-            if ("4.5.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._4_5_0);
-            if ("4.6.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._4_6_0);
-            if ("5.0.0-snapshot1".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0SNAPSHOT1);
-            if ("5.0.0-cibuild".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0CIBUILD);
-            throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
+        if ("0.01".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_01);
+        if ("0.05".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_05);
+        if ("0.06".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_06);
+        if ("0.11".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_11);
+        if ("0.0.80".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_80);
+        if ("0.0.81".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_81);
+        if ("0.0.82".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_82);
+        if ("0.4.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_4_0);
+        if ("0.5.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_5_0);
+        if ("1.0.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_0);
+        if ("1.0.1".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_1);
+        if ("1.0.2".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_2);
+        if ("1.1.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_1_0);
+        if ("1.4.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_4_0);
+        if ("1.6.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_6_0);
+        if ("1.8.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_8_0);
+        if ("3.0.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_0);
+        if ("3.0.1".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_1);
+        if ("3.0.2".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_2);
+        if ("3.3.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_3_0);
+        if ("3.5.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_5_0);
+        if ("4.0.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0_0);
+        if ("4.0.1".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0_1);
+        if ("4.1.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_1_0);
+        if ("4.2.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_2_0);
+        if ("4.3.0-snapshot1".equalsIgnoreCase(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0SNAPSHOT1);
+        if ("4.3.0-cibuild".equalsIgnoreCase(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0CIBUILD);
+        if ("4.4.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_4_0);
+        if ("4.5.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_5_0);
+        if ("4.6.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_6_0);
+        if ("5.0.0-snapshot1".equalsIgnoreCase(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0SNAPSHOT1);
+        if ("5.0.0-cibuild".equalsIgnoreCase(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0CIBUILD);
+        throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
     public String toCode(FHIRVersion code) {
       if (code == FHIRVersion._0_01)
