@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Fix for FHIRPathEngine.funcReplaceMatches() incorrectly returning Boolean in DSTU2 & DSTU3
