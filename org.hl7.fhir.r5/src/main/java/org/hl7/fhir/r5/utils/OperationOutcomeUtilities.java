@@ -65,6 +65,9 @@ public class OperationOutcomeUtilities {
     if (message.getSource() != null) {
       issue.getExtension().add(ToolingExtensions.makeIssueSource(message.getSource()));
     }
+    if (message.getMessageId() != null) {
+      issue.getExtension().add(ToolingExtensions.makeIssueMessageId(message.getMessageId()));
+    }
     issue.setUserData("source.msg", message);
     return issue;
   }

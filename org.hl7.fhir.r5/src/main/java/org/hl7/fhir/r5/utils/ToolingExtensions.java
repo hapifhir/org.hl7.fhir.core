@@ -119,6 +119,7 @@ public class ToolingExtensions {
   private static final String EXT_IDENTIFIER = "http://hl7.org/fhir/StructureDefinition/identifier";
   public static final String EXT_TRANSLATION = "http://hl7.org/fhir/StructureDefinition/translation";
   public static final String EXT_ISSUE_SOURCE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source";
+  public static final String EXT_ISSUE_MSG_ID = "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id";
   public static final String EXT_ISSUE_LINE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line";
   public static final String EXT_ISSUE_COL = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col";
   public static final String EXT_DISPLAY_HINT = "http://hl7.org/fhir/StructureDefinition/structuredefinition-display-hint"; 
@@ -210,6 +211,16 @@ public class ToolingExtensions {
     ex.setUrl(ToolingExtensions.EXT_ISSUE_SOURCE);
     CodeType c = new CodeType();
     c.setValue(source.toString());
+    ex.setValue(c);
+    return ex;
+  }
+
+  public static Extension makeIssueMessageId(String msgId) {
+    Extension ex = new Extension();
+    // todo: write this up and get it published with the pack (and handle the redirect?)
+    ex.setUrl(ToolingExtensions.EXT_ISSUE_MSG_ID);
+    CodeType c = new CodeType();
+    c.setValue(msgId);
     ex.setValue(c);
     return ex;
   }
