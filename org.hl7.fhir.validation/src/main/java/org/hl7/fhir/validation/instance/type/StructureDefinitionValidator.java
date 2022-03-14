@@ -133,8 +133,8 @@ public class StructureDefinitionValidator extends BaseValidator {
         typeMustSupport = true;
       }
       String tc = type.getChildValue("code");
-      if (type.hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type")) {
-        tc = type.getExtensionValue("http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type").primitiveValue();
+      if (type.hasExtension(ToolingExtensions.EXT_FHIR_TYPE)) {
+        tc = type.getExtensionValue(ToolingExtensions.EXT_FHIR_TYPE).primitiveValue();
       }
       if (Utilities.noString(tc) && type.hasChild("code")) {
         if (type.getNamedChild("code").hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type")) {
