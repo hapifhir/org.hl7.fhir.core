@@ -2244,12 +2244,14 @@ public class FHIRPathEngine {
 
   private List<Base> funcReplaceMatches(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    String sw = convertToString(execute(context, focus, exp.getParameters().get(0), true));
+    String regex = convertToString(execute(context, focus, exp.getParameters().get(0), true));
+    String repl = convertToString(execute(context, focus, exp.getParameters().get(1), true));
 
-    if (focus.size() == 1 && !Utilities.noString(sw))
-      result.add(new BooleanType(convertToString(focus.get(0)).contains(sw)));
-    else
-      result.add(new BooleanType(false));
+    if (focus.size() == 1 && !Utilities.noString(regex)) {
+      result.add(new StringType(convertToString(focus.get(0)).replaceAll(regex, repl)));
+    } else {
+      result.add(new StringType(convertToString(focus.get(0))));
+    }
     return result;
   }
 
