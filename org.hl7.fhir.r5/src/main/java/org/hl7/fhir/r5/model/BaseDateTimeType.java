@@ -100,9 +100,6 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 	 */
 	public BaseDateTimeType(String theString) {
 		setValueAsString(theString);
-		if (isPrecisionAllowed(getPrecision()) == false) {
-			throw new IllegalArgumentException("Invalid date/time string (datatype " + getClass().getSimpleName() + " does not support " + getPrecision() + " precision): " + theString);
-		}
 	}
 
 	/**
