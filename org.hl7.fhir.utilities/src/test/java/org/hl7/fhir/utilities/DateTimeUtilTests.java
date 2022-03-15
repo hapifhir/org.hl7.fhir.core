@@ -3,6 +3,7 @@ package org.hl7.fhir.utilities;
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -35,6 +36,7 @@ public class DateTimeUtilTests {
     );
   }
 
+  @Disabled
   @ParameterizedTest
   @MethodSource("getToHumanDisplayParams")
   public void testToHumanDisplay(TimeZone theTimeZone, TemporalPrecisionEnum thePrecision, Date theValue, String expected) {
