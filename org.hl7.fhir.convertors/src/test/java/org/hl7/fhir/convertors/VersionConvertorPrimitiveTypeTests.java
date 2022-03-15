@@ -99,8 +99,46 @@ public class VersionConvertorPrimitiveTypeTests {
         getDateTimeArgs(VersionConvertorFactory_10_50.class,
           org.hl7.fhir.dstu2.model.DateTimeType.class, org.hl7.fhir.dstu2.model.Type.class,
           org.hl7.fhir.r5.model.DateType.class, org.hl7.fhir.r5.model.DataType.class,
-          DEFAULT_DATE_PRECISION_STRINGS)
+          DEFAULT_DATE_PRECISION_STRINGS),
 
+        //DateTime
+        getDateTimeArgs(VersionConvertorFactory_10_30.class,
+          org.hl7.fhir.dstu2.model.DateTimeType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.dstu3.model.DateTimeType.class, org.hl7.fhir.dstu3.model.Type.class,
+          MILLISECOND_DATE_PRECISION_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_10_40.class,
+          org.hl7.fhir.dstu2.model.DateTimeType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r4.model.DateTimeType.class, org.hl7.fhir.r4.model.Type.class,
+          MILLISECOND_DATE_PRECISION_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_10_50.class,
+          org.hl7.fhir.dstu2.model.DateTimeType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r5.model.DateTimeType.class, org.hl7.fhir.r5.model.DataType.class,
+          MILLISECOND_DATE_PRECISION_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_14_30.class,
+          org.hl7.fhir.dstu2016may.model.DateTimeType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.dstu3.model.DateTimeType.class, org.hl7.fhir.dstu3.model.Type.class,
+          MILLISECOND_DATE_PRECISION_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_14_40.class,
+          org.hl7.fhir.dstu2016may.model.DateTimeType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r4.model.DateTimeType.class, org.hl7.fhir.r4.model.Type.class,
+          MILLISECOND_DATE_PRECISION_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_14_50.class,
+          org.hl7.fhir.dstu2016may.model.DateTimeType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r5.model.DateTimeType.class, org.hl7.fhir.r5.model.DataType.class,
+          MILLISECOND_DATE_PRECISION_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_30_40.class,
+          org.hl7.fhir.dstu3.model.DateTimeType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r4.model.DateTimeType.class, org.hl7.fhir.r4.model.Type.class,
+          MILLISECOND_DATE_PRECISION_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_30_50.class,
+          org.hl7.fhir.dstu3.model.DateTimeType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r5.model.DateTimeType.class, org.hl7.fhir.r5.model.DataType.class,
+          MILLISECOND_DATE_PRECISION_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_40_50.class,
+          org.hl7.fhir.r4.model.DateTimeType.class, org.hl7.fhir.r4.model.Type.class,
+          org.hl7.fhir.r5.model.DateTimeType.class, org.hl7.fhir.r5.model.DataType.class,
+          MILLISECOND_DATE_PRECISION_STRINGS)
+       
       ).flatMap(i -> i);
 
   }
