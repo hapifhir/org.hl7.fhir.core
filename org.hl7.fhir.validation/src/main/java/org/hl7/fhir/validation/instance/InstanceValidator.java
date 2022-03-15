@@ -1871,7 +1871,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     for (StructureDefinitionContextComponent ctxt : list) {
       res.add(ctxt.copy());
     }
-    if ("http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type".equals(extUrl)) {
+    if (ToolingExtensions.EXT_FHIR_TYPE.equals(extUrl)) {
       list.get(0).setExpression("ElementDefinition.type");
     }
     // the history of this is a mess - see https://jira.hl7.org/browse/FHIR-13328
