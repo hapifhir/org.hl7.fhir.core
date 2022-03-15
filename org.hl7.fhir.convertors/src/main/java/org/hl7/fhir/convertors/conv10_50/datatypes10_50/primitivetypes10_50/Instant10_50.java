@@ -5,13 +5,13 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 public class Instant10_50 {
   public static org.hl7.fhir.r5.model.InstantType convertInstant(org.hl7.fhir.dstu2.model.InstantType src) throws FHIRException {
-    org.hl7.fhir.r5.model.InstantType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.InstantType(src.getValue()) : new org.hl7.fhir.r5.model.InstantType();
+    org.hl7.fhir.r5.model.InstantType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.InstantType(src.getValueAsString()) : new org.hl7.fhir.r5.model.InstantType();
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
     return tgt;
   }
 
   public static org.hl7.fhir.dstu2.model.InstantType convertInstant(org.hl7.fhir.r5.model.InstantType src) throws FHIRException {
-    org.hl7.fhir.dstu2.model.InstantType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.InstantType(src.getValue()) : new org.hl7.fhir.dstu2.model.InstantType();
+    org.hl7.fhir.dstu2.model.InstantType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.InstantType(src.getValueAsString()) : new org.hl7.fhir.dstu2.model.InstantType();
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
     return tgt;
   }

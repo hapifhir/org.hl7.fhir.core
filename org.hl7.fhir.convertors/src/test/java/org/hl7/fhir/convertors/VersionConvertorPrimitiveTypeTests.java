@@ -27,6 +27,10 @@ public class VersionConvertorPrimitiveTypeTests {
     Stream.concat(Arrays.stream(SECOND_DATE_PRECISION_STRINGS),Stream.of("1933-01-02T13:45:12.3", "1933-01-02T13:45:12.3456"))
       .toArray(size -> (String[]) Array.newInstance(String.class, size));
 
+  private static String[] INSTANT_PRECISION_STRINGS = {
+    "1933-01-02T13:45:12", "1933-01-02T13:45:12.3", "1933-01-02T13:45:12.3456"
+  };
+  
   private static <K,L>  Stream<Arguments> getDateTimeArgs(Class<? extends VersionConvertorFactory> versionConverterFactoryClazz, Class<K> firstTypeClazz, Class<?> firstTypeMethodClazz, Class<L> secondTypeClazz, Class<?> secondTypeMethodClazz, String[] testStrings) {
 
     return Arrays.stream(testStrings).map( it -> Arguments.of(versionConverterFactoryClazz,
@@ -137,8 +141,46 @@ public class VersionConvertorPrimitiveTypeTests {
         getDateTimeArgs(VersionConvertorFactory_40_50.class,
           org.hl7.fhir.r4.model.DateTimeType.class, org.hl7.fhir.r4.model.Type.class,
           org.hl7.fhir.r5.model.DateTimeType.class, org.hl7.fhir.r5.model.DataType.class,
-          MILLISECOND_DATE_PRECISION_STRINGS)
-       
+          MILLISECOND_DATE_PRECISION_STRINGS),
+
+        //Instant
+        getDateTimeArgs(VersionConvertorFactory_10_30.class,
+          org.hl7.fhir.dstu2.model.InstantType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.dstu3.model.InstantType.class, org.hl7.fhir.dstu3.model.Type.class,
+          INSTANT_PRECISION_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_10_40.class,
+          org.hl7.fhir.dstu2.model.InstantType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r4.model.InstantType.class, org.hl7.fhir.r4.model.Type.class,
+          INSTANT_PRECISION_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_10_50.class,
+          org.hl7.fhir.dstu2.model.InstantType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r5.model.InstantType.class, org.hl7.fhir.r5.model.DataType.class,
+          INSTANT_PRECISION_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_14_30.class,
+          org.hl7.fhir.dstu2016may.model.InstantType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.dstu3.model.InstantType.class, org.hl7.fhir.dstu3.model.Type.class,
+          INSTANT_PRECISION_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_14_40.class,
+          org.hl7.fhir.dstu2016may.model.InstantType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r4.model.InstantType.class, org.hl7.fhir.r4.model.Type.class,
+          INSTANT_PRECISION_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_14_50.class,
+          org.hl7.fhir.dstu2016may.model.InstantType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r5.model.InstantType.class, org.hl7.fhir.r5.model.DataType.class,
+          INSTANT_PRECISION_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_30_40.class,
+          org.hl7.fhir.dstu3.model.InstantType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r4.model.InstantType.class, org.hl7.fhir.r4.model.Type.class,
+          INSTANT_PRECISION_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_30_50.class,
+          org.hl7.fhir.dstu3.model.InstantType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r5.model.InstantType.class, org.hl7.fhir.r5.model.DataType.class,
+          INSTANT_PRECISION_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_40_50.class,
+          org.hl7.fhir.r4.model.InstantType.class, org.hl7.fhir.r4.model.Type.class,
+          org.hl7.fhir.r5.model.InstantType.class, org.hl7.fhir.r5.model.DataType.class,
+          INSTANT_PRECISION_STRINGS)
+        
       ).flatMap(i -> i);
 
   }
