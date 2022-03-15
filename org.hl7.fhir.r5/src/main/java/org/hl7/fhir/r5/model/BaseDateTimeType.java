@@ -716,9 +716,12 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 	}
 
 	@Override
-	public void setValueAsString(String theValue) throws DataFormatException {
+	public void setValueAsString(String theString) throws DataFormatException {
 		clearTimeZone();
-		super.setValueAsString(theValue);
+		super.setValueAsString(theString);
+    if (isPrecisionAllowed(getPrecision()) == false) {
+      throw new IllegalArgumentException("Invalid date/time string (datatype " + getClass().getSimpleName() + " does not support " + getPrecision() + " precision): " + theString);
+    }
 	}
 
 	protected void setValueAsV3String(String theV3String) {
