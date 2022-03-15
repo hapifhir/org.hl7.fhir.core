@@ -14,8 +14,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang3.RegExUtils;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.Pair;
 import org.fhir.ucum.UcumException;
@@ -1322,6 +1325,7 @@ public class FHIRPathEngine {
     case StartsWith: return checkParamCount(lexer, location, exp, 1);
     case EndsWith: return checkParamCount(lexer, location, exp, 1);
     case Matches: return checkParamCount(lexer, location, exp, 1);
+    case MatchesFull: return checkParamCount(lexer, location, exp, 1);
     case ReplaceMatches: return checkParamCount(lexer, location, exp, 2);
     case Contains: return checkParamCount(lexer, location, exp, 1);
     case Replace: return checkParamCount(lexer, location, exp, 2);
@@ -3156,6 +3160,11 @@ public class FHIRPathEngine {
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean); 
     }
+    case MatchesFull : {
+      checkContextString(focus, "matches", exp);
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean); 
+    }
     case ReplaceMatches : {
       checkContextString(focus, "replaceMatches", exp);
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String), new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
@@ -3456,6 +3465,7 @@ public class FHIRPathEngine {
     case StartsWith : return funcStartsWith(context, focus, exp);
     case EndsWith : return funcEndsWith(context, focus, exp);
     case Matches : return funcMatches(context, focus, exp);
+    case MatchesFull : return funcMatchesFull(context, focus, exp);
     case ReplaceMatches : return funcReplaceMatches(context, focus, exp);
     case Contains : return funcContains(context, focus, exp);
     case Replace : return funcReplace(context, focus, exp);
@@ -4777,7 +4787,9 @@ public class FHIRPathEngine {
       if (Utilities.noString(st)) {
         result.add(new BooleanType(false).noExtensions());
       } else {
-        boolean ok = st.matches("(?s)" + sw);
+        Pattern p = Pattern.compile("(?s)" + sw);
+        Matcher m = p.matcher(st);
+        boolean ok = m.find();
         result.add(new BooleanType(ok).noExtensions());
       }
     } else {
@@ -4786,6 +4798,25 @@ public class FHIRPathEngine {
     return result;
   }
 
+	 private List<Base> funcMatchesFull(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+	    List<Base> result = new ArrayList<Base>();
+	    String sw = convertToString(execute(context, focus, exp.getParameters().get(0), true));
+
+	    if (focus.size() == 1 && !Utilities.noString(sw)) {
+	      String st = convertToString(focus.get(0));
+	      if (Utilities.noString(st)) {
+	        result.add(new BooleanType(false).noExtensions());
+	      } else {
+	        Pattern p = Pattern.compile("(?s)" + sw);
+	        Matcher m = p.matcher(st);
+	        boolean ok = m.matches();
+	        result.add(new BooleanType(ok).noExtensions());
+	      }
+	    } else {
+	      result.add(new BooleanType(false).noExtensions());
+	    }
+	    return result;
+	  }
 	private List<Base> funcContains(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
     String sw = convertToString(execute(context, focus, exp.getParameters().get(0), true));
