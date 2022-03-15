@@ -180,9 +180,7 @@ public class VersionConvertorPrimitiveTypeTests {
           org.hl7.fhir.r4.model.InstantType.class, org.hl7.fhir.r4.model.Type.class,
           org.hl7.fhir.r5.model.InstantType.class, org.hl7.fhir.r5.model.DataType.class,
           INSTANT_PRECISION_STRINGS)
-        
       ).flatMap(i -> i);
-
   }
 
   @ParameterizedTest(name = "Test index: {index} ConvertorFactory={0} First Class={1} First Value={3} Second Class={4} Second Value={6}")
