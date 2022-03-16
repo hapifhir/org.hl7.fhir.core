@@ -23,6 +23,15 @@ public class VersionConvertorPrimitiveTypeTests {
     "true", "false"
   };
 
+  private static String[] STRING_STRINGS = {
+    "something", "<html>?</html>", "Han shot first", ""
+  };
+
+  private static String[] URI_STRINGS = {
+    "http://my.dummy.uri/abcd"
+  };
+
+  //Date, DateTime, and Instant
   private static String[] DEFAULT_DATE_PRECISION_STRINGS = {
     "1933", "1933-01", "1933-01-02"
   };
@@ -87,6 +96,158 @@ public class VersionConvertorPrimitiveTypeTests {
           org.hl7.fhir.r5.model.Base64BinaryType.class, org.hl7.fhir.r5.model.DataType.class,
           BASE64_BINARY_STRINGS),
 
+        //Boolean
+        getConversionParams(VersionConvertorFactory_10_30.class,
+          org.hl7.fhir.dstu2.model.BooleanType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.dstu3.model.BooleanType.class, org.hl7.fhir.dstu3.model.Type.class,
+          BOOLEAN_STRINGS),
+        getConversionParams(VersionConvertorFactory_10_40.class,
+          org.hl7.fhir.dstu2.model.BooleanType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r4.model.BooleanType.class, org.hl7.fhir.r4.model.Type.class,
+          BOOLEAN_STRINGS),
+        getConversionParams(VersionConvertorFactory_10_50.class,
+          org.hl7.fhir.dstu2.model.BooleanType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r5.model.BooleanType.class, org.hl7.fhir.r5.model.DataType.class,
+          BOOLEAN_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_30.class,
+          org.hl7.fhir.dstu2016may.model.BooleanType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.dstu3.model.BooleanType.class, org.hl7.fhir.dstu3.model.Type.class,
+          BOOLEAN_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_40.class,
+          org.hl7.fhir.dstu2016may.model.BooleanType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r4.model.BooleanType.class, org.hl7.fhir.r4.model.Type.class,
+          BOOLEAN_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_50.class,
+          org.hl7.fhir.dstu2016may.model.BooleanType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r5.model.BooleanType.class, org.hl7.fhir.r5.model.DataType.class,
+          BOOLEAN_STRINGS),
+        getConversionParams(VersionConvertorFactory_30_40.class,
+          org.hl7.fhir.dstu3.model.BooleanType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r4.model.BooleanType.class, org.hl7.fhir.r4.model.Type.class,
+          BOOLEAN_STRINGS),
+        getConversionParams(VersionConvertorFactory_30_50.class,
+          org.hl7.fhir.dstu3.model.BooleanType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r5.model.BooleanType.class, org.hl7.fhir.r5.model.DataType.class,
+          BOOLEAN_STRINGS),
+        getConversionParams(VersionConvertorFactory_40_50.class,
+          org.hl7.fhir.r4.model.BooleanType.class, org.hl7.fhir.r4.model.Type.class,
+          org.hl7.fhir.r5.model.BooleanType.class, org.hl7.fhir.r5.model.DataType.class,
+          BOOLEAN_STRINGS),
+
+        //Code
+        getConversionParams(VersionConvertorFactory_10_30.class,
+          org.hl7.fhir.dstu2.model.CodeType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.dstu3.model.CodeType.class, org.hl7.fhir.dstu3.model.Type.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_10_40.class,
+          org.hl7.fhir.dstu2.model.CodeType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r4.model.CodeType.class, org.hl7.fhir.r4.model.Type.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_10_50.class,
+          org.hl7.fhir.dstu2.model.CodeType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r5.model.CodeType.class, org.hl7.fhir.r5.model.DataType.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_30.class,
+          org.hl7.fhir.dstu2016may.model.CodeType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.dstu3.model.CodeType.class, org.hl7.fhir.dstu3.model.Type.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_40.class,
+          org.hl7.fhir.dstu2016may.model.CodeType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r4.model.CodeType.class, org.hl7.fhir.r4.model.Type.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_50.class,
+          org.hl7.fhir.dstu2016may.model.CodeType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r5.model.CodeType.class, org.hl7.fhir.r5.model.DataType.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_30_40.class,
+          org.hl7.fhir.dstu3.model.CodeType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r4.model.CodeType.class, org.hl7.fhir.r4.model.Type.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_30_50.class,
+          org.hl7.fhir.dstu3.model.CodeType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r5.model.CodeType.class, org.hl7.fhir.r5.model.DataType.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_40_50.class,
+          org.hl7.fhir.r4.model.CodeType.class, org.hl7.fhir.r4.model.Type.class,
+          org.hl7.fhir.r5.model.CodeType.class, org.hl7.fhir.r5.model.DataType.class,
+          STRING_STRINGS),
+
+        //Markdown
+        getConversionParams(VersionConvertorFactory_10_30.class,
+          org.hl7.fhir.dstu2.model.MarkdownType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.dstu3.model.MarkdownType.class, org.hl7.fhir.dstu3.model.Type.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_10_40.class,
+          org.hl7.fhir.dstu2.model.MarkdownType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r4.model.MarkdownType.class, org.hl7.fhir.r4.model.Type.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_10_50.class,
+          org.hl7.fhir.dstu2.model.MarkdownType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r5.model.MarkdownType.class, org.hl7.fhir.r5.model.DataType.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_30.class,
+          org.hl7.fhir.dstu2016may.model.MarkdownType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.dstu3.model.MarkdownType.class, org.hl7.fhir.dstu3.model.Type.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_40.class,
+          org.hl7.fhir.dstu2016may.model.MarkdownType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r4.model.MarkdownType.class, org.hl7.fhir.r4.model.Type.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_50.class,
+          org.hl7.fhir.dstu2016may.model.MarkdownType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r5.model.MarkdownType.class, org.hl7.fhir.r5.model.DataType.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_30_40.class,
+          org.hl7.fhir.dstu3.model.MarkdownType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r4.model.MarkdownType.class, org.hl7.fhir.r4.model.Type.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_30_50.class,
+          org.hl7.fhir.dstu3.model.MarkdownType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r5.model.MarkdownType.class, org.hl7.fhir.r5.model.DataType.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_40_50.class,
+          org.hl7.fhir.r4.model.MarkdownType.class, org.hl7.fhir.r4.model.Type.class,
+          org.hl7.fhir.r5.model.MarkdownType.class, org.hl7.fhir.r5.model.DataType.class,
+          STRING_STRINGS),
+
+        //String
+        getConversionParams(VersionConvertorFactory_10_30.class,
+          org.hl7.fhir.dstu2.model.StringType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.dstu3.model.StringType.class, org.hl7.fhir.dstu3.model.Type.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_10_40.class,
+          org.hl7.fhir.dstu2.model.StringType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r4.model.StringType.class, org.hl7.fhir.r4.model.Type.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_10_50.class,
+          org.hl7.fhir.dstu2.model.StringType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r5.model.StringType.class, org.hl7.fhir.r5.model.DataType.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_30.class,
+          org.hl7.fhir.dstu2016may.model.StringType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.dstu3.model.StringType.class, org.hl7.fhir.dstu3.model.Type.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_40.class,
+          org.hl7.fhir.dstu2016may.model.StringType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r4.model.StringType.class, org.hl7.fhir.r4.model.Type.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_50.class,
+          org.hl7.fhir.dstu2016may.model.StringType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r5.model.StringType.class, org.hl7.fhir.r5.model.DataType.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_30_40.class,
+          org.hl7.fhir.dstu3.model.StringType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r4.model.StringType.class, org.hl7.fhir.r4.model.Type.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_30_50.class,
+          org.hl7.fhir.dstu3.model.StringType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r5.model.StringType.class, org.hl7.fhir.r5.model.DataType.class,
+          STRING_STRINGS),
+        getConversionParams(VersionConvertorFactory_40_50.class,
+          org.hl7.fhir.r4.model.StringType.class, org.hl7.fhir.r4.model.Type.class,
+          org.hl7.fhir.r5.model.StringType.class, org.hl7.fhir.r5.model.DataType.class,
+          STRING_STRINGS),
+        
         //Date
         getConversionParams(VersionConvertorFactory_10_30.class,
           org.hl7.fhir.dstu2.model.DateType.class, org.hl7.fhir.dstu2.model.Type.class,
@@ -241,6 +402,8 @@ public class VersionConvertorPrimitiveTypeTests {
 
     Method srcSetValueAsStringMethod = srcTypeClazz.getMethod("setValueAsString", String.class);
     Method srcGetValueAsString =  srcTypeClazz.getMethod("getValueAsString");
+    Method srcHasValue =  srcTypeClazz.getMethod("hasValue");
+
 
     Method convertTypeMethod = versionConverterFactoryClazz.getMethod("convertType", srcTypeMethodClazz);
 
@@ -250,10 +413,16 @@ public class VersionConvertorPrimitiveTypeTests {
     String srcValueAsString = (String) srcGetValueAsString.invoke(srcInstance);
     Assertions.assertEquals(srcString, srcValueAsString);
 
+    boolean srcHasValueReturn = (boolean) srcHasValue.invoke(srcInstance);
+
+
     L tgtInstance = (L) convertTypeMethod.invoke(null, srcInstance);
 
-    String tgtValueAsString = (String) tgtGetValueAsString.invoke(tgtInstance);
-
-    Assertions.assertEquals( tgtString, tgtValueAsString);
+    if (srcHasValueReturn) {
+      String tgtValueAsString = (String) tgtGetValueAsString.invoke(tgtInstance);
+      Assertions.assertEquals(tgtString, tgtValueAsString);
+    } else {
+      Assertions.assertNull(tgtInstance);
+    }
   }
 }
