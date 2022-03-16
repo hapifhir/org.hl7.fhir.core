@@ -5,13 +5,13 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 public class Base64Binary14_50 {
   public static org.hl7.fhir.r5.model.Base64BinaryType convertBase64Binary(org.hl7.fhir.dstu2016may.model.Base64BinaryType src) throws FHIRException {
-    org.hl7.fhir.r5.model.Base64BinaryType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.Base64BinaryType(src.getValueAsString()) : new org.hl7.fhir.r5.model.Base64BinaryType();
+    org.hl7.fhir.r5.model.Base64BinaryType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.Base64BinaryType(src.getValue()) : new org.hl7.fhir.r5.model.Base64BinaryType();
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     return tgt;
   }
 
   public static org.hl7.fhir.dstu2016may.model.Base64BinaryType convertBase64Binary(org.hl7.fhir.r5.model.Base64BinaryType src) throws FHIRException {
-    org.hl7.fhir.dstu2016may.model.Base64BinaryType tgt = src.hasValue() ? new org.hl7.fhir.dstu2016may.model.Base64BinaryType(src.getValueAsString()) : new org.hl7.fhir.dstu2016may.model.Base64BinaryType();
+    org.hl7.fhir.dstu2016may.model.Base64BinaryType tgt = src.hasValue() ? new org.hl7.fhir.dstu2016may.model.Base64BinaryType(src.getValue()) : new org.hl7.fhir.dstu2016may.model.Base64BinaryType();
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     return tgt;
   }
