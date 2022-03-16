@@ -59,9 +59,14 @@ public class Base64BinaryType extends PrimitiveType<byte[]> {
 	public Base64BinaryType(String theValue) {
 		super();
     // Null values still result in non-null instance being created
-    if (theValue != null) checkValidBase64(theValue);
 		setValueAsString(theValue);
 	}
+
+  @Override
+  public void setValueAsString(String theString) {
+    if (theString != null) checkValidBase64(theString);
+    super.setValueAsString(theString);
+  }
 
   protected byte[] parse(String theValue) {
     if (theValue != null) {

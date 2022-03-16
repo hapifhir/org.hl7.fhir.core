@@ -15,6 +15,10 @@ import java.util.stream.Stream;
 
 public class VersionConvertorPrimitiveTypeTests {
 
+  private static String[] BASE64_BINARY_STRINGS = {
+     "dGhpcyBpcyB2YWxpZCBiYXNlNjQ="
+  };
+
   private static String[] DEFAULT_DATE_PRECISION_STRINGS = {
     "1933", "1933-01", "1933-01-02"
   };
@@ -41,6 +45,44 @@ public class VersionConvertorPrimitiveTypeTests {
 
   private static Stream<Arguments> getParams() {
       return Stream.of(
+        //Base64Binary
+        getDateTimeArgs(VersionConvertorFactory_10_30.class,
+          org.hl7.fhir.dstu2.model.Base64BinaryType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.dstu3.model.Base64BinaryType.class, org.hl7.fhir.dstu3.model.Type.class,
+          BASE64_BINARY_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_10_40.class,
+          org.hl7.fhir.dstu2.model.Base64BinaryType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r4.model.Base64BinaryType.class, org.hl7.fhir.r4.model.Type.class,
+          BASE64_BINARY_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_10_50.class,
+          org.hl7.fhir.dstu2.model.Base64BinaryType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r5.model.Base64BinaryType.class, org.hl7.fhir.r5.model.DataType.class,
+          BASE64_BINARY_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_14_30.class,
+          org.hl7.fhir.dstu2016may.model.Base64BinaryType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.dstu3.model.Base64BinaryType.class, org.hl7.fhir.dstu3.model.Type.class,
+          BASE64_BINARY_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_14_40.class,
+          org.hl7.fhir.dstu2016may.model.Base64BinaryType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r4.model.Base64BinaryType.class, org.hl7.fhir.r4.model.Type.class,
+          BASE64_BINARY_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_14_50.class,
+          org.hl7.fhir.dstu2016may.model.Base64BinaryType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r5.model.Base64BinaryType.class, org.hl7.fhir.r5.model.DataType.class,
+          BASE64_BINARY_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_30_40.class,
+          org.hl7.fhir.dstu3.model.Base64BinaryType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r4.model.Base64BinaryType.class, org.hl7.fhir.r4.model.Type.class,
+          BASE64_BINARY_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_30_50.class,
+          org.hl7.fhir.dstu3.model.Base64BinaryType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r5.model.Base64BinaryType.class, org.hl7.fhir.r5.model.DataType.class,
+          BASE64_BINARY_STRINGS),
+        getDateTimeArgs(VersionConvertorFactory_40_50.class,
+          org.hl7.fhir.r4.model.Base64BinaryType.class, org.hl7.fhir.r4.model.Type.class,
+          org.hl7.fhir.r5.model.Base64BinaryType.class, org.hl7.fhir.r5.model.DataType.class,
+          BASE64_BINARY_STRINGS),
+
         //Date
         getDateTimeArgs(VersionConvertorFactory_10_30.class,
           org.hl7.fhir.dstu2.model.DateType.class, org.hl7.fhir.dstu2.model.Type.class,
