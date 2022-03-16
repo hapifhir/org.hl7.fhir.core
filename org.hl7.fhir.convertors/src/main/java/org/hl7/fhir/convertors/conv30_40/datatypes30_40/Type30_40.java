@@ -14,7 +14,7 @@ public class Type30_40 {
   }
 
   public org.hl7.fhir.r4.model.Type convertType(org.hl7.fhir.dstu3.model.Type src) throws FHIRException {
-    if (src == null) return null;
+    if (src == null || src.isEmpty()) return null;
     if (src instanceof org.hl7.fhir.dstu3.model.Base64BinaryType)
       return Base64Binary30_40.convertBase64Binary((org.hl7.fhir.dstu3.model.Base64BinaryType) src);
     if (src instanceof org.hl7.fhir.dstu3.model.BooleanType)
@@ -122,7 +122,7 @@ public class Type30_40 {
   }
 
   public org.hl7.fhir.dstu3.model.Type convertType(org.hl7.fhir.r4.model.Type src) throws FHIRException {
-    if (src == null) return null;
+    if (src == null || src.isEmpty()) return null;
     if (src instanceof org.hl7.fhir.r4.model.Base64BinaryType)
       return Base64Binary30_40.convertBase64Binary((org.hl7.fhir.r4.model.Base64BinaryType) src);
     if (src instanceof org.hl7.fhir.r4.model.BooleanType)
