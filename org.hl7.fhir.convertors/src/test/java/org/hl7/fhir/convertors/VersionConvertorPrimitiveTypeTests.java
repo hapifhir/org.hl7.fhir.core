@@ -23,12 +23,20 @@ public class VersionConvertorPrimitiveTypeTests {
     "true", "false"
   };
 
+  private static String[] ID_STRINGS = {
+    "345e3443345343f3453.t34g5348t3-45t34"
+  };
+  
   private static String[] STRING_STRINGS = {
     "something", "<html>?</html>", "Han shot first", ""
   };
 
   private static String[] URI_STRINGS = {
-    "http://my.dummy.uri/abcd"
+    "foo://example.com:8042/find/bassist?name=lemmy#birthdate"
+  };
+
+  private static String[] UUID_STRINGS = {
+    "123e4567-e89b-12d3-a456-426614174000"
   };
 
   //Date, DateTime, and Instant
@@ -172,6 +180,44 @@ public class VersionConvertorPrimitiveTypeTests {
           org.hl7.fhir.r5.model.CodeType.class, org.hl7.fhir.r5.model.DataType.class,
           STRING_STRINGS),
 
+        //Id
+        getConversionParams(VersionConvertorFactory_10_30.class,
+          org.hl7.fhir.dstu2.model.IdType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.dstu3.model.IdType.class, org.hl7.fhir.dstu3.model.Type.class,
+          ID_STRINGS),
+        getConversionParams(VersionConvertorFactory_10_40.class,
+          org.hl7.fhir.dstu2.model.IdType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r4.model.IdType.class, org.hl7.fhir.r4.model.Type.class,
+          ID_STRINGS),
+        getConversionParams(VersionConvertorFactory_10_50.class,
+          org.hl7.fhir.dstu2.model.IdType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r5.model.IdType.class, org.hl7.fhir.r5.model.DataType.class,
+          ID_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_30.class,
+          org.hl7.fhir.dstu2016may.model.IdType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.dstu3.model.IdType.class, org.hl7.fhir.dstu3.model.Type.class,
+          ID_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_40.class,
+          org.hl7.fhir.dstu2016may.model.IdType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r4.model.IdType.class, org.hl7.fhir.r4.model.Type.class,
+          ID_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_50.class,
+          org.hl7.fhir.dstu2016may.model.IdType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r5.model.IdType.class, org.hl7.fhir.r5.model.DataType.class,
+          ID_STRINGS),
+        getConversionParams(VersionConvertorFactory_30_40.class,
+          org.hl7.fhir.dstu3.model.IdType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r4.model.IdType.class, org.hl7.fhir.r4.model.Type.class,
+          ID_STRINGS),
+        getConversionParams(VersionConvertorFactory_30_50.class,
+          org.hl7.fhir.dstu3.model.IdType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r5.model.IdType.class, org.hl7.fhir.r5.model.DataType.class,
+          ID_STRINGS),
+        getConversionParams(VersionConvertorFactory_40_50.class,
+          org.hl7.fhir.r4.model.IdType.class, org.hl7.fhir.r4.model.Type.class,
+          org.hl7.fhir.r5.model.IdType.class, org.hl7.fhir.r5.model.DataType.class,
+          ID_STRINGS),
+        
         //Markdown
         getConversionParams(VersionConvertorFactory_10_30.class,
           org.hl7.fhir.dstu2.model.MarkdownType.class, org.hl7.fhir.dstu2.model.Type.class,
@@ -285,6 +331,44 @@ public class VersionConvertorPrimitiveTypeTests {
           org.hl7.fhir.r4.model.UriType.class, org.hl7.fhir.r4.model.Type.class,
           org.hl7.fhir.r5.model.UriType.class, org.hl7.fhir.r5.model.DataType.class,
           URI_STRINGS),
+
+        //Uri
+        getConversionParams(VersionConvertorFactory_10_30.class,
+          org.hl7.fhir.dstu2.model.UuidType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.dstu3.model.UuidType.class, org.hl7.fhir.dstu3.model.Type.class,
+          UUID_STRINGS),
+        getConversionParams(VersionConvertorFactory_10_40.class,
+          org.hl7.fhir.dstu2.model.UuidType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r4.model.UuidType.class, org.hl7.fhir.r4.model.Type.class,
+          UUID_STRINGS),
+        getConversionParams(VersionConvertorFactory_10_50.class,
+          org.hl7.fhir.dstu2.model.UuidType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r5.model.UuidType.class, org.hl7.fhir.r5.model.DataType.class,
+          UUID_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_30.class,
+          org.hl7.fhir.dstu2016may.model.UuidType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.dstu3.model.UuidType.class, org.hl7.fhir.dstu3.model.Type.class,
+          UUID_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_40.class,
+          org.hl7.fhir.dstu2016may.model.UuidType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r4.model.UuidType.class, org.hl7.fhir.r4.model.Type.class,
+          UUID_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_50.class,
+          org.hl7.fhir.dstu2016may.model.UuidType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r5.model.UuidType.class, org.hl7.fhir.r5.model.DataType.class,
+          UUID_STRINGS),
+        getConversionParams(VersionConvertorFactory_30_40.class,
+          org.hl7.fhir.dstu3.model.UuidType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r4.model.UuidType.class, org.hl7.fhir.r4.model.Type.class,
+          UUID_STRINGS),
+        getConversionParams(VersionConvertorFactory_30_50.class,
+          org.hl7.fhir.dstu3.model.UuidType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r5.model.UuidType.class, org.hl7.fhir.r5.model.DataType.class,
+          UUID_STRINGS),
+        getConversionParams(VersionConvertorFactory_40_50.class,
+          org.hl7.fhir.r4.model.UuidType.class, org.hl7.fhir.r4.model.Type.class,
+          org.hl7.fhir.r5.model.UuidType.class, org.hl7.fhir.r5.model.DataType.class,
+          UUID_STRINGS),
         
         //Date
         getConversionParams(VersionConvertorFactory_10_30.class,
