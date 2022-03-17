@@ -1086,7 +1086,7 @@ public class NpmPackage {
   }
 
   public boolean isCore() {
-    return "fhir.core".equals(JSONUtil.str(npm, "type"));
+    return Utilities.existsInList(JSONUtil.str(npm, "type"), "fhir.core", "Core");
   }
 
   public boolean hasCanonical(String url) {
