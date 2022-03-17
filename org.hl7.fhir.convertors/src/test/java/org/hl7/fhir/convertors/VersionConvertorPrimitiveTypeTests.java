@@ -31,6 +31,19 @@ public class VersionConvertorPrimitiveTypeTests {
     "something", "<html>?</html>", "Han shot first", ""
   };
 
+  private static String[] INTEGER_STRINGS = {
+    Integer.toString(Integer.MIN_VALUE), "-12345", "0", "12345", Integer.toString(Integer.MAX_VALUE)
+  };
+
+  private static String[] POSITIVE_INT_STRINGS = {
+    "1", "12345", Integer.toString(Integer.MAX_VALUE)
+  };
+  
+  private static String[] UNSIGNED_INT_STRINGS = {
+    "0", "12345", Integer.toString(Integer.MAX_VALUE)
+  };
+  
+
   private static String[] URI_STRINGS = {
     "foo://example.com:8042/find/bassist?name=lemmy#birthdate"
   };
@@ -217,6 +230,44 @@ public class VersionConvertorPrimitiveTypeTests {
           org.hl7.fhir.r4.model.IdType.class, org.hl7.fhir.r4.model.Type.class,
           org.hl7.fhir.r5.model.IdType.class, org.hl7.fhir.r5.model.DataType.class,
           ID_STRINGS),
+
+        //Integer
+        getConversionParams(VersionConvertorFactory_10_30.class,
+          org.hl7.fhir.dstu2.model.IntegerType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.dstu3.model.IntegerType.class, org.hl7.fhir.dstu3.model.Type.class,
+          INTEGER_STRINGS),
+        getConversionParams(VersionConvertorFactory_10_40.class,
+          org.hl7.fhir.dstu2.model.IntegerType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r4.model.IntegerType.class, org.hl7.fhir.r4.model.Type.class,
+          INTEGER_STRINGS),
+        getConversionParams(VersionConvertorFactory_10_50.class,
+          org.hl7.fhir.dstu2.model.IntegerType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r5.model.IntegerType.class, org.hl7.fhir.r5.model.DataType.class,
+          INTEGER_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_30.class,
+          org.hl7.fhir.dstu2016may.model.IntegerType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.dstu3.model.IntegerType.class, org.hl7.fhir.dstu3.model.Type.class,
+          INTEGER_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_40.class,
+          org.hl7.fhir.dstu2016may.model.IntegerType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r4.model.IntegerType.class, org.hl7.fhir.r4.model.Type.class,
+          INTEGER_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_50.class,
+          org.hl7.fhir.dstu2016may.model.IntegerType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r5.model.IntegerType.class, org.hl7.fhir.r5.model.DataType.class,
+          INTEGER_STRINGS),
+        getConversionParams(VersionConvertorFactory_30_40.class,
+          org.hl7.fhir.dstu3.model.IntegerType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r4.model.IntegerType.class, org.hl7.fhir.r4.model.Type.class,
+          INTEGER_STRINGS),
+        getConversionParams(VersionConvertorFactory_30_50.class,
+          org.hl7.fhir.dstu3.model.IntegerType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r5.model.IntegerType.class, org.hl7.fhir.r5.model.DataType.class,
+          INTEGER_STRINGS),
+        getConversionParams(VersionConvertorFactory_40_50.class,
+          org.hl7.fhir.r4.model.IntegerType.class, org.hl7.fhir.r4.model.Type.class,
+          org.hl7.fhir.r5.model.IntegerType.class, org.hl7.fhir.r5.model.DataType.class,
+          INTEGER_STRINGS),
         
         //Markdown
         getConversionParams(VersionConvertorFactory_10_30.class,
@@ -256,6 +307,44 @@ public class VersionConvertorPrimitiveTypeTests {
           org.hl7.fhir.r5.model.MarkdownType.class, org.hl7.fhir.r5.model.DataType.class,
           STRING_STRINGS),
 
+        //PositiveInt
+        getConversionParams(VersionConvertorFactory_10_30.class,
+          org.hl7.fhir.dstu2.model.PositiveIntType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.dstu3.model.PositiveIntType.class, org.hl7.fhir.dstu3.model.Type.class,
+          POSITIVE_INT_STRINGS),
+        getConversionParams(VersionConvertorFactory_10_40.class,
+          org.hl7.fhir.dstu2.model.PositiveIntType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r4.model.PositiveIntType.class, org.hl7.fhir.r4.model.Type.class,
+          POSITIVE_INT_STRINGS),
+        getConversionParams(VersionConvertorFactory_10_50.class,
+          org.hl7.fhir.dstu2.model.PositiveIntType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r5.model.PositiveIntType.class, org.hl7.fhir.r5.model.DataType.class,
+          POSITIVE_INT_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_30.class,
+          org.hl7.fhir.dstu2016may.model.PositiveIntType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.dstu3.model.PositiveIntType.class, org.hl7.fhir.dstu3.model.Type.class,
+          POSITIVE_INT_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_40.class,
+          org.hl7.fhir.dstu2016may.model.PositiveIntType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r4.model.PositiveIntType.class, org.hl7.fhir.r4.model.Type.class,
+          POSITIVE_INT_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_50.class,
+          org.hl7.fhir.dstu2016may.model.PositiveIntType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r5.model.PositiveIntType.class, org.hl7.fhir.r5.model.DataType.class,
+          POSITIVE_INT_STRINGS),
+        getConversionParams(VersionConvertorFactory_30_40.class,
+          org.hl7.fhir.dstu3.model.PositiveIntType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r4.model.PositiveIntType.class, org.hl7.fhir.r4.model.Type.class,
+          POSITIVE_INT_STRINGS),
+        getConversionParams(VersionConvertorFactory_30_50.class,
+          org.hl7.fhir.dstu3.model.PositiveIntType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r5.model.PositiveIntType.class, org.hl7.fhir.r5.model.DataType.class,
+          POSITIVE_INT_STRINGS),
+        getConversionParams(VersionConvertorFactory_40_50.class,
+          org.hl7.fhir.r4.model.PositiveIntType.class, org.hl7.fhir.r4.model.Type.class,
+          org.hl7.fhir.r5.model.PositiveIntType.class, org.hl7.fhir.r5.model.DataType.class,
+          POSITIVE_INT_STRINGS),
+        
         //String
         getConversionParams(VersionConvertorFactory_10_30.class,
           org.hl7.fhir.dstu2.model.StringType.class, org.hl7.fhir.dstu2.model.Type.class,
@@ -294,6 +383,44 @@ public class VersionConvertorPrimitiveTypeTests {
           org.hl7.fhir.r5.model.StringType.class, org.hl7.fhir.r5.model.DataType.class,
           STRING_STRINGS),
 
+        //UnsignedInt
+        getConversionParams(VersionConvertorFactory_10_30.class,
+          org.hl7.fhir.dstu2.model.UnsignedIntType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.dstu3.model.UnsignedIntType.class, org.hl7.fhir.dstu3.model.Type.class,
+          UNSIGNED_INT_STRINGS),
+        getConversionParams(VersionConvertorFactory_10_40.class,
+          org.hl7.fhir.dstu2.model.UnsignedIntType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r4.model.UnsignedIntType.class, org.hl7.fhir.r4.model.Type.class,
+          UNSIGNED_INT_STRINGS),
+        getConversionParams(VersionConvertorFactory_10_50.class,
+          org.hl7.fhir.dstu2.model.UnsignedIntType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r5.model.UnsignedIntType.class, org.hl7.fhir.r5.model.DataType.class,
+          UNSIGNED_INT_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_30.class,
+          org.hl7.fhir.dstu2016may.model.UnsignedIntType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.dstu3.model.UnsignedIntType.class, org.hl7.fhir.dstu3.model.Type.class,
+          UNSIGNED_INT_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_40.class,
+          org.hl7.fhir.dstu2016may.model.UnsignedIntType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r4.model.UnsignedIntType.class, org.hl7.fhir.r4.model.Type.class,
+          UNSIGNED_INT_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_50.class,
+          org.hl7.fhir.dstu2016may.model.UnsignedIntType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r5.model.UnsignedIntType.class, org.hl7.fhir.r5.model.DataType.class,
+          UNSIGNED_INT_STRINGS),
+        getConversionParams(VersionConvertorFactory_30_40.class,
+          org.hl7.fhir.dstu3.model.UnsignedIntType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r4.model.UnsignedIntType.class, org.hl7.fhir.r4.model.Type.class,
+          UNSIGNED_INT_STRINGS),
+        getConversionParams(VersionConvertorFactory_30_50.class,
+          org.hl7.fhir.dstu3.model.UnsignedIntType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r5.model.UnsignedIntType.class, org.hl7.fhir.r5.model.DataType.class,
+          UNSIGNED_INT_STRINGS),
+        getConversionParams(VersionConvertorFactory_40_50.class,
+          org.hl7.fhir.r4.model.UnsignedIntType.class, org.hl7.fhir.r4.model.Type.class,
+          org.hl7.fhir.r5.model.UnsignedIntType.class, org.hl7.fhir.r5.model.DataType.class,
+          UNSIGNED_INT_STRINGS),
+        
         //Uri
         getConversionParams(VersionConvertorFactory_10_30.class,
           org.hl7.fhir.dstu2.model.UriType.class, org.hl7.fhir.dstu2.model.Type.class,
@@ -332,7 +459,7 @@ public class VersionConvertorPrimitiveTypeTests {
           org.hl7.fhir.r5.model.UriType.class, org.hl7.fhir.r5.model.DataType.class,
           URI_STRINGS),
 
-        //Uri
+        //Uuid
         getConversionParams(VersionConvertorFactory_10_30.class,
           org.hl7.fhir.dstu2.model.UuidType.class, org.hl7.fhir.dstu2.model.Type.class,
           org.hl7.fhir.dstu3.model.UuidType.class, org.hl7.fhir.dstu3.model.Type.class,
