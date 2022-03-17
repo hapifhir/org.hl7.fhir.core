@@ -35,6 +35,13 @@ public class VersionConvertorPrimitiveTypeTests {
     Integer.toString(Integer.MIN_VALUE), "-12345", "0", "12345", Integer.toString(Integer.MAX_VALUE)
   };
 
+  private static String[] OID_STRINGS = {
+    "urn:oid:1.3.6.1",
+    "urn:oid:1.3.6.1.4.1",
+    "urn:oid:1.3.6.1.2.1.27",
+    "URN:OID:0.9.2342.19200300.100.4"
+  };
+
   private static String[] POSITIVE_INT_STRINGS = {
     "1", "12345", Integer.toString(Integer.MAX_VALUE)
   };
@@ -307,6 +314,44 @@ public class VersionConvertorPrimitiveTypeTests {
           org.hl7.fhir.r5.model.MarkdownType.class, org.hl7.fhir.r5.model.DataType.class,
           STRING_STRINGS),
 
+        //Oid
+        getConversionParams(VersionConvertorFactory_10_30.class,
+          org.hl7.fhir.dstu2.model.OidType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.dstu3.model.OidType.class, org.hl7.fhir.dstu3.model.Type.class,
+          OID_STRINGS),
+        getConversionParams(VersionConvertorFactory_10_40.class,
+          org.hl7.fhir.dstu2.model.OidType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r4.model.OidType.class, org.hl7.fhir.r4.model.Type.class,
+          OID_STRINGS),
+        getConversionParams(VersionConvertorFactory_10_50.class,
+          org.hl7.fhir.dstu2.model.OidType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r5.model.OidType.class, org.hl7.fhir.r5.model.DataType.class,
+          OID_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_30.class,
+          org.hl7.fhir.dstu2016may.model.OidType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.dstu3.model.OidType.class, org.hl7.fhir.dstu3.model.Type.class,
+          OID_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_40.class,
+          org.hl7.fhir.dstu2016may.model.OidType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r4.model.OidType.class, org.hl7.fhir.r4.model.Type.class,
+          OID_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_50.class,
+          org.hl7.fhir.dstu2016may.model.OidType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r5.model.OidType.class, org.hl7.fhir.r5.model.DataType.class,
+          OID_STRINGS),
+        getConversionParams(VersionConvertorFactory_30_40.class,
+          org.hl7.fhir.dstu3.model.OidType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r4.model.OidType.class, org.hl7.fhir.r4.model.Type.class,
+          OID_STRINGS),
+        getConversionParams(VersionConvertorFactory_30_50.class,
+          org.hl7.fhir.dstu3.model.OidType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r5.model.OidType.class, org.hl7.fhir.r5.model.DataType.class,
+          OID_STRINGS),
+        getConversionParams(VersionConvertorFactory_40_50.class,
+          org.hl7.fhir.r4.model.OidType.class, org.hl7.fhir.r4.model.Type.class,
+          org.hl7.fhir.r5.model.OidType.class, org.hl7.fhir.r5.model.DataType.class,
+          OID_STRINGS),
+        
         //PositiveInt
         getConversionParams(VersionConvertorFactory_10_30.class,
           org.hl7.fhir.dstu2.model.PositiveIntType.class, org.hl7.fhir.dstu2.model.Type.class,
