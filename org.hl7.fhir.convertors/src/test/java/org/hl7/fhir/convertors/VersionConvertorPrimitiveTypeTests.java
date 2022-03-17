@@ -10,6 +10,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -21,6 +22,20 @@ public class VersionConvertorPrimitiveTypeTests {
 
   private static String[] BOOLEAN_STRINGS = {
     "true", "false"
+  };
+
+  private static String[] DECIMAL_STRINGS = {
+    BigDecimal.valueOf(-Double.MAX_VALUE).toPlainString(),
+    "-12345",
+    "-12.300",
+    "-12.3000",
+    "0",
+    "0.0",
+    "0.00",
+    "12.300",
+    "12.3000",
+    "12345",
+    BigDecimal.valueOf(Double.MAX_VALUE).toPlainString()
   };
 
   private static String[] ID_STRINGS = {
@@ -199,6 +214,45 @@ public class VersionConvertorPrimitiveTypeTests {
           org.hl7.fhir.r4.model.CodeType.class, org.hl7.fhir.r4.model.Type.class,
           org.hl7.fhir.r5.model.CodeType.class, org.hl7.fhir.r5.model.DataType.class,
           STRING_STRINGS),
+
+        //Decimal
+        getConversionParams(VersionConvertorFactory_10_30.class,
+          org.hl7.fhir.dstu2.model.DecimalType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.dstu3.model.DecimalType.class, org.hl7.fhir.dstu3.model.Type.class,
+          DECIMAL_STRINGS),
+        getConversionParams(VersionConvertorFactory_10_40.class,
+          org.hl7.fhir.dstu2.model.DecimalType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r4.model.DecimalType.class, org.hl7.fhir.r4.model.Type.class,
+          DECIMAL_STRINGS),
+        getConversionParams(VersionConvertorFactory_10_50.class,
+          org.hl7.fhir.dstu2.model.DecimalType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r5.model.DecimalType.class, org.hl7.fhir.r5.model.DataType.class,
+          DECIMAL_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_30.class,
+          org.hl7.fhir.dstu2016may.model.DecimalType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.dstu3.model.DecimalType.class, org.hl7.fhir.dstu3.model.Type.class,
+          DECIMAL_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_40.class,
+          org.hl7.fhir.dstu2016may.model.DecimalType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r4.model.DecimalType.class, org.hl7.fhir.r4.model.Type.class,
+          DECIMAL_STRINGS),
+        getConversionParams(VersionConvertorFactory_14_50.class,
+          org.hl7.fhir.dstu2016may.model.DecimalType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r5.model.DecimalType.class, org.hl7.fhir.r5.model.DataType.class,
+          DECIMAL_STRINGS),
+        getConversionParams(VersionConvertorFactory_30_40.class,
+          org.hl7.fhir.dstu3.model.DecimalType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r4.model.DecimalType.class, org.hl7.fhir.r4.model.Type.class,
+          DECIMAL_STRINGS),
+        getConversionParams(VersionConvertorFactory_30_50.class,
+          org.hl7.fhir.dstu3.model.DecimalType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r5.model.DecimalType.class, org.hl7.fhir.r5.model.DataType.class,
+          DECIMAL_STRINGS),
+        getConversionParams(VersionConvertorFactory_40_50.class,
+          org.hl7.fhir.r4.model.DecimalType.class, org.hl7.fhir.r4.model.Type.class,
+          org.hl7.fhir.r5.model.DecimalType.class, org.hl7.fhir.r5.model.DataType.class,
+          DECIMAL_STRINGS),
+
 
         //Id
         getConversionParams(VersionConvertorFactory_10_30.class,
