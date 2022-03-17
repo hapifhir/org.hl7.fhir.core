@@ -45,10 +45,10 @@ public class Type14_50 {
       return UnsignedInt14_50.convertUnsignedInt((org.hl7.fhir.dstu2016may.model.UnsignedIntType) src);
     if (src instanceof org.hl7.fhir.dstu2016may.model.IntegerType)
       return Integer14_50.convertInteger((org.hl7.fhir.dstu2016may.model.IntegerType) src);
-    if (src instanceof org.hl7.fhir.dstu2016may.model.UriType)
-      return Uri14_50.convertUri((org.hl7.fhir.dstu2016may.model.UriType) src);
     if (src instanceof org.hl7.fhir.dstu2016may.model.UuidType)
       return Uuid14_50.convertUuid((org.hl7.fhir.dstu2016may.model.UuidType) src);
+    if (src instanceof org.hl7.fhir.dstu2016may.model.UriType)
+      return Uri14_50.convertUri((org.hl7.fhir.dstu2016may.model.UriType) src);
     if (src instanceof org.hl7.fhir.dstu2016may.model.Extension)
       return Extension14_50.convertExtension((org.hl7.fhir.dstu2016may.model.Extension) src);
     if (src instanceof org.hl7.fhir.dstu2016may.model.Narrative)
