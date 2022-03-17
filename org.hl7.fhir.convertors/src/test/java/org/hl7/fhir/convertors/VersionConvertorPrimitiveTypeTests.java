@@ -42,7 +42,7 @@ public class VersionConvertorPrimitiveTypeTests {
   private static String[] UNSIGNED_INT_STRINGS = {
     "0", "12345", Integer.toString(Integer.MAX_VALUE)
   };
-  
+
 
   private static String[] URI_STRINGS = {
     "foo://example.com:8042/find/bassist?name=lemmy#birthdate"
