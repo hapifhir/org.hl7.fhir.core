@@ -2524,6 +2524,9 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
   public static String processRelativeUrls(String markdown, String webUrl, String basePath, List<String> resourceNames, Set<String> filenames, boolean processRelatives) {
+    if (markdown == null) {
+      return "";
+    }
     StringBuilder b = new StringBuilder();
     int i = 0;
     while (i < markdown.length()) {
@@ -2818,7 +2821,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       ElementDefinition e = profile.getSnapshot().getElement().get(0);
       String webroot = profile.getUserString("webroot");
 
-      base.setDefinition(processRelativeUrls(e.getDefinition(), webroot, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, true));
+      if (e.hasDefinition()) {
+        base.setDefinition(processRelativeUrls(e.getDefinition(), webroot, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, true));
+      }
       base.setShort(e.getShort());
       if (e.hasCommentElement())
         base.setCommentElement(e.getCommentElement());

@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.context;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -148,8 +149,9 @@ public interface IWorkerContext {
   public class PackageVersion {
     private String id;
     private String version;
+    private Date date;
     
-    public PackageVersion(String source) {
+    public PackageVersion(String source, Date date) {
       if (source == null) {
         throw new Error("Source cannot be null");
       }
@@ -158,12 +160,15 @@ public interface IWorkerContext {
       }
       id = source.substring(0, source.indexOf("#"));
       version = source.substring(source.indexOf("#")+1);
+      this.date = date;
     }
-    public PackageVersion(String id, String version) {
+    public PackageVersion(String id, String version, Date date) {
       super();
       this.id = id;
       this.version = version;
+      this.date = date;
     }
+    
     public String getId() {
       return id;
     }
@@ -178,6 +183,9 @@ public interface IWorkerContext {
     public String toString() {
       return id+"#"+version;
     }
+    public Date getDate() {
+      return date;
+    }
     
   }
 
@@ -185,8 +193,9 @@ public interface IWorkerContext {
     private String name;
     private String canonical;
     private String web;
-    public PackageDetails(String id, String version, String name, String canonical, String web) {
-      super(id, version);
+    
+    public PackageDetails(String id, String version, String name, String canonical, String web, Date date) {
+      super(id, version, date);
       this.name = name;
       this.canonical = canonical;
       this.web = web;

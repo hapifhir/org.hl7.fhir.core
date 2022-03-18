@@ -5757,6 +5757,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return "htmlChecks2()";
     }
 
+    // clarification in FHIRPath spec
+    if (expr.equals("name.matches('[A-Z]([A-Za-z0-9_]){0,254}')")) {
+      return "name.matches('^[A-Z]([A-Za-z0-9_]){0,254}$')";
+    }
+    if ("eld-19".equals(key)) {
+      return "path.matches('^[^\\\\s\\\\.,:;\\\\\\'\"\\\\/|?!@#$%&*()\\\\[\\\\]{}]{1,64}(\\\\.[^\\\\s\\\\.,:;\\\\\\'\"\\\\/|?!@#$%&*()\\\\[\\\\]{}]{1,64}(\\\\[x\\\\])?(\\\\:[^\\\\s\\\\.]+)?)*$')";
+    }
+    if ("eld-20".equals(key)) {
+      return "path.matches('^[A-Za-z][A-Za-z0-9]*(\\\\.[a-z][A-Za-z0-9]*(\\\\[x])?)*$')";
+    }
+  
     // handled in 4.0.1
     if ("(component.empty() and hasMember.empty()) implies (dataAbsentReason or value)".equals(expr)) {
       return "(component.empty() and hasMember.empty()) implies (dataAbsentReason.exists() or value.exists())";

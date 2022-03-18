@@ -474,7 +474,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       }
       for (String s : pi.listResources(types)) {
         try {
-          loadDefinitionItem(s, pi.load("package", s), loader, null, new PackageVersion(pi.id(), pi.version()));
+          loadDefinitionItem(s, pi.load("package", s), loader, null, new PackageVersion(pi.id(), pi.version(), pi.dateAsDate()));
           t++;
         } catch (Exception e) {
           throw new FHIRException(formatMessage(I18nConstants.ERROR_READING__FROM_PACKAGE__, s, pi.name(), pi.version(), e.getMessage()), e);
@@ -486,7 +486,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       }
       for (PackageResourceInformation pri : pi.listIndexedResources(types)) {
         try {
-          registerResourceFromPackage(new PackageResourceLoader(pri, loader), new PackageVersion(pi.id(), pi.version()));
+          registerResourceFromPackage(new PackageResourceLoader(pri, loader), new PackageVersion(pi.id(), pi.version(), pi.dateAsDate()));
           t++;
         } catch (FHIRException e) {
           throw new FHIRException(formatMessage(I18nConstants.ERROR_READING__FROM_PACKAGE__, pri.getFilename(), pi.name(), pi.version(), e.getMessage()), e);
