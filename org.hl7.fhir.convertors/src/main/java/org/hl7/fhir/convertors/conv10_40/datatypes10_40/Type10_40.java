@@ -133,9 +133,9 @@ public class Type10_40 {
       return UnsignedInt10_40.convertUnsignedInt((org.hl7.fhir.r4.model.UnsignedIntType) src);
     if (src instanceof org.hl7.fhir.r4.model.IntegerType)
       return Integer10_40.convertInteger((org.hl7.fhir.r4.model.IntegerType) src);
-    if (src instanceof org.hl7.fhir.r4.model.UriType) return Uri10_40.convertUri((org.hl7.fhir.r4.model.UriType) src);
     if (src instanceof org.hl7.fhir.r4.model.UuidType)
       return Uuid10_40.convertUuid((org.hl7.fhir.r4.model.UuidType) src);
+    if (src instanceof org.hl7.fhir.r4.model.UriType) return Uri10_40.convertUri((org.hl7.fhir.r4.model.UriType) src);
     if (src instanceof org.hl7.fhir.r4.model.Extension)
       return Extension10_40.convertExtension((org.hl7.fhir.r4.model.Extension) src);
     if (src instanceof org.hl7.fhir.r4.model.Narrative)
