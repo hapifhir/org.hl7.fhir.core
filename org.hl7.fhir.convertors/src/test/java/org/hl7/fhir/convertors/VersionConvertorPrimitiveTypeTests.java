@@ -608,6 +608,12 @@ public class VersionConvertorPrimitiveTypeTests {
           org.hl7.fhir.r5.model.UriType.class, org.hl7.fhir.r5.model.DataType.class,
           URI_STRINGS),
 
+        //Url
+        getFactoryConversionParams(VersionConvertorFactory_40_50.class,
+          org.hl7.fhir.r4.model.UrlType.class, org.hl7.fhir.r4.model.Type.class,
+          org.hl7.fhir.r5.model.UrlType.class, org.hl7.fhir.r5.model.DataType.class,
+          URI_STRINGS),
+        
         //Uuid
         getFactoryConversionParams(VersionConvertorFactory_10_30.class,
           org.hl7.fhir.dstu2.model.UuidType.class, org.hl7.fhir.dstu2.model.Type.class,
