@@ -65,14 +65,21 @@ public class VersionConvertorPrimitiveTypeTests {
   private static String[] POSITIVE_INT_STRINGS = {
     "1", "12345", Integer.toString(Integer.MAX_VALUE)
   };
+
+  private static String[] TIME_STRINGS = {
+    "12:34:56", "12:34:56.789"
+  };
   
   private static String[] UNSIGNED_INT_STRINGS = {
     "0", "12345", Integer.toString(Integer.MAX_VALUE)
   };
 
-
   private static String[] URI_STRINGS = {
     "foo://example.com:8042/find/bassist?name=lemmy#birthdate"
+  };
+
+  private static String[] URL_STRINGS = {
+    "http://example.com:8042/find/bassist?name=lemmy#birthdate"
   };
 
   private static String[] UUID_STRINGS = {
@@ -486,6 +493,44 @@ public class VersionConvertorPrimitiveTypeTests {
           org.hl7.fhir.r4.model.StringType.class, org.hl7.fhir.r4.model.Type.class,
           org.hl7.fhir.r5.model.StringType.class, org.hl7.fhir.r5.model.DataType.class,
           STRING_STRINGS),
+
+        //Time
+        getFactoryConversionParams(VersionConvertorFactory_10_30.class,
+          org.hl7.fhir.dstu2.model.TimeType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.dstu3.model.TimeType.class, org.hl7.fhir.dstu3.model.Type.class,
+          TIME_STRINGS),
+        getFactoryConversionParams(VersionConvertorFactory_10_40.class,
+          org.hl7.fhir.dstu2.model.TimeType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r4.model.TimeType.class, org.hl7.fhir.r4.model.Type.class,
+          TIME_STRINGS),
+        getFactoryConversionParams(VersionConvertorFactory_10_50.class,
+          org.hl7.fhir.dstu2.model.TimeType.class, org.hl7.fhir.dstu2.model.Type.class,
+          org.hl7.fhir.r5.model.TimeType.class, org.hl7.fhir.r5.model.DataType.class,
+          TIME_STRINGS),
+        getFactoryConversionParams(VersionConvertorFactory_14_30.class,
+          org.hl7.fhir.dstu2016may.model.TimeType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.dstu3.model.TimeType.class, org.hl7.fhir.dstu3.model.Type.class,
+          TIME_STRINGS),
+        getFactoryConversionParams(VersionConvertorFactory_14_40.class,
+          org.hl7.fhir.dstu2016may.model.TimeType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r4.model.TimeType.class, org.hl7.fhir.r4.model.Type.class,
+          TIME_STRINGS),
+        getFactoryConversionParams(VersionConvertorFactory_14_50.class,
+          org.hl7.fhir.dstu2016may.model.TimeType.class, org.hl7.fhir.dstu2016may.model.Type.class,
+          org.hl7.fhir.r5.model.TimeType.class, org.hl7.fhir.r5.model.DataType.class,
+          TIME_STRINGS),
+        getFactoryConversionParams(VersionConvertorFactory_30_40.class,
+          org.hl7.fhir.dstu3.model.TimeType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r4.model.TimeType.class, org.hl7.fhir.r4.model.Type.class,
+          TIME_STRINGS),
+        getFactoryConversionParams(VersionConvertorFactory_30_50.class,
+          org.hl7.fhir.dstu3.model.TimeType.class, org.hl7.fhir.dstu3.model.Type.class,
+          org.hl7.fhir.r5.model.TimeType.class, org.hl7.fhir.r5.model.DataType.class,
+          TIME_STRINGS),
+        getFactoryConversionParams(VersionConvertorFactory_40_50.class,
+          org.hl7.fhir.r4.model.TimeType.class, org.hl7.fhir.r4.model.Type.class,
+          org.hl7.fhir.r5.model.TimeType.class, org.hl7.fhir.r5.model.DataType.class,
+          TIME_STRINGS),
 
         //UnsignedInt
         getFactoryConversionParams(VersionConvertorFactory_10_30.class,
