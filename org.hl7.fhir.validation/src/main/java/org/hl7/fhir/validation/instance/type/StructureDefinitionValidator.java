@@ -355,7 +355,7 @@ public class StructureDefinitionValidator extends BaseValidator {
   private void validateTargetProfile(List<ValidationMessage> errors, Element profile, String code, NodeStack stack, String path) {
     String p = profile.primitiveValue();
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, p);
-    if (code.equals("Reference")) {
+    if (code.equals("Reference") || code.equals("CodeableReference")) {
       if (warning(errors, IssueType.EXCEPTION, stack.getLiteralPath(), sd != null, I18nConstants.SD_ED_TYPE_PROFILE_UNKNOWN, p)) {
         StructureDefinition t = determineBaseType(sd);
         if (t == null) {
