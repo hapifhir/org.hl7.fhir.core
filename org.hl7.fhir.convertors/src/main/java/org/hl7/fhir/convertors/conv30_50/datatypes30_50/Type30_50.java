@@ -151,9 +151,9 @@ public class Type30_50 {
       return String30_50.convertString((org.hl7.fhir.r5.model.StringType) src);
     if (src instanceof org.hl7.fhir.r5.model.TimeType)
       return Time30_50.convertTime((org.hl7.fhir.r5.model.TimeType) src);
-    if (src instanceof org.hl7.fhir.r5.model.UriType) return Uri30_50.convertUri((org.hl7.fhir.r5.model.UriType) src);
     if (src instanceof org.hl7.fhir.r5.model.UuidType)
       return Uuid30_50.convertUuid((org.hl7.fhir.r5.model.UuidType) src);
+    if (src instanceof org.hl7.fhir.r5.model.UriType) return Uri30_50.convertUri((org.hl7.fhir.r5.model.UriType) src);
     if (src instanceof org.hl7.fhir.r5.model.Extension)
       return Extension30_50.convertExtension((org.hl7.fhir.r5.model.Extension) src);
     if (src instanceof org.hl7.fhir.r5.model.Narrative)

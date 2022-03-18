@@ -44,14 +44,14 @@ public class Type40_50 {
     if (src instanceof org.hl7.fhir.r4.model.MarkdownType)
       return MarkDown40_50.convertMarkdown((org.hl7.fhir.r4.model.MarkdownType) src);
     if (src instanceof org.hl7.fhir.r4.model.OidType) return Oid40_50.convertOid((org.hl7.fhir.r4.model.OidType) src);
-    if (src instanceof org.hl7.fhir.r4.model.StringType)
-      return String40_50.convertString((org.hl7.fhir.r4.model.StringType) src);
     if (src instanceof org.hl7.fhir.r4.model.TimeType)
       return Time40_50.convertTime((org.hl7.fhir.r4.model.TimeType) src);
     if (src instanceof org.hl7.fhir.r4.model.UrlType) return Url40_50.convertUrl((org.hl7.fhir.r4.model.UrlType) src);
     if (src instanceof org.hl7.fhir.r4.model.UuidType)
       return Uuid40_50.convertUuid((org.hl7.fhir.r4.model.UuidType) src);
     if (src instanceof org.hl7.fhir.r4.model.UriType) return Uri40_50.convertUri((org.hl7.fhir.r4.model.UriType) src);
+    if (src instanceof org.hl7.fhir.r4.model.StringType)
+      return String40_50.convertString((org.hl7.fhir.r4.model.StringType) src);
     if (src instanceof org.hl7.fhir.r4.model.Extension)
       return Extension40_50.convertExtension((org.hl7.fhir.r4.model.Extension) src);
     if (src instanceof org.hl7.fhir.r4.model.Narrative)
