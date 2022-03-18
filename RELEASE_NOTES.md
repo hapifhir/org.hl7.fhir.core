@@ -2,6 +2,7 @@
 
 * no changes
 * Add messageid to OperationOutcome from Validation
+* Add support for new rules around value set interpretation with multiple imported value sets (https://jira.hl7.org/browse/FHIR-25179)
 
 ## Other code changes
 
