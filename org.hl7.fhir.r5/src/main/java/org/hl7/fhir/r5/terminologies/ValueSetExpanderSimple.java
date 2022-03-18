@@ -66,7 +66,9 @@ import java.io.IOException;
  */
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -79,6 +81,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode;
@@ -426,8 +429,9 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
         focus.getExpansion().addParameter().setName(p.getName()).setValue(p.getValue());
     }
 
-    if (source.hasCompose())
-      handleCompose(source.getCompose(), focus.getExpansion(), expParams, source.getUrl(), focus.getExpansion().getExtension());
+    if (source.hasCompose()) {
+      handleCompose(source.getCompose(), focus.getExpansion(), expParams, source.getUrl(), focus.getExpansion().getExtension(), source);
+    }
 
     if (canBeHeirarchy) {
       for (ValueSetExpansionContainsComponent c : roots) {
@@ -467,7 +471,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     return null;
   }
 
-  private void handleCompose(ValueSetComposeComponent compose, ValueSetExpansionComponent exp, Parameters expParams, String ctxt, List<Extension> extensions)
+  private void handleCompose(ValueSetComposeComponent compose, ValueSetExpansionComponent exp, Parameters expParams, String ctxt, List<Extension> extensions, ValueSet valueSet)
       throws ETooCostly, FileNotFoundException, IOException, FHIRException {
     compose.checkNoModifiers("ValueSet.compose", "expanding");
     // Exclude comes first because we build up a map of things to exclude
@@ -481,11 +485,11 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
         first = false;
       else
         canBeHeirarchy = false;
-      includeCodes(inc, exp, expParams, canBeHeirarchy, compose.hasInactive() && !compose.getInactive(), extensions);
+      includeCodes(inc, exp, expParams, canBeHeirarchy, compose.hasInactive() && !compose.getInactive(), extensions, valueSet);
     }
   }
 
-  private ValueSet importValueSet(String value, ValueSetExpansionComponent exp, Parameters expParams, boolean noInactive) throws ETooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
+  private ValueSet importValueSet(String value, ValueSetExpansionComponent exp, Parameters expParams, boolean noInactive, ValueSet valueSet) throws ETooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
     if (value == null)
       throw fail("unable to find value set with no identity");
     ValueSet vs = context.fetchResource(ValueSet.class, value);
@@ -521,9 +525,21 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
       if (!existsInParams(exp.getParameter(), p.getName(), p.getValue()))
         exp.getParameter().add(p);
     }
-    copyExpansion(vso.getValueset().getExpansion().getContains());
+    if (isValueSetUnionImports(valueSet)) {
+      copyExpansion(vso.getValueset().getExpansion().getContains());
+    }
     canBeHeirarchy = false; // if we're importing a value set, we have to be combining, so we won't try for a heirarchy
     return vso.getValueset();
+  }
+  
+
+  protected boolean isValueSetUnionImports(ValueSet valueSet) {
+    PackageVersion p = (PackageVersion) valueSet.getUserData("package");
+    if (p != null) {
+      return p.getDate().before(new GregorianCalendar(2022, Calendar.MARCH, 31).getTime());
+    } else {
+      return false;
+    }
   }
 
   public void copyExpansion(List<ValueSetExpansionContainsComponent> list) {
@@ -562,11 +578,11 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     }
   }
 
-  private void includeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, boolean heirarchical, boolean noInactive, List<Extension> extensions) throws ETooCostly, FileNotFoundException, IOException, FHIRException {
+  private void includeCodes(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, boolean heirarchical, boolean noInactive, List<Extension> extensions, ValueSet valueSet) throws ETooCostly, FileNotFoundException, IOException, FHIRException {
     inc.checkNoModifiers("Compose.include", "expanding");
     List<ValueSet> imports = new ArrayList<ValueSet>();
     for (UriType imp : inc.getValueSet()) {
-      imports.add(importValueSet(imp.getValue(), exp, expParams, noInactive));
+      imports.add(importValueSet(imp.getValue(), exp, expParams, noInactive, valueSet));
     }
 
     if (!inc.hasSystem()) {
