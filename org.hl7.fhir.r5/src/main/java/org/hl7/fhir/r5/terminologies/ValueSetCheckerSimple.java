@@ -32,6 +32,8 @@ package org.hl7.fhir.r5.terminologies;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -41,6 +43,8 @@ import java.util.Set;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.context.IWorkerContext.PackageDetails;
+import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -64,6 +68,7 @@ import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationConte
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.npm.PackageInfo;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationOptions.ValueSetMode;
@@ -671,9 +676,17 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
   }
 
   private Boolean inComponent(ConceptSetComponent vsi, int vsiIndex, String system, String code, boolean only, List<String> warnings) throws FHIRException {
-    for (UriType uri : vsi.getValueSet()) {
-      if (inImport(uri.getValue(), system, code)) {
-        return true;
+    if (isValueSetUnionImports()) {
+      for (UriType uri : vsi.getValueSet()) {
+        if (inImport(uri.getValue(), system, code)) {
+          return true;
+        }
+      }
+    } else {
+      for (UriType uri : vsi.getValueSet()) {
+        if (!inImport(uri.getValue(), system, code)) {
+          return false;
+        }
       }
     }
 
@@ -735,6 +748,15 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       } else {
         return ok;
       }
+    }
+  }
+
+  protected boolean isValueSetUnionImports() {
+    PackageVersion p = (PackageVersion) valueset.getUserData("package");
+    if (p != null) {
+      return p.getDate().before(new GregorianCalendar(2022, Calendar.MARCH, 31).getTime());
+    } else {
+      return false;
     }
   }
 

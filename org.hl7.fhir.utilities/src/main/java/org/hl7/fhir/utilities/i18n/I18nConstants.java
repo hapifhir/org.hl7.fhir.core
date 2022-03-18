@@ -622,6 +622,7 @@ public class I18nConstants {
   public static final String VALUESET_REFERENCE_UNKNOWN = "VALUESET_REFERENCE_UNKNOWN";
   public static final String VALUESET_UNC_SYSTEM_WARNING = "VALUESET_UNC_SYSTEM_WARNING";
   public static final String VALUESET_UNC_SYSTEM_WARNING_VER = "VALUESET_UNC_SYSTEM_WARNING_VER";
+  public static final String VALUESET_IMPORT_UNION_INTERSECTION = "VALUESET_IMPORT_UNION_INTERSECTION";
   public static final String VERSION_MISMATCH_THE_CONTEXT_HAS_VERSION__LOADED_AND_THE_NEW_CONTENT_BEING_LOADED_IS_VERSION_ = "Version_mismatch_The_context_has_version__loaded_and_the_new_content_being_loaded_is_version_";
   public static final String WRONG_NAMESPACE__EXPECTED_ = "Wrong_namespace__expected_";
   public static final String WRONG_TYPE_FOR_RESOURCE = "Wrong_type_for_resource";

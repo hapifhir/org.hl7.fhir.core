@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.test;
 
+import java.util.Date;
+
 import org.hl7.fhir.r5.context.CanonicalResourceManager;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
@@ -425,14 +427,13 @@ public class CanonicalResourceManagerTests {
     vs2.setUrl("http://terminology.hl7.org/ValueSet/234");
     vs2.setVersion("2000.0.0");
     vs2.setName("2");
-    
 
-    mrm.see(vs1, new PackageVersion("hl7.fhir.r4.core", "4.0.1"));
+    mrm.see(vs1, new PackageVersion("hl7.fhir.r4.core", "4.0.1", new Date()));
     Assertions.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234"));
     Assertions.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234", "2.0.0"));
     Assertions.assertTrue(mrm.get("http://terminology.hl7.org/ValueSet/234").getName().equals("1"));
 
-    mrm.see(vs2, new PackageVersion("hl7.terminology.r4", "4.0.1"));   
+    mrm.see(vs2, new PackageVersion("hl7.terminology.r4", "4.0.1", new Date()));   
     Assertions.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234"));
     Assertions.assertTrue(mrm.get("http://terminology.hl7.org/ValueSet/234").getName().equals("2"));
     Assertions.assertNull(mrm.get("http://terminology.hl7.org/ValueSet/234", "2.0.0")); // this will get dropped completely because of UTG rules
