@@ -130,6 +130,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
         synchronized (this) {
           resource = res;
         }
+        resource.setUserData("package", packageInfo);
         proxy = null;
       }
       return resource;
@@ -224,6 +225,10 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
         
     if (enforceUniqueId && map.containsKey(cr.getId())) {
       drop(cr.getId());      
+    }
+    
+    if (cr.resource != null) {
+      cr.resource.setUserData("package", cr.getPackageInfo());
     }
     
     // special case logic for UTG support prior to version 5
