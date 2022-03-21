@@ -5,13 +5,16 @@ import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
 import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Canonical10_40;
 import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.conv14_30.VersionConvertor_14_30;
 import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
 import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
 import org.hl7.fhir.convertors.conv40_50.VersionConvertor_40_50;
 import org.hl7.fhir.convertors.factory.*;
+import org.hl7.fhir.dstu3.model.Coding;
 import org.hl7.fhir.r4.model.CanonicalType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -69,6 +72,10 @@ public class VersionConvertorPrimitiveTypeTests {
 
   private static String[] INTEGER_STRINGS = {
     Integer.toString(Integer.MIN_VALUE), "-12345", "0", "12345", Integer.toString(Integer.MAX_VALUE)
+  };
+
+  private static String[] INTEGER_64_STRINGS = {
+    Long.toString(Long.MIN_VALUE), "-12345", "0", "12345", Long.toString(Long.MAX_VALUE)
   };
 
   private static String[] OID_STRINGS = {
@@ -865,13 +872,6 @@ public class VersionConvertorPrimitiveTypeTests {
       ),
 
       //10_40
-      /* TODO Test this another way; no get/setValueAsString in Reference
-      Arguments.of(
-        org.hl7.fhir.r4.model.CanonicalType.class, org.hl7.fhir.dstu2.model.Reference.class,
-        (Function<org.hl7.fhir.r4.model.CanonicalType, org.hl7.fhir.dstu2.model.Reference>) org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Canonical10_40::convertCanonicalToReference,
-        URL_STRINGS[0], URL_STRINGS[0]
-      ),
-      */
       Arguments.of(
         org.hl7.fhir.dstu2.model.PositiveIntType.class,org.hl7.fhir.r4.model.UnsignedIntType.class,
         (Function<org.hl7.fhir.dstu2.model.PositiveIntType, org.hl7.fhir.r4.model.UnsignedIntType>) org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.UnsignedInt10_40::convertUnsignedIntToPositive,
@@ -900,14 +900,7 @@ public class VersionConvertorPrimitiveTypeTests {
         STRING_STRINGS, STRING_STRINGS
       ),
 
-      //14_30
-      /* TODO Test this another way; no get/setValueAsString in Reference
 
-      Arguments.of(
-        org.hl7.fhir.dstu3.model.Coding.class, org.hl7.fhir.dstu2016may.model.Coding.class,
-        (Function<org.hl7.fhir.dstu3.model.Coding, org.hl7.fhir.dstu2016may.model.Coding>) org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.Code14_30::convertCoding,
-        CODE_STRINGS, CODE_STRINGS
-      )*/
 
       //14_50
       Arguments.of(
@@ -930,7 +923,7 @@ public class VersionConvertorPrimitiveTypeTests {
       Arguments.of(
         org.hl7.fhir.r5.model.Integer64Type.class, org.hl7.fhir.dstu3.model.DecimalType.class,
         (Function<org.hl7.fhir.r5.model.Integer64Type, org.hl7.fhir.dstu3.model.DecimalType>) org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Decimal30_50::convertInteger64,
-        POSITIVE_INT_STRINGS, POSITIVE_INT_STRINGS
+        INTEGER_64_STRINGS, INTEGER_64_STRINGS
       ),
       Arguments.of(
         org.hl7.fhir.dstu3.model.StringType.class, org.hl7.fhir.r5.model.MarkdownType.class,
@@ -1008,4 +1001,30 @@ public class VersionConvertorPrimitiveTypeTests {
     ConversionContext30_50.INSTANCE.close(CONTEXT_PATH);
     ConversionContext40_50.INSTANCE.close(CONTEXT_PATH);
   }
+
+  @Test
+  public void testCanonicalType10_40Conversion() {
+    ConversionContext10_40.INSTANCE.init(mock(VersionConvertor_10_40.class), CONTEXT_PATH);
+
+    for (String urlString : URL_STRINGS) {
+      {
+        org.hl7.fhir.r4.model.CanonicalType src = new CanonicalType();
+        src.setValueAsString(urlString);
+        Assertions.assertEquals(urlString, src.getValueAsString());
+        org.hl7.fhir.dstu2.model.Reference actualTgt = Canonical10_40.convertCanonicalToReference(src);
+
+        Assertions.assertEquals(src.getValueAsString(), actualTgt.getReference());
+      }
+
+      {
+        org.hl7.fhir.dstu2.model.Reference src = new org.hl7.fhir.dstu2.model.Reference(urlString);
+        Assertions.assertEquals(urlString, src.getReference());
+
+        org.hl7.fhir.r4.model.CanonicalType tgt = Canonical10_40.convertReferenceToCanonical(src);
+        Assertions.assertEquals(src.getReference(), tgt.getValueAsString());
+      }
+    }
+    ConversionContext10_40.INSTANCE.close(CONTEXT_PATH);
+  }
+
 }
