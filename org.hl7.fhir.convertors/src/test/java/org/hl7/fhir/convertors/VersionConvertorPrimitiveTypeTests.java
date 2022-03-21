@@ -1,14 +1,12 @@
 package org.hl7.fhir.convertors;
 
-import org.hl7.fhir.convertors.context.ConversionContext10_30;
-import org.hl7.fhir.convertors.context.ConversionContext10_40;
-import org.hl7.fhir.convertors.context.ConversionContext10_50;
-import org.hl7.fhir.convertors.context.ConversionContext14_50;
+import org.hl7.fhir.convertors.context.*;
 import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
 import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Canonical10_40;
 import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
+import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
 import org.hl7.fhir.convertors.factory.*;
 import org.hl7.fhir.r4.model.CanonicalType;
 import org.junit.jupiter.api.Assertions;
@@ -925,7 +923,20 @@ public class VersionConvertorPrimitiveTypeTests {
         org.hl7.fhir.dstu2016may.model.StringType.class, org.hl7.fhir.r5.model.MarkdownType.class,
         (Function<org.hl7.fhir.dstu2016may.model.StringType, org.hl7.fhir.r5.model.MarkdownType>) org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.String14_50::convertStringToMarkdown,
         STRING_STRINGS, STRING_STRINGS
+      ),
+
+      //30_50
+      Arguments.of(
+        org.hl7.fhir.r5.model.Integer64Type.class, org.hl7.fhir.dstu3.model.DecimalType.class,
+        (Function<org.hl7.fhir.r5.model.Integer64Type, org.hl7.fhir.dstu3.model.DecimalType>) org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Decimal30_50::convertInteger64,
+        POSITIVE_INT_STRINGS, POSITIVE_INT_STRINGS
+      ),
+      Arguments.of(
+        org.hl7.fhir.dstu3.model.StringType.class, org.hl7.fhir.r5.model.MarkdownType.class,
+        (Function<org.hl7.fhir.dstu3.model.StringType, org.hl7.fhir.r5.model.MarkdownType>) org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50::convertStringToMarkdown,
+        STRING_STRINGS, STRING_STRINGS
       )
+
     );
   }
 
@@ -940,6 +951,7 @@ public class VersionConvertorPrimitiveTypeTests {
     ConversionContext10_40.INSTANCE.init(mock(VersionConvertor_10_40.class), CONTEXT_PATH);
     ConversionContext10_50.INSTANCE.init(mock(VersionConvertor_10_50.class), CONTEXT_PATH);
     ConversionContext14_50.INSTANCE.init(mock(VersionConvertor_14_50.class), CONTEXT_PATH);
+    ConversionContext30_50.INSTANCE.init(mock(VersionConvertor_30_50.class), CONTEXT_PATH);
 
 
     Method srcSetValueAsStringMethod = srcTypeClazz.getMethod("setValueAsString", String.class);
@@ -974,5 +986,6 @@ public class VersionConvertorPrimitiveTypeTests {
     ConversionContext10_40.INSTANCE.close(CONTEXT_PATH);
     ConversionContext10_50.INSTANCE.close(CONTEXT_PATH);
     ConversionContext14_50.INSTANCE.close(CONTEXT_PATH);
+    ConversionContext30_50.INSTANCE.close(CONTEXT_PATH);
   }
 }
