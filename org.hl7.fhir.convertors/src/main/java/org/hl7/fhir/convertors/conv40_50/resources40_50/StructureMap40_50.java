@@ -790,7 +790,7 @@ public class StructureMap40_50 {
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasName())
       tgt.setNameElement(Id40_50.convertId(src.getNameElement()));
-    for (StructureMapGroupRuleTargetParameterComponent t : src.getParameter()) tgt.getVariable().add(String40_50.convertString(t.getValueStringType()));
+    for (StructureMapGroupRuleTargetParameterComponent t : src.getParameter()) tgt.getVariable().add(new org.hl7.fhir.r4.model.StringType(t.getValue().primitiveValue()));
     return tgt;
   }
 }
