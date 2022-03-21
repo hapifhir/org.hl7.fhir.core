@@ -7,6 +7,7 @@ import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Cano
 import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
 import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.conv40_50.VersionConvertor_40_50;
 import org.hl7.fhir.convertors.factory.*;
 import org.hl7.fhir.r4.model.CanonicalType;
 import org.junit.jupiter.api.Assertions;
@@ -935,6 +936,23 @@ public class VersionConvertorPrimitiveTypeTests {
         org.hl7.fhir.dstu3.model.StringType.class, org.hl7.fhir.r5.model.MarkdownType.class,
         (Function<org.hl7.fhir.dstu3.model.StringType, org.hl7.fhir.r5.model.MarkdownType>) org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50::convertStringToMarkdown,
         STRING_STRINGS, STRING_STRINGS
+      ),
+
+      //40_50
+      Arguments.of(
+        org.hl7.fhir.r5.model.Integer64Type.class, org.hl7.fhir.r4.model.UnsignedIntType.class,
+        (Function<org.hl7.fhir.r5.model.Integer64Type, org.hl7.fhir.r4.model.UnsignedIntType>) org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.UnsignedInt40_50::convertInteger64ToUnsignedInt,
+        UNSIGNED_INT_STRINGS, UNSIGNED_INT_STRINGS
+      ),
+      Arguments.of(
+        org.hl7.fhir.r4.model.UnsignedIntType.class, org.hl7.fhir.r5.model.Integer64Type.class,
+        (Function<org.hl7.fhir.r4.model.UnsignedIntType, org.hl7.fhir.r5.model.Integer64Type>) org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.UnsignedInt40_50::convertUnsignedIntToInteger64,
+        UNSIGNED_INT_STRINGS, UNSIGNED_INT_STRINGS
+      ),
+      Arguments.of(
+        org.hl7.fhir.r4.model.StringType.class, org.hl7.fhir.r5.model.MarkdownType.class,
+        (Function<org.hl7.fhir.r4.model.StringType, org.hl7.fhir.r5.model.MarkdownType>) org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.MarkDown40_50::convertStringToMarkdown,
+        STRING_STRINGS, STRING_STRINGS
       )
 
     );
@@ -952,6 +970,7 @@ public class VersionConvertorPrimitiveTypeTests {
     ConversionContext10_50.INSTANCE.init(mock(VersionConvertor_10_50.class), CONTEXT_PATH);
     ConversionContext14_50.INSTANCE.init(mock(VersionConvertor_14_50.class), CONTEXT_PATH);
     ConversionContext30_50.INSTANCE.init(mock(VersionConvertor_30_50.class), CONTEXT_PATH);
+    ConversionContext40_50.INSTANCE.init(mock(VersionConvertor_40_50.class), CONTEXT_PATH);
 
 
     Method srcSetValueAsStringMethod = srcTypeClazz.getMethod("setValueAsString", String.class);
@@ -987,5 +1006,6 @@ public class VersionConvertorPrimitiveTypeTests {
     ConversionContext10_50.INSTANCE.close(CONTEXT_PATH);
     ConversionContext14_50.INSTANCE.close(CONTEXT_PATH);
     ConversionContext30_50.INSTANCE.close(CONTEXT_PATH);
+    ConversionContext40_50.INSTANCE.close(CONTEXT_PATH);
   }
 }
