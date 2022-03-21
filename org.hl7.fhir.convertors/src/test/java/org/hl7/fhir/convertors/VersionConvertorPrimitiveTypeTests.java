@@ -5,30 +5,22 @@ import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
 import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Canonical10_40;
 import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
-import org.hl7.fhir.convertors.conv14_30.VersionConvertor_14_30;
 import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
 import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
 import org.hl7.fhir.convertors.conv40_50.VersionConvertor_40_50;
 import org.hl7.fhir.convertors.factory.*;
-import org.hl7.fhir.dstu3.model.Coding;
 import org.hl7.fhir.r4.model.CanonicalType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.concurrent.Callable;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -842,6 +834,10 @@ public class VersionConvertorPrimitiveTypeTests {
     Method tgtGetValueAsString = tgtTypeClazz.getMethod("getValueAsString");
     srcSetValueAsStringMethod.invoke(srcInstance, srcString);
 
+    K srcStringConstructed = srcTypeClazz.getDeclaredConstructor(String.class).newInstance(srcString);
+    String srcStringConstructedAsString = (String) srcGetValueAsString.invoke(srcStringConstructed);
+    Assertions.assertEquals(srcString, srcStringConstructedAsString);
+
     String srcValueAsString = (String) srcGetValueAsString.invoke(srcInstance);
     Assertions.assertEquals(srcString, srcValueAsString);
 
@@ -1011,8 +1007,8 @@ public class VersionConvertorPrimitiveTypeTests {
         org.hl7.fhir.r4.model.CanonicalType src = new CanonicalType();
         src.setValueAsString(urlString);
         Assertions.assertEquals(urlString, src.getValueAsString());
-        org.hl7.fhir.dstu2.model.Reference actualTgt = Canonical10_40.convertCanonicalToReference(src);
 
+        org.hl7.fhir.dstu2.model.Reference actualTgt = Canonical10_40.convertCanonicalToReference(src);
         Assertions.assertEquals(src.getValueAsString(), actualTgt.getReference());
       }
 
