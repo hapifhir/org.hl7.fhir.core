@@ -17,7 +17,7 @@ public class Decimal30_50 {
   }
 
   public static org.hl7.fhir.dstu3.model.DecimalType convertInteger64(org.hl7.fhir.r5.model.Integer64Type src) throws FHIRException {
-    org.hl7.fhir.dstu3.model.DecimalType tgt = new org.hl7.fhir.dstu3.model.DecimalType(src.getValue().toString());
+    org.hl7.fhir.dstu3.model.DecimalType tgt = new org.hl7.fhir.dstu3.model.DecimalType(src.getValueAsString());
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     return tgt;
   }
