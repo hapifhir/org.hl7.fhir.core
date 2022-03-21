@@ -134,9 +134,9 @@ public class Type14_50 {
       return UnsignedInt14_50.convertUnsignedInt((org.hl7.fhir.r5.model.UnsignedIntType) src);
     if (src instanceof org.hl7.fhir.r5.model.IntegerType)
       return Integer14_50.convertInteger((org.hl7.fhir.r5.model.IntegerType) src);
-    if (src instanceof org.hl7.fhir.r5.model.UriType) return Uri14_50.convertUri((org.hl7.fhir.r5.model.UriType) src);
     if (src instanceof org.hl7.fhir.r5.model.UuidType)
       return Uuid14_50.convertUuid((org.hl7.fhir.r5.model.UuidType) src);
+    if (src instanceof org.hl7.fhir.r5.model.UriType) return Uri14_50.convertUri((org.hl7.fhir.r5.model.UriType) src);
     if (src instanceof org.hl7.fhir.r5.model.Extension)
       return Extension14_50.convertExtension((org.hl7.fhir.r5.model.Extension) src);
     if (src instanceof org.hl7.fhir.r5.model.Narrative)

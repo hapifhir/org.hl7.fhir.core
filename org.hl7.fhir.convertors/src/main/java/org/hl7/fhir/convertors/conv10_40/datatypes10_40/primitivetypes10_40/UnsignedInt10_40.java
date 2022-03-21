@@ -19,7 +19,7 @@ public class UnsignedInt10_40 {
   }
 
   public static UnsignedIntType convertUnsignedIntToPositive(PositiveIntType src) {
-    UnsignedIntType tgt = src.hasValue() ? new UnsignedIntType(src.getValue()) : new UnsignedIntType();
+    UnsignedIntType tgt = src.hasValue() ? new UnsignedIntType(src.getValueAsString()) : new UnsignedIntType();
     ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     return tgt;
   }
