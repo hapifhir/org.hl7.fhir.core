@@ -3,10 +3,12 @@ package org.hl7.fhir.convertors;
 import org.hl7.fhir.convertors.context.ConversionContext10_30;
 import org.hl7.fhir.convertors.context.ConversionContext10_40;
 import org.hl7.fhir.convertors.context.ConversionContext10_50;
+import org.hl7.fhir.convertors.context.ConversionContext14_50;
 import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
 import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Canonical10_40;
 import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
 import org.hl7.fhir.convertors.factory.*;
 import org.hl7.fhir.r4.model.CanonicalType;
 import org.junit.jupiter.api.Assertions;
@@ -38,6 +40,10 @@ public class VersionConvertorPrimitiveTypeTests {
 
   private static String[] BOOLEAN_STRINGS = {
     "true", "false"
+  };
+
+  private static String[] CODE_STRINGS = {
+    "dummyString1", "otherDummyString"
   };
 
   private static String[] DECIMAL_STRINGS = {
@@ -847,27 +853,79 @@ public class VersionConvertorPrimitiveTypeTests {
 
   private static Stream<Arguments> getDirectConversionParams() {
     return Stream.of(
+      //10_30
+      Arguments.of(
+        org.hl7.fhir.dstu3.model.UriType.class, org.hl7.fhir.dstu2.model.CodeType.class,
+        (Function<org.hl7.fhir.dstu3.model.UriType, org.hl7.fhir.dstu2.model.CodeType>) org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Code10_30::convertUriToCode,
+        URI_STRINGS, URI_STRINGS
+      ),
+      Arguments.of(
+        org.hl7.fhir.dstu2.model.CodeType.class, org.hl7.fhir.dstu3.model.UriType.class,
+        (Function<org.hl7.fhir.dstu2.model.CodeType, org.hl7.fhir.dstu3.model.UriType>) org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Code10_30::convertCodeToUri,
+        URI_STRINGS, URI_STRINGS
+      ),
+
+      //10_40
+      /* TODO Test this another way; no get/setValueAsString in Reference
+      Arguments.of(
+        org.hl7.fhir.r4.model.CanonicalType.class, org.hl7.fhir.dstu2.model.Reference.class,
+        (Function<org.hl7.fhir.r4.model.CanonicalType, org.hl7.fhir.dstu2.model.Reference>) org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Canonical10_40::convertCanonicalToReference,
+        URL_STRINGS[0], URL_STRINGS[0]
+      ),
+      */
+      Arguments.of(
+        org.hl7.fhir.dstu2.model.PositiveIntType.class,org.hl7.fhir.r4.model.UnsignedIntType.class,
+        (Function<org.hl7.fhir.dstu2.model.PositiveIntType, org.hl7.fhir.r4.model.UnsignedIntType>) org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.UnsignedInt10_40::convertUnsignedIntToPositive,
+        POSITIVE_INT_STRINGS, POSITIVE_INT_STRINGS
+      ),
+
+      //10_50
       Arguments.of(
         org.hl7.fhir.r5.model.UriType.class, org.hl7.fhir.dstu2.model.CodeType.class,
         (Function<org.hl7.fhir.r5.model.UriType, org.hl7.fhir.dstu2.model.CodeType>) org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Code10_50::convertUriToCode,
-        "dummyCode", "dummyCode"
+        URI_STRINGS, URI_STRINGS
       ),
       Arguments.of(
         org.hl7.fhir.dstu2.model.CodeType.class, org.hl7.fhir.r5.model.UriType.class,
         (Function<org.hl7.fhir.dstu2.model.CodeType, org.hl7.fhir.r5.model.UriType>) org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Code10_50::convertCodeToUri,
-        "dummyCode", "dummyCode"
+        CODE_STRINGS, CODE_STRINGS
       ),
       Arguments.of(
         org.hl7.fhir.r5.model.MarkdownType.class, org.hl7.fhir.dstu2.model.StringType.class,
         (Function<org.hl7.fhir.r5.model.MarkdownType, org.hl7.fhir.dstu2.model.StringType>) org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.MarkDown10_50::convertMarkdownToString,
-        "blah blah blah", "blah blah blah"
+        STRING_STRINGS, STRING_STRINGS
       ),
       Arguments.of(
         org.hl7.fhir.dstu2.model.StringType.class, org.hl7.fhir.r5.model.MarkdownType.class,
         (Function<org.hl7.fhir.dstu2.model.StringType, org.hl7.fhir.r5.model.MarkdownType>) org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.MarkDown10_50::convertStringToMarkdown,
-        "blah blah blah", "blah blah blah"
+        STRING_STRINGS, STRING_STRINGS
+      ),
+
+      //14_30
+      /* TODO Test this another way; no get/setValueAsString in Reference
+
+      Arguments.of(
+        org.hl7.fhir.dstu3.model.Coding.class, org.hl7.fhir.dstu2016may.model.Coding.class,
+        (Function<org.hl7.fhir.dstu3.model.Coding, org.hl7.fhir.dstu2016may.model.Coding>) org.hl7.fhir.convertors.conv14_30.datatypes14_30.primitivetypes14_30.Code14_30::convertCoding,
+        CODE_STRINGS, CODE_STRINGS
+      )*/
+
+      //14_50
+      Arguments.of(
+        org.hl7.fhir.r5.model.UriType.class, org.hl7.fhir.dstu2016may.model.CodeType.class,
+        (Function<org.hl7.fhir.r5.model.UriType, org.hl7.fhir.dstu2016may.model.CodeType>) org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Code14_50::convertCode,
+        URI_STRINGS, URI_STRINGS
+      ),
+      Arguments.of(
+        org.hl7.fhir.dstu2016may.model.CodeType.class, org.hl7.fhir.r5.model.UriType.class,
+        (Function<org.hl7.fhir.dstu2016may.model.CodeType, org.hl7.fhir.r5.model.UriType>) org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Code14_50::convertCodeToUri,
+        CODE_STRINGS, CODE_STRINGS
+      ),
+      Arguments.of(
+        org.hl7.fhir.dstu2016may.model.StringType.class, org.hl7.fhir.r5.model.MarkdownType.class,
+        (Function<org.hl7.fhir.dstu2016may.model.StringType, org.hl7.fhir.r5.model.MarkdownType>) org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.String14_50::convertStringToMarkdown,
+        STRING_STRINGS, STRING_STRINGS
       )
-      //org.hl7.fhir.dstu3.model.UriType convertCodeToUri(org.hl7.fhir.dstu2.model.CodeType src
     );
   }
 
@@ -876,30 +934,45 @@ public class VersionConvertorPrimitiveTypeTests {
 
   @ParameterizedTest(name = "Test index: {index} Source Class={1} First Value={3} Second Class={4} Second Value={6}")
   @MethodSource("getDirectConversionParams")
-  public <K, L> void testDirectConversion(Class<K> srcTypeClazz, Class<L> tgtTypeClazz, Function<K, L> convertFunction, String srcString, String tgtString) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+  public <K, L> void testDirectConversion(Class<K> srcTypeClazz, Class<L> tgtTypeClazz, Function<K, L> convertFunction, String[] srcStrings, String[] tgtStrings) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
     ConversionContext10_30.INSTANCE.init(mock(VersionConvertor_10_30.class), CONTEXT_PATH);
+    ConversionContext10_40.INSTANCE.init(mock(VersionConvertor_10_40.class), CONTEXT_PATH);
     ConversionContext10_50.INSTANCE.init(mock(VersionConvertor_10_50.class), CONTEXT_PATH);
+    ConversionContext14_50.INSTANCE.init(mock(VersionConvertor_14_50.class), CONTEXT_PATH);
 
-    K srcInstance = srcTypeClazz.getDeclaredConstructor().newInstance();
 
     Method srcSetValueAsStringMethod = srcTypeClazz.getMethod("setValueAsString", String.class);
     Method srcGetValueAsString = srcTypeClazz.getMethod("getValueAsString");
+    Method srcHasValue = srcTypeClazz.getMethod("hasValue");
 
-    srcSetValueAsStringMethod.invoke(srcInstance, srcString);
+    for (int i = 0; i < srcStrings.length; i++) {
+      K srcInstance = srcTypeClazz.getDeclaredConstructor().newInstance();
 
-    String srcValueAsString = (String) srcGetValueAsString.invoke(srcInstance);
+      srcSetValueAsStringMethod.invoke(srcInstance, srcStrings[i]);
 
-    Assertions.assertEquals(srcString, srcValueAsString);
+      String srcValueAsString = (String) srcGetValueAsString.invoke(srcInstance);
 
-    L tgtInstance = convertFunction.apply(srcInstance);
+      Assertions.assertEquals(srcStrings[i], srcValueAsString);
 
-    Method tgtGetValueAsString = tgtTypeClazz.getMethod("getValueAsString");
+      boolean srcHasValueReturn = (boolean) srcHasValue.invoke(srcInstance);
 
-    String tgtValueAsString = (String) tgtGetValueAsString.invoke(tgtInstance);
-    Assertions.assertEquals(tgtString, tgtValueAsString);
+      L tgtInstance = convertFunction.apply(srcInstance);
 
+      Method tgtGetValueAsString = tgtTypeClazz.getMethod("getValueAsString");
+      Method tgtHasValue = tgtTypeClazz.getMethod("hasValue");
+
+      if (srcHasValueReturn) {
+        String tgtValueAsString = (String) tgtGetValueAsString.invoke(tgtInstance);
+        Assertions.assertEquals(tgtStrings[i], tgtValueAsString);
+      } else {
+        boolean tgtHasValueReturn = (boolean) tgtHasValue.invoke(tgtInstance);
+        Assertions.assertFalse(tgtHasValueReturn);
+      }
+    }
     ConversionContext10_30.INSTANCE.close(CONTEXT_PATH);
+    ConversionContext10_40.INSTANCE.close(CONTEXT_PATH);
     ConversionContext10_50.INSTANCE.close(CONTEXT_PATH);
+    ConversionContext14_50.INSTANCE.close(CONTEXT_PATH);
   }
 }
