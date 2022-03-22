@@ -5,15 +5,13 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 public class Decimal14_50 {
   public static org.hl7.fhir.r5.model.DecimalType convertDecimal(org.hl7.fhir.dstu2016may.model.DecimalType src) throws FHIRException {
-    org.hl7.fhir.r5.model.DecimalType tgt = new org.hl7.fhir.r5.model.DecimalType();
-    if (src.hasValue()) tgt.setValue(src.getValue());
+    org.hl7.fhir.r5.model.DecimalType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.DecimalType(src.getValueAsString()) : new org.hl7.fhir.r5.model.DecimalType();
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     return tgt;
   }
 
   public static org.hl7.fhir.dstu2016may.model.DecimalType convertDecimal(org.hl7.fhir.r5.model.DecimalType src) throws FHIRException {
-    org.hl7.fhir.dstu2016may.model.DecimalType tgt = new org.hl7.fhir.dstu2016may.model.DecimalType();
-    if (src.hasValue()) tgt.setValue(src.getValue());
+    org.hl7.fhir.dstu2016may.model.DecimalType tgt = src.hasValue() ? new org.hl7.fhir.dstu2016may.model.DecimalType(src.getValueAsString()) : new org.hl7.fhir.dstu2016may.model.DecimalType();
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     return tgt;
   }

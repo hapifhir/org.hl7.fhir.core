@@ -14,7 +14,7 @@ public class Type30_50 {
   }
 
   public org.hl7.fhir.r5.model.DataType convertType(org.hl7.fhir.dstu3.model.Type src) throws FHIRException {
-    if (src == null) return null;
+    if (src == null || src.isEmpty()) return null;
     if (src instanceof org.hl7.fhir.dstu3.model.Base64BinaryType)
       return Base64Binary30_50.convertBase64Binary((org.hl7.fhir.dstu3.model.Base64BinaryType) src);
     if (src instanceof org.hl7.fhir.dstu3.model.BooleanType)
@@ -44,10 +44,10 @@ public class Type30_50 {
       return String30_50.convertString((org.hl7.fhir.dstu3.model.StringType) src);
     if (src instanceof org.hl7.fhir.dstu3.model.TimeType)
       return Time30_50.convertTime((org.hl7.fhir.dstu3.model.TimeType) src);
-    if (src instanceof org.hl7.fhir.dstu3.model.UriType)
-      return Uri30_50.convertUri((org.hl7.fhir.dstu3.model.UriType) src);
     if (src instanceof org.hl7.fhir.dstu3.model.UuidType)
       return Uuid30_50.convertUuid((org.hl7.fhir.dstu3.model.UuidType) src);
+    if (src instanceof org.hl7.fhir.dstu3.model.UriType)
+      return Uri30_50.convertUri((org.hl7.fhir.dstu3.model.UriType) src);
     if (src instanceof org.hl7.fhir.dstu3.model.Extension)
       return Extension30_50.convertExtension((org.hl7.fhir.dstu3.model.Extension) src);
     if (src instanceof org.hl7.fhir.dstu3.model.Narrative)
@@ -120,7 +120,7 @@ public class Type30_50 {
   }
 
   public org.hl7.fhir.dstu3.model.Type convertType(org.hl7.fhir.r5.model.DataType src) throws FHIRException {
-    if (src == null) return null;
+    if (src == null || src.isEmpty()) return null;
     if (src instanceof org.hl7.fhir.r5.model.Base64BinaryType)
       return Base64Binary30_50.convertBase64Binary((org.hl7.fhir.r5.model.Base64BinaryType) src);
     if (src instanceof org.hl7.fhir.r5.model.BooleanType)
@@ -151,9 +151,9 @@ public class Type30_50 {
       return String30_50.convertString((org.hl7.fhir.r5.model.StringType) src);
     if (src instanceof org.hl7.fhir.r5.model.TimeType)
       return Time30_50.convertTime((org.hl7.fhir.r5.model.TimeType) src);
-    if (src instanceof org.hl7.fhir.r5.model.UriType) return Uri30_50.convertUri((org.hl7.fhir.r5.model.UriType) src);
     if (src instanceof org.hl7.fhir.r5.model.UuidType)
       return Uuid30_50.convertUuid((org.hl7.fhir.r5.model.UuidType) src);
+    if (src instanceof org.hl7.fhir.r5.model.UriType) return Uri30_50.convertUri((org.hl7.fhir.r5.model.UriType) src);
     if (src instanceof org.hl7.fhir.r5.model.Extension)
       return Extension30_50.convertExtension((org.hl7.fhir.r5.model.Extension) src);
     if (src instanceof org.hl7.fhir.r5.model.Narrative)
