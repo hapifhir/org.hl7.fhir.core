@@ -13,7 +13,7 @@ public class Canonical10_40 {
   }
 
   static public Reference convertCanonicalToReference(CanonicalType src) throws FHIRException {
-    Reference dst = new Reference(src.getValue());
+    Reference dst = new Reference(src.getValueAsString());
     ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, dst);
     return dst;
   }
