@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Consistent use of string values for primitive type conversions
