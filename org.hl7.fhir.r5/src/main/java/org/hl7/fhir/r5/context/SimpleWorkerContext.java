@@ -314,7 +314,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   public String connectToTSServer(TerminologyClient client, String log) {
     try {
-      tlog("Connect to "+client.getAddress());
+      txLog("Connect to "+client.getAddress());
       txClient = client;
       if (log != null && log.endsWith(".txt")) {
         txLog = new TextClientLogger(log);
@@ -359,7 +359,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 		  Bundle bnd = (Bundle) f;
 		  for (BundleEntryComponent e : bnd.getEntry()) {
 		    if (e.getFullUrl() == null) {
-		      logger.logDebugMessage(LogCategory.CONTEXT, "unidentified resource in " + name+" (no fullUrl)");
+		      logDebugMessage(LogCategory.CONTEXT, "unidentified resource in " + name+" (no fullUrl)");
 		    }
 	      if (filter == null || filter.isOkToLoad(e.getResource())) {
 	        String path = loader != null ? loader.getResourcePath(e.getResource()) : null;
