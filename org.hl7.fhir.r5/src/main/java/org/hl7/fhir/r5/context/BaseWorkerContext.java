@@ -1574,6 +1574,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (codeSystems.has(uri)) {
           return (T) codeSystems.get(uri, version);
         } 
+         if(systems.has(uri)) {
+    	   return (T) systems.get(uri, version);
+       }
         if (operations.has(uri)) {
           return (T) operations.get(uri, version);
         } 
