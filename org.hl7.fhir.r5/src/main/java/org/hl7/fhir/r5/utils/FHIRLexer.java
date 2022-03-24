@@ -201,7 +201,7 @@ public class FHIRLexer {
         cursor++;
         if (cursor < source.length() && (source.charAt(cursor) == '/')) {
           // this is en error - should already have been skipped
-          error("This shoudn't happen?");
+          error("This shouldn't happen?");
         }
         current = source.substring(currentStart, cursor);
       } else if (ch == '$') {
