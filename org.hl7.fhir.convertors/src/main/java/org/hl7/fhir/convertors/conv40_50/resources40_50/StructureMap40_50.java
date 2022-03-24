@@ -791,10 +791,25 @@ public class StructureMap40_50 {
     if (src.hasName())
       tgt.setNameElement(Id40_50.convertId(src.getNameElement()));
     for (StructureMapGroupRuleTargetParameterComponent t : src.getParameter()) {
-      if (t.hasValueStringType()) {
-        tgt.getVariable().add(String40_50.convertString(t.getValueStringType()));
-      }
+        tgt.getVariable().add(convertStructureMapGroupRuleTargetParameterComponentToString(t));
     }
+    return tgt;
+  }
+
+  public static org.hl7.fhir.r4.model.StringType convertStructureMapGroupRuleTargetParameterComponentToString(StructureMapGroupRuleTargetParameterComponent src) {
+    org.hl7.fhir.r4.model.StringType tgt = new org.hl7.fhir.r4.model.StringType();
+    if (src.hasValueIdType()) {
+      tgt.setValueAsString(src.getValueIdType().getValueAsString());
+    } else if (src.hasValueStringType()) {
+      tgt.setValueAsString(src.getValueStringType().getValueAsString());
+    } else if (src.hasValueIntegerType()) {
+      tgt.setValueAsString(src.getValueIntegerType().getValueAsString());
+    } else if (src.hasValueDecimalType()) {
+      tgt.setValueAsString(src.getValueDecimalType().getValueAsString());
+    } else if (src.hasValueBooleanType()) {
+      tgt.setValueAsString(src.getValueBooleanType().getValueAsString());
+    }
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     return tgt;
   }
 }

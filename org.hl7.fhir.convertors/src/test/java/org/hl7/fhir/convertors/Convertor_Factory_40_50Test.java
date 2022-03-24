@@ -72,14 +72,23 @@ class Convertor_Factory_40_50Test implements ITransformerServices {
 
     assertEquals("tgt", mapR5.getGroup().get(0).getRule().get(0).getTarget().get(0).getParameter().get(0).getValueIdType().getValue());
     assertEquals("item.answer.valueString", mapR5.getGroup().get(1).getRule().get(0).getTarget().get(0).getParameter().get(0).getValueStringType().getValue());
+    assertEquals("item", mapR5.getGroup().get(0).getRule().get(0).getDependent().get(0).getParameter().get(0).getValueIdType().getValueAsString());
+    assertEquals("patient", mapR5.getGroup().get(0).getRule().get(0).getDependent().get(0).getParameter().get(1).getValueIdType().getValueAsString());
+
 
     org.hl7.fhir.r4.model.StructureMap mapR4 = (org.hl7.fhir.r4.model.StructureMap) VersionConvertorFactory_40_50.convertResource(mapR5);
     assertEquals("tgt", mapR4.getGroup().get(0).getRule().get(0).getTarget().get(0).getParameter().get(0).getValueIdType().getValue());
     assertEquals("item.answer.valueString", mapR4.getGroup().get(1).getRule().get(0).getTarget().get(0).getParameter().get(0).getValueStringType().getValue());
+    assertEquals("item", mapR4.getGroup().get(0).getRule().get(0).getDependent().get(0).getVariable().get(0).getValueAsString());
+    assertEquals("patient", mapR4.getGroup().get(0).getRule().get(0).getDependent().get(0).getVariable().get(1).getValueAsString());
+
 
     StructureMap mapR5Back = (StructureMap) VersionConvertorFactory_40_50.convertResource(mapR4);
     assertEquals("tgt", mapR5Back.getGroup().get(0).getRule().get(0).getTarget().get(0).getParameter().get(0).getValueIdType().getValue());
     assertEquals("item.answer.valueString", mapR5Back.getGroup().get(1).getRule().get(0).getTarget().get(0).getParameter().get(0).getValueStringType().getValue());
+    assertEquals("item", mapR5Back.getGroup().get(0).getRule().get(0).getDependent().get(0).getParameter().get(0).getValueIdType().getValueAsString());
+    assertEquals("patient", mapR5Back.getGroup().get(0).getRule().get(0).getDependent().get(0).getParameter().get(1).getValueIdType().getValueAsString());
+
   }
 
   @Override
