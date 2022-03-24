@@ -126,6 +126,8 @@ import org.hl7.fhir.utilities.validation.ValidationOptions.ValueSetMode;
 
 import com.google.gson.JsonObject;
 
+import javax.annotation.Nonnull;
+
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext{
 
   public class ResourceProxy {
@@ -230,7 +232,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private boolean canRunWithoutTerminology;
   protected boolean noTerminologyServer;
   private int expandCodesLimit = 1000;
-  protected ILoggingService logger;
+  protected ILoggingService logger = new SystemOutLoggingService();
   protected Parameters expParameters;
   private TranslationServices translator = new NullTranslator();
 
@@ -240,7 +242,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private boolean tlogging = true;
   private ICanonicalResourceLocator locator;
   protected String userAgent;
-  
+
   protected BaseWorkerContext() throws FileNotFoundException, IOException, FHIRException {
     setValidationMessageLanguage(getLocale());
     clock = new TimeTracker();
@@ -384,7 +386,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
         map.put(r.getId(), new ResourceProxy(r));
       } else {
-        logDebugMessage(LogCategory.PROGRESS,"Ignore "+r.fhirType()+"/"+r.getId()+" from package "+packageInfo.toString());
+        logger.logDebugMessage(LogCategory.PROGRESS,"Ignore "+r.fhirType()+"/"+r.getId()+" from package "+packageInfo.toString());
       }
 
       if (r instanceof CodeSystem || r instanceof NamingSystem) {
@@ -593,19 +595,19 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
         if (txcaps == null) {
           try {
-            log("Terminology server: Check for supported code systems for "+system);
+            logger.logMessage("Terminology server: Check for supported code systems for "+system);
             final TerminologyCapabilities capabilityStatement = txCache.hasTerminologyCapabilities() ? txCache.getTerminologyCapabilities() : txClient.getTerminologyCapabilities();
             txCache.cacheTerminologyCapabilities(capabilityStatement);
             setTxCaps(capabilityStatement);
           } catch (Exception e) {
             if (canRunWithoutTerminology) {
               noTerminologyServer = true;
-              log("==============!! Running without terminology server !! ==============");
+              logger.logMessage("==============!! Running without terminology server !! ==============");
               if (txClient!=null) {
-                log("txServer = "+txClient.getAddress());
-                log("Error = "+e.getMessage()+"");
+                logger.logMessage("txServer = "+txClient.getAddress());
+                logger.logMessage("Error = "+e.getMessage()+"");
               }
-              log("=====================================================================");
+              logger.logMessage("=====================================================================");
               return false;
             } else {
               e.printStackTrace();
@@ -621,29 +623,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  private void log(String message) {
-    if (logger != null) {
-      logger.logMessage(message);
-    } else {
-      System.out.println(message);
-    }
-  }
 
-  protected void logDebugMessage(LogCategory category, String message) {
-    if (logger != null) {
-      logger.logDebugMessage(category, message);
-    } else {
-      System.out.println(" -"+ category.name().toLowerCase() + ": " +message);
-    }
-  }
+
+
 
   protected void txLog(String msg) {
     if (tlogging ) {
-      if (logger != null) {
         logger.logDebugMessage(LogCategory.TX, msg);
-      } else { 
-        System.out.println("-tx: "+msg);
-      }
     }
   }
 
@@ -1294,7 +1280,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.canRunWithoutTerminology = canRunWithoutTerminology;
   }
 
-  public void setLogger(ILoggingService logger) {
+  public void setLogger(@Nonnull ILoggingService logger) {
     this.logger = logger;
   }
 

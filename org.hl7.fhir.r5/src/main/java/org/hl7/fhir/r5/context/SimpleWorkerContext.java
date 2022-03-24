@@ -359,7 +359,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 		  Bundle bnd = (Bundle) f;
 		  for (BundleEntryComponent e : bnd.getEntry()) {
 		    if (e.getFullUrl() == null) {
-		      logDebugMessage(LogCategory.CONTEXT, "unidentified resource in " + name+" (no fullUrl)");
+		      logger.logDebugMessage(LogCategory.CONTEXT, "unidentified resource in " + name+" (no fullUrl)");
 		    }
 	      if (filter == null || filter.isOkToLoad(e.getResource())) {
 	        String path = loader != null ? loader.getResourcePath(e.getResource()) : null;
