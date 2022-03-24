@@ -43,6 +43,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.Set;
 
 import lombok.Getter;
@@ -199,7 +200,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private int serverQueryCount = 0;
   private final Set<String> cached = new HashSet<>();
   
-  private Map<String, Map<String, ResourceProxy>> allResourcesById = new HashMap<String, Map<String, ResourceProxy>>();
+  private Map<String, Map<String, ResourceProxy>> allResourcesById = new TreeMap<String, Map<String, ResourceProxy>>();
   // all maps are to the full URI
   private CanonicalResourceManager<CodeSystem> codeSystems = new CanonicalResourceManager<CodeSystem>(false);
   private final Set<String> supportedCodeSystems = new HashSet<String>();
@@ -312,7 +313,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     synchronized (lock) {
       Map<String, ResourceProxy> map = allResourcesById.get(r.getType());
       if (map == null) {
-        map = new HashMap<String, ResourceProxy>();
+        map = new TreeMap<String, ResourceProxy>();
         allResourcesById.put(r.getType(), map);
       }
       if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
@@ -382,7 +383,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     synchronized (lock) {
       Map<String, ResourceProxy> map = allResourcesById.get(r.fhirType());
       if (map == null) {
-        map = new HashMap<String, ResourceProxy>();
+        map = new TreeMap<String, ResourceProxy>();
         allResourcesById.put(r.fhirType(), map);
       }
       if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
@@ -1573,6 +1574,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (codeSystems.has(uri)) {
           return (T) codeSystems.get(uri, version);
         } 
+         if(systems.has(uri)) {
+    	   return (T) systems.get(uri, version);
+       }
         if (operations.has(uri)) {
           return (T) operations.get(uri, version);
         } 
