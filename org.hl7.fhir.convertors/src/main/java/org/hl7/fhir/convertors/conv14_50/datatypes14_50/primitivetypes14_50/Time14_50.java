@@ -5,15 +5,13 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 public class Time14_50 {
   public static org.hl7.fhir.r5.model.TimeType convertTime(org.hl7.fhir.dstu2016may.model.TimeType src) throws FHIRException {
-    org.hl7.fhir.r5.model.TimeType tgt = new org.hl7.fhir.r5.model.TimeType();
-    if (src.hasValue()) tgt.setValue(src.getValue());
+    org.hl7.fhir.r5.model.TimeType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.TimeType(src.getValueAsString()) : new org.hl7.fhir.r5.model.TimeType();
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     return tgt;
   }
 
   public static org.hl7.fhir.dstu2016may.model.TimeType convertTime(org.hl7.fhir.r5.model.TimeType src) throws FHIRException {
-    org.hl7.fhir.dstu2016may.model.TimeType tgt = new org.hl7.fhir.dstu2016may.model.TimeType();
-    if (src.hasValue()) tgt.setValue(src.getValue());
+    org.hl7.fhir.dstu2016may.model.TimeType tgt = src.hasValue() ? new org.hl7.fhir.dstu2016may.model.TimeType(src.getValueAsString()) : new org.hl7.fhir.dstu2016may.model.TimeType();
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     return tgt;
   }

@@ -99,7 +99,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
    */
   public BaseDateTimeType(String theString) {
     setValueAsString(theString);
-    validatePrecisionAndThrowDataFormatException(theString, getPrecision());
+
   }
 
   /**
@@ -710,9 +710,10 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   }
 
   @Override
-  public void setValueAsString(String theValue) throws DataFormatException {
+  public void setValueAsString(String theString) throws DataFormatException {
     clearTimeZone();
-    super.setValueAsString(theValue);
+    super.setValueAsString(theString);
+    validatePrecisionAndThrowDataFormatException(theString, getPrecision());
   }
 
   protected void setValueAsV3String(String theV3String) {
