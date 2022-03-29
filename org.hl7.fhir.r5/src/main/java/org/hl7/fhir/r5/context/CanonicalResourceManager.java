@@ -20,7 +20,6 @@ import org.hl7.fhir.utilities.VersionUtilities;
 public class CanonicalResourceManager<T extends CanonicalResource> {
 
   private final String[] INVALID_TERMINOLOGY_URLS = {
-    "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
     "http://snomed.info/sct",
     "http://nucc.org/provider-taxonomy"
   };
