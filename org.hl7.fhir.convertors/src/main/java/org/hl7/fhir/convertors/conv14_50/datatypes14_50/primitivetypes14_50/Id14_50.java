@@ -5,15 +5,13 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 public class Id14_50 {
   public static org.hl7.fhir.r5.model.IdType convertId(org.hl7.fhir.dstu2016may.model.IdType src) throws FHIRException {
-    org.hl7.fhir.r5.model.IdType tgt = new org.hl7.fhir.r5.model.IdType();
-    if (src.hasValue()) tgt.setValue(src.getValue());
+    org.hl7.fhir.r5.model.IdType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.IdType(src.getValueAsString()) : new org.hl7.fhir.r5.model.IdType();
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     return tgt;
   }
 
   public static org.hl7.fhir.dstu2016may.model.IdType convertId(org.hl7.fhir.r5.model.IdType src) throws FHIRException {
-    org.hl7.fhir.dstu2016may.model.IdType tgt = new org.hl7.fhir.dstu2016may.model.IdType();
-    if (src.hasValue()) tgt.setValue(src.getValue());
+    org.hl7.fhir.dstu2016may.model.IdType tgt = src.hasValue() ? new org.hl7.fhir.dstu2016may.model.IdType(src.getValueAsString()) : new org.hl7.fhir.dstu2016may.model.IdType();
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     return tgt;
   }

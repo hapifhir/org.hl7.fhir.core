@@ -5,13 +5,13 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 public class Id30_50 {
   public static org.hl7.fhir.r5.model.IdType convertId(org.hl7.fhir.dstu3.model.IdType src) throws FHIRException {
-    org.hl7.fhir.r5.model.IdType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.IdType(src.getValue()) : new org.hl7.fhir.r5.model.IdType();
+    org.hl7.fhir.r5.model.IdType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.IdType(src.getValueAsString()) : new org.hl7.fhir.r5.model.IdType();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     return tgt;
   }
 
   public static org.hl7.fhir.dstu3.model.IdType convertId(org.hl7.fhir.r5.model.IdType src) throws FHIRException {
-    org.hl7.fhir.dstu3.model.IdType tgt = src.hasValue() ? new org.hl7.fhir.dstu3.model.IdType(src.getValue()) : new org.hl7.fhir.dstu3.model.IdType();
+    org.hl7.fhir.dstu3.model.IdType tgt = src.hasValue() ? new org.hl7.fhir.dstu3.model.IdType(src.getValueAsString()) : new org.hl7.fhir.dstu3.model.IdType();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     return tgt;
   }
