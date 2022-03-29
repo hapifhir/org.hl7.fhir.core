@@ -53,9 +53,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.context.BaseWorkerContext.ResourceProxy;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
-import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.context.IWorkerContext.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.model.BooleanType;
@@ -128,7 +126,7 @@ import org.hl7.fhir.utilities.validation.ValidationOptions.ValueSetMode;
 
 import com.google.gson.JsonObject;
 
-import ca.uhn.fhir.model.valueset.BundleEntrySearchModeEnum;
+import javax.annotation.Nonnull;
 
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext{
 
@@ -234,7 +232,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private boolean canRunWithoutTerminology;
   protected boolean noTerminologyServer;
   private int expandCodesLimit = 1000;
-  protected ILoggingService logger;
+  protected ILoggingService logger = new SystemOutLoggingService();
   protected Parameters expParameters;
   private TranslationServices translator = new NullTranslator();
 
@@ -244,7 +242,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private boolean tlogging = true;
   private ICanonicalResourceLocator locator;
   protected String userAgent;
-  
+
   protected BaseWorkerContext() throws FileNotFoundException, IOException, FHIRException {
     setValidationMessageLanguage(getLocale());
     clock = new TimeTracker();
@@ -399,7 +397,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         CanonicalResource m = (CanonicalResource) r;
         String url = m.getUrl();
         if (!allowLoadingDuplicates && hasResource(r.getClass(), url)) {
-          // spcial workaround for known problems with existing packages
+          // special workaround for known problems with existing packages
           if (Utilities.existsInList(url, "http://hl7.org/fhir/SearchParameter/example")) {
             return;
           }
@@ -597,19 +595,19 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
         if (txcaps == null) {
           try {
-            log("Terminology server: Check for supported code systems for "+system);
+            logger.logMessage("Terminology server: Check for supported code systems for "+system);
             final TerminologyCapabilities capabilityStatement = txCache.hasTerminologyCapabilities() ? txCache.getTerminologyCapabilities() : txClient.getTerminologyCapabilities();
             txCache.cacheTerminologyCapabilities(capabilityStatement);
             setTxCaps(capabilityStatement);
           } catch (Exception e) {
             if (canRunWithoutTerminology) {
               noTerminologyServer = true;
-              log("==============!! Running without terminology server !! ==============");
+              logger.logMessage("==============!! Running without terminology server !! ==============");
               if (txClient!=null) {
-                log("txServer = "+txClient.getAddress());
-                log("Error = "+e.getMessage()+"");
+                logger.logMessage("txServer = "+txClient.getAddress());
+                logger.logMessage("Error = "+e.getMessage()+"");
               }
-              log("=====================================================================");
+              logger.logMessage("=====================================================================");
               return false;
             } else {
               e.printStackTrace();
@@ -625,22 +623,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  private void log(String message) {
-    if (logger != null) {
-      logger.logMessage(message);
-    } else {
-      System.out.println(message);
-    }
-  }
 
 
-  protected void tlog(String msg) {
+
+
+  protected void txLog(String msg) {
     if (tlogging ) {
-      if (logger != null) {
         logger.logDebugMessage(LogCategory.TX, msg);
-      } else { 
-        System.out.println("-tx: "+msg);
-      }
     }
   }
 
@@ -692,7 +681,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Map<String, String> params = new HashMap<String, String>();
     params.put("_limit", Integer.toString(expandCodesLimit ));
     params.put("_incomplete", "true");
-    tlog("$expand on "+txCache.summary(vs));
+    txLog("$expand on "+txCache.summary(vs));
     try {
       ValueSet result = txClient.expandValueset(vs, p, params);
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
@@ -786,7 +775,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Map<String, String> params = new HashMap<String, String>();
     params.put("_limit", Integer.toString(expandCodesLimit ));
     params.put("_incomplete", "true");
-    tlog("$expand on "+txCache.summary(vs));
+    txLog("$expand on "+txCache.summary(vs));
     try {
       ValueSet result = txClient.expandValueset(vs, p, params);
       if (!result.hasUrl()) {
@@ -895,7 +884,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
     if (batch.getEntry().size() > 0) {
-      tlog("$batch validate for "+batch.getEntry().size()+" codes on systems "+systems.toString());
+      txLog("$batch validate for "+batch.getEntry().size()+" codes on systems "+systems.toString());
       if (txClient == null) {
         throw new FHIRException(formatMessage(I18nConstants.ATTEMPT_TO_USE_TERMINOLOGY_SERVER_WHEN_NO_TERMINOLOGY_SERVER_IS_AVAILABLE));
       }
@@ -983,9 +972,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     String csumm =  txCache != null ? txCache.summary(code) : null;
     if (txCache != null) {
-      tlog("$validate "+csumm+" for "+ txCache.summary(vs));
+      txLog("$validate "+csumm+" for "+ txCache.summary(vs));
     } else {
-      tlog("$validate "+csumm+" before cache exists");
+      txLog("$validate "+csumm+" before cache exists");
     }
     try {
       Parameters pIn = constructParameters(options, code);
@@ -1107,7 +1096,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (noTerminologyServer) {
       return new ValidationResult(IssueSeverity.ERROR, "Error validating code: running without terminology services", TerminologyServiceErrorClass.NOSERVICE);
     }
-    tlog("$validate "+txCache.summary(code)+" for "+ txCache.summary(vs));
+    txLog("$validate "+txCache.summary(code)+" for "+ txCache.summary(vs));
     try {
       Parameters pIn = constructParameters(options, code);
       res = validateOnServer(vs, pIn, options);
@@ -1291,7 +1280,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.canRunWithoutTerminology = canRunWithoutTerminology;
   }
 
-  public void setLogger(ILoggingService logger) {
+  public void setLogger(@Nonnull ILoggingService logger) {
     this.logger = logger;
   }
 
