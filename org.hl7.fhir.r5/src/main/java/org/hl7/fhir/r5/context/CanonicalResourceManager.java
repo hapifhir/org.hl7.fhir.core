@@ -1,20 +1,11 @@
 package org.hl7.fhir.r5.context;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
@@ -27,6 +18,11 @@ import org.hl7.fhir.utilities.VersionUtilities;
  */
 
 public class CanonicalResourceManager<T extends CanonicalResource> {
+
+  private final String[] INVALID_TERMINOLOGY_URLS = {
+    "http://snomed.info/sct",
+    "http://nucc.org/provider-taxonomy"
+  };
 
   public static abstract class CanonicalResourceProxy {
     private String type;
@@ -219,7 +215,11 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 
   public void see(CachedCanonicalResource<T> cr) {
     // ignore UTG NUCC erroneous code system
-    if (cr.getPackageInfo() != null && cr.getPackageInfo().getId() != null && cr.getPackageInfo().getId().startsWith("hl7.terminology") && "http://nucc.org/provider-taxonomy".equals(cr.getUrl())) {
+    if (cr.getPackageInfo() != null
+      && cr.getPackageInfo().getId() != null
+      && cr.getPackageInfo().getId().startsWith("hl7.terminology")
+      && Arrays.stream(INVALID_TERMINOLOGY_URLS).anyMatch((it)->it.equals(cr.getUrl()))
+    ) {
       return;
     }
         
