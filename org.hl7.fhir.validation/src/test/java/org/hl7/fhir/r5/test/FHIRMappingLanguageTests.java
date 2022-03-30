@@ -107,7 +107,7 @@ public class FHIRMappingLanguageTests {
     } else {
       TextFile.bytesToFile(s.toByteArray(), fileOutputRes);
       TextFile.bytesToFile(outputJson.getBytes(), fileOutputResOrig);
-      msg = TestingUtilities.checkXMLIsSame(new FileInputStream(fileOutputRes), new FileInputStream(fileOutputResOrig));
+      msg = TestingUtilities.checkXMLIsSame(new FileInputStream(fileOutputResOrig), new FileInputStream(fileOutputRes));
     }
     if (!Utilities.noString(msg)) {
       System.out.print(s.toString());

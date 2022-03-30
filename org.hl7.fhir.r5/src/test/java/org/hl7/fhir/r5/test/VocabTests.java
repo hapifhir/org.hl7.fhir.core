@@ -150,7 +150,7 @@ public class VocabTests {
       String actualFileName = TestingUtilities.tempFile("vocab", test.getId() + ".actual.html");
       TextFile.stringToFile(expected, expectedFileName);
       TextFile.stringToFile(actual, actualFileName);
-      String msg = TestingUtilities.checkXMLIsSame(actualFileName, expectedFileName);
+      String msg = TestingUtilities.checkXMLIsSame(expectedFileName, actualFileName);
       Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
     } else {
       Assertions.fail("Expansion Failed: "+outcome.getError());
