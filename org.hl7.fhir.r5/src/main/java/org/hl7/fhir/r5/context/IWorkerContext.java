@@ -77,6 +77,8 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import com.google.gson.JsonSyntaxException;
 
+import javax.annotation.Nonnull;
+
 
 /**
  * This is the standard interface used for access to underlying FHIR
@@ -802,7 +804,7 @@ public interface IWorkerContext {
     public void logDebugMessage(LogCategory category, String message); // verbose; only when debugging 
   }
 
-  public void setLogger(ILoggingService logger);
+  public void setLogger(@Nonnull ILoggingService logger);
   public ILoggingService getLogger();
 
   public boolean isNoTerminologyServer();

@@ -201,6 +201,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     @With
     private final boolean allowLoadingDuplicates;
 
+    @With
+    private final IWorkerContext.ILoggingService loggingService;
+
     public SimpleWorkerContextBuilder() {
       cacheTerminologyClientErrors = false;
       alwaysUseTerminologyServer = false;
@@ -209,6 +212,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       locale = null;
       userAgent = null;
       allowLoadingDuplicates = false;
+      loggingService = new SystemOutLoggingService();
     }
 
     private SimpleWorkerContext getSimpleWorkerContextInstance() throws IOException {
@@ -227,6 +231,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     private SimpleWorkerContext build(SimpleWorkerContext context) throws IOException {
       context.initTS(terminologyCachePath);
       context.setUserAgent(userAgent);
+      context.setLogger(loggingService);
       return context;
     }
 
@@ -314,7 +319,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   public String connectToTSServer(TerminologyClient client, String log) {
     try {
-      tlog("Connect to "+client.getAddress());
+      txLog("Connect to "+client.getAddress());
       txClient = client;
       if (log != null && log.endsWith(".txt")) {
         txLog = new TextClientLogger(log);

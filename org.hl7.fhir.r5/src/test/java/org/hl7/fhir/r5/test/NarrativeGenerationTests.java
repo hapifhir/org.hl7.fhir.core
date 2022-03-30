@@ -132,24 +132,24 @@ public class NarrativeGenerationTests {
     }
     
     XhtmlNode x = RendererFactory.factory(source, rc).build(source);
-    String target = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".html"));
-    String output = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
-    String tfn = TestingUtilities.tempFile("narrative", test.getId() + ".target.html");
-    String ofn = TestingUtilities.tempFile("narrative", test.getId() + ".output.html");
-    TextFile.stringToFile(target, tfn);
-    TextFile.stringToFile(output, ofn);
-    String msg = TestingUtilities.checkXMLIsSame(ofn, tfn);
+    String expected = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".html"));
+    String actual = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
+    String expectedFileName = TestingUtilities.tempFile("narrative", test.getId() + ".expected.html");
+    String actualFileName = TestingUtilities.tempFile("narrative", test.getId() + ".actual.html");
+    TextFile.stringToFile(expected, expectedFileName);
+    TextFile.stringToFile(actual, actualFileName);
+    String msg = TestingUtilities.checkXMLIsSame(actualFileName, expectedFileName);
     Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
     
     if (test.isMeta()) {
       org.hl7.fhir.r5.elementmodel.Element e = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"), FhirFormat.XML); 
       x = RendererFactory.factory(source, rc).render(new ElementWrappers.ResourceWrapperMetaElement(rc, e));
 
-      target = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-meta.html"));
-      output = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
-      ofn = TestingUtilities.tempFile("narrative", test.getId() + "-meta.output.html");
-      TextFile.stringToFile(output, ofn);
-      msg = TestingUtilities.checkXMLIsSame(ofn, tfn);
+      expected = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-meta.html"));
+      actual = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
+      actualFileName = TestingUtilities.tempFile("narrative", test.getId() + "-meta.actual.html");
+      TextFile.stringToFile(actual, actualFileName);
+      msg = TestingUtilities.checkXMLIsSame(actualFileName, expectedFileName);
       Assertions.assertTrue(msg == null, "Meta output does not match expected: "+msg);
     }
   }

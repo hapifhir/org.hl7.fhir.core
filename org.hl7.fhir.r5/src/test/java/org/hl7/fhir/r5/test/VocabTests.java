@@ -1,6 +1,5 @@
 package org.hl7.fhir.r5.test;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.TestPackageLoader;
+import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
@@ -109,13 +108,8 @@ public class VocabTests {
     /* Do NOT get a shared worker context from Testing Utilities or else the terminology package loaded below
        will appear in tests where it causes failures.
      */
-    context = TestingUtilities.getWorkerContext(VersionUtilities.getMajMin(TestingUtilities.DEFAULT_CONTEXT_VERSION));
-    if (!context.hasPackage("hl7.terminology", null)) {
-  
-      NpmPackage utg = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage("hl7.terminology");
-      System.out.println("Loading THO: "+utg.name()+"#"+utg.version());
-      context.loadFromPackage(utg, new TestPackageLoader(new String[]{"CodeSystem", "ValueSet"}));
-    }
+    context = TestingUtilities.getSharedWorkerContext(VersionUtilities.getMajMin(TestingUtilities.DEFAULT_CONTEXT_VERSION));
+
   }
 
   @ParameterizedTest(name = "{index}: file {0}")
@@ -150,13 +144,13 @@ public class VocabTests {
     if (outcome.isOk()) {
       outcome.getValueset().getExpansion().setIdentifier(null);
       outcome.getValueset().getExpansion().setTimestamp(null);
-      String target = new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeString(targetVS);
-      String output = new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeString(outcome.getValueset());
-      String tfn = TestingUtilities.tempFile("vocab", test.getId() + ".target.html");
-      String ofn = TestingUtilities.tempFile("vocab", test.getId() + ".output.html");
-      TextFile.stringToFile(target, tfn);
-      TextFile.stringToFile(output, ofn);
-      String msg = TestingUtilities.checkXMLIsSame(ofn, tfn);
+      String expected = new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeString(targetVS);
+      String actual = new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeString(outcome.getValueset());
+      String expectedFileName = TestingUtilities.tempFile("vocab", test.getId() + ".expected.html");
+      String actualFileName = TestingUtilities.tempFile("vocab", test.getId() + ".actual.html");
+      TextFile.stringToFile(expected, expectedFileName);
+      TextFile.stringToFile(actual, actualFileName);
+      String msg = TestingUtilities.checkXMLIsSame(actualFileName, expectedFileName);
       Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
     } else {
       Assertions.fail("Expansion Failed: "+outcome.getError());
