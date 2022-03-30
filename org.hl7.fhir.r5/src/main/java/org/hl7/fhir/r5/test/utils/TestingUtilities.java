@@ -114,6 +114,11 @@ public class TestingUtilities extends BaseTestingUtilities {
       IWorkerContext fcontext = getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(version), version));
       fcontext.setUcumService(new UcumEssenceService(TestingUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
       fcontext.setExpansionProfile(new Parameters());
+      if (!fcontext.hasPackage("hl7.terminology", null)) {
+        NpmPackage utg = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage("hl7.terminology");
+        System.out.println("Loading THO: "+utg.name()+"#"+utg.version());
+        fcontext.loadFromPackage(utg, new TestPackageLoader(new String[]{"CodeSystem", "ValueSet"}));
+      }
       return fcontext;
     } catch (Exception e) {
       e.printStackTrace();

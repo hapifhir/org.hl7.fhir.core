@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.cli.services;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.context.SystemOutLoggingService;
 import org.hl7.fhir.r5.context.TerminologyCache;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
@@ -329,6 +330,7 @@ public class ValidationService {
       String txver = validator.setTerminologyServer(cliContext.getTxServer(), cliContext.getTxLog(), ver);
       System.out.println(" - Version " + txver + " (" + tt.milestone() + ")");
       validator.setDebug(cliContext.isDoDebug());
+      validator.getContext().setLogger(new SystemOutLoggingService(cliContext.isDoDebug()));
       for (String src : cliContext.getIgs()) {
         igLoader.loadIg(validator.getIgs(), validator.getBinaries(), src, cliContext.isRecursive());
       }
