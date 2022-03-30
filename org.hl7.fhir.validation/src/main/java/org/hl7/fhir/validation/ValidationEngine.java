@@ -12,9 +12,11 @@ import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ICanonicalResourceLocator;
 import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.context.SystemOutLoggingService;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
@@ -207,6 +209,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     @With
     private final boolean canRunWithoutTerminologyServer;
 
+    @With
+    private final IWorkerContext.ILoggingService loggingService;
+
+
     public ValidationEngineBuilder() {
       terminologyCachePath = null;
       userAgent = null;
@@ -216,9 +222,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       txVersion = null;
       timeTracker = null;
       canRunWithoutTerminologyServer = false;
+      loggingService = new SystemOutLoggingService();
     }
 
-    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer) {
+    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, IWorkerContext.ILoggingService loggingService) {
       this.terminologyCachePath = terminologyCachePath;
       this.userAgent = userAgent;
       this.version = version;
@@ -227,15 +234,16 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       this.txVersion = txVersion;
       this.timeTracker = timeTracker;
       this.canRunWithoutTerminologyServer = canRunWithoutTerminologyServer;
+      this.loggingService = loggingService;
     }
 
     public ValidationEngineBuilder withTxServer(String txServer, String txLog, FhirPublication txVersion) {
-      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion,timeTracker, canRunWithoutTerminologyServer);
+      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion,timeTracker, canRunWithoutTerminologyServer, loggingService);
     }
 
     public ValidationEngine fromNothing() throws IOException {
       ValidationEngine engine = new ValidationEngine();
-      SimpleWorkerContext.SimpleWorkerContextBuilder contextBuilder = new SimpleWorkerContext.SimpleWorkerContextBuilder();
+      SimpleWorkerContext.SimpleWorkerContextBuilder contextBuilder = new SimpleWorkerContext.SimpleWorkerContextBuilder().withLoggingService(loggingService);
       if (terminologyCachePath != null)
         contextBuilder = contextBuilder.withTerminologyCachePath(terminologyCachePath);
       engine.setContext(contextBuilder.build());
@@ -246,7 +254,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
     public ValidationEngine fromSource(String src) throws IOException, URISyntaxException {
       ValidationEngine engine = new ValidationEngine();
-      engine.loadCoreDefinitions(src, false, terminologyCachePath, userAgent, timeTracker);
+      engine.loadCoreDefinitions(src, false, terminologyCachePath, userAgent, timeTracker, loggingService);
       engine.getContext().setCanRunWithoutTerminology(canRunWithoutTerminologyServer);
 
       if (txServer != null) {
@@ -258,11 +266,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     }
   }
 
-  private void loadCoreDefinitions(String src, boolean recursive, String terminologyCachePath, String userAgent, TimeTracker tt) throws FHIRException, IOException {
+  private void loadCoreDefinitions(String src, boolean recursive, String terminologyCachePath, String userAgent, TimeTracker tt, IWorkerContext.ILoggingService loggingService) throws FHIRException, IOException {
     NpmPackage npm = getPcm().loadPackage(src, null);
     if (npm != null) {
       version = npm.fhirVersion();
-      SimpleWorkerContext.SimpleWorkerContextBuilder contextBuilder = new SimpleWorkerContext.SimpleWorkerContextBuilder();
+      SimpleWorkerContext.SimpleWorkerContextBuilder contextBuilder = new SimpleWorkerContext.SimpleWorkerContextBuilder().withLoggingService(loggingService);
       if (terminologyCachePath != null)
         contextBuilder = contextBuilder.withTerminologyCachePath(terminologyCachePath);
       if (userAgent != null) {
