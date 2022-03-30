@@ -258,7 +258,11 @@ public class NPMPackageGenerator {
 
     packageManifest = new JsonObject();
     packageManifest.addProperty("version", ig.getVersion());
-    packageManifest.addProperty("fhirVersion", fhirVersion.toString());
+    JsonArray fv = new JsonArray();
+    for (String v : fhirVersion) {
+      fv.add(v);
+    }
+    packageManifest.add("fhirVersion", fv);
     packageManifest.addProperty("date", dt);
     packageManifest.addProperty("name", ig.getPackageId());
 
