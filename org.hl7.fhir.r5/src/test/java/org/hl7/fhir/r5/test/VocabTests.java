@@ -12,6 +12,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -146,11 +147,11 @@ public class VocabTests {
       outcome.getValueset().getExpansion().setTimestamp(null);
       String expected = new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeString(targetVS);
       String actual = new XmlParser().setOutputStyle(OutputStyle.PRETTY).composeString(outcome.getValueset());
-      String expectedFileName = TestingUtilities.tempFile("vocab", test.getId() + ".expected.html");
-      String actualFileName = TestingUtilities.tempFile("vocab", test.getId() + ".actual.html");
+      String expectedFileName = CompareUtilities.tempFile("vocab", test.getId() + ".expected.html");
+      String actualFileName = CompareUtilities.tempFile("vocab", test.getId() + ".actual.html");
       TextFile.stringToFile(expected, expectedFileName);
       TextFile.stringToFile(actual, actualFileName);
-      String msg = TestingUtilities.checkXMLIsSame(expectedFileName, actualFileName);
+      String msg = CompareUtilities.checkXMLIsSame(expectedFileName, actualFileName);
       Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
     } else {
       Assertions.fail("Expansion Failed: "+outcome.getError());

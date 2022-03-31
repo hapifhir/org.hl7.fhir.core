@@ -1,8 +1,7 @@
 package org.hl7.fhir.r5.test.utils;
 
 import org.apache.commons.io.IOUtils;
-import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
-import org.junit.jupiter.api.Test;
+
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -81,10 +80,10 @@ public class CompareUtilitiesTest {
  @ParameterizedTest
  @MethodSource("getCompareJSONParams")
  public void testCompareJSON(String expectedFileName, String actualFileName, String expectedOutputFileName) throws IOException {
-   final String expectedXMLPath = ROOT_JSON_TEST_PATH.resolve(expectedFileName).toAbsolutePath().toString();
-   final String actualXMLPath = ROOT_JSON_TEST_PATH.resolve(actualFileName).toAbsolutePath().toString();
+   final String expectedJSONPath = ROOT_JSON_TEST_PATH.resolve(expectedFileName).toAbsolutePath().toString();
+   final String actualJSONPath = ROOT_JSON_TEST_PATH.resolve(actualFileName).toAbsolutePath().toString();
 
-   final String actualOutput = CompareUtilities.checkJsonSrcIsSame(getResourceAsString(expectedXMLPath), getResourceAsString(actualXMLPath), false);
+   final String actualOutput = CompareUtilities.checkJsonSrcIsSame(getResourceAsString(expectedJSONPath), getResourceAsString(actualJSONPath), false);
    if (expectedOutputFileName == null) {
      assertNull(actualOutput);
    } else {

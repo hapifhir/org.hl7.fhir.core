@@ -1,1 +1,3 @@
-array properties differ at .expectedArray: count 2/1
+array properties count differs at .expectedArray
+Expected :2
+Actual  :1

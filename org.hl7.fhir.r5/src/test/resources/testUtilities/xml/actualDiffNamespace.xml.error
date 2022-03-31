@@ -1,1 +1,3 @@
-Namespaces differ at /root: http://www.example.com/FOO/http://www.example.com/BAR
+Namespaces differ at /root
+Expected :http://www.example.com/FOO
+Actual  :http://www.example.com/BAR

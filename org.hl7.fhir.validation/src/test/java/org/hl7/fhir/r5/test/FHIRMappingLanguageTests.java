@@ -18,6 +18,7 @@ import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureMap;
+import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.TextFile;
@@ -103,11 +104,11 @@ public class FHIRMappingLanguageTests {
       assertTrue(e.getMessage(), false);
     }
     if (output.endsWith("json")) {
-      msg = TestingUtilities.checkJsonSrcIsSame(s.toString(), outputJson);
+      msg = CompareUtilities.checkJsonSrcIsSame(s.toString(), outputJson);
     } else {
       TextFile.bytesToFile(s.toByteArray(), fileOutputRes);
       TextFile.bytesToFile(outputJson.getBytes(), fileOutputResOrig);
-      msg = TestingUtilities.checkXMLIsSame(new FileInputStream(fileOutputResOrig), new FileInputStream(fileOutputRes));
+      msg = CompareUtilities.checkXMLIsSame(new FileInputStream(fileOutputResOrig), new FileInputStream(fileOutputRes));
     }
     if (!Utilities.noString(msg)) {
       System.out.print(s.toString());

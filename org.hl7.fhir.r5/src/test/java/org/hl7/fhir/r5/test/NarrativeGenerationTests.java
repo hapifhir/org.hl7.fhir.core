@@ -22,6 +22,7 @@ import org.hl7.fhir.r5.renderers.utils.ElementWrappers;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ITypeParser;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
+import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TextFile;
@@ -134,11 +135,11 @@ public class NarrativeGenerationTests {
     XhtmlNode x = RendererFactory.factory(source, rc).build(source);
     String expected = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".html"));
     String actual = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
-    String expectedFileName = TestingUtilities.tempFile("narrative", test.getId() + ".expected.html");
-    String actualFileName = TestingUtilities.tempFile("narrative", test.getId() + ".actual.html");
+    String expectedFileName = CompareUtilities.tempFile("narrative", test.getId() + ".expected.html");
+    String actualFileName = CompareUtilities.tempFile("narrative", test.getId() + ".actual.html");
     TextFile.stringToFile(expected, expectedFileName);
     TextFile.stringToFile(actual, actualFileName);
-    String msg = TestingUtilities.checkXMLIsSame(expectedFileName, actualFileName);
+    String msg = CompareUtilities.checkXMLIsSame(expectedFileName, actualFileName);
     Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
     
     if (test.isMeta()) {
@@ -147,9 +148,9 @@ public class NarrativeGenerationTests {
 
       expected = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-meta.html"));
       actual = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
-      actualFileName = TestingUtilities.tempFile("narrative", test.getId() + "-meta.actual.html");
+      actualFileName = CompareUtilities.tempFile("narrative", test.getId() + "-meta.actual.html");
       TextFile.stringToFile(actual, actualFileName);
-      msg = TestingUtilities.checkXMLIsSame(expectedFileName, actualFileName);
+      msg = CompareUtilities.checkXMLIsSame(expectedFileName, actualFileName);
       Assertions.assertTrue(msg == null, "Meta output does not match expected: "+msg);
     }
   }
