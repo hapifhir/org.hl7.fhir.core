@@ -6,3 +6,4 @@
 ## Other code changes
 
 * Consistent use of string values for primitive type conversions
+* Improved output for unit test comparisons

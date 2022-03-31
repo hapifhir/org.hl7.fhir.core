@@ -27,7 +27,7 @@ public class CompareUtilitiesTest {
   public String getResourceAsString(String path) throws IOException {
     InputStream inputStream = new FileInputStream(path);
     String contents = IOUtils.toString(inputStream, java.nio.charset.StandardCharsets.UTF_8);
-    return contents;
+    return contents.trim();
   }
 
   private static Stream<Arguments> getCompareXMLParams() {
@@ -58,7 +58,7 @@ public class CompareUtilitiesTest {
     } else {
       final String expectedOutputPath = ROOT_XML_TEST_PATH.resolve(expectedOutputFileName).toAbsolutePath().toString();
       String expectedOutput = getResourceAsString(expectedOutputPath);
-      assertEquals(expectedOutput, actualOutput);
+      assertEquals(expectedOutput, actualOutput.trim());
     }
   }
 
@@ -89,7 +89,7 @@ public class CompareUtilitiesTest {
    } else {
      final String expectedOutputPath = ROOT_JSON_TEST_PATH.resolve(expectedOutputFileName).toAbsolutePath().toString();
      String expectedOutput = getResourceAsString(expectedOutputPath);
-     assertEquals(expectedOutput, actualOutput);
+     assertEquals(expectedOutput, actualOutput.trim());
    }
  }
 }
