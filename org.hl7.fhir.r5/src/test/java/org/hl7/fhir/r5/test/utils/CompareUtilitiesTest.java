@@ -45,6 +45,10 @@ public class CompareUtilitiesTest {
         );
   }
 
+  private static String normalizeNewlines(String input) {
+    return input.replaceAll("\\r\\n?", "\n");
+  }
+
   @ParameterizedTest
   @MethodSource("getCompareXMLParams")
   public void testCompareXML(String expectedFileName, String actualFileName, String expectedOutputFileName) throws Exception {
@@ -57,8 +61,8 @@ public class CompareUtilitiesTest {
       assertNull(actualOutput);
     } else {
       final String expectedOutputPath = ROOT_XML_TEST_PATH.resolve(expectedOutputFileName).toAbsolutePath().toString();
-      String expectedOutput = getResourceAsString(expectedOutputPath);
-      assertEquals(expectedOutput, actualOutput.trim());
+      String expectedOutput = normalizeNewlines(getResourceAsString(expectedOutputPath));
+      assertEquals(expectedOutput, normalizeNewlines(actualOutput));
     }
   }
 
@@ -88,8 +92,8 @@ public class CompareUtilitiesTest {
      assertNull(actualOutput);
    } else {
      final String expectedOutputPath = ROOT_JSON_TEST_PATH.resolve(expectedOutputFileName).toAbsolutePath().toString();
-     String expectedOutput = getResourceAsString(expectedOutputPath);
-     assertEquals(expectedOutput, actualOutput.trim());
+     String expectedOutput = normalizeNewlines(getResourceAsString(expectedOutputPath));
+     assertEquals(expectedOutput, normalizeNewlines(actualOutput));
    }
  }
 }
