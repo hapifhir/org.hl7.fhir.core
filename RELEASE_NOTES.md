@@ -1,8 +1,8 @@
 ## Validator Changes
 
-* Default output to console, with additional output available via -debug option in CLI.
-* Bump jackson-databind version to fix security vulnerability.
+* no changes
 
 ## Other code changes
 
-* Consistent use of string values for primitive type conversions
+* Improved output for unit test comparisons
+

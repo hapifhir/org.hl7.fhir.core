@@ -307,14 +307,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   
 
   public void registerResourceFromPackage(CanonicalResourceProxy r, PackageVersion packageInfo) throws FHIRException {
+    
     synchronized (lock) {
-      Map<String, ResourceProxy> map = allResourcesById.get(r.getType());
-      if (map == null) {
-        map = new HashMap<String, ResourceProxy>();
-        allResourcesById.put(r.getType(), map);
-      }
-      if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
-        map.put(r.getId(), new ResourceProxy(r));
+      if (r.getId() != null) {
+        Map<String, ResourceProxy> map = allResourcesById.get(r.getType());
+        if (map == null) {
+          map = new HashMap<String, ResourceProxy>();
+          allResourcesById.put(r.getType(), map);
+        }
+        if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
+          map.put(r.getId(), new ResourceProxy(r));
+        }
       }
 
       String url = r.getUrl();
@@ -377,16 +380,19 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   public void cacheResourceFromPackage(Resource r, PackageVersion packageInfo) throws FHIRException {
-    synchronized (lock) {
-      Map<String, ResourceProxy> map = allResourcesById.get(r.fhirType());
-      if (map == null) {
-        map = new HashMap<String, ResourceProxy>();
-        allResourcesById.put(r.fhirType(), map);
-      }
-      if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
-        map.put(r.getId(), new ResourceProxy(r));
-      } else {
-        logger.logDebugMessage(LogCategory.PROGRESS,"Ignore "+r.fhirType()+"/"+r.getId()+" from package "+packageInfo.toString());
+ 
+    synchronized (lock) {   
+      if (r.getId() != null) {
+        Map<String, ResourceProxy> map = allResourcesById.get(r.fhirType());
+        if (map == null) {
+          map = new HashMap<String, ResourceProxy>();
+          allResourcesById.put(r.fhirType(), map);
+        }
+        if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
+          map.put(r.getId(), new ResourceProxy(r));
+        } else {
+          logger.logDebugMessage(LogCategory.PROGRESS,"Ignore "+r.fhirType()+"/"+r.getId()+" from package "+packageInfo.toString());
+        }
       }
 
       if (r instanceof CodeSystem || r instanceof NamingSystem) {
