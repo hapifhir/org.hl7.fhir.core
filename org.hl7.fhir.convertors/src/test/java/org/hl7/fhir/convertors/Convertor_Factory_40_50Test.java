@@ -116,15 +116,4 @@ class Convertor_Factory_40_50Test  {
     assertNull(mapR5.getGroup().get(0).getRule().get(0).getDependent().get(0).getParameter().get(0).getExtensionByUrl(ToolingExtensions.EXT_ORIGINAL_ELEMENT_TYPE));
     assertNull(mapR5.getGroup().get(0).getRule().get(0).getDependent().get(0).getParameter().get(1).getExtensionByUrl(ToolingExtensions.EXT_ORIGINAL_ELEMENT_TYPE));
   }
-
-  @Test
-  public void myTest() {
-    DataType string = new StringType();
-    DataType integer=  new IntegerType("2");
-    DataType decimal =  new DecimalType("3.0");
-    DataType booleanT = new  BooleanType("true");
-
-    System.out.print("");
-  }
-
 }
