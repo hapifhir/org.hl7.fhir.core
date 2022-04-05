@@ -1168,7 +1168,15 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (diffMatches.get(0).hasType() && "Reference".equals(diffMatches.get(0).getType().get(0).getWorkingCode()) && !isValidType(diffMatches.get(0).getType().get(0), currentBase)) {
             throw new DefinitionException(context.formatMessage(I18nConstants.VALIDATION_VAL_ILLEGAL_TYPE_CONSTRAINT, url, diffMatches.get(0).getPath(), diffMatches.get(0).getType().get(0), currentBase.typeSummary()));            
           }
-          if (diffMatches.get(0).hasType() && diffMatches.get(0).getType().size() == 1 && diffMatches.get(0).getType().get(0).hasProfile() && !"Reference".equals(diffMatches.get(0).getType().get(0).getWorkingCode())) {
+          String id = diffMatches.get(0).getId();
+          String lid = tail(id);          
+          if (lid.contains("/")) {
+            // the template comes from the snapshot of the base
+            generateIds(result.getElement(), url, srcSD.getType());
+            String baseId = id.substring(0, id.length()-lid.length()) + lid.substring(0, lid.indexOf("/")); // this is wrong if there's more than one reslice (todo: one thing at a time)
+            template = getById(result.getElement(), baseId);
+            
+          } else if (diffMatches.get(0).hasType() && diffMatches.get(0).getType().size() == 1 && diffMatches.get(0).getType().get(0).hasProfile() && !"Reference".equals(diffMatches.get(0).getType().get(0).getWorkingCode())) {
             CanonicalType p = diffMatches.get(0).getType().get(0).getProfile().get(0);
             StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getValue());
             if (sd == null && xver != null && xver.matchingUrl(p.getValue())) {
@@ -1928,6 +1936,15 @@ public class ProfileUtilities extends TranslatingUtilities {
     return res;
   }
 
+  private ElementDefinition getById(List<ElementDefinition> list, String baseId) {
+    for (ElementDefinition t : list) {
+      if (baseId.equals(t.getId())) {
+        return t;
+      }
+    }
+    return null;
+  }
+
   private void updateConstraintSources(ElementDefinition ed, String url) {
     for (ElementDefinitionConstraintComponent c : ed.getConstraint()) {
       if (!c.hasSource()) {
@@ -2507,19 +2524,22 @@ public class ProfileUtilities extends TranslatingUtilities {
       if (webUrl != null) {
         // also, must touch up the markdown
         if (element.hasDefinition())
-          element.setDefinition(processRelativeUrls(element.getDefinition(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, true));
+          element.setDefinition(processRelativeUrls(element.getDefinition(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
         if (element.hasComment())
-          element.setComment(processRelativeUrls(element.getComment(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, true));
+          element.setComment(processRelativeUrls(element.getComment(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
         if (element.hasRequirements())
-          element.setRequirements(processRelativeUrls(element.getRequirements(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, true));
+          element.setRequirements(processRelativeUrls(element.getRequirements(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
         if (element.hasMeaningWhenMissing())
-          element.setMeaningWhenMissing(processRelativeUrls(element.getMeaningWhenMissing(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, true));
+          element.setMeaningWhenMissing(processRelativeUrls(element.getMeaningWhenMissing(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, false));
       }
     }
     return element;
   }
 
-  public static String processRelativeUrls(String markdown, String webUrl, String basePath, List<String> resourceNames, Set<String> filenames, boolean processRelatives) {
+  public static String processRelativeUrls(String markdown, String webUrl, String basePath, List<String> resourceNames, Set<String> baseFilenames, Set<String> localFilenames, boolean processRelatives) {
+    if (markdown == null) {
+      return "";
+    }
     StringBuilder b = new StringBuilder();
     int i = 0;
     while (i < markdown.length()) {
@@ -2540,7 +2560,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             // This code is trying to guess which relative references are actually to the
             // base specification.
             // 
-            if (isLikelySourceURLReference(url, resourceNames, filenames)) {
+            if (isLikelySourceURLReference(url, resourceNames, baseFilenames, localFilenames)) {
               b.append("](");
               b.append(basePath);
               i = i + 1;
@@ -2549,7 +2569,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               // disabled 7-Dec 2021 GDG - we don't want to fool with relative URLs at all? 
               // re-enabled 11-Feb 2022 GDG - we do want to do this. At least, $assemble in davinci-dtr, where the markdown comes from the SDC IG, and an SDC local reference must be changed to point to SDC. in this case, it's called when generating snapshots
               // added processRelatives parameter to deal with this (well, to try)
-              if (processRelatives && webUrl != null) {
+              if (processRelatives && webUrl != null && !issLocalFileName(url, localFilenames)) {
 //                System.out.println("Making "+url+" relative to '"+webUrl+"'");
                 b.append(webUrl);
               } else {
@@ -2570,7 +2590,19 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  public static boolean isLikelySourceURLReference(String url, List<String> resourceNames, Set<String> filenames) {
+  public static boolean issLocalFileName(String url, Set<String> localFilenames) {
+    if (localFilenames != null) {
+      for (String n : localFilenames) {
+        if (url.startsWith(n.toLowerCase())) {
+          return true;
+        }
+      }
+    }
+    return false; 
+  }
+
+
+  public static boolean isLikelySourceURLReference(String url, List<String> resourceNames, Set<String> baseFilenames, Set<String> localFilenames) {
     if (resourceNames != null) {
       for (String n : resourceNames) {
         if (url.startsWith(n.toLowerCase()+".html")) {
@@ -2581,8 +2613,15 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
       }
     }
-    if (filenames != null) {
-      for (String n : filenames) {
+    if (localFilenames != null) {
+      for (String n : localFilenames) {
+        if (url.startsWith(n.toLowerCase())) {
+          return false;
+        }
+      }
+    }
+    if (baseFilenames != null) {
+      for (String n : baseFilenames) {
         if (url.startsWith(n.toLowerCase())) {
           return true;
         }
@@ -2814,7 +2853,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       ElementDefinition e = profile.getSnapshot().getElement().get(0);
       String webroot = profile.getUserString("webroot");
 
-      base.setDefinition(processRelativeUrls(e.getDefinition(), webroot, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, true));
+      if (e.hasDefinition()) {
+        base.setDefinition(processRelativeUrls(e.getDefinition(), webroot, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames, null, true));
+      }
       base.setShort(e.getShort());
       if (e.hasCommentElement())
         base.setCommentElement(e.getCommentElement());
@@ -5247,7 +5288,9 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
   private String tail(String path) {
-    if (path.contains("."))
+    if (path == null) {
+      return "";
+    } else if (path.contains("."))
       return path.substring(path.lastIndexOf('.')+1);
     else
       return path;
