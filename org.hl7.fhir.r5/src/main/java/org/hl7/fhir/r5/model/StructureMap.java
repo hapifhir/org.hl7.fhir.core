@@ -4428,7 +4428,7 @@ public String toString() {
          * Parameter value - variable or literal.
          */
         @Child(name = "value", type = {IdType.class, StringType.class, BooleanType.class, IntegerType.class, DecimalType.class, DateType.class, TimeType.class, DateTimeType.class}, order=1, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Parameter value - variable or literal", formalDefinition="Parameter value - variable or literal." )
+        @Description(shortDefinition="-", formalDefinition="Parameter value - variable or literal." )
         protected DataType value;
 
         private static final long serialVersionUID = -1135414639L;
