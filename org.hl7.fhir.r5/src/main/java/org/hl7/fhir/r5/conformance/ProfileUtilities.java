@@ -1172,7 +1172,15 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (diffMatches.get(0).hasType() && "Reference".equals(diffMatches.get(0).getType().get(0).getWorkingCode()) && !isValidType(diffMatches.get(0).getType().get(0), currentBase)) {
             throw new DefinitionException(context.formatMessage(I18nConstants.VALIDATION_VAL_ILLEGAL_TYPE_CONSTRAINT, url, diffMatches.get(0).getPath(), diffMatches.get(0).getType().get(0), currentBase.typeSummary()));            
           }
-          if (diffMatches.get(0).hasType() && diffMatches.get(0).getType().size() == 1 && diffMatches.get(0).getType().get(0).hasProfile() && !"Reference".equals(diffMatches.get(0).getType().get(0).getWorkingCode())) {
+          String id = diffMatches.get(0).getId();
+          String lid = tail(id);          
+          if (lid.contains("/")) {
+            // the template comes from the snapshot of the base
+            generateIds(result.getElement(), url, srcSD.getType());
+            String baseId = id.substring(0, id.length()-lid.length()) + lid.substring(0, lid.indexOf("/")); // this is wrong if there's more than one reslice (todo: one thing at a time)
+            template = getById(result.getElement(), baseId);
+            
+          } else if (diffMatches.get(0).hasType() && diffMatches.get(0).getType().size() == 1 && diffMatches.get(0).getType().get(0).hasProfile() && !"Reference".equals(diffMatches.get(0).getType().get(0).getWorkingCode())) {
             CanonicalType p = diffMatches.get(0).getType().get(0).getProfile().get(0);
             StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getValue());
             if (sd == null && xver != null && xver.matchingUrl(p.getValue())) {
@@ -1930,6 +1938,15 @@ public class ProfileUtilities extends TranslatingUtilities {
         throw new Error(context.formatMessage(I18nConstants.NULL_MIN));
     }
     return res;
+  }
+
+  private ElementDefinition getById(List<ElementDefinition> list, String baseId) {
+    for (ElementDefinition t : list) {
+      if (baseId.equals(t.getId())) {
+        return t;
+      }
+    }
+    return null;
   }
 
   private void updateConstraintSources(ElementDefinition ed, String url) {
@@ -4844,6 +4861,8 @@ public class ProfileUtilities extends TranslatingUtilities {
     String valueSet = ext.getExtensionString("valueSet");
     String doco = ext.getExtensionString("documentation");
     UsageContext usage = (ext.hasExtension("usage")) ? ext.getExtensionByUrl("usage").getValueUsageContext() : null;
+    boolean any = "any".equals(ext.getExtensionString("scope"));
+
 //    
 //    purpose: code - defines how the binding is used
 //    usage : UsageContext - defines the contexts in which this binding is used for it's purpose
@@ -5275,7 +5294,9 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
   private String tail(String path) {
-    if (path.contains("."))
+    if (path == null) {
+      return "";
+    } else if (path.contains("."))
       return path.substring(path.lastIndexOf('.')+1);
     else
       return path;
