@@ -1,5 +1,8 @@
 package org.hl7.fhir.r5.utils;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -61,6 +64,7 @@ POSSIBILITY OF SUCH DAMAGE.
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -939,6 +943,22 @@ public class ToolingExtensions {
       }
     }
     return false;
+  }
+
+  public static List<String> allConsts() {
+
+    List<String> list = new ArrayList<>();
+    for (Field field : ToolingExtensions.class.getDeclaredFields()) {
+      int modifiers = field.getModifiers();
+      if (Modifier.isStatic(modifiers) && Modifier.isFinal(modifiers)) {
+        try {
+          list.add(field.get(field.getType()).toString());
+        } catch (Exception e) {
+        }
+      }
+    }
+    return list;
+
   }
 
   

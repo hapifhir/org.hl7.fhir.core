@@ -234,7 +234,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       for (JsonElement je : content.getAsJsonArray("profiles")) {
         String filename = je.getAsString();    
         String contents = TestingUtilities.loadTestResource("validator", filename);
-        StructureDefinition sd = loadProfile(filename, contents, messages);
+        StructureDefinition sd = loadProfile(filename, contents, messages, val.isDebug());
         val.getContext().cacheResource(sd);
       }
    }
@@ -293,7 +293,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
         String contents = TestingUtilities.loadTestResource("validator", filename);
         System.out.println("Name: " + name + " - profile : " + profile.get("source").getAsString());
         version = content.has("version") ? content.get("version").getAsString() : Constants.VERSION;
-        sd = loadProfile(filename, contents, messages);
+        sd = loadProfile(filename, contents, messages, val.isDebug());
         val.getContext().cacheResource(sd);
       }
       val.setAssumeValidRestReferences(profile.has("assumeValidRestReferences") ? profile.get("assumeValidRestReferences").getAsBoolean() : false);
@@ -348,9 +348,10 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     return res;
   }
 
-  public StructureDefinition loadProfile(String filename, String contents, List<ValidationMessage> messages) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
+  public StructureDefinition loadProfile(String filename, String contents, List<ValidationMessage> messages, boolean debug) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
     StructureDefinition sd = (StructureDefinition) loadResource(filename, contents);
     ProfileUtilities pu = new ProfileUtilities(TestingUtilities.getSharedWorkerContext(version), messages, null);
+    pu.setDebug(debug);
     if (!sd.hasSnapshot()) {
       StructureDefinition base = TestingUtilities.getSharedWorkerContext(version).fetchResource(StructureDefinition.class, sd.getBaseDefinition());
       pu.generateSnapshot(base, sd, sd.getUrl(), null, sd.getTitle());

@@ -377,6 +377,8 @@ public class I18nConstants {
   public static final String SD_ED_BIND_NO_BINDABLE = "SD_ED_BIND_NO_BINDABLE";
   public static final String SD_ED_BIND_MULTIPLE_TYPES = "SD_ED_BIND_MULTIPLE_TYPES";
   public static final String SD_VALUE_TYPE_IILEGAL = "SD_VALUE_TYPE_IILEGAL";
+  public static final String SD_VALUE_TYPE_REPEAT_HINT = "SD_VALUE_TYPE_REPEAT_HINT";
+  public static final String SD_VALUE_TYPE_REPEAT_WARNING_DOTNET = "SD_VALUE_TYPE_REPEAT_WARNING_DOTNET";
   public static final String SD_NO_TYPES_OR_CONTENTREF = "SD_NO_TYPES_OR_CONTENTREF";
   public static final String SEARCHPARAMETER_BASE_WRONG = "SEARCHPARAMETER_BASE_WRONG";
   public static final String SEARCHPARAMETER_EXP_WRONG = "SEARCHPARAMETER_EXP_WRONG";
