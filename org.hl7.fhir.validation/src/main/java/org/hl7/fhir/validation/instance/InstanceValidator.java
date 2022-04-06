@@ -2143,7 +2143,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         // the URL must be an IRI if present
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isAbsoluteUrl(url), 
             node.isContained() ? I18nConstants.TYPE_SPECIFIC_CHECKS_CANONICAL_CONTAINED : I18nConstants.TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE, url);                  
-      } else {
+      } else if (!e.getProperty().getDefinition().getPath().equals("Bundle.entry.fullUrl")) { // we don't check fullUrl here; it's not a reference, it's a definition. It'll get checked as part of checking the bundle
         validateReference(hostContext, errors, path, type, context, e, url);
       }
     }
