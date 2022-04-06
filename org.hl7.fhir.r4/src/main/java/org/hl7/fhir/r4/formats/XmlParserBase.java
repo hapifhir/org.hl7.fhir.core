@@ -320,8 +320,9 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 
 
 	protected void unknownContent(XmlPullParser xpp) throws FHIRFormatError, XmlPullParserException, IOException {
-		if (!isAllowUnknownContent())
+		if (!isAllowUnknownContent()) {
 			throw new FHIRFormatError("Unknown Content "+xpp.getName()+" @ "+pathForLocation(xpp));
+		}
 		// otherwise, read over whatever element this is 
 		int count = 1;
 		do {
