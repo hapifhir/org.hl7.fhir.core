@@ -599,6 +599,14 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     this.dest = dest;
     this.inLineGraphics = inlineGraphics;
     this.makeTargets = true;
+    checkSetup();
+  }
+
+  private void checkSetup() {
+    if (dest == null) {
+      throw new Error("what");
+    }
+    
   }
 
   public HierarchicalTableGenerator(String dest, boolean inlineGraphics, boolean makeTargets) {
@@ -606,6 +614,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     this.dest = dest;
     this.inLineGraphics = inlineGraphics;
     this.makeTargets = makeTargets;
+    checkSetup();
   }
 
   public TableModel initNormalTable(String prefix, boolean isLogical, boolean alternating, String id, boolean isActive) {
@@ -947,7 +956,11 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       String file = Utilities.path(dest, b.toString());
       if (!new File(file).exists()) {
         File newFile = new File(file);
-        newFile.getParentFile().mkdirs();
+        if (newFile.getParentFile() == null) {
+          throw new Error("No source directory provided. ("+file+")");
+        } else {
+          newFile.getParentFile().mkdirs();
+        }
         newFile.createNewFile();
         FileOutputStream stream = new FileOutputStream(file);
         genImage(indents, hasChildren, lineColor, stream);
