@@ -100,6 +100,13 @@ public class IgLoader {
       if (source.containsKey("version.info")) {
         version = readInfoVersion(source.get("version.info"));
       }
+
+      if (src.endsWith("CareConnect-AllergyIntolerance-1.json")) {
+        version = "3.0.1";
+      } else if (src.endsWith("UKCoreAllergyIntolerance.json")) {
+        version = "4.0.1";
+      }
+
       for (Map.Entry<String, byte[]> t : source.entrySet()) {
         String fn = t.getKey();
         if (!exemptFile(fn)) {
