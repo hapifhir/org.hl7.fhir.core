@@ -68,7 +68,6 @@ public class Base64BinaryType extends PrimitiveType<byte[]> implements IPrimitiv
   public Base64BinaryType(String theValue) {
     super();
     // Null values still result in non-null instance being created
-    if (theValue != null) checkValidBase64(theValue);
     setValueAsString(theValue);
   }
 
@@ -118,6 +117,7 @@ public class Base64BinaryType extends PrimitiveType<byte[]> implements IPrimitiv
 
   @Override
   public void setValueAsString(String theValue) throws IllegalArgumentException {
+    if (theValue != null) checkValidBase64(theValue);
     fromStringValue(theValue);
     setValue(parse(theValue));
   }

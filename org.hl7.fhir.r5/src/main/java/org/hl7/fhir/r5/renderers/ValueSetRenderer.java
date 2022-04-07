@@ -29,6 +29,7 @@ import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
+import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.ExtensionHelper;
 import org.hl7.fhir.r5.model.PrimitiveType;
@@ -39,6 +40,7 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
@@ -48,7 +50,11 @@ import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Title;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -65,7 +71,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
 
   private static final String ABSTRACT_CODE_HINT = "This code is not selectable ('Abstract')";
 
-  private static final int MAX_LANGS_IN_LINE = 5;
+  private static final int MAX_DESIGNATIONS_IN_LINE = 5;
 
   private List<ConceptMapRenderInstructions> renderingMaps = new ArrayList<ConceptMapRenderInstructions>();
 
@@ -176,23 +182,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
       else
         x.para().tx("This value set contains "+count.toString()+" concepts");
     }
-    if (ToolingExtensions.hasExtension(vs.getExpansion(), ToolingExtensions.EXT_EXP_FRAGMENT)) {
-      XhtmlNode div = x.div().style("border: maroon 1px solid; background-color: #FFCCCC; padding: 8px");
-      List<Extension> exl = vs.getExpansion().getExtensionsByUrl(ToolingExtensions.EXT_EXP_FRAGMENT);
-      if (exl.size() > 1) {
-        div.para().addText("Warning: this expansion is generated from fragments of the following code systems, and may be missing codes, or include codes that are not valid:");
-        XhtmlNode ul = div.ul();
-        for (Extension ex : exl) {
-          addCSRef(ul.li(), ex.getValue().primitiveValue());
-        }
-      } else {
-        XhtmlNode p = div.para();
-        p.addText("Warning: this expansion is generated from a fragment of the code system ");
-        addCSRef(p, exl.get(0).getValue().primitiveValue());
-        p.addText(" and may be missing codes, or include codes that are not valid");
-      }
-    }
     
+    generateContentModeNotices(x, vs.getExpansion());
     generateVersionNotice(x, vs.getExpansion());
 
     CodeSystem allCS = null;
@@ -222,7 +213,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     XhtmlNode t = x.table( "codes");
     XhtmlNode tr = t.tr();
     if (doLevel)
-      tr.td().b().tx("Lvl");
+      tr.td().b().tx("Level");
     tr.td().attribute("style", "white-space:nowrap").b().tx("Code");
     if (doSystem)
       tr.td().b().tx("System");
@@ -237,7 +228,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       doLangs = false;
     } else {
       // if we're not doing definitions and we don't have too many languages, we'll do them in line
-      if (langs.size() < MAX_LANGS_IN_LINE) {
+      if (langs.size() < MAX_DESIGNATIONS_IN_LINE) {
         doLangs = true;
         if (vs.hasLanguage()) {
           tdDisp.tx(" - "+describeLang(vs.getLanguage()));
@@ -251,7 +242,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     
     addMapHeaders(tr, maps);
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
-      addExpansionRowToTable(t, c, 0, doLevel, doSystem, doDefinition, maps, allCS, langs, doLangs);
+      addExpansionRowToTable(t, c, 1, doLevel, doSystem, doDefinition, maps, allCS, langs, doLangs);
     }
 
     // now, build observed languages
@@ -271,6 +262,46 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
 
     return hasExtensions;
+  }
+
+  private void generateContentModeNotices(XhtmlNode x, ValueSetExpansionComponent expansion) {
+    generateContentModeNotice(x, expansion, "example", "Expansion based on example code system"); 
+    generateContentModeNotice(x, expansion, "fragment", "Expansion based on code system fragment"); 
+  }
+  
+  private void generateContentModeNotice(XhtmlNode x, ValueSetExpansionComponent expansion, String mode, String text) {
+    Multimap<String, String> versions = HashMultimap.create();
+    for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
+      if (p.getName().equals(mode)) {
+        String[] parts = ((PrimitiveType) p.getValue()).asStringValue().split("\\|");
+        if (parts.length == 2)
+          versions.put(parts[0], parts[1]);
+      }
+    }
+    if (versions.size() > 0) {
+      XhtmlNode div = null;
+      XhtmlNode ul = null;
+      boolean first = true;
+      for (String s : versions.keySet()) {
+        if (versions.size() == 1 && versions.get(s).size() == 1) {
+          for (String v : versions.get(s)) { // though there'll only be one
+            XhtmlNode p = x.para().style("border: black 1px dotted; background-color: #ffcccc; padding: 8px; margin-bottom: 8px");
+            p.tx(text+" ");
+            expRef(p, s, v);
+          }
+        } else {
+          for (String v : versions.get(s)) {
+            if (first) {
+              div = x.div().style("border: black 1px dotted; background-color: #EEEEEE; padding: 8px; margin-bottom: 8px");
+              div.para().tx(text+"s: ");
+              ul = div.ul();
+              first = false;
+            }
+            expRef(ul.li(), s, v);
+          }
+        }
+      }
+    }
   }
 
   private boolean checkDoSystem(ValueSet vs, ValueSet src) {
@@ -561,8 +592,12 @@ public class ValueSetRenderer extends TerminologyRenderer {
   private boolean checkDoDefinition(List<ValueSetExpansionContainsComponent> contains) {
     for (ValueSetExpansionContainsComponent c : contains) {
       CodeSystem cs = getContext().getWorker().fetchCodeSystem(c.getSystem());
-      if (cs != null)
-        return true;
+      if (cs != null) {
+        ConceptDefinitionComponent cd = CodeSystemUtilities.getCode(cs, c.getCode());
+        if (cd != null && cd.hasDefinition()) {
+          return true;
+        }
+      }
       if (checkDoDefinition(c.getContains()))
         return true;
     }
@@ -686,7 +721,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
 
   private void addCodeToTable(boolean isAbstract, String system, String code, String display, XhtmlNode td) {
     CodeSystem e = getContext().getWorker().fetchCodeSystem(system);
-    if (e == null || e.getContent() != org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.COMPLETE) {
+    if (e == null || (e.getContent() != org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.COMPLETE && e.getContent() != org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode.FRAGMENT)) {
       if (isAbstract)
         td.i().setAttribute("title", ABSTRACT_CODE_HINT).addText(code);
       else if ("http://snomed.info/sct".equals(system)) {
@@ -729,13 +764,14 @@ public class ValueSetRenderer extends TerminologyRenderer {
   private boolean generateComposition(XhtmlNode x, ValueSet vs, boolean header, List<UsedConceptMap> maps) throws FHIRException, IOException {
     boolean hasExtensions = false;
     List<String> langs = new ArrayList<String>();
+    Map<String, String> designations = new HashMap<>(); //  map of url = description, where url is the designation code. Designations that are for languages won't make it into this list 
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
-      scanForLangs(inc, langs);
+      scanDesignations(inc, langs, designations);
     }
     for (ConceptSetComponent inc : vs.getCompose().getExclude()) {
-      scanForLangs(inc, langs);
+      scanDesignations(inc, langs, designations);
     }
-    boolean doLangs = langs.size() < MAX_LANGS_IN_LINE;
+    boolean doDesignations = langs.size() + designations.size() < MAX_DESIGNATIONS_IN_LINE;
     
     if (header) {
       XhtmlNode h = x.h2();
@@ -744,35 +780,48 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if (vs.hasCopyrightElement())
         generateCopyright(x, vs);
     }
+    int index = 0;
     if (vs.getCompose().getInclude().size() == 1 && vs.getCompose().getExclude().size() == 0) {
-      hasExtensions = genInclude(x.ul(), vs.getCompose().getInclude().get(0), "Include", langs, doLangs, maps) || hasExtensions;
+      hasExtensions = genInclude(x.ul(), vs.getCompose().getInclude().get(0), "Include", langs, doDesignations, maps, designations, index) || hasExtensions;
     } else {
       XhtmlNode p = x.para();
       p.tx("This value set includes codes based on the following rules:");
       XhtmlNode ul = x.ul();
       for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
-        hasExtensions = genInclude(ul, inc, "Include", langs, doLangs, maps) || hasExtensions;
+        hasExtensions = genInclude(ul, inc, "Include", langs, doDesignations, maps, designations, index) || hasExtensions;
+        index++;
       }
       if (vs.getCompose().hasExclude()) {
         p = x.para();
         p.tx("This value set excludes codes based on the following rules:");
         ul = x.ul();
         for (ConceptSetComponent exc : vs.getCompose().getExclude()) {
-          hasExtensions = genInclude(ul, exc, "Exclude", langs, doLangs, maps) || hasExtensions;
+          hasExtensions = genInclude(ul, exc, "Exclude", langs, doDesignations, maps, designations, index) || hasExtensions;
+          index++;
         }
       }
     }
     
     // now, build observed languages
 
-    if (!doLangs && langs.size() > 0) {
+    if (!doDesignations && langs.size() + designations.size() > 0) {
       Collections.sort(langs);
-      x.para().b().tx("Additional Language Displays");
-      XhtmlNode t = x.table( "codes");
+      if (designations.size() == 0) {
+        x.para().b().tx("Additional Language Displays");        
+      } else if (langs.size() == 0) {
+        x.para().b().tx("Additional Designations");       
+      } else {
+        x.para().b().tx("Additional Designations and Language Displays");
+      }
+      XhtmlNode t = x.table("codes");
       XhtmlNode tr = t.tr();
       tr.td().b().tx("Code");
-      for (String lang : langs)
+      for (String url : designations.keySet()) {
+        tr.td().b().addText(designations.get(url));
+      }
+      for (String lang : langs) {
         tr.td().b().addText(describeLang(lang));
+      }
       for (ConceptSetComponent c : vs.getCompose().getInclude()) {
         for (ConceptReferenceComponent cc : c.getConcept()) {
           addLanguageRow(cc, t, langs);
@@ -780,10 +829,102 @@ public class ValueSetRenderer extends TerminologyRenderer {
       }
     }
 
+  
     return hasExtensions;
   }
 
-  private void scanForLangs(ConceptSetComponent inc, List<String> langs) {
+  private void renderExpansionRules(XhtmlNode x, ConceptSetComponent inc, int index, Map<String, ConceptDefinitionComponent> definitions) throws FHIRException, IOException {
+    String s = "This include specifies a heirarchy for when value sets are generated for use in a User Interface, but the rules are not properly defined";
+    if (inc.hasExtension(ToolingExtensions.EXT_EXPAND_RULES)) {
+      String rule = inc.getExtensionString(ToolingExtensions.EXT_EXPAND_RULES);
+      if (rule != null) {
+        switch (rule) {
+        case "all-codes": s = "This include specifies a heirarchy for when value sets are generated for use in a User Interface. The expansion contains all the codes, and also this structure:"; 
+        case "ungrouped": s = "This include specifies a heirarchy for when value sets are generated for use in a User Interface. The expansion contains this structure, and any codes not found in the structure:";
+        case "groups-only": s = "This include specifies a heirarchy for when value sets are generated for use in a User Interface. The expansion contains this structure:";
+        }
+      }
+    }
+    x.br();
+    x.tx(s);
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(), true);
+    TableModel model = gen.new TableModel("exp.h="+index, !forResource);    
+    model.setAlternating(true);
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("vs.exp.header", "Code"), translate("vs.exp.hint", "The code for the item"), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("vs.exp.header", "Display"), translate("vs.exp.hint", "The display for the item"), null, 0));
+
+    for (Extension ext : inc.getExtensionsByUrl(ToolingExtensions.EXT_EXPAND_GROUP)) {
+      renderExpandGroup(gen, model, ext, inc, definitions);
+    }
+    x.br();
+    x.tx("table"); 
+    XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null);
+    x.getChildNodes().add(xn);
+  }
+
+  private void renderExpandGroup(HierarchicalTableGenerator gen, TableModel model, Extension ext, ConceptSetComponent inc, Map<String, ConceptDefinitionComponent> definitions) {
+    Row row = gen.new Row(); 
+    model.getRows().add(row);
+    row.setIcon("icon_entry_blue.png", "entry");
+    String code = ext.getExtensionString("code");
+    if (code != null) {
+      row.getCells().add(gen.new Cell(null, null, code, null, null));
+      row.getCells().add(gen.new Cell(null, null, getDisplayForCode(inc, code, definitions), null, null));
+    } else if (ext.hasId()) {      
+      row.getCells().add(gen.new Cell(null, null, "(#"+ext.getId()+")", null, null));      
+      row.getCells().add(gen.new Cell(null, null, ext.getExtensionString("display"), null, null));
+    } else {
+      row.getCells().add(gen.new Cell(null, null, null, null, null));      
+      row.getCells().add(gen.new Cell(null, null, ext.getExtensionString("display"), null, null));
+    }
+    for (Extension member : ext.getExtensionsByUrl("member")) {
+      Row subRow = gen.new Row(); 
+      row.getSubRows().add(subRow);
+      subRow.setIcon("icon_entry_blue.png", "entry");
+      String mc = member.getValue().primitiveValue();
+      // mc might be a reference to another expansion group - we check that first, or to a code in the compose
+      if (mc.startsWith("#")) {
+        // it's a reference by id
+        subRow.getCells().add(gen.new Cell(null, null, "("+mc+")", null, null));      
+        subRow.getCells().add(gen.new Cell(null, null, "group reference by id", null, null));
+      } else {
+        Extension tgt = findTargetByCode(inc, mc);
+        if (tgt != null) {
+          subRow.getCells().add(gen.new Cell(null, null, mc, null, null));      
+          subRow.getCells().add(gen.new Cell(null, null, "group reference by code", null, null));                    
+        } else {
+          subRow.getCells().add(gen.new Cell(null, null, mc, null, null));      
+          subRow.getCells().add(gen.new Cell(null, null, getDisplayForCode(inc, mc, definitions), null, null));          
+        }
+      }
+    }
+  }
+
+  private Extension findTargetByCode(ConceptSetComponent inc, String mc) {
+    for (Extension ext : inc.getExtensionsByUrl(ToolingExtensions.EXT_EXPAND_GROUP)) {
+      String code = ext.getExtensionString("code");
+      if (mc.equals(code)) {
+        return ext;
+      }
+    }
+    return null;
+  }
+
+  private String getDisplayForCode(ConceptSetComponent inc, String code, Map<String, ConceptDefinitionComponent> definitions) {
+    for (ConceptReferenceComponent cc : inc.getConcept()) {
+      if (code.equals(cc.getCode())) {
+        if (cc.hasDisplay()) {
+          return cc.getDisplay();
+        }
+      }
+    }
+    if (definitions.containsKey(code)) {
+      return definitions.get(code).getDisplay();
+    }
+    return null;
+  }
+
+  private void scanDesignations(ConceptSetComponent inc, List<String> langs, Map<String, String> designations) {
     for (ConceptReferenceComponent cc : inc.getConcept()) {
       for (Extension ext : cc.getExtension()) {
         if (ToolingExtensions.EXT_TRANSLATION.equals(ext.getUrl())) {
@@ -797,17 +938,47 @@ public class ValueSetRenderer extends TerminologyRenderer {
         String lang = d.getLanguage();
         if (!Utilities.noString(lang) && !langs.contains(lang)) {
           langs.add(lang);
+        } else {
+          // can we present this as a designation that we know? 
+          String url = getUrlForDesignation(d);          
+          String disp = getDisplayForUrl(url);
+          if (disp != null && !designations.containsKey(url)) {
+            designations.put(url, disp);            
+          }
         }
       }
     }
   }
 
-  private boolean genInclude(XhtmlNode ul, ConceptSetComponent inc, String type, List<String> langs, boolean doLangs, List<UsedConceptMap> maps) throws FHIRException, IOException {
+  private String getDisplayForUrl(String url) {
+    if (url == null) {
+      return null;
+    }
+    switch (url) {
+    case "http://snomed.info/sct#900000000000003001":
+      return "Fully specified name";
+    case "http://snomed.info/sct#900000000000013009":
+      return "Synonym";
+    default:
+      return null;
+    }
+  }
+
+  private String getUrlForDesignation(ConceptReferenceDesignationComponent d) {
+    if (d.hasUse() && d.getUse().hasSystem() && d.getUse().hasCode()) {
+      return d.getUse().getSystem()+"#"+d.getUse().getCode();
+    } else {
+      return null;
+    }
+  }
+
+  private boolean genInclude(XhtmlNode ul, ConceptSetComponent inc, String type, List<String> langs, boolean doDesignations, List<UsedConceptMap> maps, Map<String, String> designations, int index) throws FHIRException, IOException {
     boolean hasExtensions = false;
     XhtmlNode li;
     li = ul.li();
     CodeSystem e = getContext().getWorker().fetchCodeSystem(inc.getSystem());
-
+    Map<String, ConceptDefinitionComponent> definitions = new HashMap<>();
+    
     if (inc.hasSystem()) {
       if (inc.getConcept().size() == 0 && inc.getFilter().size() == 0) {
         li.addText(type+" all codes defined in ");
@@ -822,7 +993,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           }
 
           // for performance reasons, we do all the fetching in one batch
-          Map<String, ConceptDefinitionComponent> definitions = getConceptsForCodes(e, inc);
+          definitions = getConceptsForCodes(e, inc);
           
           XhtmlNode t = li.table("none");
           boolean hasComments = false;
@@ -834,7 +1005,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           }
           if (hasComments || hasDefinition)
             hasExtensions = true;
-          addMapHeaders(addTableHeaderRowStandard(t, false, true, hasDefinition, hasComments, false, false, null, langs, doLangs), maps);
+          addMapHeaders(addTableHeaderRowStandard(t, false, true, hasDefinition, hasComments, false, false, null, langs, designations, doDesignations), maps);
           for (ConceptReferenceComponent c : inc.getConcept()) {
             XhtmlNode tr = t.tr();
             XhtmlNode td = tr.td();
@@ -861,7 +1032,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
                 smartAddText(td, "Note: "+ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_VS_COMMENT));
               }
             }
-            if (doLangs) {
+            if (doDesignations) {
+              addDesignationsToRow(c, designations, tr);
               addLangaugesToRow(c, langs, tr);
             }
           }
@@ -921,6 +1093,10 @@ public class ValueSetRenderer extends TerminologyRenderer {
           AddVsRef(vs.asStringValue(), li);
         }
       }
+      if (inc.hasExtension(ToolingExtensions.EXT_EXPAND_RULES) || inc.hasExtension(ToolingExtensions.EXT_EXPAND_GROUP)) {
+        hasExtensions = true;
+        renderExpansionRules(li, inc, index, definitions);
+      }
     } else {
       li.tx("Import all the codes that are contained in ");
       if (inc.getValueSet().size() < 4) {
@@ -941,6 +1117,20 @@ public class ValueSetRenderer extends TerminologyRenderer {
       }
     }
     return hasExtensions;
+  }
+
+  public void addDesignationsToRow(ConceptReferenceComponent c, Map<String, String> designations, XhtmlNode tr) {
+    for (String url : designations.keySet()) {
+      String d = null;
+      if (d == null) {
+        for (ConceptReferenceDesignationComponent dd : c.getDesignation()) {
+          if (url.equals(getUrlForDesignation(dd))) {
+            d = dd.getValue();
+          }
+        }
+      }
+      tr.td().addText(d == null ? "" : d);
+    }
   }
 
   public void addLangaugesToRow(ConceptReferenceComponent c, List<String> langs, XhtmlNode tr) {
@@ -975,7 +1165,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     ValueSetExpansionComponent vse = null;
     if (!context.isNoSlowLookup() && !getContext().getWorker().hasCache()) {
       try {
-        ValueSetExpansionOutcome vso = getContext().getWorker().expandVS(inc, false);   
+        ValueSetExpansionOutcome vso = getContext().getWorker().expandVS(inc, false, false);   
         ValueSet valueset = vso.getValueset();
         if (valueset == null)
           throw new TerminologyServiceException("Error Expanding ValueSet: "+vso.getError());

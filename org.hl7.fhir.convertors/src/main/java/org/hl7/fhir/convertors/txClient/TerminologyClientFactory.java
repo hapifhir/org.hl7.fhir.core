@@ -51,6 +51,8 @@ public class TerminologyClientFactory {
         return new TerminologyClientR2(checkEndsWith("/r2", url), userAgent);
       case R4:
         return new TerminologyClientR5(checkEndsWith("/r4", url), userAgent);
+      case R4B:
+        return new TerminologyClientR5(checkEndsWith("/r4", url), userAgent);
       case R5:
         return new TerminologyClientR5(checkEndsWith("/r4", url), userAgent); // r4 for now, since the terminology is currently the same
       case STU3:
@@ -64,20 +66,25 @@ public class TerminologyClientFactory {
     if (v == null)
       return new TerminologyClientR5(checkEndsWith("/r4", url), userAgent);
     v = VersionUtilities.getMajMin(v);
-    switch (v) {
-      case "1.0":
-        return new TerminologyClientR2(checkEndsWith("/r2", url), userAgent);
-      case "1.4":
-        return new TerminologyClientR3(checkEndsWith("/r3", url), userAgent); // r3 is the least worst match
-      case "3.0":
-        return new TerminologyClientR3(checkEndsWith("/r3", url), userAgent);
-      case "4.0":
-        return new TerminologyClientR4(checkEndsWith("/r4", url), userAgent);
-      case "4.5":
-        return new TerminologyClientR5(checkEndsWith("/r4", url), userAgent); // r4 for now, since the terminology is currently the same
-      default:
-        throw new Error("The version " + v + " is not currently supported");
+    if (VersionUtilities.isR2Ver(v)) {
+      return new TerminologyClientR2(checkEndsWith("/r2", url), userAgent);      
     }
+    if (VersionUtilities.isR2BVer(v)) {
+      return new TerminologyClientR3(checkEndsWith("/r3", url), userAgent); // r3 is the least worst match      
+    }
+    if (VersionUtilities.isR3Ver(v)) {
+      return new TerminologyClientR3(checkEndsWith("/r3", url), userAgent); // r3 is the least worst match      
+    }
+    if (VersionUtilities.isR4Ver(v)) {
+      return new TerminologyClientR4(checkEndsWith("/r4", url), userAgent);      
+    }
+    if (VersionUtilities.isR4BVer(v)) {
+      return new TerminologyClientR4(checkEndsWith("/r4", url), userAgent);
+    }
+    if (VersionUtilities.isR5Ver(v)) {
+      return new TerminologyClientR5(checkEndsWith("/r4", url), userAgent); // r4 for now, since the terminology is currently the same      
+    }
+    throw new Error("The version " + v + " is not currently supported");
   }
 
   private static String checkEndsWith(String term, String url) {
@@ -85,7 +92,7 @@ public class TerminologyClientFactory {
       return url;
     if (url.startsWith("http://tx.fhir.org"))
       return Utilities.pathURL(url, term);
-    if (url.equals("http://local.fhir.org:960"))
+    if (url.equals("http://local.fhir.org:8080"))
       return Utilities.pathURL(url, term);
     return url;
   }

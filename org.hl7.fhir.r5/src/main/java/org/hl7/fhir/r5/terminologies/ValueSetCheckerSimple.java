@@ -32,13 +32,19 @@ package org.hl7.fhir.r5.terminologies;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.context.IWorkerContext.PackageDetails;
+import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -56,9 +62,13 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
+import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.npm.PackageInfo;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationOptions.ValueSetMode;
@@ -69,11 +79,51 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
   private IWorkerContext context;
   private Map<String, ValueSetCheckerSimple> inner = new HashMap<>();
   private ValidationOptions options;
+  private ValidationContextCarrier localContext;
+  private List<CodeSystem> localSystems = new ArrayList<>();
 
   public ValueSetCheckerSimple(ValidationOptions options, ValueSet source, IWorkerContext context) {
     this.valueset = source;
     this.context = context;
     this.options = options;
+  }
+  
+  public ValueSetCheckerSimple(ValidationOptions options, ValueSet source, IWorkerContext context, ValidationContextCarrier ctxt) {
+    this.valueset = source;
+    this.context = context;
+    this.options = options;
+    this.localContext = ctxt;
+    analyseValueSet();
+  }
+
+  private void analyseValueSet() {
+    if (localContext != null) {
+      if (valueset != null) {
+        for (ConceptSetComponent i : valueset.getCompose().getInclude()) {
+          analyseComponent(i);
+        }
+        for (ConceptSetComponent i : valueset.getCompose().getExclude()) {
+          analyseComponent(i);
+        }
+      }
+    }
+  }
+
+  private void analyseComponent(ConceptSetComponent i) {
+    if (i.getSystemElement().hasExtension(ToolingExtensions.EXT_VALUESET_SYSTEM)) {
+      String ref = i.getSystemElement().getExtensionString(ToolingExtensions.EXT_VALUESET_SYSTEM);
+      if (ref.startsWith("#")) {
+        String id = ref.substring(1);
+        for (ValidationContextResourceProxy t : localContext.getResources()) {
+          CodeSystem cs = (CodeSystem) t.loadContainedResource(id, CodeSystem.class);
+          if (cs != null) {
+            localSystems.add(cs);
+          }
+        }
+      } else {        
+        throw new Error("Not done yet #2: "+ref);
+      }
+    }    
   }
 
   public ValidationResult validateCode(CodeableConcept code) throws FHIRException {
@@ -85,7 +135,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         if (!c.hasSystem()) {
           warnings.add(context.formatMessage(I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE));
         }
-        CodeSystem cs = context.fetchCodeSystem(c.getSystem());
+        CodeSystem cs = resolveCodeSystem(c.getSystem());
         ValidationResult res = null;
         if (cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) {
           res = context.validateCode(options.noClient(), c, null);
@@ -99,6 +149,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         }
       }
     }
+    Coding foundCoding = null;
     if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
       Boolean result = false;
       for (Coding c : code.getCoding()) {
@@ -107,6 +158,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
           result = null;
         } else if (ok) {
           result = true;
+          foundCoding = c;
         }
       }
       if (result == null) {
@@ -119,9 +171,24 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       return new ValidationResult(IssueSeverity.ERROR, errors.toString());
     } else if (warnings.size() > 0) {
       return new ValidationResult(IssueSeverity.WARNING, warnings.toString());
-    } else { 
-      return new ValidationResult(IssueSeverity.INFORMATION, null);
+    } else {
+      ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
+      cd.setDisplay(foundCoding.getDisplay());
+      return new ValidationResult(foundCoding.getSystem(), cd);
     }
+  }
+
+  public CodeSystem resolveCodeSystem(String system) {
+    for (CodeSystem t : localSystems) {
+      if (t.getUrl().equals(system)) {
+        return t;
+      }
+    }
+    CodeSystem cs = context.fetchCodeSystem(system);
+    if (cs == null) {
+      cs = findSpecialCodeSystem(system);
+    }
+    return cs;
   }
 
   public ValidationResult validateCode(Coding code) throws FHIRException {
@@ -144,10 +211,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       }
       inExpansion = checkExpansion(code);
       inInclude = checkInclude(code);
-      CodeSystem cs = context.fetchCodeSystem(system);
-      if (cs == null) {
-        cs = findSpecialCodeSystem(system);
-      }
+      CodeSystem cs = resolveCodeSystem(system);
       if (cs == null) {
         warningMessage = "Unable to resolve system "+system;
         if (!inExpansion) {
@@ -198,7 +262,11 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
             res = new ValidationResult((IssueSeverity) null, null);
           }
           if (!inExpansion && !inInclude) {
-            res.setMessage("Not in value set "+valueset.getUrl()).setSeverity(IssueSeverity.ERROR);
+            if (warnings != null) {
+              res.setMessage("Not in value set "+valueset.getUrl()+" ("+warnings+")").setSeverity(IssueSeverity.ERROR);              
+            } else {
+              res.setMessage("Not in value set "+valueset.getUrl()).setSeverity(IssueSeverity.ERROR);
+            }
           } else if (warningMessage!=null) {
             res = new ValidationResult(IssueSeverity.WARNING, context.formatMessage(I18nConstants.CODE_FOUND_IN_EXPANSION_HOWEVER_, warningMessage));
           } else if (inExpansion) {
@@ -483,71 +551,92 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
 
 
   private String systemForCodeInValueSet(String code) {
-    String sys = null;
+    Set<String> sys = new HashSet<>();
+    if (!scanForCodeInValueSet(code, sys)) {
+      return null;
+    }
+    if (sys.size() != 1) {
+      return null;
+    } else {
+      return sys.iterator().next();
+    }
+  }
+  
+  private boolean scanForCodeInValueSet(String code, Set<String> sys) {
     if (valueset.hasCompose()) {
-      if (valueset.getCompose().hasExclude()) {
-        return null;
-      }
+      //  not sure what to do with the 
+//      if (valueset.getCompose().hasExclude()) {
+//        return false;
+//      }
       for (ConceptSetComponent vsi : valueset.getCompose().getInclude()) {
         if (vsi.hasValueSet()) {
-          return null;
-        }
-        if (!vsi.hasSystem()) { 
-          return null;
-        }
-        if (vsi.hasFilter()) {
-          return null;
-        }
-        CodeSystem cs = context.fetchCodeSystem(vsi.getSystem());
-        if (cs == null) {
-          return null;
-        }
-        if (vsi.hasConcept()) {
-          for (ConceptReferenceComponent cc : vsi.getConcept()) {
-            boolean match = cs.getCaseSensitive() ? cc.getCode().equals(code) : cc.getCode().equalsIgnoreCase(code);
-            if (match) {
-              if (sys == null) {
-                sys = vsi.getSystem();
-              } else if (!sys.equals(vsi.getSystem())) {
-                return null;
-              }
+          for (CanonicalType u : vsi.getValueSet()) {
+            if (!checkForCodeInValueSet(code, u.getValue(), sys)) {
+              return false;
             }
           }
-        } else {
-          ConceptDefinitionComponent cc = findCodeInConcept(cs.getConcept(), code);
-          if (cc != null) {
-            if (sys == null) {
-              sys = vsi.getSystem();
-            } else if (!sys.equals(vsi.getSystem())) {
-              return null;
+        } else if (!vsi.hasSystem()) { 
+          return false;
+        }
+        if (vsi.hasSystem()) {
+          if (vsi.hasFilter()) {
+            return false;
+          }
+          CodeSystem cs = resolveCodeSystem(vsi.getSystem());
+          if (cs != null) {
+
+            if (vsi.hasConcept()) {
+              for (ConceptReferenceComponent cc : vsi.getConcept()) {
+                boolean match = cs.getCaseSensitive() ? cc.getCode().equals(code) : cc.getCode().equalsIgnoreCase(code);
+                if (match) {
+                  sys.add(vsi.getSystem());
+                }
+              }
+            } else {
+              ConceptDefinitionComponent cc = findCodeInConcept(cs.getConcept(), code);
+              if (cc != null) {
+                sys.add(vsi.getSystem());
+              }
+            }
+          } else {
+            if (vsi.hasConcept()) {
+              for (ConceptReferenceComponent cc : vsi.getConcept()) {
+                boolean match = cc.getCode().equals(code);
+                if (match) {
+                  sys.add(vsi.getSystem());
+                }
+              }
             }
           }
         }
       }
     } else if (valueset.hasExpansion()) {
       // Retrieve a list of all systems associated with this code in the expansion
-      List<String> systems = new ArrayList<String>();
-      checkSystems(valueset.getExpansion().getContains(), code, systems);
-      if (systems.size()==1)
-        sys = systems.get(0);
+      if (!checkSystems(valueset.getExpansion().getContains(), code, sys)) {
+        return false;
+      }
     }
+    return true;
+  }
 
-    return sys;  
+  private boolean checkForCodeInValueSet(String code, String uri, Set<String> sys) {
+    ValueSetCheckerSimple vs = getVs(uri);
+    return vs.scanForCodeInValueSet(code, sys);
   }
 
   /*
    * Recursively go through all codes in the expansion and for any coding that matches the specified code, add the system for that coding
    * to the passed list. 
    */
-  private void checkSystems(List<ValueSetExpansionContainsComponent> contains, String code, List<String> systems) {
+  private boolean checkSystems(List<ValueSetExpansionContainsComponent> contains, String code, Set<String> systems) {
     for (ValueSetExpansionContainsComponent c: contains) {
       if (c.getCode().equals(code)) {
-        if (!systems.contains(c.getSystem()))
-          systems.add(c.getSystem());
+        systems.add(c.getSystem());
       }
       if (c.hasContains())
         checkSystems(c.getContains(), code, systems);
     }
+    return true;
   }
   
   @Override
@@ -560,8 +649,10 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     if (valueset.hasExpansion()) {
       return checkExpansion(new Coding(system, code, null));
     } else if (valueset.hasCompose()) {
+      int i = 0;
       for (ConceptSetComponent vsi : valueset.getCompose().getInclude()) {
-        Boolean ok = inComponent(vsi, system, code, valueset.getCompose().getInclude().size() == 1, warnings);
+        Boolean ok = inComponent(vsi, i, system, code, valueset.getCompose().getInclude().size() == 1, warnings);
+        i++;
         if (ok == null && result == false) {
           result = null;
         } else if (ok) {
@@ -569,8 +660,10 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
           break;
         }
       }
+      i = valueset.getCompose().getInclude().size();
       for (ConceptSetComponent vsi : valueset.getCompose().getExclude()) {
-        Boolean nok = inComponent(vsi, system, code, valueset.getCompose().getInclude().size() == 1, warnings);
+        Boolean nok = inComponent(vsi, i, system, code, valueset.getCompose().getInclude().size() == 1, warnings);
+        i++;
         if (nok == null && result == false) {
           result = null;
         } else if (nok != null && nok) {
@@ -582,10 +675,18 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     return result;
   }
 
-  private Boolean inComponent(ConceptSetComponent vsi, String system, String code, boolean only, List<String> warnings) throws FHIRException {
-    for (UriType uri : vsi.getValueSet()) {
-      if (inImport(uri.getValue(), system, code)) {
-        return true;
+  private Boolean inComponent(ConceptSetComponent vsi, int vsiIndex, String system, String code, boolean only, List<String> warnings) throws FHIRException {
+    if (isValueSetUnionImports()) {
+      for (UriType uri : vsi.getValueSet()) {
+        if (inImport(uri.getValue(), system, code)) {
+          return true;
+        }
+      }
+    } else {
+      for (UriType uri : vsi.getValueSet()) {
+        if (!inImport(uri.getValue(), system, code)) {
+          return false;
+        }
       }
     }
 
@@ -604,12 +705,13 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     if (!system.equals(vsi.getSystem()))
       return false;
     // ok, we need the code system
-    CodeSystem cs = context.fetchCodeSystem(system);
+    CodeSystem cs = resolveCodeSystem(system);
     if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)) {
       // make up a transient value set with
       ValueSet vs = new ValueSet();
       vs.setStatus(PublicationStatus.ACTIVE);
-      vs.setUrl(Utilities.makeUuidUrn());
+      vs.setUrl(valueset.getUrl()+"--"+vsiIndex);
+      vs.setVersion(valueset.getVersion());
       vs.getCompose().addInclude(vsi);
       ValidationResult res = context.validateCode(options.noClient(), new Coding(system, code, null), vs);
       if (res.getErrorClass() == TerminologyServiceErrorClass.UNKNOWN || res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNSUPPORTED) {
@@ -646,6 +748,15 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       } else {
         return ok;
       }
+    }
+  }
+
+  protected boolean isValueSetUnionImports() {
+    PackageVersion p = (PackageVersion) valueset.getUserData("package");
+    if (p != null) {
+      return p.getDate().before(new GregorianCalendar(2022, Calendar.MARCH, 31).getTime());
+    } else {
+      return false;
     }
   }
 
@@ -709,7 +820,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       return inner.get(url);
     }
     ValueSet vs = context.fetchResource(ValueSet.class, url);
-    ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, context);
+    ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, context, localContext);
     inner.put(url, vsc);
     return vsc;
   }

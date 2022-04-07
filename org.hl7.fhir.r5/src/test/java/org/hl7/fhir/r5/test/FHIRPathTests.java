@@ -15,6 +15,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
+import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BooleanType;
@@ -24,7 +25,6 @@ import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.test.FHIRPathTests.TestResultType;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
@@ -93,7 +93,7 @@ public class FHIRPathTests {
 
     @Override
     public ValueSet resolveValueSet(Object appContext, String url) {
-      return TestingUtilities.context().fetchResource(ValueSet.class, url);
+      return TestingUtilities.getSharedWorkerContext().fetchResource(ValueSet.class, url);
     }
 
   }
@@ -103,7 +103,7 @@ public class FHIRPathTests {
 
   @BeforeAll
   public static void setUp() {
-    fp = new FHIRPathEngine(TestingUtilities.context());
+    fp = new FHIRPathEngine(TestingUtilities.getSharedWorkerContext());
   }
 
   public static Stream<Arguments> data() throws ParserConfigurationException, SAXException, IOException {
@@ -187,7 +187,11 @@ public class FHIRPathTests {
         } else {
           res = resources.get(input);
           if (res == null) {
-            res = new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", input));
+            if (input.endsWith(".json")) {
+              res = new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", input));              
+            } else {
+              res = new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", input));
+            }
             resources.put(input, res);
           }
           fp.check(res, res.getResourceType().toString(), res.getResourceType().toString(), node);

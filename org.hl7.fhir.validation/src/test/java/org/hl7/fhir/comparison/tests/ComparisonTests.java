@@ -108,13 +108,14 @@ public class ComparisonTests {
 
     if (context == null) {
       System.out.println("---- Load R5 ----------------------------------------------------------------");
-      context = TestingUtilities.context();
+      context = TestingUtilities.getSharedWorkerContext();
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
       NpmPackage npm = pcm.loadPackage("hl7.fhir.us.core#3.1.0");
       BaseWorkerContext bc = (BaseWorkerContext) context;
       boolean dupl = bc.isAllowLoadingDuplicates();
       bc.setAllowLoadingDuplicates(true);
-      context.loadFromPackage(npm, new R4ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProviderR5()));
+      context.loadFromPackage(npm, new R4ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"},
+          new NullLoaderKnowledgeProviderR5(), context.getVersion()));
       bc.setAllowLoadingDuplicates(dupl);
     }
 

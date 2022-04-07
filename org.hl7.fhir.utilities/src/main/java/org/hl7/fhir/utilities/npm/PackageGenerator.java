@@ -52,15 +52,31 @@ import com.google.gson.JsonSyntaxException;
 public class PackageGenerator {
 
   public enum PackageType {
-    CORE, IG, TOOL, TEMPLATE, SUBSET;
+    CONFORMANCE, IG, CORE, EXAMPLES, GROUP, TOOL, IG_TEMPLATE;
+    // CORE, IG, TOOL, TEMPLATE, SUBSET;
 
     public String getCode() {
       switch (this) {
-      case CORE: return "fhir.core";
+      case CONFORMANCE: return "Conformance";
+      case IG: return "IG";
+      case CORE: return "Core";
+      case EXAMPLES: return "Examples";
+      case GROUP: return "Group";
+      case TOOL: return "Tool";
+      case IG_TEMPLATE: return "IG-Template";
+      }
+      throw new Error("Unknown Type");
+    }
+
+    String getOldCode() {
+      switch (this) {
+      case CONFORMANCE: return "xxx";
       case IG: return "fhir.ig";
+      case CORE: return "fhir.core";
+      case EXAMPLES: return "fhir.examples";
+      case GROUP: return "fhir.group";
       case TOOL: return "fhir.tool";
-      case TEMPLATE: return "fhir.template";
-      case SUBSET: return "fhir.subset";  
+      case IG_TEMPLATE: return "fhir.template";
       }
       throw new Error("Unknown Type");
     }

@@ -51,7 +51,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       h.addText(cs.hasTitle() ? cs.getTitle() : cs.getName());
       addMarkdown(x, cs.getDescription());
       if (cs.hasCopyright())
-        generateCopyright(x, cs);
+        generateCopyright(x, cs );
     }
 
     generateProperties(x, cs);
@@ -94,8 +94,10 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   private void generateProperties(XhtmlNode x, CodeSystem cs) {
     if (cs.hasProperty()) {
       boolean hasRendered = false;
+      boolean hasURI = false;
       for (PropertyComponent p : cs.getProperty()) {
         hasRendered = hasRendered || !p.getCode().equals(ToolingExtensions.getPresentation(p, p.getCodeElement()));
+        hasURI = hasURI || p.hasUri();
       }
       
       x.para().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Properties", getContext().getLang()));
@@ -105,18 +107,22 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Name", getContext().getLang()));        
       }
       tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Code", getContext().getLang()));
-      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "URL", getContext().getLang()));
-      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Description", getContext().getLang()));
+      if (hasURI) {
+        tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "URL", getContext().getLang()));
+      }
       tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Type", getContext().getLang()));
+      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Description", getContext().getLang()));
       for (PropertyComponent p : cs.getProperty()) {
         tr = tbl.tr();
         if (hasRendered) {
           tr.td().tx(ToolingExtensions.getPresentation(p, p.getCodeElement()));          
         }
         tr.td().tx(p.getCode());
-        tr.td().tx(p.getUri());
-        tr.td().tx(p.getDescription());
+        if (hasURI) {
+          tr.td().tx(p.getUri());
+        }
         tr.td().tx(p.hasType() ? p.getType().toCode() : "");
+        tr.td().tx(p.getDescription());
       }
     }
   }
@@ -126,7 +132,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     if (cs.getContent() == CodeSystemContentMode.COMPLETE)
       p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system %s defines the following codes", cs.getUrl())+":");
     else if (cs.getContent() == CodeSystemContentMode.EXAMPLE)
-      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system %s defines many codes, of which the following are some examples", cs.getUrl())+":");
+      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system %s defines some example codes", cs.getUrl())+":");
     else if (cs.getContent() == CodeSystemContentMode.FRAGMENT )
       p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system %s defines many codes, of which the following are a subset", cs.getUrl())+":");
     else if (cs.getContent() == CodeSystemContentMode.NOTPRESENT ) {
@@ -141,6 +147,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     boolean hierarchy = false;
     boolean version = false;
     boolean ignoreStatus = false;
+    boolean isSupplement = cs.getContent() == CodeSystemContentMode.SUPPLEMENT;
     List<PropertyComponent> properties = new ArrayList<>();
     for (PropertyComponent cp : cs.getProperty()) {
       if (showPropertyInTable(cp)) {
@@ -168,9 +175,9 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     hierarchy = hierarchy || csNav.isRestructure();
     
     List<String> langs = new ArrayList<>();
-    addMapHeaders(addTableHeaderRowStandard(t, hierarchy, display, definitions, commentS, version, deprecated, properties, null, false), maps);
+    addMapHeaders(addTableHeaderRowStandard(t, hierarchy, display, definitions, commentS, version, deprecated, properties, null, null, false), maps);
     for (ConceptDefinitionComponent c : csNav.getConcepts(null)) {
-      hasExtensions = addDefineRowToTable(t, c, 0, hierarchy, display, definitions, commentS, version, deprecated, maps, cs.getUrl(), cs, properties, csNav, langs) || hasExtensions;
+      hasExtensions = addDefineRowToTable(t, c, 0, hierarchy, display, definitions, commentS, version, deprecated, maps, cs.getUrl(), cs, properties, csNav, langs, isSupplement) || hasExtensions;
     }
     if (langs.size() > 0) {
       Collections.sort(langs);
@@ -223,10 +230,10 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         return true;
       }
       String uri = cp.getUri();
-      String code = null;
       if (Utilities.noString(uri)){
-        return false;
+        return true; // do we always want to render properties in this case? Not sure...
       }
+      String code = null;
       if (uri.contains("#")) {
         code = uri.substring(uri.indexOf("#")+1);
         uri = uri.substring(0, uri.indexOf("#"));
@@ -238,7 +245,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       if (cs == null) {
         return false;
       }
-      return CodeSystemUtilities.hasCode(cs, code);
+      return code == null ? false : CodeSystemUtilities.hasCode(cs, code);
     }
     return false;
   }
@@ -290,7 +297,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
 
 
-  private boolean addDefineRowToTable(XhtmlNode t, ConceptDefinitionComponent c, int level, boolean hasHierarchy, boolean hasDisplay, boolean hasDefinitions, boolean comment, boolean version, boolean deprecated, List<UsedConceptMap> maps, String system, CodeSystem cs, List<PropertyComponent> properties, CodeSystemNavigator csNav, List<String> langs) throws FHIRFormatError, DefinitionException, IOException {
+  private boolean addDefineRowToTable(XhtmlNode t, ConceptDefinitionComponent c, int level, boolean hasHierarchy, boolean hasDisplay, boolean hasDefinitions, boolean comment, boolean version, boolean deprecated, List<UsedConceptMap> maps, String system, CodeSystem cs, List<PropertyComponent> properties, CodeSystemNavigator csNav, List<String> langs, boolean isSupplement) throws FHIRFormatError, DefinitionException, IOException {
     boolean hasExtensions = false;
     XhtmlNode tr = t.tr();
     XhtmlNode td = tr.td();
@@ -300,7 +307,12 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       String s = Utilities.padLeft("", '\u00A0', level*2);
       td.addText(s);
     }
-    td.attribute("style", "white-space:nowrap").addText(c.getCode());
+    String link = isSupplement ? getLinkForCode(cs.getSupplements(), null, c.getCode()) : null;
+    if (link != null) {
+      td.ah(link).attribute("style", "white-space:nowrap").addText(c.getCode());
+    } else {
+      td.attribute("style", "white-space:nowrap").addText(c.getCode());
+    }      
     XhtmlNode a;
     if (c.hasCodeElement()) {
       td.an(cs.getId()+"-" + Utilities.nmtokenize(c.getCode()));
@@ -450,7 +462,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
     List<ConceptDefinitionComponent> ocl = csNav.getOtherChildren(c);
     for (ConceptDefinitionComponent cc : csNav.getConcepts(c)) {
-      hasExtensions = addDefineRowToTable(t, cc, level+1, hasHierarchy, hasDisplay, hasDefinitions, comment, version, deprecated, maps, system, cs, properties, csNav, langs) || hasExtensions;
+      hasExtensions = addDefineRowToTable(t, cc, level+1, hasHierarchy, hasDisplay, hasDefinitions, comment, version, deprecated, maps, system, cs, properties, csNav, langs, isSupplement) || hasExtensions;
     }
     for (ConceptDefinitionComponent cc : ocl) {
       tr = t.tr();

@@ -20,6 +20,7 @@ import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
@@ -158,9 +159,8 @@ public abstract class ResourceRenderer extends DataRenderer {
         if (target.hasUserData("path")) {
           x.ah(target.getUserString("path")).tx(cr.present());
         } else {
-          url = url.substring(0, url.indexOf("|"));
           x.code().tx(url);
-          x.tx(": "+cr.present());          
+          x.tx(" ("+cr.present()+")");          
         }
       }
     }
@@ -202,7 +202,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     }
     // what to display: if text is provided, then that. if the reference was resolved, then show the name, or the generated narrative
     String display = r.hasDisplayElement() ? r.getDisplay() : null;
-    String name = tr != null && tr.getResource() != null ? tr.getResource().getNameFromResource() : null;
+    String name = tr != null && tr.getResource() != null ? tr.getResource().getNameFromResource() : null; 
     
     if (display == null && (tr == null || tr.getResource() == null)) {
       c.addText(r.getReference());
@@ -214,6 +214,11 @@ public abstract class ResourceRenderer extends DataRenderer {
       if ((tr == null || !tr.getReference().startsWith("#")) && name != null) {
         x.addText(" \""+name+"\"");
       }
+      if (r.hasExtension(ToolingExtensions.EXT_TARGET_ID)) {
+        x.addText("(#"+r.getExtensionString(ToolingExtensions.EXT_TARGET_ID)+")");
+      } else if (r.hasExtension(ToolingExtensions.EXT_TARGET_PATH)) {
+        x.addText("(#/"+r.getExtensionString(ToolingExtensions.EXT_TARGET_PATH)+")");
+      }  
     } else {
       if (display != null) {
         c.addText(display);
@@ -272,6 +277,11 @@ public abstract class ResourceRenderer extends DataRenderer {
       }
       return null;
     }
+    String version = null;
+    if (url.contains("/_history/")) {
+      version = url.substring(url.indexOf("/_history/")+10);
+      url = url.substring(0, url.indexOf("/_history/"));
+    }
 
     if (rcontext != null) {
       BundleEntryComponent bundleResource = rcontext.resolve(url);
@@ -279,7 +289,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         String bundleUrl = "#" + bundleResource.getResource().getResourceType().name() + "_" + bundleResource.getResource().getId(); 
         return new ResourceWithReference(bundleUrl, new ResourceWrapperDirect(this.context, bundleResource.getResource()));
       }
-      org.hl7.fhir.r5.elementmodel.Element bundleElement = rcontext.resolveElement(url);
+      org.hl7.fhir.r5.elementmodel.Element bundleElement = rcontext.resolveElement(url, version);
       if (bundleElement != null) {
         String bundleUrl = null;
         Element br = bundleElement.getNamedChild("resource");
@@ -292,7 +302,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       }
     }
 
-    Resource ae = getContext().getWorker().fetchResource(null, url);
+    Resource ae = getContext().getWorker().fetchResource(null, url, version);
     if (ae != null)
       return new ResourceWithReference(url, new ResourceWrapperDirect(this.context, ae));
     else if (context.getResolver() != null) {
@@ -473,10 +483,22 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
 
   private String getPrimitiveValue(BaseWrapper b, String name) throws UnsupportedEncodingException, FHIRException, IOException {
-    return b != null && b.getChildByName(name).hasValues() ? b.getChildByName(name).getValues().get(0).getBase().primitiveValue() : null;
+    return b != null && b.has(name) && b.getChildByName(name).hasValues() ? b.getChildByName(name).getValues().get(0).getBase().primitiveValue() : null;
   }
 
   private String getPrimitiveValue(ResourceWrapper r, String name) throws UnsupportedEncodingException, FHIRException, IOException {
-    return r.getChildByName(name).hasValues() ? r.getChildByName(name).getValues().get(0).getBase().primitiveValue() : null;
+    return r.has(name) && r.getChildByName(name).hasValues() ? r.getChildByName(name).getValues().get(0).getBase().primitiveValue() : null;
+  }
+
+  public void renderOrError(DomainResource dr) {
+    try {
+      render(dr);
+    } catch (Exception e) {
+      XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+      x.para().tx("Error rendering: "+e.getMessage());
+      dr.setText(null);
+      inject(dr, x, NarrativeStatus.GENERATED);   
+    }
+    
   }
 }

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1261,36 +1261,150 @@ public class RelatedPerson extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>address</b>
+   * Search parameter: <b>active</b>
    * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-* [Person](person.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-* [Practitioner](practitioner.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-* [RelatedPerson](relatedperson.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Patient.address | Person.address | Practitioner.address | RelatedPerson.address</b><br>
+   * Description: <b>Indicates if the related person record is active</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RelatedPerson.active</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="address", path="Patient.address | Person.address | Practitioner.address | RelatedPerson.address", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text\r\n* [Person](person.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text\r\n* [Practitioner](practitioner.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text\r\n* [RelatedPerson](relatedperson.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text\r\n", type="string" )
-  public static final String SP_ADDRESS = "address";
+  @SearchParamDefinition(name="active", path="RelatedPerson.active", description="Indicates if the related person record is active", type="token" )
+  public static final String SP_ACTIVE = "active";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>address</b>
+   * <b>Fluent Client</b> search parameter constant for <b>active</b>
    * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-* [Person](person.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-* [Practitioner](practitioner.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-* [RelatedPerson](relatedperson.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Patient.address | Person.address | Practitioner.address | RelatedPerson.address</b><br>
+   * Description: <b>Indicates if the related person record is active</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RelatedPerson.active</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ACTIVE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ACTIVE);
+
+ /**
+   * Search parameter: <b>family</b>
+   * <p>
+   * Description: <b>A portion of the family name of the related person</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>RelatedPerson.name.family</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="family", path="RelatedPerson.name.family", description="A portion of the family name of the related person", type="string" )
+  public static final String SP_FAMILY = "family";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>family</b>
+   * <p>
+   * Description: <b>A portion of the family name of the related person</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>RelatedPerson.name.family</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam FAMILY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_FAMILY);
+
+ /**
+   * Search parameter: <b>given</b>
+   * <p>
+   * Description: <b>A portion of the given name of the related person</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>RelatedPerson.name.given</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="given", path="RelatedPerson.name.given", description="A portion of the given name of the related person", type="string" )
+  public static final String SP_GIVEN = "given";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>given</b>
+   * <p>
+   * Description: <b>A portion of the given name of the related person</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>RelatedPerson.name.given</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam GIVEN = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_GIVEN);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>An Identifier of the RelatedPerson</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RelatedPerson.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="RelatedPerson.identifier", description="An Identifier of the RelatedPerson", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>An Identifier of the RelatedPerson</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RelatedPerson.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>name</b>
+   * <p>
+   * Description: <b>A server defined search that may match any of the string fields in the HumanName, including family, give, prefix, suffix, suffix, and/or text</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>RelatedPerson.name</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="name", path="RelatedPerson.name", description="A server defined search that may match any of the string fields in the HumanName, including family, give, prefix, suffix, suffix, and/or text", type="string" )
+  public static final String SP_NAME = "name";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>name</b>
+   * <p>
+   * Description: <b>A server defined search that may match any of the string fields in the HumanName, including family, give, prefix, suffix, suffix, and/or text</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>RelatedPerson.name</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>The patient this related person is related to</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RelatedPerson.patient</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="RelatedPerson.patient", description="The patient this related person is related to", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>The patient this related person is related to</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RelatedPerson.patient</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>RelatedPerson:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("RelatedPerson:patient").toLocked();
+
+ /**
+   * Search parameter: <b>relationship</b>
+   * <p>
+   * Description: <b>The relationship between the patient and the relatedperson</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RelatedPerson.relationship</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="relationship", path="RelatedPerson.relationship", description="The relationship between the patient and the relatedperson", type="token" )
+  public static final String SP_RELATIONSHIP = "relationship";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>relationship</b>
+   * <p>
+   * Description: <b>The relationship between the patient and the relatedperson</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RelatedPerson.relationship</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam RELATIONSHIP = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_RELATIONSHIP);
 
  /**
    * Search parameter: <b>address-city</b>
@@ -1451,6 +1565,38 @@ public class RelatedPerson extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam ADDRESS_USE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ADDRESS_USE);
+
+ /**
+   * Search parameter: <b>address</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Patient](patient.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
+* [Person](person.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
+* [Practitioner](practitioner.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
+* [RelatedPerson](relatedperson.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
+</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Patient.address | Person.address | Practitioner.address | RelatedPerson.address</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="address", path="Patient.address | Person.address | Practitioner.address | RelatedPerson.address", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text\r\n* [Person](person.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text\r\n* [Practitioner](practitioner.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text\r\n* [RelatedPerson](relatedperson.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text\r\n", type="string" )
+  public static final String SP_ADDRESS = "address";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>address</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Patient](patient.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
+* [Person](person.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
+* [Practitioner](practitioner.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
+* [RelatedPerson](relatedperson.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
+</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Patient.address | Person.address | Practitioner.address | RelatedPerson.address</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS);
 
  /**
    * Search parameter: <b>birthdate</b>
@@ -1647,112 +1793,6 @@ public class RelatedPerson extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TELECOM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TELECOM);
-
- /**
-   * Search parameter: <b>active</b>
-   * <p>
-   * Description: <b>Indicates if the related person record is active</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RelatedPerson.active</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="active", path="RelatedPerson.active", description="Indicates if the related person record is active", type="token" )
-  public static final String SP_ACTIVE = "active";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>active</b>
-   * <p>
-   * Description: <b>Indicates if the related person record is active</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RelatedPerson.active</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ACTIVE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ACTIVE);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>An Identifier of the RelatedPerson</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RelatedPerson.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="RelatedPerson.identifier", description="An Identifier of the RelatedPerson", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>An Identifier of the RelatedPerson</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RelatedPerson.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>name</b>
-   * <p>
-   * Description: <b>A server defined search that may match any of the string fields in the HumanName, including family, give, prefix, suffix, suffix, and/or text</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>RelatedPerson.name</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="name", path="RelatedPerson.name", description="A server defined search that may match any of the string fields in the HumanName, including family, give, prefix, suffix, suffix, and/or text", type="string" )
-  public static final String SP_NAME = "name";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>name</b>
-   * <p>
-   * Description: <b>A server defined search that may match any of the string fields in the HumanName, including family, give, prefix, suffix, suffix, and/or text</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>RelatedPerson.name</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>The patient this related person is related to</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>RelatedPerson.patient</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="RelatedPerson.patient", description="The patient this related person is related to", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>The patient this related person is related to</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>RelatedPerson.patient</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>RelatedPerson:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("RelatedPerson:patient").toLocked();
-
- /**
-   * Search parameter: <b>relationship</b>
-   * <p>
-   * Description: <b>The relationship between the patient and the relatedperson</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RelatedPerson.relationship</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="relationship", path="RelatedPerson.relationship", description="The relationship between the patient and the relatedperson", type="token" )
-  public static final String SP_RELATIONSHIP = "relationship";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>relationship</b>
-   * <p>
-   * Description: <b>The relationship between the patient and the relatedperson</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>RelatedPerson.relationship</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam RELATIONSHIP = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_RELATIONSHIP);
 
 
 }

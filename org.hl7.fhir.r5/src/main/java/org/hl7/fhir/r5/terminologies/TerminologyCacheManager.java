@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -75,7 +76,8 @@ public class TerminologyCacheManager {
     }
 
     IniFile ini = new IniFile(Utilities.path(cacheFolder, "cache.ini"));
-    ini.setStringProperty("version", "version", version, null);
+    ini.setStringProperty("cache", "version", version, null);
+    ini.setDateProperty("cache", "last-use", new Date(), null);
     ini.save();
   }
 
@@ -104,7 +106,7 @@ public class TerminologyCacheManager {
           Utilities.createDirectory(path);
         } else {
           Utilities.createDirectory(Utilities.getDirectoryForFile(path));
-          TextFile.streamToFile(zipIn, path);
+          TextFile.streamToFileNoClose(zipIn, path);
         }
       }
     }
@@ -116,7 +118,7 @@ public class TerminologyCacheManager {
 
   private String getCacheVersion() throws IOException {
     IniFile ini = new IniFile(Utilities.path(cacheFolder, "cache.ini"));
-    return ini.getStringProperty("version", "version");
+    return ini.getStringProperty("cache", "version");
   }
 
   public String getFolder() {
@@ -154,6 +156,8 @@ public class TerminologyCacheManager {
     String url = "https://tx.fhir.org/post/tx-cache/"+ghOrg+"/"+ghRepo+"/"+ghBranch+".zip";
     System.out.println("Sending tx-cache to "+url+" ("+Utilities.describeSize(bs.toByteArray().length)+")");
     SimpleHTTPClient http = new SimpleHTTPClient();
+    http.setUsername(token.substring(0, token.indexOf(':')));
+    http.setPassword(token.substring(token.indexOf(':')+1));
     HTTPResult res = http.put(url, "application/zip", bs.toByteArray(), null); // accept doesn't matter
     if (res.getCode() >= 300) {
       System.out.println("sending cache failed: "+res.getCode());

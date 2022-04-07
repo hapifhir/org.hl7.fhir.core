@@ -596,6 +596,8 @@ public class Utilities {
         if ("[tmp]".equals(a)) {
           if (hasCTempDir()) {
             a = "c:\\temp";
+          } else if (ToolGlobalSettings.hasTempPath()) {            
+            a = ToolGlobalSettings.getTempPath();
           } else {
             a = System.getProperty("java.io.tmpdir");
           }
@@ -649,7 +651,7 @@ public class Utilities {
     StringBuilder s = new StringBuilder();
     boolean d = false;
     for (String arg : args) {
-      if (args != null) {
+      if (arg != null) {
         if (!d)
           d = !noString(arg);
         else if (s.toString() != null && !s.toString().endsWith("/") && !arg.startsWith("/"))
@@ -659,14 +661,6 @@ public class Utilities {
     }
     return s.toString();
   }
-
-
-//  public static void checkCase(String filename) {
-//    File f = new CSFile(filename);
-//    if (!f.getName().equals(filename))
-//      throw new FHIRException("Filename  ")
-//    
-//  }
 
   public static String nmtokenize(String cs) {
     if (cs == null)
@@ -1003,7 +997,6 @@ public class Utilities {
     return s.substring(0, 1).toLowerCase() + s.substring(1);
   }
 
-
   public static int charCount(String s, char c) {
     int res = 0;
     for (char ch : s.toCharArray())
@@ -1012,11 +1005,9 @@ public class Utilities {
     return res;
   }
 
-
   public static boolean isOid(String cc) {
-    return cc.matches(OID_REGEX) && cc.lastIndexOf('.') >= 5;
+    return cc.matches(OID_REGEX);
   }
-
 
   public static boolean equals(String one, String two) {
     if (one == null && two == null)
@@ -1508,6 +1499,10 @@ public class Utilities {
       }
     }
     return -1;
+  }
+
+  public static String toString(String[] expected) {
+    return "['"+String.join("' | '", expected)+"']";
   }
 
 

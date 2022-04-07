@@ -1,0 +1,6 @@
+{
+  "subject" : {
+    "reference" : "Patient/example"
+  },
+  "valueString": "FOO"
+}

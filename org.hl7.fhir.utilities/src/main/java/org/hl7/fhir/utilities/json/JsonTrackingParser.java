@@ -664,6 +664,12 @@ public class JsonTrackingParser {
     TextFile.stringToFile(jcnt, file);    
   }
     
+  public static void write(JsonObject json, File file, boolean pretty) throws IOException {
+    Gson gson = pretty ? new GsonBuilder().setPrettyPrinting().create() : new GsonBuilder().create();
+    String jcnt = gson.toJson(json);
+    TextFile.stringToFile(jcnt, file);    
+  }
+    
   public static void write(JsonObject json, String fileName) throws IOException {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     String jcnt = gson.toJson(json);

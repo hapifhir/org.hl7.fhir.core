@@ -33,6 +33,8 @@ package org.hl7.fhir.r5.terminologies;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -51,6 +53,7 @@ import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptDefinitionComponentSorter;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.Meta;
 import org.hl7.fhir.r5.model.UriType;
@@ -59,6 +62,15 @@ import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 
 public class CodeSystemUtilities {
+
+  public static class ConceptDefinitionComponentSorter implements Comparator<ConceptDefinitionComponent> {
+
+    @Override
+    public int compare(ConceptDefinitionComponent o1, ConceptDefinitionComponent o2) {
+      return o1.getCode().compareTo(o2.getCode());
+    }
+
+  }
 
   public static final String USER_DATA_CROSS_LINK = "cs.utils.cross.link";
 
@@ -128,7 +140,7 @@ public class CodeSystemUtilities {
     private List<String> getSubsumedBy(ConceptDefinitionComponent cd) {
       List<String> codes = new ArrayList<>();
       for (ConceptPropertyComponent cp : cd.getProperty()) {
-        if (cp.getCode().equals("subsumedBy")) {
+        if ("subsumedBy".equals(cp.getCode())) {
           codes.add(cp.getValue().primitiveValue());
         }
       }
@@ -149,7 +161,7 @@ public class CodeSystemUtilities {
 
   public static boolean isNotSelectable(CodeSystem cs, ConceptDefinitionComponent def) {
     for (ConceptPropertyComponent p : def.getProperty()) {
-      if (p.getCode().equals("notSelectable") && p.hasValue() && p.getValue() instanceof BooleanType) 
+      if ("notSelectable".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType) 
         return ((BooleanType) p.getValue()).getValue();
     }
     return false;
@@ -212,14 +224,14 @@ public class CodeSystemUtilities {
     try {
       for (ConceptPropertyComponent p : def.getProperty()) {
         if (!ignoreStatus) {
-          if (p.getCode().equals("status") && p.hasValue() && p.hasValueCodeType() && p.getValueCodeType().getCode().equals("deprecated"))
+          if ("status".equals(p.getCode()) && p.hasValue() && p.hasValueCodeType() && "deprecated".equals(p.getValueCodeType().getCode()))
             return true;
         }
         // this, though status should also be set
-        if (p.getCode().equals("deprecationDate") && p.hasValue() && p.getValue() instanceof DateTimeType) 
+        if ("deprecationDate".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof DateTimeType) 
           return ((DateTimeType) p.getValue()).before(new DateTimeType(Calendar.getInstance()));
         // legacy  
-        if (p.getCode().equals("deprecated") && p.hasValue() && p.getValue() instanceof BooleanType) 
+        if ("deprecated".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType) 
           return ((BooleanType) p.getValue()).getValue();
       }
       return false;
@@ -236,8 +248,8 @@ public class CodeSystemUtilities {
   
   public static boolean isInactive(CodeSystem cs, ConceptDefinitionComponent def) throws FHIRException {
     for (ConceptPropertyComponent p : def.getProperty()) {
-      if (p.getCode().equals("status") && p.hasValueStringType()) 
-        return "inactive".equals(p.getValueStringType());
+      if ("status".equals(p.getCode()) && p.hasValueStringType()) 
+        return "inactive".equals(p.getValueStringType().primitiveValue()) || "retired".equals(p.getValueStringType().primitiveValue());
     }
     return false;
   }
@@ -273,10 +285,14 @@ public class CodeSystemUtilities {
   }
 
   public static CodeSystem makeShareable(CodeSystem cs) {
+    if (!cs.hasExperimental()) {
+      cs.setExperimental(false);
+    }
+
     if (!cs.hasMeta())
       cs.setMeta(new Meta());
     for (UriType t : cs.getMeta().getProfile()) 
-      if (t.getValue().equals("http://hl7.org/fhir/StructureDefinition/shareablecodesystem"))
+      if ("http://hl7.org/fhir/StructureDefinition/shareablecodesystem".equals(t.getValue()))
         return cs;
     cs.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareablecodesystem"));
     return cs;
@@ -286,7 +302,7 @@ public class CodeSystemUtilities {
     if (!cs.hasMeta())
       cs.setMeta(new Meta());
     for (UriType t : cs.getMeta().getProfile()) 
-      if (t.getValue().equals("http://hl7.org/fhir/StructureDefinition/shareablecodesystem"))
+      if ("http://hl7.org/fhir/StructureDefinition/shareablecodesystem".equals(t.getValue()))
         return false;
     cs.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareablecodesystem"));
     return true;
@@ -350,8 +366,12 @@ public class CodeSystemUtilities {
     }
     if (fmm != null) {
       String sfmm = ToolingExtensions.readStringExtension(cs, ToolingExtensions.EXT_FMM_LEVEL);
-      if (Utilities.noString(sfmm) || Integer.parseInt(sfmm) < Integer.parseInt(fmm)) 
+      if (Utilities.noString(sfmm) || Integer.parseInt(sfmm) < Integer.parseInt(fmm)) { 
         ToolingExtensions.setIntegerExtension(cs, ToolingExtensions.EXT_FMM_LEVEL, Integer.parseInt(fmm));
+      }
+      if (Integer.parseInt(fmm) <= 1) {
+        cs.setExperimental(true);
+      }
     }
   }
 
@@ -489,6 +509,28 @@ public class CodeSystemUtilities {
       }
     }
     
+  }
+
+  public static boolean hasHierarchy(CodeSystem cs) {
+    for (ConceptDefinitionComponent c : cs.getConcept()) {
+      if (c.hasConcept()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static void sortAllCodes(CodeSystem cs) {
+    sortAllCodes(cs.getConcept());
+  }
+
+  private static void sortAllCodes(List<ConceptDefinitionComponent> list) {
+    Collections.sort(list, new ConceptDefinitionComponentSorter());
+    for (ConceptDefinitionComponent cd : list) {
+      if (cd.hasConcept()) {
+        sortAllCodes(cd.getConcept());
+      }
+    }    
   }
   
 }

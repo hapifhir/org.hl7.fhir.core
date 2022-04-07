@@ -48,12 +48,12 @@ public class MedicationStatement40_50 {
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_50.convertReference(t));
+//    for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
+//    for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_50.convertReference(t));
     if (src.hasStatus())
       tgt.setStatusElement(convertMedicationStatementStatus(src.getStatusElement()));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getStatusReason())
-      tgt.addStatusReason(CodeableConcept40_50.convertCodeableConcept(t));
+//    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getStatusReason())
+//      tgt.addStatusReason(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasCategory())
       tgt.addCategory(CodeableConcept40_50.convertCodeableConcept(src.getCategory()));
     if (src.hasMedicationCodeableConcept()) {
@@ -90,12 +90,12 @@ public class MedicationStatement40_50 {
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_50.convertReference(t));
+//    for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
+//    for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_50.convertReference(t));
     if (src.hasStatus())
       tgt.setStatusElement(convertMedicationStatementStatus(src.getStatusElement()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getStatusReason())
-      tgt.addStatusReason(CodeableConcept40_50.convertCodeableConcept(t));
+//    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getStatusReason())
+//      tgt.addStatusReason(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept40_50.convertCodeableConcept(src.getCategoryFirstRep()));
     if (src.getMedication().hasConcept()) {
@@ -134,28 +134,28 @@ public class MedicationStatement40_50 {
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case ACTIVE:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.COMPLETED);
+        tgt.setValue(org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.RECORDED);
         break;
       case COMPLETED:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.COMPLETED);
+        tgt.setValue(org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.RECORDED);
         break;
       case ENTEREDINERROR:
         tgt.setValue(org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.ENTEREDINERROR);
         break;
       case INTENDED:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.UNKNOWN);
+        tgt.setValue(org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.RECORDED);
         break;
       case STOPPED:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.UNKNOWN);
+        tgt.setValue(org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.RECORDED);
         break;
       case ONHOLD:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.UNKNOWN);
+        tgt.setValue(org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.RECORDED);
         break;
       case UNKNOWN:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.UNKNOWN);
+        tgt.setValue(org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.RECORDED);
         break;
       case NOTTAKEN:
-        tgt.setValue(org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.COMPLETED);
+        tgt.setValue(org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.RECORDED);
         break;
       default:
         tgt.setValue(org.hl7.fhir.r5.model.MedicationUsage.MedicationUsageStatusCodes.NULL);
@@ -173,7 +173,7 @@ public class MedicationStatement40_50 {
 //            case ACTIVE:
 //                tgt.setValue(org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.ACTIVE);
 //                break;
-      case COMPLETED:
+      case RECORDED:
         tgt.setValue(org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.COMPLETED);
         break;
       case ENTEREDINERROR:
@@ -188,7 +188,7 @@ public class MedicationStatement40_50 {
 //            case ONHOLD:
 //                tgt.setValue(org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.ONHOLD);
 //                break;
-      case UNKNOWN:
+      case DRAFT:
         tgt.setValue(org.hl7.fhir.r4.model.MedicationStatement.MedicationStatementStatus.UNKNOWN);
         break;
 //            case NOTTAKEN:

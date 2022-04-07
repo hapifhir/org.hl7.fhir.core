@@ -11,11 +11,8 @@ import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.utils.ResourceUtilities;
 import org.hl7.fhir.r4.utils.client.EFhirClientException;
 import org.hl7.fhir.r4.utils.client.ResourceFormat;
-import org.hl7.fhir.utilities.ToolingClientLogger;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;

@@ -80,7 +80,7 @@ public class DicomPackageBuilder {
         vs.setId(vs.getId().substring(0, 64));
       }
       if (ids.contains(vs.getId())) {
-        throw new Error("Duplicate Id once Ids cut off at 64 char: "+vs.getId());
+        throw new Error("Duplicate Id (note Ids cut off at 64 char): "+vs.getId());
       }
       ids.add(vs.getId());
       gen.addFile(Category.RESOURCE, "ValueSet-"+vs.getId()+".json", new JsonParser().setOutputStyle(OutputStyle.NORMAL).composeBytes(vs));
@@ -96,7 +96,7 @@ public class DicomPackageBuilder {
     vs.setId("all");
     vs.setUrl("http://dicom.nema.org/resources/ValueSet/all");
     vs.setVersion(version);
-    vs.setName("All DICOMTerminologyDefinitions");
+    vs.setName("AllDICOMTerminologyDefinitions");
     vs.setTitle("All DICOM Controlled Terminology Definitions");
     vs.setStatus(PublicationStatus.ACTIVE);
     vs.setExperimental(false);
@@ -113,7 +113,7 @@ public class DicomPackageBuilder {
   private JsonObject buildPackage() {
     JsonObject npm = new JsonObject();
     npm.addProperty("tools-version", 3);
-    npm.addProperty("type", "fhir.ig");
+    npm.addProperty("type", "Conformance");
     npm.addProperty("license", "free");
     npm.addProperty("author", "FHIR Project for DICOM");
     npm.addProperty("name", "fhir.dicom");

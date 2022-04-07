@@ -45,10 +45,10 @@ public class Type14_40 {
       return UnsignedInt14_40.convertUnsignedInt((org.hl7.fhir.dstu2016may.model.UnsignedIntType) src);
     if (src instanceof org.hl7.fhir.dstu2016may.model.IntegerType)
       return Integer14_40.convertInteger((org.hl7.fhir.dstu2016may.model.IntegerType) src);
-    if (src instanceof org.hl7.fhir.dstu2016may.model.UriType)
-      return Uri14_40.convertUri((org.hl7.fhir.dstu2016may.model.UriType) src);
     if (src instanceof org.hl7.fhir.dstu2016may.model.UuidType)
       return Uuid14_40.convertUuid((org.hl7.fhir.dstu2016may.model.UuidType) src);
+    if (src instanceof org.hl7.fhir.dstu2016may.model.UriType)
+      return Uri14_40.convertUri((org.hl7.fhir.dstu2016may.model.UriType) src);
     if (src instanceof org.hl7.fhir.dstu2016may.model.Extension)
       return Extension14_40.convertExtension((org.hl7.fhir.dstu2016may.model.Extension) src);
     if (src instanceof org.hl7.fhir.dstu2016may.model.Narrative)
@@ -134,9 +134,9 @@ public class Type14_40 {
       return UnsignedInt14_40.convertUnsignedInt((org.hl7.fhir.r4.model.UnsignedIntType) src);
     if (src instanceof org.hl7.fhir.r4.model.IntegerType)
       return Integer14_40.convertInteger((org.hl7.fhir.r4.model.IntegerType) src);
-    if (src instanceof org.hl7.fhir.r4.model.UriType) return Uri14_40.convertUri((org.hl7.fhir.r4.model.UriType) src);
     if (src instanceof org.hl7.fhir.r4.model.UuidType)
       return Uuid14_40.convertUuid((org.hl7.fhir.r4.model.UuidType) src);
+    if (src instanceof org.hl7.fhir.r4.model.UriType) return Uri14_40.convertUri((org.hl7.fhir.r4.model.UriType) src);
     if (src instanceof org.hl7.fhir.r4.model.Extension)
       return Extension14_40.convertExtension((org.hl7.fhir.r4.model.Extension) src);
     if (src instanceof org.hl7.fhir.r4.model.Narrative)

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r5.utils;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -61,6 +64,7 @@ POSSIBILITY OF SUCH DAMAGE.
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -69,7 +73,9 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.fhir.ucum.Utilities;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeType;
@@ -89,6 +95,7 @@ import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.MarkdownType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.PrimitiveType;
+import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType;
 import org.hl7.fhir.r5.model.StringType;
@@ -116,6 +123,7 @@ public class ToolingExtensions {
   private static final String EXT_IDENTIFIER = "http://hl7.org/fhir/StructureDefinition/identifier";
   public static final String EXT_TRANSLATION = "http://hl7.org/fhir/StructureDefinition/translation";
   public static final String EXT_ISSUE_SOURCE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source";
+  public static final String EXT_ISSUE_MSG_ID = "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id";
   public static final String EXT_ISSUE_LINE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line";
   public static final String EXT_ISSUE_COL = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col";
   public static final String EXT_DISPLAY_HINT = "http://hl7.org/fhir/StructureDefinition/structuredefinition-display-hint"; 
@@ -166,6 +174,7 @@ public class ToolingExtensions {
   public static final String EXT_IGP_MAPPING_CSV = "http://hl7.org/fhir/StructureDefinition/igpublisher-mapping-csv";
   public static final String EXT_IGP_BUNDLE = "http://hl7.org/fhir/StructureDefinition/igpublisher-bundle";
   public static final String EXT_IGP_RESOURCE_INFO = "http://hl7.org/fhir/tools/StructureDefinition/resource-information";
+  public static final String EXT_IGP_CONTAINED_RESOURCE_INFO = "http://hl7.org/fhir/tools/StructureDefinition/contained-resource-information";
   public static final String EXT_IGP_LOADVERSION = "http://hl7.org/fhir/StructureDefinition/igpublisher-loadversion";
   public static final String EXT_MAX_VALUESET = "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet";
   public static final String EXT_MIN_VALUESET = "http://hl7.org/fhir/StructureDefinition/elementdefinition-minValueSet";
@@ -182,7 +191,6 @@ public class ToolingExtensions {
   public static final String EXT_XML_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-xml-type";
   public static final String EXT_RENDERED_VALUE = "http://hl7.org/fhir/StructureDefinition/rendered-value";
   public static final String EXT_OLD_CONCEPTMAP_EQUIVALENCE = "http://hl7.org/fhir/1.0/StructureDefinition/extension-ConceptMap.element.target.equivalence";
-  public static final String EXT_EXP_FRAGMENT = "http://hl7.org/fhir/tools/StructureDefinition/expansion-codesystem-fragment";
   public static final String EXT_EXP_TOOCOSTLY = "http://hl7.org/fhir/StructureDefinition/valueset-toocostly";
   public static final String EXT_MUST_SUPPORT = "http://hl7.org/fhir/StructureDefinition/elementdefinition-type-must-support";
   public static final String EXT_TRANSLATABLE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-translatable";
@@ -192,6 +200,12 @@ public class ToolingExtensions {
   public static final String EXT_XML_NAME = "http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name";
   public static final String EXT_BINDING_STYLE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-binding-style";
   public static final String EXT_BINARY_FORMAT = "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format";
+  public static final String EXT_TARGET_ID = "http://hl7.org/fhir/StructureDefinition/targetElement";
+  public static final String EXT_TARGET_PATH = "http://hl7.org/fhir/StructureDefinition/targetPath";
+  public static final String EXT_VALUESET_SYSTEM = "http://hl7.org/fhir/StructureDefinition/valueset-system";
+  public static final String EXT_EXPAND_RULES = "http://hl7.org/fhir/StructureDefinition/valueset-expand-rules";
+  public static final String EXT_EXPAND_GROUP = "http://hl7.org/fhir/StructureDefinition/valueset-expand-group";
+  public static final String EXT_BINDING_ADDITIONAL = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding";
   
   // specific extension helpers
 
@@ -201,6 +215,16 @@ public class ToolingExtensions {
     ex.setUrl(ToolingExtensions.EXT_ISSUE_SOURCE);
     CodeType c = new CodeType();
     c.setValue(source.toString());
+    ex.setValue(c);
+    return ex;
+  }
+
+  public static Extension makeIssueMessageId(String msgId) {
+    Extension ex = new Extension();
+    // todo: write this up and get it published with the pack (and handle the redirect?)
+    ex.setUrl(ToolingExtensions.EXT_ISSUE_MSG_ID);
+    CodeType c = new CodeType();
+    c.setValue(msgId);
     ex.setValue(c);
     return ex;
   }
@@ -462,11 +486,12 @@ public class ToolingExtensions {
 //    return findBooleanExtension(c, EXT_DEPRECATED);    
 //  }
 
-  public static void addFlyOver(QuestionnaireItemComponent item, String text){
+  public static void addFlyOver(QuestionnaireItemComponent item, String text, String linkId){
     if (!StringUtils.isBlank(text)) {
     	QuestionnaireItemComponent display = item.addItem();
     	display.setType(QuestionnaireItemType.DISPLAY);
     	display.setText(text);
+    	display.setLinkId(linkId);
     	display.getExtension().add(Factory.newExtension(EXT_CONTROL, Factory.newCodeableConcept("flyover", "http://hl7.org/fhir/questionnaire-item-control", "Fly-over"), true));
     }
   }
@@ -504,7 +529,7 @@ public class ToolingExtensions {
    * @return The extension, if on this element, else null
    */
   public static Extension getExtension(DomainResource resource, String name) {
-    if (name == null)
+    if (resource == null || name == null)
       return null;
     if (!resource.hasExtension())
       return null;
@@ -898,6 +923,42 @@ public class ToolingExtensions {
       ex.setValue(new UriType(value));
     else
       dr.getExtension().add(Factory.newExtension(url, new UriType(value), true));   
+  }
+
+  public static boolean usesExtension(String url, Base base) {
+    if ("Extension".equals(base.fhirType())) {
+      Property p = base.getNamedProperty("url");
+      for (Base b : p.getValues()) {
+        if (url.equals(b.primitiveValue())) {
+          return true;
+        }
+      }
+    }
+    
+    for (Property p : base.children() ) {
+      for (Base v : p.getValues()) {
+        if (usesExtension(url, v)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public static List<String> allConsts() {
+
+    List<String> list = new ArrayList<>();
+    for (Field field : ToolingExtensions.class.getDeclaredFields()) {
+      int modifiers = field.getModifiers();
+      if (Modifier.isStatic(modifiers) && Modifier.isFinal(modifiers)) {
+        try {
+          list.add(field.get(field.getType()).toString());
+        } catch (Exception e) {
+        }
+      }
+    }
+    return list;
+
   }
 
   

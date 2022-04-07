@@ -34,9 +34,6 @@ package org.hl7.fhir.validation;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
-import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
-import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
@@ -69,9 +66,9 @@ import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.utils.IResourceValidator.BestPracticeWarningLevel;
-import org.hl7.fhir.r5.utils.IResourceValidator.CheckDisplayOption;
-import org.hl7.fhir.r5.utils.IResourceValidator.IdStatus;
+import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
+import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
@@ -140,7 +137,7 @@ public class NativeHostServices {
    * @throws Exception
    */
   public void init(String pack) throws Exception {
-    validator = new ValidationEngine(pack);
+    validator = new ValidationEngine.ValidationEngineBuilder().fromSource(pack);
     validator.getContext().setAllowLoadingDuplicates(true);
     igLoader = new IgLoader(validator.getPcm(), validator.getContext(), validator.getVersion(), validator.isDebug());
   }
@@ -164,6 +161,16 @@ public class NativeHostServices {
    */
   public void connectToTxSvc(String txServer, String log) throws Exception {
     validator.connectToTSServer(txServer, log, FhirPublication.R5);
+  }
+
+  /**
+   * Set up the validator with a terminology service
+   *
+   * @param txServer - the URL of the terminology service (http://tx.fhir.org/r4 default)
+   * @throws Exception
+   */
+  public void connectToTxSvc(String txServer, String log, String txCache) throws Exception {
+    validator.connectToTSServer(txServer, log, txCache, FhirPublication.R5);
   }
 
   /**

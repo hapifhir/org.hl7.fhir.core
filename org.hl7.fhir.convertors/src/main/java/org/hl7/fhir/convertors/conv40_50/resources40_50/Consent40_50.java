@@ -48,15 +48,15 @@ public class Consent40_50 {
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     if (src.hasStatus())
       tgt.setStatusElement(convertConsentState(src.getStatusElement()));
-    if (src.hasScope())
-      tgt.setScope(CodeableConcept40_50.convertCodeableConcept(src.getScope()));
+//    if (src.hasScope())
+//      tgt.setScope(CodeableConcept40_50.convertCodeableConcept(src.getScope()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory())
       tgt.addCategory(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasPatient())
       tgt.setSubject(Reference40_50.convertReference(src.getPatient()));
     if (src.hasDateTime())
       tgt.setDateTimeElement(DateTime40_50.convertDateTime(src.getDateTimeElement()));
-    for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addPerformer(Reference40_50.convertReference(t));
+    for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addGrantee(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getOrganization()) tgt.addManager(Reference40_50.convertReference(t));
     if (src.hasSourceAttachment())
       tgt.addSourceAttachment(Attachment40_50.convertAttachment(src.getSourceAttachment()));
@@ -82,15 +82,15 @@ public class Consent40_50 {
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     if (src.hasStatus())
       tgt.setStatusElement(convertConsentState(src.getStatusElement()));
-    if (src.hasScope())
-      tgt.setScope(CodeableConcept40_50.convertCodeableConcept(src.getScope()));
+//    if (src.hasScope())
+//      tgt.setScope(CodeableConcept40_50.convertCodeableConcept(src.getScope()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory())
       tgt.addCategory(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasSubject())
       tgt.setPatient(Reference40_50.convertReference(src.getSubject()));
     if (src.hasDateTime())
       tgt.setDateTimeElement(DateTime40_50.convertDateTime(src.getDateTimeElement()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(Reference40_50.convertReference(t));
+    for (org.hl7.fhir.r5.model.Reference t : src.getGrantee()) tgt.addPerformer(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getManager()) tgt.addOrganization(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getController())
       tgt.addOrganization(Reference40_50.convertReference(t));

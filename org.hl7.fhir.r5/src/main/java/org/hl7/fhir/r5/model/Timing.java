@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -637,13 +637,13 @@ public class Timing extends BackboneType implements ICompositeType {
         }
         public String getDisplay() {
           switch (this) {
-            case S: return "second";
-            case MIN: return "minute";
-            case H: return "hour";
-            case D: return "day";
-            case WK: return "week";
-            case MO: return "month";
-            case A: return "year";
+            case S: return "秒";
+            case MIN: return "分钟";
+            case H: return "小时";
+            case D: return "天";
+            case WK: return "星期";
+            case MO: return "月";
+            case A: return "年";
             default: return "?";
           }
         }

@@ -1,8 +1,14 @@
 package org.hl7.fhir.r5.renderers.utils;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -117,6 +123,13 @@ public class RenderingContext {
   private boolean addGeneratedNarrativeHeader = true;
 
   private FhirPublication targetVersion;
+  private Locale locale;
+  private ZoneId timeZoneId;
+  private DateTimeFormatter dateTimeFormat;
+  private DateTimeFormatter dateFormat;
+  private DateTimeFormatter dateYearFormat;
+  private DateTimeFormatter dateYearMonthFormat;
+  
   /**
    * 
    * @param context - access to all related resources that might be needed
@@ -136,6 +149,8 @@ public class RenderingContext {
     if (terminologyServiceOptions != null) {
       this.terminologyServiceOptions = terminologyServiceOptions;
     }
+ // default to US locale - discussion here: https://github.com/hapifhir/org.hl7.fhir.core/issues/666
+    this.locale = new Locale.Builder().setLanguageTag("en-US").build(); 
     profileUtilities = new ProfileUtilities(worker, null, null);
   }
 
@@ -346,7 +361,16 @@ public class RenderingContext {
     res.definitionsTarget = definitionsTarget;
     res.destDir = destDir;
     res.addGeneratedNarrativeHeader = addGeneratedNarrativeHeader;
-    
+    res.questionnaireMode = questionnaireMode;
+    res.header = header;
+    res.selfLink = selfLink;
+    res.inlineGraphics = inlineGraphics;
+    res.timeZoneId = timeZoneId;
+    res.dateTimeFormat = dateTimeFormat;
+    res.dateFormat = dateFormat;
+    res.dateYearFormat = dateYearFormat;
+    res.dateYearMonthFormat = dateYearMonthFormat;
+
     return res;
   }
 
@@ -427,4 +451,111 @@ public class RenderingContext {
     return mode == ResourceRendererMode.TECHNICAL;
   }
 
+  public boolean hasLocale() {
+    return locale != null;
+  }
+  
+  public Locale getLocale() {
+    if (locale == null) {
+      return Locale.getDefault();
+    } else { 
+      return locale;
+    }
+  }
+
+  public void setLocale(Locale locale) {
+    this.locale = locale;
+  }
+
+
+  /**
+   * if the timezone is null, the rendering will default to the source timezone
+   * in the resource
+   * 
+   * Note that if you're working server side, the FHIR project recommends the use
+   * of the Date header so that clients know what timezone the server defaults to,
+   * 
+   * There is no standard way for the server to know what the client timezone is. 
+   * In the case where the client timezone is unknown, the timezone should be null
+   *
+   * @return the specified timezone to render in
+   */
+  public ZoneId getTimeZoneId() {
+    return timeZoneId;
+  }
+
+  public void setTimeZoneId(ZoneId timeZoneId) {
+    this.timeZoneId = timeZoneId;
+  }
+
+
+  /**
+   * In the absence of a specified format, the renderers will default to 
+   * the FormatStyle.MEDIUM for the current locale.
+   * 
+   * @return the format to use
+   */
+  public DateTimeFormatter getDateTimeFormat() {
+    return this.dateTimeFormat;
+  }
+
+  public void setDateTimeFormat(DateTimeFormatter dateTimeFormat) {
+    this.dateTimeFormat = dateTimeFormat;
+  }
+
+  public void setDateTimeFormatString(String dateTimeFormat) {
+    this.dateTimeFormat = DateTimeFormatter.ofPattern(dateTimeFormat);
+  }
+
+  /**
+   * In the absence of a specified format, the renderers will default to 
+   * the FormatStyle.MEDIUM for the current locale.
+   * 
+   * @return the format to use
+   */
+  public DateTimeFormatter getDateFormat() {
+    return this.dateFormat;
+  }
+
+  public void setDateFormat(DateTimeFormatter dateFormat) {
+    this.dateFormat = dateFormat;
+  }
+
+  public void setDateFormatString(String dateFormat) {
+    this.dateFormat = DateTimeFormatter.ofPattern(dateFormat);
+  }
+
+  public DateTimeFormatter getDateYearFormat() {
+    return dateYearFormat;
+  }
+
+  public void setDateYearFormat(DateTimeFormatter dateYearFormat) {
+    this.dateYearFormat = dateYearFormat;
+  }
+
+  public void setDateYearFormatString(String dateYearFormat) {
+    this.dateYearFormat = DateTimeFormatter.ofPattern(dateYearFormat);
+  }
+
+  public DateTimeFormatter getDateYearMonthFormat() {
+    return dateYearMonthFormat;
+  }
+
+  public void setDateYearMonthFormat(DateTimeFormatter dateYearMonthFormat) {
+    this.dateYearMonthFormat = dateYearMonthFormat;
+  }
+
+  public void setDateYearMonthFormatString(String dateYearMonthFormat) {
+    this.dateYearMonthFormat = DateTimeFormatter.ofPattern(dateYearMonthFormat);
+  }
+
+  public ResourceRendererMode getMode() {
+    return mode;
+  }
+
+  public void setMode(ResourceRendererMode mode) {
+    this.mode = mode;
+  }
+  
+  
 }

@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.i18n;
 
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
 public class I18nConstants {
@@ -28,10 +29,12 @@ public class I18nConstants {
   public static final String BUNDLE_BUNDLE_ENTRY_NOFIRSTRESOURCE = "Bundle_BUNDLE_Entry_NoFirstResource";
   public static final String BUNDLE_BUNDLE_ENTRY_NOFULLURL = "Bundle_BUNDLE_Entry_NoFullUrl";
   public static final String BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED = "BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED";
-  public static final String BUNDLE_BUNDLE_ENTRY_NOPROFILE = "Bundle_BUNDLE_Entry_NoProfile";
+  public static final String BUNDLE_BUNDLE_ENTRY_NOPROFILE_EXPL = "Bundle_BUNDLE_Entry_NoProfile_EXPL";
+  public static final String BUNDLE_BUNDLE_ENTRY_NOPROFILE_TYPE = "Bundle_BUNDLE_Entry_NoProfile_TYPE";
   public static final String BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES = "BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES";
   public static final String BUNDLE_BUNDLE_ENTRY_NOTFOUND = "Bundle_BUNDLE_Entry_NotFound";
   public static final String BUNDLE_BUNDLE_ENTRY_ORPHAN = "Bundle_BUNDLE_Entry_Orphan";
+  public static final String BUNDLE_BUNDLE_ENTRY_REVERSE = "BUNDLE_BUNDLE_ENTRY_REVERSE";
   public static final String BUNDLE_BUNDLE_ENTRY_TYPE = "Bundle_BUNDLE_Entry_Type";
   public static final String BUNDLE_BUNDLE_ENTRY_TYPE2 = "Bundle_BUNDLE_Entry_Type2";
   public static final String BUNDLE_BUNDLE_ENTRY_TYPE3 = "Bundle_BUNDLE_Entry_Type3";
@@ -347,6 +350,7 @@ public class I18nConstants {
   public static final String REFERENCE_REF_RESOURCETYPE = "Reference_REF_ResourceType";
   public static final String REFERENCE_REF_SUSPICIOUS = "REFERENCE_REF_SUSPICIOUS";
   public static final String REFERENCE_REF_WRONGTARGET = "Reference_REF_WrongTarget";
+  public static final String REFERENCE_REF_WRONGTARGET_LOAD = "REFERENCE_REF_WRONGTARGET_LOAD";
   public static final String REFERENCE_TO__CANNOT_BE_RESOLVED = "reference_to__cannot_be_resolved";
   public static final String REFERENCE__REFERS_TO_A__NOT_A_VALUESET = "Reference__refers_to_a__not_a_ValueSet";
   public static final String RESOURCE_RESOLUTION_SERVICES_NOT_PROVIDED = "Resource_resolution_services_not_provided";
@@ -358,9 +362,12 @@ public class I18nConstants {
   public static final String SD_MUST_HAVE_DERIVATION = "SD_MUST_HAVE_DERIVATION";
   public static final String SD_NESTED_MUST_SUPPORT_DIFF = "SD_NESTED_MUST_SUPPORT_DIFF";
   public static final String SD_NESTED_MUST_SUPPORT_SNAPSHOT = "SD_NESTED_MUST_SUPPORT_SNAPSHOT";
+  public static final String SD_DERIVATION_KIND_MISMATCH = "SD_DERIVATION_KIND_MISMATCH";
   public static final String SD_ED_TYPE_PROFILE_UNKNOWN = "SD_ED_TYPE_PROFILE_UNKNOWN";
   public static final String SD_ED_TYPE_PROFILE_NOTYPE = "SD_ED_TYPE_PROFILE_NOTYPE";
   public static final String SD_ED_TYPE_PROFILE_WRONG = "SD_ED_TYPE_PROFILE_WRONG";
+  public static final String SD_ED_TYPE_PROFILE_IS_MODIFIER = "SD_ED_TYPE_PROFILE_IS_MODIFIER";
+  public static final String SD_ED_TYPE_PROFILE_NOT_MODIFIER = "SD_ED_TYPE_PROFILE_NOT_MODIFIER";
   public static final String SD_ED_TYPE_PROFILE_WRONG_TARGET = "SD_ED_TYPE_PROFILE_WRONG_TARGET";
   public static final String SD_ED_TYPE_NO_TARGET_PROFILE = "SD_ED_TYPE_NO_TARGET_PROFILE";
   public static final String SD_ED_SHOULD_BIND = "SD_ED_SHOULD_BIND";
@@ -368,7 +375,10 @@ public class I18nConstants {
   public static final String SD_ED_BIND_UNKNOWN_VS = "SD_ED_BIND_UNKNOWN_VS";
   public static final String SD_ED_BIND_NOT_VS = "SD_ED_BIND_NOT_VS";
   public static final String SD_ED_BIND_NO_BINDABLE = "SD_ED_BIND_NO_BINDABLE";
+  public static final String SD_ED_BIND_MULTIPLE_TYPES = "SD_ED_BIND_MULTIPLE_TYPES";
   public static final String SD_VALUE_TYPE_IILEGAL = "SD_VALUE_TYPE_IILEGAL";
+  public static final String SD_VALUE_TYPE_REPEAT_HINT = "SD_VALUE_TYPE_REPEAT_HINT";
+  public static final String SD_VALUE_TYPE_REPEAT_WARNING_DOTNET = "SD_VALUE_TYPE_REPEAT_WARNING_DOTNET";
   public static final String SD_NO_TYPES_OR_CONTENTREF = "SD_NO_TYPES_OR_CONTENTREF";
   public static final String SEARCHPARAMETER_BASE_WRONG = "SEARCHPARAMETER_BASE_WRONG";
   public static final String SEARCHPARAMETER_EXP_WRONG = "SEARCHPARAMETER_EXP_WRONG";
@@ -437,7 +447,7 @@ public class I18nConstants {
   public static final String TERMINOLOGY_TX_SYSTEM_VALUESET = "Terminology_TX_System_ValueSet";
   public static final String TERMINOLOGY_TX_SYSTEM_VALUESET2 = "Terminology_TX_System_ValueSet2";
   public static final String TERMINOLOGY_TX_VALUESET_NOTFOUND = "Terminology_TX_ValueSet_NotFound";
-  public static final String TERMINOLOGY_TX_VALUESET_NOTFOUND2 = "Terminology_TX_ValueSet_NotFound2";
+  public static final String TERMINOLOGY_TX_VALUESET_NOTFOUND_CS = "Terminology_TX_ValueSet_NotFound_CS";
   public static final String TERMINOLOGY_TX_NOSVC_BOUND_REQ = "TERMINOLOGY_TX_NOSVC_BOUND_REQ";
   public static final String TERMINOLOGY_TX_NOSVC_BOUND_EXT = "TERMINOLOGY_TX_NOSVC_BOUND_EXT";
   public static final String TEXT_SHOULD_NOT_BE_PRESENT = "Text_should_not_be_present";
@@ -481,6 +491,8 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_DECIMAL_CHARS = "TYPE_SPECIFIC_CHECKS_DT_DECIMAL_CHARS";
   public static final String TYPE_SPECIFIC_CHECKS_DT_DECIMAL_RANGE = "Type_Specific_Checks_DT_Decimal_Range";
   public static final String TYPE_SPECIFIC_CHECKS_DT_DECIMAL_VALID = "Type_Specific_Checks_DT_Decimal_Valid";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_DECIMAL_GT = "Type_Specific_Checks_DT_Decimal_GT";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_DECIMAL_LT = "Type_Specific_Checks_DT_Decimal_LT";
   public static final String TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_VALUE = "TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_VALUE";
   public static final String TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_SYSTEM = "Type_Specific_Checks_DT_Identifier_System";
   public static final String TYPE_SPECIFIC_CHECKS_DT_ID_VALID = "Type_Specific_Checks_DT_ID_Valid";
@@ -509,6 +521,7 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE = "TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE";
   public static final String TYPE_SPECIFIC_CHECKS_DT_CANONICAL_TYPE = "TYPE_SPECIFIC_CHECKS_DT_CANONICAL_TYPE";
   public static final String TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE = "TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE_NC = "TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE_NC";
   public static final String TYPE_SPECIFIC_CHECKS_DT_UUID_STRAT = "Type_Specific_Checks_DT_UUID_Strat";
   public static final String TYPE_SPECIFIC_CHECKS_DT_UUID_VALID = "Type_Specific_Checks_DT_UUID_Valid";
   public static final String UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER = "Unable_to_connect_to_terminology_server";
@@ -611,6 +624,7 @@ public class I18nConstants {
   public static final String VALUESET_REFERENCE_UNKNOWN = "VALUESET_REFERENCE_UNKNOWN";
   public static final String VALUESET_UNC_SYSTEM_WARNING = "VALUESET_UNC_SYSTEM_WARNING";
   public static final String VALUESET_UNC_SYSTEM_WARNING_VER = "VALUESET_UNC_SYSTEM_WARNING_VER";
+  public static final String VALUESET_IMPORT_UNION_INTERSECTION = "VALUESET_IMPORT_UNION_INTERSECTION";
   public static final String VERSION_MISMATCH_THE_CONTEXT_HAS_VERSION__LOADED_AND_THE_NEW_CONTENT_BEING_LOADED_IS_VERSION_ = "Version_mismatch_The_context_has_version__loaded_and_the_new_content_being_loaded_is_version_";
   public static final String WRONG_NAMESPACE__EXPECTED_ = "Wrong_namespace__expected_";
   public static final String WRONG_TYPE_FOR_RESOURCE = "Wrong_type_for_resource";
@@ -651,6 +665,42 @@ public class I18nConstants {
   public static final String BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_OUTCOME = "BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_OUTCOME";
   public static final String UNICODE_BIDI_CONTROLS_CHARS_DISALLOWED = "UNICODE_BIDI_CONTROLS_CHARS_DISALLOWED";
   public static final String UNICODE_BIDI_CONTROLS_CHARS_MATCH = "UNICODE_BIDI_CONTROLS_CHARS_MATCH";
+  public static final String CODESYSTEM_CS_HL7_MISSING_ELEMENT_SHALL = "CODESYSTEM_CS_HL7_MISSING_ELEMENT_SHALL";
+  public static final String CODESYSTEM_CS_HL7_MISSING_ELEMENT_SHOULD = "CODESYSTEM_CS_HL7_MISSING_ELEMENT_SHOULD";
+  public static final String CODESYSTEM_CS_NONHL7_MISSING_ELEMENT = "CODESYSTEM_CS_NONHL7_MISSING_ELEMENT";
+  public static final String CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL = "CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL";
+  public static final String CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_WRONG = "CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_WRONG";
+  public static final String CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_MISSING = "CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_MISSING";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_NO_QTY = "TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_NO_QTY";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_SYSTEM_MISMATCH = "TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_SYSTEM_MISMATCH";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_CODE_MISMATCH = "TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_CODE_MISMATCH";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_VALUE = "TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_VALUE";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_NO_VALUE = "TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_NO_VALUE";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_SYSTEM = "TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_SYSTEM";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_NO_SYSTEM = "TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_NO_SYSTEM";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_CODE = "TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_CODE";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_NO_CODE = "TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_NO_CODE";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_NO_UCUM_SVC = "TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_NO_UCUM_SVC";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_CONVERT = "TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_CONVERT";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_WRONG = "TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_WRONG";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_WRONG_UCUM = "TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_WRONG_UCUM";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_NO_QTY = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_NO_QTY";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_SYSTEM_MISMATCH = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_SYSTEM_MISMATCH";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_CODE_MISMATCH = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_CODE_MISMATCH";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_VALUE = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_VALUE";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_NO_VALUE = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_NO_VALUE";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_SYSTEM = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_SYSTEM";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_NO_SYSTEM = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_NO_SYSTEM";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_CODE = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_CODE";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_NO_CODE = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_NO_CODE";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_NO_UCUM_SVC = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_NO_UCUM_SVC";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_CONVERT = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_CONVERT";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_WRONG = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_WRONG";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_WRONG_UCUM = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_WRONG_UCUM";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR = "TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING = "TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING";
 }
+
+
 
 

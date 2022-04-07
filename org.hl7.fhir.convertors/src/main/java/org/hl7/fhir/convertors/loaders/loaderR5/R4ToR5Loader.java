@@ -36,12 +36,14 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.formats.XmlParser;
 import org.hl7.fhir.r4.model.Resource;
+import org.hl7.fhir.r5.conformance.StructureDefinitionHacker;
 import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.utilities.VersionUtilities;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,9 +54,11 @@ import java.util.UUID;
 public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader {
 
   private final BaseAdvisor_40_50 advisor = new BaseAdvisor_40_50();
+  private String version;
 
-  public R4ToR5Loader(String[] types, ILoaderKnowledgeProviderR5 lkp) {
+  public R4ToR5Loader(String[] types, ILoaderKnowledgeProviderR5 lkp, String version) { // might be 4B
     super(types, lkp);
+    this.version = version;
   }
 
   @Override
@@ -122,6 +126,9 @@ public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
     }
     if (killPrimitives) {
       throw new FHIRException("Cannot kill primitives when using deferred loading");
+    }
+    if (r5 instanceof StructureDefinition && VersionUtilities.isR4BVer(version)) {
+      r5 = new StructureDefinitionHacker(version).fixSD((StructureDefinition) r5);
     }
     if (patchUrls) {
       if (r5 instanceof StructureDefinition) {

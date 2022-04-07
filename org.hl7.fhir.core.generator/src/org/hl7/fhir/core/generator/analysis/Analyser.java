@@ -19,35 +19,46 @@ import org.hl7.fhir.r5.model.Enumerations.ResourceTypeEnum;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 
 public class Analyser {
 
   private Definitions definitions;
   private Configuration config;
+  private String version;
 
-  public Analyser(Definitions definitions, Configuration config) {
+  public Analyser(Definitions definitions, Configuration config, String version) {
     this.definitions = definitions;
     this.config = config;
+    this.version = version;
   }
 
   public Analysis analyse(StructureDefinition sd) throws Exception {
     Analysis res = new Analysis(definitions, sd);
 
-    res.setAncestor(definitions.getStructures().get(sd.getBaseDefinition()));
+    if (VersionUtilities.isR4BVer(version)) {
+      res.setAncestor(definitions.getStructures().get(getR4bAncestor(sd)));
+    } else {
+      res.setAncestor(definitions.getStructures().get(sd.getBaseDefinition()));
+    }
     res.setAbstract(sd.getAbstract());
     res.setInterface(sd.hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-interface"));
     res.setClassName(sd.getName().equals("List") ? "ListResource" : sd.getName());
     
     TypeInfo type = new TypeInfo();
     type.setName(res.getClassName());
-    type.setAncestorName(res.getAncestor().getName());
+    if (res.getAncestor() != null) {
+      type.setAncestorName(res.getAncestor().getName());
+    }
     res.getTypes().put(type.getName(), type);
     res.setRootType(type);
     sd.setUserData("java.type.info", type);
     
     type.setDefn(sd.getSnapshot().getElementFirstRep());
     type.setChildren(filterChildren(new ProfileUtilities(null, null, null).getChildList(sd, type.getDefn())));
-    type.setInheritedChildren(getAbstractChildren(res.getAncestor()));
+    if (res.getAncestor() != null) {
+      type.setInheritedChildren(getAbstractChildren(res.getAncestor()));
+    }
     
     for (ElementDefinition e : type.getChildren()) {
       scanNestedTypes(res, type, type.getName(), e);
@@ -72,6 +83,16 @@ public class Analyser {
     return res;
   }
   
+  private String getR4bAncestor(StructureDefinition sd) {
+    switch (sd.getKind()) {
+    case COMPLEXTYPE: return "http://hl7.org/fhir/StructureDefinition/DataType";
+    case LOGICAL: return "http://hl7.org/fhir/StructureDefinition/Element";
+    case PRIMITIVETYPE: return "http://hl7.org/fhir/StructureDefinition/PrimitiveType";
+    case RESOURCE: return sd.getBaseDefinition();
+    default: return null;
+    }
+  }
+
   protected List<ElementDefinition> filterChildren(List<ElementDefinition> childList) {
     List<ElementDefinition> res = new ArrayList<>();
     res.addAll(childList);
@@ -109,6 +130,9 @@ public class Analyser {
             ei = new EnumInfo(tn);
             analysis.getEnums().put(tn,  ei);
             ei.setValueSet(vs);
+          }
+          if (tn.equals("SubscriptionStatus")) { // work around cause there's a Resource with the same name
+            tn = "org.hl7.fhir.r4b.model.Enumerations."+tn;
           }
           e.setUserData("java.type", "Enumeration<"+tn+">");
           e.setUserData("java.enum", ei);
@@ -225,8 +249,8 @@ public class Analyser {
   }
 
   protected String getTypename(TypeRefComponent type) throws Exception {
-    if (type.hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type")) {
-      return type.getExtensionString("http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type");
+    if (type.hasExtension(ToolingExtensions.EXT_FHIR_TYPE)) {
+      return type.getExtensionString(ToolingExtensions.EXT_FHIR_TYPE);
     } else {
       return getTypeName(type.getCode());
     }

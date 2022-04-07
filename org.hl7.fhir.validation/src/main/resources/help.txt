@@ -6,8 +6,8 @@ command line
 
 The FHIR validation tool validates a FHIR resource or bundle.
 Schema and schematron checking is performed, then some additional checks are performed. 
-* XML & Json (FHIR versions 1.0, 1.4, 3.0, 4.0, " + Constants.VERSION_MM + ")
-* Turtle (FHIR versions 3.0, 4.0, " + Constants.VERSION_MM + ")
+* XML & Json (FHIR versions {{XML_AND_JSON_FHIR_VERSIONS}})
+* Turtle (FHIR versions {{TURTLE_FHIR_VERSIONS}})
 
 If requested, instances will also be verified against the appropriate schema
 W3C XML Schema, JSON schema or ShEx, as appropriate
@@ -22,8 +22,8 @@ The following parameters are supported:
     Patterns are limited to a directory followed by a filename with an embedded
     asterisk.  E.g. foo*-examples.xml or someresource.*, etc.
 -version [ver]: The FHIR version to use. This can only appear once. 
-    valid values 1.0 | 1.4 | 3.0 | " + VersionUtilities.CURRENT_VERSION + " or 1.0.2 | 1.4.0 | 3.0.2 | 4.0.1 | " + VersionUtilities.CURRENT_FULL_VERSION);
-    Default value is  " + VersionUtilities.CURRENT_VERSION);
+    valid values {{FHIR_MAJOR_VERSIONS}} or {{FHIR_MINOR_VERSIONS}}
+    Default value is {{FHIR_CURRENT_VERSION}}
 -ig [package|file|folder|url]: an IG or profile definition to load. Can be 
      the URL of an implementation guide or a package ([id]-[ver]) for
      a built implementation guide or a local folder that contains a
@@ -48,7 +48,7 @@ The following parameters are supported:
 -showReferenceMessages
      Includes validation messages resulting from validating target resources 
      against profiles defined on a reference.  This increases the volume of 
-     validationmessages, but may allow easier debugging.  If not specified, 
+     validation messages, but may allow easier debugging.  If not specified,
      then only a high-level message indicating that the referenced item wasn't
      valid against the listed profile(s) will be provided.
 -questionnaire mode: what to do with when validating QuestionnaireResponse resources

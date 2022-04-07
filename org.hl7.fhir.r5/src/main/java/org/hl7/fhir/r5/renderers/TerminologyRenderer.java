@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -201,7 +202,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     return null;
   }
 
-  protected XhtmlNode addTableHeaderRowStandard(XhtmlNode t, boolean hasHierarchy, boolean hasDisplay, boolean definitions, boolean comments, boolean version, boolean deprecated, List<PropertyComponent> properties, List<String> langs, boolean doLangs) {
+  protected XhtmlNode addTableHeaderRowStandard(XhtmlNode t, boolean hasHierarchy, boolean hasDisplay, boolean definitions, boolean comments, boolean version, boolean deprecated, List<PropertyComponent> properties, List<String> langs, Map<String, String> designations, boolean doDesignations) {
     XhtmlNode tr = t.tr();
     if (hasHierarchy) {
       tr.td().b().tx("Lvl");
@@ -234,7 +235,10 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
         tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", display, getContext().getLang()));      
       }
     }
-    if (doLangs) {
+    if (doDesignations) {
+      for (String url : designations.keySet()) {
+        tr.td().b().addText(designations.get(url));        
+      }
       for (String lang : langs) {
         tr.td().b().addText(describeLang(lang));
       }

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -4036,26 +4036,6 @@ public class InsurancePlan extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>address</b>
-   * <p>
-   * Description: <b>A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.contact.address</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address", path="InsurancePlan.contact.address", description="A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text", type="string" )
-  public static final String SP_ADDRESS = "address";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address</b>
-   * <p>
-   * Description: <b>A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.contact.address</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS);
-
- /**
    * Search parameter: <b>address-city</b>
    * <p>
    * Description: <b>A city specified in an address</b><br>
@@ -4156,6 +4136,26 @@ public class InsurancePlan extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam ADDRESS_USE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ADDRESS_USE);
 
  /**
+   * Search parameter: <b>address</b>
+   * <p>
+   * Description: <b>A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>InsurancePlan.contact.address</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="address", path="InsurancePlan.contact.address", description="A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text", type="string" )
+  public static final String SP_ADDRESS = "address";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>address</b>
+   * <p>
+   * Description: <b>A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>InsurancePlan.contact.address</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS);
+
+ /**
    * Search parameter: <b>administered-by</b>
    * <p>
    * Description: <b>Product administrator</b><br>
@@ -4232,17 +4232,17 @@ public class InsurancePlan extends DomainResource {
    * <p>
    * Description: <b>A portion of the organization's name or alias</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>name | alias</b><br>
+   * Path: <b>InsurancePlan.name | InsurancePlan.alias</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="name", path="name | alias", description="A portion of the organization's name or alias", type="string" )
+  @SearchParamDefinition(name="name", path="InsurancePlan.name | InsurancePlan.alias", description="A portion of the organization's name or alias", type="string" )
   public static final String SP_NAME = "name";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>name</b>
    * <p>
    * Description: <b>A portion of the organization's name or alias</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>name | alias</b><br>
+   * Path: <b>InsurancePlan.name | InsurancePlan.alias</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);

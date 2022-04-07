@@ -13,4 +13,9 @@ public class NullLoaderKnowledgeProviderR5 implements ILoaderKnowledgeProviderR5
   public ILoaderKnowledgeProviderR5 forNewPackage(NpmPackage npm) {
     return this;
   }
+
+  @Override
+  public String getWebRoot() {
+     return null;
+  }
 }

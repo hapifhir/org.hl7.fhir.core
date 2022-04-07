@@ -1,97 +1,69 @@
 package org.hl7.fhir.validation;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
-  
-  Redistribution and use in source and binary forms, with or without modification, 
+
+  Redistribution and use in source and binary forms, with or without modification,
   are permitted provided that the following conditions are met:
-    
-   * Redistributions of source code must retain the above copyright notice, this 
+
+   * Redistributions of source code must retain the above copyright notice, this
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice,
+     this list of conditions and the following disclaimer in the documentation
      and/or other materials provided with the distribution.
-   * Neither the name of HL7 nor the names of its contributors may be used to 
-     endorse or promote products derived from this software without specific 
+   * Neither the name of HL7 nor the names of its contributors may be used to
+     endorse or promote products derived from this software without specific
      prior written permission.
-  
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE.
-  
- */
-
-
-
-/*
-Copyright (c) 2011+, HL7, Inc
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, 
-are permitted provided that the following conditions are met:
-
- * Redistributions of source code must retain the above copyright notice, this 
-   list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice, 
-   this list of conditions and the following disclaimer in the documentation 
-   and/or other materials provided with the distribution.
- * Neither the name of HL7 nor the names of its contributors may be used to 
-   endorse or promote products derived from this software without specific 
-   prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-POSSIBILITY OF SUCH DAMAGE.
 
  */
-import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.DomainResource;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.elementmodel.JsonParser;
+import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
+import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.IValidationContextResourceLoader;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
-import org.hl7.fhir.validation.BaseValidator.TrackedLocationRelatedMessage;
+import org.hl7.fhir.validation.cli.utils.ValidationLevel;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
 
-public class BaseValidator {
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
+public class BaseValidator implements IValidationContextResourceLoader {
 
   public class TrackedLocationRelatedMessage {
     private Object location;
@@ -107,8 +79,7 @@ public class BaseValidator {
     public ValidationMessage getVmsg() {
       return vmsg;
     }
-    
-  }
+      }
 
   public class ValidationControl {
     private boolean allowed;
@@ -148,7 +119,8 @@ public class BaseValidator {
   protected XVerExtensionManager xverManager;
   protected List<TrackedLocationRelatedMessage> trackedMessages = new ArrayList<>();
   protected List<ValidationMessage> messagesToRemove = new ArrayList<>();
-  
+  private ValidationLevel level = ValidationLevel.HINTS;
+
   public BaseValidator(IWorkerContext context, XVerExtensionManager xverManager) {
     super();
     this.context = context;
@@ -158,6 +130,36 @@ public class BaseValidator {
     }
 
   }
+  
+  private boolean doingLevel(IssueSeverity error) {
+    switch (error) {
+    case ERROR:
+      return level == null || level == ValidationLevel.ERRORS || level == ValidationLevel.WARNINGS || level == ValidationLevel.HINTS;
+    case FATAL:
+      return level == null || level == ValidationLevel.ERRORS || level == ValidationLevel.WARNINGS || level == ValidationLevel.HINTS;
+    case WARNING:
+      return level == null || level == ValidationLevel.WARNINGS || level == ValidationLevel.HINTS;
+    case INFORMATION:
+      return level == null || level == ValidationLevel.HINTS;
+    case NULL:
+      return true;
+    default:
+      return true;    
+    }
+  }
+
+  private boolean doingErrors() {
+    return doingLevel(IssueSeverity.ERROR);
+  }
+  
+  private boolean doingWarnings() {
+    return doingLevel(IssueSeverity.WARNING);
+  }
+  
+  private boolean doingHints() {
+    return doingLevel(IssueSeverity.INFORMATION);
+  }
+  
 
   /**
    * Use to control what validation the validator performs. 
@@ -178,14 +180,14 @@ public class BaseValidator {
    */
   @Deprecated
   protected boolean fail(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg) {
-    if (!thePass) {
+    if (!thePass && doingErrors()) {
       addValidationMessage(errors, type, line, col, path, msg, IssueSeverity.FATAL, null);
     }
     return thePass;
   }
 
   protected boolean fail(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
-    if (!thePass) {
+    if (!thePass && doingErrors()) {
       String msg = context.formatMessage(theMessage, theMessageArguments);
       addValidationMessage(errors, type, line, col, path, msg, IssueSeverity.FATAL, theMessage);
     }
@@ -201,7 +203,7 @@ public class BaseValidator {
    */
   @Deprecated
   protected boolean fail(List<ValidationMessage> errors, IssueType type, List<String> pathParts, boolean thePass, String msg) {
-    if (!thePass) {
+    if (!thePass && doingErrors()) {
       String path = toPath(pathParts);
       addValidationMessage(errors, type, -1, -1, path, msg, IssueSeverity.FATAL, null);
     }
@@ -217,7 +219,7 @@ public class BaseValidator {
    */
   @Deprecated
   protected boolean fail(List<ValidationMessage> errors, IssueType type, List<String> pathParts, boolean thePass, String theMessage, Object... theMessageArguments) {
-    if (!thePass) {
+    if (!thePass && doingErrors()) {
       String path = toPath(pathParts);
       addValidationMessage(errors, type, -1, -1, path, context.formatMessage(theMessage, theMessageArguments), IssueSeverity.FATAL, theMessage);
     }
@@ -233,7 +235,7 @@ public class BaseValidator {
    */
   @Deprecated
   protected boolean fail(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg) {
-    if (!thePass) {
+    if (!thePass && doingErrors()) {
       addValidationMessage(errors, type, -1, -1, path, msg, IssueSeverity.FATAL, null);
     }
     return thePass;
@@ -251,7 +253,7 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean hint(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg) {
-    if (!thePass) {
+    if (!thePass && doingHints()) {
       String message = context.formatMessage(msg);
       addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION, msg);
     }
@@ -267,7 +269,7 @@ public class BaseValidator {
    */
   //FIXME: formatMessage should be done here
   protected boolean slicingHint(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, boolean isCritical, String msg, String html, String[] text) {
-    if (!thePass) {
+    if (!thePass && doingHints()) {
       addValidationMessage(errors, type, line, col, path, msg, IssueSeverity.INFORMATION, null).setSlicingHint(true).setSliceHtml(html, text).setCriticalSignpost(isCritical);
     }
     return thePass;
@@ -281,7 +283,7 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean hint(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
-    if (!thePass) {
+    if (!thePass && doingHints()) {
       String message = context.formatMessage(theMessage, theMessageArguments);
       addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION, theMessage);
     }
@@ -294,7 +296,7 @@ public class BaseValidator {
   }
 
   protected boolean txHint(List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
-    if (!thePass) {
+    if (!thePass && doingHints()) {
       String message = context.formatMessage(theMessage, theMessageArguments);
       addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION, Source.TerminologyEngine, theMessage).setTxLink(txLink);
     }
@@ -309,7 +311,7 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean hint(List<ValidationMessage> errors, IssueType type, List<String> pathParts, boolean thePass, String theMessage, Object... theMessageArguments) {
-    if (!thePass) {
+    if (!thePass && doingHints()) {
       String path = toPath(pathParts);
       String message = context.formatMessage(theMessage, theMessageArguments);
       addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.INFORMATION, theMessage);
@@ -325,7 +327,7 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean hint(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
-    if (!thePass) {
+    if (!thePass && doingHints()) {
       String message = context.formatMessage(theMessage, theMessageArguments);
       addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.INFORMATION, null);
     }
@@ -340,7 +342,7 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean rule(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
-    if (!thePass) {
+    if (!thePass && doingErrors()) {
       String message = context.formatMessage(theMessage, theMessageArguments);
       addValidationMessage(errors, type, line, col, path, message, IssueSeverity.ERROR, theMessage);
     }
@@ -348,7 +350,7 @@ public class BaseValidator {
   }
 
   protected boolean txRule(List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
-    if (!thePass) {
+    if (!thePass && doingErrors()) {
       String message = context.formatMessage(theMessage, theMessageArguments);
       ValidationMessage vm = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, message, IssueSeverity.ERROR).setMessageId(theMessage);
       if (checkMsgId(theMessage, vm)) {
@@ -366,7 +368,7 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean rule(List<ValidationMessage> errors, IssueType type, List<String> pathParts, boolean thePass, String msg) {
-    if (!thePass) {
+    if (!thePass && doingErrors()) {
       String path = toPath(pathParts);
       addValidationMessage(errors, type, -1, -1, path, msg, IssueSeverity.ERROR, null);
     }
@@ -381,7 +383,7 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean rule(List<ValidationMessage> errors, IssueType type, List<String> pathParts, boolean thePass, String theMessage, Object... theMessageArguments) {
-    if (!thePass) {
+    if (!thePass && doingErrors()) {
       String path = toPath(pathParts);
       String message = context.formatMessage(theMessage, theMessageArguments);
       addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.ERROR, theMessage);
@@ -399,7 +401,7 @@ public class BaseValidator {
 
 
   protected boolean rule(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
-    if (!thePass) {
+    if (!thePass && doingErrors()) {
       String message = context.formatMessage(theMessage, theMessageArguments);
       addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.ERROR, theMessage);
     }
@@ -407,7 +409,7 @@ public class BaseValidator {
   }
 
   public boolean rule(List<ValidationMessage> errors, Source source, IssueType type, String path, boolean thePass, String msg) {
-    if (!thePass) {
+    if (!thePass && doingErrors()) {
       addValidationMessage(errors, type, -1, -1, path, msg, IssueSeverity.ERROR, source, null);
     }
     return thePass;
@@ -421,7 +423,7 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean ruleHtml(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, String html) {
-    if (!thePass) {
+    if (!thePass && doingErrors()) {
       msg = context.formatMessage(msg, null);
       html = context.formatMessage(html, null);
       addValidationMessage(errors, type, path, msg, html, IssueSeverity.ERROR, null);
@@ -465,7 +467,7 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean warning(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
-    if (!thePass) {
+    if (!thePass && doingWarnings()) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
       IssueSeverity severity = IssueSeverity.WARNING;
       addValidationMessage(errors, type, line, col, path, nmsg, severity, msg);
@@ -481,7 +483,7 @@ public class BaseValidator {
 
   protected ValidationMessage addValidationMessage(List<ValidationMessage> errors, IssueType type, int line, int col, String path, String msg, IssueSeverity theSeverity, Source theSource, String id) {
     ValidationMessage validationMessage = new ValidationMessage(theSource, type, line, col, path, msg, theSeverity).setMessageId(id);
-    if (checkMsgId(id, validationMessage)) {
+    if (doingLevel(theSeverity) && checkMsgId(id, validationMessage)) {
       errors.add(validationMessage);
     }
     return validationMessage;
@@ -506,7 +508,7 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean txWarning(List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
-    if (!thePass) {
+    if (!thePass && doingWarnings()) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
       ValidationMessage vmsg = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, nmsg, IssueSeverity.WARNING).setTxLink(txLink).setMessageId(msg);
       if (checkMsgId(msg, vmsg)) {
@@ -525,7 +527,7 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean txWarningForLaterRemoval(Object location, List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
-    if (!thePass) {
+    if (!thePass && doingWarnings()) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
       ValidationMessage vmsg = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, nmsg, IssueSeverity.WARNING).setTxLink(txLink).setMessageId(msg);
       if (checkMsgId(msg, vmsg)) {
@@ -551,7 +553,10 @@ public class BaseValidator {
   protected boolean warningOrError(boolean isError, List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
-      addValidationMessage(errors, type, line, col, path, nmsg, isError ? IssueSeverity.ERROR : IssueSeverity.WARNING, msg);
+      IssueSeverity lvl = isError ? IssueSeverity.ERROR : IssueSeverity.WARNING;
+      if (doingLevel(lvl)) {
+        addValidationMessage(errors, type, line, col, path, nmsg, lvl, msg);
+      }
     }
     return thePass;
 
@@ -565,7 +570,7 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean warning(List<ValidationMessage> errors, IssueType type, List<String> pathParts, boolean thePass, String theMessage, Object... theMessageArguments) {
-    if (!thePass) {
+    if (!thePass && doingWarnings()) {
       String path = toPath(pathParts);
       String message = context.formatMessage(theMessage, theMessageArguments);
       addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.WARNING, theMessage);
@@ -581,7 +586,7 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean warning(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, Object... theMessageArguments) {
-    if (!thePass) {
+    if (!thePass && doingWarnings()) {
       String message = context.formatMessage(msg, theMessageArguments);
       addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.WARNING, null);
     }
@@ -598,7 +603,10 @@ public class BaseValidator {
   protected boolean warningOrHint(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, boolean warning, String msg, Object... theMessageArguments) {
     if (!thePass) {
       String message = context.formatMessage(msg, theMessageArguments);
-      addValidationMessage(errors, type, -1, -1, path, message, warning ? IssueSeverity.WARNING : IssueSeverity.INFORMATION, null);
+      IssueSeverity lvl = warning ? IssueSeverity.WARNING : IssueSeverity.INFORMATION;
+      if  (doingLevel(lvl)) {
+        addValidationMessage(errors, type, -1, -1, path, message, lvl, null);
+      }
     }
     return thePass;
   }
@@ -611,7 +619,7 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean warningHtml(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, String html) {
-    if (!thePass) {
+    if (!thePass && doingWarnings()) {
       addValidationMessage(errors, type, path, msg, html, IssueSeverity.WARNING, null);
     }
     return thePass;
@@ -625,7 +633,7 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean warningHtml(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, String html, Object... theMessageArguments) {
-    if (!thePass) {
+    if (!thePass && doingWarnings()) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
       addValidationMessage(errors, type, path, nmsg, html, IssueSeverity.WARNING, msg);
     }
@@ -641,7 +649,7 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean suppressedwarning(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
-    if (!thePass) { 
+    if (!thePass && doingWarnings()) { 
       String nmsg = context.formatMessage(msg, theMessageArguments);
       addValidationMessage(errors, type, line, col, path, nmsg, IssueSeverity.INFORMATION, msg);
     }
@@ -657,7 +665,7 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean suppressedwarning(List<ValidationMessage> errors, IssueType type, List<String> pathParts, boolean thePass, String theMessage, Object... theMessageArguments) {
-    if (!thePass) {
+    if (!thePass && doingWarnings()) {
       String path = toPath(pathParts);
       String message = context.formatMessage(theMessage, theMessageArguments);
       addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.INFORMATION, theMessage);
@@ -673,7 +681,7 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean suppressedwarning(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg) {
-    if (!thePass) {
+    if (!thePass && doingWarnings()) {
       addValidationMessage(errors, type, -1, -1, path, msg, IssueSeverity.INFORMATION, null);
     }
     return thePass;
@@ -687,7 +695,7 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean suppressedwarning(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, String html) {
-    if (!thePass) {
+    if (!thePass && doingWarnings()) {
       IssueSeverity severity = IssueSeverity.INFORMATION;
       addValidationMessage(errors, type, path, msg, html, severity, null);
     }
@@ -697,7 +705,9 @@ public class BaseValidator {
   protected void addValidationMessage(List<ValidationMessage> errors, IssueType type, String path, String msg, String html, IssueSeverity theSeverity, String id) {
     ValidationMessage vm = new ValidationMessage(source, type, -1, -1, path, msg, html, theSeverity);
     if (checkMsgId(id, vm)) {
-      errors.add(vm.setMessageId(id));
+      if (doingLevel(theSeverity)) {
+        errors.add(vm.setMessageId(id));
+      }
     }
   }
 
@@ -709,7 +719,7 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean suppressedwarning(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, String html, Object... theMessageArguments) {
-    if (!thePass) {
+    if (!thePass && doingWarnings()) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
       addValidationMessage(errors, type, path, nmsg, html, IssueSeverity.INFORMATION, msg);
     }
@@ -1027,4 +1037,68 @@ public class BaseValidator {
       return system;
     }
   }
+  
+  @Override
+  public Resource loadContainedResource(List<ValidationMessage> errors, String path, Element resource, String id, Class<? extends Resource> class1) throws FHIRException {
+    for (Element contained : resource.getChildren("contained")) {
+      if (contained.getIdBase().equals(id)) {
+        return loadFoundResource(errors, path, contained, class1);
+      }
+    }
+    return null;
+  }
+  
+  protected Resource loadFoundResource(List<ValidationMessage> errors, String path, Element resource, Class<? extends Resource> class1) throws FHIRException {
+    try {
+      FhirPublication v = FhirPublication.fromCode(context.getVersion());
+      ByteArrayOutputStream bs = new ByteArrayOutputStream();
+      new JsonParser(context).compose(resource, bs, OutputStyle.NORMAL, resource.getIdBase());
+      byte[] json = bs.toByteArray();
+      Resource r5 = null;
+      switch (v) {
+      case DSTU1:
+        rule(errors, IssueType.INVALID, resource.line(), resource.col(), path, false, I18nConstants.UNSUPPORTED_VERSION_R1, resource.getIdBase());
+        return null; // this can't happen
+      case DSTU2:
+        org.hl7.fhir.dstu2.model.Resource r2 = new org.hl7.fhir.dstu2.formats.JsonParser().parse(json);
+        r5 = VersionConvertorFactory_10_50.convertResource(r2);
+        break;
+      case DSTU2016May:
+        org.hl7.fhir.dstu2016may.model.Resource r2a = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(json);
+        r5 = VersionConvertorFactory_14_50.convertResource(r2a);
+        break;
+      case STU3:
+        org.hl7.fhir.dstu3.model.Resource r3 = new org.hl7.fhir.dstu3.formats.JsonParser().parse(json);
+        r5 = VersionConvertorFactory_30_50.convertResource(r3);
+        break;
+      case R4:
+        org.hl7.fhir.r4.model.Resource r4 = new org.hl7.fhir.r4.formats.JsonParser().parse(json);
+        r5 = VersionConvertorFactory_40_50.convertResource(r4);
+        break;
+      case R5:
+        r5 = new org.hl7.fhir.r5.formats.JsonParser().parse(json);
+        break;
+      default:
+        return null; // this can't happen
+      }
+      if (class1.isInstance(r5))
+        return (Resource) r5;
+      else {
+        rule(errors, IssueType.INVALID, resource.line(), resource.col(), path, false, I18nConstants.REFERENCE_REF_WRONGTARGET_LOAD, resource.getIdBase(), class1.toString(), r5.fhirType());
+        return null;
+      }
+
+    } catch (IOException e) {
+      throw new FHIRException(e);
+    }
+  }
+
+  public void setLevel(ValidationLevel level) {
+    this.level = level;
+  }
+
+  public ValidationLevel getLevel() {
+    return level;
+  }
+
 }

@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>5.5.11-SNAPSHOT</version>
+        <version>5.6.41-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -155,7 +155,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.16</version>
+            <version>${lombok_version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -164,6 +164,13 @@
             <groupId>org.hl7.fhir.testcases</groupId>
             <artifactId>fhir-test-cases</artifactId>
             <version>${validator_test_case_version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.atlassian.commonmark</groupId>
+            <artifactId>commonmark</artifactId>
+            <optional>true</optional>
             <scope>test</scope>
         </dependency>
 
@@ -183,7 +190,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.10.5.1</version>
+            <version>2.12.6.1</version>
         </dependency>
         <dependency>
             <groupId>org.thymeleaf</groupId>
@@ -210,7 +217,12 @@
             <version>${junit_jupiter_version}</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <optional>true</optional>
+            <scope>test</scope>
+        </dependency>
         <!-- End to end -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
@@ -229,10 +241,30 @@
     <build>
         <plugins>
             <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven_surefire_version}</version>
+                <executions>
+                <execution>
+                <id>default-test</id>
+                <phase>test</phase>
+                <goals>
+                    <goal>test</goal>
+                </goals>
+                </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.basepom.maven</groupId>
                 <artifactId>duplicate-finder-maven-plugin</artifactId>
                 <configuration>
                     <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <configuration>
+                    <stagingProgressTimeoutMinutes>15</stagingProgressTimeoutMinutes>
                 </configuration>
             </plugin>
         </plugins>

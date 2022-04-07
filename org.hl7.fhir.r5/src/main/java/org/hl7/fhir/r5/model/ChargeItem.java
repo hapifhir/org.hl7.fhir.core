@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -597,10 +597,10 @@ public class ChargeItem extends DomainResource {
     /**
      * Identifies the device, food, drug or other product being charged either by type code or reference to an instance.
      */
-    @Child(name = "product", type = {Device.class, Medication.class, Substance.class, CodeableConcept.class}, order=22, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "product", type = {CodeableReference.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Product charged", formalDefinition="Identifies the device, food, drug or other product being charged either by type code or reference to an instance." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-type")
-    protected DataType product;
+    protected List<CodeableReference> product;
 
     /**
      * Account into which this ChargeItems belongs.
@@ -623,7 +623,7 @@ public class ChargeItem extends DomainResource {
     @Description(shortDefinition="Further information supporting this charge", formalDefinition="Further information supporting this charge." )
     protected List<Reference> supportingInformation;
 
-    private static final long serialVersionUID = 2095236577L;
+    private static final long serialVersionUID = 244289087L;
 
   /**
    * Constructor
@@ -1577,52 +1577,54 @@ public class ChargeItem extends DomainResource {
     /**
      * @return {@link #product} (Identifies the device, food, drug or other product being charged either by type code or reference to an instance.)
      */
-    public DataType getProduct() { 
+    public List<CodeableReference> getProduct() { 
+      if (this.product == null)
+        this.product = new ArrayList<CodeableReference>();
       return this.product;
     }
 
     /**
-     * @return {@link #product} (Identifies the device, food, drug or other product being charged either by type code or reference to an instance.)
+     * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Reference getProductReference() throws FHIRException { 
-      if (this.product == null)
-        this.product = new Reference();
-      if (!(this.product instanceof Reference))
-        throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.product.getClass().getName()+" was encountered");
-      return (Reference) this.product;
-    }
-
-    public boolean hasProductReference() { 
-      return this != null && this.product instanceof Reference;
-    }
-
-    /**
-     * @return {@link #product} (Identifies the device, food, drug or other product being charged either by type code or reference to an instance.)
-     */
-    public CodeableConcept getProductCodeableConcept() throws FHIRException { 
-      if (this.product == null)
-        this.product = new CodeableConcept();
-      if (!(this.product instanceof CodeableConcept))
-        throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.product.getClass().getName()+" was encountered");
-      return (CodeableConcept) this.product;
-    }
-
-    public boolean hasProductCodeableConcept() { 
-      return this != null && this.product instanceof CodeableConcept;
+    public ChargeItem setProduct(List<CodeableReference> theProduct) { 
+      this.product = theProduct;
+      return this;
     }
 
     public boolean hasProduct() { 
-      return this.product != null && !this.product.isEmpty();
+      if (this.product == null)
+        return false;
+      for (CodeableReference item : this.product)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableReference addProduct() { //3
+      CodeableReference t = new CodeableReference();
+      if (this.product == null)
+        this.product = new ArrayList<CodeableReference>();
+      this.product.add(t);
+      return t;
+    }
+
+    public ChargeItem addProduct(CodeableReference t) { //3
+      if (t == null)
+        return this;
+      if (this.product == null)
+        this.product = new ArrayList<CodeableReference>();
+      this.product.add(t);
+      return this;
     }
 
     /**
-     * @param value {@link #product} (Identifies the device, food, drug or other product being charged either by type code or reference to an instance.)
+     * @return The first repetition of repeating field {@link #product}, creating it if it does not already exist {3}
      */
-    public ChargeItem setProduct(DataType value) { 
-      if (value != null && !(value instanceof Reference || value instanceof CodeableConcept))
-        throw new Error("Not the right type for ChargeItem.product[x]: "+value.fhirType());
-      this.product = value;
-      return this;
+    public CodeableReference getProductFirstRep() { 
+      if (getProduct().isEmpty()) {
+        addProduct();
+      }
+      return getProduct().get(0);
     }
 
     /**
@@ -1808,7 +1810,7 @@ public class ChargeItem extends DomainResource {
         children.add(new Property("enteredDate", "dateTime", "Date the charge item was entered.", 0, 1, enteredDate));
         children.add(new Property("reason", "CodeableConcept", "Describes why the event occurred in coded or textual form.", 0, java.lang.Integer.MAX_VALUE, reason));
         children.add(new Property("service", "Reference(DiagnosticReport|ImagingStudy|Immunization|MedicationAdministration|MedicationDispense|Observation|Procedure|SupplyDelivery)", "Indicated the rendered service that caused this charge.", 0, java.lang.Integer.MAX_VALUE, service));
-        children.add(new Property("product[x]", "Reference(Device|Medication|Substance)|CodeableConcept", "Identifies the device, food, drug or other product being charged either by type code or reference to an instance.", 0, 1, product));
+        children.add(new Property("product", "CodeableReference(Device|Medication|Substance)", "Identifies the device, food, drug or other product being charged either by type code or reference to an instance.", 0, java.lang.Integer.MAX_VALUE, product));
         children.add(new Property("account", "Reference(Account)", "Account into which this ChargeItems belongs.", 0, java.lang.Integer.MAX_VALUE, account));
         children.add(new Property("note", "Annotation", "Comments made about the event by the performer, subject or other participants.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("supportingInformation", "Reference(Any)", "Further information supporting this charge.", 0, java.lang.Integer.MAX_VALUE, supportingInformation));
@@ -1843,10 +1845,7 @@ public class ChargeItem extends DomainResource {
         case 555978181: /*enteredDate*/  return new Property("enteredDate", "dateTime", "Date the charge item was entered.", 0, 1, enteredDate);
         case -934964668: /*reason*/  return new Property("reason", "CodeableConcept", "Describes why the event occurred in coded or textual form.", 0, java.lang.Integer.MAX_VALUE, reason);
         case 1984153269: /*service*/  return new Property("service", "Reference(DiagnosticReport|ImagingStudy|Immunization|MedicationAdministration|MedicationDispense|Observation|Procedure|SupplyDelivery)", "Indicated the rendered service that caused this charge.", 0, java.lang.Integer.MAX_VALUE, service);
-        case 1753005361: /*product[x]*/  return new Property("product[x]", "Reference(Device|Medication|Substance)|CodeableConcept", "Identifies the device, food, drug or other product being charged either by type code or reference to an instance.", 0, 1, product);
-        case -309474065: /*product*/  return new Property("product[x]", "Reference(Device|Medication|Substance)|CodeableConcept", "Identifies the device, food, drug or other product being charged either by type code or reference to an instance.", 0, 1, product);
-        case -669667556: /*productReference*/  return new Property("product[x]", "Reference(Device|Medication|Substance)", "Identifies the device, food, drug or other product being charged either by type code or reference to an instance.", 0, 1, product);
-        case 906854066: /*productCodeableConcept*/  return new Property("product[x]", "CodeableConcept", "Identifies the device, food, drug or other product being charged either by type code or reference to an instance.", 0, 1, product);
+        case -309474065: /*product*/  return new Property("product", "CodeableReference(Device|Medication|Substance)", "Identifies the device, food, drug or other product being charged either by type code or reference to an instance.", 0, java.lang.Integer.MAX_VALUE, product);
         case -1177318867: /*account*/  return new Property("account", "Reference(Account)", "Account into which this ChargeItems belongs.", 0, java.lang.Integer.MAX_VALUE, account);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Comments made about the event by the performer, subject or other participants.", 0, java.lang.Integer.MAX_VALUE, note);
         case -1248768647: /*supportingInformation*/  return new Property("supportingInformation", "Reference(Any)", "Further information supporting this charge.", 0, java.lang.Integer.MAX_VALUE, supportingInformation);
@@ -1880,7 +1879,7 @@ public class ChargeItem extends DomainResource {
         case 555978181: /*enteredDate*/ return this.enteredDate == null ? new Base[0] : new Base[] {this.enteredDate}; // DateTimeType
         case -934964668: /*reason*/ return this.reason == null ? new Base[0] : this.reason.toArray(new Base[this.reason.size()]); // CodeableConcept
         case 1984153269: /*service*/ return this.service == null ? new Base[0] : this.service.toArray(new Base[this.service.size()]); // Reference
-        case -309474065: /*product*/ return this.product == null ? new Base[0] : new Base[] {this.product}; // DataType
+        case -309474065: /*product*/ return this.product == null ? new Base[0] : this.product.toArray(new Base[this.product.size()]); // CodeableReference
         case -1177318867: /*account*/ return this.account == null ? new Base[0] : this.account.toArray(new Base[this.account.size()]); // Reference
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         case -1248768647: /*supportingInformation*/ return this.supportingInformation == null ? new Base[0] : this.supportingInformation.toArray(new Base[this.supportingInformation.size()]); // Reference
@@ -1960,7 +1959,7 @@ public class ChargeItem extends DomainResource {
           this.getService().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case -309474065: // product
-          this.product = TypeConvertor.castToType(value); // DataType
+          this.getProduct().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case -1177318867: // account
           this.getAccount().add(TypeConvertor.castToReference(value)); // Reference
@@ -2023,8 +2022,8 @@ public class ChargeItem extends DomainResource {
           this.getReason().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("service")) {
           this.getService().add(TypeConvertor.castToReference(value));
-        } else if (name.equals("product[x]")) {
-          this.product = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("product")) {
+          this.getProduct().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("account")) {
           this.getAccount().add(TypeConvertor.castToReference(value));
         } else if (name.equals("note")) {
@@ -2062,8 +2061,7 @@ public class ChargeItem extends DomainResource {
         case 555978181:  return getEnteredDateElement();
         case -934964668:  return addReason(); 
         case 1984153269:  return addService(); 
-        case 1753005361:  return getProduct();
-        case -309474065:  return getProduct();
+        case -309474065:  return addProduct(); 
         case -1177318867:  return addAccount(); 
         case 3387378:  return addNote(); 
         case -1248768647:  return addSupportingInformation(); 
@@ -2097,7 +2095,7 @@ public class ChargeItem extends DomainResource {
         case 555978181: /*enteredDate*/ return new String[] {"dateTime"};
         case -934964668: /*reason*/ return new String[] {"CodeableConcept"};
         case 1984153269: /*service*/ return new String[] {"Reference"};
-        case -309474065: /*product*/ return new String[] {"Reference", "CodeableConcept"};
+        case -309474065: /*product*/ return new String[] {"CodeableReference"};
         case -1177318867: /*account*/ return new String[] {"Reference"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         case -1248768647: /*supportingInformation*/ return new String[] {"Reference"};
@@ -2192,13 +2190,8 @@ public class ChargeItem extends DomainResource {
         else if (name.equals("service")) {
           return addService();
         }
-        else if (name.equals("productReference")) {
-          this.product = new Reference();
-          return this.product;
-        }
-        else if (name.equals("productCodeableConcept")) {
-          this.product = new CodeableConcept();
-          return this.product;
+        else if (name.equals("product")) {
+          return addProduct();
         }
         else if (name.equals("account")) {
           return addAccount();
@@ -2280,7 +2273,11 @@ public class ChargeItem extends DomainResource {
           for (Reference i : service)
             dst.service.add(i.copy());
         };
-        dst.product = product == null ? null : product.copy();
+        if (product != null) {
+          dst.product = new ArrayList<CodeableReference>();
+          for (CodeableReference i : product)
+            dst.product.add(i.copy());
+        };
         if (account != null) {
           dst.account = new ArrayList<Reference>();
           for (Reference i : account)

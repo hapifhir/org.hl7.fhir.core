@@ -80,3 +80,9 @@
         return res;
       } 
             
+      public Coding(String theSystem, String theVersion, String theCode, String theDisplay) {
+        setSystem(theSystem);
+        setVersion(theVersion);
+        setCode(theCode);
+        setDisplay(theDisplay);
+      }      

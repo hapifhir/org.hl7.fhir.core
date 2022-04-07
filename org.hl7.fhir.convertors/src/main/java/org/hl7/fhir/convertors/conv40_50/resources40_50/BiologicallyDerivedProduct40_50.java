@@ -55,17 +55,17 @@ public class BiologicallyDerivedProduct40_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertBiologicallyDerivedProductStatus(src.getStatusElement()));
     for (org.hl7.fhir.r4.model.Reference t : src.getRequest()) tgt.addRequest(Reference40_50.convertReference(t));
-    if (src.hasQuantity())
-      tgt.setQuantityElement(Integer40_50.convertInteger(src.getQuantityElement()));
+//    if (src.hasQuantity())
+//      tgt.setQuantityElement(Integer40_50.convertInteger(src.getQuantityElement()));
     for (org.hl7.fhir.r4.model.Reference t : src.getParent()) tgt.addParent(Reference40_50.convertReference(t));
     if (src.hasCollection())
       tgt.setCollection(convertBiologicallyDerivedProductCollectionComponent(src.getCollection()));
-    for (org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent t : src.getProcessing())
-      tgt.addProcessing(convertBiologicallyDerivedProductProcessingComponent(t));
-    if (src.hasManipulation())
-      tgt.setManipulation(convertBiologicallyDerivedProductManipulationComponent(src.getManipulation()));
-    for (org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent t : src.getStorage())
-      tgt.addStorage(convertBiologicallyDerivedProductStorageComponent(t));
+//    for (org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent t : src.getProcessing())
+//      tgt.addProcessing(convertBiologicallyDerivedProductProcessingComponent(t));
+//    if (src.hasManipulation())
+//      tgt.setManipulation(convertBiologicallyDerivedProductManipulationComponent(src.getManipulation()));
+//    for (org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent t : src.getStorage())
+//      tgt.addStorage(convertBiologicallyDerivedProductStorageComponent(t));
     return tgt;
   }
 
@@ -83,17 +83,17 @@ public class BiologicallyDerivedProduct40_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertBiologicallyDerivedProductStatus(src.getStatusElement()));
     for (org.hl7.fhir.r5.model.Reference t : src.getRequest()) tgt.addRequest(Reference40_50.convertReference(t));
-    if (src.hasQuantity())
-      tgt.setQuantityElement(Integer40_50.convertInteger(src.getQuantityElement()));
+//    if (src.hasQuantity())
+//      tgt.setQuantityElement(Integer40_50.convertInteger(src.getQuantityElement()));
     for (org.hl7.fhir.r5.model.Reference t : src.getParent()) tgt.addParent(Reference40_50.convertReference(t));
     if (src.hasCollection())
       tgt.setCollection(convertBiologicallyDerivedProductCollectionComponent(src.getCollection()));
-    for (org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent t : src.getProcessing())
-      tgt.addProcessing(convertBiologicallyDerivedProductProcessingComponent(t));
-    if (src.hasManipulation())
-      tgt.setManipulation(convertBiologicallyDerivedProductManipulationComponent(src.getManipulation()));
-    for (org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent t : src.getStorage())
-      tgt.addStorage(convertBiologicallyDerivedProductStorageComponent(t));
+//    for (org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent t : src.getProcessing())
+//      tgt.addProcessing(convertBiologicallyDerivedProductProcessingComponent(t));
+//    if (src.hasManipulation())
+//      tgt.setManipulation(convertBiologicallyDerivedProductManipulationComponent(src.getManipulation()));
+//    for (org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent t : src.getStorage())
+//      tgt.addStorage(convertBiologicallyDerivedProductStorageComponent(t));
     return tgt;
   }
 
@@ -219,135 +219,135 @@ public class BiologicallyDerivedProduct40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent convertBiologicallyDerivedProductProcessingComponent(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent tgt = new org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    if (src.hasDescription())
-      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-    if (src.hasProcedure())
-      tgt.setProcedure(CodeableConcept40_50.convertCodeableConcept(src.getProcedure()));
-    if (src.hasAdditive())
-      tgt.setAdditive(Reference40_50.convertReference(src.getAdditive()));
-    if (src.hasTime())
-      tgt.setTime(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTime()));
-    return tgt;
-  }
-
-  public static org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent convertBiologicallyDerivedProductProcessingComponent(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent tgt = new org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    if (src.hasDescription())
-      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-    if (src.hasProcedure())
-      tgt.setProcedure(CodeableConcept40_50.convertCodeableConcept(src.getProcedure()));
-    if (src.hasAdditive())
-      tgt.setAdditive(Reference40_50.convertReference(src.getAdditive()));
-    if (src.hasTime())
-      tgt.setTime(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTime()));
-    return tgt;
-  }
-
-  public static org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductManipulationComponent convertBiologicallyDerivedProductManipulationComponent(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductManipulationComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductManipulationComponent tgt = new org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductManipulationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    if (src.hasDescription())
-      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-    if (src.hasTime())
-      tgt.setTime(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTime()));
-    return tgt;
-  }
-
-  public static org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductManipulationComponent convertBiologicallyDerivedProductManipulationComponent(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductManipulationComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductManipulationComponent tgt = new org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductManipulationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    if (src.hasDescription())
-      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-    if (src.hasTime())
-      tgt.setTime(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTime()));
-    return tgt;
-  }
-
-  public static org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent convertBiologicallyDerivedProductStorageComponent(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent tgt = new org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    if (src.hasDescription())
-      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-    if (src.hasTemperature())
-      tgt.setTemperatureElement(Decimal40_50.convertDecimal(src.getTemperatureElement()));
-    if (src.hasScale())
-      tgt.setScaleElement(convertBiologicallyDerivedProductStorageScale(src.getScaleElement()));
-    if (src.hasDuration())
-      tgt.setDuration(Period40_50.convertPeriod(src.getDuration()));
-    return tgt;
-  }
-
-  public static org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent convertBiologicallyDerivedProductStorageComponent(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent tgt = new org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    if (src.hasDescription())
-      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-    if (src.hasTemperature())
-      tgt.setTemperatureElement(Decimal40_50.convertDecimal(src.getTemperatureElement()));
-    if (src.hasScale())
-      tgt.setScaleElement(convertBiologicallyDerivedProductStorageScale(src.getScaleElement()));
-    if (src.hasDuration())
-      tgt.setDuration(Period40_50.convertPeriod(src.getDuration()));
-    return tgt;
-  }
-
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale> convertBiologicallyDerivedProductStorageScale(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScaleEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case FARENHEIT:
-        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale.FARENHEIT);
-        break;
-      case CELSIUS:
-        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale.CELSIUS);
-        break;
-      case KELVIN:
-        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale.KELVIN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale.NULL);
-        break;
-    }
-    return tgt;
-  }
-
-  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale> convertBiologicallyDerivedProductStorageScale(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale> src) throws FHIRException {
-    if (src == null || src.isEmpty())
-      return null;
-    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScaleEnumFactory());
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    switch (src.getValue()) {
-      case FARENHEIT:
-        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale.FARENHEIT);
-        break;
-      case CELSIUS:
-        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale.CELSIUS);
-        break;
-      case KELVIN:
-        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale.KELVIN);
-        break;
-      default:
-        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale.NULL);
-        break;
-    }
-    return tgt;
-  }
+//  public static org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent convertBiologicallyDerivedProductProcessingComponent(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent tgt = new org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent();
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+//    if (src.hasDescription())
+//      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+//    if (src.hasProcedure())
+//      tgt.setProcedure(CodeableConcept40_50.convertCodeableConcept(src.getProcedure()));
+//    if (src.hasAdditive())
+//      tgt.setAdditive(Reference40_50.convertReference(src.getAdditive()));
+//    if (src.hasTime())
+//      tgt.setTime(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTime()));
+//    return tgt;
+//  }
+//
+//  public static org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent convertBiologicallyDerivedProductProcessingComponent(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent tgt = new org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductProcessingComponent();
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+//    if (src.hasDescription())
+//      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+//    if (src.hasProcedure())
+//      tgt.setProcedure(CodeableConcept40_50.convertCodeableConcept(src.getProcedure()));
+//    if (src.hasAdditive())
+//      tgt.setAdditive(Reference40_50.convertReference(src.getAdditive()));
+//    if (src.hasTime())
+//      tgt.setTime(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTime()));
+//    return tgt;
+//  }
+//
+//  public static org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductManipulationComponent convertBiologicallyDerivedProductManipulationComponent(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductManipulationComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductManipulationComponent tgt = new org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductManipulationComponent();
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+//    if (src.hasDescription())
+//      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+//    if (src.hasTime())
+//      tgt.setTime(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTime()));
+//    return tgt;
+//  }
+//
+//  public static org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductManipulationComponent convertBiologicallyDerivedProductManipulationComponent(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductManipulationComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductManipulationComponent tgt = new org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductManipulationComponent();
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+//    if (src.hasDescription())
+//      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+//    if (src.hasTime())
+//      tgt.setTime(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTime()));
+//    return tgt;
+//  }
+//
+//  public static org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent convertBiologicallyDerivedProductStorageComponent(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent tgt = new org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent();
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+//    if (src.hasDescription())
+//      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+//    if (src.hasTemperature())
+//      tgt.setTemperatureElement(Decimal40_50.convertDecimal(src.getTemperatureElement()));
+//    if (src.hasScale())
+//      tgt.setScaleElement(convertBiologicallyDerivedProductStorageScale(src.getScaleElement()));
+//    if (src.hasDuration())
+//      tgt.setDuration(Period40_50.convertPeriod(src.getDuration()));
+//    return tgt;
+//  }
+//
+//  public static org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent convertBiologicallyDerivedProductStorageComponent(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent tgt = new org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageComponent();
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+//    if (src.hasDescription())
+//      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+//    if (src.hasTemperature())
+//      tgt.setTemperatureElement(Decimal40_50.convertDecimal(src.getTemperatureElement()));
+//    if (src.hasScale())
+//      tgt.setScaleElement(convertBiologicallyDerivedProductStorageScale(src.getScaleElement()));
+//    if (src.hasDuration())
+//      tgt.setDuration(Period40_50.convertPeriod(src.getDuration()));
+//    return tgt;
+//  }
+//
+//  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale> convertBiologicallyDerivedProductStorageScale(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale> src) throws FHIRException {
+//    if (src == null || src.isEmpty())
+//      return null;
+//    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScaleEnumFactory());
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+//    switch (src.getValue()) {
+//      case FARENHEIT:
+//        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale.FARENHEIT);
+//        break;
+//      case CELSIUS:
+//        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale.CELSIUS);
+//        break;
+//      case KELVIN:
+//        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale.KELVIN);
+//        break;
+//      default:
+//        tgt.setValue(org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale.NULL);
+//        break;
+//    }
+//    return tgt;
+//  }
+//
+//  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale> convertBiologicallyDerivedProductStorageScale(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale> src) throws FHIRException {
+//    if (src == null || src.isEmpty())
+//      return null;
+//    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScaleEnumFactory());
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+//    switch (src.getValue()) {
+//      case FARENHEIT:
+//        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale.FARENHEIT);
+//        break;
+//      case CELSIUS:
+//        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale.CELSIUS);
+//        break;
+//      case KELVIN:
+//        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale.KELVIN);
+//        break;
+//      default:
+//        tgt.setValue(org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale.NULL);
+//        break;
+//    }
+//    return tgt;
+//  }
 }

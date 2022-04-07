@@ -34,6 +34,10 @@ public class ResourceChecker {
 //  }
   public static Manager.FhirFormat checkIsResource(SimpleWorkerContext context, boolean debug, byte[] cnt, String filename, boolean guessFromExtension) {
     System.out.println("   ..Detect format for " + filename);
+    if (cnt.length == 0) {
+      System.out.println("   " + filename+" is empty");
+      return null;
+    }
     if (guessFromExtension) {
       String ext = Utilities.getFileExtension(filename);
       if (Utilities.existsInList(ext, "xml")) {
@@ -99,7 +103,7 @@ public class ResourceChecker {
       String s = new String(cnt, StandardCharsets.UTF_8);
       if (s.startsWith("shc:/")) 
         s = SHCParser.decodeQRCode(s);
-      JWT jwt = SHCParser.decodeJWT(s);
+      JWT jwt = new SHCParser(context).decodeJWT(s);
       return Manager.FhirFormat.SHC;
     } catch (Exception e) {
       if (debug) {

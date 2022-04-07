@@ -19,3 +19,6 @@
     return true;
   }
   
+  public String getVersionedUrl() {
+    return hasVersion() ? getUrl()+"|"+getVersion() : getUrl();
+  }  

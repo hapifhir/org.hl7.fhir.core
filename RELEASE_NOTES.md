@@ -1,9 +1,12 @@
-Validator Changes
-* none
+## Validator Changes
 
-Other Code Changes
-* Updating client logger to log both req and resp
-* Refactoring of converter loader and misc packages. 
-* rework all HTTP access through a single access point (todo: refactor this to use okhttp)
-* Improvements to rendering for IG publication
+* Handle reslicing within the same profile
+* Fix up wrong handling of context on exists() in FHIRPath
+* Add hints to profiles around behavior of pattern on repeating elements
+* Ignore all tooling extensions when validating
+* 
+
+## Other code changes
+
+* Improved output for unit test comparisons
 

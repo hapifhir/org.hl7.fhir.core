@@ -40,11 +40,16 @@ public class XVerExtensionManager {
     this.context = context;
   }
 
-  public XVerExtensionStatus status(String url) throws FHIRException {
+  public boolean isR5(String url) {
     String v = url.substring(20, 23);
-    if ("5.0".equals(v)) {
-      v = "4.6"; // for now
+    return "5.0".equals(v);    
+  }
+  
+  public XVerExtensionStatus status(String url) throws FHIRException {
+    if (url.length() < 24) {
+      return XVerExtensionStatus.Invalid;
     }
+    String v = url.substring(20, 23);
     String e = url.substring(54);
     if (!lists.containsKey(v)) {
       if (context.getBinaries().containsKey("xver-paths-"+v+".json")) {
@@ -59,6 +64,9 @@ public class XVerExtensionManager {
     }
     JsonObject root = lists.get(v);
     JsonObject path = root.getAsJsonObject(e);
+    if (path == null) {
+      path = root.getAsJsonObject(e+"[x]");      
+    }
     if (path == null) {
       return XVerExtensionStatus.Unknown;
     }
@@ -75,13 +83,13 @@ public class XVerExtensionManager {
 
   public StructureDefinition makeDefinition(String url) {
     String verSource = url.substring(20, 23);
-    if ("5.0".equals(verSource)) {
-      verSource = "4.6"; // for now
-    }
     String verTarget = VersionUtilities.getMajMin(context.getVersion());
     String e = url.substring(54);
     JsonObject root = lists.get(verSource);
     JsonObject path = root.getAsJsonObject(e);
+    if (path == null) {
+      path = root.getAsJsonObject(e+"[x]");
+    }
     
     StructureDefinition sd = new StructureDefinition();
     sd.setUserData(XVER_EXT_MARKER, "true");
@@ -109,21 +117,28 @@ public class XVerExtensionManager {
       populateTypes(path, val, verSource, verTarget);
     } else if (path.has("elements")) {
       for (JsonElement i : path.getAsJsonArray("elements")) {
-        String s = i.getAsString();
+        JsonObject elt = root.getAsJsonObject(e+"."+i.getAsString());
+        if (elt != null) {
+        String s = i.getAsString().replace("[x]", "");
         sd.getDifferential().addElement().setPath("Extension.extension").setSliceName(s);
         sd.getDifferential().addElement().setPath("Extension.extension.extension").setMax("0");
         sd.getDifferential().addElement().setPath("Extension.extension.url").setFixed(new UriType(s));
         ElementDefinition val = sd.getDifferential().addElement().setPath("Extension.extension.value[x]").setMin(1);
-        JsonObject elt = root.getAsJsonObject(e+"."+s);
         if (!elt.has("types")) {
           throw new FHIRException("Internal error - nested elements not supported yet");
         }
         populateTypes(elt, val, verSource, verTarget);
+        }
       }      
       sd.getDifferential().addElement().setPath("Extension.url").setFixed(new UriType(url));
       sd.getDifferential().addElement().setPath("Extension.value[x]").setMax("0");
     } else {
       throw new FHIRException("Internal error - attempt to define extension for "+url+" when it is invalid");
+    }
+    if (path.has("modifier") && path.get("modifier").getAsBoolean()) {
+      ElementDefinition baseDef = new ElementDefinition("Extension");
+      sd.getDifferential().getElement().add(0, baseDef);
+      baseDef.setIsModifier(true);
     }
     return sd;
   }

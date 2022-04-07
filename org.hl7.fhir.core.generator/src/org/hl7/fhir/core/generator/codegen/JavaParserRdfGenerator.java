@@ -51,8 +51,8 @@ public class JavaParserRdfGenerator extends JavaBaseGenerator {
   private StringBuilder reg = new StringBuilder();
   private StringBuilder regt = new StringBuilder();
 
-  public JavaParserRdfGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version) throws UnsupportedEncodingException {
-    super(out, definitions, configuration, version, genDate);
+  public JavaParserRdfGenerator(OutputStream out, Definitions definitions, Configuration configuration, Date genDate, String version, String jid) throws UnsupportedEncodingException {
+    super(out, definitions, configuration, version, genDate, jid);
   }
   
   public void seeClass(Analysis analysis) throws Exception {
@@ -70,6 +70,7 @@ public class JavaParserRdfGenerator extends JavaBaseGenerator {
   
   public void generate() throws Exception {   
     String template = config.getAdornments().get("RdfParser");
+    template = template.replace("{{jid}}", jid);
     template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
 

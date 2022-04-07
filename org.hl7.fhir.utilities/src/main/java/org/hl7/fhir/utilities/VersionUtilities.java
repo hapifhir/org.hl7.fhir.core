@@ -75,6 +75,10 @@ public class VersionUtilities {
     if (isR4BVer(v)) {
       return "hl7.fhir.r4b.core";
     }
+
+    if (isR5Ver(v)) {
+      return "hl7.fhir.r5.core";
+    }
     
     if ("current".equals(v)) {
       return "hl7.fhir.r5.core";
@@ -100,6 +104,9 @@ public class VersionUtilities {
     }
     if (isR4Ver(v)) {
       return "4.0.1";
+    }
+    if (isR5Ver(v)) {
+      return "5.0.0";
     }
     if (v != null && v.startsWith(CURRENT_VERSION)) {
       return "current";
@@ -127,19 +134,22 @@ public class VersionUtilities {
   }
 
   public static boolean isSupportedVersion(String version) {
-    return Utilities.existsInList(version, "1.0.2", "1.4.0", "3.0.2", "4.0.1", "4.1.0", CURRENT_FULL_VERSION);
+    if (version.contains("-")) {
+      version = version.substring(0, version.indexOf("-"));
+    }
+    return Utilities.existsInList(version, "1.0.2", "1.4.0", "3.0.2", "4.0.1", "4.1.0", "4.3.0", "5.0.0", CURRENT_FULL_VERSION);
   }
 
   public static String listSupportedVersions() {
-    return "1.0.2, 1.4.0, 3.0.2, 4.0.1, 4.1.0, "+CURRENT_FULL_VERSION;
+    return "1.0.2, 1.4.0, 3.0.2, 4.0.1, 4.1.0, 4.3.0, 5.0, " + CURRENT_FULL_VERSION;
   }
 
   public static boolean isR5Ver(String ver) {
-    return ver != null && (ver.startsWith(CURRENT_VERSION) || ver.equals("current"));
+    return ver != null && (ver.startsWith("5.0") || ver.startsWith(CURRENT_VERSION) || ver.equals("current"));
   }
 
   public static boolean isR4BVer(String ver) {
-    return ver != null && ver.startsWith("4.1");
+    return ver != null && (ver.startsWith("4.1") || ver.startsWith("4.3"));
   }
 
   public static boolean isR4Ver(String ver) {
@@ -221,6 +231,9 @@ public class VersionUtilities {
       return false;
     }
     String[] p = version.split("\\.");
+    if (p[2].contains("-")) {
+      p[2] = p[2].substring(0, p[2].indexOf("-"));
+    }
     return Utilities.isInteger(p[0]) && Utilities.isInteger(p[1]) && Utilities.isInteger(p[2]);
   }
 
@@ -397,7 +410,6 @@ public class VersionUtilities {
 
     }
     if (isR4Ver(version)) {
-
       res.add("CodeSystem");
       res.add("ActivityDefinition");
       res.add("CapabilityStatement");
@@ -425,6 +437,38 @@ public class VersionUtilities {
       res.add("SearchParameter");
       res.add("StructureDefinition");
       res.add("StructureMap");
+      res.add("TerminologyCapabilities");
+      res.add("TestScript");
+      res.add("ValueSet");
+    }
+    if (isR4BVer(version)) {
+      res.add("ActivityDefinition");
+      res.add("CapabilityStatement");
+      res.add("ChargeItemDefinition");
+      res.add("Citation");
+      res.add("CodeSystem");
+      res.add("CompartmentDefinition");
+      res.add("ConceptMap");
+      res.add("EventDefinition");
+      res.add("Evidence");
+      res.add("EvidenceReport");
+      res.add("EvidenceVariable");
+      res.add("ExampleScenario");
+      res.add("GraphDefinition");
+      res.add("ImplementationGuide");
+      res.add("Library");
+      res.add("Measure");
+      res.add("MessageDefinition");
+      res.add("NamingSystem");
+      res.add("OperationDefinition");
+      res.add("PlanDefinition");
+      res.add("Questionnaire");
+      res.add("ResearchDefinition");
+      res.add("ResearchElementDefinition");
+      res.add("SearchParameter");
+      res.add("StructureDefinition");
+      res.add("StructureMap");
+      res.add("SubscriptionTopic");
       res.add("TerminologyCapabilities");
       res.add("TestScript");
       res.add("ValueSet");
@@ -477,6 +521,17 @@ public class VersionUtilities {
     String mm1 = getMajMin(v1);
     String mm2 = getMajMin(v2);
     return mm1 != null && mm2 != null && mm1.equals(mm2);
+  }
+
+  public static boolean isR5VerOrLater(String version) {
+    if (version == null) {
+      return false;
+    }
+    if (version.startsWith(CURRENT_VERSION) || version.equals("current")) {
+      return true;
+    }
+    String v = getMajMin(version);
+    return v.compareTo("4.5") >= 0; 
   }
 
 

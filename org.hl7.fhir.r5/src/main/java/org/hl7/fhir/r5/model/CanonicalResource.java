@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -554,6 +554,13 @@ public abstract class CanonicalResource extends DomainResource {
     return true;
   }
   
+  public boolean supportsExperimental() {
+    return true;
+  }
+  
+  public String getVersionedUrl() {
+    return hasVersion() ? getUrl()+"|"+getVersion() : getUrl();
+  }  
 // end addition
 
 }

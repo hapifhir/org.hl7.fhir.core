@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.context;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -44,8 +45,8 @@ import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
-import org.hl7.fhir.r5.context.IWorkerContext.CodingValidationRequest;
 import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
+import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.ParserType;
 import org.hl7.fhir.r5.model.Bundle;
@@ -64,15 +65,19 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.utils.IResourceValidator;
+import org.hl7.fhir.r5.utils.validation.IResourceValidator;
+import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import com.google.gson.JsonSyntaxException;
+
+import javax.annotation.Nonnull;
 
 
 /**
@@ -146,8 +151,9 @@ public interface IWorkerContext {
   public class PackageVersion {
     private String id;
     private String version;
+    private Date date;
     
-    public PackageVersion(String source) {
+    public PackageVersion(String source, Date date) {
       if (source == null) {
         throw new Error("Source cannot be null");
       }
@@ -156,26 +162,42 @@ public interface IWorkerContext {
       }
       id = source.substring(0, source.indexOf("#"));
       version = source.substring(source.indexOf("#")+1);
+      this.date = date;
     }
-    public PackageVersion(String id, String version) {
+    public PackageVersion(String id, String version, Date date) {
       super();
       this.id = id;
       this.version = version;
+      this.date = date;
     }
+    
     public String getId() {
       return id;
     }
     public String getVersion() {
       return version;
     }
+    public boolean isExamplesPackage() {
+      boolean b = id.startsWith("hl7.fhir.") && id.endsWith(".examples");
+      return b;
+    }
+    @Override
+    public String toString() {
+      return id+"#"+version;
+    }
+    public Date getDate() {
+      return date;
+    }
+    
   }
 
   public class PackageDetails extends PackageVersion {
     private String name;
     private String canonical;
     private String web;
-    public PackageDetails(String id, String version, String name, String canonical, String web) {
-      super(id, version);
+    
+    public PackageDetails(String id, String version, String name, String canonical, String web, Date date) {
+      super(id, version, date);
       this.name = name;
       this.canonical = canonical;
       this.web = web;
@@ -191,13 +213,14 @@ public interface IWorkerContext {
     }
     
   }
+
   public interface ICanonicalResourceLocator {
     void findResource(Object caller, String url); // if it can be found, put it in the context
   }
   
   public interface IContextResourceLoader {
     /** 
-     * @return List of the resource types that shoud be loaded
+     * @return List of the resource types that should be loaded
      */
     String[] getTypes();
     
@@ -241,7 +264,6 @@ public interface IWorkerContext {
      */
     IContextResourceLoader getNewLoader(NpmPackage npm) throws JsonSyntaxException, IOException;   
   }
-
 
   /**
    * Get the versions of the definitions loaded in context
@@ -335,6 +357,7 @@ public interface IWorkerContext {
    */
   public <T extends Resource> T fetchResource(Class<T> class_, String uri);
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException;
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version);
 
   /** has the same functionality as fetchResource, but passes in information about the source of the 
    * reference (this may affect resolution of version)
@@ -476,6 +499,7 @@ public interface IWorkerContext {
    * @return
    */
   public CodeSystem fetchCodeSystem(String system);
+  public CodeSystem fetchCodeSystem(String system, String version);
 
   /**
    * True if the underlying terminology service provider will do 
@@ -509,6 +533,14 @@ public interface IWorkerContext {
   public ValueSetExpansionOutcome expandVS(ValueSet source, boolean cacheOk, boolean heiarchical);
   
   /**
+   * ValueSet Expansion - see $expand
+   *  
+   * @param source
+   * @return
+   */
+  public ValueSetExpansionOutcome expandVS(ValueSet source, boolean cacheOk, boolean heiarchical, boolean incompleteOk);
+  
+  /**
    * ValueSet Expansion - see $expand, but resolves the binding first
    *  
    * @param source
@@ -526,7 +558,7 @@ public interface IWorkerContext {
    * @return
    * @throws FHIRException 
    */
-  ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical) throws TerminologyServiceException;
+  ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical, boolean noInactive) throws TerminologyServiceException;
 
   Locale getLocale();
 
@@ -733,6 +765,8 @@ public interface IWorkerContext {
    * @return
    */
   public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs);
+  
+  public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs, ValidationContextCarrier ctxt);
 
   public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs);
   
@@ -770,7 +804,7 @@ public interface IWorkerContext {
     public void logDebugMessage(LogCategory category, String message); // verbose; only when debugging 
   }
 
-  public void setLogger(ILoggingService logger);
+  public void setLogger(@Nonnull ILoggingService logger);
   public ILoggingService getLogger();
 
   public boolean isNoTerminologyServer();

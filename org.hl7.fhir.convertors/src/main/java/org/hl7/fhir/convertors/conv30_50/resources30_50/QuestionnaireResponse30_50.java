@@ -16,7 +16,7 @@ public class QuestionnaireResponse30_50 {
     org.hl7.fhir.r5.model.QuestionnaireResponse tgt = new org.hl7.fhir.r5.model.QuestionnaireResponse();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyDomainResource(src, tgt);
     if (src.hasIdentifier())
-      tgt.setIdentifier(Identifier30_50.convertIdentifier(src.getIdentifier()));
+      tgt.addIdentifier(Identifier30_50.convertIdentifier(src.getIdentifier()));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference30_50.convertReference(t));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getParent()) tgt.addPartOf(Reference30_50.convertReference(t));
     if (src.hasQuestionnaire())
@@ -44,7 +44,7 @@ public class QuestionnaireResponse30_50 {
     org.hl7.fhir.dstu3.model.QuestionnaireResponse tgt = new org.hl7.fhir.dstu3.model.QuestionnaireResponse();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyDomainResource(src, tgt);
     if (src.hasIdentifier())
-      tgt.setIdentifier(Identifier30_50.convertIdentifier(src.getIdentifier()));
+      tgt.setIdentifier(Identifier30_50.convertIdentifier(src.getIdentifierFirstRep()));
     for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference30_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addParent(Reference30_50.convertReference(t));
     if (src.hasQuestionnaire())
