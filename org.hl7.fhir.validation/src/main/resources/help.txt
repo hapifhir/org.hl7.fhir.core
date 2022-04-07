@@ -4,98 +4,110 @@ The validation tool compares a resource against the base definitions and any
 profiles declared in the resource (Resource.meta.profile) or specified on the 
 command line
 
-The FHIR validation tool validates a FHIR resource or bundle.
-Schema and schematron checking is performed, then some additional checks are performed. 
+The FHIR validation tool validates a FHIR resource or bundle. Schema and
+schematron checking is performed, then some additional checks are performed.
+
 * XML & Json (FHIR versions {{XML_AND_JSON_FHIR_VERSIONS}})
 * Turtle (FHIR versions {{TURTLE_FHIR_VERSIONS}})
 
-If requested, instances will also be verified against the appropriate schema
-W3C XML Schema, JSON schema or ShEx, as appropriate
+If requested, instances will also be verified against the appropriate schema W3C
+XML Schema, JSON schema or ShEx, as appropriate
 
 Usage: java -jar [validator].jar (parameters)
 
 The following parameters are supported:
-[source]: a file, url, directory or pattern for resources to validate.  At
-    least one source must be declared.  If there is more than one source or if
-    the source is other than a single file or url and the output parameter is
+[source]: a file, url, directory or pattern for resources to validate.
+       At least one source must be declared. If there is more than one source or
+    if the source is other than a single file or url and the output parameter is
     used, results will be provided as a Bundle.
-    Patterns are limited to a directory followed by a filename with an embedded
-    asterisk.  E.g. foo*-examples.xml or someresource.*, etc.
--version [ver]: The FHIR version to use. This can only appear once. 
-    valid values {{FHIR_MAJOR_VERSIONS}} or {{FHIR_MINOR_VERSIONS}}
-    Default value is {{FHIR_CURRENT_VERSION}}
--ig [package|file|folder|url]: an IG or profile definition to load. Can be 
-     the URL of an implementation guide or a package ([id]-[ver]) for
-     a built implementation guide or a local folder that contains a
-     set of conformance resources.
-     If you would like to load the latest unreleased version of the implementation guide or package,
-     please define the version as '#current'. If no version is provided, the latest version
-     in the package cache will be used, or if no such cached package is available, the
-     PackageCacheManager will load the latest from the the online package repo.
-     No default value. This parameter can appear any number of times
+       Patterns are limited to a directory followed by a filename with an
+    embedded asterisk.  E.g. foo*-examples.xml or someresource.*, etc.
+-version [ver]: The FHIR version to use.
+       This can only appear once.
+       valid values {{FHIR_MAJOR_VERSIONS}} or {{FHIR_MINOR_VERSIONS}}
+       Default value is {{FHIR_CURRENT_VERSION}}
+-ig [package|file|folder|url]: an IG or profile definition to load.
+       Can be the URL of an implementation guide or a package ([id]-[ver]) for a
+    built implementation guide or a local folder that contains a set of
+    conformance resources.
+       If you would like to load the latest unreleased version of the
+    implementation guide or package, please define the version as '#current'.
+       If no version is provided, the latest version in the package cache will
+    be used, or if no such cached package is available, the PackageCacheManager
+    will load the latest from the the online package repo.
+       No default value. This parameter can appear any number of times
 -tx [url]: the [base] url of a FHIR terminology service
-     Default value is http://tx.fhir.org. This parameter can appear once
-     To run without terminology value, specific n/a as the URL
+      Default value is http://tx.fhir.org. This parameter can appear once
+      To run without terminology value, specific n/a as the URL
 -txLog [file]: Produce a log of the terminology server operations in [file]
-     Default value is not to produce a log
+       Default value is not to produce a log
 -profile [url]: the canonical URL to validate against (same as if it was 
-     specified in Resource.meta.profile). If no profile is specified, the 
-     resource is validated against the base specification. This parameter 
-     can appear any number of times.
-     Note: the profile (and it's dependencies) have to be made available 
+     specified in Resource.meta.profile).
+        If no profile is specified, the resource is validated against the base
+     specification. This parameter can appear any number of times.
+        Note: the profile (and it's dependencies) have to be made available
      through one of the -ig parameters. Note that package dependencies will 
      automatically be resolved
 -showReferenceMessages
-     Includes validation messages resulting from validating target resources 
+        Includes validation messages resulting from validating target resources
      against profiles defined on a reference.  This increases the volume of 
      validation messages, but may allow easier debugging.  If not specified,
      then only a high-level message indicating that the referenced item wasn't
      valid against the listed profile(s) will be provided.
--questionnaire mode: what to do with when validating QuestionnaireResponse resources
-     none (default): just ignore the questionnaire reference
-     required: check that the QuestionnaireResponse has a questionnaire and validate against it 
-     check: if the QuestionnaireResponse has a questionnaire, validate against it
-     The questionnaire must be loaded using the -ig parameter
+-questionnaire mode: what to do when validating QuestionnaireResponse resources
+     * none (default): just ignore the questionnaire reference
+     * required: check that the QuestionnaireResponse has a questionnaire and
+       validate against it
+     * check: if the QuestionnaireResponse has a questionnaire, validate
+       against it
+        The questionnaire must be loaded using the -ig parameter
 the location of a questionnaire. If provided, then the validator will validate
      any QuestionnaireResponse that claims to match the Questionnaire against it
      no default value. This parameter can appear any number of times
 -output [file]: a filename for the results (OperationOutcome)
-     Default: results are sent to the std out.
+        Default: results are sent to the std out.
 -debug
-     Produce additional information about the loading/validation process
+        Produce additional information about the loading/validation process
 -recurse
-     Look in subfolders when -ig refers to a folder
+        Look in subfolders when -ig refers to a folder
 -locale
-     Specifies the locale/language of the validation result messages (eg.: de-DE
+        Specifies the locale/language of the validation result messages (eg.:
+     de-DE
 -sct
      Specify the edition of SNOMED CT to use. Valid Choices:
        intl | us | uk | au | nl | ca | se | dk | es
-     tx.fhir.org only supports a subset. To add to this list or tx.fhir.org
-     ask on https://chat.fhir.org/#narrow/stream/179202-terminology
+     tx.fhir.org only supports a subset. To add to this list or tx.fhir.org ask
+     on https://chat.fhir.org/#narrow/stream/179202-terminology
 -native: use schema for validation as well
      * XML: w3c schema+schematron
      * JSON: json.schema
      * RDF: SHEX
      Default: false
--language: [lang]
-     The language to use when validating coding displays - same value as for xml:lang
-     Not used if the resource specifies language
-     Default: no specified language
--strictExtensions: If present, treat extensions not defined within the specified FHIR version and any
-     referenced implementation guides or profiles as errors.  (Default is to only raise information messages.)
--hintAboutNonMustSupport: If present, raise hints if the instance contains data elements that are not
-     marked as mustSupport=true.  Useful to identify elements included that may be ignored by recipients
--assumeValidRestReferences: If present, assume that URLs that reference resources follow the RESTful URI pattern
-     and it is safe to infer the type from the URL
--security-checks: If present, check that string content doesn't include any html-like tags that might create
-     problems downstream (though all external input must always be santized by escaping for either html or sql)
+-language: [lang] The language to use when validating coding displays - same
+    value as for xml:lang
+       Not used if the resource specifies language
+    Default: no specified language
+-strictExtensions: If present, treat extensions not defined within the specified
+    FHIR version and any referenced implementation guides or profiles as errors.
+    (Default is to only raise information messages.)
+-hintAboutNonMustSupport: If present, raise hints if the instance contains data
+    elements that are not marked as mustSupport=true.  Useful to identify
+    elements included that may be ignored by recipients
+-assumeValidRestReferences: If present, assume that URLs that reference
+    resources follow the RESTful URI pattern and it is safe to infer the type
+    from the URL
+-security-checks: If present, check that string content doesn't include any html
+    -like tags that might create problems downstream (though all external input
+    must always be santized by escaping for either html or sql)
 
-The validator also supports the param -proxy=[address]:[port] for if you use a proxy
+The validator also supports the param -proxy=[address]:[port] for if you use a
+proxy
 
 Parameters can appear in any order
 
-Alternatively, you can use the validator to execute a transformation as described by a structure map.
-To do this, you must provide some additional parameters:
+Alternatively, you can use the validator to execute a transformation as
+described by a structure map. To do this, you must provide some additional
+parameters:
 
  -transform [map]
 
@@ -103,34 +115,39 @@ To do this, you must provide some additional parameters:
 
 Any other dependency maps have to be loaded through an -ig reference 
 
--transform uses the parameters -defn, -txserver, -ig (at least one with the map files), and -output
+-transform uses the parameters -defn, -txserver, -ig (at least one with the map
+files), and -output
 
 Alternatively, you can use the validator to generate narrative for a resource.
 To do this, you must provide a specific parameter:
 
  -narrative
 
--narrative requires the parameters -defn, -txserver, -source, and -output. ig and profile may be used
+-narrative requires the parameters -defn, -txserver, -source, and -output. ig
+and profile may be used
 
 Alternatively, you can use the validator to convert a resource or logical model.
 To do this, you must provide a specific parameter:
 
  -convert
 
--convert requires the parameters -source and -output. ig may be used to provide a logical model
+-convert requires the parameters -source and -output. ig may be used to provide
+a logical model
 
-Alternatively, you can use the validator to evaluate a FHIRPath expression on a resource or logical model.
-To do this, you must provide a specific parameter:
+Alternatively, you can use the validator to evaluate a FHIRPath expression on a
+resource or logical model. To do this, you must provide a specific parameter:
 
  -fhirpath [FHIRPath]
 
 * [FHIRPath] the FHIRPath expression to evaluate
 
--fhirpath requires the parameters -source. ig may be used to provide a logical model
+-fhirpath requires the parameters -source. ig may be used to provide a logical
+model
 
 Finally, you can use the validator to generate a snapshot for a profile.
 To do this, you must provide a specific parameter:
 
  -snapshot
 
--snapshot requires the parameters -defn, -txserver, -source, and -output. ig may be used to provide necessary base profiles
+-snapshot requires the parameters -defn, -txserver, -source, and -output. ig may
+be used to provide necessary base profiles
