@@ -61,9 +61,10 @@ The following parameters are supported:
      * check: if the QuestionnaireResponse has a questionnaire, validate
        against it
         The questionnaire must be loaded using the -ig parameter
-the location of a questionnaire. If provided, then the validator will validate
-     any QuestionnaireResponse that claims to match the Questionnaire against it
-     no default value. This parameter can appear any number of times
+     which specifies the location of a questionnaire. If provided, then the
+     validator will validate any QuestionnaireResponse that claims to match the
+     Questionnaire against it no default value. This parameter can appear any
+     number of times
 -output [file]: a filename for the results (OperationOutcome)
         Default: results are sent to the std out.
 -debug
