@@ -29,6 +29,7 @@ import static org.mockito.Mockito.*;
 public class IgLoaderTests {
 
   final static String DUMMY_PATH = Paths.get("src","test","resources", "igLoad", "my-dummy-ig.json").toAbsolutePath().toString();
+  final static String DUMMY_FOO_PATH = Paths.get("src","test","resources", "igLoad", "my-dummy-ig.json").toAbsolutePath().toString();
 
   @Mock
   FilesystemPackageCacheManager filesystemPackageCacheManager;
@@ -43,7 +44,9 @@ public class IgLoaderTests {
       return Stream.of(
               Arguments.of(DUMMY_PATH, DUMMY_PATH, "4.0.1"),
               Arguments.of("[3.0.1]" + DUMMY_PATH, DUMMY_PATH, "3.0.1"),
-              Arguments.of("[" + DUMMY_PATH, "[" + DUMMY_PATH, "4.0.1")
+              Arguments.of("[" + DUMMY_PATH, "[" + DUMMY_PATH, "4.0.1"),
+              Arguments.of(DUMMY_FOO_PATH, DUMMY_FOO_PATH, "4.0.1"),
+              Arguments.of("[2.0.1]"+DUMMY_FOO_PATH, DUMMY_FOO_PATH, "2.0.1")
       );
   }
 
