@@ -129,7 +129,7 @@ public class Base64BinaryType extends PrimitiveType<byte[]> implements IPrimitiv
   @Override
   public Base64BinaryType setValue(byte[] theValue) throws IllegalArgumentException {
     myValue = theValue;
-    return this;
+    return (Base64BinaryType) super.setValue(theValue);
   }
 
   @Override
