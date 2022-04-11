@@ -988,12 +988,12 @@ public class ProfileComparer extends CanonicalResourceComparer {
         nc = utilsRight.genElementNameCell(gen, combined.getRight().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, false, ext, used , ref, sName);
       }
       if (combined.hasLeft()) {
-        frame(utilsRight.genElementCells(gen, combined.getLeft().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getLeft().getSrc(), typesRow, row, true, ext, used , ref, sName, nc, false, false), leftColor);
+        frame(utilsRight.genElementCells(gen, combined.getLeft().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getLeft().getSrc(), typesRow, row, true, ext, used , ref, sName, nc, false, false, null), leftColor);
       } else {
         frame(spacers(row, 4, gen), leftColor);
       }
       if (combined.hasRight()) {
-        frame(utilsRight.genElementCells(gen, combined.getRight().getDef(), "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, true, ext, used, ref, sName, nc, false, false), rightColor);
+        frame(utilsRight.genElementCells(gen, combined.getRight().getDef(), "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, true, ext, used, ref, sName, nc, false, false, null), rightColor);
       } else {
         frame(spacers(row, 4, gen), rightColor);
       }
