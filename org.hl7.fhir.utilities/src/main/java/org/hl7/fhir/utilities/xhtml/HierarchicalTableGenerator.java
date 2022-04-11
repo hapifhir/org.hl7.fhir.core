@@ -214,6 +214,13 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       return this;
     }
     
+    public Piece attr(String name, String value) {
+      if (attributes == null) {
+        attributes = new HashMap<>();
+      }
+      attributes.put(name, value);
+      return this;
+    }
   }
   
   public class Cell {
