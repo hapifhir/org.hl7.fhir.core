@@ -25,17 +25,17 @@ public class AuditEvent40_50Test {
   @Test
   @DisplayName("Test r5 -> r4 AuditEvent conversion.")
   public void testR5_R4() throws IOException {
-    InputStream r5_input = this.getClass().getResourceAsStream("/auditevent_50_with_base64binary.json");
+    InputStream r5_input = this.getClass().getResourceAsStream("/auditevent_50_with_base64binary.xml");
 
-    org.hl7.fhir.r5.model.AuditEvent r5_actual = (org.hl7.fhir.r5.model.AuditEvent) new org.hl7.fhir.r5.formats.JsonParser().parse(r5_input);
+    org.hl7.fhir.r5.model.AuditEvent r5_actual = (org.hl7.fhir.r5.model.AuditEvent) new org.hl7.fhir.r5.formats.XmlParser().parse(r5_input);
     org.hl7.fhir.r4.model.Resource r4_conv = VersionConvertorFactory_40_50.convertResource(r5_actual);
 
-    org.hl7.fhir.r4.formats.JsonParser r4_parser = new org.hl7.fhir.r4.formats.JsonParser();
+    org.hl7.fhir.r4.formats.XmlParser r4_parser = new org.hl7.fhir.r4.formats.XmlParser();
 
     ByteArrayOutputStream stream = new ByteArrayOutputStream();
     r4_parser.compose(stream, r4_conv);
 
-    org.hl7.fhir.r4.model.Resource r4_streamed = (org.hl7.fhir.r4.model.AuditEvent) new org.hl7.fhir.r4.formats.JsonParser().parse(new ByteArrayInputStream(stream.toByteArray()));
+    org.hl7.fhir.r4.model.Resource r4_streamed = (org.hl7.fhir.r4.model.AuditEvent) new org.hl7.fhir.r4.formats.XmlParser().parse(new ByteArrayInputStream(stream.toByteArray()));
 
     assertArrayEquals(((org.hl7.fhir.r4.model.AuditEvent)r4_conv).getEntity().get(0).getQuery(), THE_BASE_64_BINARY_BYTE_ARRAY);
     assertArrayEquals(((org.hl7.fhir.r4.model.AuditEvent)r4_streamed).getEntity().get(0).getQuery(), THE_BASE_64_BINARY_BYTE_ARRAY);
@@ -44,19 +44,19 @@ public class AuditEvent40_50Test {
   @Test
   @DisplayName("Test r5 -> r4 AuditEvent conversion.")
   public void testR4_R5() throws IOException {
-    InputStream r4_input = this.getClass().getResourceAsStream("/auditevent_40_with_base64binary.json");
+    InputStream r4_input = this.getClass().getResourceAsStream("/auditevent_40_with_base64binary.xml");
 
-    org.hl7.fhir.r4.model.AuditEvent r4_actual = (org.hl7.fhir.r4.model.AuditEvent) new org.hl7.fhir.r4.formats.JsonParser().parse(r4_input);
+    org.hl7.fhir.r4.model.AuditEvent r4_actual = (org.hl7.fhir.r4.model.AuditEvent) new org.hl7.fhir.r4.formats.XmlParser().parse(r4_input);
     org.hl7.fhir.r5.model.Resource r5_conv = VersionConvertorFactory_40_50.convertResource(r4_actual);
 
-    org.hl7.fhir.r5.formats.JsonParser r5_parser = new org.hl7.fhir.r5.formats.JsonParser();
+    org.hl7.fhir.r5.formats.XmlParser r5_parser = new org.hl7.fhir.r5.formats.XmlParser();
 
     ByteArrayOutputStream stream
       = new ByteArrayOutputStream();
 
     r5_parser.compose(stream, r5_conv);
 
-    org.hl7.fhir.r5.model.Resource r5_streamed = (org.hl7.fhir.r5.model.AuditEvent) new org.hl7.fhir.r5.formats.JsonParser().parse(new ByteArrayInputStream(stream.toByteArray()));
+    org.hl7.fhir.r5.model.Resource r5_streamed = (org.hl7.fhir.r5.model.AuditEvent) new org.hl7.fhir.r5.formats.XmlParser().parse(new ByteArrayInputStream(stream.toByteArray()));
 
     assertArrayEquals(((org.hl7.fhir.r5.model.AuditEvent)r5_conv).getEntity().get(0).getQuery(), THE_BASE_64_BINARY_BYTE_ARRAY);
     assertArrayEquals(((org.hl7.fhir.r5.model.AuditEvent)r5_streamed).getEntity().get(0).getQuery(), THE_BASE_64_BINARY_BYTE_ARRAY);
@@ -66,20 +66,20 @@ public class AuditEvent40_50Test {
   @Test
   @DisplayName("Test r5 -> r4 AuditEvent conversion with invalid Base64Binary.")
   public void testR4_R5BadBase64Binary() throws IOException {
-    InputStream r4_input = this.getClass().getResourceAsStream("/auditevent_40_with_invalid_base64binary.json");
+    InputStream r4_input = this.getClass().getResourceAsStream("/auditevent_40_with_invalid_base64binary.xml");
 
-    org.hl7.fhir.r4.model.AuditEvent r4_actual = (org.hl7.fhir.r4.model.AuditEvent) new org.hl7.fhir.r4.formats.JsonParser().parse(r4_input);
+    org.hl7.fhir.r4.model.AuditEvent r4_actual = (org.hl7.fhir.r4.model.AuditEvent) new org.hl7.fhir.r4.formats.XmlParser().parse(r4_input);
 
     org.hl7.fhir.r5.model.Resource r5_conv = VersionConvertorFactory_40_50.convertResource(r4_actual);
 
-    org.hl7.fhir.r5.formats.JsonParser r5_parser = new org.hl7.fhir.r5.formats.JsonParser();
+    org.hl7.fhir.r5.formats.XmlParser r5_parser = new org.hl7.fhir.r5.formats.XmlParser();
 
     ByteArrayOutputStream stream
       = new ByteArrayOutputStream();
 
     r5_parser.compose(stream, r5_conv);
 
-    org.hl7.fhir.r5.model.Resource r5_streamed = (org.hl7.fhir.r5.model.AuditEvent) new org.hl7.fhir.r5.formats.JsonParser().parse(new ByteArrayInputStream(stream.toByteArray()));
+    org.hl7.fhir.r5.model.Resource r5_streamed = (org.hl7.fhir.r5.model.AuditEvent) new org.hl7.fhir.r5.formats.XmlParser().parse(new ByteArrayInputStream(stream.toByteArray()));
 
     System.out.println(((org.hl7.fhir.r5.model.AuditEvent)r5_conv).getEntity().get(0).getQueryElement().getValueAsString());
 
