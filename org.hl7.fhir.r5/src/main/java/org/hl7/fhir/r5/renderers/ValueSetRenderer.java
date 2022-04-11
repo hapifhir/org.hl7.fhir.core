@@ -1022,7 +1022,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
     case "http://snomed.info/sct#900000000000013009":
       return "Synonym";
     default:
-      return null;
+      // As specified in http://www.hl7.org/fhir/valueset-definitions.html#ValueSet.compose.include.concept.designation.use and in http://www.hl7.org/fhir/codesystem-definitions.html#CodeSystem.concept.designation.use the terminology binding is extensible.
+      return url;
     }
   }
 
