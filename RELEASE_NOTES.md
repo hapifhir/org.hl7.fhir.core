@@ -8,4 +8,5 @@
 
 ## Other code changes
 
-* no changes
+* Improved output for unit test comparisons
+
