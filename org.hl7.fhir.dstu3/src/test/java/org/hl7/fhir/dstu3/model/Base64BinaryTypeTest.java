@@ -1,6 +1,7 @@
 package org.hl7.fhir.dstu3.model;
 
 import ca.uhn.fhir.parser.DataFormatException;
+import org.apache.commons.codec.binary.Base64;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,8 @@ class Base64BinaryTypeTest {
 
   static final String NON_BASE_64 = "Picard was the best starship captain.";
   static final String VALID_BASE_64 = "dGhpcyBpcyB2YWxpZCBiYXNlNjQ=";
+  static final byte[] VALID_BASE_64_BYTES = Base64.decodeBase64(VALID_BASE_64.getBytes(ca.uhn.fhir.rest.api.Constants.CHARSET_UTF8));
+
   @Test
   @DisplayName("Passing a non Base64 encoded String to constructor causes exception.")
   public void testNonBase64String() {
@@ -49,6 +52,15 @@ class Base64BinaryTypeTest {
   @DisplayName("Valid Base64 String creates non-null instance with non-null values.")
   public void testValid() {
     Base64BinaryType b64 = new Base64BinaryType(VALID_BASE_64);
+    Assertions.assertNotNull(b64);
+    Assertions.assertNotNull(b64.getValue());
+    Assertions.assertEquals(VALID_BASE_64, b64.asStringValue());
+  }
+
+  @Test
+  @DisplayName("Valid Base64 String creates non-null instance with non-null bytes.")
+  public void testValidBytes() {
+    Base64BinaryType b64 = new Base64BinaryType(VALID_BASE_64_BYTES);
     Assertions.assertNotNull(b64);
     Assertions.assertNotNull(b64.getValue());
     Assertions.assertEquals(VALID_BASE_64, b64.asStringValue());

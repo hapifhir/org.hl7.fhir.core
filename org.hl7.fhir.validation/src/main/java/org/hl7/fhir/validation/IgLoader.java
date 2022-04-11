@@ -69,11 +69,37 @@ public class IgLoader {
       this.isDebug = isDebug;
   }
 
+  /**
+   *
+   * @param igs
+   * @param binaries
+   * @param src Source of the IG
+   *
+   * @param recursive
+   * @throws IOException
+   * @throws FHIRException
+   *
+   * @see IgLoader#loadIgSource(String, boolean, boolean) loadIgSource for detailed description of the src parameter
+   */
   public void loadIg(List<ImplementationGuide> igs,
                      Map<String, byte[]> binaries,
                      String src,
                      boolean recursive) throws IOException, FHIRException {
-    NpmPackage npm = src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT) && !new File(src).exists() ? getPackageCacheManager().loadPackage(src, null) : null;
+
+    final String explicitFhirVersion;
+    final String srcPackage;
+    if (src.startsWith("[") && src.indexOf(']', 1) > 1) {
+      explicitFhirVersion = src.substring(1,src.indexOf(']', 1));
+      srcPackage = src.substring(src.indexOf(']',1) + 1);
+      if (VersionUtilities.isSupportedVersion(explicitFhirVersion)) {
+        throw new FHIRException("Unsupported FHIR Version: " + explicitFhirVersion + " valid versions are " + VersionUtilities.listSupportedVersions());
+      }
+    } else {
+      explicitFhirVersion = null;
+      srcPackage = src;
+    }
+
+    NpmPackage npm = srcPackage.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT) && !new File(srcPackage).exists() ? getPackageCacheManager().loadPackage(srcPackage, null) : null;
     if (npm != null) {
       for (String s : npm.dependencies()) {
         if (!getContext().getLoadedPackages().contains(s)) {
@@ -82,17 +108,17 @@ public class IgLoader {
           }
         }
       }
-      System.out.print("  Load " + src);
-      if (!src.contains("#")) {
+      System.out.print("  Load " + srcPackage);
+      if (!srcPackage.contains("#")) {
         System.out.print("#" + npm.version());
       }
       int count = getContext().loadFromPackage(npm, ValidatorUtils.loaderForVersion(npm.fhirVersion()));
       System.out.println(" - " + count + " resources (" + getContext().clock().milestone() + ")");
     } else {
-      System.out.print("  Load " + src);
+      System.out.print("  Load " + srcPackage);
       String canonical = null;
       int count = 0;
-      Map<String, byte[]> source = loadIgSource(src, recursive, true);
+      Map<String, byte[]> source = loadIgSource(srcPackage, recursive, true);
       String version = Constants.VERSION;
       if (getVersion() != null) {
         version = getVersion();
@@ -100,6 +126,10 @@ public class IgLoader {
       if (source.containsKey("version.info")) {
         version = readInfoVersion(source.get("version.info"));
       }
+      if (explicitFhirVersion != null) {
+        version = explicitFhirVersion;
+      }
+
       for (Map.Entry<String, byte[]> t : source.entrySet()) {
         String fn = t.getKey();
         if (!exemptFile(fn)) {
@@ -126,6 +156,18 @@ public class IgLoader {
     }
   }
 
+  /**
+   *
+   * @param source
+   * @param opName
+   * @param asIg
+   * @return
+   * @throws FHIRException
+   * @throws IOException
+   *
+   *    * @see IgLoader#loadIgSource(String, boolean, boolean) loadIgSource for detailed description of the src parameter
+   */
+
   public Content loadContent(String source, String opName, boolean asIg) throws FHIRException, IOException {
     Map<String, byte[]> s = loadIgSource(source, false, asIg);
     Content res = new Content();
@@ -150,18 +192,23 @@ public class IgLoader {
   }
 
   /**
-   * explore should be true if we're trying to load an -ig parameter, and false if we're loading source
    *
+   * @param src can be one of the following:
+   *      <br> - a canonical url for an ig - this will be converted to a package id and loaded into the cache
+   *      <br> - a package id for an ig - this will be loaded into the cache
+   *      <br> - a direct reference to a package ("package.tgz") - this will be extracted by the cache manager, but not put in the cache
+   *      <br> - a folder containing resources - these will be loaded directly
+   * @param recursive if true and src resolves to a folder, recursively find and load IgSources from that directory
+   * @param explore should be true if we're trying to load an -ig parameter, and false if we're loading source
+   *
+   * @return
+   * @throws FHIRException
    * @throws IOException
-   **/
+   */
   public Map<String, byte[]> loadIgSource(String src,
                                           boolean recursive,
                                           boolean explore) throws FHIRException, IOException {
-    // src can be one of the following:
-    // - a canonical url for an ig - this will be converted to a package id and loaded into the cache
-    // - a package id for an ig - this will be loaded into the cache
-    // - a direct reference to a package ("package.tgz") - this will be extracted by the cache manager, but not put in the cache
-    // - a folder containing resources - these will be loaded directly
+    //
     if (Common.isNetworkPath(src)) {
       String v = null;
       if (src.contains("|")) {
@@ -627,7 +674,7 @@ public class IgLoader {
     return Utilities.existsInList(fn, EXEMPT_FILES);
   }
 
-  private Resource loadFileWithErrorChecking(String version, Map.Entry<String, byte[]> t, String fn) {
+  protected Resource loadFileWithErrorChecking(String version, Map.Entry<String, byte[]> t, String fn) {
     log("* load file: " + fn);
     Resource r = null;
     try {

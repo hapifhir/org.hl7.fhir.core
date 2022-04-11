@@ -266,6 +266,19 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     }
   }
 
+  /**
+   *
+   * @param src
+   * @param recursive
+   * @param terminologyCachePath
+   * @param userAgent
+   * @param tt
+   * @param loggingService
+   * @throws FHIRException
+   * @throws IOException
+   *
+   * @see IgLoader#loadIgSource(String, boolean, boolean) loadIgSource for detailed description of the src parameter
+   */
   private void loadCoreDefinitions(String src, boolean recursive, String terminologyCachePath, String userAgent, TimeTracker tt, IWorkerContext.ILoggingService loggingService) throws FHIRException, IOException {
     NpmPackage npm = getPcm().loadPackage(src, null);
     if (npm != null) {
