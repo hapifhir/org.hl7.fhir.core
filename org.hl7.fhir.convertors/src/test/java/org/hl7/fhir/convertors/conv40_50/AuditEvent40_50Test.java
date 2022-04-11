@@ -19,7 +19,7 @@ public class AuditEvent40_50Test {
   public static final byte[] THE_BASE_64_BINARY_BYTE_ARRAY = Base64.decodeBase64(THE_BASE_64_BINARY_STRING.getBytes(ca.uhn.fhir.rest.api.Constants.CHARSET_UTF8));
 
   public static final String INVALID_BASE_64_BINARY_STRING = "Picard was the best starship captain";
-  public static final byte[] INVALID_BASE_64_BINARY_BYTE_ARRAY = Base64.decodeBase64(THE_BASE_64_BINARY_STRING.getBytes(ca.uhn.fhir.rest.api.Constants.CHARSET_UTF8));
+  public static final byte[] INVALID_BASE_64_BINARY_BYTE_ARRAY = Base64.decodeBase64(INVALID_BASE_64_BINARY_STRING.getBytes(ca.uhn.fhir.rest.api.Constants.CHARSET_UTF8));
 
 
   @Test
