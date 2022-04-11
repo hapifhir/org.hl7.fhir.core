@@ -90,6 +90,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
@@ -2245,4 +2246,23 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       txClient.setUserAgent(userAgent);
   }
 
+  public List<String> getCanonicalResourceNames() {
+    List<String> names = new ArrayList<>();
+    for (StructureDefinition sd : allStructures()) {
+      if (sd.getKind() == StructureDefinitionKind.RESOURCE && !sd.getAbstract() && hasUrlProperty(sd)) {
+        names.add(sd.getType());
+      }
+    }
+    return names;
+  }
+
+  private boolean hasUrlProperty(StructureDefinition sd) {
+    for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+      if (ed.getPath().equals(sd.getType()+".url")) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
 }
