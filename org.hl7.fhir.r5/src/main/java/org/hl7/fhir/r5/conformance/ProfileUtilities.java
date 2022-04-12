@@ -4759,7 +4759,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               c.addMarkdownNoPara(PublicationHacker.fixBindingDescriptions(context, binding.getDescriptionElement()).asStringValue(), checkForNoChange(PublicationHacker.fixBindingDescriptions(context, binding.getDescriptionElement())));
             } 
 
-            AdditionalBindingsRenderer abr = new AdditionalBindingsRenderer(pkp, gen, c, corePath, profile, definition.getPath(), rc);
+            AdditionalBindingsRenderer abr = new AdditionalBindingsRenderer(pkp, corePath, profile, definition.getPath(), rc, null);
             if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET)) {
               abr.seeMaxBinding(ToolingExtensions.getExtension(binding, ToolingExtensions.EXT_MAX_VALUESET));
             }
@@ -4769,7 +4769,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             if (binding.hasExtension(ToolingExtensions.EXT_BINDING_ADDITIONAL)) {
               abr.seeAdditionalBindings(binding.getExtensionsByUrl(ToolingExtensions.EXT_BINDING_ADDITIONAL));
             }
-            abr.render();
+            abr.render(gen, c);
           }
           for (ElementDefinitionConstraintComponent inv : definition.getConstraint()) {
             if (!inv.hasSource() || profile == null || inv.getSource().equals(profile.getUrl()) || allInvariants) {
