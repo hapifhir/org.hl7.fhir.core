@@ -852,6 +852,20 @@ public class XhtmlNode implements IBaseXhtml {
    }        
   }
 
+  public void innerHTML(String html) throws IOException {
+    if (html != null) {
+       XhtmlParser p = new XhtmlParser();
+       XhtmlNode m;
+       try {
+         m = p.parse("<div>"+html+"</div>", "div");
+       } catch (org.hl7.fhir.exceptions.FHIRFormatError e) {
+         throw new FHIRFormatError(e.getMessage(), e);
+       }
+       getChildNodes().addAll(m.getChildNodes());
+    }        
+   }
+
+
 
   public XhtmlNode sep(String separator) {
     // if there's already text, add the separator. otherwise, we'll add it next time

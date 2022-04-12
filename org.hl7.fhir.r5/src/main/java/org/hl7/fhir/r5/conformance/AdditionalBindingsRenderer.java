@@ -13,13 +13,16 @@ import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.renderers.DataRenderer;
+import org.hl7.fhir.r5.renderers.IMarkdownProcessor;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.utils.PublicationHacker;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 import org.hl7.fhir.utilities.xhtml.NodeType;
+import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class AdditionalBindingsRenderer {
@@ -34,21 +37,19 @@ public class AdditionalBindingsRenderer {
 
   private List<AdditionalBindingDetail> bindings = new ArrayList<>();
   private ProfileKnowledgeProvider pkp;
-  private HierarchicalTableGenerator gen;
-  private Cell c;
   private String corePath;
   private StructureDefinition profile;
   private String path;
   private RenderingContext context;
+  private IMarkdownProcessor md;
 
-  public AdditionalBindingsRenderer(ProfileKnowledgeProvider pkp, HierarchicalTableGenerator gen, Cell c, String corePath, StructureDefinition profile, String path, RenderingContext context) {
+  public AdditionalBindingsRenderer(ProfileKnowledgeProvider pkp, String corePath, StructureDefinition profile, String path, RenderingContext context, IMarkdownProcessor md) {
     this.pkp = pkp;
-    this.gen = gen;
-    this.c = c;
     this.corePath = corePath;
     this.profile = profile;
     this.path = path;
     this.context = context;
+    this.md = md;
   }
 
   public void seeMaxBinding(Extension ext) {    
@@ -80,24 +81,40 @@ public class AdditionalBindingsRenderer {
     }
   }  
 
-  public void render() throws FHIRFormatError, DefinitionException, IOException {
+  public String render() throws IOException {
+    if (bindings.isEmpty()) {
+      return "";
+    } else {
+      XhtmlNode tbl = new XhtmlNode(NodeType.Element, "table");
+      tbl.attribute("class", "grid");
+      render(tbl.getChildNodes(), true);
+      return new XhtmlComposer(false).compose(tbl);
+    }
+  }
+
+  public void render(HierarchicalTableGenerator gen, Cell c) throws FHIRFormatError, DefinitionException, IOException {
     if (bindings.isEmpty()) {
       return;
+    } else {
+      Piece piece = gen.new Piece("table").attr("class", "grid");
+      c.getPieces().add(piece);
+      render(piece.getChildren(), false);
     }
-    //    boolean doco = false;
+  }
+  
+  private void render(List<XhtmlNode> children, boolean doDoco) throws FHIRFormatError, DefinitionException, IOException {
+    boolean doco = false;
     boolean usage = false;
     boolean any = false;
     for (AdditionalBindingDetail binding : bindings) {
-      //      doco = doco || binding.doco != null;
+      doco = doco || (doDoco && binding.doco != null);
       usage = usage || binding.usage != null;
       any = any || binding.any;
     }
 
-    Piece piece = gen.new Piece("table").attr("class", "grid");
-    c.getPieces().add(piece); 
 
     XhtmlNode tr = new XhtmlNode(NodeType.Element, "tr");
-    piece.getChildren().add(tr);
+    children.add(tr);
     tr.td().style("font-size: 11px").b().tx("Additional Bindings");
     tr.td().style("font-size: 11px").tx("Purpose");
     if (usage) {
@@ -106,12 +123,15 @@ public class AdditionalBindingsRenderer {
     if (any) {
       tr.td().style("font-size: 11px").tx("Any");
     }
+    if (doco) {
+      tr.td().style("font-size: 11px").tx("Documentation");
+    }
     for (AdditionalBindingDetail binding : bindings) {
       tr =  new XhtmlNode(NodeType.Element, "tr");
       if (binding.unchanged) {
         tr.style("opacity: 0.5");
       }
-      piece.getChildren().add(tr);
+      children.add(tr);
       BindingResolution br = pkp == null ? makeNullBr(binding) : pkp.resolveBinding(profile, binding.valueSet, path);
 
       if (br.url != null) {
@@ -132,6 +152,14 @@ public class AdditionalBindingsRenderer {
           tr.td().style("font-size: 11px").tx("Any repeat");
         } else {
           tr.td().style("font-size: 11px").tx("All repeats");
+        }
+      }
+      if (doco) {
+        if (binding.doco != null) {
+          String d = md.processMarkdown("Binding.description", binding.doco);          
+          tr.td().style("font-size: 11px").innerHTML(d);
+        } else {
+          tr.td().style("font-size: 11px");
         }
       }
     }
@@ -174,5 +202,6 @@ public class AdditionalBindingsRenderer {
     br.display = "todo";
     return br;
   }
+
 
 }
