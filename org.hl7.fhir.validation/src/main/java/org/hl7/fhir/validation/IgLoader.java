@@ -88,10 +88,10 @@ public class IgLoader {
 
     final String explicitFhirVersion;
     final String srcPackage;
-    if (src.startsWith("[") && src.indexOf(']', 1) > 1) {
-      explicitFhirVersion = src.substring(1,src.indexOf(']', 1));
-      srcPackage = src.substring(src.indexOf(']',1) + 1);
-      if (VersionUtilities.isSupportedVersion(explicitFhirVersion)) {
+    if (PackageArgUtil.hasExplicitFhirVersion(src)) {
+      explicitFhirVersion = PackageArgUtil.getExplicitFhirVersion(src);
+      srcPackage = PackageArgUtil.getPackageForExplicitFhirVersion(src);
+      if (!VersionUtilities.isSupportedVersion(explicitFhirVersion)) {
         throw new FHIRException("Unsupported FHIR Version: " + explicitFhirVersion + " valid versions are " + VersionUtilities.listSupportedVersions());
       }
     } else {
@@ -253,7 +253,8 @@ public class IgLoader {
   public void scanForIgVersion(String src,
                                boolean recursive,
                                VersionSourceInformation versions) throws Exception {
-    Map<String, byte[]> source = loadIgSourceForVersion(src, recursive, true, versions);
+    final String packageSrc = PackageArgUtil.hasExplicitFhirVersion(src) ? PackageArgUtil.getPackageForExplicitFhirVersion(src) : src;
+    Map<String, byte[]> source = loadIgSourceForVersion(packageSrc, recursive, true, versions);
     if (source != null && source.containsKey("version.info"))
       versions.see(readInfoVersion(source.get("version.info")), "version.info in " + src);
   }
