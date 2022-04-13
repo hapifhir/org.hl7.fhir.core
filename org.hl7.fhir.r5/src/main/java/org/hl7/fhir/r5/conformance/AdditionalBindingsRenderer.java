@@ -176,7 +176,7 @@ public class AdditionalBindingsRenderer {
     case "conformance" :
       td.ah(corePath+"terminologies.html#strength", "Validators will check this binding (strength = required)").tx("Validation Criteria");
       break;
-    case "required" :
+    case "current" :
       td.span(null, "New records are required to use this value set, but legacy records may use other codes").tx("Required");
       break;
     case "recommended" :
