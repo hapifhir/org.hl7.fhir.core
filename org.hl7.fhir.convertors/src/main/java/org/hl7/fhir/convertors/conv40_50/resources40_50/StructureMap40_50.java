@@ -11,6 +11,7 @@ import org.hl7.fhir.r4.model.StructureMap.StructureMapGroupTypeMode;
 import org.hl7.fhir.r4.utils.ToolingExtensions;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent;
+import org.hl7.fhir.r5.utils.FHIRPathConstant;
 import org.hl7.fhir.utilities.Utilities;
 
 import java.util.stream.Collectors;
@@ -811,9 +812,9 @@ public class StructureMap40_50 {
 
   public static org.hl7.fhir.r5.model.DataType convertVariableStringToGuessedParameterDataType(org.hl7.fhir.r4.model.StringType it) {
     final String stringValue = it.asStringValue();
-    if (!Utilities.isConstant(stringValue)) {
+    if (!FHIRPathConstant.isFHIRPathConstant(stringValue)) {
       return new IdType(stringValue);
-    } else if (Utilities.isStringConstant(stringValue))
+    } else if (FHIRPathConstant.isFHIRPathStringConstant(stringValue))
       return new StringType(stringValue);
     else {
       return convertVariableStringToGuessedParameterConstantType(stringValue);
