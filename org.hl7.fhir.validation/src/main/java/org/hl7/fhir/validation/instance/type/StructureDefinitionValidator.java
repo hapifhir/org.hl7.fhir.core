@@ -165,6 +165,9 @@ public class StructureDefinitionValidator extends BaseValidator {
     // in a snapshot, we validate that fixedValue, pattern, and defaultValue, if present, are all of the right type
     if (snapshot && (element.getIdBase() != null) && (element.getIdBase().contains("."))) {
       if (rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), !typeCodes.isEmpty() || element.hasChild("contentReference"), I18nConstants.SD_NO_TYPES_OR_CONTENTREF, element.getIdBase())) {     
+        // if we see fixed[x] or pattern[x] applied to a repeating element, we'll give the user a hint
+        boolean repeating = !Utilities.existsInList(element.getChildValue("max"), "0", "1");
+        
         Element v = element.getNamedChild("defaultValue");
         if (v != null) {
           rule(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), typeCodes.contains(v.fhirType()), I18nConstants.SD_VALUE_TYPE_IILEGAL, element.getIdBase(), "defaultValue", v.fhirType(), typeCodes);
@@ -172,13 +175,29 @@ public class StructureDefinitionValidator extends BaseValidator {
         v = element.getNamedChild("fixed");
         if (v != null) {
           rule(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), typeCodes.contains(v.fhirType()), I18nConstants.SD_VALUE_TYPE_IILEGAL, element.getIdBase(), "fixed", v.fhirType(), typeCodes);
+          hint(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), !repeating, I18nConstants.SD_VALUE_TYPE_REPEAT_HINT, element.getIdBase(), "fixed");
+          if (isPrimitiveType(v.fhirType())) {
+            warning(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), !repeating, I18nConstants.SD_VALUE_TYPE_REPEAT_WARNING_DOTNET, element.getIdBase(), "fixed");
+          }          
         }
         v = element.getNamedChild("pattern");
         if (v != null) {
           rule(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), typeCodes.contains(v.fhirType()), I18nConstants.SD_VALUE_TYPE_IILEGAL, element.getIdBase(), "pattern", v.fhirType(), typeCodes);
+          hint(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), !repeating, I18nConstants.SD_VALUE_TYPE_REPEAT_HINT, element.getIdBase(), "pattern");
+          if (isPrimitiveType(v.fhirType())) {
+            warning(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), !repeating, I18nConstants.SD_VALUE_TYPE_REPEAT_WARNING_DOTNET, element.getIdBase(), "pattern");
+          }
         }
       }
+      // if we see fixed[x] or pattern[x] applied to a repeating element, we'll give the user a hint
+      
     }
+  }
+
+  
+  private boolean isPrimitiveType(String fhirType) {
+    StructureDefinition sd = context.fetchTypeDefinition(fhirType);
+    return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
   }
 
   private String boundType(Set<String> typeCodes) {
@@ -355,7 +374,7 @@ public class StructureDefinitionValidator extends BaseValidator {
   private void validateTargetProfile(List<ValidationMessage> errors, Element profile, String code, NodeStack stack, String path) {
     String p = profile.primitiveValue();
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, p);
-    if (code.equals("Reference")) {
+    if (code.equals("Reference") || code.equals("CodeableReference")) {
       if (warning(errors, IssueType.EXCEPTION, stack.getLiteralPath(), sd != null, I18nConstants.SD_ED_TYPE_PROFILE_UNKNOWN, p)) {
         StructureDefinition t = determineBaseType(sd);
         if (t == null) {

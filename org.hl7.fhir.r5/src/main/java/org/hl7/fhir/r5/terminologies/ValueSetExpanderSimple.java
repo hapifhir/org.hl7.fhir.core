@@ -225,7 +225,15 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
 
     if (expParams.getParameterBool("includeDesignations") && designations != null) {
       for (ConceptDefinitionDesignationComponent t : designations) {
-        ToolingExtensions.addLanguageTranslation(n, t.getLanguage(), t.getValue());
+        if (t.getLanguage() != null || t.getValue() != null) {
+          ConceptReferenceDesignationComponent d = n.addDesignation();
+          if (t.getLanguage() != null) {
+            d.setLanguage(t.getLanguage().trim());
+          }
+          if (t.getValue() != null) {
+            d.setValue(t.getValue().trim());
+          }
+        }
       }
     }
     ConceptDefinitionDesignationComponent t = expParams.hasLanguage() ? getMatchingLang(designations, expParams.getLanguage()) : null;
