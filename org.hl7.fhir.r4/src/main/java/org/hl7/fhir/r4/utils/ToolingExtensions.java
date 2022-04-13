@@ -69,28 +69,11 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.fhir.ucum.Utilities;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.model.BooleanType;
-import org.hl7.fhir.r4.model.CanonicalType;
+import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.r4.model.CodeType;
-import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.DomainResource;
-import org.hl7.fhir.r4.model.Element;
-import org.hl7.fhir.r4.model.ElementDefinition;
-import org.hl7.fhir.r4.model.Extension;
-import org.hl7.fhir.r4.model.ExtensionHelper;
-import org.hl7.fhir.r4.model.Factory;
-import org.hl7.fhir.r4.model.Identifier;
-import org.hl7.fhir.r4.model.IntegerType;
-import org.hl7.fhir.r4.model.MarkdownType;
 import org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.r4.model.PrimitiveType;
 import org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemComponent;
 import org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType;
-import org.hl7.fhir.r4.model.StringType;
-import org.hl7.fhir.r4.model.Type;
-import org.hl7.fhir.r4.model.UriType;
 import org.hl7.fhir.r4.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r4.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.utilities.StandardsStatus;
@@ -174,6 +157,10 @@ public class ToolingExtensions {
   public static final String EXT_XML_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-xml-type";
   public static final String EXT_JSON_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type";
 
+  public static final String EXT_ORIGINAL_ITEM_TYPE = "http://hl7.org/fhir/tools/StructureDefinition/original-item-type";
+  public static final String EXT_ORIGINAL_ELEMENT_TYPE = "http://hl7.org/fhir/tools/StructureDefinition/original-item-type";
+
+
   // specific extension helpers
 
   public static Extension makeIssueSource(Source source) {
@@ -242,6 +229,14 @@ public class ToolingExtensions {
       else
         e.getExtension().add(Factory.newExtension(url, new StringType(content), true));   
     }
+  }
+
+  public static void addUrlExtension(Element e, String url, String value) {
+    Extension ex = getExtension(e, url);
+    if (ex != null)
+      ex.setValue(new UrlType(value));
+    else
+      e.getExtension().add(Factory.newExtension(url, new UrlType(value), true));
   }
 
   public static void addUriExtension(Element e, String url, String uri) {

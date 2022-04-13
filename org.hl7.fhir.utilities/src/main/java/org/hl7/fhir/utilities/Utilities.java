@@ -104,7 +104,6 @@ public class Utilities {
     return inf.pluralize(word);
   }
 
-
   public static boolean isInteger(String string) {
     if (isBlank(string)) {
       return false;
