@@ -1,6 +1,7 @@
 package org.hl7.fhir.r4b.test;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -54,7 +55,7 @@ public class ParsingTests {
     String src = new String(b);
     Resource r = new JsonParser().parse(b);
     b = new XmlParser().composeBytes(r);
-    TextFile.bytesToFile(b, "c:\\temp\\test.xml");
+    TextFile.bytesToFile(b, Paths.get(System.getProperty("java.io.tmpdir"),"test.xml").toAbsolutePath().toString());
     r = new XmlParser().parse(b);
     b = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeBytes(r);
     String output = new String(b);
