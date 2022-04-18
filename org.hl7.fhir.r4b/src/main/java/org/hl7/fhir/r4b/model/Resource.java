@@ -126,7 +126,12 @@ public abstract class Resource extends BaseResource implements IAnyResource {
       return this.id == null ? null : this.id.getValue();
     }
 
-    /**
+  public String getIdPart() {
+    return getIdElement().getIdPart();
+  }
+
+
+  /**
      * @param value The logical id of the resource, as used in the URL for the resource. Once assigned, this value never changes.
      */
     public Resource setId(String value) { 

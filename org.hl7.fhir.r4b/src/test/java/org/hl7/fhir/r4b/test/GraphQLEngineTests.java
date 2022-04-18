@@ -24,12 +24,11 @@ import org.hl7.fhir.r4b.test.utils.TestingUtilities;
 import org.hl7.fhir.r4b.utils.GraphQLEngine;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.graphql.Argument;
-import org.hl7.fhir.utilities.graphql.IGraphQLStorageServices;
-import org.hl7.fhir.utilities.graphql.NameValue;
-import org.hl7.fhir.utilities.graphql.Parser;
+import org.hl7.fhir.utilities.graphql.*;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -65,10 +64,15 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
         stream = TestingUtilities.loadTestResourceStream("r4b", parts[0].toLowerCase()+"-"+parts[1].toLowerCase()+".xml");
     }
 
+    Resource parsedResource =  stream != null ? new XmlParser().parse(stream) : null;
+
+    testResource(parsedResource, output, source, operation);
+  }
+
+  private void testResource(Resource resource, String output, String source, String operation) throws IOException, EGraphEngine, EGraphQLException {
     GraphQLEngine gql = new GraphQLEngine(TestingUtilities.context());
     gql.setServices(this);
-    if (stream != null)
-      gql.setFocus(new XmlParser().parse(stream));
+    gql.setFocus(resource);
     gql.setGraphQL(Parser.parse(TestingUtilities.loadTestResource("r4b", "graphql", source)));
     gql.getGraphQL().setOperationName(operation);
     gql.getGraphQL().getVariables().add(new Argument("var", new NameValue("true")));
@@ -85,17 +89,33 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
     }
     if (ok) {
       Assertions.assertTrue(!output.equals("$error"), "Expected to fail, but didn't");
-      StringBuilder str = new StringBuilder();
+      StringBuilder actualStringBuilder = new StringBuilder();
       gql.getOutput().setWriteWrapper(false);
-      gql.getOutput().write(str, 0);
+      gql.getOutput().write(actualStringBuilder, 0);
       IOUtils.copy(TestingUtilities.loadTestResourceStream("r4b", "graphql", source), new FileOutputStream(TestingUtilities.tempFile("graphql", source)));
       IOUtils.copy(TestingUtilities.loadTestResourceStream("r4b", "graphql", output), new FileOutputStream(TestingUtilities.tempFile("graphql", output)));
-      TextFile.stringToFile(str.toString(), TestingUtilities.tempFile("graphql", output+".out"));
+      TextFile.stringToFile(actualStringBuilder.toString(), TestingUtilities.tempFile("graphql", output+".out"));
       msg = TestingUtilities.checkJsonIsSame(TestingUtilities.tempFile("graphql", output+".out"), TestingUtilities.tempFile("graphql", output));
       Assertions.assertTrue(Utilities.noString(msg), msg);
     }
     else
       Assertions.assertTrue(output.equals("$error"), "Error, but proper output was expected ("+msg+")");
+  }
+
+  @Test
+  public void testHistory() throws Exception {
+    String context = "Patient/example/$graphql";
+    String source = "reference-reverse.gql";
+    String output="reference-reverse-history.json";
+
+    String[] parts = context.split("/");
+    InputStream stream  = TestingUtilities.loadTestResourceStream("r4b", parts[0].toLowerCase()+"-"+parts[1].toLowerCase()+".xml");
+
+    Resource parsedResource = new XmlParser().parse(stream);
+
+    parsedResource.setId("example/_history/1");
+
+    testResource(parsedResource, output, source, null);
   }
 
   @Override
@@ -136,7 +156,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
   @Override
   public void listResources(Object appInfo, String type, List<Argument> searchParams, List<IBaseResource> matches) throws FHIRException {
     try {
-      if (type.equals("Condition")) 
+      if (type.equals("Condition") && searchParams.get(0).hasValue("Patient/example"))
         matches.add(new XmlParser().parse(TestingUtilities.loadTestResourceStream("r4b", "condition-example.xml")));
       else if (type.equals("Patient")) {
         matches.add(new XmlParser().parse(TestingUtilities.loadTestResourceStream("r4b", "patient-example.xml")));
