@@ -140,7 +140,11 @@ public abstract class Resource extends BaseResource implements IAnyResource {
       return this;
     }
 
-    public String getIdPart() {
+  /**
+   * @return  the logical ID part of this resource's id
+   * @see IdType#getIdPart()
+   */
+  public String getIdPart() {
       return getIdElement().getIdPart();
     }
 
