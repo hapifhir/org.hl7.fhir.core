@@ -38,6 +38,7 @@ import org.hl7.fhir.dstu3.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.dstu3.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.dstu3.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -78,9 +79,9 @@ public class ICPC2Importer {
   public static void main(String[] args) {
     try {
       ICPC2Importer r = new ICPC2Importer();
-      r.setSourceFileName("c:\\temp\\ICPC-2e-v5.0.xml");
-      r.setTargetFileNameCS("C:\\temp\\icpc2.xml");
-      r.setTargetFileNameVS("C:\\temp\\icpc2-vs.xml");
+      r.setSourceFileName(Utilities.path("[tmp]", "ICPC-2e-v5.0.xml"));
+      r.setTargetFileNameCS(Utilities.path("[tmp]", "icpc2.xml"));
+      r.setTargetFileNameVS(Utilities.path("[tmp]", "icpc2-vs.xml"));
       r.go();
       System.out.println("Completed OK");
     } catch (Exception e) {

@@ -121,7 +121,7 @@ public class ISO21090Importer {
       addParentProperties(sd.getSnapshot().getElement(), dt.getName(), dt.getParent(), false, true);
     produceProperties(sd.getSnapshot().getElement(), dt.getName(), dt.getProperties(), false, true);
     ed.getBase().setPath(ed.getPath()).setMin(ed.getMin()).setMax(ed.getMax());
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("c:\\temp\\iso21090\\StructureDefinition-" + dt.getName() + ".xml"), sd);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "iso21090\\StructureDefinition-" + dt.getName() + ".xml")), sd);
   }
 
   private void addParentProperties(List<ElementDefinition> elements, String name, String parent, boolean attrMode, boolean snapshot) throws FHIRFormatError {
@@ -172,7 +172,7 @@ public class ISO21090Importer {
     for (String code : evs.getCodes()) {
       inc.addConcept().setCode(code);
     }
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("c:\\temp\\iso21090\\ValueSet-" + evs.getName() + ".xml"), vs);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "iso21090\\ValueSet-" + evs.getName() + ".xml")), vs);
   }
 
   private void processDataTypes() {

@@ -50,6 +50,7 @@ import org.hl7.fhir.dstu2016may.model.DateTimeType;
 import org.hl7.fhir.dstu2016may.model.Enumerations.ConformanceResourceStatus;
 import org.hl7.fhir.dstu2016may.model.Identifier;
 import org.hl7.fhir.dstu2016may.model.ValueSet;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -67,9 +68,9 @@ public class ICPC2Importer {
   public static void main(String[] args) {
     try {
       ICPC2Importer r = new ICPC2Importer();
-      r.setSourceFileName("c:\\temp\\ICPC-2e-v5.0.xml");
-      r.setTargetFileNameCS("C:\\temp\\icpc2.xml");
-      r.setTargetFileNameVS("C:\\temp\\icpc2-vs.xml");
+      r.setSourceFileName(Utilities.path("[tmp]", "ICPC-2e-v5.0.xml"));
+      r.setTargetFileNameCS(Utilities.path("[tmp]", "icpc2.xml"));
+      r.setTargetFileNameVS(Utilities.path("[tmp]", "icpc2-vs.xml"));
       r.go();
       System.out.println("Completed OK");
     } catch (Exception e) {

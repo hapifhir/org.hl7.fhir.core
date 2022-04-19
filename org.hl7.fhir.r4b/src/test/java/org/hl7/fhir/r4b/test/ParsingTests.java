@@ -14,6 +14,7 @@ import org.hl7.fhir.r4b.formats.XmlParser;
 import org.hl7.fhir.r4b.model.Resource;
 import org.hl7.fhir.r4b.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
@@ -54,7 +55,7 @@ public class ParsingTests {
     String src = new String(b);
     Resource r = new JsonParser().parse(b);
     b = new XmlParser().composeBytes(r);
-    TextFile.bytesToFile(b, "c:\\temp\\test.xml");
+    TextFile.bytesToFile(b, Utilities.path("[tmp]", "test.xml"));
     r = new XmlParser().parse(b);
     b = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeBytes(r);
     String output = new String(b);

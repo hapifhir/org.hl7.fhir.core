@@ -105,7 +105,7 @@ public class CKMImporter {
     Document sxml = loadXml(ckm + "/services/ArchetypeFinderBean/getArchetypeInXML?archetypeId=" + id);
     Element e = XMLUtil.getFirstChild(sxml.getDocumentElement());
 
-    String src = Utilities.path("c:\\temp", id + ".xml");
+    String src = Utilities.path(Utilities.path("[tmp]"), id + ".xml");
     TextFile.stringToFile(e.getTextContent(), src);
   }
 
@@ -113,7 +113,7 @@ public class CKMImporter {
     System.out.println("Process " + id);
 
     String cfg = info == null ? null : Utilities.path(info, id + ".config");
-    String src = Utilities.path("c:\\temp", id + ".xml");
+    String src = Utilities.path(Utilities.path("[tmp]"), id + ".xml");
     String dst = Utilities.path(dest, id + ".xml");
 
     if (!new File(src).exists())
