@@ -70,7 +70,6 @@ import org.xmlpull.v1.XmlPullParserException;
  */
 public class LoincToDEConvertor {
 
-	// C:\temp\LOINC.xml
 	public static void main(String[] args) throws FHIRFormatError, IOException, XmlPullParserException, SAXException, ParserConfigurationException {
 		if (args.length == 0) {
 			System.out.println("FHIR LOINC to CDE convertor. ");

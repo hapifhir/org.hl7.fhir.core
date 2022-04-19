@@ -97,9 +97,9 @@ public class RoundTripTest {
 	}
 
 	int i = 0;
-	private String makeTempFilename() {
+	private String makeTempFilename() throws IOException {
 		i++;
-  	return "c:\\temp\\fhirtests\\"+Integer.toString(i)+".tmp";
+  	return Utilities.path("[tmp]", "fhirtests\\"+Integer.toString(i)+".tmp");
 	}
 
 }

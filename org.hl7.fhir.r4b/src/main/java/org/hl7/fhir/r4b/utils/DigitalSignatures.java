@@ -60,6 +60,7 @@ import javax.xml.crypto.dsig.spec.TransformParameterSpec;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.XmlGenerator;
 import org.w3c.dom.Document;
 
@@ -114,7 +115,7 @@ public class DigitalSignatures {
     XMLSignature signature = fac.newXMLSignature(si, ki); 
     signature.sign(dsc);
     
-    OutputStream os = new FileOutputStream("c:\\temp\\java-digsig.xml");
+    OutputStream os = new FileOutputStream(Utilities.path("[tmp]", "java-digsig.xml"));
     new XmlGenerator().generate(doc.getDocumentElement(), os);
   }
 }

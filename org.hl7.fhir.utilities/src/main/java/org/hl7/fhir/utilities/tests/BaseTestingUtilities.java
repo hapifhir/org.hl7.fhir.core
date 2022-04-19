@@ -108,21 +108,8 @@ public class BaseTestingUtilities {
   }
 
   public static String tempFolder(String name) throws IOException {
-    File tmp = new File("C:\\temp");
-    if (tmp.exists() && tmp.isDirectory()) {
-      String path = Utilities.path("C:\\temp", name);
-      Utilities.createDirectory(path);
-      return path;
-    } else if (ToolGlobalSettings.hasTempPath()) {
-      return ToolGlobalSettings.getTempPath();
-    } else if (new File("/tmp").exists()) {
-      String path = Utilities.path("/tmp", name);
-      Utilities.createDirectory(path);
-      return path;
-    } else {
-      String path = Utilities.path(System.getProperty("java.io.tmpdir"), name);
-      Utilities.createDirectory(path);
-      return path;
-    }
+    String path = ToolGlobalSettings.hasTempPath() ? ToolGlobalSettings.getTempPath() : Utilities.path("[tmp]", name);
+    Utilities.createDirectory(path);
+    return path;
   }
 }

@@ -3,6 +3,7 @@ package org.hl7.fhir.dstu2016may.test;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 import org.hl7.fhir.dstu2016may.formats.IParser.OutputStyle;
 import org.hl7.fhir.dstu2016may.metamodel.Element;
@@ -89,9 +90,9 @@ public class ParserTests {
 	}
 
 	int i = 0;
-	private String makeTempFilename() {
+	private String makeTempFilename() throws IOException {
 		i++;
-  	return "c:\\temp\\fhirtests\\"+Integer.toString(i)+".tmp";
+  	return Utilities.path("[tmp]", "fhirtests\\"+Integer.toString(i)+".tmp");
 	}
 
 }

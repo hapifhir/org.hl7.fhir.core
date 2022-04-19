@@ -6,6 +6,7 @@ import org.hl7.fhir.dstu2016may.utils.EOperationOutcome;
 import org.hl7.fhir.dstu2016may.utils.NarrativeGenerator;
 import org.hl7.fhir.dstu2016may.utils.SimpleWorkerContext;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.Utilities;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -38,7 +39,7 @@ public class NarrativeGeneratorTests {
     XmlParser p = new XmlParser();
     DomainResource r = (DomainResource) p.parse(new FileInputStream(path));
     gen.generate(r);
-    FileOutputStream s = new FileOutputStream("c:\\temp\\gen.xml");
+    FileOutputStream s = new FileOutputStream(Utilities.path("[tmp]", "gen.xml"));
     new XmlParser().compose(s, r, true);
     s.close();
   }

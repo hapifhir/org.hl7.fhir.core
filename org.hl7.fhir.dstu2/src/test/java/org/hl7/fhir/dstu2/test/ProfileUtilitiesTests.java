@@ -44,7 +44,7 @@ public class ProfileUtilitiesTests {
     // new ProfileUtilitiesTests().execute(args);
     new ProfileUtilitiesTests("C:\\work\\org.hl7.fhir\\build\\publish").testSnapshotGeneration();
     //    StructureDefinition p = (StructureDefinition) new XmlParser().parse(new FileInputStream("C:\\work\\org.hl7.fhir\\build\\publish\\lipid-report-cholesterol.profile.xml"));
-    //    new ProfileUtilities(context, messages, null).generateSchematrons(new FileOutputStream("c:\\temp\\test.sch"), p);
+    //    new ProfileUtilities(context, messages, null).generateSchematrons(new FileOutputStream(Utilities.path("[tmp]", "test.sch"), p);
   }
   
   public void execute(String[] args) throws FileNotFoundException, IOException, FHIRException {
@@ -74,9 +74,9 @@ public class ProfileUtilitiesTests {
     System.out.println("processing output");
     for (ProfileComparison outcome : comp.getComparisons()) { 
       if (outcome.getSubset() != null)
-        new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("C:\\temp\\intersection-"+outcome.getId()+".xml"), outcome.getSubset());
+        new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "intersection-"+outcome.getId()+".xml")), outcome.getSubset());
       if (outcome.getSuperset() != null)
-        new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("C:\\temp\\union-"+outcome.getId()+".xml"), outcome.getSuperset());
+        new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "union-"+outcome.getId()+".xml")), outcome.getSuperset());
     
       System.out.println("\r\n"+outcome.getId()+": Comparison of "+outcome.getLeft().getUrl()+" and "+outcome.getRight().getUrl());
       for (ValidationMessage vm : outcome.getMessages())
@@ -870,7 +870,7 @@ public class ProfileUtilitiesTests {
     command.add("\"" + diff + "\" \"" + f1 + "\" \"" + f2 + "\"");
 
     ProcessBuilder builder = new ProcessBuilder(command);
-    builder.directory(new CSFile("c:\\temp"));
+    builder.directory(new CSFile(Utilities.path("[tmp]")));
     builder.start();
 
   }

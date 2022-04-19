@@ -56,7 +56,7 @@ public class NUCCConvertor {
   }
 
   public void execute() throws IOException, FHIRException {
-    CSVReader csv = new CSVReader(new FileInputStream("c:\\temp\\nucc.csv"));
+    CSVReader csv = new CSVReader(new FileInputStream(Utilities.path("[tmp]", "nucc.csv")));
     CodeSystem cs = new CodeSystem();
     cs.setId("nucc-provider-taxonomy");
     cs.setUrl("http://nucc.org/provider-taxonomy");
@@ -79,7 +79,7 @@ public class NUCCConvertor {
     }
     csv.close();
     cs.sort();
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("c:\\temp\\nucc.json"), cs);
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "nucc.json")), cs);
   }
 
   private void processLine(CodeSystem cs, String[] values) throws FHIRFormatError {
