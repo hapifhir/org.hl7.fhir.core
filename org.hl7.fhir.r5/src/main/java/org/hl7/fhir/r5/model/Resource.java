@@ -140,6 +140,10 @@ public abstract class Resource extends BaseResource implements IAnyResource {
       return this;
     }
 
+  public String getIdPart() {
+    return getIdElement().getIdPart();
+  }
+
     /**
      * @return {@link #meta} (The metadata about the resource. This is content that is maintained by the infrastructure. Changes to the content might not always be associated with version changes to the resource.)
      */
@@ -414,8 +418,8 @@ public abstract class Resource extends BaseResource implements IAnyResource {
           , language);
       }
 
-// Manual code (from Configuration.txt):
-@Override
+  // Manual code (from Configuration.txt):
+  @Override
   public String getIdBase() {
     return getId();
   }

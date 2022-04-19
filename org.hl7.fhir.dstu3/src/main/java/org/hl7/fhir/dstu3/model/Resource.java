@@ -132,6 +132,10 @@ public abstract class Resource extends BaseResource implements IAnyResource {
       return this;
     }
 
+  public String getIdPart() {
+    return getIdElement().getIdPart();
+  }
+
     /**
      * @return {@link #meta} (The metadata about the resource. This is content that is maintained by the infrastructure. Changes to the content may not always be associated with version changes to the resource.)
      */

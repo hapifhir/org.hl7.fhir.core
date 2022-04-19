@@ -72,7 +72,9 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
   private void testResource(Resource resource, String output, String source, String operation) throws IOException, EGraphEngine, EGraphQLException {
     GraphQLEngine gql = new GraphQLEngine(TestingUtilities.context());
     gql.setServices(this);
-    gql.setFocus(resource);
+    if (resource != null) {
+      gql.setFocus(resource);
+    }
     gql.setGraphQL(Parser.parse(TestingUtilities.loadTestResource("r4b", "graphql", source)));
     gql.getGraphQL().setOperationName(operation);
     gql.getGraphQL().getVariables().add(new Argument("var", new NameValue("true")));
@@ -103,7 +105,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
   }
 
   @Test
-  public void testHistory() throws Exception {
+  public void testReferenceReverseHistory() throws Exception {
     String context = "Patient/example/$graphql";
     String source = "reference-reverse.gql";
     String output="reference-reverse-history.json";
@@ -113,6 +115,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
 
     Resource parsedResource = new XmlParser().parse(stream);
 
+    //Rather than duplicate the entire resource we modify the ID with a _history path
     parsedResource.setId("example/_history/1");
 
     testResource(parsedResource, output, source, null);
