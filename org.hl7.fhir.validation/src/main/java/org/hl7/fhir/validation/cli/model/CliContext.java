@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.cli.utils.ValidationLevel;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
@@ -359,7 +360,11 @@ public class CliContext {
 
   @JsonProperty("sv")
   public CliContext setSv(String sv) {
-    this.sv = sv;
+    if (sv != null && sv.startsWith("R")) {
+      this.sv = VersionUtilities.versionFromCode(sv.toLowerCase());
+    } else {
+      this.sv = sv;
+    }
     return this;
   }
 

@@ -69,6 +69,7 @@ public class Utilities {
 
   private static final String UUID_REGEX = "[0-9a-f]{8}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{4}\\-[0-9a-f]{12}";
   private static final String OID_REGEX = "[0-2](\\.(0|[1-9][0-9]*))+";
+  static final String C_TEMP_DIR = "c:\\temp";
 
   /**
    * Returns the plural form of the word in the string.
@@ -595,7 +596,7 @@ public class Utilities {
       if (s.length() == 0) {
         if ("[tmp]".equals(a)) {
           if (hasCTempDir()) {
-            a = "c:\\temp";
+            a = Utilities.path("[tmp]");
           } else if (ToolGlobalSettings.hasTempPath()) {            
             a = ToolGlobalSettings.getTempPath();
           } else {
@@ -643,7 +644,7 @@ public class Utilities {
     if (!System.getProperty("os.name").toLowerCase().contains("win")) {
       return false;
     }
-    File tmp = new File("c:\\temp");
+    File tmp = new File(C_TEMP_DIR);
     return tmp.exists() && tmp.isDirectory() && tmp.canWrite();
   }
 

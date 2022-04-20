@@ -154,7 +154,7 @@ public class NDJsonWriter {
 
   public static void main(String[] args) throws IOException {
     String dstDir = "C:\\work\\org.hl7.fhir\\build\\publish\\";
-    NDJsonWriter ndjson = new NDJsonWriter(dstDir + "examples-ndjson.zip", "c:\\temp\\ndjson");
+    NDJsonWriter ndjson = new NDJsonWriter(dstDir + "examples-ndjson.zip", Utilities.path("[tmp]", "ndjson"));
     ndjson.addFilesFiltered(dstDir, ".json", new String[] {".schema.json", ".canonical.json", ".diff.json", "expansions.json", "package.json"});
     ndjson.close();
   }

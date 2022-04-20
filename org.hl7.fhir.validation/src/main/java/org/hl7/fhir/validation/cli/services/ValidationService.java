@@ -382,8 +382,8 @@ public class ValidationService {
       }
     }
     if (versions.isEmpty()) {
-      System.out.println("  No Version Info found: Using Default version '" + VersionUtilities.CURRENT_VERSION + "'");
-      return "current";
+      System.out.println("  No Version Info found: Using Default version '" + VersionUtilities.CURRENT_DEFAULT_VERSION + "'");
+      return VersionUtilities.CURRENT_DEFAULT_FULL_VERSION;
     }
     if (versions.size() == 1) {
       System.out.println("-> use version " + versions.version());
