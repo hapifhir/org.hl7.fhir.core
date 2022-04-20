@@ -216,7 +216,7 @@ public class CompareUtilities extends BaseTestingUtilities {
       command.add("\"" + diff + "\" \"" + expected +  "\" \"" + actual + "\"");
 
       ProcessBuilder builder = new ProcessBuilder(command);
-      builder.directory(new CSFile("c:\\temp"));
+      builder.directory(new CSFile(Utilities.path("[tmp]")));
       builder.start();
 
     }
@@ -298,12 +298,6 @@ public class CompareUtilities extends BaseTestingUtilities {
     } else
       return "unhandled property " + actualJsonElement.getClass().getName();
     return null;
-  }
-
-  public static String temp() {
-    if (new File("c:\\temp").exists())
-      return "c:\\temp";
-    return System.getProperty("java.io.tmpdir");
   }
 
   public static String checkTextIsSame(String expected, String actual) throws JsonSyntaxException, FileNotFoundException, IOException {

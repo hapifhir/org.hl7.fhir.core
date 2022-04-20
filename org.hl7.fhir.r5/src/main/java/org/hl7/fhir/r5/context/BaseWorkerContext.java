@@ -899,9 +899,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         txLog.clearLastId();
       }
       Bundle resp = txClient.validateBatch(batch);
+      if (resp == null) {
+        throw new FHIRException(formatMessage(I18nConstants.TX_SERVER_NO_BATCH_RESPONSE));          
+      }      
       for (int i = 0; i < batch.getEntry().size(); i++) {
         CodingValidationRequest t = (CodingValidationRequest) batch.getEntry().get(i).getUserData("source");
         BundleEntryComponent r = resp.getEntry().get(i);
+
         if (r.getResource() instanceof Parameters) {
           t.setResult(processValidationResult((Parameters) r.getResource()));
           if (txCache != null) {

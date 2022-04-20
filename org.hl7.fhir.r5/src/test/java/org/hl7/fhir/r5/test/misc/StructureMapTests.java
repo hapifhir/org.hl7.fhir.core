@@ -10,6 +10,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.utilities.Utilities;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -135,7 +136,7 @@ public class StructureMapTests {
 //    Manager.compose(TestingUtilities.context, cda, new FileOutputStream("C:\\work\\org.hl7.fhir\\build\\guides\\ccda2\\mapping\\example\\ccd.out.xml"), FhirFormat.XML, OutputStyle.PRETTY, null);
 //    Bundle bundle = new Bundle();
 //    scu.transform(null, cda, maps.get("http://hl7.org/fhir/StructureMap/cda"), bundle);
-//    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("c:\\temp\\bundle.xml"), bundle);
+//    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "bundle.xml"), bundle);
 //  }
 //
 //  @Test
@@ -165,7 +166,7 @@ public class StructureMapTests {
 //        
 //    List<StructureDefinition> result = scu.analyse(null, maps.get("http://hl7.org/fhir/StructureMap/cda")).getProfiles();
 //    for (StructureDefinition sd : result)
-//      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("c:\\temp\\res-"+sd.getId()+".xml"), sd);
+//      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "res-"+sd.getId()+".xml"), sd);
 //  }
 //
 }
