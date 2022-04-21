@@ -15,12 +15,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import static org.mockito.Mockito.*;
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.*;
 public class IgLoaderTests {
 
   final static String DUMMY_PATH = Paths.get("src","test","resources", "igLoad", "my-dummy-ig.json").toAbsolutePath().toString();
-  final static String DUMMY_FOO_PATH = Paths.get("src","test","resources", "igLoad", "my-dummy-ig.json").toAbsolutePath().toString();
+  final static String DUMMY_FOO_PATH = Paths.get("src","test","resources", "igLoad", "my-dummy-ig[foo].json").toAbsolutePath().toString();
 
   @Mock
   FilesystemPackageCacheManager filesystemPackageCacheManager;
@@ -43,10 +43,10 @@ public class IgLoaderTests {
   private static Stream<Arguments> getTestIgLoadParams() {
       return Stream.of(
               Arguments.of(DUMMY_PATH, DUMMY_PATH, "4.0.1"),
-              Arguments.of("[3.0.1]" + DUMMY_PATH, DUMMY_PATH, "3.0.1"),
+              Arguments.of("[3.0.2]" + DUMMY_PATH, DUMMY_PATH, "3.0.2"),
               Arguments.of("[" + DUMMY_PATH, "[" + DUMMY_PATH, "4.0.1"),
               Arguments.of(DUMMY_FOO_PATH, DUMMY_FOO_PATH, "4.0.1"),
-              Arguments.of("[2.0.1]"+DUMMY_FOO_PATH, DUMMY_FOO_PATH, "2.0.1")
+              Arguments.of("[3.0.2]"+DUMMY_FOO_PATH, DUMMY_FOO_PATH, "3.0.2")
       );
   }
 
@@ -80,13 +80,13 @@ public class IgLoaderTests {
   }
 
   @Test
-  public void testFailIfInvalidFHIRVersion() {
+  public void testFailIfInvalidFHIRVersion() throws IOException {
+    IgLoader igLoader = Mockito.spy(new IgLoader(
+      filesystemPackageCacheManager,
+      simpleWorkerContext,
+      "4.0.1"
+    ));
     Exception exception = assertThrows(FHIRException.class, () -> {
-      IgLoader igLoader = Mockito.spy(new IgLoader(
-        filesystemPackageCacheManager,
-        simpleWorkerContext,
-        "4.0.1"
-      ));
 
       List<ImplementationGuide> igs = Collections.emptyList();
       igLoader.loadIg(igs,
@@ -94,5 +94,7 @@ public class IgLoaderTests {
         "[0.1.2]" + DUMMY_PATH,
         false);
     });
+
+    assertLinesMatch(Arrays.asList(".*Unsupported FHIR Version.*"), Arrays.asList(exception.getMessage()));
   }
 }
