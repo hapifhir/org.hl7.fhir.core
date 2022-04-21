@@ -98,6 +98,9 @@ public class ValueSetValidator extends BaseValidator {
       }
       i++;
     }
+    if (valuesets.size() > 1) {
+      warning(errors, IssueType.INFORMATIONAL, stack.getLiteralPath(), false, I18nConstants.VALUESET_IMPORT_UNION_INTERSECTION);                  
+    }
     List<Element> concepts = include.getChildrenByName("concept");
     List<Element> filters = include.getChildrenByName("filter");
     if (!Utilities.noString(system)) {

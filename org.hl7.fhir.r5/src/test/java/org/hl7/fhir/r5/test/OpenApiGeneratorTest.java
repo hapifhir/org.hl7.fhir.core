@@ -10,6 +10,7 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.openapi.OpenApiGenerator;
 import org.hl7.fhir.r5.openapi.Writer;
+import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.junit.jupiter.api.Test;
 
@@ -32,7 +33,7 @@ public class OpenApiGeneratorTest {
   public void run(InputStream sfn, String dfn) throws IOException, FHIRFormatError, FileNotFoundException {
     CapabilityStatement cs = (CapabilityStatement) new JsonParser().parse(sfn);
     Writer oa = new Writer(new FileOutputStream(dfn));
-    OpenApiGenerator gen = new OpenApiGenerator(TestingUtilities.context(), cs, oa);
+    OpenApiGenerator gen = new OpenApiGenerator(TestingUtilities.getSharedWorkerContext(), cs, oa);
     gen.generate("test-lic", "http://spdx.org/licenses/test-lic.html");
     oa.commit();
   }

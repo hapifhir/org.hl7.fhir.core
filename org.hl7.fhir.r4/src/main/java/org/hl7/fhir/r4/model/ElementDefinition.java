@@ -7603,9 +7603,9 @@ When pattern[x] is used to constrain a complex object, it means that each proper
   
   public String typeSummary() {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-    for (TypeRefComponent tr : type) {
+    for (TypeRefComponent tr : getType()) {
       if (tr.hasCode())
-        b.append(tr.getCode());
+        b.append(tr.getWorkingCode());
     }
     return b.toString();
    }

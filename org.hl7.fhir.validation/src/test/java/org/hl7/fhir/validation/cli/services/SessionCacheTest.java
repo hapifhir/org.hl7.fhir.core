@@ -16,7 +16,7 @@ class SessionCacheTest {
   void expiredSession() throws IOException, InterruptedException {
     final long EXPIRE_TIME = 5L;
     SessionCache cache = new SessionCache(EXPIRE_TIME, TimeUnit.SECONDS);
-    ValidationEngine testEngine = new ValidationEngine();
+    ValidationEngine testEngine = new ValidationEngine.ValidationEngineBuilder().fromNothing();
     String sessionId = cache.cacheSession(testEngine);
     TimeUnit.SECONDS.sleep(EXPIRE_TIME + 1L);
     Assertions.assertNull(cache.fetchSessionValidatorEngine(sessionId));
@@ -27,7 +27,7 @@ class SessionCacheTest {
   void cachedSession() throws IOException {
     final long EXPIRE_TIME = 5L;
     SessionCache cache = new SessionCache(EXPIRE_TIME, TimeUnit.SECONDS);
-    ValidationEngine testEngine = new ValidationEngine();
+    ValidationEngine testEngine = new ValidationEngine.ValidationEngineBuilder().fromNothing();
     String sessionId = cache.cacheSession(testEngine);
     Assertions.assertEquals(testEngine, cache.fetchSessionValidatorEngine(sessionId));
   }
@@ -36,7 +36,7 @@ class SessionCacheTest {
   @DisplayName("test session exists")
   void sessionExists() throws IOException {
     SessionCache cache = new SessionCache();
-    ValidationEngine testEngine = new ValidationEngine();
+    ValidationEngine testEngine = new ValidationEngine.ValidationEngineBuilder().fromNothing();
     String sessionId = cache.cacheSession(testEngine);
     Assertions.assertTrue(cache.sessionExists(sessionId));
     Assertions.assertFalse(cache.sessionExists(UUID.randomUUID().toString()));

@@ -16,7 +16,6 @@ import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -82,10 +81,10 @@ public class PackageClient {
       if (versions != null) {
         for (String v : sorted(versions.keySet())) {
           JsonObject obj = versions.getAsJsonObject(v);
-          res.add(new PackageInfo(JSONUtil.str(obj, "name"),
-            JSONUtil.str(obj, "version"),
-            JSONUtil.str(obj, "FhirVersion"),
-            JSONUtil.str(obj, "description"),
+          res.add(new PackageInfo(JSONUtil.str(obj, "Name", "name"),
+            JSONUtil.str(obj, "Version", "version"),
+            JSONUtil.str(obj, "FhirVersion", "fhirVersion"),
+            JSONUtil.str(obj, "Description", "description"),
             JSONUtil.str(obj, "url"),
             JSONUtil.str(obj, "canonical"),
             address));
@@ -192,42 +191,51 @@ public class PackageClient {
     }
   }
 
+  protected PackageInfo getPackageInfoFromJSON(JsonObject o, String name, String canonical, String fhirVersion) {
+      String id = JSONUtil.str(o, "npm-name");
+      String pname = JSONUtil.str(o, "name");
+      String pcanonical = JSONUtil.str(o, "canonical");
+      String description = JSONUtil.str(o, "description");
+      boolean ok = true;
+      if (ok && !Utilities.noString(name)) {
+        ok = (pname != null && pname.contains(name)) || (description != null && description.contains(name)) || (id != null && id.contains(name));
+      }
+      if (ok && !Utilities.noString(canonical)) {
+        ok = pcanonical.contains(canonical);
+      }
+      String version = null;
+      String fVersion = null;
+      String url = null;
+
+      if (ok) {
+        // if we can find something...
+        for (JsonObject e : JSONUtil.objects(o, "editions")) {
+          if (fhirVersion == null || fhirVersion.equals(JSONUtil.str(e, "fhir-version"))) {
+            String v = JSONUtil.str(e, "ig-version");
+            if (version == null || VersionUtilities.isThisOrLater(version, v)) {
+              version = v;
+              fVersion = e.getAsJsonArray("fhir-version").get(0).getAsString();
+              url = JSONUtil.str(e, "url");
+
+              String npmPackage = JSONUtil.str(e, "package");
+              if (npmPackage != null && id == null) {
+                id = npmPackage.substring(0, npmPackage.indexOf("#"));
+              }
+            }
+          }
+        }
+      }
+      return new PackageInfo(id, version, fVersion, description, url, pcanonical, address);
+  }
   
   public List<PackageInfo> listFromRegistry(String name, String canonical, String fhirVersion) throws IOException {
     List<PackageInfo> result = new ArrayList<>();
     JsonObject packages = JsonTrackingParser.fetchJson("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json?nocache=" + System.currentTimeMillis());
     for (JsonObject o : JSONUtil.objects(packages, "guides")) {
       if (o.has("canonical")) {
-        String id = JSONUtil.str(o, "npm-name");
-        String pname = JSONUtil.str(o, "name");
-        String pcanonical = JSONUtil.str(o, "canonical");
-        String description = JSONUtil.str(o, "description");
-        boolean ok = true;
-        if (ok && !Utilities.noString(name)) {
-          ok = (pname != null && pname.contains(name)) || (description != null && description.contains(name)) || (id != null && id.contains(name)); 
-        }
-        if (ok && !Utilities.noString(canonical)) {
-          ok = pcanonical.contains(canonical); 
-        }
-        String version = null;
-        String fVersion = null;
-        String url = null;
-        
-        if (ok) {
-          // if we can find something...
-          for (JsonObject e : JSONUtil.objects(o, "editions")) {
-            if (fhirVersion == null || fhirVersion.equals(JSONUtil.str(e, "fhir-version"))) {
-              String v = JSONUtil.str(e, "ig-version");
-              if (version == null || VersionUtilities.isThisOrLater(version, v)) {
-                version = v;
-                fVersion = e.getAsJsonArray("fhir-version").get(0).getAsString();
-                url = JSONUtil.str(e, "url");
-              }
-            }
-          }
-        }
-        if (version != null) {  
-          result.add(new PackageInfo(id, version, fVersion, description, url, pcanonical, address));
+      final PackageInfo packageInfo = getPackageInfoFromJSON(o, name, canonical, fhirVersion);
+        if (packageInfo.getVersion() != null) {
+          result.add(packageInfo);
         }
       }
     }

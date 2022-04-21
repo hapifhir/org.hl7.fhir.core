@@ -65,6 +65,9 @@ public class OperationOutcomeUtilities {
     if (message.getSource() != null) {
       issue.getExtension().add(ToolingExtensions.makeIssueSource(message.getSource()));
     }
+    if (message.getMessageId() != null) {
+      issue.getExtension().add(ToolingExtensions.makeIssueMessageId(message.getMessageId()));
+    }
     issue.setUserData("source.msg", message);
     return issue;
   }
@@ -111,9 +114,12 @@ public class OperationOutcomeUtilities {
     case TIMEOUT: return IssueType.TIMEOUT;
     case THROTTLED: return IssueType.THROTTLED;
     case INFORMATIONAL: return IssueType.INFORMATIONAL;
-	 case NULL: return IssueType.NULL;
+	  case NULL: return IssueType.NULL;
+    case DELETED: return IssueType.DELETED;
+    case MULTIPLEMATCHES: return IssueType.MULTIPLEMATCHES;
+    default:
+      return IssueType.NULL;
     }
-    return IssueType.NULL;
   }
 
   public static OperationOutcome createOutcome(List<ValidationMessage> messages) {

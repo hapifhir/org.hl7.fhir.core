@@ -4,6 +4,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4b.conformance.ProfileUtilities;
 import org.hl7.fhir.r4b.model.Base;
 import org.hl7.fhir.r4b.model.ElementDefinition;
+import org.hl7.fhir.r4b.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r4b.model.IntegerType;
 import org.hl7.fhir.r4b.model.StructureDefinition;
 import org.hl7.fhir.r4b.model.StructureDefinition.TypeDerivationRule;
@@ -51,6 +52,12 @@ public class ProfileUtilitiesTests {
           f.setBase(null);
           b.setRequirements(null);
           f.setRequirements(null);
+          for (ElementDefinitionConstraintComponent c : b.getConstraint()) {
+            c.setSource(null);
+          }
+          for (ElementDefinitionConstraintComponent c : f.getConstraint()) {
+            c.setSource(null);
+          }
           ok = Base.compareDeep(b, f, true);
         }
       }
@@ -83,6 +90,12 @@ public class ProfileUtilitiesTests {
       if (ok) {
         ElementDefinition b = base.getSnapshot().getElement().get(i);
         ElementDefinition f = focus.getSnapshot().getElement().get(i);
+        for (ElementDefinitionConstraintComponent c : b.getConstraint()) {
+          c.setSource(null);
+        }
+        for (ElementDefinitionConstraintComponent c : f.getConstraint()) {
+          c.setSource(null);
+        }
         if (!f.hasBase() || !b.getPath().equals(f.getPath()))
           ok = false;
         else {
@@ -128,6 +141,12 @@ public class ProfileUtilitiesTests {
         ElementDefinition f = focus.getSnapshot().getElement().get(i);
         b.setRequirements(null);
         f.setRequirements(null);
+        for (ElementDefinitionConstraintComponent c : b.getConstraint()) {
+          c.setSource(null);
+        }
+        for (ElementDefinitionConstraintComponent c : f.getConstraint()) {
+          c.setSource(null);
+        }
         if (!f.hasBase() || !b.getPath().equals(f.getPath())) {
           ok = false;
         }
@@ -174,6 +193,12 @@ public class ProfileUtilitiesTests {
         ElementDefinition f = focus.getSnapshot().getElement().get(i);
         b.setRequirements(null);
         f.setRequirements(null);
+        for (ElementDefinitionConstraintComponent c : b.getConstraint()) {
+          c.setSource(null);
+        }
+        for (ElementDefinitionConstraintComponent c : f.getConstraint()) {
+          c.setSource(null);
+        }
         if (!f.hasBase() || !b.getPath().equals(f.getPath())) {
           ok = false;
         }
@@ -221,6 +246,12 @@ public class ProfileUtilitiesTests {
         ElementDefinition f = focus.getSnapshot().getElement().get(i);
         b.setRequirements(null);
         f.setRequirements(null);
+        for (ElementDefinitionConstraintComponent c : b.getConstraint()) {
+          c.setSource(null);
+        }
+        for (ElementDefinitionConstraintComponent c : f.getConstraint()) {
+          c.setSource(null);
+        }
         if (!f.hasBase() || !b.getPath().equals(f.getPath())) {
           ok = false;
         }

@@ -30,7 +30,6 @@ class UtilitiesTest {
   public static final String LINUX_USER_DIR = System.getProperty("user.home") + "/";
   public static final String LINUX_JAVA_HOME = getNormalizedJavaHomeDir() + "/";
 
-  public static final String WIN_TEMP_DIR = "c:\\temp\\";
   public static final String WIN_USER_DIR = System.getProperty("user.home") + "\\";
   public static final String WIN_JAVA_HOME = getNormalizedJavaHomeDir() + "\\";
 
@@ -39,7 +38,11 @@ class UtilitiesTest {
   @Test
   @DisplayName("Test Utilities.path maps temp directory correctly")
   public void testTempDirPath() throws IOException {
-    Assertions.assertEquals(Utilities.path("[tmp]", TEST_TXT), getTempDirectory() + TEST_TXT);
+    if (ToolGlobalSettings.hasTempPath()) {
+      Assertions.assertEquals(Utilities.path("[tmp]", TEST_TXT), ToolGlobalSettings.getTempPath() +File.separator+ TEST_TXT);      
+    } else {
+      Assertions.assertEquals(Utilities.path("[tmp]", TEST_TXT), getTempDirectory() + TEST_TXT);
+    }
   }
 
   @Test
@@ -87,9 +90,9 @@ class UtilitiesTest {
     } else if (os.contains(LINUX)) {
       return LINUX_TEMP_DIR;
     } else if (os.toUpperCase().contains(WINDOWS)) {
-      File tmp = new File("c:\\temp");
+      File tmp = new File(Utilities.C_TEMP_DIR);
       if(tmp.exists()) {
-        return WIN_TEMP_DIR;
+        return Utilities.C_TEMP_DIR;
       } else {
         return System.getProperty("java.io.tmpdir");
       }

@@ -66,7 +66,10 @@ _The source contains cached terminology server responses for testing. If the exp
 this cache should be cleaned and rebuilt with the above so that subsequent `mvn test` calls will have the most current 
 responses cached._
 
+#### IDE Setup
 
+This project uses the [Lombok](https://projectlombok.org/) java library, which requires some configuration to work correctly with an IDE. Currently, the 
+project works in Intellij and Eclipse, and you can find instructions on how to configure Lombok for each [here](https://www.baeldung.com/lombok-ide).
 
 ### Publishing Binaries
 

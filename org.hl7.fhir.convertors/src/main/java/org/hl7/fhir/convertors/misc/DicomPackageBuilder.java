@@ -96,7 +96,7 @@ public class DicomPackageBuilder {
     vs.setId("all");
     vs.setUrl("http://dicom.nema.org/resources/ValueSet/all");
     vs.setVersion(version);
-    vs.setName("All DICOMTerminologyDefinitions");
+    vs.setName("AllDICOMTerminologyDefinitions");
     vs.setTitle("All DICOM Controlled Terminology Definitions");
     vs.setStatus(PublicationStatus.ACTIVE);
     vs.setExperimental(false);

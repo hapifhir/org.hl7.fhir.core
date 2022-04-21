@@ -10290,9 +10290,9 @@ The primary difference between a medication statement and a medication administr
           return FHIRVersion._4_0_1;
         if ("4.1.0".equals(codeString))
           return FHIRVersion._4_1_0;
-        if ("4.3.0-snapshot1".equals(codeString))
+        if ("4.3.0-snapshot1".equalsIgnoreCase(codeString))
           return FHIRVersion._4_3_0_SNAPSHOT1;
-        if ("4.3.0-cibuild".equals(codeString))
+        if ("4.3.0-cibuild".equalsIgnoreCase(codeString))
           return FHIRVersion._4_3_0_CIBUILD;
         throw new IllegalArgumentException("Unknown FHIRVersion code '"+codeString+"'");
         }

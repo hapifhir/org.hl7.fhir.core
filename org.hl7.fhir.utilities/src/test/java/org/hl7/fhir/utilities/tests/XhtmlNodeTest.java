@@ -79,7 +79,7 @@ public class XhtmlNodeTest {
   @Test
   public void testParseXXE() {
     XhtmlNode dt = new XhtmlNode();
-    dt.setValueAsString("<div xmlns=\"http://www.w3.org/1999/xhtml\">\n      <!DOCTYPE foo [ <!ENTITY xxe SYSTEM \"file://c:\\temp\\xxe.txt\">]>\n <p>This is some narrative  &xxe;</p>\n    </div>");
+    dt.setValueAsString("<div xmlns=\"http://www.w3.org/1999/xhtml\">\n      <!DOCTYPE foo [ <!ENTITY xxe SYSTEM \"file://xxe.txt\">]>\n <p>This is some narrative  &xxe;</p>\n    </div>");
   }
   
   @Test

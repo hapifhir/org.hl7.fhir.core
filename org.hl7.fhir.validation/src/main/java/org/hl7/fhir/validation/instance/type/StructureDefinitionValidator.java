@@ -77,7 +77,7 @@ public class StructureDefinitionValidator extends BaseValidator {
             List<ValidationMessage> msgs = new ArrayList<>();
             ProfileUtilities pu = new ProfileUtilities(context, msgs, null);
             pu.setXver(xverManager);
-            pu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir", sd.getName());
+            pu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir/R4/", sd.getName());
             if (msgs.size() > 0) {
               for (ValidationMessage msg : msgs) {
                 // we need to set the location for the context 
@@ -133,8 +133,8 @@ public class StructureDefinitionValidator extends BaseValidator {
         typeMustSupport = true;
       }
       String tc = type.getChildValue("code");
-      if (type.hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type")) {
-        tc = type.getExtensionValue("http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type").primitiveValue();
+      if (type.hasExtension(ToolingExtensions.EXT_FHIR_TYPE)) {
+        tc = type.getExtensionValue(ToolingExtensions.EXT_FHIR_TYPE).primitiveValue();
       }
       if (Utilities.noString(tc) && type.hasChild("code")) {
         if (type.getNamedChild("code").hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type")) {
@@ -165,6 +165,9 @@ public class StructureDefinitionValidator extends BaseValidator {
     // in a snapshot, we validate that fixedValue, pattern, and defaultValue, if present, are all of the right type
     if (snapshot && (element.getIdBase() != null) && (element.getIdBase().contains("."))) {
       if (rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), !typeCodes.isEmpty() || element.hasChild("contentReference"), I18nConstants.SD_NO_TYPES_OR_CONTENTREF, element.getIdBase())) {     
+        // if we see fixed[x] or pattern[x] applied to a repeating element, we'll give the user a hint
+        boolean repeating = !Utilities.existsInList(element.getChildValue("max"), "0", "1");
+        
         Element v = element.getNamedChild("defaultValue");
         if (v != null) {
           rule(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), typeCodes.contains(v.fhirType()), I18nConstants.SD_VALUE_TYPE_IILEGAL, element.getIdBase(), "defaultValue", v.fhirType(), typeCodes);
@@ -172,13 +175,29 @@ public class StructureDefinitionValidator extends BaseValidator {
         v = element.getNamedChild("fixed");
         if (v != null) {
           rule(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), typeCodes.contains(v.fhirType()), I18nConstants.SD_VALUE_TYPE_IILEGAL, element.getIdBase(), "fixed", v.fhirType(), typeCodes);
+          hint(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), !repeating, I18nConstants.SD_VALUE_TYPE_REPEAT_HINT, element.getIdBase(), "fixed");
+          if (isPrimitiveType(v.fhirType())) {
+            warning(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), !repeating, I18nConstants.SD_VALUE_TYPE_REPEAT_WARNING_DOTNET, element.getIdBase(), "fixed");
+          }          
         }
         v = element.getNamedChild("pattern");
         if (v != null) {
           rule(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), typeCodes.contains(v.fhirType()), I18nConstants.SD_VALUE_TYPE_IILEGAL, element.getIdBase(), "pattern", v.fhirType(), typeCodes);
+          hint(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), !repeating, I18nConstants.SD_VALUE_TYPE_REPEAT_HINT, element.getIdBase(), "pattern");
+          if (isPrimitiveType(v.fhirType())) {
+            warning(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), !repeating, I18nConstants.SD_VALUE_TYPE_REPEAT_WARNING_DOTNET, element.getIdBase(), "pattern");
+          }
         }
       }
+      // if we see fixed[x] or pattern[x] applied to a repeating element, we'll give the user a hint
+      
     }
+  }
+
+  
+  private boolean isPrimitiveType(String fhirType) {
+    StructureDefinition sd = context.fetchTypeDefinition(fhirType);
+    return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
   }
 
   private String boundType(Set<String> typeCodes) {
@@ -294,6 +313,15 @@ public class StructureDefinitionValidator extends BaseValidator {
           rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
         } else {
           rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), isInstanceOf(t, code), I18nConstants.SD_ED_TYPE_PROFILE_WRONG, p, t, code, path);
+          if (t.getType().equals("Extension")) {
+            boolean isModifierDefinition = checkIsModifierExtension(sd);
+            boolean isModifierContext = path.endsWith(".modifierExtension");
+            if (isModifierDefinition) {
+              rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), isModifierContext, I18nConstants.SD_ED_TYPE_PROFILE_NOT_MODIFIER, p, t, code, path);            
+            } else {
+              rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), !isModifierContext, I18nConstants.SD_ED_TYPE_PROFILE_IS_MODIFIER, p, t, code, path);
+            }          
+          }
         }
       }      
     }
@@ -325,14 +353,28 @@ public class StructureDefinitionValidator extends BaseValidator {
         rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
       } else if (!isInstanceOf(t, code)) {
         rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_WRONG, p, t, code, path);
+      } else {
+        if (t.getType().equals("Extension")) {
+          boolean isModifierDefinition = checkIsModifierExtension(sd);
+          boolean isModifierContext = path.endsWith(".modifierExtension");
+          if (isModifierDefinition) {
+            rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), isModifierContext, I18nConstants.SD_ED_TYPE_PROFILE_NOT_MODIFIER, p, t, code, path);            
+          } else {
+            rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), !isModifierContext, I18nConstants.SD_ED_TYPE_PROFILE_IS_MODIFIER, p, t, code, path);
+          }          
+        }
       }
     }
+  }
+
+  private boolean checkIsModifierExtension(StructureDefinition t) {
+    return t.getSnapshot().getElementFirstRep().getIsModifier();
   }
 
   private void validateTargetProfile(List<ValidationMessage> errors, Element profile, String code, NodeStack stack, String path) {
     String p = profile.primitiveValue();
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, p);
-    if (code.equals("Reference")) {
+    if (code.equals("Reference") || code.equals("CodeableReference")) {
       if (warning(errors, IssueType.EXCEPTION, stack.getLiteralPath(), sd != null, I18nConstants.SD_ED_TYPE_PROFILE_UNKNOWN, p)) {
         StructureDefinition t = determineBaseType(sd);
         if (t == null) {

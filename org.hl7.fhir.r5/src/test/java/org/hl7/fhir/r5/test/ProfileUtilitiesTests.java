@@ -1,9 +1,13 @@
 package org.hl7.fhir.r5.test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
@@ -12,9 +16,6 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ProfileUtilitiesTests {
 
@@ -29,13 +30,13 @@ public class ProfileUtilitiesTests {
   public void testSimple() throws FHIRException {
 
     StructureDefinition focus = new StructureDefinition();
-    StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
+    StructureDefinition base = TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setBaseDefinition(base.getUrl());
     focus.setType("Patient");
     focus.setDerivation(TypeDerivationRule.CONSTRAINT);
     List<ValidationMessage> messages = new ArrayList<>();
-    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://test.org/test", "Simple Test");
+    new ProfileUtilities(TestingUtilities.getSharedWorkerContext(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://test.org/test", "Simple Test");
 
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
@@ -51,6 +52,12 @@ public class ProfileUtilitiesTests {
           f.setBase(null);
           b.setRequirements(null);
           f.setRequirements(null);
+          for (ElementDefinitionConstraintComponent c : b.getConstraint()) {
+            c.setSource(null);
+          }
+          for (ElementDefinitionConstraintComponent c : f.getConstraint()) {
+            c.setSource(null);
+          }
           ok = Base.compareDeep(b, f, true);
         }
       }
@@ -70,19 +77,25 @@ public class ProfileUtilitiesTests {
 //   */
   @Test
   public void testSimple2() {
-    StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/ValueSet").copy();
+    StructureDefinition base = TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/ValueSet").copy();
     StructureDefinition focus = base.copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setSnapshot(null);
     focus.setDifferential(null);
     List<ValidationMessage> messages = new ArrayList<>();
-    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://test.org", "Simple Test");
+    new ProfileUtilities(TestingUtilities.getSharedWorkerContext(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://test.org", "Simple Test");
 
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
       if (ok) {
         ElementDefinition b = base.getSnapshot().getElement().get(i);
         ElementDefinition f = focus.getSnapshot().getElement().get(i);
+        for (ElementDefinitionConstraintComponent c : b.getConstraint()) {
+          c.setSource(null);
+        }
+        for (ElementDefinitionConstraintComponent c : f.getConstraint()) {
+          c.setSource(null);
+        }
         if (!f.hasBase() || !b.getPath().equals(f.getPath()))
           ok = false;
         else {
@@ -110,7 +123,7 @@ public class ProfileUtilitiesTests {
   @Test
   void testCardinalityChange() {
     StructureDefinition focus = new StructureDefinition();
-    StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
+    StructureDefinition base = TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setBaseDefinition(base.getUrl());
     focus.setType(base.getType());
@@ -119,7 +132,7 @@ public class ProfileUtilitiesTests {
     id.setPath("Patient.identifier");
     id.setMin(1);
     List<ValidationMessage> messages = new ArrayList<>();
-    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://test.org", "Simple Test");
+    new ProfileUtilities(TestingUtilities.getSharedWorkerContext(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://test.org", "Simple Test");
 
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
@@ -128,6 +141,12 @@ public class ProfileUtilitiesTests {
         ElementDefinition f = focus.getSnapshot().getElement().get(i);
         b.setRequirements(null);
         f.setRequirements(null);
+        for (ElementDefinitionConstraintComponent c : b.getConstraint()) {
+          c.setSource(null);
+        }
+        for (ElementDefinitionConstraintComponent c : f.getConstraint()) {
+          c.setSource(null);
+        }
         if (!f.hasBase() || !b.getPath().equals(f.getPath())) {
           ok = false;
         }
@@ -155,7 +174,7 @@ public class ProfileUtilitiesTests {
   void testMinValueChange() {
     // Given
     StructureDefinition focus = new StructureDefinition();
-    StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Appointment").copy();
+    StructureDefinition base = TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Appointment").copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setBaseDefinition(base.getUrl());
     focus.setType(base.getType());
@@ -165,7 +184,7 @@ public class ProfileUtilitiesTests {
     id.setMinValue(new IntegerType(1));
     List<ValidationMessage> messages = new ArrayList<>();
     // When
-    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://test.org", "Simple Test");
+    new ProfileUtilities(TestingUtilities.getSharedWorkerContext(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://test.org", "Simple Test");
     // Then
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
@@ -174,6 +193,12 @@ public class ProfileUtilitiesTests {
         ElementDefinition f = focus.getSnapshot().getElement().get(i);
         b.setRequirements(null);
         f.setRequirements(null);
+        for (ElementDefinitionConstraintComponent c : b.getConstraint()) {
+          c.setSource(null);
+        }
+        for (ElementDefinitionConstraintComponent c : f.getConstraint()) {
+          c.setSource(null);
+        }
         if (!f.hasBase() || !b.getPath().equals(f.getPath())) {
           ok = false;
         }
@@ -202,7 +227,7 @@ public class ProfileUtilitiesTests {
   void testMaxValueChange() {
     // Given
     StructureDefinition focus = new StructureDefinition();
-    StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Appointment").copy();
+    StructureDefinition base = TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Appointment").copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setBaseDefinition(base.getUrl());
     focus.setType(base.getType());
@@ -212,7 +237,7 @@ public class ProfileUtilitiesTests {
     id.setMaxValue(new IntegerType(1));
     List<ValidationMessage> messages = new ArrayList<>();
     // When
-    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://test.org", "Simple Test");
+    new ProfileUtilities(TestingUtilities.getSharedWorkerContext(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://test.org", "Simple Test");
     // Then
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
@@ -221,6 +246,12 @@ public class ProfileUtilitiesTests {
         ElementDefinition f = focus.getSnapshot().getElement().get(i);
         b.setRequirements(null);
         f.setRequirements(null);
+        for (ElementDefinitionConstraintComponent c : b.getConstraint()) {
+          c.setSource(null);
+        }
+        for (ElementDefinitionConstraintComponent c : f.getConstraint()) {
+          c.setSource(null);
+        }
         if (!f.hasBase() || !b.getPath().equals(f.getPath())) {
           ok = false;
         }

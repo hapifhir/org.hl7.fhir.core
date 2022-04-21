@@ -172,8 +172,8 @@ public class JavaBaseGenerator extends OutputStreamWriter {
 	}
 
 	protected String getTypename(TypeRefComponent type) throws Exception {
-	  if (type.hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type")) {
-	    return type.getExtensionString("http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type");
+	  if (type.hasExtension(ToolingExtensions.EXT_FHIR_TYPE)) {
+	    return type.getExtensionString(ToolingExtensions.EXT_FHIR_TYPE);
 	  } else {
 		  return getTypeName(type.getCode());
 	  }

@@ -40,7 +40,7 @@ public class TestingUtilities {
 	    command.add("\"" + diff + "\" \"" + f1 + "\" \"" + f2 + "\"");
 
 	    ProcessBuilder builder = new ProcessBuilder(command);
-	    builder.directory(new CSFile("c:\\temp"));
+	    builder.directory(new CSFile(Utilities.path("[tmp]")));
 	    builder.start();
 			
 		}
@@ -161,7 +161,7 @@ public class TestingUtilities {
 	    command.add("\"" + diff + "\" \"" + f1 + "\" \"" + f2 + "\"");
 
 	    ProcessBuilder builder = new ProcessBuilder(command);
-	    builder.directory(new CSFile("c:\\temp"));
+	    builder.directory(new CSFile(Utilities.path("[tmp]")));
 	    builder.start();
 			
 		}

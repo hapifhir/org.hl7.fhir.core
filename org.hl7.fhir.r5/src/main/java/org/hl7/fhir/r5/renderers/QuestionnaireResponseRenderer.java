@@ -168,10 +168,12 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     r.getCells().add(gen.new Cell(null, context.getDefinitionsTarget() == null ? "" : context.getDefinitionsTarget()+"#item."+linkId, linkId, null, null));
     r.getCells().add(gen.new Cell(null, null, text, null, null));
     r.getCells().add(gen.new Cell(null, null, null, null, null));
-    if (answers.size() == 0) {
+    if (answers == null ||  answers.size() == 0) {
       r.getCells().add(gen.new Cell(null, null, null, null, null));
-      for (BaseWrapper si : items) {
-        renderTreeItem(gen, r.getSubRows(), q, si);
+      if (items != null) {
+        for (BaseWrapper si : items) {
+          renderTreeItem(gen, r.getSubRows(), q, si);
+        }
       }
     } else if (answers.size() == 1) {
       BaseWrapper ans = answers.get(0);

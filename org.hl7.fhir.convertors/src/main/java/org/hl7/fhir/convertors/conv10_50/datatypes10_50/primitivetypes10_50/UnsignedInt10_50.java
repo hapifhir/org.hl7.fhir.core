@@ -5,13 +5,13 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 public class UnsignedInt10_50 {
   public static org.hl7.fhir.r5.model.UnsignedIntType convertUnsignedInt(org.hl7.fhir.dstu2.model.UnsignedIntType src) throws FHIRException {
-    org.hl7.fhir.r5.model.UnsignedIntType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.UnsignedIntType(src.getValue()) : new org.hl7.fhir.r5.model.UnsignedIntType();
+    org.hl7.fhir.r5.model.UnsignedIntType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.UnsignedIntType(src.getValueAsString()) : new org.hl7.fhir.r5.model.UnsignedIntType();
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
     return tgt;
   }
 
   public static org.hl7.fhir.dstu2.model.UnsignedIntType convertUnsignedInt(org.hl7.fhir.r5.model.UnsignedIntType src) throws FHIRException {
-    org.hl7.fhir.dstu2.model.UnsignedIntType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.UnsignedIntType(src.getValue()) : new org.hl7.fhir.dstu2.model.UnsignedIntType();
+    org.hl7.fhir.dstu2.model.UnsignedIntType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.UnsignedIntType(src.getValueAsString()) : new org.hl7.fhir.dstu2.model.UnsignedIntType();
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
     return tgt;
   }
