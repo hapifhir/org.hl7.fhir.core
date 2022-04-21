@@ -91,7 +91,7 @@ public class IgLoader {
     if (src.startsWith("[") && src.indexOf(']', 1) > 1) {
       explicitFhirVersion = src.substring(1,src.indexOf(']', 1));
       srcPackage = src.substring(src.indexOf(']',1) + 1);
-      if (VersionUtilities.isSupportedVersion(explicitFhirVersion)) {
+      if (!VersionUtilities.isSupportedVersion(explicitFhirVersion)) {
         throw new FHIRException("Unsupported FHIR Version: " + explicitFhirVersion + " valid versions are " + VersionUtilities.listSupportedVersions());
       }
     } else {
