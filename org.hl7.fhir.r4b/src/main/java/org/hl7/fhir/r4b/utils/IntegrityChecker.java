@@ -4,6 +4,8 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -23,6 +25,8 @@ import org.hl7.fhir.r4b.utils.IntegrityChecker.SearchParameterNode;
 import org.hl7.fhir.r4b.utils.IntegrityChecker.SearchParameterNodeSorter;
 import org.hl7.fhir.r4b.utils.IntegrityChecker.SearchParameterParamNode;
 import org.hl7.fhir.r4b.utils.IntegrityChecker.SearchParameterParamNodeSorter;
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r4b.model.ElementDefinition;
 import org.hl7.fhir.r4b.formats.JsonParser;
 import org.hl7.fhir.r4b.formats.XmlParser;
 import org.hl7.fhir.r4b.model.StructureDefinition;
@@ -107,12 +111,49 @@ public class IntegrityChecker {
   }
 
   private void check(String dst) throws IOException {
-    checkSD();
-    checkSP();
-    checkExamplesXml(dst);
-    checkExamplesJson(dst);
+    dumpSD(new FileWriter("/Users/grahamegrieve/temp/r4b-dump.txt"));
+//    checkSD();
+//    checkSP();
+//    checkExamplesXml(dst);
+//    checkExamplesJson(dst);
   }
   
+
+  private void dumpSD(FileWriter w) throws FHIRFormatError, IOException {
+    Map<String, StructureDefinition> map = new HashMap<>();
+    for (String sdn : npm.listResources("StructureDefinition")) {
+      InputStream s = npm.load(sdn);
+      StructureDefinition sd = (StructureDefinition) new JsonParser().parse(s);
+      map.put(sd.getUrl(), sd);
+    }
+    msg("Loaded "+map.size()+" Structures");
+    List<String> structures = new ArrayList<>();
+    for (StructureDefinition sd : map.values()) {
+      structures.add(sd.getUrl());
+    }
+    Collections.sort(structures);
+    
+    for (String sdn : structures) {
+      dumpSD(map.get(sdn), map, w);
+    }
+  }
+
+  private void dumpSD(StructureDefinition sd, Map<String, StructureDefinition> map, FileWriter w) throws IOException {
+    if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+      StructureDefinition base = sd.hasBaseDefinition() ? map.get(sd.getBaseDefinition()) : null;
+      System.out.println(sd.getType()+(base == null ? "" : " : "+base.getType()));
+      w.append(sd.getType()+(base == null ? "" : " : "+base.getType())+"\r\n");
+      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+        w.append("  "+Utilities.padLeft("", ' ', Utilities.charCount(ed.getPath(), '.'))+tail(ed.getPath())+" : "+ed.typeSummary()+" ["+ed.getMin()+".."+ed.getMax()+"]"+"\r\n");
+      }
+    }
+  }
+
+  
+  private String tail(String path) {
+    return path.contains(".") ? path.substring(path.lastIndexOf('.')+1) : path;
+  }
+
   private Map<String, byte[]> loadZip(InputStream stream) throws IOException {
     Map<String, byte[]> res = new HashMap<String, byte[]>();
     ZipInputStream zip = new ZipInputStream(stream);

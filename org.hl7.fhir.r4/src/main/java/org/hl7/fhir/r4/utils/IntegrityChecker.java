@@ -1,6 +1,7 @@
 package org.hl7.fhir.r4.utils;
 
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -11,8 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.model.CodeType;
+import org.hl7.fhir.r4.model.ElementDefinition;
 import org.hl7.fhir.r4.model.SearchParameter;
 import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureDefinition.TypeDerivationRule;
@@ -100,10 +103,46 @@ public class IntegrityChecker {
   }
 
   private void check() throws IOException {
-    checkSD();
-    checkSP();
+    dumpSD(new FileWriter("/Users/grahamegrieve/temp/r4-dump.txt"));
+//    checkSD();
+//    checkSP();
   }
   
+
+
+  private void dumpSD(FileWriter w) throws FHIRFormatError, IOException {
+    Map<String, StructureDefinition> map = new HashMap<>();
+    for (String sdn : npm.listResources("StructureDefinition")) {
+      InputStream s = npm.load(sdn);
+      StructureDefinition sd = (StructureDefinition) new JsonParser().parse(s);
+      map.put(sd.getUrl(), sd);
+    }
+    msg("Loaded "+map.size()+" Structures");
+    List<String> structures = new ArrayList<>();
+    for (StructureDefinition sd : map.values()) {
+      structures.add(sd.getUrl());
+    }
+    Collections.sort(structures);
+    
+    for (String sdn : structures) {
+      dumpSD(map.get(sdn), map, w);
+    }
+  }
+
+  private void dumpSD(StructureDefinition sd, Map<String, StructureDefinition> map, FileWriter w) throws IOException {
+    if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+      StructureDefinition base = sd.hasBaseDefinition() ? map.get(sd.getBaseDefinition()) : null;
+      System.out.println(sd.getType()+(base == null ? "" : " : "+base.getType()));
+      w.append(sd.getType()+(base == null ? "" : " : "+base.getType())+"\r\n");
+      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+        w.append("  "+Utilities.padLeft("", ' ', Utilities.charCount(ed.getPath(), '.'))+tail(ed.getPath())+" : "+ed.typeSummary()+" ["+ed.getMin()+".."+ed.getMax()+"]"+"\r\n");
+      }
+    }
+  }
+  
+  private String tail(String path) {
+    return path.contains(".") ? path.substring(path.lastIndexOf('.')+1) : path;
+  }
   
   private void checkSP() throws IOException {
     List<SearchParameter> list =  new ArrayList<>();
