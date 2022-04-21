@@ -214,6 +214,13 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       return this;
     }
     
+    public Piece attr(String name, String value) {
+      if (attributes == null) {
+        attributes = new HashMap<>();
+      }
+      attributes.put(name, value);
+      return this;
+    }
   }
   
   public class Cell {
@@ -221,7 +228,8 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     private String cellStyle;
     protected int span = 1;
     private TextAlignment alignment = TextAlignment.LEFT;
-
+    private String id;
+ 
     public Cell() {
       
     }
@@ -241,6 +249,8 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       return this;
     }
 
+
+    
     public Cell addMarkdown(String md) {
       if (!Utilities.noString(md)) {
         try {
@@ -400,6 +410,11 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       pieces.add(p);
       return p;
     }
+    public Piece addText(String text) {
+      Piece p = new Piece(null, text, null);
+      pieces.add(p);
+      return p;
+    }
     public String text() {
       StringBuilder b = new StringBuilder();
       for (Piece p : pieces)
@@ -428,7 +443,13 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       return this;
     }
     
-    
+    public String getId() {
+      return id;
+    }
+    public void setId(String id) {
+      this.id = id;
+    }
+
   }
 
   public class Title extends Cell {
@@ -585,6 +606,14 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     this.dest = dest;
     this.inLineGraphics = inlineGraphics;
     this.makeTargets = true;
+    checkSetup();
+  }
+
+  private void checkSetup() {
+    if (dest == null) {
+      throw new Error("what");
+    }
+    
   }
 
   public HierarchicalTableGenerator(String dest, boolean inlineGraphics, boolean makeTargets) {
@@ -592,6 +621,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     this.dest = dest;
     this.inLineGraphics = inlineGraphics;
     this.makeTargets = makeTargets;
+    checkSetup();
   }
 
   public TableModel initNormalTable(String prefix, boolean isLogical, boolean alternating, String id, boolean isActive) {
@@ -725,6 +755,10 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     if (c.span > 1) {
       tc.colspan(Integer.toString(c.span));
     }
+    if (c.getId() != null) {
+      tc.setAttribute("id", c.getId());
+    }
+
     if (indents != null) {
       tc.addTag("img").setAttribute("src", srcFor(imagePath, "tbl_spacer.png")).setAttribute("style", "background-color: inherit").setAttribute("class", "hierarchy").setAttribute("alt", ".");
       tc.setAttribute("style", "vertical-align: top; text-align : left; "+(c.cellStyle != null  && c.cellStyle.contains("background-color") ? "" : "background-color: "+color+"; ")+"border: "+ border +"px #F0F0F0 solid; padding:0px 4px 0px 4px; white-space: nowrap; background-image: url("+imagePath+checkExists(indents, hasChildren, lineColor, outputTracker)+")"+(c.cellStyle != null ? ";"+c.cellStyle : ""));
@@ -795,8 +829,9 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
         if (p.getHint() != null)
           tag.setAttribute("title", p.getHint());
         addStyle(tag, p);
-        if (p.hasChildren())
+        if (p.hasChildren()) {
           tag.getChildNodes().addAll(p.getChildren());
+        }
       } else if (!Utilities.noString(p.getReference())) {
         XhtmlNode a = addStyle(tc.addTag("a"), p);
         a.setAttribute("href", p.getReference());
@@ -818,6 +853,9 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
           s.addText(p.getText());
         } else
           tc.addText(p.getText());
+        if (p.hasChildren()) {
+          tc.getChildNodes().addAll(p.getChildren());
+        }
       }
     }
     if (makeTargets && !Utilities.noString(anchor))
@@ -925,7 +963,11 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       String file = Utilities.path(dest, b.toString());
       if (!new File(file).exists()) {
         File newFile = new File(file);
-        newFile.getParentFile().mkdirs();
+        if (newFile.getParentFile() == null) {
+          throw new Error("No source directory provided. ("+file+")");
+        } else {
+          newFile.getParentFile().mkdirs();
+        }
         newFile.createNewFile();
         FileOutputStream stream = new FileOutputStream(file);
         genImage(indents, hasChildren, lineColor, stream);

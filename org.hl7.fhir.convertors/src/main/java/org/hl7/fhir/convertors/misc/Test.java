@@ -48,7 +48,7 @@ import java.io.FileOutputStream;
 
 public class Test {
   public final static String DEF_TS_SERVER = "http://fhir-dev.healthintersections.com.au/open";
-  public final static String DEV_TS_SERVER = "http://local.fhir.org:960/open";
+  public final static String DEV_TS_SERVER = "http://local.fhir.org:8080/open";
 
 
   public static final String DEF_PATH = "c:\\work\\org.hl7.fhir\\build\\implementations\\java\\org.hl7.fhir.convertors\\samples\\";

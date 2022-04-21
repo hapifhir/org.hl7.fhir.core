@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class FHIRLexerTest {
   @Test
   @DisplayName("Test that a 'null' current value returns 'false' when FHIRLexer.isConstant() is called, and not NPE.")

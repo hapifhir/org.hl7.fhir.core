@@ -56,6 +56,9 @@ public class DataRequirement40_50 {
     if (name.equals("MedicationStatement")) {
       return "MedicationUsage";
     }
+    if (name.equals("DeviceUseStatement")) {
+      return "DeviceUsage";
+    }
     return name;
   }
 
@@ -63,6 +66,9 @@ public class DataRequirement40_50 {
     if (name == null) return null;
     if (name.equals("MedicationUsage")) {
       return "MedicationStatement";
+    }
+    if (name.equals("DeviceUsage")) {
+      return "DeviceUseStatement";
     }
     return name;
   }

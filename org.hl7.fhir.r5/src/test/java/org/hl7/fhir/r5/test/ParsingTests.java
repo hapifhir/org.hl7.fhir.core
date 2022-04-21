@@ -12,6 +12,7 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
@@ -57,7 +58,7 @@ public class ParsingTests {
     r = new XmlParser().parse(b);
     b = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeBytes(r);
     String output = new String(b);
-    String msg = TestingUtilities.checkJsonSrcIsSame(src, output);
+    String msg = CompareUtilities.checkJsonSrcIsSame(src, output);
     Assertions.assertTrue(msg == null, msg);
   }
 

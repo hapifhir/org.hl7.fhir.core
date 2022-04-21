@@ -11,7 +11,7 @@ import java.io.FileInputStream;
 public class QuestionnaireBuilderTester {
 
   private static final String TEST_PROFILE_DIR = "C:\\work\\org.hl7.fhir\\build\\publish";
-  private static final String TEST_DEST = "c:\\temp\\questionnaires\\";
+//  private static final String TEST_DEST = Utilities.path("[tmp]", "questionnaires\\");
 
   public static void main(String[] args) {
     QuestionnaireBuilder b = new QuestionnaireBuilder(null);

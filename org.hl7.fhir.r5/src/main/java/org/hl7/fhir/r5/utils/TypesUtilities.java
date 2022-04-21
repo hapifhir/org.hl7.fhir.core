@@ -163,7 +163,9 @@ public class TypesUtilities {
     
     // special cases
     res.add(new WildcardInformation("Dosage", TypeClassification.SPECIAL));
-    res.add(new WildcardInformation("Meta", TypeClassification.SPECIAL));
+    if (!VersionUtilities.isR4BVer(version)) {
+      res.add(new WildcardInformation("Meta", TypeClassification.SPECIAL));
+    }
     return res;
   }
 

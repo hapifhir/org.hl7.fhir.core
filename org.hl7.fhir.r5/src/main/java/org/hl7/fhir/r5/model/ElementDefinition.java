@@ -11568,6 +11568,10 @@ When pattern[x] is used to constrain a complex object, it means that each proper
 
   public boolean isInlineType() {
     return getType().size() == 1 && Utilities.existsInList(getType().get(0).getCode(), "Element", "BackboneElement");
+  }
+
+  public boolean prohibited() {
+    return "0".equals(getMax());
   }  
 
 

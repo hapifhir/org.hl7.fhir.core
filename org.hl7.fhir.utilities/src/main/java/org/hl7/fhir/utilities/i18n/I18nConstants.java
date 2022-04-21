@@ -366,6 +366,8 @@ public class I18nConstants {
   public static final String SD_ED_TYPE_PROFILE_UNKNOWN = "SD_ED_TYPE_PROFILE_UNKNOWN";
   public static final String SD_ED_TYPE_PROFILE_NOTYPE = "SD_ED_TYPE_PROFILE_NOTYPE";
   public static final String SD_ED_TYPE_PROFILE_WRONG = "SD_ED_TYPE_PROFILE_WRONG";
+  public static final String SD_ED_TYPE_PROFILE_IS_MODIFIER = "SD_ED_TYPE_PROFILE_IS_MODIFIER";
+  public static final String SD_ED_TYPE_PROFILE_NOT_MODIFIER = "SD_ED_TYPE_PROFILE_NOT_MODIFIER";
   public static final String SD_ED_TYPE_PROFILE_WRONG_TARGET = "SD_ED_TYPE_PROFILE_WRONG_TARGET";
   public static final String SD_ED_TYPE_NO_TARGET_PROFILE = "SD_ED_TYPE_NO_TARGET_PROFILE";
   public static final String SD_ED_SHOULD_BIND = "SD_ED_SHOULD_BIND";
@@ -375,6 +377,8 @@ public class I18nConstants {
   public static final String SD_ED_BIND_NO_BINDABLE = "SD_ED_BIND_NO_BINDABLE";
   public static final String SD_ED_BIND_MULTIPLE_TYPES = "SD_ED_BIND_MULTIPLE_TYPES";
   public static final String SD_VALUE_TYPE_IILEGAL = "SD_VALUE_TYPE_IILEGAL";
+  public static final String SD_VALUE_TYPE_REPEAT_HINT = "SD_VALUE_TYPE_REPEAT_HINT";
+  public static final String SD_VALUE_TYPE_REPEAT_WARNING_DOTNET = "SD_VALUE_TYPE_REPEAT_WARNING_DOTNET";
   public static final String SD_NO_TYPES_OR_CONTENTREF = "SD_NO_TYPES_OR_CONTENTREF";
   public static final String SEARCHPARAMETER_BASE_WRONG = "SEARCHPARAMETER_BASE_WRONG";
   public static final String SEARCHPARAMETER_EXP_WRONG = "SEARCHPARAMETER_EXP_WRONG";
@@ -620,6 +624,7 @@ public class I18nConstants {
   public static final String VALUESET_REFERENCE_UNKNOWN = "VALUESET_REFERENCE_UNKNOWN";
   public static final String VALUESET_UNC_SYSTEM_WARNING = "VALUESET_UNC_SYSTEM_WARNING";
   public static final String VALUESET_UNC_SYSTEM_WARNING_VER = "VALUESET_UNC_SYSTEM_WARNING_VER";
+  public static final String VALUESET_IMPORT_UNION_INTERSECTION = "VALUESET_IMPORT_UNION_INTERSECTION";
   public static final String VERSION_MISMATCH_THE_CONTEXT_HAS_VERSION__LOADED_AND_THE_NEW_CONTENT_BEING_LOADED_IS_VERSION_ = "Version_mismatch_The_context_has_version__loaded_and_the_new_content_being_loaded_is_version_";
   public static final String WRONG_NAMESPACE__EXPECTED_ = "Wrong_namespace__expected_";
   public static final String WRONG_TYPE_FOR_RESOURCE = "Wrong_type_for_resource";
@@ -694,6 +699,7 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_WRONG_UCUM = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_WRONG_UCUM";
   public static final String TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR = "TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR";
   public static final String TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING = "TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING";
+  public static final String TX_SERVER_NO_BATCH_RESPONSE = "TX_SERVER_NO_BATCH_RESPONSE";
 }
 
 

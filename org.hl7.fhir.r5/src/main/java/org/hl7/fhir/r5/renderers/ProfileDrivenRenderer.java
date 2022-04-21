@@ -312,9 +312,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       x.addText(new Base64().encodeAsString(((Base64BinaryType) e).getValue()));
     else if (e instanceof org.hl7.fhir.r5.model.DateType) {
       org.hl7.fhir.r5.model.DateType dt = ((org.hl7.fhir.r5.model.DateType) e);
-      if (((org.hl7.fhir.r5.model.DateType) e).hasValue()) {
-        x.addText(((org.hl7.fhir.r5.model.DateType) e).toHumanDisplay());
-      }
+      renderDate(x, dt);
     } else if (e instanceof Enumeration) {
       Object ev = ((Enumeration<?>) e).getValue();
       x.addText(ev == null ? "" : ev.toString()); // todo: look up a display name if there is one

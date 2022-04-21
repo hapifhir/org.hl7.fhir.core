@@ -136,7 +136,7 @@ public class TestingUtilities {
 	    command.add("\"" + diff + "\" \"" + f1 + "\" \"" + f2 + "\"");
 
 	    ProcessBuilder builder = new ProcessBuilder(command);
-	    builder.directory(new CSFile("c:\\temp"));
+	    builder.directory(new CSFile(Utilities.path("[tmp]")));
 	    builder.start();
 			
 		}
@@ -302,7 +302,7 @@ public class TestingUtilities {
 	    command.add("\"" + diff + "\" \"" + f1 + "\" \"" + f2 + "\"");
 
 	    ProcessBuilder builder = new ProcessBuilder(command);
-	    builder.directory(new CSFile("c:\\temp"));
+	    builder.directory(new CSFile(Utilities.path("[tmp]")));
 	    builder.start();
 			
 		}
@@ -389,11 +389,6 @@ public class TestingUtilities {
 		return null;
 	}
 
-  public static String temp() {
-    if (new File("c:\\temp").exists())
-      return "c:\\temp";
-    return System.getProperty("java.io.tmpdir");
-  }
 
   public static String checkTextIsSame(String s1, String s2) throws JsonSyntaxException, FileNotFoundException, IOException {
     return checkTextIsSame(s1,s2,true);

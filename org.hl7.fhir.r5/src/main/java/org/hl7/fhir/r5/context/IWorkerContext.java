@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.context;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -76,6 +77,8 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import com.google.gson.JsonSyntaxException;
 
+import javax.annotation.Nonnull;
+
 
 /**
  * This is the standard interface used for access to underlying FHIR
@@ -148,8 +151,9 @@ public interface IWorkerContext {
   public class PackageVersion {
     private String id;
     private String version;
+    private Date date;
     
-    public PackageVersion(String source) {
+    public PackageVersion(String source, Date date) {
       if (source == null) {
         throw new Error("Source cannot be null");
       }
@@ -158,12 +162,15 @@ public interface IWorkerContext {
       }
       id = source.substring(0, source.indexOf("#"));
       version = source.substring(source.indexOf("#")+1);
+      this.date = date;
     }
-    public PackageVersion(String id, String version) {
+    public PackageVersion(String id, String version, Date date) {
       super();
       this.id = id;
       this.version = version;
+      this.date = date;
     }
+    
     public String getId() {
       return id;
     }
@@ -178,6 +185,9 @@ public interface IWorkerContext {
     public String toString() {
       return id+"#"+version;
     }
+    public Date getDate() {
+      return date;
+    }
     
   }
 
@@ -185,8 +195,9 @@ public interface IWorkerContext {
     private String name;
     private String canonical;
     private String web;
-    public PackageDetails(String id, String version, String name, String canonical, String web) {
-      super(id, version);
+    
+    public PackageDetails(String id, String version, String name, String canonical, String web, Date date) {
+      super(id, version, date);
       this.name = name;
       this.canonical = canonical;
       this.web = web;
@@ -434,6 +445,11 @@ public interface IWorkerContext {
   public Set<String> getResourceNamesAsSet();
 
   /**
+   * @return a list of the resource names that are canonical resources defined for this version
+   */
+  public List<String> getCanonicalResourceNames();
+  
+  /**
    * @return a list of the resource and type names defined for this version
    */
   public List<String> getTypeNames();
@@ -547,7 +563,7 @@ public interface IWorkerContext {
    * @return
    * @throws FHIRException 
    */
-  ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical) throws TerminologyServiceException;
+  ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical, boolean noInactive) throws TerminologyServiceException;
 
   Locale getLocale();
 
@@ -793,7 +809,7 @@ public interface IWorkerContext {
     public void logDebugMessage(LogCategory category, String message); // verbose; only when debugging 
   }
 
-  public void setLogger(ILoggingService logger);
+  public void setLogger(@Nonnull ILoggingService logger);
   public ILoggingService getLogger();
 
   public boolean isNoTerminologyServer();

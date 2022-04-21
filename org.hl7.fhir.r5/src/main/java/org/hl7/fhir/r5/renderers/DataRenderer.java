@@ -1,5 +1,9 @@
 package org.hl7.fhir.r5.renderers;
 
+import static java.time.temporal.ChronoField.DAY_OF_MONTH;
+import static java.time.temporal.ChronoField.MONTH_OF_YEAR;
+import static java.time.temporal.ChronoField.YEAR;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -9,8 +13,12 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
+import java.time.format.ResolverStyle;
+import java.time.format.SignStyle;
 import java.util.Currency;
 import java.util.List;
 import java.util.TimeZone;
@@ -22,6 +30,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.model.Address;
 import org.hl7.fhir.r5.model.Annotation;
+import org.hl7.fhir.r5.model.BackboneType;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BaseDateTimeType;
 import org.hl7.fhir.r5.model.CanonicalResource;
@@ -39,6 +48,8 @@ import org.hl7.fhir.r5.model.DataRequirement.SortDirection;
 import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
+import org.hl7.fhir.r5.model.DateType;
+import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Expression;
 import org.hl7.fhir.r5.model.Extension;
@@ -348,8 +359,138 @@ public class DataRenderer extends Renderer {
     return value.primitiveValue();
   }
   
+  // -- 6. General purpose extension rendering ---------------------------------------------- 
 
-  // -- 5. Data type Rendering ---------------------------------------------- 
+  public boolean hasRenderableExtensions(DataType element) {
+    for (Extension ext : element.getExtension()) {
+      if (canRender(ext)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  public boolean hasRenderableExtensions(BackboneType element) {
+    for (Extension ext : element.getExtension()) {
+      if (canRender(ext)) {
+        return true;
+      }
+    }
+    return element.hasModifierExtension();  
+  }
+  
+  private String getExtensionLabel(Extension ext) {
+    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, ext.getUrl());
+    if (sd != null && ext.getValue().isPrimitive() && sd.hasSnapshot()) {
+      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+        if (Utilities.existsInList(ed.getPath(), "Extension", "Extension.value[x]") && ed.hasLabel()) {
+          return ed.getLabel();
+        }
+      }
+    }
+    return null;    
+  }
+  
+  private boolean canRender(Extension ext) {
+    return getExtensionLabel(ext) != null;
+  }
+
+  public void renderExtensionsInList(XhtmlNode ul, DataType element) throws FHIRFormatError, DefinitionException, IOException {
+    for (Extension ext : element.getExtension()) {
+      if (canRender(ext)) {
+        String lbl = getExtensionLabel(ext);
+        XhtmlNode li = ul.li();
+        li.tx(lbl);
+        li.tx(": ");
+        render(li, ext.getValue());
+      }
+    }
+  }
+  
+  public void renderExtensionsInList(XhtmlNode ul, BackboneType element) throws FHIRFormatError, DefinitionException, IOException {
+    for (Extension ext : element.getModifierExtension()) {
+      if (canRender(ext)) {
+        String lbl = getExtensionLabel(ext);
+        XhtmlNode li = ul.li();
+        li = li.b();
+        li.tx(lbl);
+        li.tx(": ");        
+        render(li, ext.getValue());
+      } else {
+        // somehow have to do better than this 
+        XhtmlNode li = ul.li();
+        li.b().tx("WARNING: Unrenderable Modifier Extension!");
+      }
+    }
+    for (Extension ext : element.getExtension()) {
+      if (canRender(ext)) {
+        String lbl = getExtensionLabel(ext);
+        XhtmlNode li = ul.li();
+        li.tx(lbl);
+        li.tx(": ");
+        render(li, ext.getValue());
+      }
+    }
+  }
+  
+  public void renderExtensionsInText(XhtmlNode div, DataType element, String sep) throws FHIRFormatError, DefinitionException, IOException {
+    boolean first = true;
+    for (Extension ext : element.getExtension()) {
+      if (canRender(ext)) {
+        if (first) {
+          first = false;
+        } else {
+          div.tx(sep);
+          div.tx(" ");
+        }
+         
+        String lbl = getExtensionLabel(ext);
+        div.tx(lbl);
+        div.tx(": ");
+        render(div, ext.getValue());
+      }
+    }
+  }
+  
+  public void renderExtensionsInList(XhtmlNode div, BackboneType element, String sep) throws FHIRFormatError, DefinitionException, IOException {
+    boolean first = true;
+    for (Extension ext : element.getModifierExtension()) {
+      if (first) {
+        first = false;
+      } else {
+        div.tx(sep);
+        div.tx(" ");
+      }
+      if (canRender(ext)) {
+        String lbl = getExtensionLabel(ext);
+        XhtmlNode b = div.b();
+        b.tx(lbl);
+        b.tx(": ");
+        render(div, ext.getValue());
+      } else {
+        // somehow have to do better than this 
+        div.b().tx("WARNING: Unrenderable Modifier Extension!");
+      }
+    }
+    for (Extension ext : element.getExtension()) {
+      if (canRender(ext)) {
+        if (first) {
+          first = false;
+        } else {
+          div.tx(sep);
+          div.tx(" ");
+        }
+         
+        String lbl = getExtensionLabel(ext);
+        div.tx(lbl);
+        div.tx(": ");
+        render(div, ext.getValue());
+      }
+    }
+
+  }
+  
+  // -- 6. Data type Rendering ---------------------------------------------- 
 
   public static String display(IWorkerContext context, DataType type) {
     return new DataRenderer(new RenderingContext(context, null, null, "http://hl7.org/fhir/R4", "", null, ResourceRendererMode.END_USER)).display(type);
@@ -413,15 +554,8 @@ public class DataRenderer extends Renderer {
     //   mode - if rendering mode is technical, format defaults to XML format
     //   locale - otherwise, format defaults to SHORT for the Locale (which defaults to default Locale)  
     if (isOnlyDate(type.getPrecision())) {
-      DateTimeFormatter fmt = context.getDateFormat();
-      if (fmt == null) {
-        if (context.isTechnicalMode()) {
-          fmt = DateTimeFormatter.ISO_DATE;
-        } else {
-          fmt = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(context.getLocale());
-        }
-      }
-
+      
+      DateTimeFormatter fmt = getDateFormatForPrecision(type);      
       LocalDate date = LocalDate.of(type.getYear(), type.getMonth()+1, type.getDay());
       return fmt.format(date);
     }
@@ -440,6 +574,43 @@ public class DataRenderer extends Renderer {
       zdt = zdt.withZoneSameInstant(zone);
     }
     return fmt.format(zdt);
+  }
+
+  private DateTimeFormatter getDateFormatForPrecision(BaseDateTimeType type) {
+    DateTimeFormatter fmt = getContextDateFormat(type);
+    if (fmt != null) {
+      return fmt;
+    }
+    if (context.isTechnicalMode()) {
+      switch (type.getPrecision()) {
+      case YEAR:
+        return new DateTimeFormatterBuilder().appendValue(YEAR, 4, 10, SignStyle.EXCEEDS_PAD).toFormatter();
+      case MONTH:
+        return  new DateTimeFormatterBuilder().appendValue(YEAR, 4, 10, SignStyle.EXCEEDS_PAD).appendLiteral('-').appendValue(MONTH_OF_YEAR, 2).toFormatter();
+      default:
+        return DateTimeFormatter.ISO_DATE;
+      }
+    } else {
+      switch (type.getPrecision()) {
+      case YEAR:
+        return DateTimeFormatter.ofPattern("uuuu");
+      case MONTH:
+        return DateTimeFormatter.ofPattern("MMM uuuu");
+      default:
+        return DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(context.getLocale());
+      }
+    }
+  }
+
+  private DateTimeFormatter getContextDateFormat(BaseDateTimeType type) {
+    switch (type.getPrecision()) {
+    case YEAR:
+      return context.getDateYearFormat();
+    case MONTH:
+      return context.getDateYearMonthFormat();
+    default:
+      return context.getDateFormat();
+    }
   }   
   
   private boolean isOnlyDate(TemporalPrecisionEnum temporalPrecisionEnum) {
@@ -530,6 +701,12 @@ public class DataRenderer extends Renderer {
   public void renderDateTime(XhtmlNode x, Base e) {
     if (e.hasPrimitiveValue()) {
       x.addText(displayDateTime((DateTimeType) e));
+    }
+  }
+
+  public void renderDate(XhtmlNode x, Base e) {
+    if (e.hasPrimitiveValue()) {
+      x.addText(displayDateTime((DateType) e));
     }
   }
 
@@ -821,11 +998,11 @@ public class DataRenderer extends Renderer {
     return s;
   }
 
-  protected void renderCodeableConcept(XhtmlNode x, CodeableConcept cc) {
+  protected void renderCodeableConcept(XhtmlNode x, CodeableConcept cc) throws FHIRFormatError, DefinitionException, IOException {
     renderCodeableConcept(x, cc, false);
   }
   
-  protected void renderCodeableReference(XhtmlNode x, CodeableReference e, boolean showCodeDetails) {
+  protected void renderCodeableReference(XhtmlNode x, CodeableReference e, boolean showCodeDetails) throws FHIRFormatError, DefinitionException, IOException {
     if (e.hasConcept()) {
       renderCodeableConcept(x, e.getConcept(), showCodeDetails);
     }
@@ -834,7 +1011,7 @@ public class DataRenderer extends Renderer {
     }
   }
 
-  protected void renderCodeableConcept(XhtmlNode x, CodeableConcept cc, boolean showCodeDetails) {
+  protected void renderCodeableConcept(XhtmlNode x, CodeableConcept cc, boolean showCodeDetails) throws FHIRFormatError, DefinitionException, IOException {
     if (cc.isEmpty()) {
       return;
     }
@@ -889,6 +1066,12 @@ public class DataRenderer extends Renderer {
         if (c.hasDisplay() && !s.equals(c.getDisplay())) {
           sp.tx(" \""+c.getDisplay()+"\"");
         }
+      }
+      if (hasRenderableExtensions(cc)) {
+        if (!first) {
+          sp.tx("; ");
+        }
+        renderExtensionsInText(sp, cc, ";");
       }
       sp.tx(")");
     } else {

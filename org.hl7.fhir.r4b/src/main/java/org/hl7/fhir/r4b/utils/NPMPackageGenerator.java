@@ -120,7 +120,7 @@ public class NPMPackageGenerator {
     p.remove("name");
     p.addProperty("name", id);
     p.remove("type");
-    p.addProperty("type", PackageType.SUBSET.getCode());    
+    p.addProperty("type", PackageType.CONFORMANCE.getCode());    
     p.remove("title");
     p.addProperty("title", name);
     if (notForPublication) {

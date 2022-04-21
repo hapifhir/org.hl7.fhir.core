@@ -42,9 +42,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -769,7 +772,7 @@ public class NpmPackage {
   }
 
   public boolean isType(PackageType template) {
-    return template.getCode().equals(type());
+    return template.getCode().equals(type()) || template.getOldCode().equals(type()) ;
   }
 
   public String type() {
@@ -1086,7 +1089,7 @@ public class NpmPackage {
   }
 
   public boolean isCore() {
-    return "fhir.core".equals(JSONUtil.str(npm, "type"));
+    return Utilities.existsInList(JSONUtil.str(npm, "type"), "fhir.core", "Core");
   }
 
   public boolean hasCanonical(String url) {
@@ -1133,6 +1136,28 @@ public class NpmPackage {
 
   public InputStream load(PackageResourceInformation p) throws FileNotFoundException {
     return new FileInputStream(p.filename);
+  }
+
+  public Date dateAsDate() {
+    try {
+      String d = date();
+      if (d == null) {
+        switch (name()) {
+        case "hl7.fhir.r2.core":  d = "20151024000000"; break;
+        case "hl7.fhir.r2b.core": d = "20160330000000"; break;
+        case "hl7.fhir.r3.core":  d = "20191024000000"; break;
+        case "hl7.fhir.r4.core":  d = "20191030000000"; break;
+        case "hl7.fhir.r4b.core": d = "202112200000000"; break;
+        case "hl7.fhir.r5.core":  d = "20211219000000"; break;
+        default:
+          return new Date();
+        }
+      }
+      return new SimpleDateFormat("yyyyMMddHHmmss").parse(d);
+    } catch (ParseException e) {
+      // this really really shouldn't happen
+      return new Date();
+    }
   }
   
   

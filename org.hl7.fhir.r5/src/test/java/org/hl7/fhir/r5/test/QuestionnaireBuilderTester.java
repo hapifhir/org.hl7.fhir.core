@@ -7,11 +7,12 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.QuestionnaireBuilder;
+import org.hl7.fhir.utilities.Utilities;
 
 public class QuestionnaireBuilderTester {
 
 	private static final String TEST_PROFILE_DIR = "C:\\work\\org.hl7.fhir\\build\\publish";
-	private static final String TEST_DEST = "c:\\temp\\questionnaires\\";
+//	private static final String TEST_DEST = Utilities.path("[tmp]", "questionnaires\\");
 
 	public static void main(String[] args) {
 		QuestionnaireBuilder b = new QuestionnaireBuilder(null);

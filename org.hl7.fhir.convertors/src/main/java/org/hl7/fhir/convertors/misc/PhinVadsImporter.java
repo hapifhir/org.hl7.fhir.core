@@ -48,7 +48,7 @@ public class PhinVadsImporter extends OIDBasedValueSetImporter {
     // first thing do is split into 2 
     List<byte[]> parts = Utilities.splitBytes(source, "\r\n\r\n".getBytes());
     if (parts.size() < 2) {
-      TextFile.bytesToFile(source, "c:\\temp\\phinvads.txt");
+      TextFile.bytesToFile(source, Utilities.path("[tmp]", "phinvads.txt"));
       throw new FHIRException("Unable to parse phinvads value set: " + parts.size() + " parts found");
     }
     CSVReader rdr = new CSVReader(new ByteArrayInputStream(parts.get(0)));

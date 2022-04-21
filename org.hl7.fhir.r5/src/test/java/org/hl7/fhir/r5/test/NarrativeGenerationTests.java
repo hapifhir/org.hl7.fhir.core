@@ -1,51 +1,36 @@
 package org.hl7.fhir.r5.test;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.SystemUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.DomainResource;
-import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.RendererFactory;
-import org.hl7.fhir.r5.renderers.ResourceRenderer;
 import org.hl7.fhir.r5.renderers.utils.ElementWrappers;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ITypeParser;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext.QuestionnaireRendererMode;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
-import org.hl7.fhir.r5.test.NarrativeGenerationTests.TestTypeParser;
+import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
-import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -111,15 +96,7 @@ public class NarrativeGenerationTests {
     List<Arguments> objects = new ArrayList<>();
     while (test != null && test.getNodeName().equals("test")) {
       TestDetails t = new TestDetails(test);
-      if (t.getId().equals("sdc")) {
-        if (SystemUtils.OS_NAME.contains(WINDOWS)) {
-          objects.add(Arguments.of(t.getId(), t));
-        } else {
-          System.out.println("sdc test not being adding because the current OS will not pass the test...");
-        }
-      } else {
-        objects.add(Arguments.of(t.getId(), t));
-      }
+      objects.add(Arguments.of(t.getId(), t));
       test = XMLUtil.getNextSibling(test);
     }
     return objects.stream();
@@ -127,7 +104,7 @@ public class NarrativeGenerationTests {
 
   @BeforeAll
   public static void setUp() {
-    context = TestingUtilities.context();
+    context = TestingUtilities.getSharedWorkerContext();
   }
 
   @ParameterizedTest(name = "{index}: file {0}")
@@ -156,24 +133,24 @@ public class NarrativeGenerationTests {
     }
     
     XhtmlNode x = RendererFactory.factory(source, rc).build(source);
-    String target = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".html"));
-    String output = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
-    String tfn = TestingUtilities.tempFile("narrative", test.getId() + ".target.html");
-    String ofn = TestingUtilities.tempFile("narrative", test.getId() + ".output.html");
-    TextFile.stringToFile(target, tfn);
-    TextFile.stringToFile(output, ofn);
-    String msg = TestingUtilities.checkXMLIsSame(ofn, tfn);
+    String expected = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".html"));
+    String actual = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
+    String expectedFileName = CompareUtilities.tempFile("narrative", test.getId() + ".expected.html");
+    String actualFileName = CompareUtilities.tempFile("narrative", test.getId() + ".actual.html");
+    TextFile.stringToFile(expected, expectedFileName);
+    TextFile.stringToFile(actual, actualFileName);
+    String msg = CompareUtilities.checkXMLIsSame(expectedFileName, actualFileName);
     Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
     
     if (test.isMeta()) {
       org.hl7.fhir.r5.elementmodel.Element e = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"), FhirFormat.XML); 
       x = RendererFactory.factory(source, rc).render(new ElementWrappers.ResourceWrapperMetaElement(rc, e));
 
-      target = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-meta.html"));
-      output = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
-      ofn = TestingUtilities.tempFile("narrative", test.getId() + "-meta.output.html");
-      TextFile.stringToFile(output, ofn);
-      msg = TestingUtilities.checkXMLIsSame(ofn, tfn);
+      expected = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-meta.html"));
+      actual = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
+      actualFileName = CompareUtilities.tempFile("narrative", test.getId() + "-meta.actual.html");
+      TextFile.stringToFile(actual, actualFileName);
+      msg = CompareUtilities.checkXMLIsSame(expectedFileName, actualFileName);
       Assertions.assertTrue(msg == null, "Meta output does not match expected: "+msg);
     }
   }

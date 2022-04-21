@@ -52,7 +52,7 @@ import com.google.gson.JsonObject;
 public class Tester {
 
 	public static void main(String[] args) throws Exception {
-		IWorkerContext context = SimpleWorkerContext.fromPack(Utilities.path("C:\\work\\org.hl7.fhir\\build\\publish", "validation-min.xml.zip"));
+		IWorkerContext context = new SimpleWorkerContext.SimpleWorkerContextBuilder().fromPack(Utilities.path("C:\\work\\org.hl7.fhir\\build\\publish", "validation-min.xml.zip"));
 		int t = 0;
 		int ok = 0;
 		for (String f : new File("C:\\work\\org.hl7.fhir\\build\\publish").list()) {
@@ -65,7 +65,7 @@ public class Tester {
 //				String tgt = normalise(TextFile.fileToString("C:\\work\\org.hl7.fhir\\build\\publish\\"+Utilities.changeFileExt(f, ".json")));
 				Element e = Manager.parseSingle(context, new FileInputStream("C:\\work\\org.hl7.fhir\\build\\publish\\"+f), FhirFormat.XML);
 				Manager.compose(context, e, new FileOutputStream("C:\\work\\org.hl7.fhir\\build\\publish\\"+Utilities.changeFileExt(f, ".mm.ttl")), FhirFormat.TURTLE, OutputStyle.PRETTY, null);
-        Manager.compose(context, e, new FileOutputStream("C:\\temp\\resource.xml"), FhirFormat.XML, OutputStyle.PRETTY, null);
+        Manager.compose(context, e, new FileOutputStream(Utilities.path("[tmp]", "resource.xml")), FhirFormat.XML, OutputStyle.PRETTY, null);
 				String src = TextFile.fileToString("C:\\work\\org.hl7.fhir\\build\\publish\\"+Utilities.changeFileExt(f, ".mm.ttl"));
 				String tgt = TextFile.fileToString("C:\\work\\org.hl7.fhir\\build\\publish\\"+Utilities.changeFileExt(f, ".ttl"));
 				t++;

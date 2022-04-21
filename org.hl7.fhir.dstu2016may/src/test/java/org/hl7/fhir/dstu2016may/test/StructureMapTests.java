@@ -105,7 +105,7 @@ public class StructureMapTests {
     Manager.compose(TestingUtilities.context, cda, new FileOutputStream("C:\\work\\org.hl7.fhir\\build\\guides\\ccda\\Example\\ccd.out.xml"), FhirFormat.XML, OutputStyle.PRETTY, null);
     Bundle bundle = new Bundle();
     scu.transform(null, cda, maps.get("http://hl7.org/fhir/StructureMap/cda"), bundle);
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("c:\\temp\\bundle.xml"), bundle);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "bundle.xml")), bundle);
   }
 
 }

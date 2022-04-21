@@ -55,9 +55,12 @@ public class VersionUtilities {
     }
   }
 
-  public static final String CURRENT_VERSION = "4.6";
-  public static final String CURRENT_FULL_VERSION = "4.6.0";
+  public static final String CURRENT_VERSION = "5.0";
+  public static final String CURRENT_FULL_VERSION = "5.0.0";
 
+  public static final String CURRENT_DEFAULT_VERSION = "4.0";
+  public static final String CURRENT_DEFAULT_FULL_VERSION = "4.0.1";
+  
   public static String packageForVersion(String v) {
     if (isR2Ver(v)) {
       return "hl7.fhir.r2.core";
@@ -351,8 +354,14 @@ public class VersionUtilities {
     if ("r4".equals(version)) {
       return "4.0.1";
     }
+    if ("r4".equals(version)) {
+      return "4.0.1";
+    }
+    if ("r4b".equals(version)) {
+      return "4.3.0";
+    }
     if ("r5".equals(version)) {
-      return CURRENT_FULL_VERSION;
+      return "5.0.0";
     }
     throw new FHIRException("Unknown version "+version);
   }
@@ -532,6 +541,17 @@ public class VersionUtilities {
     }
     String v = getMajMin(version);
     return v.compareTo("4.5") >= 0; 
+  }
+
+  public static String removeVersionFromCanonical(String url) {
+    if (url == null) {
+      return null;
+    }
+    if (url.contains("|")) {
+      return url.substring(0, url.indexOf("|"));
+    } else {
+      return url;
+    }
   }
 
 
