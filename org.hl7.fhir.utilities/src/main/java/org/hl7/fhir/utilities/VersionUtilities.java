@@ -543,5 +543,16 @@ public class VersionUtilities {
     return v.compareTo("4.5") >= 0; 
   }
 
+  public static String removeVersionFromCanonical(String url) {
+    if (url == null) {
+      return null;
+    }
+    if (url.contains("|")) {
+      return url.substring(0, url.indexOf("|"));
+    } else {
+      return url;
+    }
+  }
+
 
 }

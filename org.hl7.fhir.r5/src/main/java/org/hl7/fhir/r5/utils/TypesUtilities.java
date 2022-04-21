@@ -132,9 +132,7 @@ public class TypesUtilities {
     res.add(new WildcardInformation("Annotation", TypeClassification.DATATYPE));
     res.add(new WildcardInformation("Attachment", TypeClassification.DATATYPE));
     res.add(new WildcardInformation("CodeableConcept", TypeClassification.DATATYPE));
-    if (!VersionUtilities.isR4BVer(version)) {
-      res.add(new WildcardInformation("CodeableReference", TypeClassification.DATATYPE));
-    }
+    res.add(new WildcardInformation("CodeableReference", TypeClassification.DATATYPE));
     res.add(new WildcardInformation("Coding", TypeClassification.DATATYPE));
     res.add(new WildcardInformation("ContactPoint", TypeClassification.DATATYPE));
     res.add(new WildcardInformation("Count", TypeClassification.DATATYPE));
@@ -147,9 +145,7 @@ public class TypesUtilities {
     res.add(new WildcardInformation("Quantity", TypeClassification.DATATYPE));
     res.add(new WildcardInformation("Range", TypeClassification.DATATYPE));
     res.add(new WildcardInformation("Ratio", TypeClassification.DATATYPE));
-    if (!VersionUtilities.isR4BVer(version)) {
-      res.add(new WildcardInformation("RatioRange", TypeClassification.DATATYPE));
-    }
+    res.add(new WildcardInformation("RatioRange", TypeClassification.DATATYPE));
     res.add(new WildcardInformation("Reference", " - a reference to another resource", TypeClassification.DATATYPE));
     res.add(new WildcardInformation("SampledData", TypeClassification.DATATYPE));
     res.add(new WildcardInformation("Signature", TypeClassification.DATATYPE));
@@ -167,7 +163,9 @@ public class TypesUtilities {
     
     // special cases
     res.add(new WildcardInformation("Dosage", TypeClassification.SPECIAL));
-    res.add(new WildcardInformation("Meta", TypeClassification.SPECIAL));
+    if (!VersionUtilities.isR4BVer(version)) {
+      res.add(new WildcardInformation("Meta", TypeClassification.SPECIAL));
+    }
     return res;
   }
 
