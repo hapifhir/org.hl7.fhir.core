@@ -97,17 +97,15 @@ public class FHIRLexer {
   }
 
   public boolean isConstant() {
-    return !Utilities.noString(current) && ((current.charAt(0) == '\'' || current.charAt(0) == '"') || current.charAt(0) == '@' || current.charAt(0) == '%' || 
-        current.charAt(0) == '-' || current.charAt(0) == '+' || (current.charAt(0) >= '0' && current.charAt(0) <= '9') || 
-        current.equals("true") || current.equals("false") || current.equals("{}"));
+    return FHIRPathConstant.isFHIRPathConstant(current);
   }
 
   public boolean isFixedName() {
-    return current != null && (current.charAt(0) == '`');
+    return FHIRPathConstant.isFHIRPathFixedName(current);
   }
 
   public boolean isStringConstant() {
-    return current.charAt(0) == '\'' || current.charAt(0) == '"' || current.charAt(0) == '`';
+    return FHIRPathConstant.isFHIRPathStringConstant(current);
   }
 
   public String take() throws FHIRLexerException {
@@ -201,7 +199,7 @@ public class FHIRLexer {
         cursor++;
         if (cursor < source.length() && (source.charAt(cursor) == '/')) {
           // this is en error - should already have been skipped
-          error("This shoudn't happen?");
+          error("This shouldn't happen?");
         }
         current = source.substring(currentStart, cursor);
       } else if (ch == '$') {

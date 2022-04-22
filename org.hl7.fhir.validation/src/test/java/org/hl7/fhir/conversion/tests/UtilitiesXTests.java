@@ -167,7 +167,7 @@ public class UtilitiesXTests {
 	    command.add("\"" + diff + "\" \"" + f1 + "\" \"" + f2 + "\"");
 
 	    ProcessBuilder builder = new ProcessBuilder(command);
-	    builder.directory(new CSFile("c:\\temp"));
+	    builder.directory(new CSFile(Utilities.path("tmp]")));
 	    builder.start();
 			
 		}
@@ -333,7 +333,7 @@ public class UtilitiesXTests {
 	    command.add("\"" + diff + "\" \"" + f1 + "\" \"" + f2 + "\"");
 
 	    ProcessBuilder builder = new ProcessBuilder(command);
-	    builder.directory(new CSFile("c:\\temp"));
+	    builder.directory(new CSFile(Utilities.path("tmp]")));
 	    builder.start();
 			
 		}
@@ -420,9 +420,9 @@ public class UtilitiesXTests {
 		return null;
 	}
 
-  public static String temp() {
-    if (new File("c:\\temp").exists())
-      return "c:\\temp";
+  public static String temp() throws IOException {
+    if (new File(Utilities.path("tmp]")).exists())
+      return Utilities.path("tmp]");
     return System.getProperty("java.io.tmpdir");
   }
 
@@ -549,9 +549,9 @@ public class UtilitiesXTests {
   }
   
   public static String tempFolder(String name) throws IOException {
-    File tmp = new File("C:\\temp");
+    File tmp = new File(Utilities.path("tmp]"));
     if (tmp.exists() && tmp.isDirectory()) {
-      String path = Utilities.path("C:\\temp", name);
+      String path = Utilities.path("[tmp]", name);
       Utilities.createDirectory(path);
       return path;
     } else if (new File("/tmp").exists()) {

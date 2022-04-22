@@ -29,7 +29,7 @@ package org.hl7.fhir.r4b.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Dec 29, 2021 07:58+1100 for FHIR v4.3.0-snapshot1
+// Generated on Fri, Apr 22, 2022 11:20+1000 for FHIR v4.3.0-cibuild
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2177,129 +2177,131 @@ public class CompartmentDefinition extends CanonicalResource {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
+      @Override
+      public String getCopyright() {
+        return new String();
+      }
+      
+      @Override
+      public MarkdownType getCopyrightElement() {
+        return new MarkdownType();
+      }
+      
+      @Override
+      public CanonicalResource setCopyright(String theCopyright) {
+        return this;
+      }
+      
+      @Override
+      public CanonicalResource setCopyrightElement(MarkdownType theCopyright) {
+        return this;
+      }
+      
+      @Override
+      public boolean hasCopyright() {
+        return false;
+      }
+      
+      @Override
+      public boolean hasCopyrightElement() {
+        return false;
+      }
+      
+      
+      @Override
+      public List<Identifier> getIdentifier() {
+        return new ArrayList<>();
+      }
+      
+      @Override
+      public CanonicalResource setIdentifier(List<Identifier> theIdentifier) {
+        return this;
+      }
+      
+      @Override
+      public boolean hasIdentifier() {
+        return false;
+      }
+      
+      @Override
+      public Identifier addIdentifier() {
+	        return null;
+	      }
+	      
+      @Override
+      public CanonicalResource addIdentifier(Identifier t) {
+        return null;
+	      }
+      
+      @Override
+      public Identifier getIdentifierFirstRep() {
+        return new Identifier();
+      }
+      
+      @Override
+      public String getTitle() {
+        return new String();
+      }
+      
+      @Override
+      public StringType getTitleElement() {
+        return new StringType();
+      }
+      
+      @Override
+      public CanonicalResource setTitle(String theTitle) {
+        return this;
+      }
+      
+      @Override
+      public CanonicalResource setTitleElement(StringType theTitle) {
+        return this;
+      }
+      
+      @Override
+      public boolean hasTitle() {
+        return false;
+      }
+      
+      @Override
+      public boolean hasTitleElement() {
+        return false;
+      }
+      
+      
+      @Override
+      public List<CodeableConcept> getJurisdiction() {
+        return new ArrayList<>();
+      }
+      
+      @Override
+      public CanonicalResource setJurisdiction(List<CodeableConcept> theJurisdiction) {
+        return this;
+      }
+      
+      @Override
+      public boolean hasJurisdiction() {
+        return false;
+      }
+      
+      @Override
+      public CodeableConcept addJurisdiction() {
+	        return null;
+	      }
+	      
+      @Override
+      public CanonicalResource addJurisdiction(CodeableConcept t) {
+        return null;
+	      }
+      
+      @Override
+      public CodeableConcept getJurisdictionFirstRep() {
+        return new CodeableConcept();
+      }
+      
 // Manual code (from Configuration.txt):
   public boolean supportsCopyright() {
     return false;
-  }
-
-  @Override
-  public List<Identifier> getIdentifier() {
-    return new ArrayList<>();
-  }
-
-  @Override
-  public CanonicalResource setIdentifier(List<Identifier> theIdentifier) {
-    return this;
-  }
-
-  @Override
-  public boolean hasIdentifier() {
-    return false;
-  }
-
-  @Override
-  public Identifier addIdentifier() {
-    return new Identifier();
-  }
-
-  @Override
-  public CanonicalResource addIdentifier(Identifier t) {
-    return this;
-  }
-
-  @Override
-  public Identifier getIdentifierFirstRep() {
-    return new Identifier();
-  }
-
-  @Override
-  public StringType getTitleElement() {
-    return new StringType();
-  }
-
-  @Override
-  public boolean hasTitleElement() {
-    return false;
-  }
-
-  @Override
-  public boolean hasTitle() {
-    return false;
-  }
-
-  @Override
-  public CanonicalResource setTitleElement(StringType value) {
-    return this;
-  }
-
-  @Override
-  public String getTitle() {
-    return null;
-  }
-
-  @Override
-  public CanonicalResource setTitle(String value) {
-    return this;
-  }
-
-  @Override
-  public List<CodeableConcept> getJurisdiction() {
-    return new ArrayList<>();
-  }
-
-  @Override
-  public CanonicalResource setJurisdiction(List<CodeableConcept> theJurisdiction) {
-    return this;
-  }
-
-  @Override
-  public boolean hasJurisdiction() {
-    return false;
-  }
-
-  @Override
-  public CodeableConcept addJurisdiction() {
-    return new CodeableConcept();
-  }
-
-  @Override
-  public CanonicalResource addJurisdiction(CodeableConcept t) {
-    return this;
-  }
-
-  @Override
-  public CodeableConcept getJurisdictionFirstRep() {
-    return new CodeableConcept();
-  }
-
-  @Override
-  public MarkdownType getCopyrightElement() {
-    return new MarkdownType();
-  }
-
-  @Override
-  public boolean hasCopyrightElement() {
-    return false;
-  }
-
-  @Override
-  public boolean hasCopyright() {
-    return false;
-  }
-
-  @Override
-  public CanonicalResource setCopyrightElement(MarkdownType value) {
-    return this;
-  }
-
-  @Override
-  public String getCopyright() {
-    return null;
-  }
-
-  @Override
-  public CanonicalResource setCopyright(String value) {
-    return this;
   }
   
 // end addition

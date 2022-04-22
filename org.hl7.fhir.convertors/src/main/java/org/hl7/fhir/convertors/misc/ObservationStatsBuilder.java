@@ -38,6 +38,7 @@ import org.hl7.fhir.dstu3.model.Observation.ObservationComponentComponent;
 import org.hl7.fhir.dstu3.model.Observation.ObservationStatus;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.utilities.Utilities;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -72,7 +73,7 @@ public class ObservationStatsBuilder {
     vitals(b, base, 130, 95, 133, 97, 37.2);
     vitals(b, base, 150, 85, 125, 98, 37.1);
 
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("c:\\temp\\vitals.xml"), b);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "vitals.xml")), b);
   }
 
   private static void vitals(Bundle b, Calendar base, int minutes, int diastolic, int systolic, int sat, double temp) throws FHIRFormatError {
@@ -196,7 +197,7 @@ public class ObservationStatsBuilder {
     addAge(b, 10, 0, "31.9");
 
 
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("c:\\temp\\obs.xml"), b);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "obs.xml")), b);
   }
 
   private static void addAge(Bundle b, int y, int m, String v) throws FHIRException {
