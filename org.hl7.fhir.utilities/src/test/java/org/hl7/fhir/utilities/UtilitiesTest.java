@@ -92,7 +92,7 @@ class UtilitiesTest {
     } else if (os.toUpperCase().contains(WINDOWS)) {
       File tmp = new File(Utilities.C_TEMP_DIR);
       if(tmp.exists()) {
-        return Utilities.C_TEMP_DIR;
+        return Utilities.C_TEMP_DIR + '\\';
       } else {
         return System.getProperty("java.io.tmpdir");
       }

@@ -29,7 +29,7 @@ package org.hl7.fhir.r4b.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Dec 31, 2021 05:58+1100 for FHIR v4.3.0-snapshot1
+// Generated on Fri, Apr 22, 2022 11:20+1000 for FHIR v4.3.0-cibuild
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,7 +51,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * A structured set of tests against a FHIR server or client implementation to determine compliance against the FHIR specification.
  */
 @ResourceDef(name="TestScript", profile="http://hl7.org/fhir/StructureDefinition/TestScript")
-public class TestScript extends DomainResource {
+public class TestScript extends CanonicalResource {
 
     public enum AssertionDirectionType {
         /**
@@ -11573,27 +11573,67 @@ public class TestScript extends DomainResource {
     }
 
     /**
+     * only one on this implementation
+     */
+    @Override
+    public int getIdentifierMax() { 
+      return 1;
+    }
+    /**
      * @return {@link #identifier} (A formal identifier that is used to identify this test script when it is represented in other formats, or referenced in a specification, model, design or an instance.)
      */
-    public Identifier getIdentifier() { 
-      if (this.identifier == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create TestScript.identifier");
-        else if (Configuration.doAutoCreate())
-          this.identifier = new Identifier(); // cc
-      return this.identifier;
+    public List<Identifier> getIdentifier() { 
+      List<Identifier> list = new ArrayList<Identifier>();
+      if (this.identifier == null) {
+        list.add(identifier);
+      }
+      return list;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public TestScript setIdentifier(List<Identifier> theIdentifier) { 
+      if (theIdentifier.size() == 0) {
+        this.identifier = null;
+      } else if (theIdentifier.size() == 1) {
+        this.identifier = theIdentifier.get(0);
+      } else {
+        throw new Error("Cannot have more than one TestScript.identifier");
+      }
+      return this;
     }
 
     public boolean hasIdentifier() { 
       return this.identifier != null && !this.identifier.isEmpty();
     }
 
-    /**
-     * @param value {@link #identifier} (A formal identifier that is used to identify this test script when it is represented in other formats, or referenced in a specification, model, design or an instance.)
-     */
-    public TestScript setIdentifier(Identifier value) { 
-      this.identifier = value;
+    public Identifier addIdentifier() { //3
+      if (this.identifier == null) {
+        this.identifier = new Identifier();
+      } else {
+        throw new Error("Cannot have more than one TestScript.identifier");
+      }
+      return this.identifier;
+    }
+
+    public TestScript addIdentifier(Identifier t) { //3
+      if (this.identifier == null) {
+        this.identifier = t;
+      } else {
+        throw new Error("Cannot have more than one TestScript.identifier");
+      }
       return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
+     */
+    public Identifier getIdentifierFirstRep() { 
+      if (identifier == null) {
+        addIdentifier();
+      }
+      return identifier;
     }
 
     /**
@@ -12856,7 +12896,7 @@ public class TestScript extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 116079:  return getUrlElement();
-        case -1618432855:  return getIdentifier();
+        case -1618432855:  return getIdentifierFirstRep();
         case 351608024:  return getVersionElement();
         case 3373707:  return getNameElement();
         case 110371416:  return getTitleElement();

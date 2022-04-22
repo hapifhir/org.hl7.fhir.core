@@ -29,7 +29,7 @@ package org.hl7.fhir.r4b.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Dec 31, 2021 05:58+1100 for FHIR v4.3.0-snapshot1
+// Generated on Fri, Apr 22, 2022 11:20+1000 for FHIR v4.3.0-cibuild
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,7 +51,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * The ResearchDefinition resource describes the conditional state (population and any exposures being compared within the population) and outcome (if specified) that the knowledge (evidence, assertion, recommendation) is about.
  */
 @ResourceDef(name="ResearchDefinition", profile="http://hl7.org/fhir/StructureDefinition/ResearchDefinition")
-public class ResearchDefinition extends DomainResource {
+public class ResearchDefinition extends CanonicalResource {
 
     /**
      * An absolute URI that is used to identify this research definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this research definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the research definition is stored on different servers.
