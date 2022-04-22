@@ -25,12 +25,10 @@ import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.GraphQLEngine;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.graphql.Argument;
-import org.hl7.fhir.utilities.graphql.IGraphQLStorageServices;
-import org.hl7.fhir.utilities.graphql.NameValue;
-import org.hl7.fhir.utilities.graphql.Parser;
+import org.hl7.fhir.utilities.graphql.*;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -66,10 +64,16 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
         stream = TestingUtilities.loadTestResourceStream("r5", parts[0].toLowerCase()+"-"+parts[1].toLowerCase()+".xml");
     }
 
+    Resource parsedResource =  stream != null ? new XmlParser().parse(stream) : null;
+
+    testResource(parsedResource, output, source, operation);
+  }
+
+  private void testResource(Resource resource, String output, String source, String operation) throws IOException, EGraphEngine, EGraphQLException {
     GraphQLEngine gql = new GraphQLEngine(TestingUtilities.getSharedWorkerContext());
     gql.setServices(this);
-    if (stream != null)
-      gql.setFocus(new XmlParser().parse(stream));
+    if (resource != null)
+      gql.setFocus(resource);
     gql.setGraphQL(Parser.parse(TestingUtilities.loadTestResource("r5", "graphql", source)));
     gql.getGraphQL().setOperationName(operation);
     gql.getGraphQL().getVariables().add(new Argument("var", new NameValue("true")));
@@ -97,6 +101,24 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
     }
     else
       Assertions.assertTrue(output.equals("$error"), "Error, but proper output was expected ("+msg+")");
+
+  }
+
+  @Test
+  public void testReferenceReverseHistory() throws Exception {
+    String context = "Patient/example/$graphql";
+    String source = "reference-reverse.gql";
+    String output="reference-reverse-history.json";
+
+    String[] parts = context.split("/");
+    InputStream stream  = TestingUtilities.loadTestResourceStream("r5", parts[0].toLowerCase()+"-"+parts[1].toLowerCase()+".xml");
+
+    Resource parsedResource = new XmlParser().parse(stream);
+
+    //Rather than duplicate the entire resource we modify the ID with a _history path
+    parsedResource.setId("example/_history/1");
+
+    testResource(parsedResource, output, source, null);
   }
 
   @Override
@@ -137,7 +159,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
   @Override
   public void listResources(Object appInfo, String type, List<Argument> searchParams, List<IBaseResource> matches) throws FHIRException {
     try {
-      if (type.equals("Condition")) 
+      if (type.equals("Condition") && searchParams.get(0).hasValue("Patient/example"))
         matches.add(new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "condition-example.xml")));
       else if (type.equals("Patient")) {
         matches.add(new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "patient-example.xml")));

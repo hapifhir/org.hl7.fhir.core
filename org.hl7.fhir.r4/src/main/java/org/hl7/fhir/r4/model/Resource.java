@@ -117,16 +117,25 @@ public abstract class Resource extends BaseResource implements IAnyResource {
       return this;
     }
 
-    /**
-     * @return The logical id of the resource, as used in the URL for the resource. Once assigned, this value never changes.
-     */
+  /**
+   * @return The most complete id value of the resource, containing all
+   * available context and history. Once assigned this value never changes.
+   * NOTE: this value is NOT limited to just the logical id property of a
+   * resource id.
+   * @see IdType
+   * @see IdType#getValue()
+   */
     public String getId() { 
       return this.id == null ? null : this.id.getValue();
     }
 
-    /**
-     * @param value The logical id of the resource, as used in the URL for the resource. Once assigned, this value never changes.
-     */
+  /**
+   * @param value The id value of the resource. Once assigned, this value
+   *              never changes.
+   *
+   * @see IdType
+   * @see IdType#setValue(String)
+   */
     public Resource setId(String value) { 
       if (Utilities.noString(value))
         this.id = null;
@@ -136,6 +145,14 @@ public abstract class Resource extends BaseResource implements IAnyResource {
         this.id.setValue(value);
       }
       return this;
+    }
+
+  /**
+   * @return  the logical ID part of this resource's id
+   * @see IdType#getIdPart()
+   */
+    public String getIdPart() {
+      return getIdElement().getIdPart();
     }
 
     /**
