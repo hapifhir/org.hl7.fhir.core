@@ -157,7 +157,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
     boolean first = true;
     for (ElementDefinition ed : ti.getChildren()) {
       if (!ed.hasRepresentation(PropertyRepresentation.XMLATTR)) {
-        genElement(analysis, ti, ed, matchingInheritedElement(ti.getInheritedChildren(), ed), first);
+        genElement(analysis, ti, ed, matchingInheritedElement(ti.getInheritedChildren(), ed, analysis.getName()), first);
         first = false;
       }
     }
@@ -307,7 +307,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
     
     for (ElementDefinition ed : ti.getChildren()) {
       if (!ed.hasRepresentation(PropertyRepresentation.XMLATTR)) {
-        genElementCompose(analysis, ti, ed, matchingInheritedElement(ti.getInheritedChildren(),  ed));
+        genElementCompose(analysis, ti, ed, matchingInheritedElement(ti.getInheritedChildren(),  ed, analysis.getName()));
       }
     }
     composer.append("  }\r\n\r\n");    

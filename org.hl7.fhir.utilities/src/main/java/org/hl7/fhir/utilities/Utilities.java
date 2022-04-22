@@ -595,7 +595,7 @@ public class Utilities {
       if (s.length() == 0) {
         if ("[tmp]".equals(a)) {
           if (hasCTempDir()) {
-            a = Utilities.path("[tmp]");
+            a = C_TEMP_DIR;
           } else if (ToolGlobalSettings.hasTempPath()) {            
             a = ToolGlobalSettings.getTempPath();
           } else {

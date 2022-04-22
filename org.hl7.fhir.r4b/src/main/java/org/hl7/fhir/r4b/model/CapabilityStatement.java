@@ -29,7 +29,7 @@ package org.hl7.fhir.r4b.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Dec 31, 2021 05:58+1100 for FHIR v4.3.0-snapshot1
+// Generated on Fri, Apr 22, 2022 11:20+1000 for FHIR v4.3.0-cibuild
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -8717,39 +8717,6 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     return ResourceType.CapabilityStatement;
    }
 
-  @Override
-  public List<Identifier> getIdentifier() {
-    return new ArrayList<>();
-  }
-
-  @Override
-  public CanonicalResource setIdentifier(List<Identifier> theIdentifier) {
-    return this;
-  }
-
-  @Override
-  public boolean hasIdentifier() {
-    return false;
-  }
-
-  @Override
-  public Identifier addIdentifier() {
-    return null;
-  }
-
-  @Override
-  public CanonicalResource addIdentifier(Identifier t) {
-    return null;
-  }
-
-  @Override
-  public Identifier getIdentifierFirstRep() {
-    return null;
-  }
-
-// Manual code (from Configuration.txt):
-
-// end addition
  /**
    * Search parameter: <b>fhirversion</b>
    * <p>
@@ -9661,6 +9628,40 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
+
+      @Override
+      public List<Identifier> getIdentifier() {
+        return new ArrayList<>();
+      }
+      
+      @Override
+      public CanonicalResource setIdentifier(List<Identifier> theIdentifier) {
+        return this;
+      }
+      
+      @Override
+      public boolean hasIdentifier() {
+        return false;
+      }
+      
+      @Override
+      public Identifier addIdentifier() {
+	        return null;
+	      }
+	      
+      @Override
+      public CanonicalResource addIdentifier(Identifier t) {
+        return null;
+	      }
+      
+      @Override
+      public Identifier getIdentifierFirstRep() {
+        return new Identifier();
+      }
+      
+// Manual code (from Configuration.txt):
+
+// end addition
 
 }
 
