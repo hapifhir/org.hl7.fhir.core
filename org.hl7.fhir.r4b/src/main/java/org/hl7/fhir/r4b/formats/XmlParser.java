@@ -30,7 +30,7 @@ package org.hl7.fhir.r4b.formats;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Dec 29, 2021 07:58+1100 for FHIR v4.3.0-snapshot1
+// Generated on Fri, Apr 22, 2022 11:20+1000 for FHIR v4.3.0-cibuild
 
 
 
@@ -7336,7 +7336,7 @@ public class XmlParser extends XmlParserBase {
     if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("url")) {
       res.setUrlElement(parseUri(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("identifier")) {
-      res.setIdentifier(parseIdentifier(xpp));
+      res.addIdentifier(parseIdentifier(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("version")) {
       res.setVersionElement(parseString(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("name")) {
@@ -23746,7 +23746,7 @@ public class XmlParser extends XmlParserBase {
     if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("url")) {
       res.setUrlElement(parseUri(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("identifier")) {
-      res.setIdentifier(parseIdentifier(xpp));
+      res.addIdentifier(parseIdentifier(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("version")) {
       res.setVersionElement(parseString(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("name")) {
@@ -50344,7 +50344,7 @@ public class XmlParser extends XmlParserBase {
       composeUri("url", element.getUrlElement());
     }
     if (element.hasIdentifier()) {
-      composeIdentifier("identifier", element.getIdentifier());
+      composeIdentifier("identifier", element.getIdentifierFirstRep());
     }
     if (element.hasVersionElement()) {
       composeString("version", element.getVersionElement());
