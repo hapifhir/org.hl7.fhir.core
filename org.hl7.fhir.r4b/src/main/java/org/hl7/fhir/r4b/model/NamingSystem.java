@@ -29,7 +29,7 @@ package org.hl7.fhir.r4b.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Dec 31, 2021 05:58+1100 for FHIR v4.3.0-snapshot1
+// Generated on Fri, Apr 22, 2022 11:20+1000 for FHIR v4.3.0-cibuild
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1775,218 +1775,6 @@ public class NamingSystem extends CanonicalResource {
     return ResourceType.NamingSystem;
    }
 
-// end addition
-
-  @Override
-  public UriType getUrlElement() {
-    return new UriType();
-  }
-
-  @Override
-  public boolean hasUrlElement() {
-    return false;
-  }
-
-  @Override
-  public boolean hasUrl() {
-    return false;
-  }
-
-  @Override
-  public CanonicalResource setUrlElement(UriType value) {
-    return this;
-  }
-
-  @Override
-  public String getUrl() {
-    return null;
-  }
-
-  @Override
-  public CanonicalResource setUrl(String value) {
-    return this;
-  }
-
-  @Override
-  public List<Identifier> getIdentifier() {
-    return new ArrayList<>();
-  }
-
-  @Override
-  public CanonicalResource setIdentifier(List<Identifier> theIdentifier) {
-    return this;
-  }
-
-  @Override
-  public boolean hasIdentifier() {
-    return false;
-  }
-
-  @Override
-  public Identifier addIdentifier() {
-    return new Identifier();
-  }
-
-  @Override
-  public CanonicalResource addIdentifier(Identifier t) {
-    return this;
-  }
-
-  @Override
-  public Identifier getIdentifierFirstRep() {
-    return new Identifier();
-  }
-
-  @Override
-  public StringType getVersionElement() {
-    return new StringType();
-  }
-
-  @Override
-  public boolean hasVersionElement() {
-    return false;
-  }
-
-  @Override
-  public boolean hasVersion() {
-    return false;
-  }
-
-  @Override
-  public CanonicalResource setVersionElement(StringType value) {
-    return this;
-  }
-
-  @Override
-  public String getVersion() {
-    return null;
-  }
-
-  @Override
-  public CanonicalResource setVersion(String value) {
-    return this;
-  }
-
-  @Override
-  public StringType getTitleElement() {
-    return new StringType();
-  }
-
-  @Override
-  public boolean hasTitleElement() {
-    return false;
-  }
-
-  @Override
-  public boolean hasTitle() {
-    return false;
-  }
-
-  @Override
-  public CanonicalResource setTitleElement(StringType value) {
-    return this;
-  }
-
-  @Override
-  public String getTitle() {
-    return null;
-  }
-
-  @Override
-  public CanonicalResource setTitle(String value) {
-    return this;
-  }
-
-  @Override
-  public BooleanType getExperimentalElement() {
-    return new BooleanType();
-  }
-
-  @Override
-  public boolean hasExperimentalElement() {
-    return false;
-  }
-
-  @Override
-  public boolean hasExperimental() {
-    return false;
-  }
-
-  @Override
-  public CanonicalResource setExperimentalElement(BooleanType value) {
-    return this;
-  }
-
-  @Override
-  public boolean getExperimental() {
-    return false;
-  }
-
-  @Override
-  public CanonicalResource setExperimental(boolean value) {
-    return this;
-  }
-
-  @Override
-  public MarkdownType getPurposeElement() {
-    return new MarkdownType();
-  }
-
-  @Override
-  public boolean hasPurposeElement() {
-    return false;
-  }
-
-  @Override
-  public boolean hasPurpose() {
-    return false;
-  }
-
-  @Override
-  public CanonicalResource setPurposeElement(MarkdownType value) {
-    return this;
-  }
-
-  @Override
-  public String getPurpose() {
-    return null;
-  }
-
-  @Override
-  public CanonicalResource setPurpose(String value) {
-    return this;
-  }
-
-  @Override
-  public MarkdownType getCopyrightElement() {
-    return new MarkdownType();
-  }
-
-  @Override
-  public boolean hasCopyrightElement() {
-    return false;
-  }
-
-  @Override
-  public boolean hasCopyright() {
-    return false;
-  }
-
-  @Override
-  public CanonicalResource setCopyrightElement(MarkdownType value) {
-    return this;
-  }
-
-  @Override
-  public String getCopyright() {
-    return null;
-  }
-
-  @Override
-  public CanonicalResource setCopyright(String value) {
-    return this;
-  }
-
  /**
    * Search parameter: <b>contact</b>
    * <p>
@@ -2717,6 +2505,222 @@ public class NamingSystem extends CanonicalResource {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
+      @Override
+      public String getPurpose() {
+        return new String();
+      }
+      
+      @Override
+      public MarkdownType getPurposeElement() {
+        return new MarkdownType();
+      }
+      
+      @Override
+      public CanonicalResource setPurpose(String thePurpose) {
+        return this;
+      }
+      
+      @Override
+      public CanonicalResource setPurposeElement(MarkdownType thePurpose) {
+        return this;
+      }
+      
+      @Override
+      public boolean hasPurpose() {
+        return false;
+      }
+      
+      @Override
+      public boolean hasPurposeElement() {
+        return false;
+      }
+      
+      
+      @Override
+      public String getCopyright() {
+        return new String();
+      }
+      
+      @Override
+      public MarkdownType getCopyrightElement() {
+        return new MarkdownType();
+      }
+      
+      @Override
+      public CanonicalResource setCopyright(String theCopyright) {
+        return this;
+      }
+      
+      @Override
+      public CanonicalResource setCopyrightElement(MarkdownType theCopyright) {
+        return this;
+      }
+      
+      @Override
+      public boolean hasCopyright() {
+        return false;
+      }
+      
+      @Override
+      public boolean hasCopyrightElement() {
+        return false;
+      }
+      
+      
+      @Override
+      public String getUrl() {
+        return new String();
+      }
+      
+      @Override
+      public UriType getUrlElement() {
+        return new UriType();
+      }
+      
+      @Override
+      public CanonicalResource setUrl(String theUrl) {
+        return this;
+      }
+      
+      @Override
+      public CanonicalResource setUrlElement(UriType theUrl) {
+        return this;
+      }
+      
+      @Override
+      public boolean hasUrl() {
+        return false;
+      }
+      
+      @Override
+      public boolean hasUrlElement() {
+        return false;
+      }
+      
+      
+      @Override
+      public boolean getExperimental() {
+        return false;
+      }
+      
+      @Override
+      public BooleanType getExperimentalElement() {
+        return new BooleanType();
+      }
+      
+      @Override
+      public CanonicalResource setExperimental(boolean theExperimental) {
+        return this;
+      }
+      
+      @Override
+      public CanonicalResource setExperimentalElement(BooleanType theExperimental) {
+        return this;
+      }
+      
+      @Override
+      public boolean hasExperimental() {
+        return false;
+      }
+      
+      @Override
+      public boolean hasExperimentalElement() {
+        return false;
+      }
+      
+      
+      @Override
+      public String getVersion() {
+        return new String();
+      }
+      
+      @Override
+      public StringType getVersionElement() {
+        return new StringType();
+      }
+      
+      @Override
+      public CanonicalResource setVersion(String theVersion) {
+        return this;
+      }
+      
+      @Override
+      public CanonicalResource setVersionElement(StringType theVersion) {
+        return this;
+      }
+      
+      @Override
+      public boolean hasVersion() {
+        return false;
+      }
+      
+      @Override
+      public boolean hasVersionElement() {
+        return false;
+      }
+      
+      
+      @Override
+      public List<Identifier> getIdentifier() {
+        return new ArrayList<>();
+      }
+      
+      @Override
+      public CanonicalResource setIdentifier(List<Identifier> theIdentifier) {
+        return this;
+      }
+      
+      @Override
+      public boolean hasIdentifier() {
+        return false;
+      }
+      
+      @Override
+      public Identifier addIdentifier() {
+	        return null;
+	      }
+	      
+      @Override
+      public CanonicalResource addIdentifier(Identifier t) {
+        return null;
+	      }
+      
+      @Override
+      public Identifier getIdentifierFirstRep() {
+        return new Identifier();
+      }
+      
+      @Override
+      public String getTitle() {
+        return new String();
+      }
+      
+      @Override
+      public StringType getTitleElement() {
+        return new StringType();
+      }
+      
+      @Override
+      public CanonicalResource setTitle(String theTitle) {
+        return this;
+      }
+      
+      @Override
+      public CanonicalResource setTitleElement(StringType theTitle) {
+        return this;
+      }
+      
+      @Override
+      public boolean hasTitle() {
+        return false;
+      }
+      
+      @Override
+      public boolean hasTitleElement() {
+        return false;
+      }
+      
+      
 // Manual code (from Configuration.txt):
   public boolean supportsCopyright() {
     return false;

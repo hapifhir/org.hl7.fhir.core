@@ -29,7 +29,7 @@ package org.hl7.fhir.r4b.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Dec 31, 2021 05:58+1100 for FHIR v4.3.0-snapshot1
+// Generated on Fri, Apr 22, 2022 11:20+1000 for FHIR v4.3.0-cibuild
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,7 +51,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * A formal computable definition of a graph of resources - that is, a coherent set of resources that form a graph by following references. The Graph Definition resource defines a set and makes rules about the set.
  */
 @ResourceDef(name="GraphDefinition", profile="http://hl7.org/fhir/StructureDefinition/GraphDefinition")
-public class GraphDefinition extends DomainResource {
+public class GraphDefinition extends CanonicalResource {
 
     public enum GraphCompartmentRule {
         /**
@@ -3663,6 +3663,98 @@ public class GraphDefinition extends DomainResource {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
+      @Override
+      public String getCopyright() {
+        return new String();
+      }
+      
+      @Override
+      public MarkdownType getCopyrightElement() {
+        return new MarkdownType();
+      }
+      
+      @Override
+      public CanonicalResource setCopyright(String theCopyright) {
+        return this;
+      }
+      
+      @Override
+      public CanonicalResource setCopyrightElement(MarkdownType theCopyright) {
+        return this;
+      }
+      
+      @Override
+      public boolean hasCopyright() {
+        return false;
+      }
+      
+      @Override
+      public boolean hasCopyrightElement() {
+        return false;
+      }
+      
+      
+      @Override
+      public List<Identifier> getIdentifier() {
+        return new ArrayList<>();
+      }
+      
+      @Override
+      public CanonicalResource setIdentifier(List<Identifier> theIdentifier) {
+        return this;
+      }
+      
+      @Override
+      public boolean hasIdentifier() {
+        return false;
+      }
+      
+      @Override
+      public Identifier addIdentifier() {
+	        return null;
+	      }
+	      
+      @Override
+      public CanonicalResource addIdentifier(Identifier t) {
+        return null;
+	      }
+      
+      @Override
+      public Identifier getIdentifierFirstRep() {
+        return new Identifier();
+      }
+      
+      @Override
+      public String getTitle() {
+        return new String();
+      }
+      
+      @Override
+      public StringType getTitleElement() {
+        return new StringType();
+      }
+      
+      @Override
+      public CanonicalResource setTitle(String theTitle) {
+        return this;
+      }
+      
+      @Override
+      public CanonicalResource setTitleElement(StringType theTitle) {
+        return this;
+      }
+      
+      @Override
+      public boolean hasTitle() {
+        return false;
+      }
+      
+      @Override
+      public boolean hasTitleElement() {
+        return false;
+      }
+      
+      
 // Manual code (from Configuration.txt):
   public boolean supportsCopyright() {
     return false;

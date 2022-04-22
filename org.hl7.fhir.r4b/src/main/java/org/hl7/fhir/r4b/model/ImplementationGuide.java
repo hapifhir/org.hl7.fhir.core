@@ -29,7 +29,7 @@ package org.hl7.fhir.r4b.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Dec 31, 2021 05:58+1100 for FHIR v4.3.0-snapshot1
+// Generated on Fri, Apr 22, 2022 11:20+1000 for FHIR v4.3.0-cibuild
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11568,66 +11568,7 @@ public class ImplementationGuide extends CanonicalResource {
     return ResourceType.ImplementationGuide;
    }
 
-  @Override
-  public List<Identifier> getIdentifier() {
-    return new ArrayList<>();
-  }
-
-  @Override
-  public CanonicalResource setIdentifier(List<Identifier> theIdentifier) {
-    return this;
-  }
-
-  @Override
-  public boolean hasIdentifier() {
-    return false;
-  }
-
-  @Override
-  public Identifier addIdentifier() {
-    return new Identifier();
-  }
-
-  @Override
-  public CanonicalResource addIdentifier(Identifier t) {
-    return this;
-  }
-
-  @Override
-  public Identifier getIdentifierFirstRep() {
-    return new Identifier();
-  }
-
-  @Override
-  public MarkdownType getPurposeElement() {
-    return new MarkdownType();
-  }
-
-  @Override
-  public boolean hasPurposeElement() {
-    return false;
-  }
-
-  @Override
-  public boolean hasPurpose() {
-    return false;
-  }
-
-  @Override
-  public CanonicalResource setPurposeElement(MarkdownType value) {
-    return this;
-  }
-
-  @Override
-  public String getPurpose() {
-    return null;
-  }
-
-  @Override
-  public CanonicalResource setPurpose(String value) {
-    return this;
-  }
-/**
+ /**
    * Search parameter: <b>depends-on</b>
    * <p>
    * Description: <b>Identity of the IG that this depends on</b><br>
@@ -12439,6 +12380,67 @@ public class ImplementationGuide extends CanonicalResource {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
+      @Override
+      public String getPurpose() {
+        return new String();
+      }
+      
+      @Override
+      public MarkdownType getPurposeElement() {
+        return new MarkdownType();
+      }
+      
+      @Override
+      public CanonicalResource setPurpose(String thePurpose) {
+        return this;
+      }
+      
+      @Override
+      public CanonicalResource setPurposeElement(MarkdownType thePurpose) {
+        return this;
+      }
+      
+      @Override
+      public boolean hasPurpose() {
+        return false;
+      }
+      
+      @Override
+      public boolean hasPurposeElement() {
+        return false;
+      }
+      
+      
+      @Override
+      public List<Identifier> getIdentifier() {
+        return new ArrayList<>();
+      }
+      
+      @Override
+      public CanonicalResource setIdentifier(List<Identifier> theIdentifier) {
+        return this;
+      }
+      
+      @Override
+      public boolean hasIdentifier() {
+        return false;
+      }
+      
+      @Override
+      public Identifier addIdentifier() {
+	        return null;
+	      }
+	      
+      @Override
+      public CanonicalResource addIdentifier(Identifier t) {
+        return null;
+	      }
+      
+      @Override
+      public Identifier getIdentifierFirstRep() {
+        return new Identifier();
+      }
+      
 
 }
 

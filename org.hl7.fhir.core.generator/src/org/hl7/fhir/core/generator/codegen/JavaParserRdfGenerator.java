@@ -117,7 +117,7 @@ public class JavaParserRdfGenerator extends JavaBaseGenerator {
       composer.append("    decorateCodeableConcept(t, element);\r\n");
 
     for (ElementDefinition ed : ti.getChildren()) {
-      genElement(analysis, ti, ed, matchingInheritedElement(ti.getInheritedChildren(), ed));
+      genElement(analysis, ti, ed, matchingInheritedElement(ti.getInheritedChildren(), ed, analysis.getName()));
     }
     composer.append("  }\r\n\r\n");    
   }

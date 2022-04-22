@@ -29,7 +29,7 @@ package org.hl7.fhir.r4b.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Dec 31, 2021 05:58+1100 for FHIR v4.3.0-snapshot1
+// Generated on Fri, Apr 22, 2022 11:20+1000 for FHIR v4.3.0-cibuild
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2785,29 +2785,67 @@ public class ConceptMap extends CanonicalResource {
     }
 
     /**
+     * only one on this implementation
+     */
+    @Override
+    public int getIdentifierMax() { 
+      return 1;
+    }
+    /**
      * @return {@link #identifier} (A formal identifier that is used to identify this concept map when it is represented in other formats, or referenced in a specification, model, design or an instance.)
      */
     public List<Identifier> getIdentifier() { 
-      if (this.identifier == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ConceptMap.identifier");
-        else if (Configuration.doAutoCreate())
-          this.identifier = new Identifier(); // cc
-      List<Identifier> result = new ArrayList<>();
-      result.add(this.identifier);
-      return result;
+      List<Identifier> list = new ArrayList<Identifier>();
+      if (this.identifier == null) {
+        list.add(identifier);
+      }
+      return list;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ConceptMap setIdentifier(List<Identifier> theIdentifier) { 
+      if (theIdentifier.size() == 0) {
+        this.identifier = null;
+      } else if (theIdentifier.size() == 1) {
+        this.identifier = theIdentifier.get(0);
+      } else {
+        throw new Error("Cannot have more than one ConceptMap.identifier");
+      }
+      return this;
     }
 
     public boolean hasIdentifier() { 
       return this.identifier != null && !this.identifier.isEmpty();
     }
 
-    /**
-     * @param value {@link #identifier} (A formal identifier that is used to identify this concept map when it is represented in other formats, or referenced in a specification, model, design or an instance.)
-     */
-    public ConceptMap setIdentifier(Identifier value) { 
-      this.identifier = value;
+    public Identifier addIdentifier() { //3
+      if (this.identifier == null) {
+        this.identifier = new Identifier();
+      } else {
+        throw new Error("Cannot have more than one ConceptMap.identifier");
+      }
+      return this.identifier;
+    }
+
+    public ConceptMap addIdentifier(Identifier t) { //3
+      if (this.identifier == null) {
+        this.identifier = t;
+      } else {
+        throw new Error("Cannot have more than one ConceptMap.identifier");
+      }
       return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
+     */
+    public Identifier getIdentifierFirstRep() { 
+      if (identifier == null) {
+        addIdentifier();
+      }
+      return identifier;
     }
 
     /**
@@ -3797,7 +3835,7 @@ public class ConceptMap extends CanonicalResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 116079:  return getUrlElement();
-        case -1618432855:  return getIdentifier().get(0);
+        case -1618432855:  return getIdentifierFirstRep();
         case 351608024:  return getVersionElement();
         case 3373707:  return getNameElement();
         case 110371416:  return getTitleElement();
@@ -4010,32 +4048,6 @@ public class ConceptMap extends CanonicalResource {
   public ResourceType getResourceType() {
     return ResourceType.ConceptMap;
    }
-
-  @Override
-  public CanonicalResource setIdentifier(List<Identifier> theIdentifier) {
-    if (theIdentifier.size() == 0) {
-      this.identifier = null;
-    } else {
-      this.identifier = theIdentifier.get(0);
-    }
-    return this;
-  }
-
-  @Override
-  public Identifier addIdentifier() {
-    return getIdentifierFirstRep();
-  }
-
-  @Override
-  public CanonicalResource addIdentifier(Identifier t) {
-    this.identifier = t;
-    return this;
-  }
-
-  @Override
-  public Identifier getIdentifierFirstRep() {
-    return getIdentifier().get(0);
-  }
 
  /**
    * Search parameter: <b>dependson</b>
@@ -5036,6 +5048,7 @@ public class ConceptMap extends CanonicalResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
+
 
 }
 
