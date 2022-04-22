@@ -120,9 +120,10 @@ public abstract class Resource extends BaseResource implements IAnyResource {
     }
 
   /**
-   * @return The id value of the resource. Once assigned, this value never
-   * changes.
-   *
+   * @return The most complete id value of the resource, containing all
+   * available context and history. Once assigned this value never changes.
+   * NOTE: this value is NOT limited to just the logical id property of a
+   * resource id.
    * @see IdType
    * @see IdType#getValue()
    */
