@@ -507,7 +507,7 @@ public class GraphQLEngine implements IGraphQLEngine {
     Argument arg = new Argument();
     params.add(arg);
     arg.setName(getSingleValue(parg));
-    arg.addValue(new StringValue(source.fhirType() + "/" + source.getId()));
+    arg.addValue(new StringValue(source.fhirType() + "/" + source.getIdPart()));
     services.listResources(appInfo, field.getName().substring(0, field.getName().length() - 4), params, list);
     arg = null;
     ObjectValue obj = null;
