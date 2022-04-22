@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Fix reverse references in GraphQL searches
