@@ -29,7 +29,7 @@ package org.hl7.fhir.r4b.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Dec 31, 2021 05:58+1100 for FHIR v4.3.0-snapshot1
+// Generated on Fri, Apr 22, 2022 11:20+1000 for FHIR v4.3.0-cibuild
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,7 +51,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * The ResearchElementDefinition resource describes a "PICO" element that knowledge (evidence, assertion, recommendation) is about.
  */
 @ResourceDef(name="ResearchElementDefinition", profile="http://hl7.org/fhir/StructureDefinition/ResearchElementDefinition")
-public class ResearchElementDefinition extends DomainResource {
+public class ResearchElementDefinition extends CanonicalResource {
 
     public enum ResearchElementType {
         /**

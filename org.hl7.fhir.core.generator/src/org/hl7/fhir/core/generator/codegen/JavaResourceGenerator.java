@@ -66,6 +66,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.utils.TypesUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 
 
 /*
@@ -157,7 +158,11 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		jdoc("", replaceTitle(analysis.getName(), analysis.getStructure().getDescription()));
 		TypeInfo ti = analysis.getRootType();
 		boolean hasChildren = ti.getChildren().size() > 0;
-		String hierarchy = analysis.getAncestor() != null ? "extends "+analysis.getAncestor().getName() : "";
+		String superName = analysis.getAncestor() == null ? null : analysis.getAncestor().getName();
+		if (VersionUtilities.isR4BVer(version) && !Utilities.noString(config.getIni().getStringProperty("R4B.CanonicalResources", analysis.getName()))) {
+		  superName = "CanonicalResource"; 
+		}
+    String hierarchy = analysis.getAncestor() != null ? "extends "+superName : "";
 		
     if (clss == JavaGenClass.Resource) {
       if (!analysis.isAbstract()) {
@@ -168,8 +173,12 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       hierarchy = hierarchy + " implements ICompositeType";
     }
     
-    if (config.getIni().hasProperty("hierarchy", analysis.getName()) && analysis.getAncestor() != null) {
-      hierarchy = config.getIni().getStringProperty("hierarchy", analysis.getName()).replace("{{super}}", analysis.getAncestor().getName());
+    if (config.getIni().hasProperty("hierarchy", analysis.getName()) ) {
+      String h = config.getIni().getStringProperty("hierarchy", analysis.getName());
+      if (analysis.getAncestor() != null) {
+        h = h.replace("{{super}}", superName);
+      }
+      hierarchy = h;
     }
 				
     write("public "+(analysis.isAbstract()? "abstract " : "")+"class "+analysis.getClassName()+" "+hierarchy.trim()+" {\r\n");
@@ -209,7 +218,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 	      if (analysis.isInterface()) {
           generateAbstractAccessors(analysis, ti, e, "    ");
 	      } else {
-		      generateAccessors(analysis, ti, e, "    ", matchingInheritedElement(ti.getInheritedChildren(), e));
+		      generateAccessors(analysis, ti, e, "    ", matchingInheritedElement(ti.getInheritedChildren(), e, analysis.getName()));
 	      }
 		  }
 		  if (!analysis.isInterface() && ti.getInheritedChildren() != null) {
@@ -250,7 +259,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		  write("    return ResourceType."+analysis.getName()+";\r\n");
 		  write("   }\r\n");
 		  write("\r\n"); 
-		} else if (analysis.isAbstract() && analysis.getAncestor() != null && Utilities.noString(analysis.getAncestor().getName())) {
+		} else if (analysis.isAbstract() && analysis.getAncestor() != null && Utilities.noString(superName)) {
       write("\r\n"); 
       write("  @Override\r\n"); 
       write("  public String getIdBase() {\r\n"); 
@@ -262,7 +271,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       write("    setId(value);\r\n");
       write("  }\r\n");
 		  write("  public abstract ResourceType getResourceType();\r\n");
-		} else if (analysis.isAbstract() && analysis.getAncestor() != null && Utilities.noString(analysis.getAncestor().getName())) {
+		} else if (analysis.isAbstract() && analysis.getAncestor() != null && Utilities.noString(superName)) {
       write("  @Override\r\n"); 
       write("  public String getIdBase() {\r\n"); 
       write("    return getId();\r\n"); 
@@ -329,6 +338,110 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		  }
 		}
 
+		if (VersionUtilities.isR4BVer(version)) {
+		  String extras = config.getIni().getStringProperty("R4B.NullImplementation", analysis.getName());
+		  if (!Utilities.noString(extras)) {
+		    for (String n : extras.split("\\,")) {
+		      String t = n.substring(n.indexOf(":")+1);
+		      n = n.substring(0, n.indexOf(":"));
+		      if (n.endsWith("[]")) {
+		        n = Utilities.capitalize(n.substring(0, n.length()-2));
+		        write("      @Override\r\n");
+		        write("      public List<"+t+"> get"+n+"() {\r\n");
+		        write("        return new ArrayList<>();\r\n");
+		        write("      }\r\n");
+		        write("      \r\n");
+		        write("      @Override\r\n");
+		        write("      public CanonicalResource set"+n+"(List<"+t+"> the"+n+") {\r\n");
+		        write("        return this;\r\n");
+		        write("      }\r\n");
+		        write("      \r\n");
+		        write("      @Override\r\n");
+		        write("      public boolean has"+n+"() {\r\n");
+		        write("        return false;\r\n");
+		        write("      }\r\n");
+		        write("      \r\n");
+		        write("      @Override\r\n");
+		        write("      public "+t+" add"+n+"() {\r\n");
+		        write("	        return null;\r\n");
+		        write("	      }\r\n");
+		        write("	      \r\n");
+		        write("      @Override\r\n");
+		        write("      public CanonicalResource add"+n+"("+t+" t) {\r\n");
+		        write("        return null;\r\n");
+		        write("	      }\r\n");
+		        write("      \r\n");
+		        write("      @Override\r\n");
+		        write("      public "+t+" get"+n+"FirstRep() {\r\n");
+		        write("        return new "+t+"();\r\n");
+		        write("      }\r\n");
+		        write("      \r\n");
+		      } else if (t.contains("|")) {
+		        n = Utilities.capitalize(n);
+		        String t1 = t.substring(0, t.indexOf("|"));
+		        String t2 = t.substring(t.indexOf("|")+1);
+		        write("      @Override\r\n");
+		        write("      public "+t1+" get"+n+"() {\r\n");
+		        if ("boolean".equals(t1)) {
+		          write("        return false;\r\n");
+		        } else {
+		          write("        return new "+t1+"();\r\n");
+		        }
+		        write("      }\r\n");
+		        write("      \r\n");
+		        write("      @Override\r\n");
+		        write("      public "+t2+" get"+n+"Element() {\r\n");
+		        write("        return new "+t2+"();\r\n");
+		        write("      }\r\n");
+		        write("      \r\n");
+		        write("      @Override\r\n");
+		        write("      public CanonicalResource set"+n+"("+t1+" the"+n+") {\r\n");
+		        write("        return this;\r\n");
+		        write("      }\r\n");
+		        write("      \r\n");
+		        write("      @Override\r\n");
+		        write("      public CanonicalResource set"+n+"Element("+t2+" the"+n+") {\r\n");
+		        write("        return this;\r\n");
+		        write("      }\r\n");
+		        write("      \r\n");
+		        write("      @Override\r\n");
+		        write("      public boolean has"+n+"() {\r\n");
+		        write("        return false;\r\n");
+		        write("      }\r\n");
+		        write("      \r\n");
+		        write("      @Override\r\n");
+		        write("      public boolean has"+n+"Element() {\r\n");
+		        write("        return false;\r\n");
+		        write("      }\r\n");
+		        write("      \r\n");
+		        write("      \r\n");		    
+          } else {
+            n = Utilities.capitalize(n);
+            write("      @Override\r\n");
+            write("      public "+t+" get"+n+"() {\r\n");
+            write("        return new "+t+"();\r\n");
+            write("      }\r\n");
+            write("      \r\n");
+            write("      @Override\r\n");
+            write("      public CanonicalResource set"+n+"("+t+" the"+n+") {\r\n");
+            write("        return this;\r\n");
+            write("      }\r\n");
+            write("      \r\n");
+            write("      @Override\r\n");
+            write("      public boolean has"+n+"() {\r\n");
+            write("        return false;\r\n");
+            write("      }\r\n");
+            write("      \r\n");
+            write("      @Override\r\n");
+            write("      public boolean has"+n+"Element() {\r\n");
+            write("        return false;\r\n");
+            write("      }\r\n");
+            write("      \r\n");
+            write("      \r\n");        
+		      }		    
+		    }		  
+		  }
+		}
 		if (config.getAdornments().containsKey(analysis.getClassName())) {
       write("// Manual code (from Configuration.txt):\r\n");
 		  write(config.getAdornments().get(analysis.getClassName())+"\r\n");
@@ -745,7 +858,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
     write(indent+"    switch (hash) {\r\n");
     for (ElementDefinition e : children) {
       if (!isInterface) { 
-        ElementDefinition inh = inheritedChildren == null ? null : matchingInheritedElement(inheritedChildren, e);
+        ElementDefinition inh = inheritedChildren == null ? null : matchingInheritedElement(inheritedChildren, e, analysis.getName());
         String tn = e.getUserString("java.type");
         if (!e.typeSummary().equals("xhtml")) {
           genPropMaker(indent, e, tn, e.getName(), inh);

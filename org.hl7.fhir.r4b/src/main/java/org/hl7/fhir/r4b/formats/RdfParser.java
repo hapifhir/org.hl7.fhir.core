@@ -31,7 +31,7 @@ package org.hl7.fhir.r4b.formats;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Dec 29, 2021 07:58+1100 for FHIR v4.3.0-snapshot1
+// Generated on Fri, Apr 22, 2022 11:20+1000 for FHIR v4.3.0-cibuild
 
 
 
@@ -21757,7 +21757,7 @@ public class RdfParser extends RdfParserBase {
       composeUri(t, "TestScript", "url", element.getUrlElement(), -1);
     }
     if (element.hasIdentifier()) {
-      composeIdentifier(t, "TestScript", "identifier", element.getIdentifier(), -1);
+      composeIdentifier(t, "TestScript", "identifier", element.getIdentifierFirstRep(), -1);
     }
     if (element.hasVersionElement()) {
       composeString(t, "TestScript", "version", element.getVersionElement(), -1);
