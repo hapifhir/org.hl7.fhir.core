@@ -30,7 +30,7 @@ package org.hl7.fhir.r4b.formats;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Wed, Dec 29, 2021 07:58+1100 for FHIR v4.3.0-snapshot1
+// Generated on Fri, Apr 22, 2022 11:20+1000 for FHIR v4.3.0-cibuild
 
 
 
@@ -8178,7 +8178,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("_url"))
       parseElementProperties(getJObject(json, "_url"), res.getUrlElement());
     if (json.has("identifier"))
-      res.setIdentifier(parseIdentifier(getJObject(json, "identifier")));
+      res.addIdentifier(parseIdentifier(getJObject(json, "identifier")));
     if (json.has("version"))
       res.setVersionElement(parseString(json.get("version").getAsString()));
     if (json.has("_version"))
@@ -27442,7 +27442,7 @@ public class JsonParser extends JsonParserBase {
     if (json.has("_url"))
       parseElementProperties(getJObject(json, "_url"), res.getUrlElement());
     if (json.has("identifier"))
-      res.setIdentifier(parseIdentifier(getJObject(json, "identifier")));
+      res.addIdentifier(parseIdentifier(getJObject(json, "identifier")));
     if (json.has("version"))
       res.setVersionElement(parseString(json.get("version").getAsString()));
     if (json.has("_version"))
@@ -59067,7 +59067,7 @@ public class JsonParser extends JsonParserBase {
         composeUriExtras("url", element.getUrlElement(), false);
       }
       if (element.hasIdentifier()) {
-        composeIdentifier("identifier", element.getIdentifier());
+        composeIdentifier("identifier", element.getIdentifierFirstRep());
       }
       if (element.hasVersionElement()) {
         composeStringCore("version", element.getVersionElement(), false);

@@ -158,7 +158,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     parser.append("  protected void "+pn+"Properties(JsonObject json, "+stn+" res) throws IOException, FHIRFormatError {\r\n");
     parser.append("    parse"+ti.getAncestorName()+"Properties(json, res);\r\n");
     for (ElementDefinition e : ti.getChildren()) {
-      genElementParser(analysis, ti, e, bUseOwner, matchingInheritedElement(ti.getInheritedChildren(), e));
+      genElementParser(analysis, ti, e, bUseOwner, matchingInheritedElement(ti.getInheritedChildren(), e, analysis.getName()));
     }
     parser.append("  }\r\n\r\n");
   }
@@ -349,7 +349,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     composer.append("  protected void compose"+tn+"Properties("+stn+" element) throws IOException {\r\n");
     composer.append("    compose"+ti.getAncestorName()+"Properties(element);\r\n");
     for (ElementDefinition e : ti.getChildren()) {
-      genElementComposer(analysis, analysis.getRootType(), e, matchingInheritedElement(ti.getInheritedChildren(), e));
+      genElementComposer(analysis, analysis.getRootType(), e, matchingInheritedElement(ti.getInheritedChildren(), e, analysis.getName()));
     }
     composer.append("  }\r\n\r\n");
   }

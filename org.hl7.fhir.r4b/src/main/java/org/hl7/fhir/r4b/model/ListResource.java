@@ -29,7 +29,7 @@ package org.hl7.fhir.r4b.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Dec 31, 2021 05:58+1100 for FHIR v4.3.0-snapshot1
+// Generated on Fri, Apr 22, 2022 11:20+1000 for FHIR v4.3.0-cibuild
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -686,7 +686,7 @@ public class ListResource extends DomainResource {
     public Enumeration<ListStatus> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create List.status");
+          throw new Error("Attempt to auto-create ListResource.status");
         else if (Configuration.doAutoCreate())
           this.status = new Enumeration<ListStatus>(new ListStatusEnumFactory()); // bb
       return this.status;
@@ -731,7 +731,7 @@ public class ListResource extends DomainResource {
     public Enumeration<ListMode> getModeElement() { 
       if (this.mode == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create List.mode");
+          throw new Error("Attempt to auto-create ListResource.mode");
         else if (Configuration.doAutoCreate())
           this.mode = new Enumeration<ListMode>(new ListModeEnumFactory()); // bb
       return this.mode;
@@ -776,7 +776,7 @@ public class ListResource extends DomainResource {
     public StringType getTitleElement() { 
       if (this.title == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create List.title");
+          throw new Error("Attempt to auto-create ListResource.title");
         else if (Configuration.doAutoCreate())
           this.title = new StringType(); // bb
       return this.title;
@@ -825,7 +825,7 @@ public class ListResource extends DomainResource {
     public CodeableConcept getCode() { 
       if (this.code == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create List.code");
+          throw new Error("Attempt to auto-create ListResource.code");
         else if (Configuration.doAutoCreate())
           this.code = new CodeableConcept(); // cc
       return this.code;
@@ -849,7 +849,7 @@ public class ListResource extends DomainResource {
     public Reference getSubject() { 
       if (this.subject == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create List.subject");
+          throw new Error("Attempt to auto-create ListResource.subject");
         else if (Configuration.doAutoCreate())
           this.subject = new Reference(); // cc
       return this.subject;
@@ -873,7 +873,7 @@ public class ListResource extends DomainResource {
     public Reference getEncounter() { 
       if (this.encounter == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create List.encounter");
+          throw new Error("Attempt to auto-create ListResource.encounter");
         else if (Configuration.doAutoCreate())
           this.encounter = new Reference(); // cc
       return this.encounter;
@@ -897,7 +897,7 @@ public class ListResource extends DomainResource {
     public DateTimeType getDateElement() { 
       if (this.date == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create List.date");
+          throw new Error("Attempt to auto-create ListResource.date");
         else if (Configuration.doAutoCreate())
           this.date = new DateTimeType(); // bb
       return this.date;
@@ -946,7 +946,7 @@ public class ListResource extends DomainResource {
     public Reference getSource() { 
       if (this.source == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create List.source");
+          throw new Error("Attempt to auto-create ListResource.source");
         else if (Configuration.doAutoCreate())
           this.source = new Reference(); // cc
       return this.source;
@@ -970,7 +970,7 @@ public class ListResource extends DomainResource {
     public CodeableConcept getOrderedBy() { 
       if (this.orderedBy == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create List.orderedBy");
+          throw new Error("Attempt to auto-create ListResource.orderedBy");
         else if (Configuration.doAutoCreate())
           this.orderedBy = new CodeableConcept(); // cc
       return this.orderedBy;
@@ -1100,7 +1100,7 @@ public class ListResource extends DomainResource {
     public CodeableConcept getEmptyReason() { 
       if (this.emptyReason == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create List.emptyReason");
+          throw new Error("Attempt to auto-create ListResource.emptyReason");
         else if (Configuration.doAutoCreate())
           this.emptyReason = new CodeableConcept(); // cc
       return this.emptyReason;
