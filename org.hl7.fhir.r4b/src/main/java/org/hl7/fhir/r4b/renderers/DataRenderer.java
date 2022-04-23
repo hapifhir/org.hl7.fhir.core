@@ -544,7 +544,11 @@ public class DataRenderer extends Renderer {
     if (uri.getValue().startsWith("mailto:")) {
       x.ah(uri.getValue()).addText(uri.getValue().substring(7));
     } else if (Utilities.isAbsoluteUrlLinkable(uri.getValue()) && !(uri instanceof IdType)) {
-      x.ah(uri.getValue()).addText(uri.getValue());
+      if (uri.getValue().contains("|")) {
+        x.ah(uri.getValue().substring(0, uri.getValue().indexOf("|"))).addText(uri.getValue());
+      } else {
+        x.ah(uri.getValue()).addText(uri.getValue());
+      }
     } else {
       x.addText(uri.getValue());
     }
