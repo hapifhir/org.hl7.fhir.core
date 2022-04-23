@@ -38,10 +38,12 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 
 import java.net.URISyntaxException;
+import java.util.EnumSet;
 import java.util.Map;
 
 public class TerminologyClientR3 implements TerminologyClient {
@@ -59,6 +61,23 @@ public class TerminologyClientR3 implements TerminologyClient {
     setClientHeaders(clientHeaders);
   }
 
+
+  public EnumSet<FhirPublication> supportableVersions() {
+    return client.supportableVersions();
+  }
+  
+  public void setAllowedVersions(EnumSet<FhirPublication> versions) {
+   client.setAllowedVersions(versions);
+  }
+  
+  public EnumSet<FhirPublication> getAllowedVersions() {
+    return client.getAllowedVersions();
+  }
+  
+  public FhirPublication getActualVersion() {
+    return client.getActualVersion();
+  }
+  
   @Override
   public TerminologyCapabilities getTerminologyCapabilities() throws FHIRException {
     return TerminologyCapabilities30_50.convertTerminologyCapabilities(client.getTerminologyCapabilities(), false);

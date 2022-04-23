@@ -8,6 +8,7 @@ import org.hl7.fhir.dstu3.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.dstu3.utils.client.network.ByteUtils;
 import org.hl7.fhir.dstu3.utils.client.network.Client;
 import org.hl7.fhir.dstu3.utils.client.network.ResourceRequest;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -16,6 +17,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,17 +69,20 @@ public class FHIRToolingClient {
   private String username;
   private String password;
   private String userAgent;
+  private EnumSet<FhirPublication> allowedVersions;
 
   //Pass endpoint for client - URI
   public FHIRToolingClient(String baseServiceUrl, String userAgent) throws URISyntaxException {
     preferredResourceFormat = ResourceFormat.RESOURCE_XML;
     this.userAgent = userAgent;
+    this.allowedVersions = supportableVersions();
     initialize(baseServiceUrl);
   }
 
   public void initialize(String baseServiceUrl) throws URISyntaxException {
     base = baseServiceUrl;
     resourceAddress = new ResourceAddress(baseServiceUrl);
+    this.allowedVersions = supportableVersions();
     this.maxResultSetSize = -1;
   }
 
@@ -85,6 +90,23 @@ public class FHIRToolingClient {
     return client;
   }
 
+  public EnumSet<FhirPublication> supportableVersions() {
+    // todo
+    return EnumSet.range(FhirPublication.STU3, FhirPublication.R5);
+  }
+  
+  public void setAllowedVersions(EnumSet<FhirPublication> versions) {
+    // todo
+  }
+  
+  public EnumSet<FhirPublication> getAllowedVersions() {
+    return null; // todo
+  }
+  
+  public FhirPublication getActualVersion() {
+    return FhirPublication.STU3;
+  }
+  
   public void setClient(Client client) {
     this.client = client;
   }

@@ -39,7 +39,7 @@ import org.hl7.fhir.dstu3.model.Bundle.BundleType;
 import org.hl7.fhir.dstu3.model.CodeSystem;
 import org.hl7.fhir.dstu3.model.ValueSet;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.FhirPublication;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import javax.annotation.Nonnull;
 
