@@ -32,13 +32,21 @@ package org.hl7.fhir.r5.terminologies;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 
+import java.util.EnumSet;
 import java.util.Map;
 
 public interface TerminologyClient {
 
+  EnumSet<FhirPublication> supportableVersions();
+  void setAllowedVersions(EnumSet<FhirPublication> versions);
+  EnumSet<FhirPublication> getAllowedVersions();
+  FhirPublication getActualVersion();
+  
   String getAddress();
   String getServerVersion();
   TerminologyCapabilities getTerminologyCapabilities() throws FHIRException;

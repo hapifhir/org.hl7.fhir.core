@@ -1,7 +1,7 @@
 package org.hl7.fhir.validation.tests.utilities;
 
 import org.hl7.fhir.r5.context.TerminologyCache;
-import org.hl7.fhir.r5.model.FhirPublication;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.validation.ValidationEngine;
 
 import java.nio.file.Paths;

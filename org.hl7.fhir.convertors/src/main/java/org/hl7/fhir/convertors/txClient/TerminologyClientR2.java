@@ -36,17 +36,46 @@ import org.hl7.fhir.dstu2.model.Resource;
 import org.hl7.fhir.dstu2.utils.client.FHIRToolingClient;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 
 import java.net.URISyntaxException;
+import java.util.EnumSet;
 import java.util.Map;
 
 public class TerminologyClientR2 implements TerminologyClient {
 
   private final FHIRToolingClient client; // todo: use the R2 client
+
+  public EnumSet<FhirPublication> supportableVersions() {
+    return EnumSet.of(FhirPublication.DSTU2);
+  }
+  
+  public void setAllowedVersions(EnumSet<FhirPublication> versions) {
+    boolean found = false;
+    for (FhirPublication version : versions) {
+      if (version == FhirPublication.DSTU2) {
+        found = true;
+      } else {
+        throw new Error("Unsupported version for DSTU2 client: "+version.toCode());
+      }
+    }
+    if (!found) {
+      throw new Error("DSTU2 client only supports DSTU2");      
+    }
+  }
+  
+  public EnumSet<FhirPublication> getAllowedVersions() {
+    return EnumSet.of(FhirPublication.DSTU2);
+  }
+  
+  public FhirPublication getActualVersion() {
+    return FhirPublication.DSTU2;
+  }
 
   public TerminologyClientR2(String address, String userAgent) throws URISyntaxException {
     client = new FHIRToolingClient(address, userAgent);
