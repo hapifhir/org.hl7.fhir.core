@@ -26,7 +26,7 @@ public class Params {
   public static final String RECURSE = "-recurse";
   public static final String SHOW_MESSAGES_FROM_REFERENCES = "-showReferenceMessages";
   public static final String LOCALE = "-locale";
-  public static final String STRICT_EXTENSIONS = "-strictExtensions";
+  public static final String EXTENSIONS = "-extensions";
   public static final String HINT_ABOUT_NON_MUST_SUPPORT = "-hintAboutNonMustSupport";
   public static final String TO_VERSION = "-to-version";
   public static final String DO_NATIVE = "-do-native";
@@ -169,8 +169,8 @@ public class Params {
         } else {
           cliContext.setLocale(new Locale(args[++i]));
         }
-      } else if (args[i].equals(STRICT_EXTENSIONS)) {
-        cliContext.setAnyExtensionsAllowed(false);
+      } else if (args[i].equals(EXTENSIONS)) {
+        cliContext.getExtensions().add(args[++i]);
       } else if (args[i].equals(NO_INTERNAL_CACHING)) {
         cliContext.setNoInternalCaching(true);
       } else if (args[i].equals(NO_EXTENSIBLE_BINDING_WARNINGS)) {

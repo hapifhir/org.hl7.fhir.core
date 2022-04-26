@@ -22,8 +22,6 @@ public class CliContext {
 
   @JsonProperty("doNative")
   private boolean doNative = false;
-  @JsonProperty("anyExtensionsAllowed")
-  private boolean anyExtensionsAllowed = true;
   @JsonProperty("hintAboutNonMustSupport")
   private boolean hintAboutNonMustSupport = false;
   @JsonProperty("recursive")
@@ -72,6 +70,8 @@ public class CliContext {
   @JsonProperty("targetVer")
   private String targetVer = null;
 
+  @JsonProperty("extensions")
+  private List<String> extensions = new ArrayList<String>();
   @JsonProperty("igs")
   private List<String> igs = new ArrayList<String>();
   @JsonProperty("questionnaire")
@@ -191,15 +191,9 @@ public class CliContext {
     return this;
   }
 
-  @JsonProperty("anyExtensionsAllowed")
-  public boolean isAnyExtensionsAllowed() {
-    return anyExtensionsAllowed;
-  }
-
-  @JsonProperty("anyExtensionsAllowed")
-  public CliContext setAnyExtensionsAllowed(boolean anyExtensionsAllowed) {
-    this.anyExtensionsAllowed = anyExtensionsAllowed;
-    return this;
+  @JsonProperty("extensions")
+  public List<String> getExtensions() {
+    return extensions;
   }
 
   @JsonProperty("hintAboutNonMustSupport")
@@ -576,7 +570,6 @@ public class CliContext {
     if (o == null || getClass() != o.getClass()) return false;
     CliContext that = (CliContext) o;
     return doNative == that.doNative &&
-      anyExtensionsAllowed == that.anyExtensionsAllowed &&
       hintAboutNonMustSupport == that.hintAboutNonMustSupport &&
       recursive == that.recursive &&
       doDebug == that.doDebug &&
@@ -587,6 +580,7 @@ public class CliContext {
       noUnicodeBiDiControlChars == that.noUnicodeBiDiControlChars &&
       noInvariants == that.noInvariants &&
       wantInvariantsInMessages == that.wantInvariantsInMessages &&
+      Objects.equals(extensions, that.extensions) &&
       Objects.equals(map, that.map) &&
       Objects.equals(output, that.output) &&
       Objects.equals(htmlOutput, that.htmlOutput) &&
@@ -615,7 +609,7 @@ public class CliContext {
 
   @Override
   public int hashCode() {
-    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, 
+    return Objects.hash(doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, 
             noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, fhirpath, snomedCT,
             targetVer, igs, questionnaireMode, level, profiles, sources, mode, locale, locations, crumbTrails, showTimes, allowExampleUrls, outputStyle, noUnicodeBiDiControlChars);
   }
@@ -624,7 +618,7 @@ public class CliContext {
   public String toString() {
     return "CliContext{" +
       "doNative=" + doNative +
-      ", anyExtensionsAllowed=" + anyExtensionsAllowed +
+      ", extensions=" + extensions +
       ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +
       ", recursive=" + recursive +
       ", doDebug=" + doDebug +
