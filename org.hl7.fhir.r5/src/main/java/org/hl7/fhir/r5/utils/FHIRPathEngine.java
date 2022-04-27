@@ -5497,7 +5497,6 @@ public class FHIRPathEngine {
     return list.size() != 1 ? true : Utilities.existsInList(list.get(0).getCode(), "Element", "BackboneElement", "Resource", "DomainResource");
   }
 
-
   private boolean hasType(ElementDefinition ed, String s) {
     for (TypeRefComponent t : ed.getType()) {
       if (s.equalsIgnoreCase(t.getCode())) {

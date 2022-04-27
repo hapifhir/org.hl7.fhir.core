@@ -95,6 +95,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private boolean buildLoaded = false;
   private Map<String, String> ciList = new HashMap<String, String>();
   private JsonArray buildInfo;
+  private boolean suppressErrors;
 
   /**
    * Constructor
@@ -354,7 +355,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       System.out.print("  Installing: ");
     }
     
-    if (npm.name() == null || id == null || !id.equalsIgnoreCase(npm.name())) {
+    if (!suppressErrors && npm.name() == null || id == null || !id.equalsIgnoreCase(npm.name())) {
       if (!id.equals("hl7.fhir.r5.core") && !id.equals("hl7.fhir.us.immds")) {// temporary work around
         throw new IOException("Attempt to import a mis-identified package. Expected " + id + ", got " + npm.name());
       }
@@ -939,4 +940,13 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       return false;
   }
 
+  public boolean isSuppressErrors() {
+    return suppressErrors;
+  }
+
+  public void setSuppressErrors(boolean suppressErrors) {
+    this.suppressErrors = suppressErrors;
+  }
+
+  
 }

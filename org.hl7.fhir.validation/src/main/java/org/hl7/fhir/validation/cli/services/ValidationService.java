@@ -340,7 +340,13 @@ public class ValidationService {
       validator.setLevel(cliContext.getLevel());
       validator.setDoNative(cliContext.isDoNative());
       validator.setHintAboutNonMustSupport(cliContext.isHintAboutNonMustSupport());
-      validator.setAnyExtensionsAllowed(cliContext.isAnyExtensionsAllowed());
+      for (String s : cliContext.getExtensions()) {
+        if ("*".equals(s)) {
+          validator.setAnyExtensionsAllowed(true);
+        } else {          
+          validator.getExtensionDomains().add(s);
+        }
+      }
       validator.setLanguage(cliContext.getLang());
       validator.setLocale(cliContext.getLocale());
       validator.setSnomedExtension(cliContext.getSnomedCTCode());
