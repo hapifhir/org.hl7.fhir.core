@@ -110,9 +110,16 @@ public abstract class Resource extends BaseResource implements IAnyResource {
       return this;
     }
 
-    /**
-     * @return The logical id of the resource, as used in the URL for the resource. Once assigned, this value never changes.
-     */
+  /**
+   * @return The most complete id value of the resource, containing all
+   * available context and history. Once assigned this value never changes.
+   * NOTE: this value is NOT limited to just the logical id property of a
+   * resource id.The id value of the resource. Once assigned, this value never
+   * changes.
+   *
+   * @see IdType
+   * @see IdType#getValue()
+   */
     public String getId() { 
       return this.id == null ? null : this.id.getValue();
     }
@@ -130,6 +137,14 @@ public abstract class Resource extends BaseResource implements IAnyResource {
       }
       return this;
     }
+
+  /**
+   * @return  the logical ID part of this resource's id
+   * @see IdType#getIdPart()
+   */
+  public String getIdPart() {
+    return getIdElement().getIdPart();
+  }
 
     /**
      * @return {@link #meta} (The metadata about the resource. This is content that is maintained by the infrastructure. Changes to the content may not always be associated with version changes to the resource.)

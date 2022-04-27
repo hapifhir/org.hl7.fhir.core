@@ -207,6 +207,8 @@ public class ValueSet10_40 {
       return null;
     org.hl7.fhir.r4.model.ValueSet tgt = new org.hl7.fhir.r4.model.ValueSet();
     ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyDomainResource(src, tgt);
+    if (src.hasId())
+      tgt.setId(Id10_40.convertIdPart(src.getIdElement()));
     if (src.hasUrlElement())
       tgt.setUrlElement(Uri10_40.convertUri(src.getUrlElement()));
     if (src.hasIdentifier())
@@ -286,6 +288,8 @@ public class ValueSet10_40 {
       return null;
     org.hl7.fhir.dstu2.model.ValueSet tgt = new org.hl7.fhir.dstu2.model.ValueSet();
     ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyDomainResource(src, tgt);
+    if (src.hasId())
+      tgt.setId(Id10_40.convertIdPart(src.getIdElement()));
     if (src.hasUrlElement())
       tgt.setUrlElement(Uri10_40.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.r4.model.Identifier i : src.getIdentifier())
