@@ -18,7 +18,7 @@ public abstract class BaseAdvisor40<T extends IBaseExtension> extends BaseAdviso
 
   public void handleCodeSystem(@Nonnull CodeSystem tgtcs,
                                @Nonnull ValueSet source) {
-    tgtcs.setId(source.getId());
+    tgtcs.setId(source.getIdPart());
     tgtcs.setValueSet(source.getUrl());
     this.cslist.add(tgtcs);
   }

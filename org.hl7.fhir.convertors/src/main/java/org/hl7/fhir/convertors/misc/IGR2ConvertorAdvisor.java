@@ -37,6 +37,6 @@ import javax.annotation.Nonnull;
 public class IGR2ConvertorAdvisor extends BaseAdvisor_10_40 {
   @Override
   public void handleCodeSystem(@Nonnull CodeSystem cs, @Nonnull ValueSet vs) {
-    cs.setId(vs.getId());
+    cs.setId(vs.getIdPart());
   }
 }

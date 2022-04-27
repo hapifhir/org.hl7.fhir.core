@@ -15,4 +15,16 @@ public class Id10_40 {
     ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     return tgt;
   }
+
+  public static org.hl7.fhir.r4.model.IdType convertIdPart(org.hl7.fhir.dstu2.model.IdType src) throws FHIRException {
+    org.hl7.fhir.r4.model.IdType tgt = src.hasValue() ? new org.hl7.fhir.r4.model.IdType(src.getIdPart()) : new org.hl7.fhir.r4.model.IdType();
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    return tgt;
+  }
+
+  public static org.hl7.fhir.dstu2.model.IdType  convertIdPart(org.hl7.fhir.r4.model.IdType src) throws FHIRException {
+    org.hl7.fhir.dstu2.model.IdType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.IdType(src.getIdPart()) : new org.hl7.fhir.dstu2.model.IdType();
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    return tgt;
+  }
 }
