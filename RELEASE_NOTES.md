@@ -1,7 +1,8 @@
 ## Validator Changes
 
-* no changes
+* fix problem with non-new data types on xver extensions
+* enable -extension parameter for validator
 
 ## Other code changes
 
-* no changes
+* Fix bug when converting resolved clinical status for allergy intolerance
