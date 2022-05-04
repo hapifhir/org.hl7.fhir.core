@@ -422,7 +422,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     ConceptPropertyComponent cp = null;
     if (cd != null) {
       for (ConceptPropertyComponent t : cd.getProperty()) {
-        if (t.getCode().equals(c)) {
+        if (t.hasCode() && t.getCode().equals(c)) {
           cp = t;
         }
       }
