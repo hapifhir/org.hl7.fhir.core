@@ -27,7 +27,7 @@ public class PackageHacker {
   private static boolean useSecureReferences = false;
   
   public static void main(String[] args) throws FileNotFoundException, IOException {
-    new PackageHacker().edit("M:\\web\\hl7.org\\fhir\\5.0.0-snapshot1\\hl7.fhir.r5.examples.tgz");
+    new PackageHacker().edit("/Users/grahamegrieve/work/test-cases/validator/swiss.mednet.fhir#0.5.0.tgz");
   }
 
   private void edit(String name) throws FileNotFoundException, IOException {
@@ -59,7 +59,7 @@ public class PackageHacker {
 
   private void change(JsonObject npm, Map<String, byte[]> content) throws FileNotFoundException, IOException {
     fixVersions(npm);
-    npm.remove("notForPublication");
+//    npm.remove("notForPublication");
 //    npm.addProperty("url", "http://hl7.org/fhir/us/carin-rtpbc/STU1");
 //    npm.remove("name");
 //    npm.addProperty("name", "hl7.fhir.uv.smart-app-launch");
@@ -69,10 +69,14 @@ public class PackageHacker {
 ////    npm.addProperty("description", "Group Wrapper that includes all the R4 packages");
 //    npm.remove("url");
 //    npm.addProperty("url", "https://terminology.hl7.org/1.0.0/");
-//    npm.remove("dependencies");
-//    JsonObject dep = new JsonObject();
-//    npm.add("dependencies", dep);
-//    dep.addProperty("hl7.fhir.r3.core", "3.0.1");
+    npm.remove("dependencies");
+    JsonObject dep = new JsonObject();
+    npm.add("dependencies", dep);
+    dep.addProperty("hl7.fhir.r4.core", "4.0.1");
+    dep.addProperty("ch.fhir.ig.ch-core", "2.0.0");
+    dep.addProperty("ch.fhir.ig.ch-epr-term", "2.0.4");
+    dep.addProperty("ch.fhir.ig.ch-emed","2.0.0");
+
 //    dep.addProperty("hl7.fhir.r4.examples", "4.0.1");
 //    dep.addProperty("hl7.fhir.r4.expansions", "4.0.1");
 //    dep.addProperty("hl7.fhir.r4.elements", "4.0.1");
