@@ -3800,6 +3800,9 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (contentReference.contains("#")) {
       String url = contentReference.substring(0, contentReference.indexOf("#"));
       contentReference = contentReference.substring(contentReference.indexOf("#"));
+      if (Utilities.noString(url)) {
+        url = source.getUrl();
+      }
       if (!url.equals(source.getUrl())) {
         source = context.fetchResource(StructureDefinition.class, url);
         if (source == null) {
