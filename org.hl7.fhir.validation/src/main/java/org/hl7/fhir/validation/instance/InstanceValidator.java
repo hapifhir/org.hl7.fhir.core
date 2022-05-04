@@ -158,7 +158,6 @@ import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
-import org.hl7.fhir.validation.cli.utils.ValidationLevel;
 import org.hl7.fhir.validation.instance.type.BundleValidator;
 import org.hl7.fhir.validation.instance.type.CodeSystemValidator;
 import org.hl7.fhir.validation.instance.type.MeasureValidator;
@@ -4401,20 +4400,25 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               // we'll try fetching it directly from it's source, but this is likely to fail later even if the resolution succeeds
               if (fetcher == null) {
                 warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN, profile.primitiveValue());
-              } else if (!fetcher.fetchesCanonicalResource(this, profile.primitiveValue())) {
-                warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY, profile.primitiveValue());                
-              } else {
-                try {
-                  sd = (StructureDefinition) fetcher.fetchCanonicalResource(this, profile.primitiveValue());
-                } catch (Exception e) {
-                  if (STACK_TRACE) e.printStackTrace();
-                  warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR, profile.primitiveValue(), e.getMessage());                
-                }
-                if (sd != null) {
-                  context.cacheResource(sd);
+              } else  {
+                final IValidatorCanonicalResourceFetchPolicy fetchPolicy = fetcher.fetchesCanonicalResource(this, profile.primitiveValue());
+                if (!fetchPolicy.fetchesCanonicalResource()) {
+                  String fetchPolicyReason = fetchPolicy.fetchPolicyReason();
+                  warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY, profile.primitiveValue(), fetchPolicyReason);
+                } else {
+                    try {
+                      sd = (StructureDefinition) fetcher.fetchCanonicalResource(this, profile.primitiveValue());
+                    } catch (Exception e) {
+                      if (STACK_TRACE) e.printStackTrace();
+                      warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR, profile.primitiveValue(), e.getMessage());
+                    }
+                    if (sd != null) {
+                      context.cacheResource(sd);
+                    }
+                  }
                 }
               }
-            }
+
             if (sd != null) {
               if (crumbTrails) {
                 element.addMessage(signpost(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_META, sd.getUrl()));

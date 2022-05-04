@@ -69,6 +69,21 @@ public class ValidationEngineTests {
   }
 
   @Test
+  public void testResourceFetching() throws Exception {
+    if (!TestUtilities.silent)
+      System.out.println("TestResourceFetching: AuditEvent-ex-FirstSliceProfile.json");
+    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
+    CacheVerificationLogger logger = new CacheVerificationLogger();
+    ve.getContext().getTxClient().setLogger(logger);
+
+    OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "slice23", "AuditEvent-ex-FirstSliceProfile.json"), null);
+    final boolean containsResourceFetchWarning = op.getIssue()
+      .stream().anyMatch(issue -> issue.getSeverity() == IssueSeverity.WARNING
+        && issue.getDetails().getText().contains("Profile reference 'http://hl7.org/fhir/test/StructureDefinition/Slice23' has not been checked because it is unknown (Reason = 'The validator is set to not fetch unknown profiles')"));
+    assertTrue(containsResourceFetchWarning, "Operation outcome must contain a properly formatted warning when fetchesCanonicalResource is false");
+  }
+
+  @Test
   public void test140() throws Exception {
     if (inbuild) {
       Assertions.assertTrue(true);

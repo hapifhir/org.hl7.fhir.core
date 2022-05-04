@@ -15,6 +15,7 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
+import org.hl7.fhir.r5.utils.validation.*;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
@@ -46,13 +47,9 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
-import org.hl7.fhir.r5.utils.validation.IResourceValidator;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 import org.hl7.fhir.r5.utils.validation.constants.CodedContentValidationPolicy;
-import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
-import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
@@ -67,6 +64,7 @@ import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -76,10 +74,21 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 
+@ExtendWith(MockitoExtension.class)
 @RunWith(Parameterized.class)
 public class ValidationTests implements IEvaluationContext, IValidatorResourceFetcher, IValidationPolicyAdvisor {
+
+  @Mock
+  private IValidatorCanonicalResourceFetchPolicy fetchPolicy = new IValidatorCanonicalResourceFetchPolicy() {
+    @Override
+    public boolean fetchesCanonicalResource() {return false;}
+    @Override
+    public String fetchPolicyReason() { return "Dummy reason"; }
+  };;
 
   public final static boolean PRINT_OUTPUT_TO_CONSOLE = true;
 
@@ -596,8 +605,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   }
 
   @Override
-  public boolean fetchesCanonicalResource(IResourceValidator validator, String url) {
-    return false;
+  public IValidatorCanonicalResourceFetchPolicy fetchesCanonicalResource(IResourceValidator validator, String url) {
+    return fetchPolicy;
   }
 
 }

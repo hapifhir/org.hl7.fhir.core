@@ -30,12 +30,14 @@ public interface IValidatorResourceFetcher {
   CanonicalResource fetchCanonicalResource(IResourceValidator validator, String url) throws URISyntaxException;
 
   /**
-   * Whether to try calling fetchCanonicalResource for this reference (not whether it will succeed - just throw an exception from fetchCanonicalResource if it doesn't resolve. This is a policy thing.
+   * Whether to try calling fetchCanonicalResource for this reference (not whether it will succeed - just throw an
+   * exception from fetchCanonicalResource if it doesn't resolve. This is a policy thing.
    * <p>
-   * Added in v5.2.2. return false to leave functionality as it was before then.
+   * Added in v5.2.2. the returned IValidatorCanonicalResourceFetchPolicy should return false to leave functionality
+   * as it was before then.
    *
    * @param url
-   * @return
+   * @return an IValidatorCanonicalResourceFetchPolicy
    */
-  boolean fetchesCanonicalResource(IResourceValidator validator, String url);
+  IValidatorCanonicalResourceFetchPolicy fetchesCanonicalResource(IResourceValidator validator, String url);
 }

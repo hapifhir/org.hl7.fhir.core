@@ -35,16 +35,14 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
-import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
-import org.hl7.fhir.r5.utils.validation.IResourceValidator;
+import org.hl7.fhir.r5.utils.validation.*;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
-import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.validation.constants.*;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -917,8 +915,19 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   @Override
-  public boolean fetchesCanonicalResource(IResourceValidator validator, String url) {
-    return fetcher != null && fetcher.fetchesCanonicalResource(validator, url);
+  public IValidatorCanonicalResourceFetchPolicy fetchesCanonicalResource(IResourceValidator validator, String url) {
+    if (fetcher != null) {
+      return fetcher.fetchesCanonicalResource(validator, url);
+    }
+    return new IValidatorCanonicalResourceFetchPolicy() {
+      @Override
+      public boolean fetchesCanonicalResource() {return false;}
+
+      @Override
+      public String fetchPolicyReason() {
+        return context.formatMessage(I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY_REASON);
+      }
+    };
   }
 
 }
