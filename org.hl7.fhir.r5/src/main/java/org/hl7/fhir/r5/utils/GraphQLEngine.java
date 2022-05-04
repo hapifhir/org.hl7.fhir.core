@@ -2,10 +2,7 @@ package org.hl7.fhir.r5.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -41,20 +38,9 @@ import java.util.Map;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.model.BackboneElement;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleLinkComponent;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.DomainResource;
-import org.hl7.fhir.r5.model.Element;
-import org.hl7.fhir.r5.model.ExpressionNode;
-import org.hl7.fhir.r5.model.IntegerType;
-import org.hl7.fhir.r5.model.Property;
-import org.hl7.fhir.r5.model.Reference;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.graphql.Argument;
 import org.hl7.fhir.utilities.graphql.Argument.ArgumentListStatus;
@@ -570,6 +556,10 @@ public class GraphQLEngine implements IGraphQLEngine {
           } else {
             if (!isPrimitive(prop.getTypeCode()) && sel.getField().getName().startsWith("_"))
               throw new EGraphQLException("Unknown property "+sel.getField().getName()+" on "+source.fhirType());
+
+          if ("id".equals(prop.getName())) {
+            prop.getValues().set(0, new IdType(context.getIdPart()));
+          }
 
             List<Base> vl = filter(context, prop, sel.getField().getName(), sel.getField().getArguments(), prop.getValues(), sel.getField().getName().startsWith("_"));
             if (!vl.isEmpty())
