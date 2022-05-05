@@ -426,8 +426,10 @@ public class TerminologyCacheTests {
     String extracted = cache.extracted(json, vs);
 
     JsonElement element = jsonParser.parse(extracted);
-    assertEquals(max, element.getAsJsonObject().getAsJsonObject("expansion").getAsJsonArray("contains").size());
-
+    final int expansionSize = element.getAsJsonObject().has("expansion")
+      ? element.getAsJsonObject().getAsJsonObject("expansion").getAsJsonArray("contains").size()
+      : 0;
+    assertEquals(max, expansionSize);
   }
 
   @ParameterizedTest
