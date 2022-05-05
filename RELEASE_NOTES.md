@@ -1,7 +1,7 @@
 ## Validator Changes
 
-* Handle invalid HTTP responses better when accessing packages
+* no changes
 
 ## Other code changes
 
-* Fix various rendering NPEs
+* no changes
