@@ -1,7 +1,7 @@
 ## Validator Changes
 
-* no changes
+* Support IGs #current where main instead of master
 
 ## Other code changes
 
-* no changes
+* Add id to Profile CSVs
