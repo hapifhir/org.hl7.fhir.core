@@ -18,6 +18,7 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
   private static final Logger ourLog = LoggerFactory.getLogger(BasePackageCacheManager.class);
   private List<String> myPackageServers = new ArrayList<>();
   private Function<String, PackageClient> myClientFactory = address -> new CachingPackageClient(address);
+  protected boolean silent;
 
   /**
    * Constructor
@@ -77,7 +78,9 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
           String url = packageClient.url(id, version);
           return new InputStreamWithSrc(stream, url, version);
         } catch (IOException e) {
-          ourLog.info("Failed to resolve package {}#{} from server: {} ({})", id, version, nextPackageServer, e.getMessage());
+          if (!silent) {
+            ourLog.info("Failed to resolve package {}#{} from server: {} ({})", id, version, nextPackageServer, e.getMessage());
+          }
         }
       }
     }
@@ -175,6 +178,11 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
 
   public NpmPackage loadPackage(String idAndVer) throws FHIRException, IOException {
     return loadPackage(idAndVer, null);
+  }
+
+
+  public void setSilent(boolean silent) {
+    this.silent = silent;    
   }
 
 }
