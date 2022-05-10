@@ -983,9 +983,9 @@ public class ProfileComparer extends CanonicalResourceComparer {
       String leftColor = !combined.hasLeft() ? COLOR_NO_ROW_LEFT : combined.hasErrors() ? COLOR_DIFFERENT : null;
       String rightColor = !combined.hasRight() ? COLOR_NO_ROW_LEFT : combined.hasErrors() ? COLOR_DIFFERENT : null;
       if (combined.hasLeft()) {
-        nc = utilsRight.genElementNameCell(gen, combined.getLeft().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getLeft().getSrc(), typesRow, row, false, ext, used , ref, sName);
+        nc = utilsRight.genElementNameCell(gen, combined.getLeft().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getLeft().getSrc(), typesRow, row, false, ext, used , ref, sName, null);
       } else {
-        nc = utilsRight.genElementNameCell(gen, combined.getRight().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, false, ext, used , ref, sName);
+        nc = utilsRight.genElementNameCell(gen, combined.getRight().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getRight().getSrc(), typesRow, row, false, ext, used , ref, sName, null);
       }
       if (combined.hasLeft()) {
         frame(utilsRight.genElementCells(gen, combined.getLeft().getDef(),  "??", true, corePath, prefix, root, false, false, combined.getLeft().getSrc(), typesRow, row, true, ext, used , ref, sName, nc, false, false, null), leftColor);
