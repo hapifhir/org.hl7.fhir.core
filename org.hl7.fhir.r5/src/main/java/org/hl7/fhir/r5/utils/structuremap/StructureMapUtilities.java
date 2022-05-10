@@ -1679,7 +1679,7 @@ public class StructureMapUtilities {
         case EVALUATE:
           ExpressionNode expr = (ExpressionNode) tgt.getUserData(MAP_EXPRESSION);
           if (expr == null) {
-            expr = fpe.parse(getParamStringNoNull(vars, tgt.getParameter().get(0), tgt.toString()));
+            expr = fpe.parse(getParamStringNoNull(vars, tgt.getParameter().get(1), tgt.toString()));
             tgt.setUserData(MAP_WHERE_EXPRESSION, expr);
           }
           List<Base> v = fpe.evaluate(vars, null, null, tgt.getParameter().size() == 2 ? getParam(vars, tgt.getParameter().get(0)) : new BooleanType(false), expr);
