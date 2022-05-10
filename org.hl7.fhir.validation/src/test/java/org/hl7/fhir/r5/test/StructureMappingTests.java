@@ -98,7 +98,6 @@ public class StructureMappingTests {
     String msg = null;
     try {
       StructureMap r = loadStructureMap(map);
-      System.out.println(new org.hl7.fhir.r5.formats.JsonParser().composeString(r));
       context.cacheResource(r);
       org.hl7.fhir.r5.elementmodel.Element element = validationEngine.transform(byteSource, FhirFormat.JSON, r.getUrl());
       s = new ByteArrayOutputStream();

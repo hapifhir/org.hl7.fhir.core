@@ -338,18 +338,19 @@ public class StructureMapUtilities {
     for (int i = 0; i < indent; i++)
       b.append(' ');
     boolean canBeAbbreviated = checkisSimple(r);
-
-    boolean first = true;
-    for (StructureMapGroupRuleSourceComponent rs : r.getSource()) {
-      if (first)
-        first = false;
-      else
-        b.append(", ");
-      renderSource(b, rs, canBeAbbreviated);
+    {
+      boolean first = true;
+      for (StructureMapGroupRuleSourceComponent rs : r.getSource()) {
+        if (first)
+          first = false;
+        else
+          b.append(", ");
+        renderSource(b, rs, canBeAbbreviated);
+      }
     }
     if (r.getTarget().size() > 1) {
       b.append(" -> ");
-      first = true;
+      boolean first = true;
       for (StructureMapGroupRuleTargetComponent rt : r.getTarget()) {
         if (first)
           first = false;
@@ -379,7 +380,7 @@ public class StructureMapUtilities {
     } else {
       if (r.hasDependent()) {
         b.append(" then ");
-        first = true;
+        boolean first = true;
         for (StructureMapGroupRuleDependentComponent rd : r.getDependent()) {
           if (first)
             first = false;
@@ -524,6 +525,7 @@ public class StructureMapUtilities {
         b.append(rt.getTransform().toCode());
         b.append("(");
         b.append(((IdType) rt.getParameter().get(0).getValue()).asStringValue());
+        b.append(", ");
         b.append(((StringType) rt.getParameter().get(1).getValue()).asStringValue());
         b.append(")");
       } else {
