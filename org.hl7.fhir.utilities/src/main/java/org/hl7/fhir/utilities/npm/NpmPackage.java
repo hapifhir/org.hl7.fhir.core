@@ -63,8 +63,10 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.json.JSONUtil;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.npm.NpmPackage.ITransformingLoader;
@@ -1158,6 +1160,13 @@ public class NpmPackage {
       // this really really shouldn't happen
       return new Date();
     }
+  }
+
+  public static NpmPackage fromUrl(String source) throws IOException {
+    SimpleHTTPClient fetcher = new SimpleHTTPClient();
+    HTTPResult res = fetcher.get(source+"?nocache=" + System.currentTimeMillis());
+    res.checkThrowException();
+    return fromPackage(new ByteArrayInputStream(res.getContent()));
   }
   
   
