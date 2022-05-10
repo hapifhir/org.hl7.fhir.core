@@ -75,7 +75,7 @@ public class PackageHacker {
     dep.addProperty("hl7.fhir.r4.core", "4.0.1");
     dep.addProperty("ch.fhir.ig.ch-core", "2.0.0");
     dep.addProperty("ch.fhir.ig.ch-epr-term", "2.0.4");
-    dep.addProperty("ch.fhir.ig.ch-emed","2.0.0");
+    dep.addProperty("ch.fhir.ig.ch-emed","current");
 
 //    dep.addProperty("hl7.fhir.r4.examples", "4.0.1");
 //    dep.addProperty("hl7.fhir.r4.expansions", "4.0.1");

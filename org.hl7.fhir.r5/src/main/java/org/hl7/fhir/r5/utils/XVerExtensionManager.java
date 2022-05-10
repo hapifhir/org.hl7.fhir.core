@@ -157,9 +157,11 @@ public class XVerExtensionManager {
                 tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/Resource");
               } else if (p.contains(",")) {
                 for (String pp : p.split("\\,")) {
-                  tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/"+pp);                              
+                  if (isResource(pp)) {
+                    tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/"+pp);
+                  }
                 }
-              } else  {
+              } else if (isResource(p)) {
                 tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/"+p);              
               }
             }
@@ -169,6 +171,12 @@ public class XVerExtensionManager {
         }
       }
     }
+  }
+
+  // todo: translate names 
+  
+  private boolean isResource(String p) {
+    return context.getResourceNames().contains(p);
   }
 
   private boolean hasTargets(String dt) {
