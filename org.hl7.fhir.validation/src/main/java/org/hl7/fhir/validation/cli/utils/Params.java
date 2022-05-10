@@ -202,6 +202,9 @@ public class Params {
         cliContext.setMode(EngineMode.SPREADSHEET);
       } else if (args[i].equals(SNAPSHOT)) {
         cliContext.setMode(EngineMode.SNAPSHOT);
+      } else if (args[i].equals("-runtests")) {
+        // TODO setBaseTestingUtils test directory
+        cliContext.setMode(EngineMode.RUNTESTS);
       } else if (args[i].equals(SECURITY_CHECKS)) {
         cliContext.setSecurityChecks(true);
       } else if (args[i].equals(CRUMB_TRAIL)) {

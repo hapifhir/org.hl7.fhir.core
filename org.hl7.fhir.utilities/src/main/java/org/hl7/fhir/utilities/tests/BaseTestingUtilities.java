@@ -14,6 +14,16 @@ public class BaseTestingUtilities {
 
   static public boolean silent;
 
+  private static String FHIR_TEST_CASES = System.getenv("FHIR-TEST-CASES");
+
+  public static String getFhirTestCases() {
+     return FHIR_TEST_CASES;
+  }
+
+  public static void setFhirTestCases(String input) {
+    FHIR_TEST_CASES = input;
+  }
+
   public static String loadTestResource(String... paths) throws IOException {
     /**
      * This 'if' condition checks to see if the fhir-test-cases project (https://github.com/FHIR/fhir-test-cases) is
@@ -24,7 +34,7 @@ public class BaseTestingUtilities {
      * at the same directory level as the core project.
      */
 
-    String dir = System.getenv("FHIR-TEST-CASES");
+    String dir = getFhirTestCases();
     if (dir == null && ToolGlobalSettings.hasTestsPath()) {
       dir = ToolGlobalSettings.getTestsPath();
     }
@@ -48,7 +58,7 @@ public class BaseTestingUtilities {
 
   
   public static InputStream loadTestResourceStream(String... paths) throws IOException {
-    String dir = System.getenv("FHIR-TEST-CASES");
+    String dir = getFhirTestCases();
     if (dir == null && ToolGlobalSettings.hasTestsPath()) {
       dir = ToolGlobalSettings.getTestsPath();
     }
@@ -66,7 +76,7 @@ public class BaseTestingUtilities {
   }
 
   public static byte[] loadTestResourceBytes(String... paths) throws IOException {
-    String dir = System.getenv("FHIR-TEST-CASES");
+    String dir = getFhirTestCases();
     if (dir == null && ToolGlobalSettings.hasTestsPath()) {
       dir = ToolGlobalSettings.getTestsPath();
     }
@@ -84,7 +94,7 @@ public class BaseTestingUtilities {
   }
 
   public static boolean findTestResource(String... paths) throws IOException {
-    String dir = System.getenv("FHIR-TEST-CASES");
+    String dir = getFhirTestCases();
     if (dir == null && ToolGlobalSettings.hasTestsPath()) {
       dir = ToolGlobalSettings.getTestsPath();
     }
@@ -112,4 +122,7 @@ public class BaseTestingUtilities {
     Utilities.createDirectory(path);
     return path;
   }
+
+    public static void setFhirTestCasesDirectory(String s) {
+    }
 }

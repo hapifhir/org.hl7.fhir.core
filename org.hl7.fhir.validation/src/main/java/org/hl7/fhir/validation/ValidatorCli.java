@@ -262,6 +262,8 @@ public class ValidatorCli {
       case VERSION:
         validationService.transformVersion(cliContext, validator);
         break;
+      case RUNTESTS:
+        TestExecutor.executeTests();
       case VALIDATION:
       case SCAN:
       default:
