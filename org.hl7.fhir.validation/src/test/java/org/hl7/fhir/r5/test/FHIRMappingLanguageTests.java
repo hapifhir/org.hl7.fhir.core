@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.test;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -101,7 +102,8 @@ public class FHIRMappingLanguageTests {
         new org.hl7.fhir.r5.elementmodel.XmlParser(context).compose(element, s, IParser.OutputStyle.PRETTY, null);
       context.dropResource(r);
     } catch (Exception e) {
-      assertTrue(e.getMessage(), false);
+      e.printStackTrace();
+      fail(e.getMessage());
     }
     if (output.endsWith("json")) {
       msg = CompareUtilities.checkJsonSrcIsSame(s.toString(), outputJson);

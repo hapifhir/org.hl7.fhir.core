@@ -1593,10 +1593,16 @@ public class ProfileUtilities extends TranslatingUtilities {
               StructureDefinition dt = getTypeForElement(differential, diffCursor, profileName, diffMatches, outcome, webUrl);
               contextName = dt.getUrl();
               int start = diffCursor;
-              while (differential.getElement().size() > diffCursor && pathStartsWith(differential.getElement().get(diffCursor).getPath(), cpath+"."))
+              if (differential.getElement().get(diffCursor).getPath().equals(cpath)) {
                 diffCursor++;
-              processPaths(indent+"  ", result, dt.getSnapshot(), differential, 1 /* starting again on the data type, but skip the root */, start, dt.getSnapshot().getElement().size()-1,
-                  diffCursor-1, url, getWebUrl(dt, webUrl, indent), profileName, cpath, outcome.getPath(), trimDifferential, contextName, resultPathBase, false, null, null, redirector, srcSD);
+              }
+              while (differential.getElement().size() > diffCursor && pathStartsWith(differential.getElement().get(diffCursor).getPath(), cpath+".")) {
+                diffCursor++;
+              }
+              if (diffCursor > start) {
+                processPaths(indent+"  ", result, dt.getSnapshot(), differential, 1 /* starting again on the data type, but skip the root */, start, dt.getSnapshot().getElement().size()-1,
+                    diffCursor-1, url, getWebUrl(dt, webUrl, indent), profileName, cpath, outcome.getPath(), trimDifferential, contextName, resultPathBase, false, null, null, redirector, srcSD);
+              }
             }
             baseCursor++;
           } else {
@@ -3800,6 +3806,9 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (contentReference.contains("#")) {
       String url = contentReference.substring(0, contentReference.indexOf("#"));
       contentReference = contentReference.substring(contentReference.indexOf("#"));
+      if (Utilities.noString(url)) {
+        url = source.getUrl();
+      }
       if (!url.equals(source.getUrl())) {
         source = context.fetchResource(StructureDefinition.class, url);
         if (source == null) {
@@ -4141,7 +4150,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       used.used = true;
       if (logicalModel && element.hasRepresentation(PropertyRepresentation.XMLATTR))
         sName = "@"+sName;
-      Cell nc = genElementNameCell(gen, element, profileBaseFileName, snapshot, corePath, imagePath, root, logicalModel, allInvariants, profile, typesRow, row, hasDef, ext, used, ref, sName);
+      Cell nc = genElementNameCell(gen, element, profileBaseFileName, snapshot, corePath, imagePath, root, logicalModel, allInvariants, profile, typesRow, row, hasDef, ext, used, ref, sName, all);
       genElementCells(gen, element, profileBaseFileName, snapshot, corePath, imagePath, root, logicalModel, allInvariants, profile, typesRow, row, hasDef, ext, used, ref, sName, nc, mustSupport, true, rc);
       if (element.hasSlicing()) {
         if (standardExtensionSlicing(element)) {
@@ -4253,19 +4262,42 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   public Cell genElementNameCell(HierarchicalTableGenerator gen, ElementDefinition element, String profileBaseFileName, boolean snapshot, String corePath,
       String imagePath, boolean root, boolean logicalModel, boolean allInvariants, StructureDefinition profile, Row typesRow, Row row, boolean hasDef,
-      boolean ext, UnusedTracker used, String ref, String sName) throws IOException {
+      boolean ext, UnusedTracker used, String ref, String sName, List<ElementDefinition> elements) throws IOException {
     String hint = "";
     hint = checkAdd(hint, (element.hasSliceName() ? translate("sd.table", "Slice")+" "+element.getSliceName() : ""));
     if (hasDef && element.hasDefinition()) {
       hint = checkAdd(hint, (hasDef && element.hasSliceName() ? ": " : ""));
       hint = checkAdd(hint, !hasDef ? null : gt(element.getDefinitionElement()));
     }
-    if (element.hasSlicing()) {
-      sName = "Slices for "+sName;
+    if (element.hasSlicing() && slicesExist(elements, element)) { // some elements set up slicing but don't actually slice, so we don't augment the name 
+      sName = "Slices for "+sName; 
     }
     Cell left = gen.new Cell(null, ref, sName, hint, null);
     row.getCells().add(left);
     return left;
+  }
+
+  private boolean slicesExist(List<ElementDefinition> elements, ElementDefinition element) {
+    if (elements == null) {
+      return true;
+    }
+    boolean found = false;
+    int start = elements.indexOf(element);
+    if (start < 0) {
+      return false;
+    }
+    for (int i = start; i < elements.size(); i++) {
+      ElementDefinition ed = elements.get(i);
+      if (ed.getPath().equals(element.getPath())) {
+        if (ed.hasSliceName()) {
+          found = true;
+        }
+      }
+      if (ed.getPath().length() < element.getPath().length()) {
+        break;
+      }
+    }
+    return found;
   }
 
   public List<Cell> genElementCells(HierarchicalTableGenerator gen, ElementDefinition element, String profileBaseFileName, boolean snapshot, String corePath,
