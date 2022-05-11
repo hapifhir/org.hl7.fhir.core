@@ -557,7 +557,7 @@ public class GraphQLEngine implements IGraphQLEngine {
             if (!isPrimitive(prop.getTypeCode()) && sel.getField().getName().startsWith("_"))
               throw new EGraphQLException("Unknown property "+sel.getField().getName()+" on "+source.fhirType());
 
-          if ("id".equals(prop.getName())) {
+          if ("id".equals(prop.getName()) && context != null) {
             prop.getValues().set(0, new IdType(context.getIdPart()));
           }
 
