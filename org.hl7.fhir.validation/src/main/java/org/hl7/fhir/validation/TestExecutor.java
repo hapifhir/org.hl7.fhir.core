@@ -17,10 +17,16 @@ public class TestExecutor {
     executeTests();
   }
   public static void executeTests() {
+
+    //System.setProperty("java.locale.providers", "COMPAT");
+
+    System.out.println("env : " + System.getenv("java.locale.providers"));
+    System.out.println("prop: " + System.getProperty("java.locale.providers"));
+
     PrintWriter out = new PrintWriter(System.out);
     PrintWriter err = new PrintWriter(System.err);
-   // String dir = System.getenv(FHIR_TEST_CASES_ENV);
 
+    //String dir = System.getenv(FHIR_TEST_CASES_ENV);
     //System.out.println("FHIR Test Cases Directory: " + dir);
 
     CommandLineOptions clo = new CommandLineOptions();
@@ -36,7 +42,7 @@ public class TestExecutor {
       ConsoleTestExecutor cte = new ConsoleTestExecutor(clo);
       TestExecutionSummary testExecutionSummary = cte.execute(out);
 
-      System.out.print("");
+
       // A System.exit is necessary because some okhttp3 mockwebserver tests leave threads running for a considerable
       // amount of time beyond the end of all other tests.
       System.exit(0);

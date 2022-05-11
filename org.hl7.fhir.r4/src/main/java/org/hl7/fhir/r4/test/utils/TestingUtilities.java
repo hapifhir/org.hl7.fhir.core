@@ -441,12 +441,13 @@ public class TestingUtilities {
 
 
   public static String resourceNameToFile(String name) throws IOException {
-    return Utilities.path(System.getProperty("user.dir"), "src", "test", "resources", name);
+    //return Utilities.path(System.getProperty("user.dir"), "src", "test", "resources", name);
+   return TestingUtilities.class.getClassLoader().getResource(name).getPath();
   }
 
 
   public static String resourceNameToFile(String subFolder, String name) throws IOException {
-    return Utilities.path(System.getProperty("user.dir"), "src", "test", "resources", subFolder, name);
+    return TestingUtilities.class.getClassLoader().getResource( (subFolder != null ? subFolder + "/" : "") + name).getPath();
   }
 
 }

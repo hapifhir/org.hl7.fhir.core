@@ -5,7 +5,9 @@ import com.google.gson.JsonObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,8 +28,8 @@ public class PackageClientTest {
 
   @Test
   @DisplayName("test getting package from JSON works")
-  public void getPackageInfoFromJSONTest() throws java.io.IOException{
-    final JsonObject jsonObject = new Gson().fromJson(Files.newBufferedReader(Paths.get("src", "test", "resources", "npm", "PackageClient-baseTestCase.json")), JsonObject.class);
+  public void getPackageInfoFromJSONTest() throws java.io.IOException, URISyntaxException {
+    final JsonObject jsonObject = new Gson().fromJson(Files.newBufferedReader(Paths.get(PackageClientTest.class.getClassLoader().getResource(Paths.get("npm","PackageClient-baseTestCase.json").toString()).getPath())), JsonObject.class);
     final PackageInfo packageInfo = packageClient.getPackageInfoFromJSON(jsonObject, null, null, null);
 
     assertExpectedFields(packageInfo);
@@ -36,7 +38,7 @@ public class PackageClientTest {
   @Test
   @DisplayName("test getting package from JSON works")
   public void getPackageInfoWithIdFromJSONTest() throws java.io.IOException {
-    final JsonObject jsonObject = new Gson().fromJson(Files.newBufferedReader(Paths.get("src", "test", "resources", "npm", "PackageClient-testCaseWithId.json")), JsonObject.class);
+    final JsonObject jsonObject = new Gson().fromJson(Files.newBufferedReader(Paths.get(PackageClientTest.class.getClassLoader().getResource(Paths.get("npm", "PackageClient-testCaseWithId.json").toString()).getPath())), JsonObject.class);
     final PackageInfo packageInfo = packageClient.getPackageInfoFromJSON(jsonObject, null, null, null);
 
     assertExpectedFields(packageInfo);

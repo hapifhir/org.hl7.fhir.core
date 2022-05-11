@@ -15,7 +15,9 @@ public class XLSXmlNormaliserTests {
 
   @Test
   public void testConvert() throws FHIRException, TransformerException, ParserConfigurationException, SAXException, IOException {
-    XLSXmlNormaliser n = new XLSXmlNormaliser("src/test/resources/observation-spreadsheet.xml", "target/observation-spreadsheet.out.xml", true);
+    String path = XLSXmlNormaliserTests.class.getClassLoader().getResource("observation-spreadsheet.xml").getPath();
+
+    XLSXmlNormaliser n = new XLSXmlNormaliser(path, "target/observation-spreadsheet.out.xml", true);
     n.go();
 //    n = new XLSXmlNormaliser("C:\\work\\org.hl7.fhir\\build\\source\\observation\\observation-spreadsheet.before.xml", "C:\\\\work\\\\org.hl7.fhir\\\\build\\\\source\\\\observation\\\\observation-spreadsheet.before.out.xml", true);
 //    n.go();
