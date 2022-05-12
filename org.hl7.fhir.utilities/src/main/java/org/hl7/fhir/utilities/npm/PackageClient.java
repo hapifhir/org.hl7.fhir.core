@@ -241,5 +241,18 @@ public class PackageClient {
     }
     return result;
   }
+
+  public void findDependents(Set<String> list, String id) {
+    CommaSeparatedStringBuilder params = new CommaSeparatedStringBuilder("&");
+    params.append("dependency="+id);
+    try {
+      JsonArray json = fetchJsonArray(Utilities.pathURL(address, "catalog?")+params.toString());
+      for (JsonElement e : json) {
+        JsonObject obj = (JsonObject) e;
+        list.add(JSONUtil.str(obj, "Name", "name"));
+      }
+    } catch (IOException e1) {
+    }
+  }
   
 }
