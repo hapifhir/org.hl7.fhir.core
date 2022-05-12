@@ -31,7 +31,7 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
   @Test
   public void testParseRuleName() throws IOException, FHIRException {
     StructureMapUtilities scu = new StructureMapUtilities(context, this);
-    String fileMap = TestingUtilities.loadTestResource("r5", "fml", "ActivityDefinition.map");
+    String fileMap = TestingUtilities.loadTestResource("r5", "structure-mapping", "ActivityDefinition.map");
     StructureMap structureMap = scu.parse(fileMap, "ActivityDefinition3To4");
 
     // StructureMap/ActivityDefinition3to4: StructureMap.group[3].rule[2].name error id value '"expression"' is not valid
@@ -59,7 +59,7 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
   @Test
   public void testSyntax() throws IOException, FHIRException {
     StructureMapUtilities scu = new StructureMapUtilities(context, this);
-    String fileMap = TestingUtilities.loadTestResource("r5", "fml", "syntax.map");
+    String fileMap = TestingUtilities.loadTestResource("r5", "structure-mapping", "syntax.map");
     System.out.println(fileMap);
 
     StructureMap structureMap = scu.parse(fileMap, "Syntax");
@@ -70,6 +70,8 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
     System.out.println(map);
     assertSerializeDeserialize(map);
   }
+
+
 
   @Override
   public void log(String message) {
