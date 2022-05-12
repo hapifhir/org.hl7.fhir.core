@@ -7635,6 +7635,14 @@ When pattern[x] is used to constrain a complex object, it means that each proper
 
   public String present() {
     return hasId() ? getId() : getPath();
+  }
+
+  public boolean hasFixedOrPattern() {
+    return hasFixed() || hasPattern();
+  }
+
+  public Type getFixedOrPattern() {
+    return hasFixed() ? getFixed() : getPattern();
   }  
   
 // end addition
