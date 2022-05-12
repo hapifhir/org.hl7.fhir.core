@@ -11,6 +11,5 @@ public enum EngineMode {
   SPREADSHEET,
   FHIRPATH,
   VERSION,
-
-  RUNTESTS
+  RUN_TESTS
 }

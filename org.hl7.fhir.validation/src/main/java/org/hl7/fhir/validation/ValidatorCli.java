@@ -159,7 +159,10 @@ public class ValidatorCli {
       if (destinationDirectoryValid(Params.getParam(args, Params.DESTINATION))) {
         doLeftRightComparison(args, cliContext, tt);
       }
-    } else {
+    } else if (Params.hasParam(args, Params.RUN_TESTS)) {
+      TestExecutor.executeTests();
+    }
+    else {
       Display.printCliArgumentsAndInfo(args);
       doValidation(tt, tts, cliContext);
     }
@@ -262,8 +265,6 @@ public class ValidatorCli {
       case VERSION:
         validationService.transformVersion(cliContext, validator);
         break;
-      case RUNTESTS:
-        TestExecutor.executeTests();
       case VALIDATION:
       case SCAN:
       default:
