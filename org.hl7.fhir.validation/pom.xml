@@ -57,9 +57,6 @@
             <version>${project.version}</version>
         </dependency>
 
-
-
-
         <!-- Validation resources (StructureDefinitions, ValueSets, etc.) -->
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
