@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation;
 
+import com.google.common.reflect.ClassPath;
 import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
 import org.junit.platform.console.options.CommandLineOptions;
@@ -9,10 +10,14 @@ import org.junit.platform.launcher.listeners.TestExecutionSummary;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.instrument.Instrumentation;
+import java.lang.reflect.Field;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.List;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+
+import org.hl7.fhir.utilities.tests.XhtmlParserTests;
 
 public class TestExecutor {
 
@@ -21,17 +26,22 @@ public class TestExecutor {
     String classpath = System.getProperty("java.class.path");
     String[] classPathValues = classpath.split(File.pathSeparator);
     System.out.println(Arrays.toString(classPathValues));
-
-    Enumeration<URL> roots = null;
     try {
-      roots = TestExecutor.class.getClassLoader().getResources("");
 
-    while(roots.hasMoreElements()) {
-      System.out.println(roots.nextElement());
-    }
-    } catch (IOException e) {
+    ClassLoader classLoader =org.junit.platform.commons.util.ClassLoaderUtils.getDefaultClassLoader();
+
+      ClassPath classPath = ClassPath.from(classLoader);
+      Set<ClassPath.ClassInfo> classes = classPath.getAllClasses();
+
+      for (ClassPath.ClassInfo classInfo : classes) {
+        if (classInfo.getName().contains("junit") || classInfo.getName().contains("hl7")) {
+          System.out.println(" classInfo: " + classInfo.getName());
+        }
+      }
+    }  catch (IOException e) {
       throw new RuntimeException(e);
     }
+
 
   }
   public static void main(String[] args) {
@@ -56,15 +66,15 @@ public class TestExecutor {
 
     clo.setScanClasspath(true);
 
-    clo.setScanModulepath(true);
+    //clo.setSelectedPackages(Arrays.asList(XhtmlParserTests.class.getPackage().getName()));
 
     //clo.setIncludedEngines(Arrays.asList("junit-vintage","junit-jupiter"));
     //clo.setExcludedPackages(Arrays.asList("org.hl7.fhir.r4.test"));
     //clo.setIncludedPackages(Arrays.asList("org.hl7.fhir.validation.tests"));
     try {
       ConsoleTestExecutor cte = new ConsoleTestExecutor(clo);
-      TestExecutionSummary testExecutionSummary = cte.execute(out);
 
+      TestExecutionSummary testExecutionSummary = cte.execute(out);
 
       // A System.exit is necessary because some okhttp3 mockwebserver tests leave threads running for a considerable
       // amount of time beyond the end of all other tests.
