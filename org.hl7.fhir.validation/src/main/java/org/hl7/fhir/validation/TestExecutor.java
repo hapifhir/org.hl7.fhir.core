@@ -1,23 +1,13 @@
 package org.hl7.fhir.validation;
 
 import com.google.common.reflect.ClassPath;
-import org.apache.commons.io.FileUtils;
-import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
-import org.junit.platform.console.options.CommandLineOptions;
-import org.junit.platform.console.tasks.ConsoleTestExecutor;
-import org.junit.platform.launcher.listeners.TestExecutionSummary;
+import org.hl7.fhir.utilities.UtilitiesTestExecutor;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.instrument.Instrumentation;
-import java.lang.reflect.Field;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
-
-import org.hl7.fhir.utilities.tests.XhtmlParserTests;
+import java.util.Arrays;
+import java.util.Set;
 
 public class TestExecutor {
 
@@ -28,9 +18,13 @@ public class TestExecutor {
     System.out.println(Arrays.toString(classPathValues));
     try {
 
-    ClassLoader classLoader =org.junit.platform.commons.util.ClassLoaderUtils.getDefaultClassLoader();
+    ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 
-      ClassPath classPath = ClassPath.from(classLoader);
+
+        contextClassLoader = Thread.currentThread().getContextClassLoader();
+
+
+      ClassPath classPath = ClassPath.from(contextClassLoader);
       Set<ClassPath.ClassInfo> classes = classPath.getAllClasses();
 
       for (ClassPath.ClassInfo classInfo : classes) {
@@ -48,8 +42,7 @@ public class TestExecutor {
     executeTests();
   }
   public static void executeTests() {
-    printClasspath();
-    //System.setProperty("java.locale.providers", "COMPAT");
+    //printClasspath();
 
     System.out.println("env : " + System.getenv("java.locale.providers"));
     System.out.println("prop: " + System.getProperty("java.locale.providers"));
@@ -59,29 +52,9 @@ public class TestExecutor {
 
     //String dir = System.getenv(FHIR_TEST_CASES_ENV);
     //System.out.println("FHIR Test Cases Directory: " + dir);
+    new UtilitiesTestExecutor().executeTests();
 
-    CommandLineOptions clo = new CommandLineOptions();
-
-    BaseTestingUtilities.setFhirTestCasesDirectory("/Users/david.otasek/IN/2021-12-02-fhir-test-cases-by-directory/fhir-test-cases");
-
-    clo.setScanClasspath(true);
-
-    //clo.setSelectedPackages(Arrays.asList(XhtmlParserTests.class.getPackage().getName()));
-
-    //clo.setIncludedEngines(Arrays.asList("junit-vintage","junit-jupiter"));
-    //clo.setExcludedPackages(Arrays.asList("org.hl7.fhir.r4.test"));
-    //clo.setIncludedPackages(Arrays.asList("org.hl7.fhir.validation.tests"));
-    try {
-      ConsoleTestExecutor cte = new ConsoleTestExecutor(clo);
-
-      TestExecutionSummary testExecutionSummary = cte.execute(out);
-
-      // A System.exit is necessary because some okhttp3 mockwebserver tests leave threads running for a considerable
-      // amount of time beyond the end of all other tests.
       System.exit(0);
-    } catch (Exception exception) {
-      exception.printStackTrace();
-      System.err.println();
-    }
+
   }
 }
