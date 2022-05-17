@@ -167,6 +167,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private ValidationLevel level = ValidationLevel.HINTS;
   @Getter @Setter private FHIRPathEngine fhirPathEngine;
   @Getter @Setter private IgLoader igLoader;
+  @Getter @Setter private Coding jurisdiction;
 
   /**
    * Systems that host the ValidationEngine can use this to control what validation the validator performs.
@@ -623,7 +624,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     if (format == FhirFormat.SHC) {
       igLoader.loadIg(getIgs(), getBinaries(), SHCParser.CURRENT_PACKAGE, true);      
     }
-
+    validator.setJurisdiction(jurisdiction);
     return validator;
   }
 

@@ -7,6 +7,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
@@ -111,7 +113,9 @@ public class CliContext {
   // TODO: Mark what goes here?
   private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
 
-
+  @JsonProperty("jurisdiction")
+  private String jurisdiction = JurisdictionUtilities.getJurisdictionFromLocale(Locale.getDefault().getCountry());
+  
   @JsonProperty("map")
   public String getMap() {
     return map;
@@ -564,6 +568,14 @@ public class CliContext {
     this.noUnicodeBiDiControlChars = noUnicodeBiDiControlChars;
   }
 
+  public String getJurisdiction() {
+    return jurisdiction;
+  }
+
+  public void setJurisdiction(String jurisdiction) {
+    this.jurisdiction = jurisdiction;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -604,6 +616,7 @@ public class CliContext {
       mode == that.mode &&
       Objects.equals(locale, that.locale) &&
       Objects.equals(outputStyle, that.outputStyle) &&
+      Objects.equals(jurisdiction, that.jurisdiction) &&
       Objects.equals(locations, that.locations);
   }
 
@@ -611,7 +624,7 @@ public class CliContext {
   public int hashCode() {
     return Objects.hash(doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, 
             noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, fhirpath, snomedCT,
-            targetVer, igs, questionnaireMode, level, profiles, sources, mode, locale, locations, crumbTrails, showTimes, allowExampleUrls, outputStyle, noUnicodeBiDiControlChars);
+            targetVer, igs, questionnaireMode, level, profiles, sources, mode, locale, locations, crumbTrails, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars);
   }
 
   @Override
@@ -650,6 +663,7 @@ public class CliContext {
       ", securityChecks=" + securityChecks +
       ", crumbTrails=" + crumbTrails +
       ", outputStyle=" + outputStyle +
+      ", jurisdiction=" + jurisdiction +
       ", allowExampleUrls=" + allowExampleUrls +
       ", showTimes=" + showTimes +
       ", locale='" + locale + '\'' +
