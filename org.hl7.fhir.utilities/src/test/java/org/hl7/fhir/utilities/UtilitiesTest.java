@@ -167,5 +167,67 @@ class UtilitiesTest {
     );
     Assertions.assertThrows(IllegalArgumentException.class, () -> Utilities.describeSize(BIG_NEG));
   }
+  
+  @Test
+  @DisplayName("Decimal Reasoning Tests")
+  void testDecimalRoutines() {
+    Assertions.assertEquals("-0.500000", Utilities.lowBoundaryForDecimal("0", 6));
+    Assertions.assertEquals("0.50000000", Utilities.lowBoundaryForDecimal("1", 8));
+    Assertions.assertEquals("0.950000", Utilities.lowBoundaryForDecimal("1.0", 6));
+    Assertions.assertEquals("0.95", Utilities.lowBoundaryForDecimal("1.0", 2));
+    Assertions.assertEquals("-1.05000000", Utilities.lowBoundaryForDecimal("-1.0", 8));
+    Assertions.assertEquals("1.23", Utilities.lowBoundaryForDecimal("1.234", 2));
+    Assertions.assertEquals("1.57", Utilities.lowBoundaryForDecimal("1.567", 2));
 
+    Assertions.assertEquals("0.50000000", Utilities.highBoundaryForDecimal("0", 8));
+    Assertions.assertEquals("1.500000", Utilities.highBoundaryForDecimal("1", 6));
+    Assertions.assertEquals("1.0500000000", Utilities.highBoundaryForDecimal("1.0", 10));
+    Assertions.assertEquals("-0.9500", Utilities.highBoundaryForDecimal("-1.0", 4));
+
+    Assertions.assertEquals(0, Utilities.getDecimalPrecision("0"));
+    Assertions.assertEquals(0, Utilities.getDecimalPrecision("1"));
+    Assertions.assertEquals(1, Utilities.getDecimalPrecision("1.0"));
+    Assertions.assertEquals(1, Utilities.getDecimalPrecision("-1.0"));
+    Assertions.assertEquals(4, Utilities.getDecimalPrecision("-1.0200"));
+  }
+  
+  @Test
+  @DisplayName("Date Reasoning Tests")
+  void testDateRoutines() {
+//    Assertions.assertEquals("2021-01-01T00:00:00.000", Utilities.lowBoundaryForDate("2021"));
+//    Assertions.assertEquals("2021-04-01T00:00:00.000", Utilities.lowBoundaryForDate("2021-04"));
+//    Assertions.assertEquals("2020-02-01T00:00:00.000", Utilities.lowBoundaryForDate("2020-02"));
+//    Assertions.assertEquals("2021-04-04T00:00:00.000", Utilities.lowBoundaryForDate("2021-04-04"));
+//    Assertions.assertEquals("2021-04-04T21:22:23.000", Utilities.lowBoundaryForDate("2021-04-04T21:22:23"));
+//    Assertions.assertEquals("2021-04-04T21:22:23.245", Utilities.lowBoundaryForDate("2021-04-04T21:22:23.245"));
+//    Assertions.assertEquals("2021-04-04T21:22:23.000Z", Utilities.lowBoundaryForDate("2021-04-04T21:22:23Z"));
+//    Assertions.assertEquals("2021-04-04T21:22:23.245+10:00", Utilities.lowBoundaryForDate("2021-04-04T21:22:23.245+10:00"));
+//
+//    Assertions.assertEquals("2021-12-31T23:23:59.999", Utilities.highBoundaryForDate("2021"));
+//    Assertions.assertEquals("2021-04-30T23:23:59.999", Utilities.highBoundaryForDate("2021-04"));
+//    Assertions.assertEquals("2020-02-29T23:23:59.999", Utilities.highBoundaryForDate("2020-02"));
+//    Assertions.assertEquals("2021-04-04T23:23:59.999", Utilities.highBoundaryForDate("2021-04-04"));
+//    Assertions.assertEquals("2021-04-04T21:22:23.999", Utilities.highBoundaryForDate("2021-04-04T21:22:23"));
+//    Assertions.assertEquals("2021-04-04T21:22:23.245", Utilities.highBoundaryForDate("2021-04-04T21:22:23.245"));
+//    Assertions.assertEquals("2021-04-04T21:22:23.999Z", Utilities.highBoundaryForDate("2021-04-04T21:22:23Z"));
+//    Assertions.assertEquals("2021-04-04T21:22:23.245+10:00", Utilities.highBoundaryForDate("2021-04-04T21:22:23.245+10:00"));
+    
+    Assertions.assertEquals(8, Utilities.getDatePrecision("1900-01-01"));
+    Assertions.assertEquals(4, Utilities.getDatePrecision("1900"));
+    Assertions.assertEquals(6, Utilities.getDatePrecision("1900-06"));
+    Assertions.assertEquals(14, Utilities.getDatePrecision("1900-06-06T14:00:00"));
+    Assertions.assertEquals(17, Utilities.getDatePrecision("1900-06-06T14:00:00.000"));
+    Assertions.assertEquals(8, Utilities.getDatePrecision("1900-01-01Z"));
+    Assertions.assertEquals(4, Utilities.getDatePrecision("1900Z"));
+    Assertions.assertEquals(6, Utilities.getDatePrecision("1900-06Z"));
+    Assertions.assertEquals(14, Utilities.getDatePrecision("1900-06-06T14:00:00Z"));
+    Assertions.assertEquals(17, Utilities.getDatePrecision("1900-06-06T14:00:00.000Z"));
+    Assertions.assertEquals(8, Utilities.getDatePrecision("1900-01-01+10:00"));
+    Assertions.assertEquals(4, Utilities.getDatePrecision("1900+10:00"));
+    Assertions.assertEquals(6, Utilities.getDatePrecision("1900-06+10:00"));
+    Assertions.assertEquals(14, Utilities.getDatePrecision("1900-06-06T14:00:00+10:00"));
+    Assertions.assertEquals(17, Utilities.getDatePrecision("1900-06-06T14:00:00.000-10:00"));
+  }
+  
+  
 }
