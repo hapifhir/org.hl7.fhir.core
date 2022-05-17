@@ -119,13 +119,14 @@ public class QuestionnaireValidator extends BaseValidator {
   private FHIRPathEngine fpe;
   private QuestionnaireMode questionnaireMode;
 
-  public QuestionnaireValidator(IWorkerContext context, EnableWhenEvaluator myEnableWhenEvaluator, FHIRPathEngine fpe, TimeTracker timeTracker, QuestionnaireMode questionnaireMode, XVerExtensionManager xverManager) {
+  public QuestionnaireValidator(IWorkerContext context, EnableWhenEvaluator myEnableWhenEvaluator, FHIRPathEngine fpe, TimeTracker timeTracker, QuestionnaireMode questionnaireMode, XVerExtensionManager xverManager, Coding jurisdiction) {
     super(context, xverManager);
     source = Source.InstanceValidator;
     this.myEnableWhenEvaluator = myEnableWhenEvaluator;
     this.fpe = fpe;
     this.timeTracker = timeTracker;
     this.questionnaireMode = questionnaireMode;
+    this.jurisdiction = jurisdiction;
   }
 
   public void validateQuestionannaire(List<ValidationMessage> errors, Element element, Element element2, NodeStack stack) {

@@ -121,6 +121,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
   protected List<TrackedLocationRelatedMessage> trackedMessages = new ArrayList<>();
   protected List<ValidationMessage> messagesToRemove = new ArrayList<>();
   private ValidationLevel level = ValidationLevel.HINTS;
+  protected Coding jurisdiction;
 
   public BaseValidator(IWorkerContext context, XVerExtensionManager xverManager) {
     super();
@@ -1102,4 +1103,5 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return level;
   }
 
+ 
 }
