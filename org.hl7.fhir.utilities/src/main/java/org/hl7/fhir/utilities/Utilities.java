@@ -22,6 +22,7 @@ import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -1505,5 +1506,229 @@ public class Utilities {
     return "['"+String.join("' | '", expected)+"']";
   }
 
+  public static String lowBoundaryForDecimal(String value, int precision) {
+    if (Utilities.noString(value)) {
+      throw new FHIRException("Unable to calculate lowBoundary for a null decimal string");
+    }
+    String e = value.contains("e") ? value.substring(value.indexOf("e")+1) : null;
+    if (value.contains("e")) {
+      value = value.substring(0, value.indexOf("e"));
+    }    
+    if (isZero(value)) {
+      return applyPrecision("-0.5000000000000000000000000", precision);
+    } else if (value.startsWith("-")) {
+      return "-"+highBoundaryForDecimal(value.substring(1), precision)+(e == null ? "" : e);
+    } else {
+      if (value.contains(".")) {
+        return applyPrecision(minusOne(value)+"50000000000000000000000000000", precision)+(e == null ? "" : e);
+      } else {
+        return applyPrecision(minusOne(value)+".50000000000000000000000000000", precision)+(e == null ? "" : e);
+      }
+    }
+  }
+
+  private static String applyPrecision(String v, int p) {
+    int d = p - getDecimalPrecision(v);
+    if (d == 0) {
+      return v;
+    } else if (d > 0) {
+      return v + padLeft("", '0', d);
+    } else {
+      if (v.charAt(v.length()+d) >= '6') {
+        return v.substring(0, v.length()+d-1)+((char) (v.charAt(v.length()+d)+1));
+      } else {
+        return v.substring(0, v.length()+d);
+      }
+    }
+  }
+
+  private static String minusOne(String value) {
+    StringBuffer s = new StringBuffer(value);
+    for (int i = s.length()-1; i >= 0; i--) {
+      if (s.charAt(i) == '0') {
+        s.setCharAt(i, '9');
+      } else if (s.charAt(i) != '.') {
+        s.setCharAt(i, (char) (s.charAt(i)-1));
+        break;
+      }
+    }
+    return s.toString();
+  }
+
+  public static String lowBoundaryForDate(String value, int precision) {
+    String[] res = splitTimezone(value);
+    StringBuilder b = new StringBuilder(res[0]);
+    if (b.length() == 4) {
+      b.append("-01");
+    }
+    if (b.length() == 7) {
+      b.append("-01");
+    }
+    if (b.length() == 10) {
+      b.append("T00:00");
+    }
+    if (b.length() == 16) {
+      b.append(":00");
+    }
+    if (b.length() == 19) {
+      b.append(".000");
+    }
+    return applyDatePrecision(b.toString(), precision)+res[1];
+  }
+
+  public static String lowBoundaryForTime(String value, int precision) {
+    String[] res = splitTimezone(value);
+    StringBuilder b = new StringBuilder(res[0]);
+    if (b.length() == 2) {
+      b.append(":00");
+    }
+    if (b.length() == 5) {
+      b.append(":00");
+    }
+    if (b.length() == 8) {
+      b.append(".000");
+    }
+    return applyTimePrecision(b.toString(), precision)+res[1];
+  }
+
+  public static String highBoundaryForTime(String value, int precision) {
+    String[] res = splitTimezone(value);
+    StringBuilder b = new StringBuilder(res[0]);
+    if (b.length() == 2) {
+      b.append(":59");
+    }
+    if (b.length() == 5) {
+      b.append(":59");
+    }
+    if (b.length() == 8) {
+      b.append(".999");
+    }
+    return applyTimePrecision(b.toString(), precision)+res[1];
+  }
+
+  
+  private static Object applyDatePrecision(String v, int precision) {
+    switch (precision) {
+    case 4: return v.substring(0, 4);
+    case 6: return v.substring(0, 7);
+    case 8: return v.substring(0, 10);
+    case 14: return v.substring(0, 17);
+    case 17: return v;      
+    }
+    throw new FHIRException("Unsupported Date precision for boundary operation: "+precision);
+  }
+
+  private static Object applyTimePrecision(String v, int precision) {
+    switch (precision) {
+    case 2: return v.substring(0, 3);
+    case 4: return v.substring(0, 6);
+    case 6: return v.substring(0, 9);
+    case 9: return v;      
+    }
+    throw new FHIRException("Unsupported Time precision for boundary operation: "+precision);
+  }
+
+  public static String highBoundaryForDecimal(String value, int precision) {
+    if (Utilities.noString(value)) {
+      throw new FHIRException("Unable to calculate highBoundary for a null decimal string");
+    }
+    String e = value.contains("e") ? value.substring(value.indexOf("e")+1) : null;
+    if (value.contains("e")) {
+      value = value.substring(0, value.indexOf("e"));
+    }
+    if (isZero(value)) {
+      return applyPrecision("0.50000000000000000000000000000", precision);
+    } else if (value.startsWith("-")) {
+      return "-"+lowBoundaryForDecimal(value.substring(1), precision)+(e == null ? "" : e);
+    } else {
+      if (value.contains(".")) {
+        return applyPrecision(value+"50000000000000000000000000000", precision)+(e == null ? "" : e);
+      } else {
+        return applyPrecision(value+".50000000000000000000000000000", precision)+(e == null ? "" : e);
+      }
+    }
+  }
+
+  private static boolean isZero(String value) {
+    return value.replace(".", "").replace("-", "").replace("0", "").length() == 0;
+  }
+
+  public static String highBoundaryForDate(String value, int precision) {
+    String[] res = splitTimezone(value);
+    StringBuilder b = new StringBuilder(res[0]);
+    if (b.length() == 4) {
+      b.append("-12");
+    }
+    if (b.length() == 7) {
+      b.append("-"+dayCount(Integer.parseInt(b.substring(0,4)), Integer.parseInt(b.substring(5,7))));
+    }
+    if (b.length() == 10) {
+      b.append("T23:59");
+    }
+    if (b.length() == 16) {
+      b.append(":59");
+    }
+    if (b.length() == 19) {
+      b.append(".999");
+    }
+    return applyDatePrecision(b.toString(), precision)+res[1];
+  }
+
+  private static String dayCount(int y, int m) {
+    switch (m) {
+    case 1: return "31";
+    case 2: return ((y % 4 == 0) && (y % 400 == 0 || !(y % 100 == 0))) ? "29" : "28";
+    case 3: return "31";
+    case 4: return "30";
+    case 5: return "31";
+    case 6: return "30";
+    case 7: return "31";
+    case 8: return "31";
+    case 9: return "30";
+    case 10: return "31";
+    case 11: return "30";
+    case 12: return "31";
+    default: return "30"; // make the compiler happy
+    }
+  }
+
+  public static Integer getDecimalPrecision(String value) {
+    if (value.contains("e")) {
+      value = value.substring(0, value.indexOf("e"));
+    }
+    if (value.contains(".")) {
+      return value.split("\\.")[1].length();
+    } else {
+      return 0;
+    }
+  }
+
+  
+  private static String[] splitTimezone(String value) {
+    String[] res = new String[2];
+    
+    if (value.contains("+")) {
+      res[0] = value.substring(0, value.indexOf("+"));
+      res[1] = value.substring(value.indexOf("+"));
+    } else if (value.contains("-") && value.contains("T") && value.lastIndexOf("-") > value.indexOf("T")) {
+      res[0] = value.substring(0, value.lastIndexOf("-"));
+      res[1]  = value.substring(value.lastIndexOf("-"));
+    } else if (value.contains("Z")) {
+      res[0] = value.substring(0, value.indexOf("Z"));
+      res[1] = value.substring(value.indexOf("Z"));
+    } else {
+      res[0] = value;
+      res[1] = "";
+    }
+    return res;
+  }
+  
+  public static Integer getDatePrecision(String value) {
+    return splitTimezone(value)[0].replace("-", "").replace("T", "").replace(":", "").replace(".", "").length();
+  }
+
+  public static Integer getTimePrecision(String value) {
+    return splitTimezone(value)[0].replace("T", "").replace(":", "").replace(".", "").length();
+  }
 
 }

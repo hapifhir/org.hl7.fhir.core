@@ -298,7 +298,7 @@ public class TypeDetails {
     String t = ProfiledType.ns(n);
     if (typesContains(t))
       return true;
-    if (Utilities.existsInList(n, "boolean", "string", "integer", "decimal", "Quantity", "dateTime", "time", "ClassInfo", "SimpleTypeInfo")) {
+    if (Utilities.existsInList(n, "boolean", "string", "integer", "decimal", "Quantity", "date", "dateTime", "time", "ClassInfo", "SimpleTypeInfo")) {
       t = FP_NS+Utilities.capitalize(n);
       if (typesContains(t))
         return true;

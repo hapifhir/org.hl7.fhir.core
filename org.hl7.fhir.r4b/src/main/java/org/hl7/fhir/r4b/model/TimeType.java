@@ -144,4 +144,9 @@ public class TimeType extends PrimitiveType<String> {
     }
   }
 
+  @Override
+  public String fpValue() {
+    return "@T"+primitiveValue();
+  }
+
 }
