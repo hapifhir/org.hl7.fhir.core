@@ -146,20 +146,6 @@
 			<scope>test</scope>
 		</dependency>
 
-
-		<!-- JUnit Jupiter -->
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<version>${junit_jupiter_version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-params</artifactId>
-			<version>${junit_jupiter_version}</version>
-			<scope>test</scope>
-		</dependency>
 		<dependency>
 			<groupId>com.atlassian.commonmark</groupId>
 			<artifactId>commonmark</artifactId>
@@ -170,6 +156,56 @@
 			<artifactId>commonmark-ext-gfm-tables</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- JUnit Jupiter -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>net.bytebuddy</groupId>
+			<artifactId>byte-buddy</artifactId>
+			<version>${byte_buddy_version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>${junit_jupiter_version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.vintage</groupId>
+			<artifactId>junit-vintage-engine</artifactId>
+			<version>${junit_jupiter_version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<version>${junit_jupiter_version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-launcher</artifactId>
+			<version>${junit_platform_launcher_version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hl7.fhir.testcases</groupId>
+			<artifactId>fhir-test-cases</artifactId>
+			<version>${validator_test_case_version}</version>
+			<scope>provided</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
