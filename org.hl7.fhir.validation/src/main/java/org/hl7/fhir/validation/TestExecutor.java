@@ -15,7 +15,6 @@ public class TestExecutor {
   private static String SUMMARY_TEMPLATE = "Tests run: %d, Failures: %d, Errors: %d, Skipped: %d";
   private static final String DOT_PLACEHOLDER = new String(new char[53]).replace("\0", ".");
 
-
   private static String getModuleResultLine(Map.Entry<String, TestExecutionSummary> moduleResult) {
     return (moduleResult.getKey().length() < 50
       ? moduleResult.getKey() + " " +  DOT_PLACEHOLDER.substring(moduleResult.getKey().length() + 1)
@@ -62,10 +61,17 @@ public class TestExecutor {
 
     List<ModuleTestExecutor> testExecutors = Arrays.asList(
 
-      new ModuleTestExecutor("org.hl7.fhir.utilities", Arrays.asList("org.hl7.fhir.utilities")),
-      new ModuleTestExecutor("org.hl7.fhir.r4b", Arrays.asList("org.hl7.fhir.r4b"))
+      ModuleTestExecutor.getStandardModuleTestExecutor("org.hl7.fhir.utilities"),
+      ModuleTestExecutor.getStandardModuleTestExecutor("org.hl7.fhir.convertors"),
+      ModuleTestExecutor.getStandardModuleTestExecutor("org.hl7.fhir.dstu2"),
+      ModuleTestExecutor.getStandardModuleTestExecutor("org.hl7.fhir.dstu2016may"),
+      ModuleTestExecutor.getStandardModuleTestExecutor("org.hl7.fhir.dstu3"),
+      ModuleTestExecutor.getStandardModuleTestExecutor("org.hl7.fhir.r4"),
+      ModuleTestExecutor.getStandardModuleTestExecutor("org.hl7.fhir.r4b"),
+      ModuleTestExecutor.getStandardModuleTestExecutor("org.hl7.fhir.r5"),
+      ModuleTestExecutor.getStandardModuleTestExecutor("org.hl7.fhir.validation")
 
-    );
+      );
 
     long testsFoundCount = 0;
     long testsFailedCount = 0;
