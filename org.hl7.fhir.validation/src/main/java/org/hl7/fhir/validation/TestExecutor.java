@@ -61,10 +61,10 @@ public class TestExecutor {
     System.out.println("prop: " + System.getProperty("java.locale.providers"));
 
     List<ModuleTestExecutor> testExecutors = Arrays.asList(
-      //new UtilitiesTestExecutor(),
+
       new ModuleTestExecutor("org.hl7.fhir.utilities", Arrays.asList("org.hl7.fhir.utilities")),
       new ModuleTestExecutor("org.hl7.fhir.r4b", Arrays.asList("org.hl7.fhir.r4b"))
-      //,new R5TestExecutor()
+
     );
 
     long testsFoundCount = 0;

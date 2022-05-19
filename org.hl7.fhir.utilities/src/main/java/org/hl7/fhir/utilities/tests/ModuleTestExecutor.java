@@ -10,6 +10,7 @@ import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
 import org.junit.platform.launcher.listeners.TestExecutionSummary;
 
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,6 +18,14 @@ import java.util.stream.Collectors;
 import static org.junit.platform.engine.discovery.ClassNameFilter.includeClassNamePatterns;
 import static org.junit.platform.engine.discovery.DiscoverySelectors.selectPackage;
 
+/**
+ * This class allows JUnit 5 tests to be run in Java runtime.
+ *
+ * JUnit 4 tests ARE NOT SUPPORTED.
+ *
+ * This mimics for the most part the output of the Maven Surefire plugin, with
+ * additional summaries and unique IDs for diagnosing failing tests.
+ */
 public class ModuleTestExecutor {
 
   private static final String STARTING_TEST_TEMPLATE = "Starting: %s";
@@ -73,6 +82,19 @@ public class ModuleTestExecutor {
     }
   }
 
+  /**
+   * Execute all tests defined in this module and return a TestExecutionSummary.
+   *
+   * Any stack traces required to diagnose test failures will be output at this
+   * stage, along with a unique test ID.
+   *
+   * @param out the PrintStream to log execution or test failure.
+   * @param classNameFilter a Regex to use to select tests. If null, this will
+   *                        default to the JUnit console filter.
+   * @return The test execution summary.
+   *
+   * @see org.junit.platform.engine.discovery.ClassNameFilter
+   */
   public TestExecutionSummary executeTests(PrintStream out, String classNameFilter) {
     LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder.request()
       .selectors(
@@ -106,6 +128,18 @@ public class ModuleTestExecutor {
     return summary;
   }
 
+  /**
+   * Utility method to print the summary of execution in human-readable
+   * format.
+   *
+   * Any test failures are listed using the same unique IDs output in
+   * the {@link ModuleTestExecutor#executeTests(PrintStream, String)}
+   * method.
+   *
+   * @param out the PrintStream to log summary data to.
+   * @param testExecutionSummary the test summary
+   * @param moduleName the module name
+   */
   public static void printSummmary(PrintStream out, TestExecutionSummary testExecutionSummary, String moduleName) {
     if (testExecutionSummary.getTotalFailureCount() > 0) {
       out.println("\n" + String.format(FAILURE_SUMMARY_TEMPLATE, moduleName, testExecutionSummary.getTotalFailureCount()));
@@ -116,4 +150,17 @@ public class ModuleTestExecutor {
     }
   }
 
+  /**
+   * Create a ModuleTestExceutor for the standard case where the module name
+   * maps to the package name of the root package containing tests.
+   *
+   * For example the module "org.hl7.fhir.r5" will be assumed to have all its
+   * tests in the "org.hl7.fhir.r5" package or its child packages.
+   *
+   * @param moduleName The name of the module and root package containing tests.
+   * @return the ModuleTestExcecutor for the module
+   */
+  public static ModuleTestExecutor getStandardModuleTestExecutor(String moduleName) {
+    return  new ModuleTestExecutor(moduleName, Arrays.asList(moduleName));
+  }
 }
