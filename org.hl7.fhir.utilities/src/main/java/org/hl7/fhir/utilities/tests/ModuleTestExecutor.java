@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.tests;
 
+import lombok.Getter;
 import lombok.Setter;
 import org.junit.platform.engine.TestExecutionResult;
 import org.junit.platform.launcher.*;
@@ -9,13 +10,14 @@ import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
 import org.junit.platform.launcher.listeners.TestExecutionSummary;
 
 import java.io.PrintStream;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.platform.engine.discovery.ClassNameFilter.includeClassNamePatterns;
 import static org.junit.platform.engine.discovery.DiscoverySelectors.selectPackage;
 
-public abstract class ModuleTestExecutor {
+public class ModuleTestExecutor {
 
   private static final String STARTING_TEST_TEMPLATE = "Starting: %s";
   private static final String FINISHED_TEST_TEMPLATE = "Finished: %s with result: %s";
@@ -27,12 +29,20 @@ public abstract class ModuleTestExecutor {
   private static final String MODULE_FINISHED_TEMPLATE = "%s module tests finished.";
   public static final String DEFAULT_CLASSNAME_FILTER = org.junit.platform.engine.discovery.ClassNameFilter.STANDARD_INCLUDE_PATTERN;
 
-  public abstract String getModuleName();
 
-  protected abstract List<String> getPackages();
+  @Getter
+  private final String moduleName;
+
+  @Getter
+  private final List<String> packageNames;
+
+  public ModuleTestExecutor(String moduleName, List<String> packageNames) {
+    this.moduleName = moduleName;
+    this.packageNames = Collections.unmodifiableList(packageNames);
+  }
 
   private List<org.junit.platform.engine.discovery.PackageSelector> getPackageSelectors() {
-    final List<String> packageNames = getPackages();
+    final List<String> packageNames = getPackageNames();
     return packageNames.stream().map(it -> selectPackage(it)).collect(Collectors.toList());
   }
 

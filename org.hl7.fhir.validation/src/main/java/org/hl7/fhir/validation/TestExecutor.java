@@ -1,13 +1,11 @@
 package org.hl7.fhir.validation;
 
 import com.google.common.reflect.ClassPath;
-import org.hl7.fhir.r5.R5TestExecutor;
-import org.hl7.fhir.utilities.UtilitiesTestExecutor;
+
 import org.hl7.fhir.utilities.tests.ModuleTestExecutor;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import java.util.*;
 
@@ -33,10 +31,7 @@ public class TestExecutor {
     try {
 
       ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-
-
       contextClassLoader = Thread.currentThread().getContextClassLoader();
-
 
       ClassPath classPath = ClassPath.from(contextClassLoader);
       Set<ClassPath.ClassInfo> classes = classPath.getAllClasses();
@@ -58,6 +53,7 @@ public class TestExecutor {
   }
 
 
+
   public static void executeTests() {
     //printClasspath();
 
@@ -65,8 +61,10 @@ public class TestExecutor {
     System.out.println("prop: " + System.getProperty("java.locale.providers"));
 
     List<ModuleTestExecutor> testExecutors = Arrays.asList(
-      new UtilitiesTestExecutor(),
-      new R5TestExecutor()
+      //new UtilitiesTestExecutor(),
+      new ModuleTestExecutor("org.hl7.fhir.utilities", Arrays.asList("org.hl7.fhir.utilities")),
+      new ModuleTestExecutor("org.hl7.fhir.r4b", Arrays.asList("org.hl7.fhir.r4b"))
+      //,new R5TestExecutor()
     );
 
     long testsFoundCount = 0;

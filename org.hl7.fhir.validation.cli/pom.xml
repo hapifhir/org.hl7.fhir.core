@@ -102,6 +102,15 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>org.hl7.fhir.r4b</artifactId>
+            <classifier>tests</classifier>
+            <type>test-jar</type>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
         <!--
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
