@@ -9,6 +9,8 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.UsageConte
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.utils.ToolingExtensions;
+import org.hl7.fhir.r5.model.TestScript.TestScriptScopeComponent;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -46,6 +48,19 @@ public class TestScript40_50 {
       return null;
     org.hl7.fhir.r5.model.TestScript tgt = new org.hl7.fhir.r5.model.TestScript();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestScript.scope")) {
+      // the advisor will get this ignored.
+      TestScriptScopeComponent scope = tgt.addScope();
+      scope.setArtifact(ext.getExtensionString("artifact"));
+      org.hl7.fhir.r4.model.Extension se = ext.getExtensionByUrl("conformance");
+      if (se != null) {
+        scope.setConformance(CodeableConcept40_50.convertCodeableConcept((org.hl7.fhir.r4.model.CodeableConcept) se.getValue()));
+      }
+      se = ext.getExtensionByUrl("phase");
+      if (se != null) {
+        scope.setPhase(CodeableConcept40_50.convertCodeableConcept((org.hl7.fhir.r4.model.CodeableConcept) se.getValue()));
+      }
+    }
     if (src.hasUrl())
       tgt.setUrlElement(Uri40_50.convertUri(src.getUrlElement()));
     if (src.hasIdentifier())
@@ -148,6 +163,25 @@ public class TestScript40_50 {
       tgt.addTest(convertTestScriptTestComponent(t));
     if (src.hasTeardown())
       tgt.setTeardown(convertTestScriptTeardownComponent(src.getTeardown()));
+    for (TestScriptScopeComponent scope : src.getScope()) {
+      org.hl7.fhir.r4.model.Extension ext = tgt.addExtension();
+      ext.setUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestScript.scope");
+      if (scope.hasArtifact()) {
+        org.hl7.fhir.r4.model.Extension se = ext.addExtension();
+        se.setUrl("artifact");
+        se.setValue(Canonical40_50.convertCanonical(scope.getArtifactElement()));
+      }
+      if (scope.hasConformance()) {
+        org.hl7.fhir.r4.model.Extension se = ext.addExtension();
+        se.setUrl("conformance");
+        se.setValue(CodeableConcept40_50.convertCodeableConcept(scope.getConformance()));
+      }
+      if (scope.hasPhase()) {
+        org.hl7.fhir.r4.model.Extension se = ext.addExtension();
+        se.setUrl("phase");
+        se.setValue(CodeableConcept40_50.convertCodeableConcept(scope.getPhase()));
+      }      
+    }
     return tgt;
   }
 

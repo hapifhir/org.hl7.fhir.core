@@ -16,6 +16,7 @@ import org.hl7.fhir.r5.renderers.spreadsheets.CodeSystemSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.ConceptMapSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.StructureDefinitionSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.ValueSetSpreadsheetGenerator;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TextFile;
@@ -364,6 +365,7 @@ public class ValidationService {
       validator.setFetcher(fetcher);
       validator.getContext().setLocator(fetcher);
       validator.getBundleValidationRules().addAll(cliContext.getBundleValidationRules());
+      validator.setJurisdiction(CodeSystemUtilities.readCoding(cliContext.getJurisdiction()));
       TerminologyCache.setNoCaching(cliContext.isNoInternalCaching());
       validator.prepare(); // generate any missing snapshots
       System.out.println(" go (" + tt.milestone() + ")");
@@ -372,6 +374,7 @@ public class ValidationService {
     }
     return sessionId;
   }
+
 
   public String determineVersion(CliContext cliContext) throws Exception {
     return determineVersion(cliContext, null);

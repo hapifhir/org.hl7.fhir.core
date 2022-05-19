@@ -43,11 +43,13 @@ public class ValueSetValidator extends BaseValidator {
 
   private InstanceValidator parent;
 
-  public ValueSetValidator(IWorkerContext context, TimeTracker timeTracker, InstanceValidator parent, XVerExtensionManager xverManager) {
+  public ValueSetValidator(IWorkerContext context, TimeTracker timeTracker, InstanceValidator parent, XVerExtensionManager xverManager, Coding jurisdiction) {
     super(context, xverManager);
     source = Source.InstanceValidator;
     this.timeTracker = timeTracker;
     this.parent = parent;
+    this.jurisdiction = jurisdiction;
+
   }
   
   public void validateValueSet(List<ValidationMessage> errors, Element vs, NodeStack stack) {

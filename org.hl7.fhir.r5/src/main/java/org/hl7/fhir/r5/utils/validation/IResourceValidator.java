@@ -33,6 +33,7 @@ package org.hl7.fhir.r5.utils.validation;
 import com.google.gson.JsonObject;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
@@ -144,6 +145,9 @@ public interface IResourceValidator {
 
   boolean isValidateValueSetCodesOnTxServer();
   void setValidateValueSetCodesOnTxServer(boolean value);
+
+  public Coding getJurisdiction();
+  public IResourceValidator setJurisdiction(Coding jurisdiction);
 
   /** 
    * Bundle validation rules allow for requesting particular entries in a bundle get validated against particular profiles
