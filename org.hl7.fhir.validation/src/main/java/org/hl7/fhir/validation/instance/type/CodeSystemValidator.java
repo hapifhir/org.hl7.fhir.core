@@ -6,6 +6,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;
@@ -22,10 +23,12 @@ import ca.uhn.fhir.validation.ValidationResult;
 
 public class CodeSystemValidator  extends BaseValidator {
 
-  public CodeSystemValidator(IWorkerContext context, TimeTracker timeTracker, XVerExtensionManager xverManager) {
+  public CodeSystemValidator(IWorkerContext context, TimeTracker timeTracker, XVerExtensionManager xverManager, Coding jurisdiction) {
     super(context, xverManager);
     source = Source.InstanceValidator;
     this.timeTracker = timeTracker;
+    this.jurisdiction = jurisdiction;
+
   }
 
   public void validateCodeSystem(List<ValidationMessage> errors, Element cs, NodeStack stack, ValidationOptions options) {

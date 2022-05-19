@@ -50,6 +50,7 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyType;
 import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
@@ -532,5 +533,10 @@ public class CodeSystemUtilities {
       }
     }    
   }
-  
+
+  public static Coding readCoding(String jurisdiction) {    
+    return jurisdiction == null || !jurisdiction.contains("#") ?  null : new Coding().setCode(jurisdiction.substring(jurisdiction.indexOf("#")+1)).setSystem(jurisdiction.substring(0, jurisdiction.indexOf("#")));
+  }
+
+
 }
