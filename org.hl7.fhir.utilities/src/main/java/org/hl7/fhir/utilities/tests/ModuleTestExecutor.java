@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.tests;
 
+import lombok.Setter;
 import org.junit.platform.engine.TestExecutionResult;
 import org.junit.platform.launcher.*;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
@@ -7,6 +8,7 @@ import org.junit.platform.launcher.core.LauncherFactory;
 import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
 import org.junit.platform.launcher.listeners.TestExecutionSummary;
 
+import java.io.PrintStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,13 +19,16 @@ public abstract class ModuleTestExecutor {
 
   private static final String STARTING_TEST_TEMPLATE = "Starting: %s";
   private static final String FINISHED_TEST_TEMPLATE = "Finished: %s with result: %s";
-
   private static final String FAILED_TEST_TEMPLATE = "Failed Test ID: %s";
+
+  private static final String FAILURE_SUMMARY_TEMPLATE = "Test failures for module %s (%d):";
   private static final String SUMMARY_TEMPLATE = "Tests run: %d, Failures: %d, Errors: %d, Skipped: %d";
 
-  public static final String DEFAULT_CLASSNAME_FILTER = ".*Tests";
+  private static final String MODULE_FINISHED_TEMPLATE = "%s module tests finished.";
+  public static final String DEFAULT_CLASSNAME_FILTER = org.junit.platform.engine.discovery.ClassNameFilter.STANDARD_INCLUDE_PATTERN;
 
   public abstract String getModuleName();
+
   protected abstract List<String> getPackages();
 
   private List<org.junit.platform.engine.discovery.PackageSelector> getPackageSelectors() {
@@ -33,16 +38,19 @@ public abstract class ModuleTestExecutor {
 
   class ModuleTestExecutionListener extends SummaryGeneratingListener {
 
+    @Setter
+    private PrintStream out;
+
     @Override
     public void executionStarted(TestIdentifier testIdentifier) {
-      System.out.println(String.format(STARTING_TEST_TEMPLATE, testIdentifier.getDisplayName()));
+      out.println(String.format(STARTING_TEST_TEMPLATE, testIdentifier.getDisplayName()));
       super.executionStarted(testIdentifier);
     }
+
     @Override
     public void executionFinished(TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
-      System.out.println(String.format(FINISHED_TEST_TEMPLATE, testIdentifier.getDisplayName(), testExecutionResult.getStatus()));
       if (testExecutionResult.getStatus().equals(TestExecutionResult.Status.FAILED)) {
-        System.out.println(String.format(FAILED_TEST_TEMPLATE, testIdentifier.getUniqueId()));
+        out.println(String.format(FAILED_TEST_TEMPLATE, testIdentifier.getUniqueId()));
         if (testExecutionResult.getThrowable().isPresent()) {
           final Throwable throwable = testExecutionResult.getThrowable().get();
           if (throwable != null) {
@@ -50,11 +58,12 @@ public abstract class ModuleTestExecutor {
           }
         }
       }
-      System.out.println(String.format(FINISHED_TEST_TEMPLATE, testIdentifier.getDisplayName(), testExecutionResult.getStatus()));
+      out.println(String.format(FINISHED_TEST_TEMPLATE, testIdentifier.getDisplayName(), testExecutionResult.getStatus()));
       super.executionFinished(testIdentifier, testExecutionResult);
     }
   }
-  public TestExecutionSummary executeTests(String classNameFilter) {
+
+  public TestExecutionSummary executeTests(PrintStream out, String classNameFilter) {
     LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder.request()
       .selectors(
         getPackageSelectors()
@@ -65,6 +74,7 @@ public abstract class ModuleTestExecutor {
       .build();
 
     ModuleTestExecutionListener moduleTestExecutionlistener = new ModuleTestExecutionListener();
+    moduleTestExecutionlistener.setOut(out);
 
     try (LauncherSession session = LauncherFactory.openSession()) {
       Launcher launcher = session.getLauncher();
@@ -75,19 +85,25 @@ public abstract class ModuleTestExecutor {
       // Execute test plan
       launcher.execute(testPlan);
       // Alternatively, execute the request directly
-     // launcher.execute(request);
+      // launcher.execute(request);
     }
 
     TestExecutionSummary summary = moduleTestExecutionlistener.getSummary();
 
-    System.out.println("\n\nTests module completed.");
-    System.out.println(String.format(SUMMARY_TEMPLATE, summary.getTestsFoundCount(), summary.getTestsFailedCount(), summary.getTestsAbortedCount(), summary.getTestsSkippedCount()));
-
-    System.out.println("\n\nTest failures: ");
-    for (TestExecutionSummary.Failure failure : summary.getFailures()) {
-      System.out.println("\t" + failure.getTestIdentifier().getUniqueId() + ": " + failure.getException().getMessage());
-    }
+    out.println("\n" + String.format(MODULE_FINISHED_TEMPLATE, getModuleName()));
+    out.println(String.format(SUMMARY_TEMPLATE, summary.getTestsFoundCount(), summary.getTestsFailedCount(), summary.getTestsAbortedCount(), summary.getTestsSkippedCount()));
 
     return summary;
   }
+
+  public static void printSummmary(PrintStream out, TestExecutionSummary testExecutionSummary, String moduleName) {
+    if (testExecutionSummary.getTotalFailureCount() > 0) {
+      out.println("\n" + String.format(FAILURE_SUMMARY_TEMPLATE, moduleName, testExecutionSummary.getTotalFailureCount()));
+      for (TestExecutionSummary.Failure failure : testExecutionSummary.getFailures()) {
+        out.println("\t" + failure.getTestIdentifier().getUniqueId() + ": " + failure.getException().getMessage());
+      }
+      out.println();
+    }
+  }
+
 }

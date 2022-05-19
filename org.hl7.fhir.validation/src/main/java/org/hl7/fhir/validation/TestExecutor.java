@@ -18,12 +18,12 @@ public class TestExecutor {
   private static final String DOT_PLACEHOLDER = new String(new char[53]).replace("\0", ".");
 
 
-  private static String getModuleResultLine(Map.Entry<String, Boolean> moduleResult) {
+  private static String getModuleResultLine(Map.Entry<String, TestExecutionSummary> moduleResult) {
     return (moduleResult.getKey().length() < 50
       ? moduleResult.getKey() + " " +  DOT_PLACEHOLDER.substring(moduleResult.getKey().length() + 1)
       : moduleResult.getKey().substring(0,50) + "..." )
       + " "
-      + (moduleResult.getValue() ? "PASSED" : "FAILED");
+      + ((moduleResult.getValue().getTestsFailedCount() == 0 && moduleResult.getValue().getTestsAbortedCount() == 0) ? "PASSED" : "FAILED");
   }
   public static void printClasspath() {
 
@@ -64,9 +64,6 @@ public class TestExecutor {
     System.out.println("env : " + System.getenv("java.locale.providers"));
     System.out.println("prop: " + System.getProperty("java.locale.providers"));
 
-    PrintWriter out = new PrintWriter(System.out);
-    PrintWriter err = new PrintWriter(System.err);
-
     List<ModuleTestExecutor> testExecutors = Arrays.asList(
       new UtilitiesTestExecutor(),
       new R5TestExecutor()
@@ -77,28 +74,33 @@ public class TestExecutor {
     long testsAbortedCount = 0;
     long testsSkippedCount = 0;
 
-    final Map<String, Boolean> moduleResultMap = new HashMap<>();
+    final Map<String, TestExecutionSummary> moduleResultMap = new HashMap<>();
 
     for (ModuleTestExecutor moduleTestExecutor : testExecutors) {
-      final TestExecutionSummary testExecutionSummary = moduleTestExecutor.executeTests(null);
+      final TestExecutionSummary testExecutionSummary = moduleTestExecutor.executeTests(System.out, null);
       testsFoundCount += testExecutionSummary.getTestsFoundCount();
       testsFailedCount += testExecutionSummary.getTestsFailedCount();
       testsAbortedCount += testExecutionSummary.getTestsAbortedCount();
       testsSkippedCount += testExecutionSummary.getTestsSkippedCount();
-      moduleResultMap.put(moduleTestExecutor.getModuleName(), testExecutionSummary.getTestsFailedCount() == 0 && testExecutionSummary.getTestsAbortedCount() == 0);
+      moduleResultMap.put(moduleTestExecutor.getModuleName(), testExecutionSummary);
     }
 
     //String dir = System.getenv(FHIR_TEST_CASES_ENV);
     //System.out.println("FHIR Test Cases Directory: " + dir);
 
-
     System.out.println("\n\nAll Tests completed.");
 
-
-
-    for (Map.Entry<String, Boolean> moduleResult : moduleResultMap.entrySet()) {
-      System.out.println(getModuleResultLine(moduleResult));
+    for (Map.Entry<String, TestExecutionSummary> moduleResult : moduleResultMap.entrySet()) {
+      ModuleTestExecutor.printSummmary(System.out, moduleResult.getValue(), moduleResult.getKey());
     }
+
+    System.out.println("\nModule Results:\n");
+
+    for (Map.Entry<String, TestExecutionSummary> moduleResult : moduleResultMap.entrySet()) {
+        System.out.println(getModuleResultLine(moduleResult));
+    }
+
+    System.out.println();
 
     System.out.println(String.format(SUMMARY_TEMPLATE, testsFoundCount, testsFailedCount, testsAbortedCount, testsSkippedCount));
 

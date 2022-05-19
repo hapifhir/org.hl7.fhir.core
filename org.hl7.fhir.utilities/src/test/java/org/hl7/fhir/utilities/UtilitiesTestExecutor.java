@@ -12,6 +12,8 @@ public class UtilitiesTestExecutor extends ModuleTestExecutor {
   }
   @Override
   protected List<String> getPackages() {
-    return Arrays.asList("org.hl7.fhir.utilities");
+    return Arrays.asList(
+      "org.hl7.fhir.utilities"
+    );
   }
 }
