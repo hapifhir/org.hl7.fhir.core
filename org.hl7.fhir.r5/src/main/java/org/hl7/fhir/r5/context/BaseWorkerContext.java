@@ -54,6 +54,7 @@ import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
+import org.hl7.fhir.r5.context.IWorkerContext.IPackageLoadingTracker;
 import org.hl7.fhir.r5.context.IWorkerContext.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.model.BooleanType;
@@ -216,6 +217,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private final CanonicalResourceManager<OperationDefinition> operations = new CanonicalResourceManager<OperationDefinition>(false);
   private final CanonicalResourceManager<PlanDefinition> plans = new CanonicalResourceManager<PlanDefinition>(false);
   private final CanonicalResourceManager<NamingSystem> systems = new CanonicalResourceManager<NamingSystem>(false);
+  private Map<String, NamingSystem> systemUrlMap;
+
   
   private UcumService ucumService;
   protected Map<String, byte[]> binaries = new HashMap<String, byte[]>();
@@ -280,6 +283,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       questionnaires.copy(other.questionnaires);
       operations.copy(other.operations);
       systems.copy(other.systems);
+      systemUrlMap = null;
       guides.copy(other.guides);
       capstmts.copy(other.capstmts);
       measures.copy(other.measures);
@@ -443,11 +447,28 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           transforms.see((StructureMap) m, packageInfo);
         } else if (r instanceof NamingSystem) {
           systems.see((NamingSystem) m, packageInfo);
+          systemUrlMap = null;
         }
       }
     }
   }
 
+  public Map<String, NamingSystem> getNSUrlMap() {
+    if (systemUrlMap == null) {
+      systemUrlMap = new HashMap<>();
+      List<NamingSystem> nsl = new ArrayList<>();
+      for (NamingSystem ns : nsl) {
+        for (NamingSystemUniqueIdComponent uid : ns.getUniqueId()) {
+          if (uid.getType() == NamingSystemIdentifierType.URI && uid.hasValue()) {
+            systemUrlMap.put(uid.getValue(), ns) ;
+          }
+        }        
+      }
+    }
+    return systemUrlMap;
+  }
+
+  
   public void fixOldSD(StructureDefinition sd) {
     if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT && sd.getType().equals("Extension") && sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/")) {
       sd.setSnapshot(null);
@@ -1661,6 +1682,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private Set<String> notCanonical = new HashSet<String>();
 
   private String overrideVersionNs;
+  protected IPackageLoadingTracker packageTracker;
 
   @Override
   public Resource fetchResourceById(String type, String uri) {
@@ -1832,6 +1854,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         transforms.drop(id);
       } else if (fhirType.equals("NamingSystem")) {
         systems.drop(id);
+        systemUrlMap = null;
       }
     }
   }
@@ -2269,4 +2292,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return false;
   }
   
+  public IPackageLoadingTracker getPackageTracker() {
+    return packageTracker;
+  }
+  
+  public IWorkerContext setPackageTracker(IPackageLoadingTracker packageTracker) {
+    this.packageTracker = packageTracker;
+    return this;
+  }
 }

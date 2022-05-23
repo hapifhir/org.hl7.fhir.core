@@ -19,6 +19,7 @@ import org.hl7.fhir.r5.renderers.spreadsheets.ValueSetSpreadsheetGenerator;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.SimpleTimeTracker;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
@@ -361,7 +362,7 @@ public class ValidationService {
       validator.setCrumbTrails(cliContext.isCrumbTrails());
       validator.setShowTimes(cliContext.isShowTimes());
       validator.setAllowExampleUrls(cliContext.isAllowExampleUrls());
-      StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validator.getPcm(), validator.getContext(), validator);
+      StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validator.getPcm(), validator.getContext(), validator);    
       validator.setFetcher(fetcher);
       validator.getContext().setLocator(fetcher);
       validator.getBundleValidationRules().addAll(cliContext.getBundleValidationRules());

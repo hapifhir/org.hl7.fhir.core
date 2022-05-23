@@ -341,6 +341,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private XVerExtensionManager xver;
   private boolean wantFixDifferentialFirstElementType;
   private Set<String> masterSourceFileNames;
+  private Map<ElementDefinition, List<ElementDefinition>> childMapCache = new HashMap<>();
 
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp, FHIRPathEngine fpe) {
     super();
@@ -413,6 +414,9 @@ public class ProfileUtilities extends TranslatingUtilities {
 
 
   public List<ElementDefinition> getChildMap(StructureDefinition profile, ElementDefinition element) throws DefinitionException {
+    if (childMapCache .containsKey(element)) {
+      return childMapCache.get(element);
+    }
     if (element.getContentReference() != null) {
       List<ElementDefinition> list = null;
       String id = null;
@@ -452,6 +456,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         } else
           break;
       }
+      childMapCache.put(element, res);
       return res;
     }
   }

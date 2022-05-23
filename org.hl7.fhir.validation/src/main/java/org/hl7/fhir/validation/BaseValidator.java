@@ -802,15 +802,33 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return null;
   }
 
-  protected Element resolveInBundle(List<Element> entries, String ref, String fullUrl, String type, String id) {
-    if (Utilities.isAbsoluteUrl(ref)) {
-      // if the reference is absolute, then you resolve by fullUrl. No other thinking is required.
+  protected Element resolveInBundle(Element bundle, List<Element> entries, String ref, String fullUrl, String type, String id) {
+    @SuppressWarnings("unchecked")
+    Map<String, Element> map = (Map<String, Element>) bundle.getUserData("validator.entrymap");
+    if (map == null) {
+      map = new HashMap<>();
+      bundle.setUserData("validator.entrymap", map);
       for (Element entry : entries) {
         String fu = entry.getNamedChildValue(FULL_URL);
-        if (ref.equals(fu))
-          return entry;
-      }
-      return null;
+        map.put(fu,  entry);
+        Element resource = entry.getNamedChild(RESOURCE);
+        if (resource != null) {
+          String et = resource.getType();
+          String eid = resource.getNamedChildValue(ID);
+          map.put(et+"/"+eid,  entry);
+        }
+      }      
+    }
+    
+    if (Utilities.isAbsoluteUrl(ref)) {
+      // if the reference is absolute, then you resolve by fullUrl. No other thinking is required.
+      return map.get(ref);
+//      for (Element entry : entries) {
+//        String fu = entry.getNamedChildValue(FULL_URL);
+//        if (ref.equals(fu))
+//          return entry;
+//      }
+//      return null;
     } else {
       // split into base, type, and id
       String u = null;
@@ -822,20 +840,25 @@ public class BaseValidator implements IValidationContextResourceLoader {
       if (parts.length >= 2) {
         String t = parts[0];
         String i = parts[1];
-        for (Element entry : entries) {
-          String fu = entry.getNamedChildValue(FULL_URL);
-          if (fu != null && fu.equals(u))
-            return entry;
-          if (u == null) {
-            Element resource = entry.getNamedChild(RESOURCE);
-            if (resource != null) {
-              String et = resource.getType();
-              String eid = resource.getNamedChildValue(ID);
-              if (t.equals(et) && i.equals(eid))
-                return entry;
-            }
-          }
+        Element res = map.get(u);
+        if (res == null) {
+          res = map.get(t+"/"+i);
         }
+        return res;
+//        for (Element entry : entries) {
+//          String fu = entry.getNamedChildValue(FULL_URL);
+//          if (fu != null && fu.equals(u))
+//            return entry;
+//          if (u == null) {
+//            Element resource = entry.getNamedChild(RESOURCE);
+//            if (resource != null) {
+//              String et = resource.getType();
+//              String eid = resource.getNamedChildValue(ID);
+//              if (t.equals(et) && i.equals(eid))
+//                return entry;
+//            }
+//          }
+//        }
       }
       return null;
     }
