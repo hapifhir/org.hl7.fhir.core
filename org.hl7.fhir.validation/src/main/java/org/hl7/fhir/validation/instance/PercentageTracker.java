@@ -25,11 +25,14 @@ public class PercentageTracker {
     if (e.getInstanceId() != instance) {
       e.setInstanceId(instance);
       current++;
-      int pct = (current*100) / total;
-      if (pct > last + 5) {
-        while (last + 5 < pct) {
+      int pct = total == 0 ? 0: (current*100) / total;
+      if (pct > last + 2) {
+        while (last + 2 < pct) {
           System.out.print(".");
-          last = last + 5;
+          last = last + 2;
+          if (last % 20 == 0) {
+            System.out.print(""+last);
+          }
         }
       }
     }
