@@ -14,6 +14,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ICanonicalResourceLocator;
+import org.hl7.fhir.r5.context.IWorkerContext.IPackageLoadingTracker;
 import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SystemOutLoggingService;
@@ -133,7 +134,7 @@ POSSIBILITY OF SUCH DAMAGE.
  * @author Grahame Grieve
  */
 @Accessors(chain = true)
-public class ValidationEngine implements IValidatorResourceFetcher, IValidationPolicyAdvisor, IPackageInstaller {
+public class ValidationEngine implements IValidatorResourceFetcher, IValidationPolicyAdvisor, IPackageInstaller, IPackageLoadingTracker {
 
   @Getter @Setter private SimpleWorkerContext context;
   @Getter @Setter private Map<String, byte[]> binaries = new HashMap<>();
@@ -185,6 +186,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
    * the validation framework in their own implementation context
    */
   @Getter @Setter private Map<String, ValidationControl> validationControl = new HashMap<>();
+  private Map<String, Boolean> resolvedUrls = new HashMap<>();
 
   private ValidationEngine()  {
 
@@ -259,7 +261,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       ValidationEngine engine = new ValidationEngine();
       engine.loadCoreDefinitions(src, false, terminologyCachePath, userAgent, timeTracker, loggingService);
       engine.getContext().setCanRunWithoutTerminology(canRunWithoutTerminologyServer);
-
+      engine.getContext().setPackageTracker(engine);    
       if (txServer != null) {
         engine.setTerminologyServer(txServer, txLog, txVersion);
       }
@@ -429,7 +431,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     for (String ref : refs) {
       TimeTracker.Session tts = context.clock().start("validation");
       context.clock().milestone();
-      System.out.print("  Validate " + ref);
+      System.out.println("  Validate " + ref);
       Content cnt = igLoader.loadContent(ref, "validate", false);
       try {
         OperationOutcome outcome = validate(ref, cnt.focus, cnt.cntType, profiles, record);
@@ -863,46 +865,49 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   @Override
   public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type) throws FHIRException {
+    // some of this logic might take a while, and it's not going to change once loaded
+    if (resolvedUrls .containsKey(type+"|"+url)) {
+      return resolvedUrls.get(type+"|"+url);
+    }
     if (!url.startsWith("http://") && !url.startsWith("https://")) { // ignore these
+      resolvedUrls.put(type+"|"+url, true);
       return true;
     }
-    if (context.fetchResource(Resource.class, url) != null)
+    if (context.fetchResource(Resource.class, url) != null) {
+      resolvedUrls.put(type+"|"+url, true);
       return true;
+    }
     if (SIDUtilities.isKnownSID(url) || 
         Utilities.existsInList(url, "http://hl7.org/fhir/w5", "http://hl7.org/fhir/fivews", "http://hl7.org/fhir/workflow", "http://hl7.org/fhir/ConsentPolicy/opt-out", "http://hl7.org/fhir/ConsentPolicy/opt-in")) {
+      resolvedUrls.put(type+"|"+url, true);
       return true;
     }
     if (Utilities.existsInList(url, "http://loinc.org", "http://unitsofmeasure.org", "http://snomed.info/sct")) {
+      resolvedUrls.put(type+"|"+url, true);
       return true;
     }
-    for (CanonicalResource cr : context.allConformanceResources()) {
-      if (cr instanceof NamingSystem) {
-        if (hasURL((NamingSystem) cr, url)) {
-          return true;
-        }
-      }
+    if (context.getNSUrlMap().containsKey(url)) {
+      resolvedUrls.put(type+"|"+url, true);
+      return true;
     }
     if (url.contains("example.org") || url.contains("acme.com")) {
+      resolvedUrls.put(type+"|"+url, false);
       return false; // todo... how to access settings from here?
     }
     if (fetcher != null) {
       try {
-        return fetcher.resolveURL(validator, appContext, path, url, type);
+        boolean ok = fetcher.resolveURL(validator, appContext, path, url, type);
+        resolvedUrls.put(type+"|"+url, ok);
+        return ok;
       } catch (Exception e) {
+        resolvedUrls.put(type+"|"+url, false);
         return false;
       }
     }
+    resolvedUrls.put(type+"|"+url, false);
     return false;
   }
 
-  private boolean hasURL(NamingSystem ns, String url) {
-    for (NamingSystemUniqueIdComponent uid : ns.getUniqueId()) {
-      if (uid.getType() == NamingSystemIdentifierType.URI && uid.hasValue() && uid.getValue().equals(url)) {
-        return true;
-      }
-    }
-    return false;
-  }
 
   @Override
   public CanonicalResource fetchCanonicalResource(IResourceValidator validator, String url) throws URISyntaxException {
@@ -920,6 +925,12 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Override
   public boolean fetchesCanonicalResource(IResourceValidator validator, String url) {
     return fetcher != null && fetcher.fetchesCanonicalResource(validator, url);
+  }
+
+  @Override
+  public void packageLoaded(String pid, String version) {
+    resolvedUrls.clear();
+    
   }
 
 }
