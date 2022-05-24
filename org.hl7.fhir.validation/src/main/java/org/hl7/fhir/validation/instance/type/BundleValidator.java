@@ -10,6 +10,7 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -32,10 +33,11 @@ public class BundleValidator extends BaseValidator {
   private String serverBase;
   private InstanceValidator validator;
 
-  public BundleValidator(IWorkerContext context, String serverBase, InstanceValidator validator, XVerExtensionManager xverManager) {
+  public BundleValidator(IWorkerContext context, String serverBase, InstanceValidator validator, XVerExtensionManager xverManager, Coding jurisdiction) {
     super(context, xverManager);
     this.serverBase = serverBase;
     this.validator = validator;
+    this.jurisdiction = jurisdiction;
   }
 
   public void validateBundle(List<ValidationMessage> errors, Element bundle, NodeStack stack, boolean checkSpecials, ValidatorHostContext hostContext) {

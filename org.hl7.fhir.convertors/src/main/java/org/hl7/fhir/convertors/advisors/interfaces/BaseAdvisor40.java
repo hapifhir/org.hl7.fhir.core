@@ -24,7 +24,7 @@ public abstract class BaseAdvisor40<T extends IBaseExtension> extends BaseAdviso
   }
 
   public boolean ignoreEntry(@Nonnull Bundle.BundleEntryComponent src,
-                             @Nonnull org.hl7.fhir.r5.model.FhirPublication targetVersion) {
+                             @Nonnull org.hl7.fhir.utilities.FhirPublication targetVersion) {
     return false;
   }
 

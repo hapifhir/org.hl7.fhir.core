@@ -95,6 +95,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private boolean buildLoaded = false;
   private Map<String, String> ciList = new HashMap<String, String>();
   private JsonArray buildInfo;
+  private boolean suppressErrors;
 
   /**
    * Constructor
@@ -343,18 +344,18 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public NpmPackage addPackageToCache(String id, String version, InputStream packageTgzInputStream, String sourceDesc) throws IOException {
     checkValidVersionString(version, id);
     if (progress) {
-      System.out.println("Installing " + id + "#" + (version == null ? "?" : version) + " to the package cache");
-      System.out.print("  Fetching:");
+      log("Installing " + id + "#" + (version == null ? "?" : version) + " to the package cache");
+      log("  Fetching:");
     }
 
     NpmPackage npm = NpmPackage.fromPackage(packageTgzInputStream, sourceDesc, true);
 
     if (progress) {
-      System.out.println();
-      System.out.print("  Installing: ");
+      log("");
+      logn("  Installing: ");
     }
     
-    if (npm.name() == null || id == null || !id.equalsIgnoreCase(npm.name())) {
+    if (!suppressErrors && npm.name() == null || id == null || !id.equalsIgnoreCase(npm.name())) {
       if (!id.equals("hl7.fhir.r5.core") && !id.equals("hl7.fhir.us.immds")) {// temporary work around
         throw new IOException("Attempt to import a mis-identified package. Expected " + id + ", got " + npm.name());
       }
@@ -373,7 +374,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           try {
             Utilities.clearDirectory(packRoot);
           } catch (Throwable t) {
-            System.out.println("Unable to clear directory: "+packRoot+": "+t.getMessage()+" - this may cause problems later");
+            log("Unable to clear directory: "+packRoot+": "+t.getMessage()+" - this may cause problems later");
           }
 
           int i = 0;
@@ -391,10 +392,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
               i++;
               if (progress && i % 50 == 0) {
                 c++;
-                System.out.print(".");
+                logn(".");
                 if (c == 120) {
-                  System.out.println("");
-                  System.out.print("  ");
+                  log("");
+                  logn("  ");
                   c = 2;
                 }
               }
@@ -408,7 +409,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           ini.setIntegerProperty("package-sizes", id + "#" + v, size, null);
           ini.save();
           if (progress)
-            System.out.println(" done.");
+            log(" done.");
         }
         pck = loadPackageInfo(packRoot);
         if (!id.equals(JSONUtil.str(npm.getNpm(), "name")) || !v.equals(JSONUtil.str(npm.getNpm(), "version"))) {
@@ -427,7 +428,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       } catch (Exception e) {
         try {
           // don't leave a half extracted package behind
-          System.out.println("Clean up package " + packRoot + " because installation failed: " + e.getMessage());
+          log("Clean up package " + packRoot + " because installation failed: " + e.getMessage());
           e.printStackTrace();
           Utilities.clearDirectory(packRoot);
           new File(packRoot).delete();
@@ -438,6 +439,18 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       }
       return pck;
     });
+  }
+
+  private void log(String s) {
+    if (!silent) {
+      System.out.println(s);
+    }
+  }
+
+  private void logn(String s) {
+    if (!silent) {
+      System.out.print(s);
+    }
   }
 
   @Override
@@ -528,7 +541,12 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     checkBuildLoaded();
     if (ciList.containsKey(id)) {
       if (branch == null) {
-        InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "package.tgz"), false);
+        InputStream stream;
+        try {
+          stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "package.tgz"), false);
+        } catch (Exception e) {
+           stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "branches", "main", "package.tgz"), false);          
+        }
         return new InputStreamWithSrc(stream, Utilities.pathURL(ciList.get(id), "package.tgz"), "current");
       } else {
         InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "branches", branch, "package.tgz"), false);
@@ -640,7 +658,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     try {
       loadFromBuildServer();
     } catch (Exception e) {
-      System.out.println("Error connecting to build server - running without build (" + e.getMessage() + ")");
+      log("Error connecting to build server - running without build (" + e.getMessage() + ")");
       e.printStackTrace();
     }
     return false;
@@ -939,4 +957,13 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       return false;
   }
 
+  public boolean isSuppressErrors() {
+    return suppressErrors;
+  }
+
+  public void setSuppressErrors(boolean suppressErrors) {
+    this.suppressErrors = suppressErrors;
+  }
+
+  
 }

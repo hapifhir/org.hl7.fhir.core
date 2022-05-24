@@ -69,6 +69,8 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapModelMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
@@ -490,11 +492,13 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         types = new String[] { "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem", "Measures" };
       }
       for (PackageResourceInformation pri : pi.listIndexedResources(types)) {
-        try {
-          registerResourceFromPackage(new PackageResourceLoader(pri, loader), new PackageVersion(pi.id(), pi.version(), pi.dateAsDate()));
-          t++;
-        } catch (FHIRException e) {
-          throw new FHIRException(formatMessage(I18nConstants.ERROR_READING__FROM_PACKAGE__, pri.getFilename(), pi.name(), pi.version(), e.getMessage()), e);
+        if (!pri.getFilename().contains("ig-r4")) {
+          try {
+            registerResourceFromPackage(new PackageResourceLoader(pri, loader), new PackageVersion(pi.id(), pi.version(), pi.dateAsDate()));
+            t++;
+          } catch (FHIRException e) {
+            throw new FHIRException(formatMessage(I18nConstants.ERROR_READING__FROM_PACKAGE__, pri.getFilename(), pi.name(), pi.version(), e.getMessage()), e);
+          }
         }
       }
     }
@@ -577,7 +581,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	public IResourceValidator newValidator() throws FHIRException {
 	  if (validatorFactory == null)
 	    throw new Error(formatMessage(I18nConstants.NO_VALIDATOR_CONFIGURED));
-	  return validatorFactory.makeValidator(this, xverManager);
+	  return validatorFactory.makeValidator(this, xverManager).setJurisdiction(JurisdictionUtilities.getJurisdictionCodingFromLocale(Locale.getDefault().getCountry()));
 	}
 
 

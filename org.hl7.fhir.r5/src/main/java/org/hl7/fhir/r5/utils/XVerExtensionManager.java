@@ -146,27 +146,37 @@ public class XVerExtensionManager {
   public void populateTypes(JsonObject path, ElementDefinition val, String verSource, String verTarget) {
     for (JsonElement i : path.getAsJsonArray("types")) {
       String s = i.getAsString();
-      if (s.contains("(")) {
-        String t = s.substring(0, s.indexOf("("));
-        TypeRefComponent tr = val.addType().setCode(translateDataType(verTarget, t));
-        if (hasTargets(tr.getCode()) ) {
-          s = s.substring(t.length()+1);
-          for (String p : s.substring(0, s.length()-1).split("\\|")) {
-            if ("Any".equals(p)) {
-              tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/Resource");
-            } else if (p.contains(",")) {
-              for (String pp : p.split("\\,")) {
-                tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/"+pp);                              
+      if (!s.startsWith("!")) {
+        if (s.contains("(")) {
+          String t = s.substring(0, s.indexOf("("));
+          TypeRefComponent tr = val.addType().setCode(translateDataType(verTarget, t));
+          if (hasTargets(tr.getCode()) ) {
+            s = s.substring(t.length()+1);
+            for (String p : s.substring(0, s.length()-1).split("\\|")) {
+              if ("Any".equals(p)) {
+                tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/Resource");
+              } else if (p.contains(",")) {
+                for (String pp : p.split("\\,")) {
+                  if (isResource(pp)) {
+                    tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/"+pp);
+                  }
+                }
+              } else if (isResource(p)) {
+                tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/"+p);              
               }
-            } else  {
-              tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/"+p);              
             }
           }
+        } else {
+          val.addType().setCode(translateDataType(verTarget, s));
         }
-      } else {
-        val.addType().setCode(translateDataType(verTarget, s));
       }
     }
+  }
+
+  // todo: translate names 
+  
+  private boolean isResource(String p) {
+    return context.getResourceNames().contains(p);
   }
 
   private boolean hasTargets(String dt) {

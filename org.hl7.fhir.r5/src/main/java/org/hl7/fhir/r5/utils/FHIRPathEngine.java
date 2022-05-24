@@ -45,6 +45,7 @@ import org.hl7.fhir.r5.model.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.model.ExpressionNode.Function;
 import org.hl7.fhir.r5.model.ExpressionNode.Kind;
 import org.hl7.fhir.r5.model.ExpressionNode.Operation;
+import org.hl7.fhir.r5.model.InstantType;
 import org.hl7.fhir.r5.model.Property.PropertyMatcher;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Property;
@@ -125,7 +126,7 @@ public class FHIRPathEngine {
       this.value = value;
     }
 
-    @Override
+    @Override    
     public String fhirType() {
       return "%constant";
     }
@@ -1381,6 +1382,10 @@ public class FHIRPathEngine {
     case Log:  return checkParamCount(lexer, location, exp, 1);
     case Power:  return checkParamCount(lexer, location, exp, 1);
     case Truncate: return checkParamCount(lexer, location, exp, 0);
+    case LowBoundary: return checkParamCount(lexer, location, exp, 0, 1);
+    case HighBoundary: return checkParamCount(lexer, location, exp, 0, 1);
+    case Precision: return checkParamCount(lexer, location, exp, 0);
+    
     case Custom: return checkParamCount(lexer, location, exp, details.getMinParameters(), details.getMaxParameters());
     }
     return false;
@@ -3337,6 +3342,25 @@ public class FHIRPathEngine {
       return new TypeDetails(CollectionStatus.SINGLETON, focus.getTypes());       
     }
 
+    case LowBoundary:
+    case HighBoundary: {
+      checkContextContinuous(focus, exp.getFunction().toCode(), exp);      
+      if (paramTypes.size() > 0) {
+        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer));
+      }
+      if (focus.hasType("decimal") && (focus.hasType("date") || focus.hasType("datetime") || focus.hasType("instant"))) {
+        return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Decimal, TypeDetails.FP_DateTime);       
+      } else if (focus.hasType("decimal")) {
+        return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Decimal);       
+      } else {
+        return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_DateTime);       
+      }
+    }
+    case Precision: {
+      checkContextContinuous(focus, exp.getFunction().toCode(), exp);      
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer);       
+    }
+    
     case Custom : {
       return hostServices.checkFunction(context.appInfo, exp.getName(), paramTypes);
     }
@@ -3420,6 +3444,12 @@ public class FHIRPathEngine {
   private void checkContextDecimal(TypeDetails focus, String name, ExpressionNode expr) throws PathEngineException {
     if (!focus.hasType("decimal") && !focus.hasType("integer")) {
       throw makeException(expr, I18nConstants.FHIRPATH_DECIMAL_ONLY, name, focus.describe());
+    }    
+  }
+
+  private void checkContextContinuous(TypeDetails focus, String name, ExpressionNode expr) throws PathEngineException {
+    if (!focus.hasType("decimal") && !focus.hasType("date") && !focus.hasType("dateTime") && !focus.hasType("time")) {
+      throw makeException(expr, I18nConstants.FHIRPATH_CONTINUOUS_ONLY, name, focus.describe());
     }    
   }
 
@@ -3534,6 +3564,10 @@ public class FHIRPathEngine {
     case Log : return funcLog(context, focus, exp); 
     case Power : return funcPower(context, focus, exp); 
     case Truncate : return funcTruncate(context, focus, exp);
+    case LowBoundary : return funcLowBoundary(context, focus, exp);
+    case HighBoundary : return funcHighBoundary(context, focus, exp);
+    case Precision : return funcPrecision(context, focus, exp);
+    
 
     case Custom: { 
       List<List<Base>> params = new ArrayList<List<Base>>();
@@ -3735,6 +3769,84 @@ public class FHIRPathEngine {
       result.add(new IntegerType(s));
     } else {
       makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "sqrt", "(focus)", base.fhirType(), "integer or decimal");
+    }
+    return result;
+  }
+
+  private List<Base> funcLowBoundary(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    if (focus.size() != 1) {
+      throw makeException(expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "lowBoundary", focus.size());  
+    }
+    int precision = 0;
+    if (expr.getParameters().size() > 0) {
+      List<Base> n1 = execute(context, focus, expr.getParameters().get(0), true);
+      if (n1.size() != 1) {
+        throw makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "lowBoundary", "0", "Multiple Values", "integer");
+      }
+      precision = Integer.parseInt(n1.get(0).primitiveValue());
+    }
+    
+    Base base = focus.get(0);
+    List<Base> result = new ArrayList<Base>();
+    
+    if (base.hasType("decimal")) {
+      result.add(new DecimalType(Utilities.lowBoundaryForDecimal(base.primitiveValue(), precision == 0 ? 8 : precision)));
+    } else if (base.hasType("date")) {
+      result.add(new DateTimeType(Utilities.lowBoundaryForDate(base.primitiveValue(), precision == 0 ? 10 : precision)));
+    } else if (base.hasType("dateTime")) {
+      result.add(new DateTimeType(Utilities.lowBoundaryForDate(base.primitiveValue(), precision == 0 ? 17 : precision)));
+    } else if (base.hasType("time")) {
+      result.add(new TimeType(Utilities.lowBoundaryForTime(base.primitiveValue(), precision == 0 ? 9 : precision)));
+    } else {
+      makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "sqrt", "(focus)", base.fhirType(), "decimal or date");
+    }
+    return result;
+  }
+  
+  private List<Base> funcHighBoundary(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    if (focus.size() != 1) {
+      throw makeException(expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "highBoundary", focus.size());
+    }
+    int precision = 0;
+    if (expr.getParameters().size() > 0) {
+      List<Base> n1 = execute(context, focus, expr.getParameters().get(0), true);
+      if (n1.size() != 1) {
+        throw makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "lowBoundary", "0", "Multiple Values", "integer");
+      }
+      precision = Integer.parseInt(n1.get(0).primitiveValue());
+    }
+    
+    
+    Base base = focus.get(0);
+    List<Base> result = new ArrayList<Base>();
+    if (base.hasType("decimal")) {
+      result.add(new DecimalType(Utilities.highBoundaryForDecimal(base.primitiveValue(), precision == 0 ? 8 : precision)));
+    } else if (base.hasType("date")) {
+      result.add(new DateTimeType(Utilities.highBoundaryForDate(base.primitiveValue(), precision == 0 ? 10 : precision)));
+    } else if (base.hasType("dateTime")) {
+      result.add(new DateTimeType(Utilities.highBoundaryForDate(base.primitiveValue(), precision == 0 ? 17 : precision)));
+    } else if (base.hasType("time")) {
+      result.add(new TimeType(Utilities.highBoundaryForTime(base.primitiveValue(), precision == 0 ? 9 : precision)));
+    } else {
+      makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "sqrt", "(focus)", base.fhirType(), "decimal or date");
+    }
+    return result;
+  }
+  
+  private List<Base> funcPrecision(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    if (focus.size() != 1) {
+      throw makeException(expr, I18nConstants.FHIRPATH_FOCUS_PLURAL, "highBoundary", focus.size());
+    }
+    Base base = focus.get(0);
+    List<Base> result = new ArrayList<Base>();
+    if (base.hasType("decimal")) {
+      result.add(new IntegerType(Utilities.getDecimalPrecision(base.primitiveValue())));
+    } else if (base.hasType("date") || base.hasType("dateTime")) {
+      result.add(new IntegerType(Utilities.getDatePrecision(base.primitiveValue())));
+    } else if (base.hasType("time")) {
+      result.add(new IntegerType(Utilities.getTimePrecision(base.primitiveValue())));
+    } else {
+      makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, "sqrt", "(focus)", base.fhirType(), "decimal or date");
     }
     return result;
   }
@@ -5496,7 +5608,6 @@ public class FHIRPathEngine {
   private boolean isAbstractType(List<TypeRefComponent> list) {
     return list.size() != 1 ? true : Utilities.existsInList(list.get(0).getCode(), "Element", "BackboneElement", "Resource", "DomainResource");
   }
-
 
   private boolean hasType(ElementDefinition ed, String s) {
     for (TypeRefComponent t : ed.getType()) {

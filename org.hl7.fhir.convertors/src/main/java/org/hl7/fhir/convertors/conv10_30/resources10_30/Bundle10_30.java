@@ -5,7 +5,7 @@ import org.hl7.fhir.convertors.context.ConversionContext10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Signature10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.*;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.FhirPublication;
+import org.hl7.fhir.utilities.FhirPublication;
 
 public class Bundle10_30 {
 

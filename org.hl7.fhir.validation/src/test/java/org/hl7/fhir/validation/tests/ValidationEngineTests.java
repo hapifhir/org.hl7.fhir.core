@@ -3,10 +3,10 @@ package org.hl7.fhir.validation.tests;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
 import org.hl7.fhir.validation.tests.utilities.TestConstants;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;

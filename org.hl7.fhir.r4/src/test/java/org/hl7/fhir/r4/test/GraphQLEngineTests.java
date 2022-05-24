@@ -14,13 +14,11 @@ import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.r4.utils.GraphQLEngine;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.graphql.Argument;
-import org.hl7.fhir.utilities.graphql.IGraphQLStorageServices;
-import org.hl7.fhir.utilities.graphql.NameValue;
-import org.hl7.fhir.utilities.graphql.Parser;
+import org.hl7.fhir.utilities.graphql.*;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -37,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-@Disabled
+
 public class GraphQLEngineTests implements IGraphQLStorageServices {
 
   public static Stream<Arguments> data() throws FileNotFoundException, IOException, ParserConfigurationException, SAXException {
@@ -52,6 +50,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
     return objects.stream();
   }
 
+  @Disabled
   @ParameterizedTest(name = "{index}: {0}")
   @MethodSource("data")
   public void test(String name, String source, String output, String context, String resource, String operation) throws Exception {
@@ -66,12 +65,35 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
         filename = TestingUtilities.resourceNameToFile(parts[0].toLowerCase() + "-" + parts[1].toLowerCase() + ".xml");
     }
 
+    Resource parsedResource = !Utilities.noString( filename ) ? new XmlParser().parse(new FileInputStream(filename)) : null;
+
+    testResource(parsedResource, output, source);
+  }
+
+  @Test
+  public void testReferenceReverseHistory() throws IOException, EGraphEngine, EGraphQLException {
+
+    String context = "Patient/example/$graphql";
+    String source = "reference-reverse.gql";
+    String output= "reference-reverse-history.json";
+
+    String[] parts = context.split("/");
+    String filename = TestingUtilities.resourceNameToFile(parts[0].toLowerCase() + "-" + parts[1].toLowerCase() + ".xml");
+
+    Resource parsedResource = new XmlParser().parse(new FileInputStream(filename));
+    parsedResource.setId("example/_history/1");
+
+    testResource(parsedResource, output, source);
+  }
+
+  private void testResource(Resource resource, String output, String source) throws IOException, EGraphEngine, EGraphQLException {
     GraphQLEngine gql = new GraphQLEngine(TestingUtilities.context());
     gql.setServices(this);
-    if (!Utilities.noString(filename))
-      gql.setFocus(new XmlParser().parse(new FileInputStream(filename)));
+    if (resource != null) {
+      gql.setFocus(resource);
+    }
     gql.setGraphQL(Parser.parseFile(TestingUtilities.resourceNameToFile("graphql", source)));
-    gql.getGraphQL().setOperationName(operation);
+    gql.getGraphQL().setOperationName(null);
     gql.getGraphQL().getVariables().add(new Argument("var", new NameValue("true")));
     boolean ok = false;
     String msg = null;
@@ -134,8 +156,9 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
 
   @Override
   public void listResources(Object appInfo, String type, List<Argument> searchParams, List<IBaseResource> matches) throws FHIRException {
+
     try {
-      if (type.equals("Condition"))
+      if (type.equals("Condition") && searchParams.get(0).hasValue("Patient/example"))
         matches.add(new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile("condition-example.xml"))));
       else if (type.equals("Patient")) {
         matches.add(new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile("patient-example.xml"))));

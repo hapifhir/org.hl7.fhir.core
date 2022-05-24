@@ -1,12 +1,9 @@
 ## Validator Changes
 
-* Handle reslicing within the same profile
-* Fix up wrong handling of context on exists() in FHIRPath
-* Add hints to profiles around behavior of pattern on repeating elements
-* Ignore all tooling extensions when validating
-* 
+* alter per-1 to handle different precision on start/end
+* Add support for a -jurisdiction parameter, preparing for jurisdictionally specific constraints in profiles
 
 ## Other code changes
 
-* Improved output for unit test comparisons
-
+* extend FHIRPath to support lowBoundary(), highBoundary() and precision()
+* Fix for inefficiency in StructureMap engine

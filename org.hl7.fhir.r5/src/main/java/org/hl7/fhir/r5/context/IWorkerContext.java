@@ -445,6 +445,11 @@ public interface IWorkerContext {
   public Set<String> getResourceNamesAsSet();
 
   /**
+   * @return a list of the resource names that are canonical resources defined for this version
+   */
+  public List<String> getCanonicalResourceNames();
+  
+  /**
    * @return a list of the resource and type names defined for this version
    */
   public List<String> getTypeNames();

@@ -32,6 +32,7 @@ package org.hl7.fhir.convertors.misc;
 
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_30;
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
+import org.hl7.fhir.utilities.Utilities;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,16 +41,16 @@ import java.io.FileOutputStream;
 public class IGPackConverter140 {
 
   public static void main(String[] args) throws Exception {
-    for (String s : new File("C:\\temp\\igpack").list()) {
+    for (String s : new File(Utilities.path("[tmp]", "igpack")).list()) {
 //      if (s.endsWith(".xml") && !s.contains("z-")) {
       if (s.equals("expansions.xml")) {
         System.out.println("process " + s);
         org.hl7.fhir.dstu2016may.formats.XmlParser xp = new org.hl7.fhir.dstu2016may.formats.XmlParser();
-        org.hl7.fhir.dstu2016may.model.Resource r14 = xp.parse(new FileInputStream("C:\\temp\\igpack\\" + s));
+        org.hl7.fhir.dstu2016may.model.Resource r14 = xp.parse(new FileInputStream(Utilities.path("[tmp]", "igpack\\" + s)));
         org.hl7.fhir.dstu3.model.Resource r17 = VersionConvertorFactory_14_30.convertResource(r14);
         org.hl7.fhir.dstu3.formats.XmlParser xc = new org.hl7.fhir.dstu3.formats.XmlParser();
         xc.setOutputStyle(OutputStyle.PRETTY);
-        xc.compose(new FileOutputStream("C:\\temp\\igpack\\z-" + s), r17);
+        xc.compose(new FileOutputStream(Utilities.path("[tmp]", "igpack\\z-" + s)), r17);
       }
     }
     System.out.println("done");

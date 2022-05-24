@@ -208,7 +208,7 @@ public class SearchParameterProcessor {
   }
 
   private void load4() throws FHIRFormatError, IOException {
-    org.hl7.fhir.r4.model.Bundle bundle = (org.hl7.fhir.r4.model.Bundle) new org.hl7.fhir.r4.formats.JsonParser().parse(new FileInputStream("c:\\temp\\sp4.json"));
+    org.hl7.fhir.r4.model.Bundle bundle = (org.hl7.fhir.r4.model.Bundle) new org.hl7.fhir.r4.formats.JsonParser().parse(new FileInputStream(Utilities.path("[tmp]", "sp4.json")));
     for (org.hl7.fhir.r4.model.Bundle.BundleEntryComponent be : bundle.getEntry()) {
       org.hl7.fhir.r4.model.SearchParameter sp = (org.hl7.fhir.r4.model.SearchParameter) be.getResource();
       for (org.hl7.fhir.r4.model.CodeType br : sp.getBase()) {
@@ -221,7 +221,7 @@ public class SearchParameterProcessor {
   }
 
   private void load3() throws FHIRFormatError, IOException {
-    org.hl7.fhir.dstu3.model.Bundle bundle = (org.hl7.fhir.dstu3.model.Bundle) new org.hl7.fhir.dstu3.formats.JsonParser().parse(new FileInputStream("c:\\temp\\sp3.json"));
+    org.hl7.fhir.dstu3.model.Bundle bundle = (org.hl7.fhir.dstu3.model.Bundle) new org.hl7.fhir.dstu3.formats.JsonParser().parse(new FileInputStream(Utilities.path("[tmp]", "sp3.json")));
     for (org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent be : bundle.getEntry()) {
       org.hl7.fhir.dstu3.model.SearchParameter sp = (org.hl7.fhir.dstu3.model.SearchParameter) be.getResource();
       for (org.hl7.fhir.dstu3.model.CodeType br : sp.getBase()) {
@@ -234,7 +234,7 @@ public class SearchParameterProcessor {
   }
 
   private void load2() throws FHIRFormatError, IOException {
-    org.hl7.fhir.dstu2.model.Bundle bundle = (org.hl7.fhir.dstu2.model.Bundle) new org.hl7.fhir.dstu2.formats.JsonParser().parse(new FileInputStream("c:\\temp\\sp2.json"));
+    org.hl7.fhir.dstu2.model.Bundle bundle = (org.hl7.fhir.dstu2.model.Bundle) new org.hl7.fhir.dstu2.formats.JsonParser().parse(new FileInputStream(Utilities.path("[tmp]", "sp2.json")));
     for (org.hl7.fhir.dstu2.model.Bundle.BundleEntryComponent be : bundle.getEntry()) {
       org.hl7.fhir.dstu2.model.SearchParameter sp = (org.hl7.fhir.dstu2.model.SearchParameter) be.getResource();
       String br = sp.getBase();
@@ -246,7 +246,7 @@ public class SearchParameterProcessor {
   }
 
   private void load2b() throws FHIRFormatError, IOException {
-    org.hl7.fhir.dstu2016may.model.Bundle bundle = (org.hl7.fhir.dstu2016may.model.Bundle) new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(new FileInputStream("c:\\temp\\sp2b.json"));
+    org.hl7.fhir.dstu2016may.model.Bundle bundle = (org.hl7.fhir.dstu2016may.model.Bundle) new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(new FileInputStream(Utilities.path("[tmp]", "sp2b.json")));
     for (org.hl7.fhir.dstu2016may.model.Bundle.BundleEntryComponent be : bundle.getEntry()) {
       org.hl7.fhir.dstu2016may.model.SearchParameter sp = (org.hl7.fhir.dstu2016may.model.SearchParameter) be.getResource();
       String br = sp.getBase();

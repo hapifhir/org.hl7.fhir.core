@@ -592,7 +592,7 @@ public class ShExGenerator {
         return simpleElement(sd, ed, ref);
       }
 
-    } else if (typ.getWorkingCode().startsWith(Constants.NS_SYSTEM_TYPE)) {
+    } else if (typ.getCode().startsWith(Constants.NS_SYSTEM_TYPE)) {
       String xt = typ.getWorkingCode();
       // TODO: Remove the next line when the type of token gets switched to string
       // TODO: Add a rdf-type entry for valueInteger to xsd:integer (instead of int)

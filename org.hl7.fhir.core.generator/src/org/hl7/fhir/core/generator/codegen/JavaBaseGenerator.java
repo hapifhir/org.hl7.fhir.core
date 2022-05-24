@@ -45,7 +45,9 @@ import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 
 
 public class JavaBaseGenerator extends OutputStreamWriter {
@@ -287,7 +289,14 @@ public class JavaBaseGenerator extends OutputStreamWriter {
   }
   
   
-  protected ElementDefinition matchingInheritedElement(List<ElementDefinition> children, ElementDefinition m) {
+  protected ElementDefinition matchingInheritedElement(List<ElementDefinition> children, ElementDefinition m, String name) {
+    if (VersionUtilities.isR4BVer(version)) {
+      if (m.getPath().endsWith(".identifier") && Utilities.charCount(m.getPath(), '.') == 1 && !Utilities.noString(config.getIni().getStringProperty("R4B.CanonicalResources", name))) {
+        ElementDefinition inh = new ElementDefinition();
+        inh.setMax("*");
+        return inh;
+      }
+    }
     if (children == null) {
       return null;
     }

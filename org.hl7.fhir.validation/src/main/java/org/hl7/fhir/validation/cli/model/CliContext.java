@@ -7,7 +7,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.cli.utils.ValidationLevel;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
@@ -21,8 +24,6 @@ public class CliContext {
 
   @JsonProperty("doNative")
   private boolean doNative = false;
-  @JsonProperty("anyExtensionsAllowed")
-  private boolean anyExtensionsAllowed = true;
   @JsonProperty("hintAboutNonMustSupport")
   private boolean hintAboutNonMustSupport = false;
   @JsonProperty("recursive")
@@ -71,6 +72,8 @@ public class CliContext {
   @JsonProperty("targetVer")
   private String targetVer = null;
 
+  @JsonProperty("extensions")
+  private List<String> extensions = new ArrayList<String>();
   @JsonProperty("igs")
   private List<String> igs = new ArrayList<String>();
   @JsonProperty("questionnaire")
@@ -110,7 +113,9 @@ public class CliContext {
   // TODO: Mark what goes here?
   private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
 
-
+  @JsonProperty("jurisdiction")
+  private String jurisdiction = JurisdictionUtilities.getJurisdictionFromLocale(Locale.getDefault().getCountry());
+  
   @JsonProperty("map")
   public String getMap() {
     return map;
@@ -190,15 +195,9 @@ public class CliContext {
     return this;
   }
 
-  @JsonProperty("anyExtensionsAllowed")
-  public boolean isAnyExtensionsAllowed() {
-    return anyExtensionsAllowed;
-  }
-
-  @JsonProperty("anyExtensionsAllowed")
-  public CliContext setAnyExtensionsAllowed(boolean anyExtensionsAllowed) {
-    this.anyExtensionsAllowed = anyExtensionsAllowed;
-    return this;
+  @JsonProperty("extensions")
+  public List<String> getExtensions() {
+    return extensions;
   }
 
   @JsonProperty("hintAboutNonMustSupport")
@@ -359,7 +358,11 @@ public class CliContext {
 
   @JsonProperty("sv")
   public CliContext setSv(String sv) {
-    this.sv = sv;
+    if (sv != null && sv.startsWith("R")) {
+      this.sv = VersionUtilities.versionFromCode(sv.toLowerCase());
+    } else {
+      this.sv = sv;
+    }
     return this;
   }
 
@@ -565,13 +568,20 @@ public class CliContext {
     this.noUnicodeBiDiControlChars = noUnicodeBiDiControlChars;
   }
 
+  public String getJurisdiction() {
+    return jurisdiction;
+  }
+
+  public void setJurisdiction(String jurisdiction) {
+    this.jurisdiction = jurisdiction;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     CliContext that = (CliContext) o;
     return doNative == that.doNative &&
-      anyExtensionsAllowed == that.anyExtensionsAllowed &&
       hintAboutNonMustSupport == that.hintAboutNonMustSupport &&
       recursive == that.recursive &&
       doDebug == that.doDebug &&
@@ -582,6 +592,7 @@ public class CliContext {
       noUnicodeBiDiControlChars == that.noUnicodeBiDiControlChars &&
       noInvariants == that.noInvariants &&
       wantInvariantsInMessages == that.wantInvariantsInMessages &&
+      Objects.equals(extensions, that.extensions) &&
       Objects.equals(map, that.map) &&
       Objects.equals(output, that.output) &&
       Objects.equals(htmlOutput, that.htmlOutput) &&
@@ -605,21 +616,22 @@ public class CliContext {
       mode == that.mode &&
       Objects.equals(locale, that.locale) &&
       Objects.equals(outputStyle, that.outputStyle) &&
+      Objects.equals(jurisdiction, that.jurisdiction) &&
       Objects.equals(locations, that.locations);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, 
+    return Objects.hash(doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, 
             noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, fhirpath, snomedCT,
-            targetVer, igs, questionnaireMode, level, profiles, sources, mode, locale, locations, crumbTrails, showTimes, allowExampleUrls, outputStyle, noUnicodeBiDiControlChars);
+            targetVer, igs, questionnaireMode, level, profiles, sources, mode, locale, locations, crumbTrails, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars);
   }
 
   @Override
   public String toString() {
     return "CliContext{" +
       "doNative=" + doNative +
-      ", anyExtensionsAllowed=" + anyExtensionsAllowed +
+      ", extensions=" + extensions +
       ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +
       ", recursive=" + recursive +
       ", doDebug=" + doDebug +
@@ -651,6 +663,7 @@ public class CliContext {
       ", securityChecks=" + securityChecks +
       ", crumbTrails=" + crumbTrails +
       ", outputStyle=" + outputStyle +
+      ", jurisdiction=" + jurisdiction +
       ", allowExampleUrls=" + allowExampleUrls +
       ", showTimes=" + showTimes +
       ", locale='" + locale + '\'' +

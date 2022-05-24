@@ -1,5 +1,8 @@
 package org.hl7.fhir.validation.cli.utils;
 
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.cli.model.CliContext;
@@ -26,7 +29,7 @@ public class Params {
   public static final String RECURSE = "-recurse";
   public static final String SHOW_MESSAGES_FROM_REFERENCES = "-showReferenceMessages";
   public static final String LOCALE = "-locale";
-  public static final String STRICT_EXTENSIONS = "-strictExtensions";
+  public static final String EXTENSIONS = "-extensions";
   public static final String HINT_ABOUT_NON_MUST_SUPPORT = "-hintAboutNonMustSupport";
   public static final String TO_VERSION = "-to-version";
   public static final String DO_NATIVE = "-do-native";
@@ -65,6 +68,7 @@ public class Params {
   public static final String SHOW_TIMES = "-show-times";
   public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
   public static final String OUTPUT_STYLE = "-output-style";
+  private static final Object JURISDICTION = "-jurisdiction";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
@@ -169,8 +173,8 @@ public class Params {
         } else {
           cliContext.setLocale(new Locale(args[++i]));
         }
-      } else if (args[i].equals(STRICT_EXTENSIONS)) {
-        cliContext.setAnyExtensionsAllowed(false);
+      } else if (args[i].equals(EXTENSIONS)) {
+        cliContext.getExtensions().add(args[++i]);
       } else if (args[i].equals(NO_INTERNAL_CACHING)) {
         cliContext.setNoInternalCaching(true);
       } else if (args[i].equals(NO_EXTENSIBLE_BINDING_WARNINGS)) {
@@ -249,6 +253,11 @@ public class Params {
           throw new Error("Specified -language without indicating language");
         else
           cliContext.setLang(args[++i]);
+      } else if (args[i].equals(JURISDICTION)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -jurisdiction without indicating jurisdiction");
+        else
+          cliContext.setJurisdiction(processJurisdiction(args[++i]));
       } else if (args[i].equals(IMPLEMENTATION_GUIDE) || args[i].equals(DEFINITION)) {
         if (i + 1 == args.length)
           throw new Error("Specified " + args[i] + " without indicating ig file");
@@ -288,6 +297,19 @@ public class Params {
       }
     }
     return cliContext;
+  }
+
+  private static String processJurisdiction(String s) {
+    if (s.startsWith("urn:iso:std:iso:3166#") || s.startsWith("urn:iso:std:iso:3166:-2#") || s.startsWith("http://unstats.un.org/unsd/methods/m49/m49.htm#")) {
+      return s;
+    } else {
+      String v = JurisdictionUtilities.getJurisdictionFromLocale(s);
+      if (v != null) { 
+        return v;        
+      } else {
+        throw new FHIRException("Unable to understand Jurisdiction '"+s+"'");
+      }
+    }
   }
 
   public static String getTerminologyServerLog(String[] args) {

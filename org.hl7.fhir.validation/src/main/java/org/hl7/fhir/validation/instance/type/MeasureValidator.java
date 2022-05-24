@@ -19,7 +19,6 @@ import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.Library;
 import org.hl7.fhir.r5.model.Measure;
 import org.hl7.fhir.r5.model.Measure.MeasureGroupComponent;
@@ -28,6 +27,7 @@ import org.hl7.fhir.r5.model.Measure.MeasureGroupStratifierComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.DataRenderer;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -42,10 +42,12 @@ import org.w3c.dom.Document;
 
 public class MeasureValidator extends BaseValidator {
 
-  public MeasureValidator(IWorkerContext context, TimeTracker timeTracker, XVerExtensionManager xverManager) {
+  public MeasureValidator(IWorkerContext context, TimeTracker timeTracker, XVerExtensionManager xverManager, Coding jurisdiction) {
     super(context, xverManager);
     source = Source.InstanceValidator;
     this.timeTracker = timeTracker;
+    this.jurisdiction = jurisdiction;
+
   }
 
   public void validateMeasure(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element element, NodeStack stack) throws FHIRException {

@@ -60,6 +60,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -231,6 +232,8 @@ public class ValidatorCli {
     if (cliContext.getSv() == null) {
       cliContext.setSv(validationService.determineVersion(cliContext));
     }
+    System.out.println("  Jurisdiction: "+JurisdictionUtilities.displayJurisdiction(cliContext.getJurisdiction()));
+
     System.out.println("Loading");
     // Comment this out because definitions filename doesn't necessarily contain version (and many not even be 14 characters long).
     // Version gets spit out a couple of lines later after we've loaded the context

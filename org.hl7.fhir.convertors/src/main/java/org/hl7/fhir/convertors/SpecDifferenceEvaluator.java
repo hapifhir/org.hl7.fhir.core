@@ -95,7 +95,7 @@ public class SpecDifferenceEvaluator {
     b.append(self.getDiffAsHtml(null));
     b.append("</body>\r\n");
     b.append("</html>\r\n");
-    TextFile.stringToFile(b.toString(), "c:\\temp\\diff.html");
+    TextFile.stringToFile(b.toString(), Utilities.path("[tmp]", "diff.html"));
     System.out.println("done");
   }
 
@@ -146,6 +146,11 @@ public class SpecDifferenceEvaluator {
       for (String n : names)
         // note reverse of order
         renames.put(ini.getStringProperty("r5-renames", n), n);
+    names = ini.getPropertyNames("r4b-renames");
+    if (names != null)
+      for (String n : names)
+        // note reverse of order
+        renames.put(ini.getStringProperty("r4b-renames", n), n);
   }
 
   public SpecPackage getOriginal() {
@@ -311,9 +316,9 @@ public class SpecDifferenceEvaluator {
     if (orig == null)
       orig = original.getTypes().get(checkRename(rev.getName()));
     if (orig == null)
-      return "<p>This " + rev.getKind().toCode() + " did not exist in Release 2</p>";
+      return "<p>This " + rev.getKind().toCode() + " did not exist in Release 3</p>";
     else {
-      start();
+       start();
       compare(orig, rev);
       return new XhtmlComposer(false, true).compose(tbl) + "\r\n<p>See the <a href=\"diff.html\">Full Difference</a> for further information</p>\r\n";
     }
@@ -646,8 +651,9 @@ public class SpecDifferenceEvaluator {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("\r\n");
     if (rev.getStrength() != orig.getStrength())
       b.append("Change binding strength from " + orig.getStrength().toCode() + " to " + rev.getStrength().toCode());
-    if (!Base.compareDeep(rev.getValueSet(), orig.getValueSet(), false))
+    if (!canonicalsMatch(rev.getValueSet(), orig.getValueSet())) {
       b.append("Change value set from " + describeReference(orig.getValueSet()) + " to " + describeReference(rev.getValueSet()));
+    }
     if (!maxValueSetsMatch(rev, orig))
       b.append("Change max value set from " + describeMax(orig) + " to " + describeMax(rev));
     if (rev.getStrength() == BindingStrength.REQUIRED && orig.getStrength() == BindingStrength.REQUIRED) {
@@ -689,6 +695,20 @@ public class SpecDifferenceEvaluator {
     }
 
     return b.toString();
+  }
+
+  private boolean canonicalsMatch(String url1, String url2) {
+
+    String rvs = VersionUtilities.removeVersionFromCanonical(url1);
+    String ovs = VersionUtilities.removeVersionFromCanonical(url2);
+
+    if (rvs == null && ovs == null) {
+      return true;
+    } else if (rvs == null) {
+      return false;
+    } else {
+     return rvs.equals(ovs);
+    }
   }
 
   private String describeMax(ElementDefinitionBindingComponent orig) {
@@ -870,8 +890,18 @@ public class SpecDifferenceEvaluator {
   private boolean hasType(List<TypeRefComponent> types, TypeRefComponent tr) {
     for (TypeRefComponent t : types) {
       if (t.getWorkingCode().equals(tr.getWorkingCode())) {
-        if (((!t.hasProfile() && !tr.hasProfile()) || (t.getProfile().equals(tr.getProfile()))))
+        if ((!t.hasProfile() && !tr.hasProfile())) {
           return true;
+        }
+        boolean found = true;
+        for (CanonicalType t1 : tr.getProfile()) {
+          boolean ok = false;
+          for (CanonicalType t2 : t.getProfile()) {
+            ok = ok || t2.getValue().equals(t1.getValue());
+          }
+          found = found && ok;
+        }
+        return found;
       }
     }
     return false;
@@ -910,7 +940,7 @@ public class SpecDifferenceEvaluator {
       if (tr.getProfile().size() > 0) {
         b.append("(");
         boolean first = true;
-        for (UriType u : tr.getTargetProfile()) {
+        for (UriType u : tr.getProfile()) {
           if (first)
             first = false;
           else

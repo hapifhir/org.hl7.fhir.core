@@ -16,7 +16,9 @@ import org.hl7.fhir.r5.renderers.spreadsheets.CodeSystemSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.ConceptMapSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.StructureDefinitionSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.ValueSetSpreadsheetGenerator;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
@@ -339,7 +341,13 @@ public class ValidationService {
       validator.setLevel(cliContext.getLevel());
       validator.setDoNative(cliContext.isDoNative());
       validator.setHintAboutNonMustSupport(cliContext.isHintAboutNonMustSupport());
-      validator.setAnyExtensionsAllowed(cliContext.isAnyExtensionsAllowed());
+      for (String s : cliContext.getExtensions()) {
+        if ("*".equals(s)) {
+          validator.setAnyExtensionsAllowed(true);
+        } else {          
+          validator.getExtensionDomains().add(s);
+        }
+      }
       validator.setLanguage(cliContext.getLang());
       validator.setLocale(cliContext.getLocale());
       validator.setSnomedExtension(cliContext.getSnomedCTCode());
@@ -357,6 +365,7 @@ public class ValidationService {
       validator.setFetcher(fetcher);
       validator.getContext().setLocator(fetcher);
       validator.getBundleValidationRules().addAll(cliContext.getBundleValidationRules());
+      validator.setJurisdiction(CodeSystemUtilities.readCoding(cliContext.getJurisdiction()));
       TerminologyCache.setNoCaching(cliContext.isNoInternalCaching());
       validator.prepare(); // generate any missing snapshots
       System.out.println(" go (" + tt.milestone() + ")");
@@ -365,6 +374,7 @@ public class ValidationService {
     }
     return sessionId;
   }
+
 
   public String determineVersion(CliContext cliContext) throws Exception {
     return determineVersion(cliContext, null);
@@ -382,8 +392,8 @@ public class ValidationService {
       }
     }
     if (versions.isEmpty()) {
-      System.out.println("  No Version Info found: Using Default version '" + VersionUtilities.CURRENT_VERSION + "'");
-      return "current";
+      System.out.println("  No Version Info found: Using Default version '" + VersionUtilities.CURRENT_DEFAULT_VERSION + "'");
+      return VersionUtilities.CURRENT_DEFAULT_FULL_VERSION;
     }
     if (versions.size() == 1) {
       System.out.println("-> use version " + versions.version());

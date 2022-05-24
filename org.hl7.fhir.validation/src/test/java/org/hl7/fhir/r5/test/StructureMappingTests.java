@@ -1,11 +1,9 @@
 package org.hl7.fhir.r5.test;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -34,7 +32,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-public class FHIRMappingLanguageTests {
+public class StructureMappingTests {
 
   private List<Resource> outputs = new ArrayList<Resource>();
 
@@ -44,7 +42,7 @@ public class FHIRMappingLanguageTests {
 
   public static Stream<Arguments> data()
     throws FileNotFoundException, IOException, ParserConfigurationException, SAXException {
-    Document tests = XMLUtil.parseToDom(TestingUtilities.loadTestResource("r5", "fml", "manifest.xml"));
+    Document tests = XMLUtil.parseToDom(TestingUtilities.loadTestResource("r5", "structure-mapping", "manifest.xml"));
     Element test = XMLUtil.getFirstChild(tests.getDocumentElement());
     List<Arguments> objects = new ArrayList<>();
     while (test != null && test.getNodeName().equals("test")) {
@@ -76,22 +74,30 @@ public class FHIRMappingLanguageTests {
       context.setValidatorFactory(new InstanceValidatorFactory());
     }
   }
-
+  private StructureMap loadStructureMap(String map) throws Exception {
+    String stringMap = TestingUtilities.loadTestResource("r5", "structure-mapping", map);
+    if (map.endsWith(".json")) {
+      return (StructureMap) new org.hl7.fhir.r5.formats.JsonParser().parse(stringMap);
+    } else if (map.endsWith(".map")) {
+      return new StructureMapUtilities(context).parse(stringMap, map);
+    }
+    throw new Exception("File extension for StuctureMap is not a recognized type (should be one of: '.map', '.json')");
+  }
   @ParameterizedTest(name = "{index}: {0}")
   @MethodSource("data")
   public void test(String name, String source, String map, String output) throws Exception {
 
-    byte[] byteSource = TestingUtilities.loadTestResourceBytes("r5", "fml", source);
-    String stringMap = TestingUtilities.loadTestResource("r5", "fml", map);
-    String outputJson = TestingUtilities.loadTestResource("r5", "fml", output);
-    String fileOutputRes = TestingUtilities.tempFile("fml", output) + ".out";
-    String fileOutputResOrig = TestingUtilities.tempFile("fml", output) + ".orig.out";
+    byte[] byteSource = TestingUtilities.loadTestResourceBytes("r5", "structure-mapping", source);
+
+    String outputJson = TestingUtilities.loadTestResource("r5", "structure-mapping", output);
+    String fileOutputRes = TestingUtilities.tempFile("structure-mapping", output) + ".out";
+    String fileOutputResOrig = TestingUtilities.tempFile("structure-mapping", output) + ".orig.out";
     ByteArrayOutputStream s = null;
     outputs.clear();
 
     String msg = null;
     try {
-      StructureMap r = new StructureMapUtilities(context).parse(stringMap, map);
+      StructureMap r = loadStructureMap(map);
       context.cacheResource(r);
       org.hl7.fhir.r5.elementmodel.Element element = validationEngine.transform(byteSource, FhirFormat.JSON, r.getUrl());
       s = new ByteArrayOutputStream();
@@ -101,7 +107,8 @@ public class FHIRMappingLanguageTests {
         new org.hl7.fhir.r5.elementmodel.XmlParser(context).compose(element, s, IParser.OutputStyle.PRETTY, null);
       context.dropResource(r);
     } catch (Exception e) {
-      assertTrue(e.getMessage(), false);
+      e.printStackTrace();
+      fail(e.getMessage());
     }
     if (output.endsWith("json")) {
       msg = CompareUtilities.checkJsonSrcIsSame(s.toString(), outputJson);

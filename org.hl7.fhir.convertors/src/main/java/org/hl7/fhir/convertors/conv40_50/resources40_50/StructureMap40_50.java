@@ -8,8 +8,11 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.UsageConte
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.StructureMap.StructureMapGroupTypeMode;
-import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r4.utils.ToolingExtensions;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent;
+import org.hl7.fhir.r5.utils.FHIRPathConstant;
+import org.hl7.fhir.utilities.Utilities;
 
 import java.util.stream.Collectors;
 
@@ -752,6 +755,7 @@ public class StructureMap40_50 {
     return tgt;
   }
 
+  //DIRTY
   public static org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent convertStructureMapGroupRuleTargetParameterComponent(org.hl7.fhir.r4.model.StructureMap.StructureMapGroupRuleTargetParameterComponent src) throws FHIRException {
     if (src == null)
       return null;
@@ -761,6 +765,7 @@ public class StructureMap40_50 {
       tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     return tgt;
   }
+
 
   public static org.hl7.fhir.r4.model.StructureMap.StructureMapGroupRuleTargetParameterComponent convertStructureMapGroupRuleTargetParameterComponent(org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent src) throws FHIRException {
     if (src == null)
@@ -772,6 +777,7 @@ public class StructureMap40_50 {
     return tgt;
   }
 
+  //DIRTY
   public static org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleDependentComponent convertStructureMapGroupRuleDependentComponent(org.hl7.fhir.r4.model.StructureMap.StructureMapGroupRuleDependentComponent src) throws FHIRException {
     if (src == null)
       return null;
@@ -779,10 +785,54 @@ public class StructureMap40_50 {
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasName())
       tgt.setNameElement(Id40_50.convertId(src.getNameElement()));
-    for (org.hl7.fhir.r4.model.StringType t : src.getVariable()) tgt.addParameter().setValue(String40_50.convertString(t));
+    for (org.hl7.fhir.r4.model.StringType t : src.getVariable()) tgt.addParameter().setValue(convertVariableStringToParameterDataType(t));
     return tgt;
   }
 
+  public static org.hl7.fhir.r5.model.DataType convertVariableStringToParameterDataType(org.hl7.fhir.r4.model.StringType it) {
+    org.hl7.fhir.r4.model.Extension originalElementType = it.getExtensionByUrl(ToolingExtensions.EXT_ORIGINAL_ELEMENT_TYPE);
+
+    return originalElementType != null ? convertVariableStringToParameterDataType(it, originalElementType) : convertVariableStringToGuessedParameterDataType(it);
+  }
+
+  public static org.hl7.fhir.r5.model.DataType convertVariableStringToParameterDataType(org.hl7.fhir.r4.model.StringType it, org.hl7.fhir.r4.model.Extension originalElementType) {
+    if (!(originalElementType.getValue() instanceof org.hl7.fhir.r4.model.UrlType)) {
+      throw new FHIRException("");
+    }
+    org.hl7.fhir.r4.model.UrlType url = (org.hl7.fhir.r4.model.UrlType)originalElementType.getValue();
+    switch (url.getValueAsString()) {
+      case "id" : return  it.hasValue() ? new org.hl7.fhir.r5.model.IdType(it.getValueAsString()) : new org.hl7.fhir.r5.model.IdType();
+      case "string" : return  it.hasValue() ? new org.hl7.fhir.r5.model.StringType(it.getValueAsString()) : new org.hl7.fhir.r5.model.StringType();
+      case "integer" : return  it.hasValue() ? new org.hl7.fhir.r5.model.IntegerType(it.getValueAsString()) : new org.hl7.fhir.r5.model.IntegerType();
+      case "decimal" : return  it.hasValue() ? new org.hl7.fhir.r5.model.DecimalType(it.getValueAsString()) : new org.hl7.fhir.r5.model.DecimalType();
+      case "boolean" : return  it.hasValue() ? new org.hl7.fhir.r5.model.BooleanType(it.getValueAsString()) : new org.hl7.fhir.r5.model.BooleanType();
+    }
+    return null;
+  }
+
+  public static org.hl7.fhir.r5.model.DataType convertVariableStringToGuessedParameterDataType(org.hl7.fhir.r4.model.StringType it) {
+    final String stringValue = it.asStringValue();
+    if (!FHIRPathConstant.isFHIRPathConstant(stringValue)) {
+      return new IdType(stringValue);
+    } else if (FHIRPathConstant.isFHIRPathStringConstant(stringValue))
+      return new StringType(stringValue);
+    else {
+      return convertVariableStringToGuessedParameterConstantType(stringValue);
+    }
+  }
+
+  public static DataType convertVariableStringToGuessedParameterConstantType(String stringValue) {
+    if (Utilities.isInteger(stringValue))
+      return new IntegerType(stringValue);
+    else if (Utilities.isDecimal(stringValue, false))
+      return new DecimalType(stringValue);
+    else if (Utilities.existsInList(stringValue, "true", "false"))
+      return new BooleanType(stringValue.equals("true"));
+    else
+      return new StringType(stringValue);
+  }
+
+  //DIRTY
   public static org.hl7.fhir.r4.model.StructureMap.StructureMapGroupRuleDependentComponent convertStructureMapGroupRuleDependentComponent(org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleDependentComponent src) throws FHIRException {
     if (src == null)
       return null;
@@ -790,7 +840,32 @@ public class StructureMap40_50 {
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasName())
       tgt.setNameElement(Id40_50.convertId(src.getNameElement()));
-    for (StructureMapGroupRuleTargetParameterComponent t : src.getParameter()) tgt.getVariable().add(String40_50.convertString(t.getValueStringType()));
+    for (StructureMapGroupRuleTargetParameterComponent t : src.getParameter()) {
+        tgt.getVariable().add(convertStructureMapGroupRuleTargetParameterComponentToString(t));
+    }
+    return tgt;
+  }
+
+  public static org.hl7.fhir.r4.model.StringType convertStructureMapGroupRuleTargetParameterComponentToString(StructureMapGroupRuleTargetParameterComponent src) {
+    org.hl7.fhir.r4.model.StringType tgt = new org.hl7.fhir.r4.model.StringType();
+    org.hl7.fhir.instance.model.api.IPrimitiveType primitiveType;
+      if (src.hasValueIdType()) {
+        primitiveType = src.getValueIdType();
+      } else if (src.hasValueStringType()) {
+        primitiveType = src.getValueStringType();
+      } else if (src.hasValueIntegerType()) {
+        primitiveType = src.getValueIntegerType();
+      } else if (src.hasValueDecimalType()) {
+        primitiveType = src.getValueDecimalType();
+      } else if (src.hasValueBooleanType()) {
+        primitiveType = src.getValueBooleanType();
+      } else {
+        throw new FHIRException("Unrecognized primitive type");
+      }
+      tgt.setValueAsString(primitiveType.getValueAsString());
+      ToolingExtensions.addUrlExtension(tgt, ToolingExtensions.EXT_ORIGINAL_ELEMENT_TYPE, primitiveType.fhirType());
+
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     return tgt;
   }
 }

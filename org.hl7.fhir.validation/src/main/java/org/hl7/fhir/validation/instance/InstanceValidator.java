@@ -2143,7 +2143,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         // the URL must be an IRI if present
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isAbsoluteUrl(url), 
             node.isContained() ? I18nConstants.TYPE_SPECIFIC_CHECKS_CANONICAL_CONTAINED : I18nConstants.TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE, url);                  
-      } else {
+      } else if (!e.getProperty().getDefinition().getPath().equals("Bundle.entry.fullUrl")) { // we don't check fullUrl here; it's not a reference, it's a definition. It'll get checked as part of checking the bundle
         validateReference(hostContext, errors, path, type, context, e, url);
       }
     }
@@ -4529,27 +4529,27 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   public void checkSpecials(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element element, NodeStack stack, boolean checkSpecials) {
     // specific known special validations
     if (element.getType().equals(BUNDLE)) {
-      new BundleValidator(context, serverBase, this, xverManager).validateBundle(errors, element, stack, checkSpecials, hostContext);
+      new BundleValidator(context, serverBase, this, xverManager, jurisdiction).validateBundle(errors, element, stack, checkSpecials, hostContext);
     } else if (element.getType().equals("Observation")) {
       validateObservation(errors, element, stack);
     } else if (element.getType().equals("Questionnaire")) {
-      new QuestionnaireValidator(context, myEnableWhenEvaluator, fpe, timeTracker, questionnaireMode, xverManager).validateQuestionannaire(errors, element, element, stack);
+      new QuestionnaireValidator(context, myEnableWhenEvaluator, fpe, timeTracker, questionnaireMode, xverManager, jurisdiction).validateQuestionannaire(errors, element, element, stack);
     } else if (element.getType().equals("QuestionnaireResponse")) {
-      new QuestionnaireValidator(context, myEnableWhenEvaluator, fpe, timeTracker, questionnaireMode, xverManager).validateQuestionannaireResponse(hostContext, errors, element, stack);
+      new QuestionnaireValidator(context, myEnableWhenEvaluator, fpe, timeTracker, questionnaireMode, xverManager, jurisdiction).validateQuestionannaireResponse(hostContext, errors, element, stack);
     } else if (element.getType().equals("Measure")) {
-      new MeasureValidator(context, timeTracker, xverManager).validateMeasure(hostContext, errors, element, stack);      
+      new MeasureValidator(context, timeTracker, xverManager, jurisdiction).validateMeasure(hostContext, errors, element, stack);      
     } else if (element.getType().equals("MeasureReport")) {
-      new MeasureValidator(context, timeTracker, xverManager).validateMeasureReport(hostContext, errors, element, stack);
+      new MeasureValidator(context, timeTracker, xverManager, jurisdiction).validateMeasureReport(hostContext, errors, element, stack);
     } else if (element.getType().equals("CapabilityStatement")) {
       validateCapabilityStatement(errors, element, stack);
     } else if (element.getType().equals("CodeSystem")) {
-      new CodeSystemValidator(context, timeTracker, xverManager).validateCodeSystem(errors, element, stack, baseOptions.setLanguage(stack.getWorkingLang()));
+      new CodeSystemValidator(context, timeTracker, xverManager, jurisdiction).validateCodeSystem(errors, element, stack, baseOptions.setLanguage(stack.getWorkingLang()));
     } else if (element.getType().equals("SearchParameter")) {
-      new SearchParameterValidator(context, timeTracker, fpe, xverManager).validateSearchParameter(errors, element, stack);
+      new SearchParameterValidator(context, timeTracker, fpe, xverManager, jurisdiction).validateSearchParameter(errors, element, stack);
     } else if (element.getType().equals("StructureDefinition")) {
-      new StructureDefinitionValidator(context, timeTracker, fpe, wantCheckSnapshotUnchanged, xverManager).validateStructureDefinition(errors, element, stack);
+      new StructureDefinitionValidator(context, timeTracker, fpe, wantCheckSnapshotUnchanged, xverManager, jurisdiction).validateStructureDefinition(errors, element, stack);
     } else if (element.getType().equals("ValueSet")) {
-      new ValueSetValidator(context, timeTracker, this, xverManager).validateValueSet(errors, element, stack);
+      new ValueSetValidator(context, timeTracker, this, xverManager, jurisdiction).validateValueSet(errors, element, stack);
     }
   }
 
@@ -5954,7 +5954,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       child.setParentForValidator(element);
       setParentsInner(child);
     }
-    
   }
 
   public void setQuestionnaireMode(QuestionnaireMode questionnaireMode) {
@@ -5987,6 +5986,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public void setNoUnicodeBiDiControlChars(boolean noUnicodeBiDiControlChars) {
     this.noUnicodeBiDiControlChars = noUnicodeBiDiControlChars;
+  }
+
+  public Coding getJurisdiction() {
+    return jurisdiction;
+  }
+
+  public IResourceValidator setJurisdiction(Coding jurisdiction) {
+    this.jurisdiction = jurisdiction;
+    return this;
   }
 
 }

@@ -88,7 +88,7 @@ public class SnapShotGenerationTests {
     context.fixtures.put(op.getResponseId(), output);
     context.snapshots.put(output.getUrl(), output);
 
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("c:\\temp", op.getResponseId() + ".xml")), output);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(Utilities.path("[tmp]"), op.getResponseId() + ".xml")), output);
     //ok, now the asserts:
     for (int i = 1; i < test.getAction().size(); i++) {
       SetupActionAssertComponent a = test.getAction().get(i).getAssert();

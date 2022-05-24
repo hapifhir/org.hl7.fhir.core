@@ -109,6 +109,7 @@ public class CSVWriter  extends TextStreamWriter  {
     this.def = def;
     CSVLine header = new CSVLine();
     lines.add(header);
+    header.addString("Id");                   // 
     header.addString("Path");                 //A
     header.addString("Slice Name");           //B
     header.addString("Alias(s)");             //C
@@ -160,6 +161,7 @@ public class CSVWriter  extends TextStreamWriter  {
   public void processElement(ElementDefinition ed) throws Exception {
     CSVLine line = new CSVLine();
     lines.add(line);
+    line.addString(ed.getId());
     line.addString(ed.getPath());
     line.addString(ed.getSliceName());
     line.addString(itemList(ed.getAlias()));

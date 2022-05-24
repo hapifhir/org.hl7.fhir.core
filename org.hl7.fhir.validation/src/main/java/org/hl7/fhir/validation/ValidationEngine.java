@@ -159,12 +159,15 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private boolean showMessagesFromReferences;
   @Getter @Setter private Locale locale;
   @Getter @Setter private List<ImplementationGuide> igs = new ArrayList<>();
+  @Getter @Setter private List<String> extensionDomains = new ArrayList<>();
+
   @Getter @Setter private boolean showTimes;
   @Getter @Setter private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
   @Getter @Setter private QuestionnaireMode questionnaireMode;
   @Getter @Setter private ValidationLevel level = ValidationLevel.HINTS;
   @Getter @Setter private FHIRPathEngine fhirPathEngine;
   @Getter @Setter private IgLoader igLoader;
+  @Getter @Setter private Coding jurisdiction;
 
   /**
    * Systems that host the ValidationEngine can use this to control what validation the validator performs.
@@ -266,6 +269,19 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     }
   }
 
+  /**
+   *
+   * @param src
+   * @param recursive
+   * @param terminologyCachePath
+   * @param userAgent
+   * @param tt
+   * @param loggingService
+   * @throws FHIRException
+   * @throws IOException
+   *
+   * @see IgLoader#loadIgSource(String, boolean, boolean) loadIgSource for detailed description of the src parameter
+   */
   private void loadCoreDefinitions(String src, boolean recursive, String terminologyCachePath, String userAgent, TimeTracker tt, IWorkerContext.ILoggingService loggingService) throws FHIRException, IOException {
     NpmPackage npm = getPcm().loadPackage(src, null);
     if (npm != null) {
@@ -583,6 +599,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     InstanceValidator validator = new InstanceValidator(context, null, null);
     validator.setHintAboutNonMustSupport(hintAboutNonMustSupport);
     validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
+    validator.getExtensionDomains().clear();
+    validator.getExtensionDomains().addAll(extensionDomains);
     validator.setNoInvariantChecks(isNoInvariantChecks());
     validator.setWantInvariantInMessage(isWantInvariantInMessage());
     validator.setValidationLanguage(language);
@@ -606,7 +624,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     if (format == FhirFormat.SHC) {
       igLoader.loadIg(getIgs(), getBinaries(), SHCParser.CURRENT_PACKAGE, true);      
     }
-
+    validator.setJurisdiction(jurisdiction);
     return validator;
   }
 

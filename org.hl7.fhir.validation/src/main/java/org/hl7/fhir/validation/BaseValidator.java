@@ -45,6 +45,7 @@ import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.IValidationContextResourceLoader;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -120,6 +121,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
   protected List<TrackedLocationRelatedMessage> trackedMessages = new ArrayList<>();
   protected List<ValidationMessage> messagesToRemove = new ArrayList<>();
   private ValidationLevel level = ValidationLevel.HINTS;
+  protected Coding jurisdiction;
 
   public BaseValidator(IWorkerContext context, XVerExtensionManager xverManager) {
     super();
@@ -1101,4 +1103,5 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return level;
   }
 
+ 
 }

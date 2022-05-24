@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.advisors.interfaces;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBaseExtension;
 import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.utilities.FhirPublication;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;

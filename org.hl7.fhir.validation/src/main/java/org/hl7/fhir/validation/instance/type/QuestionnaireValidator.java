@@ -29,7 +29,6 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DateType;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
-import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemAnswerOptionComponent;
@@ -44,6 +43,7 @@ import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -119,13 +119,14 @@ public class QuestionnaireValidator extends BaseValidator {
   private FHIRPathEngine fpe;
   private QuestionnaireMode questionnaireMode;
 
-  public QuestionnaireValidator(IWorkerContext context, EnableWhenEvaluator myEnableWhenEvaluator, FHIRPathEngine fpe, TimeTracker timeTracker, QuestionnaireMode questionnaireMode, XVerExtensionManager xverManager) {
+  public QuestionnaireValidator(IWorkerContext context, EnableWhenEvaluator myEnableWhenEvaluator, FHIRPathEngine fpe, TimeTracker timeTracker, QuestionnaireMode questionnaireMode, XVerExtensionManager xverManager, Coding jurisdiction) {
     super(context, xverManager);
     source = Source.InstanceValidator;
     this.myEnableWhenEvaluator = myEnableWhenEvaluator;
     this.fpe = fpe;
     this.timeTracker = timeTracker;
     this.questionnaireMode = questionnaireMode;
+    this.jurisdiction = jurisdiction;
   }
 
   public void validateQuestionannaire(List<ValidationMessage> errors, Element element, Element element2, NodeStack stack) {

@@ -29,7 +29,7 @@ package org.hl7.fhir.r4b.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Dec 31, 2021 05:58+1100 for FHIR v4.3.0-snapshot1
+// Generated on Fri, Apr 22, 2022 11:20+1000 for FHIR v4.3.0-cibuild
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,7 +51,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * The Citation Resource enables reference to any knowledge artifact for purposes of identification and attribution. The Citation Resource supports existing reference structures and developing publication practices such as versioning, expressing complex contributorship roles, and referencing computable resources.
  */
 @ResourceDef(name="Citation", profile="http://hl7.org/fhir/StructureDefinition/Citation")
-public class Citation extends DomainResource {
+public class Citation extends CanonicalResource {
 
     @Block()
     public static class CitationClassificationComponent extends BackboneElement implements IBaseBackboneElement {

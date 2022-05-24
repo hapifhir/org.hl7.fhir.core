@@ -47,13 +47,14 @@ public class ExpressionNode {
     Custom, 
     
     Empty, Not, Exists, SubsetOf, SupersetOf, IsDistinct, Distinct, Count, Where, Select, All, Repeat, Aggregate, Item /*implicit from name[]*/, As, Is, Single,
-    First, Last, Tail, Skip, Take, Union, Combine, Intersect, Exclude, Iif, Upper, Lower, ToChars, IndexOf, Substring, StartsWith, EndsWith, Matches, ReplaceMatches, Contains, Replace, Length,  
+    First, Last, Tail, Skip, Take, Union, Combine, Intersect, Exclude, Iif, Upper, Lower, ToChars, IndexOf, Substring, StartsWith, EndsWith, Matches, MatchesFull, ReplaceMatches, Contains, Replace, Length,  
     Children, Descendants, MemberOf, Trace, Check, Today, Now, Resolve, Extension, AllFalse, AnyFalse, AllTrue, AnyTrue,
     HasValue, OfType, Type, ConvertsToBoolean, ConvertsToInteger, ConvertsToString, ConvertsToDecimal, ConvertsToQuantity, ConvertsToDateTime, ConvertsToDate, ConvertsToTime, ToBoolean, ToInteger, ToString, ToDecimal, ToQuantity, ToDateTime, ToTime, ConformsTo,
     Round, Sqrt, Abs, Ceiling, Exp, Floor, Ln, Log, Power, Truncate,
     
     // R3 functions
-    Encode, Decode, Escape, Unescape, Trim, Split, Join, 
+    Encode, Decode, Escape, Unescape, Trim, Split, Join, LowBoundary, HighBoundary, Precision,
+    
     // Local extensions to FHIRPath
     HtmlChecks1, HtmlChecks2, AliasAs, Alias;
 
@@ -93,6 +94,7 @@ public class ExpressionNode {
       if (name.equals("startsWith")) return Function.StartsWith;
       if (name.equals("endsWith")) return Function.EndsWith;
       if (name.equals("matches")) return Function.Matches;
+      if (name.equals("matchesFull")) return Function.MatchesFull;
       if (name.equals("replaceMatches")) return Function.ReplaceMatches;
       if (name.equals("contains")) return Function.Contains;
       if (name.equals("replace")) return Function.Replace;
@@ -151,6 +153,10 @@ public class ExpressionNode {
       if (name.equals("log")) return Function.Log;
       if (name.equals("power")) return Function.Power;
       if (name.equals("truncate")) return Function.Truncate;      
+      if (name.equals("lowBoundary")) return Function.LowBoundary;  
+      if (name.equals("highBoundary")) return Function.HighBoundary;  
+      if (name.equals("precision")) return Function.Precision;  
+
       return null;
     }
     public String toCode() {
@@ -190,6 +196,7 @@ public class ExpressionNode {
       case StartsWith : return "startsWith";
       case EndsWith : return "endsWith";
       case Matches : return "matches";
+      case MatchesFull : return "matchesFull";
       case ReplaceMatches : return "replaceMatches";
       case Contains : return "contains";
       case Replace : return "replace";
@@ -247,7 +254,9 @@ public class ExpressionNode {
       case Log : return "log";
       case Power : return "power";
       case Truncate: return "truncate";
-      
+      case LowBoundary: return "lowBoundary";
+      case HighBoundary: return "highBoundary";
+      case Precision: return "precision";
       default: return "?custom?";
       }
     }
@@ -614,6 +623,9 @@ public class ExpressionNode {
 
 	public String check() {
 
+	  if (kind == null) {
+	    return "Error in expression - node has no kind";
+	  }
 		switch (kind) {
 		case Name:
 			if (Utilities.noString(name)) 
