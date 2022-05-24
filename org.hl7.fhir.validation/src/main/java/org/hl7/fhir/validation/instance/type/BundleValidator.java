@@ -23,6 +23,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.InstanceValidator;
+import org.hl7.fhir.validation.instance.PercentageTracker;
 import org.hl7.fhir.validation.instance.utils.EntrySummary;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
@@ -40,7 +41,7 @@ public class BundleValidator extends BaseValidator {
     this.jurisdiction = jurisdiction;
   }
 
-  public void validateBundle(List<ValidationMessage> errors, Element bundle, NodeStack stack, boolean checkSpecials, ValidatorHostContext hostContext) {
+  public void validateBundle(List<ValidationMessage> errors, Element bundle, NodeStack stack, boolean checkSpecials, ValidatorHostContext hostContext, PercentageTracker pct) {
     List<Element> entries = new ArrayList<Element>();
     bundle.getNamedChildren(ENTRY, entries);
     String type = bundle.getNamedChildValue(TYPE);
@@ -60,7 +61,7 @@ public class BundleValidator extends BaseValidator {
         Element resource = firstEntry.getNamedChild(RESOURCE);
         if (rule(errors, IssueType.INVALID, firstEntry.line(), firstEntry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), resource != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOFIRSTRESOURCE)) {
           String id = resource.getNamedChildValue(ID);
-          validateDocument(errors, entries, resource, firstStack.push(resource, -1, null, null), fullUrl, id);
+          validateDocument(errors, bundle, entries, resource, firstStack.push(resource, -1, null, null), fullUrl, id);
         }
         if (!VersionUtilities.isThisOrLater(FHIRVersion._4_0_1.getDisplay(), bundle.getProperty().getStructure().getFhirVersion().getDisplay())) {
           handleSpecialCaseForLastUpdated(bundle, errors, stack);
@@ -118,7 +119,7 @@ public class BundleValidator extends BaseValidator {
                 res.addMessage(signpost(errors, IssueType.INFORMATIONAL, res.line(), res.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_BUNDLE_PARAM, defn.getUrl()));
               }
               stack.resetIds();
-              validator.startInner(hostContext, errors, res, res, defn, rstack, false);
+              validator.startInner(hostContext, errors, res, res, defn, rstack, false, pct);
             }
           }
         }      
@@ -282,23 +283,23 @@ public class BundleValidator extends BaseValidator {
     return null;
   }
 
-  private void validateDocument(List<ValidationMessage> errors, List<Element> entries, Element composition, NodeStack stack, String fullUrl, String id) {
+  private void validateDocument(List<ValidationMessage> errors, Element bundle, List<Element> entries, Element composition, NodeStack stack, String fullUrl, String id) {
     // first entry must be a composition
     if (rule(errors, IssueType.INVALID, composition.line(), composition.col(), stack.getLiteralPath(), composition.getType().equals("Composition"), I18nConstants.BUNDLE_BUNDLE_ENTRY_DOCUMENT)) {
 
       // the composition subject etc references must resolve in the bundle
-      validateDocumentReference(errors, entries, composition, stack, fullUrl, id, false, "subject", "Composition");
-      validateDocumentReference(errors, entries, composition, stack, fullUrl, id, true, "author", "Composition");
-      validateDocumentReference(errors, entries, composition, stack, fullUrl, id, false, "encounter", "Composition");
-      validateDocumentReference(errors, entries, composition, stack, fullUrl, id, false, "custodian", "Composition");
-      validateDocumentSubReference(errors, entries, composition, stack, fullUrl, id, "Composition", "attester", false, "party");
-      validateDocumentSubReference(errors, entries, composition, stack, fullUrl, id, "Composition", "event", true, "detail");
+      validateDocumentReference(errors, bundle, entries, composition, stack, fullUrl, id, false, "subject", "Composition");
+      validateDocumentReference(errors, bundle, entries, composition, stack, fullUrl, id, true, "author", "Composition");
+      validateDocumentReference(errors, bundle, entries, composition, stack, fullUrl, id, false, "encounter", "Composition");
+      validateDocumentReference(errors, bundle, entries, composition, stack, fullUrl, id, false, "custodian", "Composition");
+      validateDocumentSubReference(errors, bundle, entries, composition, stack, fullUrl, id, "Composition", "attester", false, "party");
+      validateDocumentSubReference(errors, bundle, entries, composition, stack, fullUrl, id, "Composition", "event", true, "detail");
 
-      validateSections(errors, entries, composition, stack, fullUrl, id);
+      validateSections(errors, bundle, entries, composition, stack, fullUrl, id);
     }
   }
 
-  private void validateSections(List<ValidationMessage> errors, List<Element> entries, Element focus, NodeStack stack, String fullUrl, String id) {
+  private void validateSections(List<ValidationMessage> errors, Element bundle, List<Element> entries, Element focus, NodeStack stack, String fullUrl, String id) {
     List<Element> sections = new ArrayList<Element>();
     focus.getNamedChildren("section", sections);
     int i = 1;
@@ -306,48 +307,48 @@ public class BundleValidator extends BaseValidator {
       NodeStack localStack = stack.push(section, i, null, null);
 
       // technically R4+, but there won't be matches from before that
-      validateDocumentReference(errors, entries, section, stack, fullUrl, id, true, "author", "Section");
-      validateDocumentReference(errors, entries, section, stack, fullUrl, id, false, "focus", "Section");
+      validateDocumentReference(errors, bundle, entries, section, stack, fullUrl, id, true, "author", "Section");
+      validateDocumentReference(errors, bundle, entries, section, stack, fullUrl, id, false, "focus", "Section");
 
       List<Element> sectionEntries = new ArrayList<Element>();
       section.getNamedChildren(ENTRY, sectionEntries);
       int j = 1;
       for (Element sectionEntry : sectionEntries) {
         NodeStack localStack2 = localStack.push(sectionEntry, j, null, null);
-        validateBundleReference(errors, entries, sectionEntry, "Section Entry", localStack2, fullUrl, "Composition", id);
+        validateBundleReference(errors, bundle, entries, sectionEntry, "Section Entry", localStack2, fullUrl, "Composition", id);
         j++;
       }
-      validateSections(errors, entries, section, localStack, fullUrl, id);
+      validateSections(errors, bundle, entries, section, localStack, fullUrl, id);
       i++;
     }
   }
 
 
-  public void validateDocumentSubReference(List<ValidationMessage> errors, List<Element> entries, Element composition, NodeStack stack, String fullUrl, String id, String title, String parent, boolean repeats, String propName) {
+  public void validateDocumentSubReference(List<ValidationMessage> errors, Element bundle, List<Element> entries, Element composition, NodeStack stack, String fullUrl, String id, String title, String parent, boolean repeats, String propName) {
     List<Element> list = new ArrayList<>();
     composition.getNamedChildren(parent, list);
     int i = 1;
     for (Element elem : list) {
-      validateDocumentReference(errors, entries, elem, stack.push(elem, i, null, null), fullUrl, id, repeats, propName, title + "." + parent);
+      validateDocumentReference(errors, bundle, entries, elem, stack.push(elem, i, null, null), fullUrl, id, repeats, propName, title + "." + parent);
       i++;
     }
   }
 
-  public void validateDocumentReference(List<ValidationMessage> errors, List<Element> entries, Element composition, NodeStack stack, String fullUrl, String id, boolean repeats, String propName, String title) {
+  public void validateDocumentReference(List<ValidationMessage> errors, Element bundle, List<Element> entries, Element composition, NodeStack stack, String fullUrl, String id, boolean repeats, String propName, String title) {
     if (repeats) {
       List<Element> list = new ArrayList<>();
       composition.getNamedChildren(propName, list);
       int i = 1;
       for (Element elem : list) {
         
-        validateBundleReference(errors, entries, elem, title + "." + propName, stack.push(elem, i, null, null), fullUrl, "Composition", id);
+        validateBundleReference(errors, bundle, entries, elem, title + "." + propName, stack.push(elem, i, null, null), fullUrl, "Composition", id);
         i++;
       }
 
     } else {
       Element elem = composition.getNamedChild(propName);
       if (elem != null) {
-        validateBundleReference(errors, entries, elem, title + "." + propName, stack.push(elem, -1, null, null), fullUrl, "Composition", id);
+        validateBundleReference(errors, bundle, entries, elem, title + "." + propName, stack.push(elem, -1, null, null), fullUrl, "Composition", id);
       }
     }
   }
@@ -357,11 +358,11 @@ public class BundleValidator extends BaseValidator {
     if (rule(errors, IssueType.INVALID, messageHeader.line(), messageHeader.col(), stack.getLiteralPath(), messageHeader.getType().equals("MessageHeader"), I18nConstants.VALIDATION_BUNDLE_MESSAGE)) {
       List<Element> elements = messageHeader.getChildren("focus");
       for (Element elem : elements)
-        validateBundleReference(errors, entries, elem, "MessageHeader Data", stack.push(elem, -1, null, null), fullUrl, "MessageHeader", id);
+        validateBundleReference(errors, messageHeader, entries, elem, "MessageHeader Data", stack.push(elem, -1, null, null), fullUrl, "MessageHeader", id);
     }
   }
 
-  private void validateBundleReference(List<ValidationMessage> errors, List<Element> entries, Element ref, String name, NodeStack stack, String fullUrl, String type, String id) {
+  private void validateBundleReference(List<ValidationMessage> errors, Element bundle, List<Element> entries, Element ref, String name, NodeStack stack, String fullUrl, String type, String id) {
     String reference = null;
     try {
       reference = ref.getNamedChildValue("reference");
@@ -370,7 +371,7 @@ public class BundleValidator extends BaseValidator {
     }
 
     if (ref != null && !Utilities.noString(reference) && !reference.startsWith("#")) {
-      Element target = resolveInBundle(entries, reference, fullUrl, type, id);
+      Element target = resolveInBundle(bundle, entries, reference, fullUrl, type, id);
       rule(errors, IssueType.INVALID, ref.line(), ref.col(), stack.addToLiteralPath("reference"), target != null,
         I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND, reference, name);
     }
@@ -413,7 +414,7 @@ public class BundleValidator extends BaseValidator {
     for (EntrySummary e : entryList) {
       Set<String> references = findReferences(e.getEntry());
       for (String ref : references) {
-        Element tgt = resolveInBundle(entries, ref, e.getEntry().getChildValue(FULL_URL), e.getResource().fhirType(), e.getResource().getIdBase());
+        Element tgt = resolveInBundle(bundle, entries, ref, e.getEntry().getChildValue(FULL_URL), e.getResource().fhirType(), e.getResource().getIdBase());
         if (tgt != null) {
           EntrySummary t = entryForTarget(entryList, tgt);
           if (t != null ) {

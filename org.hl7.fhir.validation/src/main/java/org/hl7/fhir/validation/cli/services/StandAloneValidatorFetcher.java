@@ -248,7 +248,11 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
 
   @Override
   public CanonicalResource fetchCanonicalResource(IResourceValidator validator, String url) throws URISyntaxException {
+    if (url.contains("|")) {
+      url = url.substring(0, url.indexOf("|"));
+    }
     String[] p = url.split("\\/");
+  
     String root = getRoot(p, url);
     if (root != null) {
       TerminologyClient c;

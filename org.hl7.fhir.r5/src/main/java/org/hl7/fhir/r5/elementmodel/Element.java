@@ -117,6 +117,9 @@ public class Element extends Base {
 	private List<ValidationMessage> messages;
 	private boolean prohibited;
 	private boolean required;
+  private Map<String, List<Element>> childMap;
+  private int descendentCount;
+  private int instanceId;
 
 	public Element(String name) {
 		super();
@@ -210,11 +213,19 @@ public class Element extends Base {
 
 	public List<Element> getChildrenByName(String name) {
 		List<Element> res = new ArrayList<Element>();
-		if (hasChildren()) {
-			for (Element child : children)
-				if (name.equals(child.getName()))
-					res.add(child);
-		}
+		if (children.size() > 20) {
+      populateChildMap();
+      List<Element> l = childMap.get(name);
+      if (l != null) {
+        res.addAll(l);
+      }
+    } else {
+  		if (hasChildren()) {
+  			for (Element child : children)
+  				if (name.equals(child.getName()))
+  					res.add(child);
+  		}
+    }
 		return res;
 	}
 
@@ -272,6 +283,7 @@ public class Element extends Base {
         child.setValue(value);
       }
     }
+    childMap = null;
     try {
       setProperty(name.hashCode(), name, new StringType(value));
     } catch (FHIRException e) {
@@ -279,13 +291,21 @@ public class Element extends Base {
     }
   }
 
-	public List<Element> getChildren(String name) {
-		List<Element> res = new ArrayList<Element>(); 
-		if (children != null)
-		for (Element child : children) {
-			if (name.equals(child.getName()))
-				res.add(child);
-		}
+  public List<Element> getChildren(String name) {
+    List<Element> res = new ArrayList<Element>(); 
+    if (children.size() > 20) {
+      populateChildMap();
+      List<Element> l = childMap.get(name);
+      if (l != null) {
+        res.addAll(l);
+      }
+    } else {
+      if (children != null)
+        for (Element child : children) {
+          if (name.equals(child.getName()))
+            res.add(child);
+        }
+    }
 		return res;
 	}
 
@@ -313,18 +333,46 @@ public class Element extends Base {
   		
   	List<Base> result = new ArrayList<Base>();
   	if (children != null) {
-  	for (Element child : children) {
-  		if (child.getName().equals(name))
-  			result.add(child);
-  		if (child.getName().startsWith(name) && child.getProperty().isChoice() && child.getProperty().getName().equals(name+"[x]"))
-  			result.add(child);
-  	}
+  	  if (children.size() > 20) {
+  	    populateChildMap();
+        List<Element> l = childMap.get(name);
+        if (l != null) {
+          result.addAll(l);
+        }
+  	  } else {
+      	for (Element child : children) {
+  	    	if (child.getName().equals(name)) {
+  			    result.add(child);
+  	    	}
+      		if (child.getName().startsWith(name) && child.getProperty().isChoice() && child.getProperty().getName().equals(name+"[x]")) {
+  	    		result.add(child);
+      		}
+      	}
+  	  }
   	}
   	if (result.isEmpty() && checkValid) {
 //  		throw new FHIRException("not determined yet");
   	}
   	return result.toArray(new Base[result.size()]);
 	}
+
+  private void populateChildMap() {
+    if (childMap == null) {
+      childMap = new HashMap<>();
+      for (Element child : children) {
+        String n = child.getName();
+        if (n.endsWith("[x]")) {
+          n = n.substring(0, n.length()-3);
+        }
+        List<Element> l = childMap.get(n);
+        if (l == null) {
+          l = new ArrayList<Element>();
+          childMap.put(n,l);
+        }
+        l.add(child);
+      }  	      
+    }
+  }
 
 	@Override
 	protected void listChildren(List<org.hl7.fhir.r5.model.Property> childProps) {
@@ -362,6 +410,7 @@ public class Element extends Base {
         throw new FHIRException("Cannot set property "+name+" on "+this.name+" - value is not a primitive type ("+value.fhirType()+") or an ElementModel type");
     }
     
+    childMap = null;
     if (children == null)
       children = new ArrayList<Element>();
     Element childForValue = null;
@@ -532,8 +581,10 @@ public class Element extends Base {
 
 	public void clearDecorations() {
 	  clearUserData("fhir.decorations");
-	  for (Element e : children)
+	  for (Element e : children) {
 	    e.clearDecorations();	  
+	  }
+    childMap = null;
 	}
 	
 	public void markValidation(StructureDefinition profile, ElementDefinition definition) {
@@ -557,7 +608,21 @@ public class Element extends Base {
   public Element getNamedChild(String name) {
     if (children == null)
       return null;
+    if (children.size() > 20) {
+      populateChildMap();
+      List<Element> l = childMap.get(name);
+      if (l == null) {
+        // try the other way (in case of complicated naming rules)
+      } else if (l.size() > 1) {
+        throw new Error("Attempt to read a single element when there is more than one present ("+name+")");
+      } else {
+        return l.get(0);
+      }
+    } else {
+      
+    }
     Element result = null;
+    
     for (Element child : children) {
       if (child.getName() != null && name != null && child.getProperty() != null && child.getProperty().getDefinition() != null && child.fhirType() != null) {
         if (child.getName().equals(name) || (child.getName().length() >  child.fhirType().length() && child.getName().substring(0, child.getName().length() - child.fhirType().length()).equals(name) && child.getProperty().getDefinition().isChoice())) {
@@ -573,9 +638,17 @@ public class Element extends Base {
 
   public void getNamedChildren(String name, List<Element> list) {
   	if (children != null)
-  		for (Element child : children) 
-  			if (child.getName().equals(name))
-  				list.add(child);
+  	  if (children.size() > 20) {
+        populateChildMap();
+        List<Element> l = childMap.get(name);
+        if (l != null) {
+          list.addAll(l);
+        }
+      } else {
+  		  for (Element child : children) 
+  			  if (child.getName().equals(name))
+  				  list.add(child);
+      }
   }
 
   public String getNamedChildValue(String name) {
@@ -761,6 +834,7 @@ public class Element extends Base {
       }
       children.removeAll(remove);
       Collections.sort(children, new ElementSortComparator(this, this.property));
+      childMap = null;
     }
   }
 
@@ -965,7 +1039,8 @@ public class Element extends Base {
 
   public void clear() {
     comments = null;
-    children.clear();;
+    children.clear();
+    childMap = null;
     property = null;
     elementProperty = null;
     xhtml = null;
@@ -996,7 +1071,8 @@ public class Element extends Base {
   }
 
   public void removeChild(String name) {
-    children.removeIf(n -> name.equals(n.getName()));    
+    children.removeIf(n -> name.equals(n.getName()));
+    childMap = null;
   }
 
   public boolean isProhibited() {
@@ -1013,6 +1089,34 @@ public class Element extends Base {
 
   public void setRequired(boolean required) {
     this.required = required;
+  }
+
+  public int getDescendentCount() {
+    return descendentCount;
+  }
+
+  public void setDescendentCount(int descendentCount) {
+    this.descendentCount = descendentCount;
+  }
+
+  public int countDescendents() {
+    if (descendentCount > 0) {
+      return descendentCount;
+    } else {
+      descendentCount = children.size();
+      for (Element e : children) {
+        descendentCount = descendentCount + e.countDescendents();
+      }
+    }
+    return descendentCount;
+  }
+
+  public int getInstanceId() {
+    return instanceId;
+  }
+
+  public void setInstanceId(int instanceId) {
+    this.instanceId = instanceId;
   }
   
   
