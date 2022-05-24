@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.ExpressionNode.Kind;
 import org.hl7.fhir.r5.model.ExpressionNode.Operation;
@@ -35,11 +36,12 @@ public class SearchParameterValidator extends BaseValidator {
 
   private FHIRPathEngine fpe;
 
-  public SearchParameterValidator(IWorkerContext context, TimeTracker timeTracker, FHIRPathEngine fpe, XVerExtensionManager xverManager) {
+  public SearchParameterValidator(IWorkerContext context, TimeTracker timeTracker, FHIRPathEngine fpe, XVerExtensionManager xverManager, Coding jurisdiction) {
     super(context, xverManager);
     source = Source.InstanceValidator;
     this.fpe = fpe;
     this.timeTracker = timeTracker;
+    this.jurisdiction = jurisdiction;
   }
   
   public void validateSearchParameter(List<ValidationMessage> errors, Element cs, NodeStack stack) {

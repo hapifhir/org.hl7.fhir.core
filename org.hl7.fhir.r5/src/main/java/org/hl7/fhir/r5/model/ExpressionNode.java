@@ -53,7 +53,8 @@ public class ExpressionNode {
     Round, Sqrt, Abs, Ceiling, Exp, Floor, Ln, Log, Power, Truncate,
     
     // R3 functions
-    Encode, Decode, Escape, Unescape, Trim, Split, Join, 
+    Encode, Decode, Escape, Unescape, Trim, Split, Join, LowBoundary, HighBoundary, Precision,
+    
     // Local extensions to FHIRPath
     HtmlChecks1, HtmlChecks2, AliasAs, Alias;
 
@@ -151,9 +152,14 @@ public class ExpressionNode {
       if (name.equals("ln")) return Function.Ln;
       if (name.equals("log")) return Function.Log;
       if (name.equals("power")) return Function.Power;
-      if (name.equals("truncate")) return Function.Truncate;      
+      if (name.equals("truncate")) return Function.Truncate;  
+      if (name.equals("lowBoundary")) return Function.LowBoundary;  
+      if (name.equals("highBoundary")) return Function.HighBoundary;  
+      if (name.equals("precision")) return Function.Precision;  
+
       return null;
     }
+    
     public String toCode() {
       switch (this) {
       case Empty : return "empty";
@@ -249,7 +255,9 @@ public class ExpressionNode {
       case Log : return "log";
       case Power : return "power";
       case Truncate: return "truncate";
-      
+      case LowBoundary: return "lowBoundary";
+      case HighBoundary: return "highBoundary";
+      case Precision: return "precision";
       default: return "?custom?";
       }
     }
