@@ -1731,4 +1731,12 @@ public class Utilities {
     return splitTimezone(value)[0].replace("T", "").replace(":", "").replace(".", "").length();
   }
 
+  public static String padInt(int i, int len) {
+    return Utilities.padLeft(Integer.toString(i), ' ', len);
+  }
+
+  public static String padInt(long i, int len) {
+    return Utilities.padLeft(Long.toString(i), ' ', len);
+  }
+
 }

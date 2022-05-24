@@ -469,7 +469,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       return 0;
     }
     loadedPackages.add(pi.id()+"#"+pi.version());
-
+    if (packageTracker != null) {
+      packageTracker.packageLoaded(pi.id(), pi.version());
+    }
     
     if ((types == null || types.length == 0) &&  loader != null) {
       types = loader.getTypes();
