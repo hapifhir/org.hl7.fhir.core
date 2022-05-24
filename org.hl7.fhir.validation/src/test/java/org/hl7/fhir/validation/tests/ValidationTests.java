@@ -85,8 +85,7 @@ import com.google.gson.JsonObject;
 public class ValidationTests implements IEvaluationContext, IValidatorResourceFetcher, IValidationPolicyAdvisor {
 
   public final static boolean PRINT_OUTPUT_TO_CONSOLE = true;
-
-  @Parameters(name = "{index}: id {0}")
+  
   public static List<Arguments> data() throws IOException {
     String contents = TestingUtilities.loadTestResource("validator", "manifest.json");
 
