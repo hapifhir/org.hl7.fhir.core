@@ -63,9 +63,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hl7.fhir.testcases</groupId>
-            <artifactId>fhir-test-cases</artifactId>
-            <version>${validator_test_case_version}</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
             <scope>compile</scope>
         </dependency>
 
@@ -119,7 +119,7 @@
             <scope>compile</scope>
         </dependency>
 -->
-        <!--
+
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>org.hl7.fhir.validation</artifactId>
@@ -128,7 +128,7 @@
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
-        -->
+
         <!-- /org.hl7.fhir.core test-jars -->
 
         <!-- org.hl7.fhir.core test-jar dependencies -->
