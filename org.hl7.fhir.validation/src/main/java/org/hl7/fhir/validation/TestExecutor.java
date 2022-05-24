@@ -2,6 +2,7 @@ package org.hl7.fhir.validation;
 
 import com.google.common.reflect.ClassPath;
 
+import org.hl7.fhir.utilities.tests.JUnit4TestExecutor;
 import org.hl7.fhir.utilities.tests.ModuleTestExecutor;
 
 import java.io.File;
@@ -105,6 +106,17 @@ public class TestExecutor {
   }
   public static void executeTests(String[] moduleNamesArg, String classNameFilterArg) {
     //printClasspath();
+
+
+    try {
+      Class.forName("org.hl7.fhir.validation.tests.ValidationTests");
+    } catch (ClassNotFoundException e) {
+
+    }
+
+    JUnit4TestExecutor jUnit4TestExecutor = new JUnit4TestExecutor();
+    jUnit4TestExecutor.executeTests(System.out, null);
+
 
     System.out.println("env : " + System.getenv("java.locale.providers"));
     System.out.println("prop: " + System.getProperty("java.locale.providers"));
