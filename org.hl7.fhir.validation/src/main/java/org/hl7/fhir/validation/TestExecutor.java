@@ -2,7 +2,9 @@ package org.hl7.fhir.validation;
 
 import com.google.common.reflect.ClassPath;
 
+import org.hl7.fhir.utilities.tests.CliTestSummary;
 import org.hl7.fhir.utilities.tests.JUnit4TestExecutor;
+import org.hl7.fhir.utilities.tests.JUnit5ModuleTestExecutor;
 import org.hl7.fhir.utilities.tests.ModuleTestExecutor;
 
 import java.io.File;
@@ -12,12 +14,12 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collectors;
-
-import org.junit.platform.launcher.listeners.TestExecutionSummary;
+import java.util.stream.Stream;
 
 public class TestExecutor {
 
-  private static final String[] moduleNames = {
+  private static final String VALIDATION_MODULE = "org.hl7.fhir.validation";
+  private static final String[] JUNIT5_MODULE_NAMES = {
     "org.hl7.fhir.utilities",
     "org.hl7.fhir.convertors",
     "org.hl7.fhir.dstu2",
@@ -26,12 +28,12 @@ public class TestExecutor {
     "org.hl7.fhir.r4",
     "org.hl7.fhir.r4b",
     "org.hl7.fhir.r5",
-    "org.hl7.fhir.validation"
+    VALIDATION_MODULE
   };
   private static String SUMMARY_TEMPLATE = "Tests run: %d, Failures: %d, Errors: %d, Skipped: %d";
   private static final String DOT_PLACEHOLDER = new String(new char[53]).replace("\0", ".");
 
-  private static String getModuleResultLine(Map.Entry<String, TestExecutionSummary> moduleResult) {
+  private static String getModuleResultLine(Map.Entry<String, CliTestSummary> moduleResult) {
     return (moduleResult.getKey().length() < 50
       ? moduleResult.getKey() + " " + DOT_PLACEHOLDER.substring(moduleResult.getKey().length() + 1)
       : moduleResult.getKey().substring(0, 50) + "...")
@@ -81,7 +83,7 @@ public class TestExecutor {
     }
     final String[] modules = param.split(MODULE_DELIMITER);
     for (String module : modules) {
-      if (Arrays.stream(moduleNames).noneMatch(i -> i.equals(module))) {
+      if (Arrays.stream(JUNIT5_MODULE_NAMES).noneMatch(i -> i.equals(module))) {
         return false;
       }
     }
@@ -107,22 +109,18 @@ public class TestExecutor {
   public static void executeTests(String[] moduleNamesArg, String classNameFilterArg) {
     //printClasspath();
 
-
-    try {
-      Class.forName("org.hl7.fhir.validation.tests.ValidationTests");
-    } catch (ClassNotFoundException e) {
-
-    }
-
-    JUnit4TestExecutor jUnit4TestExecutor = new JUnit4TestExecutor();
-    jUnit4TestExecutor.executeTests(System.out, null);
-
+    //Our lone JUnit 4 test.
+    List<ModuleTestExecutor> jUnit4TestExecutors = moduleNamesArg == null
+      ? Arrays.asList(new JUnit4TestExecutor(VALIDATION_MODULE, Arrays.asList("org.hl7.fhir.validation.tests.ValidationTests")))
+      : Arrays.stream(moduleNamesArg).anyMatch(moduleName -> VALIDATION_MODULE.equals(moduleName))
+        ? Arrays.asList( new JUnit4TestExecutor(VALIDATION_MODULE, Arrays.asList("org.hl7.fhir.validation.tests.ValidationTests")))
+      : Arrays.asList();
 
     System.out.println("env : " + System.getenv("java.locale.providers"));
     System.out.println("prop: " + System.getProperty("java.locale.providers"));
 
-    List<ModuleTestExecutor> testExecutors = Arrays.stream(moduleNamesArg == null ? moduleNames : moduleNamesArg)
-      .map(moduleName -> ModuleTestExecutor.getStandardModuleTestExecutor(moduleName))
+    List<ModuleTestExecutor> jUnit5TestExecutors = Arrays.stream(moduleNamesArg == null ? JUNIT5_MODULE_NAMES : moduleNamesArg)
+      .map(moduleName -> JUnit5ModuleTestExecutor.getStandardModuleTestExecutor(moduleName))
       .collect(Collectors.toList());
 
     long testsFoundCount = 0;
@@ -130,10 +128,10 @@ public class TestExecutor {
     long testsAbortedCount = 0;
     long testsSkippedCount = 0;
 
-    final Map<String, TestExecutionSummary> moduleResultMap = new HashMap<>();
+    final Map<String, CliTestSummary> moduleResultMap = new HashMap<>();
 
-    for (ModuleTestExecutor moduleTestExecutor : testExecutors) {
-      final TestExecutionSummary testExecutionSummary = moduleTestExecutor.executeTests(System.out, classNameFilterArg);
+    for (ModuleTestExecutor moduleTestExecutor : Stream.concat( jUnit4TestExecutors.stream(), jUnit5TestExecutors.stream()).collect(Collectors.toList())) {
+      final CliTestSummary testExecutionSummary = moduleTestExecutor.executeTests(System.out, classNameFilterArg);
       testsFoundCount += testExecutionSummary.getTestsFoundCount();
       testsFailedCount += testExecutionSummary.getTestsFailedCount();
       testsAbortedCount += testExecutionSummary.getTestsAbortedCount();
@@ -146,13 +144,13 @@ public class TestExecutor {
 
     System.out.println("\n\nAll Tests completed.");
 
-    for (Map.Entry<String, TestExecutionSummary> moduleResult : moduleResultMap.entrySet()) {
-      ModuleTestExecutor.printSummmary(System.out, moduleResult.getValue(), moduleResult.getKey());
+    for (Map.Entry<String, CliTestSummary> moduleResult : moduleResultMap.entrySet()) {
+      JUnit5ModuleTestExecutor.printSummmary(System.out, moduleResult.getValue(), moduleResult.getKey());
     }
 
     System.out.println("\nModule Results:\n");
 
-    for (Map.Entry<String, TestExecutionSummary> moduleResult : moduleResultMap.entrySet()) {
+    for (Map.Entry<String, CliTestSummary> moduleResult : moduleResultMap.entrySet()) {
       System.out.println(getModuleResultLine(moduleResult));
     }
 
