@@ -132,7 +132,7 @@ public class ComparisonTests {
     CanonicalResource left = load("left");
     CanonicalResource right = load("right");
 
-    ComparisonSession session = new ComparisonSession(context, context, "Comparison Tests", null);
+    ComparisonSession session = new ComparisonSession(context, context, "Comparison Tests", null, null);
 
     if (left instanceof CodeSystem && right instanceof CodeSystem) {
       CodeSystemComparer cs = new CodeSystemComparer(session);

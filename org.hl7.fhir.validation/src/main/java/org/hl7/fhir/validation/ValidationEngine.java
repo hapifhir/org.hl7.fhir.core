@@ -627,6 +627,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       igLoader.loadIg(getIgs(), getBinaries(), SHCParser.CURRENT_PACKAGE, true);      
     }
     validator.setJurisdiction(jurisdiction);
+    validator.setLogProgress(true);
     return validator;
   }
 

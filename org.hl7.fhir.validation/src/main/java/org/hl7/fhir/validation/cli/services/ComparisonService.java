@@ -60,7 +60,7 @@ public class ComparisonService {
 
   public static void compareStructureDefinitions(String dest, ValidationEngine validator, String left, String right, StructureDefinition resLeft, StructureDefinition resRight) throws IOException, FHIRException, EOperationOutcome {
     System.out.println("Comparing StructureDefinitions " + left + " to " + right);
-    ComparisonSession session = new ComparisonSession(validator.getContext(), validator.getContext(), "Comparing Profiles", null);
+    ComparisonSession session = new ComparisonSession(validator.getContext(), validator.getContext(), "Comparing Profiles", null, null);
     session.compare(resLeft, resRight);
     
     System.out.println("Generating output to " + dest + "...");

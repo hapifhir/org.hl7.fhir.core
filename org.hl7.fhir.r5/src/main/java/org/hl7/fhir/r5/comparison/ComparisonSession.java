@@ -31,15 +31,17 @@ public class ComparisonSession {
   private int count;
   private boolean debug;
   private String title;
-  private ProfileKnowledgeProvider pkp;
+  private ProfileKnowledgeProvider pkpLeft;
+  private ProfileKnowledgeProvider pkpRight;
   
-  public ComparisonSession(IWorkerContext contextLeft, IWorkerContext contextRight, String title, ProfileKnowledgeProvider pkp) {
+  public ComparisonSession(IWorkerContext contextLeft, IWorkerContext contextRight, String title, ProfileKnowledgeProvider pkpLeft, ProfileKnowledgeProvider pkpRight) {
     super();
     this.contextLeft = contextLeft;
     this.contextRight = contextRight;
     this.sessiondId = UUID.randomUUID().toString().toLowerCase();
     this.title = title;
-    this.pkp = pkp;
+    this.pkpLeft = pkpLeft;
+    this.pkpRight = pkpRight;
 //    debug = true;
   }
   
@@ -88,7 +90,7 @@ public class ComparisonSession {
           compares.put(key, csc);
           return csc;
         } else if (left instanceof StructureDefinition && right instanceof StructureDefinition) {
-          ProfileComparer cs = new ProfileComparer(this, new ProfileUtilities(contextLeft, null, pkp), new ProfileUtilities(contextRight, null, pkp));
+          ProfileComparer cs = new ProfileComparer(this, new ProfileUtilities(contextLeft, null, pkpLeft), new ProfileUtilities(contextRight, null, pkpRight));
           ProfileComparison csc = cs.compare((StructureDefinition) left, (StructureDefinition) right);
           compares.put(key, csc);
           return csc;
@@ -145,7 +147,11 @@ public class ComparisonSession {
     return compares;
   }
 
-  public ProfileKnowledgeProvider getPkp() {
-    return pkp;
+  public ProfileKnowledgeProvider getPkpLeft() {
+    return pkpLeft;
+  }
+  
+  public ProfileKnowledgeProvider getPkpRight() {
+    return pkpRight;
   }
 }

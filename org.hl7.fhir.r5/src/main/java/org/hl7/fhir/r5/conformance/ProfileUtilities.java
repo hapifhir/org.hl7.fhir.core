@@ -1435,7 +1435,10 @@ public class ProfileUtilities extends TranslatingUtilities {
             }
             ndc = differential.getElement().indexOf(diffMatches.get(i));
             ndl = findEndOfElement(differential, ndc);
-            processPaths(indent+"  ", result, base, differential, baseCursor, ndc, nbl, ndl, url, webUrl, profileName+pathTail(diffMatches, i), contextPathSrc, contextPathDst, trimDifferential, contextName, resultPathBase, true, e, null, redirector, srcSD);
+            ElementDefinition typeSliceElement = processPaths(indent+"  ", result, base, differential, baseCursor, ndc, nbl, ndl, url, webUrl, profileName+pathTail(diffMatches, i), contextPathSrc, contextPathDst, trimDifferential, contextName, resultPathBase, true, e, null, redirector, srcSD);
+            if (typeList.size() > start+1) {
+              typeSliceElement.setMin(0);
+            }
           }
           if (elementToRemove != null) {
             differential.getElement().remove(elementToRemove);
@@ -5445,9 +5448,10 @@ public class ProfileUtilities extends TranslatingUtilities {
     private int prefixLength;
     private String base;
     private String name;
+    private String baseName;
     private Set<String> errors = new HashSet<String>();
 
-    public ElementDefinitionComparer(boolean inExtension, List<ElementDefinition> snapshot, String base, int prefixLength, String name) {
+    public ElementDefinitionComparer(boolean inExtension, List<ElementDefinition> snapshot, String base, int prefixLength, String name, String baseName) {
       this.inExtension = inExtension;
       this.snapshot = snapshot;
       this.prefixLength = prefixLength;
@@ -5456,6 +5460,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         this.base = urlTail(base);
       }
       this.name = name;
+      this.baseName = baseName;
     }
 
     @Override
@@ -5504,9 +5509,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
       if (mandatory) {
         if (prefixLength == 0)
-          errors.add("Differential contains path "+path+" which is not found in the in base "+name);
+          errors.add("Differential contains path "+path+" which is not found in the in base "+baseName);
         else
-          errors.add("Differential contains path "+path+" which is actually "+actual+", which is not found in the in base "+name);
+          errors.add("Differential contains path "+path+" which is actually "+actual+", which is not found in the in base "+ baseName);
       }
       return 0;
     }
@@ -5565,7 +5570,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     processElementsIntoTree(edh, i, diff.getDifferential().getElement());
 
     // now, we sort the siblings throughout the tree
-    ElementDefinitionComparer cmp = new ElementDefinitionComparer(true, base.getSnapshot().getElement(), "", 0, name);
+    ElementDefinitionComparer cmp = new ElementDefinitionComparer(true, base.getSnapshot().getElement(), "", 0, name, base.getType());
     sortElements(edh, cmp, errors);
 
     // now, we serialise them back to a list
@@ -5652,27 +5657,27 @@ public class ProfileUtilities extends TranslatingUtilities {
         if (profile==null) {
           ccmp = null; // this might happen before everything is loaded. And we don't so much care about sot order in this case
         } else {
-          ccmp = new ElementDefinitionComparer(true, profile.getSnapshot().getElement(), profile.getType(), child.getSelf().getPath().length(), cmp.name);
+          ccmp = new ElementDefinitionComparer(true, profile.getSnapshot().getElement(), profile.getType(), child.getSelf().getPath().length(), cmp.name, profile.present());
         }
       } else {
-        ccmp = new ElementDefinitionComparer(true, cmp.snapshot, cmp.base, cmp.prefixLength, cmp.name);
+        ccmp = new ElementDefinitionComparer(true, cmp.snapshot, cmp.base, cmp.prefixLength, cmp.name, cmp.name);
       }
     } else if (ed.getType().get(0).getWorkingCode().equals("Extension") && child.getSelf().getType().size() == 1 && child.getSelf().getType().get(0).hasProfile()) {
       StructureDefinition profile = context.fetchResource(StructureDefinition.class, child.getSelf().getType().get(0).getProfile().get(0).getValue());
       if (profile==null)
         ccmp = null; // this might happen before everything is loaded. And we don't so much care about sot order in this case
       else
-      ccmp = new ElementDefinitionComparer(true, profile.getSnapshot().getElement(), resolveType(ed.getType().get(0).getWorkingCode()), child.getSelf().getPath().length(), cmp.name);
+        ccmp = new ElementDefinitionComparer(true, profile.getSnapshot().getElement(), resolveType(ed.getType().get(0).getWorkingCode()), child.getSelf().getPath().length(), cmp.name, profile.present());
     } else if (ed.getType().size() == 1 && !ed.getType().get(0).getWorkingCode().equals("*")) {
       StructureDefinition profile = context.fetchResource(StructureDefinition.class, sdNs(ed.getType().get(0).getWorkingCode()));
       if (profile==null)
         throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_PROFILE__IN_ELEMENT_, sdNs(ed.getType().get(0).getWorkingCode()), ed.getPath()));
-      ccmp = new ElementDefinitionComparer(false, profile.getSnapshot().getElement(), resolveType(ed.getType().get(0).getWorkingCode()), child.getSelf().getPath().length(), cmp.name);
+      ccmp = new ElementDefinitionComparer(false, profile.getSnapshot().getElement(), resolveType(ed.getType().get(0).getWorkingCode()), child.getSelf().getPath().length(), cmp.name, profile.present());
     } else if (child.getSelf().getType().size() == 1) {
       StructureDefinition profile = context.fetchResource(StructureDefinition.class, sdNs(child.getSelf().getType().get(0).getWorkingCode()));
       if (profile==null)
         throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_PROFILE__IN_ELEMENT_, sdNs(ed.getType().get(0).getWorkingCode()), ed.getPath()));
-      ccmp = new ElementDefinitionComparer(false, profile.getSnapshot().getElement(), child.getSelf().getType().get(0).getWorkingCode(), child.getSelf().getPath().length(), cmp.name);
+      ccmp = new ElementDefinitionComparer(false, profile.getSnapshot().getElement(), child.getSelf().getType().get(0).getWorkingCode(), child.getSelf().getPath().length(), cmp.name, profile.present());
     } else if (ed.getPath().endsWith("[x]") && !child.getSelf().getPath().endsWith("[x]")) {
       String edLastNode = ed.getPath().replaceAll("(.*\\.)*(.*)", "$2");
       String childLastNode = child.getSelf().getPath().replaceAll("(.*\\.)*(.*)", "$2");
@@ -5682,7 +5687,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       StructureDefinition sd = context.fetchResource(StructureDefinition.class, sdNs(p));
       if (sd == null)
         throw new Error(context.formatMessage(I18nConstants.UNABLE_TO_FIND_PROFILE__AT_, p, ed.getId()));
-      ccmp = new ElementDefinitionComparer(false, sd.getSnapshot().getElement(), p, child.getSelf().getPath().length(), cmp.name);
+      ccmp = new ElementDefinitionComparer(false, sd.getSnapshot().getElement(), p, child.getSelf().getPath().length(), cmp.name, sd.present());
     } else if (child.getSelf().hasType() && child.getSelf().getType().get(0).getWorkingCode().equals("Reference")) {
       for (TypeRefComponent t: child.getSelf().getType()) {
         if (!t.getWorkingCode().equals("Reference")) {
@@ -5690,7 +5695,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
       }
       StructureDefinition profile = context.fetchResource(StructureDefinition.class, sdNs(ed.getType().get(0).getWorkingCode()));
-      ccmp = new ElementDefinitionComparer(false, profile.getSnapshot().getElement(), ed.getType().get(0).getWorkingCode(), child.getSelf().getPath().length(), cmp.name);
+      ccmp = new ElementDefinitionComparer(false, profile.getSnapshot().getElement(), ed.getType().get(0).getWorkingCode(), child.getSelf().getPath().length(), cmp.name, profile.present());
     } else if (!child.getSelf().hasType() && ed.getType().get(0).getWorkingCode().equals("Reference")) {
       for (TypeRefComponent t: ed.getType()) {
         if (!t.getWorkingCode().equals("Reference")) {
@@ -5698,13 +5703,13 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
       }
       StructureDefinition profile = context.fetchResource(StructureDefinition.class, sdNs(ed.getType().get(0).getWorkingCode()));
-      ccmp = new ElementDefinitionComparer(false, profile.getSnapshot().getElement(), ed.getType().get(0).getWorkingCode(), child.getSelf().getPath().length(), cmp.name);
+      ccmp = new ElementDefinitionComparer(false, profile.getSnapshot().getElement(), ed.getType().get(0).getWorkingCode(), child.getSelf().getPath().length(), cmp.name, profile.present());
     } else {
       // this is allowed if we only profile the extensions
       StructureDefinition profile = context.fetchResource(StructureDefinition.class, sdNs("Element"));
       if (profile==null)
         throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_PROFILE__IN_ELEMENT_, sdNs(ed.getType().get(0).getWorkingCode()), ed.getPath()));
-      ccmp = new ElementDefinitionComparer(false, profile.getSnapshot().getElement(), "Element", child.getSelf().getPath().length(), cmp.name);
+      ccmp = new ElementDefinitionComparer(false, profile.getSnapshot().getElement(), "Element", child.getSelf().getPath().length(), cmp.name, profile.present());
 //      throw new Error("Not handled yet (sortElements: "+ed.getPath()+":"+typeCode(ed.getType())+")");
     }
     return ccmp;
