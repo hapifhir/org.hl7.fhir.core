@@ -196,7 +196,7 @@ public class ComparisonRenderer implements IEvaluationContext {
   private void renderProfile(String id, ProfileComparison comp) throws IOException {
     String template = templates.get("Profile");
     Map<String, Base> vars = new HashMap<>();
-    ProfileComparer cs = new ProfileComparer(session, new ProfileUtilities(session.getContextLeft(), null, session.getPkp()), new ProfileUtilities(session.getContextRight(), null, session.getPkp()));
+    ProfileComparer cs = new ProfileComparer(session, new ProfileUtilities(session.getContextLeft(), null, session.getPkpLeft()), new ProfileUtilities(session.getContextRight(), null, session.getPkpRight()));
     vars.put("left", new StringType(comp.getLeft().present()));
     vars.put("right", new StringType(comp.getRight().present()));
     vars.put("leftId", new StringType(comp.getLeft().getId()));
