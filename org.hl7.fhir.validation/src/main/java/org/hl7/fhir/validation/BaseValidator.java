@@ -950,8 +950,34 @@ public class BaseValidator implements IValidationContextResourceLoader {
 
     if (match != null && resourceType != null)
       rule(errors, IssueType.REQUIRED, -1, -1, path, match.getType().equals(resourceType), I18nConstants.REFERENCE_REF_RESOURCETYPE, ref, match.getType());
-    if (match == null)
+    if (match == null) {
       warning(errors, IssueType.REQUIRED, -1, -1, path, !ref.startsWith("urn"), I18nConstants.BUNDLE_BUNDLE_NOT_LOCAL, ref);
+      if (!Utilities.isAbsoluteUrl(ref)) {
+        String[] p = ref.split("\\/");
+        List<Element> ml = new ArrayList<>();
+        if (p.length >= 2 && Utilities.existsInList(p[0], context.getResourceNames()) && Utilities.isValidId(p[1])) {
+          for (int i = 0; i < entries.size(); i++) {
+            Element we = entries.get(i);
+            Element r = we.getNamedChild(RESOURCE);
+            if (r != null && p[0].equals(r.fhirType()) && p[1].equals(r.getNamedChildValue("id")) ) {
+              ml.add(we);
+            }
+          }          
+        }
+        if (ml.size() > 1) {
+          warning(errors, IssueType.REQUIRED, -1, -1, path, false, I18nConstants.BUNDLE_POSSSIBLE_MATCHES, ref, targetUrl);          
+        }
+        for (Element e : ml) {
+          String fu = e.getChildValue(FULL_URL);
+          int i = entries.indexOf(e);
+          if (fu == null) {
+            warning(errors, IssueType.REQUIRED, -1, -1, path, false, I18nConstants.BUNDLE_BUNDLE_POSSIBLE_MATCH_NO_FU, i, ref, targetUrl);
+          } else {
+            warning(errors, IssueType.REQUIRED, -1, -1, path, false, I18nConstants.BUNDLE_BUNDLE_POSSIBLE_MATCH_WRONG_FU, i, ref, fu, targetUrl);            
+          }
+        }
+      }
+    }
     return match == null ? null : new IndexedElement(matchIndex, match, entries.get(matchIndex));
   }
 

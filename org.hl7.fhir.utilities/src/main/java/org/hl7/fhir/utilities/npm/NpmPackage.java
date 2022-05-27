@@ -851,6 +851,9 @@ public class NpmPackage {
 
   public InputStream loadExampleResource(String type, String id) throws IOException {
     NpmPackageFolder f = folders.get("example");
+    if (f == null) {
+      f = folders.get("package/example");      
+    }
     if (f != null) {
       JsonArray files = f.index.getAsJsonArray("files");
       for (JsonElement e : files) {
