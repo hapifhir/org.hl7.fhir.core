@@ -1,6 +1,6 @@
 ## Validator Changes
 
-* Significant improvement in performance of validation (up to 100 fold for simple resources)
+* Significant improvement in performance of validation (10-100 fold for simple resources)
 * Add output tracker to trask progress of validation (Validate %R against %P..........20..........40..........60..........80.........|)
 * Alter per-1 to handle different precision on start/end
 * Add support for a -jurisdiction parameter, preparing for jurisdictionally specific constraints in profiles
