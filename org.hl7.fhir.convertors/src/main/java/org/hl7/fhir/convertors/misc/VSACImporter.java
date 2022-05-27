@@ -22,16 +22,16 @@ public class VSACImporter extends OIDBasedValueSetImporter {
 
   public static void main(String[] args) throws FHIRException, IOException, ParseException, URISyntaxException {
     VSACImporter self = new VSACImporter();
-    self.process(args[0], args[1], args[2], args[3]);
+    self.process(args[0], args[1], args[2]);
   }
 
-  private void process(String source, String dest, String username, String password) throws FHIRException, IOException, URISyntaxException {
+  private void process(String source, String dest, String apiKey) throws FHIRException, IOException, URISyntaxException {
     CSVReader csv = new CSVReader(new FileInputStream(source));
     csv.readHeaders();
 
     FHIRToolingClient fhirToolingClient = new FHIRToolingClient("https://cts.nlm.nih.gov/fhir", "fhir/vsac");
-    fhirToolingClient.setUsername(username);
-    fhirToolingClient.setPassword(password);
+    fhirToolingClient.setUsername("apikey");
+    fhirToolingClient.setPassword(apiKey);
 
     int i = 0;
     while (csv.line()) {
