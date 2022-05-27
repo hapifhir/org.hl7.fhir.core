@@ -424,6 +424,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private QuestionnaireMode questionnaireMode;
   private ValidationOptions baseOptions = new ValidationOptions();
   private Map<String, CanonicalResourceLookupResult> crLookups = new HashMap<>();
+  private boolean logProgress;
 
   public InstanceValidator(IWorkerContext theContext, IEvaluationContext hostServices, XVerExtensionManager xverManager) {
     super(theContext, xverManager);
@@ -2980,8 +2981,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (refType.equals("contained") || refType.equals("bundled")) {
       pol = ReferenceValidationPolicy.CHECK_VALID;
     } else {
-      if (policyAdvisor == null) pol = ReferenceValidationPolicy.IGNORE;
-      else pol = policyAdvisor.policyForReference(this, hostContext.getAppContext(), path, ref);
+      if (policyAdvisor == null) {
+        pol = ReferenceValidationPolicy.IGNORE;
+      } else {
+        pol = policyAdvisor.policyForReference(this, hostContext.getAppContext(), path, ref);
+      }
     }
 
     if (pol.checkExists()) {
@@ -4397,7 +4401,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       // this method is reentrant, but also the right place to tell the user what is going on if it's the root. 
       // if we're not at the root, we don't report progress
       pctOwned = true;
-      pct = new PercentageTracker(resource.countDescendents()+1, resource.fhirType(), defn.getUrl());
+      pct = new PercentageTracker(resource.countDescendents()+1, resource.fhirType(), defn.getUrl(), logProgress);
     }
     if (BUNDLE.equals(element.fhirType())) {
       if (debug) {
@@ -4467,7 +4471,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               }
               stack.resetIds();
               if (pctOwned) {
-                pct = new PercentageTracker(resource.countDescendents(), resource.fhirType(), sd.getUrl());
+                pct = new PercentageTracker(resource.countDescendents(), resource.fhirType(), sd.getUrl(), logProgress);
               }
               startInner(hostContext, errors, resource, element, sd, stack, false, pct);
               if (pctOwned) {
@@ -4490,7 +4494,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
             stack.resetIds();
             if (pctOwned) {
-              pct = new PercentageTracker(resource.countDescendents(), resource.fhirType(), sd.getUrl());
+              pct = new PercentageTracker(resource.countDescendents(), resource.fhirType(), sd.getUrl(), logProgress);
             }
             startInner(hostContext, errors, resource, element, sd, stack, false, pct);
             if (pctOwned) {
@@ -6070,6 +6074,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   public IResourceValidator setJurisdiction(Coding jurisdiction) {
     this.jurisdiction = jurisdiction;
     return this;
+  }
+
+  public boolean isLogProgress() {
+    return logProgress;
+  }
+
+  public void setLogProgress(boolean logProgress) {
+    this.logProgress = logProgress;
   }
 
 }

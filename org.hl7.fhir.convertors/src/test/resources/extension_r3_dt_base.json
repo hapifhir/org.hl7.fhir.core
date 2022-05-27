@@ -1,0 +1,98 @@
+{
+  "resourceType": "StructureDefinition",
+  "id": "coding-sctdescid",
+  "extension": [
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/structuredefinition-wg",
+      "valueCode": "fhir"
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/structuredefinition-fmm",
+      "valueInteger": 1
+    }
+  ],
+  "url": "http://hl7.org/fhir/StructureDefinition/coding-sctdescid",
+  "name": "sctdescid",
+  "status": "draft",
+  "date": "2015-02-28",
+  "publisher": "Health Level Seven, Inc. - FHIR Core WG",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "url",
+          "value": "http://hl7.org/special/committees/FHIR"
+        }
+      ]
+    }
+  ],
+  "description": "The SNOMED CT Description ID for the display.",
+  "fhirVersion": "3.0.2",
+  "mapping": [
+    {
+      "identity": "v2",
+      "uri": "http://hl7.org/v2",
+      "name": "HL7 v2 Mapping"
+    },
+    {
+      "identity": "rim",
+      "uri": "http://hl7.org/v3",
+      "name": "RIM Mapping"
+    }
+  ],
+  "kind": "complex-type",
+  "abstract": false,
+  "contextType": "datatype",
+  "context": [
+    "Coding"
+  ],
+  "type": "Extension",
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Extension",
+  "derivation": "constraint",
+  "differential": {
+    "element": [
+      {
+        "id": "Extension",
+        "path": "Extension",
+        "short": "SNOMED CT Description ID",
+        "definition": "The SNOMED CT Description ID for the display.",
+        "min": 0,
+        "max": "1",
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "N/A"
+          },
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Extension.extension",
+        "path": "Extension.extension",
+        "max": "0"
+      },
+      {
+        "id": "Extension.url",
+        "path": "Extension.url",
+        "type": [
+          {
+            "code": "uri"
+          }
+        ],
+        "fixedUri": "http://hl7.org/fhir/StructureDefinition/coding-sctdescid"
+      },
+      {
+        "id": "Extension.valueId",
+        "path": "Extension.valueId",
+        "type": [
+          {
+            "code": "id"
+          }
+        ]
+      }
+    ]
+  }
+}

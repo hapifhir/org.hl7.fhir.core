@@ -7,18 +7,30 @@ public class PercentageTracker {
   private int total;
   private int last; 
   private int current;
+  private boolean log;
+  private String url;
   
   private static int instance;
   
-  public PercentageTracker(int total, String fhirType, String url) {
+  public PercentageTracker(int total, String fhirType, String url, boolean log) {
     this.total = total;
     instance++;
     last = 0;
-    System.out.print("Validate "+fhirType+" against "+url);
+    this.log = log;
+    this.url = url;
+    if (log) {
+      System.out.print("Validate "+fhirType+" against "+url);
+    }
   }
 
   public void done() {
-    System.out.println("|");
+    if (log) {
+      System.out.println("|");
+    }
+  }
+  
+  public String getUrl() {
+    return url;
   }
 
   public void seeElement(Element e) {
@@ -28,10 +40,14 @@ public class PercentageTracker {
       int pct = total == 0 ? 0: (current*100) / total;
       if (pct > last + 2) {
         while (last + 2 < pct) {
-          System.out.print(".");
+          if (log) {
+            System.out.print(".");
+          }
           last = last + 2;
           if (last % 20 == 0) {
-            System.out.print(""+last);
+            if (log) {
+              System.out.print(""+last);
+            }
           }
         }
       }
