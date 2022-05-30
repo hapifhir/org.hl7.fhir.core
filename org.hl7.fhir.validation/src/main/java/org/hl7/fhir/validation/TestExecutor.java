@@ -33,12 +33,28 @@ public class TestExecutor {
   private static String SUMMARY_TEMPLATE = "Tests run: %d, Failures: %d, Errors: %d, Skipped: %d";
   private static final String DOT_PLACEHOLDER = new String(new char[53]).replace("\0", ".");
 
+  private static final int MAX_NAME_LENGTH = 50;
+
   private static String getModuleResultLine(Map.Entry<String, CliTestSummary> moduleResult) {
-    return (moduleResult.getKey().length() < 50
-      ? moduleResult.getKey() + " " + DOT_PLACEHOLDER.substring(moduleResult.getKey().length() + 1)
-      : moduleResult.getKey().substring(0, 50) + "...")
+    return getModuleNameAndSpacer(moduleResult.getKey())
       + " "
-      + ((moduleResult.getValue().getTestsFailedCount() == 0 && moduleResult.getValue().getTestsAbortedCount() == 0) ? "PASSED" : "FAILED");
+      + getModuleResultString(moduleResult.getValue());
+  }
+
+  protected static String getModuleNameAndSpacer(String moduleName) {
+    return moduleName.length() < MAX_NAME_LENGTH
+      ? moduleName + " " + DOT_PLACEHOLDER.substring(moduleName.length() + 1)
+      : moduleName.substring(0, MAX_NAME_LENGTH) + "...";
+  }
+
+  protected static String getModuleResultString(CliTestSummary cliTestSummary) {
+    if (cliTestSummary.getTestsFoundCount() == 0) {
+      return "NO TESTS";
+    }
+
+    return cliTestSummary.getTestsFailedCount() == 0 && cliTestSummary.getTestsAbortedCount() == 0
+      ? "PASSED"
+      : "FAILED";
   }
 
   public static void printClasspath() {
@@ -108,7 +124,7 @@ public class TestExecutor {
   }
   public static void executeTests(String[] moduleNamesArg, String classNameFilterArg) {
     //printClasspath();
-
+    long start = System.currentTimeMillis();
     //Our lone JUnit 4 test.
     List<ModuleTestExecutor> jUnit4TestExecutors = moduleNamesArg == null
       ? Arrays.asList(new JUnit4TestExecutor(VALIDATION_MODULE, Arrays.asList("org.hl7.fhir.validation.tests.ValidationTests")))
@@ -157,6 +173,8 @@ public class TestExecutor {
     System.out.println();
 
     System.out.println(String.format(SUMMARY_TEMPLATE, testsFoundCount, testsFailedCount, testsAbortedCount, testsSkippedCount));
+
+    System.out.println("\nCompleted in " + (System.currentTimeMillis() - start) + "ms");
 
     System.exit(0);
 
