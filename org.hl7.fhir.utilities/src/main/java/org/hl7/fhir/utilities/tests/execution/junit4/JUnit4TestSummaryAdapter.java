@@ -1,5 +1,7 @@
-package org.hl7.fhir.utilities.tests;
+package org.hl7.fhir.utilities.tests.execution.junit4;
 
+import org.hl7.fhir.utilities.tests.execution.CliTestException;
+import org.hl7.fhir.utilities.tests.execution.CliTestSummary;
 import org.junit.runner.Result;
 
 import java.util.List;

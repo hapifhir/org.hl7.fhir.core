@@ -1,25 +1,23 @@
-package org.hl7.fhir.utilities.tests;
+package org.hl7.fhir.utilities.tests.execution.junit4;
 
 
 
 import lombok.Getter;
-import org.junit.internal.TextListener;
-import org.junit.platform.engine.TestExecutionResult;
+import org.hl7.fhir.utilities.tests.execution.CliTestSummary;
+import org.hl7.fhir.utilities.tests.execution.ModuleTestExecutor;
 import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
-import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class JUnit4TestExecutor extends BasicModuleTestExecutor {
+public class JUnit4TestExecutor extends ModuleTestExecutor {
 
   @Getter
   private final String moduleName;
@@ -39,19 +37,19 @@ public class JUnit4TestExecutor extends BasicModuleTestExecutor {
 
     @Override
     public void testStarted(Description description) {
-      BasicModuleTestExecutor.printTestStarted(writer, description.getDisplayName());
+      ModuleTestExecutor.printTestStarted(writer, description.getDisplayName());
     }
 
     @Override
     public void testFinished(Description description) {
-      BasicModuleTestExecutor.printTestFinished(writer, description.getDisplayName(),
+      ModuleTestExecutor.printTestFinished(writer, description.getDisplayName(),
         "FINISHED");
     }
 
 
     @Override
     public void testFailure(Failure failure) {
-      BasicModuleTestExecutor.printTestFailed(writer,
+      ModuleTestExecutor.printTestFailed(writer,
 
         failure.getDescription().getDisplayName(),
         failure.getException()

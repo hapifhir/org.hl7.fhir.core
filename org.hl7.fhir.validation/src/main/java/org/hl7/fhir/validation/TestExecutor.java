@@ -2,10 +2,10 @@ package org.hl7.fhir.validation;
 
 import com.google.common.reflect.ClassPath;
 
-import org.hl7.fhir.utilities.tests.CliTestSummary;
-import org.hl7.fhir.utilities.tests.JUnit4TestExecutor;
-import org.hl7.fhir.utilities.tests.JUnit5ModuleTestExecutor;
-import org.hl7.fhir.utilities.tests.ModuleTestExecutor;
+import org.hl7.fhir.utilities.tests.execution.CliTestSummary;
+import org.hl7.fhir.utilities.tests.execution.junit4.JUnit4TestExecutor;
+import org.hl7.fhir.utilities.tests.execution.junit5.JUnit5ModuleTestExecutor;
+import org.hl7.fhir.utilities.tests.execution.ModuleTestExecutor;
 
 import java.io.File;
 import java.io.IOException;

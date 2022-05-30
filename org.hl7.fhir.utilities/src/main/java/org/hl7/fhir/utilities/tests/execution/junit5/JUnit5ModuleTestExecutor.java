@@ -1,7 +1,9 @@
-package org.hl7.fhir.utilities.tests;
+package org.hl7.fhir.utilities.tests.execution.junit5;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hl7.fhir.utilities.tests.execution.CliTestSummary;
+import org.hl7.fhir.utilities.tests.execution.ModuleTestExecutor;
 import org.junit.platform.engine.TestExecutionResult;
 import org.junit.platform.launcher.*;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
@@ -26,7 +28,7 @@ import static org.junit.platform.engine.discovery.DiscoverySelectors.selectPacka
  * This mimics for the most part the output of the Maven Surefire plugin, with
  * additional summaries and unique IDs for diagnosing failing tests.
  */
-public class JUnit5ModuleTestExecutor extends BasicModuleTestExecutor {
+public class JUnit5ModuleTestExecutor extends ModuleTestExecutor {
 
 
 
@@ -59,7 +61,7 @@ public class JUnit5ModuleTestExecutor extends BasicModuleTestExecutor {
 
     @Override
     public void executionStarted(TestIdentifier testIdentifier) {
-      BasicModuleTestExecutor.printTestStarted(out, testIdentifier.getDisplayName());
+      ModuleTestExecutor.printTestStarted(out, testIdentifier.getDisplayName());
       super.executionStarted(testIdentifier);
     }
 
@@ -67,11 +69,11 @@ public class JUnit5ModuleTestExecutor extends BasicModuleTestExecutor {
     public void executionFinished(TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
       //
       if (testExecutionResult.getStatus().equals(TestExecutionResult.Status.FAILED)) {
-        BasicModuleTestExecutor.printTestFailed(out, testIdentifier.getUniqueId(),  testExecutionResult.getThrowable().isPresent()
+        ModuleTestExecutor.printTestFailed(out, testIdentifier.getUniqueId(),  testExecutionResult.getThrowable().isPresent()
           ? testExecutionResult.getThrowable().get()
           :null);
       }
-      BasicModuleTestExecutor.printTestFinished(out,
+      ModuleTestExecutor.printTestFinished(out,
         testIdentifier.getDisplayName(),
         testExecutionResult.getStatus().name()
       );

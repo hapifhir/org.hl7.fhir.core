@@ -1,5 +1,6 @@
-package org.hl7.fhir.utilities.tests;
+package org.hl7.fhir.utilities.tests.execution.junit4;
 
+import org.hl7.fhir.utilities.tests.execution.CliTestException;
 import org.junit.runner.notification.Failure;
 
 public class JUnit4TestException implements CliTestException {

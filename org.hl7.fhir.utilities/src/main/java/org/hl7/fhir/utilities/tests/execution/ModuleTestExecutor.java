@@ -1,10 +1,10 @@
-package org.hl7.fhir.utilities.tests;
+package org.hl7.fhir.utilities.tests.execution;
 
-import org.junit.platform.engine.TestExecutionResult;
+import org.hl7.fhir.utilities.tests.execution.junit5.JUnit5ModuleTestExecutor;
 
 import java.io.PrintStream;
 
-public abstract class BasicModuleTestExecutor implements ModuleTestExecutor {
+public abstract class ModuleTestExecutor {
   private static final String FAILURE_SUMMARY_TEMPLATE = "Test failures for module %s (%d):";
 
   private static final String STARTING_TEST_TEMPLATE = "Starting: %s";
@@ -49,4 +49,9 @@ public abstract class BasicModuleTestExecutor implements ModuleTestExecutor {
   public static void printTestFinished(PrintStream out, String displayName, String status) {
     out.println(String.format(FINISHED_TEST_TEMPLATE, displayName, status));
   }
+
+  public abstract String getModuleName();
+
+  public abstract CliTestSummary executeTests(PrintStream out, String classNameFilter);
+
 }
