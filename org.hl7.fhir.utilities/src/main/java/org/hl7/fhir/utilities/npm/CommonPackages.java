@@ -6,6 +6,6 @@ public class CommonPackages {
   public static final String VER_XVER = "0.0.11";
   
   public static final String ID_PUBPACK = "hl7.fhir.pubpack";
-  public static final String VER_PUBPACK = "0.0.9";
+  public static final String VER_PUBPACK = "0.1.0";
 
 }

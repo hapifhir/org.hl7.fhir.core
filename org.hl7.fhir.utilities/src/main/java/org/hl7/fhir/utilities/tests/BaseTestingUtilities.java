@@ -118,7 +118,7 @@ public class BaseTestingUtilities {
   }
 
   public static String tempFolder(String name) throws IOException {
-    String path = ToolGlobalSettings.hasTempPath() ? ToolGlobalSettings.getTempPath() : Utilities.path("[tmp]", name);
+    String path = Utilities.path(ToolGlobalSettings.hasTempPath() ? ToolGlobalSettings.getTempPath() : "[tmp]", name);
     Utilities.createDirectory(path);
     return path;
   }
