@@ -4,13 +4,14 @@ pr:
 - master
 - release
 
-# Different users have different machine setups, we run the build three times, on ubuntu, osx, and windows
+# Different users have different machine setups, we run the build three times, on ubuntu, osx, and windows.
+# Azure doesn't always have the same Java versions on each system, so they are enumerated for each system independently.
 jobs:
   - template: pull-request-pipeline-parameterized.yml
     parameters:
       images:
         - name: ubuntu-latest
-          jdkVersions:  [ '1.8', '1.11' ]
+          jdkVersions:  [ '1.8', '1.11', '1.17']
         - name: macos-latest
           jdkVersions: [ '1.8', '1.11', '1.17']
         - name: windows-2019
