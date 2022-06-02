@@ -91,9 +91,10 @@ The following parameters are supported:
     value as for xml:lang
        Not used if the resource specifies language
     Default: no specified language
--strictExtensions: If present, treat extensions not defined within the specified
-    FHIR version and any referenced implementation guides or profiles as errors.
-    (Default is to only raise information messages.)
+-extension: Controls how extensions are validated by the validator. The value
+    for this parameter is a URL for a domain from which extensions will be
+    allowed. By default, unknown extensions are prohibited, but can be allowed
+    by using the * wildcard. This parameter can repeat any number of times.
 -hintAboutNonMustSupport: If present, raise hints if the instance contains data
     elements that are not marked as mustSupport=true.  Useful to identify
     elements included that may be ignored by recipients
