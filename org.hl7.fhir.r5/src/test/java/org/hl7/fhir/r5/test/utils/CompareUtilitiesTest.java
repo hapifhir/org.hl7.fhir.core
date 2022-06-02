@@ -18,14 +18,16 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class CompareUtilitiesTest {
 
-  public static final Path ROOT_TEST_PATH = Paths.get("src","test","resources", "testUtilities");
+  public static final Path ROOT_TEST_PATH = Paths.get("testUtilities");
 
   public static final Path ROOT_XML_TEST_PATH = ROOT_TEST_PATH.resolve("xml");
   public static final Path ROOT_JSON_TEST_PATH = ROOT_TEST_PATH.resolve("json");
 
 
   public String getResourceAsString(String path) throws IOException {
-    InputStream inputStream = new FileInputStream(path);
+    ClassLoader classLoader =CompareUtilitiesTest.class.getClassLoader();
+
+    InputStream inputStream = classLoader.getResourceAsStream(path);
     String contents = IOUtils.toString(inputStream, java.nio.charset.StandardCharsets.UTF_8);
     return contents.trim();
   }
@@ -52,15 +54,20 @@ public class CompareUtilitiesTest {
   @ParameterizedTest
   @MethodSource("getCompareXMLParams")
   public void testCompareXML(String expectedFileName, String actualFileName, String expectedOutputFileName) throws Exception {
-    final String expectedXMLPath = ROOT_XML_TEST_PATH.resolve(expectedFileName).toAbsolutePath().toString();
-    final String actualXMLPath = ROOT_XML_TEST_PATH.resolve(actualFileName).toAbsolutePath().toString();
+    final String expectedXMLPath = ROOT_XML_TEST_PATH.resolve(expectedFileName).toString();
+    final String actualXMLPath = ROOT_XML_TEST_PATH.resolve(actualFileName).toString();
 
-    final String actualOutput = CompareUtilities.checkXMLIsSame(expectedXMLPath, actualXMLPath);
+    ClassLoader classLoader =CompareUtilitiesTest.class.getClassLoader();
+
+    InputStream expectedXMLStream = classLoader.getResourceAsStream(expectedXMLPath);
+    InputStream actualXMLStream = classLoader.getResourceAsStream(actualXMLPath);
+
+    final String actualOutput = CompareUtilities.checkXMLIsSame(expectedXMLStream, actualXMLStream);
 
     if (expectedOutputFileName == null) {
       assertNull(actualOutput);
     } else {
-      final String expectedOutputPath = ROOT_XML_TEST_PATH.resolve(expectedOutputFileName).toAbsolutePath().toString();
+      final String expectedOutputPath = ROOT_XML_TEST_PATH.resolve(expectedOutputFileName).toString();
       String expectedOutput = normalizeNewlines(getResourceAsString(expectedOutputPath));
       assertEquals(expectedOutput, normalizeNewlines(actualOutput));
     }
@@ -84,14 +91,14 @@ public class CompareUtilitiesTest {
  @ParameterizedTest
  @MethodSource("getCompareJSONParams")
  public void testCompareJSON(String expectedFileName, String actualFileName, String expectedOutputFileName) throws IOException {
-   final String expectedJSONPath = ROOT_JSON_TEST_PATH.resolve(expectedFileName).toAbsolutePath().toString();
-   final String actualJSONPath = ROOT_JSON_TEST_PATH.resolve(actualFileName).toAbsolutePath().toString();
+   final String expectedJSONPath = ROOT_JSON_TEST_PATH.resolve(expectedFileName).toString();
+   final String actualJSONPath = ROOT_JSON_TEST_PATH.resolve(actualFileName).toString();
 
    final String actualOutput = CompareUtilities.checkJsonSrcIsSame(getResourceAsString(expectedJSONPath), getResourceAsString(actualJSONPath), false);
    if (expectedOutputFileName == null) {
      assertNull(actualOutput);
    } else {
-     final String expectedOutputPath = ROOT_JSON_TEST_PATH.resolve(expectedOutputFileName).toAbsolutePath().toString();
+     final String expectedOutputPath = ROOT_JSON_TEST_PATH.resolve(expectedOutputFileName).toString();
      String expectedOutput = normalizeNewlines(getResourceAsString(expectedOutputPath));
      assertEquals(expectedOutput, normalizeNewlines(actualOutput));
    }

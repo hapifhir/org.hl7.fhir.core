@@ -2,6 +2,8 @@ package org.hl7.fhir.validation.tests.utilities;
 
 import org.hl7.fhir.r5.context.TerminologyCache;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.tests.TestConfig;
+import org.hl7.fhir.utilities.tests.TestConstants;
 import org.hl7.fhir.validation.ValidationEngine;
 
 import java.nio.file.Paths;
@@ -16,7 +18,7 @@ public class TestUtilities {
       .withCanRunWithoutTerminologyServer(canRunWithoutTerminologyServer)
       .withVersion(vString)
       .withUserAgent(TestConstants.USER_AGENT)
-      .withTerminologyCachePath(Paths.get(TestConstants.TX_CACHE, vString).toString())
+      .withTerminologyCachePath(getTerminologyCacheDirectory(vString))
       .withTxServer(txServer, txLog, version)
       .fromSource(src);
 
@@ -24,11 +26,15 @@ public class TestUtilities {
     return validationEngine;
   }
 
+  public static String getTerminologyCacheDirectory(String ... testSetPath) {
+    return Paths.get(TestConfig.getInstance().getTxCacheDirectory(), testSetPath).toString();
+  }
+
   public static ValidationEngine getValidationEngine(java.lang.String src, java.lang.String txServer, FhirPublication version, java.lang.String vString) throws Exception {
     final ValidationEngine validationEngine = new ValidationEngine.ValidationEngineBuilder()
       .withVersion(vString)
       .withUserAgent(TestConstants.USER_AGENT)
-      .withTerminologyCachePath(Paths.get(TestConstants.TX_CACHE, vString).toString())
+      .withTerminologyCachePath(getTerminologyCacheDirectory(vString))
       .withTxServer(txServer, TestConstants.TX_CACHE_LOG, version)
       .fromSource(src);
     TerminologyCache.setCacheErrors(true);

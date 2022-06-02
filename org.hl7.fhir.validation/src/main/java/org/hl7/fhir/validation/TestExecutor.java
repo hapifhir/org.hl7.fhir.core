@@ -2,6 +2,7 @@ package org.hl7.fhir.validation;
 
 import com.google.common.reflect.ClassPath;
 
+import org.hl7.fhir.utilities.tests.TestConfig;
 import org.hl7.fhir.utilities.tests.execution.CliTestSummary;
 import org.hl7.fhir.utilities.tests.execution.junit4.JUnit4TestExecutor;
 import org.hl7.fhir.utilities.tests.execution.junit5.JUnit5ModuleTestExecutor;
@@ -131,6 +132,8 @@ public class TestExecutor {
       : Arrays.stream(moduleNamesArg).anyMatch(moduleName -> VALIDATION_MODULE.equals(moduleName))
         ? Arrays.asList( new JUnit4TestExecutor(VALIDATION_MODULE, Arrays.asList("org.hl7.fhir.validation.tests.ValidationTests")))
       : Arrays.asList();
+
+    TestConfig.getInstance().setTxCacheDirectory("/Users/david.otasek/IN/2022-05-10-validator-run-tests/txCache");
 
     System.out.println("env : " + System.getenv("java.locale.providers"));
     System.out.println("prop: " + System.getProperty("java.locale.providers"));
