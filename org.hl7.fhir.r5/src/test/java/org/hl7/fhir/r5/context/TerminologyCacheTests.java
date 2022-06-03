@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +28,7 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander;
-import org.hl7.fhir.r5.test.utils.CompareUtilitiesTest;
+import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -39,7 +38,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
-public class TerminologyCacheTests {
+public class TerminologyCacheTests implements ResourceLoaderTests {
 
   static final ValueSet.ConceptSetComponent include = new ValueSet.ConceptSetComponent();
   static {
@@ -62,10 +61,7 @@ public class TerminologyCacheTests {
   private JsonParser jsonParser = new JsonParser();
 
   private JsonElement getJsonFromFile(String filename) throws URISyntaxException, IOException {
-    final Path path = Paths.get( "context", filename);
-
-    ClassLoader classLoader = CompareUtilitiesTest.class.getClassLoader();
-    InputStream inputStream = classLoader.getResourceAsStream(path.toString());
+    InputStream inputStream = getResourceAsInputStream("context", filename);
 
     final String stringValue = IOUtils.toString(inputStream, java.nio.charset.StandardCharsets.UTF_8);
     return jsonParser.parse(stringValue);

@@ -2,11 +2,11 @@ package org.hl7.fhir.r5.test.utils;
 
 import org.apache.commons.io.IOUtils;
 
+import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -16,18 +16,15 @@ import java.util.stream.Stream;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class CompareUtilitiesTest {
+public class CompareUtilitiesTests implements ResourceLoaderTests {
 
   public static final Path ROOT_TEST_PATH = Paths.get("testUtilities");
-
   public static final Path ROOT_XML_TEST_PATH = ROOT_TEST_PATH.resolve("xml");
   public static final Path ROOT_JSON_TEST_PATH = ROOT_TEST_PATH.resolve("json");
 
 
   public String getResourceAsString(String path) throws IOException {
-    ClassLoader classLoader =CompareUtilitiesTest.class.getClassLoader();
-
-    InputStream inputStream = classLoader.getResourceAsStream(path);
+    InputStream inputStream = getResourceAsInputStream(path);
     String contents = IOUtils.toString(inputStream, java.nio.charset.StandardCharsets.UTF_8);
     return contents.trim();
   }
@@ -57,7 +54,7 @@ public class CompareUtilitiesTest {
     final String expectedXMLPath = ROOT_XML_TEST_PATH.resolve(expectedFileName).toString();
     final String actualXMLPath = ROOT_XML_TEST_PATH.resolve(actualFileName).toString();
 
-    ClassLoader classLoader =CompareUtilitiesTest.class.getClassLoader();
+    ClassLoader classLoader = CompareUtilitiesTests.class.getClassLoader();
 
     InputStream expectedXMLStream = classLoader.getResourceAsStream(expectedXMLPath);
     InputStream actualXMLStream = classLoader.getResourceAsStream(actualXMLPath);

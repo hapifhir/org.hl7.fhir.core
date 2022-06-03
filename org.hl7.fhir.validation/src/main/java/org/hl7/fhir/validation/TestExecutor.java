@@ -8,6 +8,7 @@ import org.hl7.fhir.utilities.tests.execution.junit4.JUnit4TestExecutor;
 import org.hl7.fhir.utilities.tests.execution.junit5.JUnit5ModuleTestExecutor;
 import org.hl7.fhir.utilities.tests.execution.ModuleTestExecutor;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
 
@@ -31,15 +32,19 @@ public class TestExecutor {
     "org.hl7.fhir.r5",
     VALIDATION_MODULE
   };
+
+  private static final List<String> JUNIT4_CLASSNAMES = Arrays.asList("org.hl7.fhir.validation.tests.ValidationTests");
+
+
   private static String SUMMARY_TEMPLATE = "Tests run: %d, Failures: %d, Errors: %d, Skipped: %d";
   private static final String DOT_PLACEHOLDER = new String(new char[53]).replace("\0", ".");
 
   private static final int MAX_NAME_LENGTH = 50;
 
-  private static String getModuleResultLine(Map.Entry<String, CliTestSummary> moduleResult) {
-    return getModuleNameAndSpacer(moduleResult.getKey())
+  private static String getModuleResultLine(String moduleName, CliTestSummary moduleTestSummary) {
+    return getModuleNameAndSpacer(moduleName)
       + " "
-      + getModuleResultString(moduleResult.getValue());
+      + getModuleResultString(moduleTestSummary);
   }
 
   protected static String getModuleNameAndSpacer(String moduleName) {
@@ -127,20 +132,14 @@ public class TestExecutor {
     //printClasspath();
     long start = System.currentTimeMillis();
     //Our lone JUnit 4 test.
-    List<ModuleTestExecutor> jUnit4TestExecutors = moduleNamesArg == null
-      ? Arrays.asList(new JUnit4TestExecutor(VALIDATION_MODULE, Arrays.asList("org.hl7.fhir.validation.tests.ValidationTests")))
-      : Arrays.stream(moduleNamesArg).anyMatch(moduleName -> VALIDATION_MODULE.equals(moduleName))
-        ? Arrays.asList( new JUnit4TestExecutor(VALIDATION_MODULE, Arrays.asList("org.hl7.fhir.validation.tests.ValidationTests")))
-      : Arrays.asList();
+    List<ModuleTestExecutor> jUnit4TestExecutors = getjUnit4TestExecutors(moduleNamesArg);
 
     TestConfig.getInstance().setTxCacheDirectory("/Users/david.otasek/IN/2022-05-10-validator-run-tests/txCache");
 
     System.out.println("env : " + System.getenv("java.locale.providers"));
     System.out.println("prop: " + System.getProperty("java.locale.providers"));
 
-    List<ModuleTestExecutor> jUnit5TestExecutors = Arrays.stream(moduleNamesArg == null ? JUNIT5_MODULE_NAMES : moduleNamesArg)
-      .map(moduleName -> JUnit5ModuleTestExecutor.getStandardModuleTestExecutor(moduleName))
-      .collect(Collectors.toList());
+    List<ModuleTestExecutor> jUnit5TestExecutors = getjUnit5TestExecutors(moduleNamesArg);
 
     long testsFoundCount = 0;
     long testsFailedCount = 0;
@@ -149,7 +148,9 @@ public class TestExecutor {
 
     final Map<String, CliTestSummary> moduleResultMap = new HashMap<>();
 
-    for (ModuleTestExecutor moduleTestExecutor : Stream.concat( jUnit4TestExecutors.stream(), jUnit5TestExecutors.stream()).collect(Collectors.toList())) {
+    final List<ModuleTestExecutor> orderedModuleTestExecutors = Stream.concat(jUnit5TestExecutors.stream(), jUnit4TestExecutors.stream()).collect(Collectors.toList());
+
+    for (ModuleTestExecutor moduleTestExecutor : orderedModuleTestExecutors) {
       final CliTestSummary testExecutionSummary = moduleTestExecutor.executeTests(System.out, classNameFilterArg);
       testsFoundCount += testExecutionSummary.getTestsFoundCount();
       testsFailedCount += testExecutionSummary.getTestsFailedCount();
@@ -163,14 +164,14 @@ public class TestExecutor {
 
     System.out.println("\n\nAll Tests completed.");
 
-    for (Map.Entry<String, CliTestSummary> moduleResult : moduleResultMap.entrySet()) {
-      JUnit5ModuleTestExecutor.printSummmary(System.out, moduleResult.getValue(), moduleResult.getKey());
+    for (ModuleTestExecutor moduleTestExecutor : orderedModuleTestExecutors) {
+      JUnit5ModuleTestExecutor.printSummmary(System.out, moduleResultMap.get(moduleTestExecutor.getModuleName()), moduleTestExecutor.getModuleName());
     }
 
     System.out.println("\nModule Results:\n");
 
-    for (Map.Entry<String, CliTestSummary> moduleResult : moduleResultMap.entrySet()) {
-      System.out.println(getModuleResultLine(moduleResult));
+    for (ModuleTestExecutor moduleTestExecutor : orderedModuleTestExecutors) {
+      System.out.println(getModuleResultLine(moduleTestExecutor.getModuleName(), moduleResultMap.get(moduleTestExecutor.getModuleName())));
     }
 
     System.out.println();
@@ -181,5 +182,27 @@ public class TestExecutor {
 
     System.exit(0);
 
+  }
+
+  @Nonnull
+  private static List<ModuleTestExecutor> getjUnit5TestExecutors(String[] moduleNamesArg) {
+    final String[] moduleNames = moduleNamesArg == null ? JUNIT5_MODULE_NAMES : moduleNamesArg;
+    return Arrays.stream(moduleNames)
+      .map(moduleName -> JUnit5ModuleTestExecutor.getStandardModuleTestExecutor(moduleName))
+      .collect(Collectors.toList());
+  }
+
+  @Nonnull
+  private static List<ModuleTestExecutor> getjUnit4TestExecutors(String[] moduleNamesArg) {
+
+    final List<ModuleTestExecutor> jUnit4TestExecutors = Arrays.asList(new JUnit4TestExecutor(VALIDATION_MODULE, JUNIT4_CLASSNAMES));
+
+    if (moduleNamesArg == null) {
+      return jUnit4TestExecutors;
+    }
+
+    return  Arrays.stream(moduleNamesArg).anyMatch(moduleName -> VALIDATION_MODULE.equals(moduleName))
+      ? jUnit4TestExecutors
+      : Arrays.asList();
   }
 }
