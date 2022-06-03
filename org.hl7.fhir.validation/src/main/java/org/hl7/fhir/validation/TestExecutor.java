@@ -128,6 +128,10 @@ public class TestExecutor {
      return false;
     }
   }
+
+  public static void extractTerminologyCaches() {
+
+  }
   public static void executeTests(String[] moduleNamesArg, String classNameFilterArg) {
     //printClasspath();
     long start = System.currentTimeMillis();
@@ -135,6 +139,7 @@ public class TestExecutor {
     List<ModuleTestExecutor> jUnit4TestExecutors = getjUnit4TestExecutors(moduleNamesArg);
 
     TestConfig.getInstance().setTxCacheDirectory("/Users/david.otasek/IN/2022-05-10-validator-run-tests/txCache");
+    TestConfig.getInstance().setFhirTestCasesDirectory("/Users/david.otasek/IN/2022-05-10-validator-run-tests/fhir-test-cases");
 
     System.out.println("env : " + System.getenv("java.locale.providers"));
     System.out.println("prop: " + System.getProperty("java.locale.providers"));

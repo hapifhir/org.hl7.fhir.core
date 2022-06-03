@@ -95,7 +95,7 @@
 
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
-            <artifactId>org.hl7.fhir.r5</artifactId>
+            <artifactId>org.hl7.fhir.r4</artifactId>
             <classifier>tests</classifier>
             <type>test-jar</type>
             <version>${project.version}</version>
@@ -111,14 +111,14 @@
             <scope>compile</scope>
         </dependency>
 
-        <!--
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
-            <artifactId>org.hl7.fhir.r5.tests</artifactId>
+            <artifactId>org.hl7.fhir.r5</artifactId>
+            <classifier>tests</classifier>
+            <type>test-jar</type>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
--->
 
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>

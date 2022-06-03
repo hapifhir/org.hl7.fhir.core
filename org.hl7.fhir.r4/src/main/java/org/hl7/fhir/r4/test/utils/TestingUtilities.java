@@ -35,6 +35,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +55,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
+import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -442,12 +446,24 @@ public class TestingUtilities {
 
   public static String resourceNameToFile(String name) throws IOException {
     //return Utilities.path(System.getProperty("user.dir"), "src", "test", "resources", name);
-   return TestingUtilities.class.getClassLoader().getResource(name).getPath();
+   return resourceNameToFile(null, name);
   }
 
 
   public static String resourceNameToFile(String subFolder, String name) throws IOException {
-    return TestingUtilities.class.getClassLoader().getResource( (subFolder != null ? subFolder + "/" : "") + name).getPath();
+
+    final String resourcePath = (subFolder != null ? subFolder + "/" : "") + name;
+
+    final Path filePath = (subFolder != null) ?  Paths.get("target", subFolder, name) : Paths.get("target", name);
+
+      Path parent = filePath.getParent();
+      if (!parent.toFile().exists()) {
+        parent.toFile().mkdirs();
+      }
+
+    ResourceLoaderTests.copyResourceToFile(TestingUtilities.class, filePath, resourcePath);
+
+    return filePath.toString();
   }
 
 }

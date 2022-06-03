@@ -7,22 +7,11 @@ import org.hl7.fhir.utilities.ToolGlobalSettings;
 import org.hl7.fhir.utilities.Utilities;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BaseTestingUtilities {
 
   static public boolean silent;
 
-  private static String FHIR_TEST_CASES = System.getenv("FHIR-TEST-CASES");
-
-  public static String getFhirTestCases() {
-     return FHIR_TEST_CASES;
-  }
-
-  public static void setFhirTestCases(String input) {
-    FHIR_TEST_CASES = input;
-  }
 
   public static String loadTestResource(String... paths) throws IOException {
     /**
@@ -34,7 +23,7 @@ public class BaseTestingUtilities {
      * at the same directory level as the core project.
      */
 
-    String dir = getFhirTestCases();
+    String dir = TestConfig.getInstance().getFhirTestCasesDirectory();
     if (dir == null && ToolGlobalSettings.hasTestsPath()) {
       dir = ToolGlobalSettings.getTestsPath();
     }
@@ -58,7 +47,7 @@ public class BaseTestingUtilities {
 
   
   public static InputStream loadTestResourceStream(String... paths) throws IOException {
-    String dir = getFhirTestCases();
+    String dir = TestConfig.getInstance().getFhirTestCasesDirectory();
     if (dir == null && ToolGlobalSettings.hasTestsPath()) {
       dir = ToolGlobalSettings.getTestsPath();
     }
@@ -76,7 +65,7 @@ public class BaseTestingUtilities {
   }
 
   public static byte[] loadTestResourceBytes(String... paths) throws IOException {
-    String dir = getFhirTestCases();
+    String dir = TestConfig.getInstance().getFhirTestCasesDirectory();
     if (dir == null && ToolGlobalSettings.hasTestsPath()) {
       dir = ToolGlobalSettings.getTestsPath();
     }
@@ -94,7 +83,7 @@ public class BaseTestingUtilities {
   }
 
   public static boolean findTestResource(String... paths) throws IOException {
-    String dir = getFhirTestCases();
+    String dir = TestConfig.getInstance().getFhirTestCasesDirectory();
     if (dir == null && ToolGlobalSettings.hasTestsPath()) {
       dir = ToolGlobalSettings.getTestsPath();
     }

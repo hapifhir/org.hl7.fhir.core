@@ -10,6 +10,9 @@ public class TestConfig {
   @Getter @Setter
   private String txCacheDirectory = TestConstants.TX_CACHE;
 
+  @Getter @Setter
+  private String fhirTestCasesDirectory = null;
+
   public static TestConfig getInstance() {
     return INSTANCE;
   }
