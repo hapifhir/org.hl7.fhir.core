@@ -83,7 +83,8 @@ public class FHIRToolingClient {
   private static final int TIMEOUT_ENTRY = 500;
   private static final int TIMEOUT_OPERATION_LONG = 60000;
   private static final int TIMEOUT_OPERATION_EXPAND = 120000;
-
+  private static final int TIMEOUT_NORMAL_EXTERNAL_TX = TIMEOUT_OPERATION_EXPAND;
+  
   private String base;
   private ResourceAddress resourceAddress;
   private ResourceFormat preferredResourceFormat;
@@ -139,7 +140,7 @@ public class FHIRToolingClient {
         getPreferredResourceFormat(),
         generateHeaders(),
         "TerminologyCapabilities",
-        TIMEOUT_NORMAL).getReference();
+        TIMEOUT_NORMAL_EXTERNAL_TX).getReference();
     } catch (Exception e) {
       throw new FHIRException("Error fetching the server's terminology capabilities", e);
     }
@@ -160,14 +161,34 @@ public class FHIRToolingClient {
     return capabilityStatement;
   }
 
+  //-- switchResourceFormat from XML to JSON and vice versa.
+  private String switchResourceFormat(){
+    if( getPreferredResourceFormat() == (ResourceFormat.RESOURCE_XML).getHeader() ){
+      setPreferredResourceFormat(ResourceFormat.RESOURCE_JSON);
+      return getPreferredResourceFormat();
+    }
+    else{
+      setPreferredResourceFormat(ResourceFormat.RESOURCE_XML);
+      return getPreferredResourceFormat();
+    }
+  }
+    
   public CapabilityStatement getCapabilitiesStatementQuick() throws EFhirClientException {
     if (capabilities != null) return capabilities;
     try {
-       capabilities = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(true),
-        getPreferredResourceFormat(),
-        generateHeaders(),
-        "CapabilitiesStatement-Quick",
-        TIMEOUT_NORMAL).getReference();
+       try{
+          capabilities = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(true),
+          getPreferredResourceFormat(),
+          generateHeaders(),
+          "CapabilitiesStatement-Quick",
+          TIMEOUT_NORMAL).getReference();
+        }catch(Exception e) {
+          capabilities = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(true),
+          switchResourceFormat(),
+          generateHeaders(),
+          "Retrying CapabilitiesStatement-Quick",
+          TIMEOUT_NORMAL).getReference();
+        }
     } catch (Exception e) {
       throw new FHIRException("Error fetching the server's capability statement: "+e.getMessage(), e);
     }
