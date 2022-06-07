@@ -13,7 +13,7 @@ import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_50;
 import org.hl7.fhir.convertors.factory.*;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.json.JSONUtil;
+import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
 
@@ -167,7 +167,7 @@ public class NpmPackageVersionConverter {
   private byte[] convertPackage(byte[] cnt) throws IOException {
     JsonObject json = JsonTrackingParser.parseJson(cnt);
     currentVersion = json.getAsJsonArray("fhirVersions").get(0).getAsString();
-    String name = JSONUtil.str(json, "name");
+    String name = JsonUtilities.str(json, "name");
     json.remove("name");
     json.addProperty("name", name + "." + vCode);
     json.remove("fhirVersions");

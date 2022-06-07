@@ -45,7 +45,7 @@ import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
-public class JSONUtil {
+public class JsonUtilities {
 
   public static JsonObject parse(String json) throws IOException {
     return JsonTrackingParser.parseJson(json);    
@@ -153,6 +153,17 @@ public class JSONUtil {
       return "Number";
     }
     return "String";
+  }
+
+  public static List<String> strings(JsonArray arr) {
+    List<String> res = new ArrayList<String>();
+    for (int i = 0; i < arr.size(); i++) {
+      JsonElement n = arr.get(i);
+      if (n.isJsonPrimitive()) {
+        res.add(n.getAsString());
+      }
+    }
+    return res;
   }
 
 }
