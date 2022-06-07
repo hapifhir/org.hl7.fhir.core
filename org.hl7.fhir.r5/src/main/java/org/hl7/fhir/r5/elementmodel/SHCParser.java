@@ -22,7 +22,7 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.json.JSONUtil;
+import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.json.JsonTrackingParser.LocationData;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -73,7 +73,7 @@ public class SHCParser extends ParserBase {
        int i = 0;
        for (JsonElement e : arr) {
          if (!(e instanceof JsonPrimitive)) {
-           logError(line(e), col(e), "$.verifiableCredential["+i+"]", IssueType.STRUCTURE, "Wrong Property verifiableCredential in JSON Payload. Expected : String but found "+JSONUtil.type(e), IssueSeverity.ERROR);                
+           logError(line(e), col(e), "$.verifiableCredential["+i+"]", IssueType.STRUCTURE, "Wrong Property verifiableCredential in JSON Payload. Expected : String but found "+JsonUtilities.type(e), IssueSeverity.ERROR);                
          } else {
            list.add(e.getAsString());
          }
@@ -117,7 +117,7 @@ public class SHCParser extends ParserBase {
       int i = 0;
       for (JsonElement e : type) {
         if (!(e instanceof JsonPrimitive)) {
-          logError(line(e), col(e), path+".type["+i+"]", IssueType.STRUCTURE, "Wrong Property Type in JSON Payload. Expected : String but found "+JSONUtil.type(e), IssueSeverity.ERROR);
+          logError(line(e), col(e), path+".type["+i+"]", IssueType.STRUCTURE, "Wrong Property Type in JSON Payload. Expected : String but found "+JsonUtilities.type(e), IssueSeverity.ERROR);
         } else {
           types.add(e.getAsString());
         }
@@ -171,7 +171,7 @@ public class SHCParser extends ParserBase {
   private boolean checkProperty(JsonObject obj, String path, String name, boolean required, String type) {
     JsonElement e = obj.get(name);
     if (e != null) {
-      String t = JSONUtil.type(e);
+      String t = JsonUtilities.type(e);
       if (!type.equals(t)) {
         logError(line(e), col(e), path+"."+name, IssueType.STRUCTURE, "Wrong Property Type in JSON Payload. Expected : "+type+" but found "+t, IssueSeverity.ERROR);                
       } else {
@@ -275,7 +275,7 @@ public class SHCParser extends ParserBase {
     }
     JWT res = new JWT();
     res.header = JsonTrackingParser.parseJson(headerJson);
-    if ("DEF".equals(JSONUtil.str(res.header, "zip"))) {
+    if ("DEF".equals(JsonUtilities.str(res.header, "zip"))) {
       payloadJson = inflate(payloadJson);
     }
     res.payload = JsonTrackingParser.parse(TextFile.bytesToString(payloadJson), res.map, true);

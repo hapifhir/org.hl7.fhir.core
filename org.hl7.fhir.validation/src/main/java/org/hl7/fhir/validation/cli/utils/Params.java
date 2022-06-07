@@ -68,6 +68,7 @@ public class Params {
   public static final String SHOW_TIMES = "-show-times";
   public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
   public static final String OUTPUT_STYLE = "-output-style";
+  public static final String DO_IMPLICIT_FHIRPATH_STRING_CONVERSION = "-implicit-fhirpath-string-conversions";
   private static final Object JURISDICTION = "-jurisdiction";
 
   /**
@@ -167,6 +168,8 @@ public class Params {
         cliContext.setRecursive(true);
       } else if (args[i].equals(SHOW_MESSAGES_FROM_REFERENCES)) {
         cliContext.setShowMessagesFromReferences(true);
+      } else if (args[i].equals(DO_IMPLICIT_FHIRPATH_STRING_CONVERSION)) {
+        cliContext.setDoImplicitFHIRPathStringConversion(true);
       } else if (args[i].equals(LOCALE)) {
         if (i + 1 == args.length) {
           throw new Error("Specified -locale without indicating locale");

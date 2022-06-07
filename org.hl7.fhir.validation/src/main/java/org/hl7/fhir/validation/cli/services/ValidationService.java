@@ -354,6 +354,7 @@ public class ValidationService {
       validator.setSnomedExtension(cliContext.getSnomedCTCode());
       validator.setAssumeValidRestReferences(cliContext.isAssumeValidRestReferences());
       validator.setShowMessagesFromReferences(cliContext.isShowMessagesFromReferences());
+      validator.setDoImplicitFHIRPathStringConversion(cliContext.isDoImplicitFHIRPathStringConversion());
       validator.setNoExtensibleBindingMessages(cliContext.isNoExtensibleBindingMessages());
       validator.setNoUnicodeBiDiControlChars(cliContext.isNoUnicodeBiDiControlChars());
       validator.setNoInvariantChecks(cliContext.isNoInvariants());

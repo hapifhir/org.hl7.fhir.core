@@ -12,7 +12,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
-import org.hl7.fhir.utilities.json.JSONUtil;
+import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -132,12 +132,12 @@ public class PackageVisitor {
       list.add(i.getId());
     }    
     JsonObject json = JsonTrackingParser.fetchJson("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json");
-    for (JsonObject ig : JSONUtil.objects(json, "guides")) {
-      list.add(JSONUtil.str(ig, "npm-name"));
+    for (JsonObject ig : JsonUtilities.objects(json, "guides")) {
+      list.add(JsonUtilities.str(ig, "npm-name"));
     }
     json = JsonTrackingParser.fetchJson("https://raw.githubusercontent.com/FHIR/ig-registry/master/package-feeds.json");
-    for (JsonObject feed : JSONUtil.objects(json, "feeds")) {
-      processFeed(list, JSONUtil.str(feed, "url"));
+    for (JsonObject feed : JsonUtilities.objects(json, "feeds")) {
+      processFeed(list, JsonUtilities.str(feed, "url"));
     }
     
     return list;

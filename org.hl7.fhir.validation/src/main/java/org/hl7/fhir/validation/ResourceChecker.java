@@ -8,7 +8,7 @@ import org.hl7.fhir.r5.elementmodel.SHCParser.JWT;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.json.JSONUtil;
+import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 
 import com.google.gson.JsonObject;

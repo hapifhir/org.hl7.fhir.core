@@ -1102,11 +1102,13 @@ public class Element extends Base {
   public int countDescendents() {
     if (descendentCount > 0) {
       return descendentCount;
-    } else {
+    } else if (children != null) {
       descendentCount = children.size();
       for (Element e : children) {
         descendentCount = descendentCount + e.countDescendents();
       }
+    } else {
+      descendentCount = 0;
     }
     return descendentCount;
   }
