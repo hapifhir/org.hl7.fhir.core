@@ -56,7 +56,7 @@ import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
-import org.hl7.fhir.utilities.json.JSONUtil;
+import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -91,7 +91,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     manifest = (JsonObject) new com.google.gson.JsonParser().parse(contents);
     for (JsonElement e : manifest.getAsJsonArray("test-cases")) {
       JsonObject o = (JsonObject) e;
-      examples.put(JSONUtil.str(o, "name"), o);
+      examples.put(JsonUtilities.str(o, "name"), o);
     }
 
     List<String> names = new ArrayList<String>(examples.size());
@@ -168,7 +168,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("use-test") && !content.get("use-test").getAsBoolean())
       return;
 
-    byte[] testCaseContent = TestingUtilities.loadTestResource("validator", JSONUtil.str(content, "file")).getBytes(StandardCharsets.UTF_8);
+    byte[] testCaseContent = TestingUtilities.loadTestResource("validator", JsonUtilities.str(content, "file")).getBytes(StandardCharsets.UTF_8);
     // load and process content    
     FhirFormat fmt = determineFormat(content, testCaseContent);
     
@@ -177,7 +177,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     val.getContext().setClientRetryCount(4);
     val.setDebug(false);
     
-    if (content.has("fetcher") && "standalone".equals(JSONUtil.str(content, "fetcher"))) {
+    if (content.has("fetcher") && "standalone".equals(JsonUtilities.str(content, "fetcher"))) {
       val.setFetcher(vCurr);
       vCurr.setFetcher(new StandAloneValidatorFetcher(vCurr.getPcm(), vCurr.getContext(), vCurr));
     } else {
@@ -337,8 +337,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
 
   private FhirFormat determineFormat(JsonObject config, byte[] cnt) throws IOException {
-    String name = JSONUtil.str(config, "file");
-    return org.hl7.fhir.validation.ResourceChecker.checkIsResource(vCurr.getContext(), true, cnt, name, !JSONUtil.bool(config, "guess-format")); 
+    String name = JsonUtilities.str(config, "file");
+    return org.hl7.fhir.validation.ResourceChecker.checkIsResource(vCurr.getContext(), true, cnt, name, !JsonUtilities.bool(config, "guess-format")); 
   }
 
   private List<StructureDefinition> asSdList(StructureDefinition sd) {

@@ -9,7 +9,7 @@ import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.json.JSONUtil;
+import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 
 import java.io.ByteArrayInputStream;
@@ -81,12 +81,12 @@ public class PackageClient {
       if (versions != null) {
         for (String v : sorted(versions.keySet())) {
           JsonObject obj = versions.getAsJsonObject(v);
-          res.add(new PackageInfo(JSONUtil.str(obj, "Name", "name"),
-            JSONUtil.str(obj, "Version", "version"),
-            JSONUtil.str(obj, "FhirVersion", "fhirVersion"),
-            JSONUtil.str(obj, "Description", "description"),
-            JSONUtil.str(obj, "url"),
-            JSONUtil.str(obj, "canonical"),
+          res.add(new PackageInfo(JsonUtilities.str(obj, "Name", "name"),
+            JsonUtilities.str(obj, "Version", "version"),
+            JsonUtilities.str(obj, "FhirVersion", "fhirVersion"),
+            JsonUtilities.str(obj, "Description", "description"),
+            JsonUtilities.str(obj, "url"),
+            JsonUtilities.str(obj, "canonical"),
             address));
         }
       }
@@ -121,12 +121,12 @@ public class PackageClient {
       JsonArray json = fetchJsonArray(Utilities.pathURL(address, "catalog?")+params.toString());
       for (JsonElement e : json) {
         JsonObject obj = (JsonObject) e;
-        res.add(new PackageInfo(JSONUtil.str(obj, "Name", "name"),
-          JSONUtil.str(obj, "Version", "version"),
-          JSONUtil.str(obj, "FhirVersion", "fhirVersion"),
-          JSONUtil.str(obj, "Description", "description"),
-          JSONUtil.str(obj, "url"),
-          JSONUtil.str(obj, "canonical"),
+        res.add(new PackageInfo(JsonUtilities.str(obj, "Name", "name"),
+          JsonUtilities.str(obj, "Version", "version"),
+          JsonUtilities.str(obj, "FhirVersion", "fhirVersion"),
+          JsonUtilities.str(obj, "Description", "description"),
+          JsonUtilities.str(obj, "url"),
+          JsonUtilities.str(obj, "canonical"),
           address));
       }
     } catch (IOException e1) {
@@ -192,10 +192,10 @@ public class PackageClient {
   }
 
   protected PackageInfo getPackageInfoFromJSON(JsonObject o, String name, String canonical, String fhirVersion) {
-      String id = JSONUtil.str(o, "npm-name");
-      String pname = JSONUtil.str(o, "name");
-      String pcanonical = JSONUtil.str(o, "canonical");
-      String description = JSONUtil.str(o, "description");
+      String id = JsonUtilities.str(o, "npm-name");
+      String pname = JsonUtilities.str(o, "name");
+      String pcanonical = JsonUtilities.str(o, "canonical");
+      String description = JsonUtilities.str(o, "description");
       boolean ok = true;
       if (ok && !Utilities.noString(name)) {
         ok = (pname != null && pname.contains(name)) || (description != null && description.contains(name)) || (id != null && id.contains(name));
@@ -209,15 +209,15 @@ public class PackageClient {
 
       if (ok) {
         // if we can find something...
-        for (JsonObject e : JSONUtil.objects(o, "editions")) {
-          if (fhirVersion == null || fhirVersion.equals(JSONUtil.str(e, "fhir-version"))) {
-            String v = JSONUtil.str(e, "ig-version");
+        for (JsonObject e : JsonUtilities.objects(o, "editions")) {
+          if (fhirVersion == null || fhirVersion.equals(JsonUtilities.str(e, "fhir-version"))) {
+            String v = JsonUtilities.str(e, "ig-version");
             if (version == null || VersionUtilities.isThisOrLater(version, v)) {
               version = v;
               fVersion = e.getAsJsonArray("fhir-version").get(0).getAsString();
-              url = JSONUtil.str(e, "url");
+              url = JsonUtilities.str(e, "url");
 
-              String npmPackage = JSONUtil.str(e, "package");
+              String npmPackage = JsonUtilities.str(e, "package");
               if (npmPackage != null && id == null) {
                 id = npmPackage.substring(0, npmPackage.indexOf("#"));
               }
@@ -231,7 +231,7 @@ public class PackageClient {
   public List<PackageInfo> listFromRegistry(String name, String canonical, String fhirVersion) throws IOException {
     List<PackageInfo> result = new ArrayList<>();
     JsonObject packages = JsonTrackingParser.fetchJson("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json?nocache=" + System.currentTimeMillis());
-    for (JsonObject o : JSONUtil.objects(packages, "guides")) {
+    for (JsonObject o : JsonUtilities.objects(packages, "guides")) {
       if (o.has("canonical")) {
       final PackageInfo packageInfo = getPackageInfoFromJSON(o, name, canonical, fhirVersion);
         if (packageInfo.getVersion() != null) {
@@ -249,7 +249,7 @@ public class PackageClient {
       JsonArray json = fetchJsonArray(Utilities.pathURL(address, "catalog?")+params.toString());
       for (JsonElement e : json) {
         JsonObject obj = (JsonObject) e;
-        list.add(JSONUtil.str(obj, "Name", "name"));
+        list.add(JsonUtilities.str(obj, "Name", "name"));
       }
     } catch (IOException e1) {
     }
