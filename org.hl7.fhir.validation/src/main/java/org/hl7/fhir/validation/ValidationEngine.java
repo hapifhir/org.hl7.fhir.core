@@ -158,6 +158,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private boolean crumbTrails;
   @Getter @Setter private boolean allowExampleUrls;
   @Getter @Setter private boolean showMessagesFromReferences;
+  @Getter @Setter private boolean doImplicitFHIRPathStringConversion;
   @Getter @Setter private Locale locale;
   @Getter @Setter private List<ImplementationGuide> igs = new ArrayList<>();
   @Getter @Setter private List<String> extensionDomains = new ArrayList<>();
@@ -623,6 +624,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.setQuestionnaireMode(questionnaireMode);
     validator.setLevel(level);
     validator.setNoUnicodeBiDiControlChars(noUnicodeBiDiControlChars);
+    validator.setDoImplicitFHIRPathStringConversion(doImplicitFHIRPathStringConversion);
     if (format == FhirFormat.SHC) {
       igLoader.loadIg(getIgs(), getBinaries(), SHCParser.CURRENT_PACKAGE, true);      
     }

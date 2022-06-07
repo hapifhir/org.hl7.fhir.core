@@ -46,6 +46,8 @@ public class CliContext {
   private boolean noInvariants = false;
   @JsonProperty("wantInvariantsInMessages")
   private boolean wantInvariantsInMessages = false;
+  @JsonProperty("doImplicitFHIRPathStringConversion")
+  private boolean doImplicitFHIRPathStringConversion = false;
 
   @JsonProperty("map")
   private String map = null;
@@ -231,6 +233,16 @@ public class CliContext {
   public CliContext setShowMessagesFromReferences(boolean showMessagesFromReferences) {
     this.showMessagesFromReferences = showMessagesFromReferences;
     return this;
+  }
+
+  @JsonProperty("doImplicitFHIRPathStringConversion")
+  public boolean isDoImplicitFHIRPathStringConversion() {
+    return doImplicitFHIRPathStringConversion;
+  }
+
+  @JsonProperty("doImplicitFHIRPathStringConversion")
+  public void setDoImplicitFHIRPathStringConversion(boolean doImplicitFHIRPathStringConversion) {
+    this.doImplicitFHIRPathStringConversion = doImplicitFHIRPathStringConversion;
   }
 
   @JsonProperty("locale")

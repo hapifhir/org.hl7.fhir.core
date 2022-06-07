@@ -262,6 +262,7 @@ public class FHIRPathEngine {
   private ProfileUtilities profileUtilities;
   private String location; // for error messages
   private boolean allowPolymorphicNames;
+  private boolean doImplicitStringConversion;
 
   // if the fhir path expressions are allowed to use constants beyond those defined in the specification
   // the application can implement them by providing a constant resolver 
@@ -446,6 +447,14 @@ public class FHIRPathEngine {
     this.legacyMode = legacyMode;
   }
 
+
+  public boolean isDoImplicitStringConversion() {
+    return doImplicitStringConversion;
+  }
+
+  public void setDoImplicitStringConversion(boolean doImplicitStringConversion) {
+    this.doImplicitStringConversion = doImplicitStringConversion;
+  }
 
   // --- public API -------------------------------------------------------
   /**
@@ -4211,14 +4220,16 @@ public class FHIRPathEngine {
     List<Base> result = new ArrayList<Base>();
 
     if (focus.size() == 1) {
-      String f = convertToString(focus.get(0));
-      if (Utilities.noString(f)) {
-        result.add(new StringType(""));
-      } else {
-        String t = convertToString(execute(context, focus, expr.getParameters().get(0), true));
-        String r = convertToString(execute(context, focus, expr.getParameters().get(1), true));
-        String n = f.replace(t, r);
-        result.add(new StringType(n));
+      if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
+        String f = convertToString(focus.get(0));
+        if (Utilities.noString(f)) {
+          result.add(new StringType(""));
+        } else {
+          String t = convertToString(execute(context, focus, expr.getParameters().get(0), true));
+          String r = convertToString(execute(context, focus, expr.getParameters().get(1), true));
+          String n = f.replace(t, r);
+          result.add(new StringType(n));
+        }
       }
     } else {
       throw makeException(expr, I18nConstants.FHIRPATH_NO_COLLECTION, "replace", focus.size());
@@ -4233,7 +4244,9 @@ public class FHIRPathEngine {
     String repl = convertToString(execute(context, focus, exp.getParameters().get(1), true));
 
     if (focus.size() == 1 && !Utilities.noString(regex)) {
-      result.add(new StringType(convertToString(focus.get(0)).replaceAll(regex, repl)).noExtensions());
+      if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
+        result.add(new StringType(convertToString(focus.get(0)).replaceAll(regex, repl)).noExtensions());
+      }
     } else {
       result.add(new StringType(convertToString(focus.get(0))).noExtensions());
     }
@@ -4249,7 +4262,7 @@ public class FHIRPathEngine {
       result.add(new BooleanType(false).noExtensions());
     } else if (Utilities.noString(sw)) {
       result.add(new BooleanType(true).noExtensions());
-    } else {
+    } else if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
       if (focus.size() == 1 && !Utilities.noString(sw)) {
         result.add(new BooleanType(convertToString(focus.get(0)).endsWith(sw)).noExtensions());
       } else {
@@ -4919,14 +4932,16 @@ public class FHIRPathEngine {
     String sw = convertToString(execute(context, focus, exp.getParameters().get(0), true));
 
     if (focus.size() == 1 && !Utilities.noString(sw)) {
-      String st = convertToString(focus.get(0));
-      if (Utilities.noString(st)) {
-        result.add(new BooleanType(false).noExtensions());
-      } else {
-        Pattern p = Pattern.compile("(?s)" + sw);
-        Matcher m = p.matcher(st);
-        boolean ok = m.find();
-        result.add(new BooleanType(ok).noExtensions());
+      if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
+        String st = convertToString(focus.get(0));
+        if (Utilities.noString(st)) {
+          result.add(new BooleanType(false).noExtensions());
+        } else {
+          Pattern p = Pattern.compile("(?s)" + sw);
+          Matcher m = p.matcher(st);
+          boolean ok = m.find();
+          result.add(new BooleanType(ok).noExtensions());
+        }
       }
     } else {
       result.add(new BooleanType(false).noExtensions());
@@ -4939,14 +4954,16 @@ public class FHIRPathEngine {
     String sw = convertToString(execute(context, focus, exp.getParameters().get(0), true));
 
     if (focus.size() == 1 && !Utilities.noString(sw)) {
-      String st = convertToString(focus.get(0));
-      if (Utilities.noString(st)) {
-        result.add(new BooleanType(false).noExtensions());
-      } else {
-        Pattern p = Pattern.compile("(?s)" + sw);
-        Matcher m = p.matcher(st);
-        boolean ok = m.matches();
-        result.add(new BooleanType(ok).noExtensions());
+      if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
+        String st = convertToString(focus.get(0));
+        if (Utilities.noString(st)) {
+          result.add(new BooleanType(false).noExtensions());
+        } else {
+          Pattern p = Pattern.compile("(?s)" + sw);
+          Matcher m = p.matcher(st);
+          boolean ok = m.matches();
+          result.add(new BooleanType(ok).noExtensions());
+        }
       }
     } else {
       result.add(new BooleanType(false).noExtensions());
@@ -4962,7 +4979,7 @@ public class FHIRPathEngine {
       result.add(new BooleanType(false).noExtensions());
     } else if (Utilities.noString(sw)) {
       result.add(new BooleanType(true).noExtensions());
-    } else {
+    } else if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
       String st = convertToString(focus.get(0));
       if (Utilities.noString(st)) {
         result.add(new BooleanType(false).noExtensions());
@@ -4981,7 +4998,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcLength(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
-    if (focus.size() == 1) {
+    if (focus.size() == 1 && (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion)) {
       String s = convertToString(focus.get(0));
       result.add(new IntegerType(s.length()).noExtensions());
     }
@@ -5007,7 +5024,7 @@ public class FHIRPathEngine {
       result.add(new BooleanType(false).noExtensions());
     } else if (Utilities.noString(sw)) {
       result.add(new BooleanType(true).noExtensions());
-    } else {
+    } else if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
       String s = convertToString(focus.get(0));
       if (s == null) {
         result.add(new BooleanType(false).noExtensions());
@@ -5020,7 +5037,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcLower(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    if (focus.size() == 1) {
+    if (focus.size() == 1 && (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion)) {
       String s = convertToString(focus.get(0));
       if (!Utilities.noString(s)) { 
         result.add(new StringType(s.toLowerCase()).noExtensions());
@@ -5031,7 +5048,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcUpper(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    if (focus.size() == 1) {
+    if (focus.size() == 1 && (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion)) {
       String s = convertToString(focus.get(0));
       if (!Utilities.noString(s)) { 
         result.add(new StringType(s.toUpperCase()).noExtensions());
@@ -5042,7 +5059,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcToChars(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    if (focus.size() == 1) {
+    if (focus.size() == 1 && (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion)) {
       String s = convertToString(focus.get(0));
       for (char c : s.toCharArray()) {  
         result.add(new StringType(String.valueOf(c)).noExtensions());
@@ -5059,7 +5076,7 @@ public class FHIRPathEngine {
       result.add(new IntegerType(0).noExtensions());
     } else if (Utilities.noString(sw)) {
       result.add(new IntegerType(0).noExtensions());
-    } else {
+    } else if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
       String s = convertToString(focus.get(0));
       if (s == null) {
         result.add(new IntegerType(0).noExtensions());
@@ -5080,7 +5097,7 @@ public class FHIRPathEngine {
       i2 = Integer.parseInt(n2.get(0).primitiveValue());
     }
 
-    if (focus.size() == 1) {
+    if (focus.size() == 1 && (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion)) {
       String sw = convertToString(focus.get(0));
       String s;
       if (i1 < 0 || i1 >= sw.length()) {
