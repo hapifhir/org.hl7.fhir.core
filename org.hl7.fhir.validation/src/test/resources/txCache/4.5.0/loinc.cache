@@ -579,3 +579,40 @@ v: {
   "error" : "The display \"Triglyceride [Moles/​volume] in Serum or Plasma\" is not a valid display for the code {http://loinc.org}35217-9 - should be one of ['Triglyceride [Mass or Moles/volume] in Serum or Plasma', 'Trigl SerPl-msCnc', 'TG' (zh-CN), 'Trigly' (zh-CN), '甘油三脂' (zh-CN), '甘油三酸酯' (zh-CN), '三酸甘油酯' (zh-CN), '甘油三酸脂' (zh-CN), '三酸甘油脂 化学' (zh-CN), '化学检验项目' (zh-CN), '化学检验项目类' (zh-CN), '化学类' (zh-CN), '化学试验' (zh-CN), '非刺激耐受型化学检验项目' (zh-CN), '非刺激耐受型化学检验项目类' (zh-CN), '非刺激耐受型化学试验' (zh-CN), '非刺激耐受型化学试验类 可用数量表示的' (zh-CN), '定量性' (zh-CN), '数值型' (zh-CN), '数量型' (zh-CN), '连续数值型标尺 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 血清或血浆 质量或摩尔浓度' (zh-CN), '质量或摩尔浓度(单位体积)' (zh-CN), '质量或物质的量浓度(单位体积)' (zh-CN), '' (zh-CN), 'Juhuslik Kvantitatiivne Plasma Seerum Seerum või plasma' (et-EE), 'Trigl' (pt-BR), 'Triglycrides' (pt-BR), 'Trig' (pt-BR), 'Triglycerides' (pt-BR), 'Level' (pt-BR), 'Point in time' (pt-BR), 'Random' (pt-BR), 'SerPl' (pt-BR), 'SerPlas' (pt-BR), 'SerP' (pt-BR), 'Serum' (pt-BR), 'SR' (pt-BR), 'Plasma' (pt-BR), 'Pl' (pt-BR), 'Plsm' (pt-BR), 'Quantitative' (pt-BR), 'QNT' (pt-BR), 'Quant' (pt-BR), 'Quan' (pt-BR), 'Chemistry' (pt-BR), 'Chimica Concentrazione Sostanza o Massa Plasma Punto nel tempo (episodio) Siero Siero o Plasma' (it-IT), 'Количественный Массовая или Молярная Концентрация Плазма Сыворотка Сыворотка или Плазма Точка во времени' (ru-RU), 'Момент' (ru-RU)] (from http://tx.fhir.org/r4)"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "version" : "2.72",
+  "code" : "56445-0",
+  "display" : "Medication summary Doc"
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "4.5.0", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "Medication summary Document",
+  "code" : "56445-0",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "version" : "2.72",
+  "code" : "56445-0"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Medication summary Document",
+  "code" : "56445-0",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "version" : "2.72",
+  "code" : "48765-2",
+  "display" : "Allergies and adverse reactions"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Allergies and adverse reactions Document",
+  "code" : "48765-2",
+  "system" : "http://loinc.org",
+  "severity" : "warning",
+  "error" : "The display \"Allergies and adverse reactions\" is not a valid display for the code {http://loinc.org}48765-2 - should be one of ['Allergies and adverse reactions Document', 'Allergies &or adverse reactions Doc', '', '临床文档型' (zh-CN), '临床文档' (zh-CN), '文档' (zh-CN), '文书' (zh-CN), '医疗文书' (zh-CN), '临床医疗文书 医疗服务对象' (zh-CN), '客户' (zh-CN), '病人' (zh-CN), '病患' (zh-CN), '病号' (zh-CN), '超系统 - 病人 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。' (zh-CN), '发现物' (zh-CN), '所见' (zh-CN), '结果' (zh-CN), '结论 变态反应与不良反应 文档.其他' (zh-CN), '杂项类文档' (zh-CN), '其他文档 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 杂项' (zh-CN), '杂项类' (zh-CN), '杂项试验 过敏反应' (zh-CN), '过敏' (zh-CN), 'Allergie e reazioni avverse Documentazione miscellanea Miscellanea Osservazione paziente Punto nel tempo (episodio)' (it-IT), 'Документ Точка во времени' (ru-RU), 'Момент' (ru-RU)] (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
