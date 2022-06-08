@@ -1,7 +1,6 @@
 package org.hl7.fhir.validation.cli.utils;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -29,7 +28,7 @@ public class Params {
   public static final String RECURSE = "-recurse";
   public static final String SHOW_MESSAGES_FROM_REFERENCES = "-showReferenceMessages";
   public static final String LOCALE = "-locale";
-  public static final String EXTENSIONS = "-extensions";
+  public static final String EXTENSION = "-extension";
   public static final String HINT_ABOUT_NON_MUST_SUPPORT = "-hintAboutNonMustSupport";
   public static final String TO_VERSION = "-to-version";
   public static final String DO_NATIVE = "-do-native";
@@ -176,7 +175,7 @@ public class Params {
         } else {
           cliContext.setLocale(new Locale(args[++i]));
         }
-      } else if (args[i].equals(EXTENSIONS)) {
+      } else if (args[i].equals(EXTENSION)) {
         cliContext.getExtensions().add(args[++i]);
       } else if (args[i].equals(NO_INTERNAL_CACHING)) {
         cliContext.setNoInternalCaching(true);

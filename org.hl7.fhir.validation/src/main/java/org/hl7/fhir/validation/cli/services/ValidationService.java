@@ -343,7 +343,7 @@ public class ValidationService {
       validator.setDoNative(cliContext.isDoNative());
       validator.setHintAboutNonMustSupport(cliContext.isHintAboutNonMustSupport());
       for (String s : cliContext.getExtensions()) {
-        if ("*".equals(s)) {
+        if ("any".equals(s)) {
           validator.setAnyExtensionsAllowed(true);
         } else {          
           validator.getExtensionDomains().add(s);
