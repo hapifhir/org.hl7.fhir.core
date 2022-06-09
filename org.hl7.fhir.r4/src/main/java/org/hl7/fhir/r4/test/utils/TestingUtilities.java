@@ -442,28 +442,35 @@ public class TestingUtilities {
       return "Strings differ in length: "+Integer.toString(s1.length())+" vs "+Integer.toString(s2.length())+" but match to the end of the shortest";
     return null;
   }
-
-
+  
   public static String resourceNameToFile(String name) throws IOException {
     //return Utilities.path(System.getProperty("user.dir"), "src", "test", "resources", name);
    return resourceNameToFile(null, name);
   }
 
-
+  private static boolean fileForPathExists(String path) {
+    return new File(path).exists();
+  }
   public static String resourceNameToFile(String subFolder, String name) throws IOException {
 
     final String resourcePath = (subFolder != null ? subFolder + "/" : "") + name;
+    final String filePathFromClassLoader = TestingUtilities.class.getClassLoader().getResource(resourcePath).getPath();
 
-    final Path filePath = (subFolder != null) ?  Paths.get("target", subFolder, name) : Paths.get("target", name);
+    if (fileForPathExists(filePathFromClassLoader)) {
+      return filePathFromClassLoader;
+    } else {
+      final Path newFilePath = (subFolder != null) ? Paths.get("target", subFolder, name) : Paths.get("target", name);
+      copyResourceToNewFile(resourcePath, newFilePath);
+      return newFilePath.toString();
+    }
+  }
 
-      Path parent = filePath.getParent();
-      if (!parent.toFile().exists()) {
-        parent.toFile().mkdirs();
-      }
-
-    ResourceLoaderTests.copyResourceToFile(TestingUtilities.class, filePath, resourcePath);
-
-    return filePath.toString();
+  private static void copyResourceToNewFile(String resourcePath, Path newFilePath) throws IOException {
+    Path parent = newFilePath.getParent();
+    if (!parent.toFile().exists()) {
+      parent.toFile().mkdirs();
+    }
+    ResourceLoaderTests.copyResourceToFile(TestingUtilities.class, newFilePath, resourcePath);
   }
 
 }
