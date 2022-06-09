@@ -95,6 +95,15 @@
 
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>org.hl7.fhir.convertors</artifactId>
+            <classifier>tests</classifier>
+            <type>test-jar</type>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>org.hl7.fhir.dstu2</artifactId>
             <classifier>tests</classifier>
             <type>test-jar</type>
