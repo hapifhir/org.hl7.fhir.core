@@ -1333,6 +1333,30 @@ public class Utilities {
     return false;
   }
 
+  public static boolean endsWithInList(String s, String... list) {
+    if (s == null) {
+      return false;
+    }
+    for (String l : list) {
+      if (s.endsWith(l)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  public static boolean endsWithInList(String s, Collection<String> list) {
+    if (s == null) {
+      return false;
+    }
+    for (String l : list) {
+      if (s.endsWith(l)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public static final int ONE_MB = 1024;
   public static final String GB = "Gb";
   public static final String MB = "Mb";

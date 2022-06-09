@@ -1332,3 +1332,15 @@ v: {
   "system" : "http://loinc.org"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "version" : "2.72",
+  "code" : "57852-6",
+  "display" : "Problem list Narrative - Reported"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Problem list Narrative - Reported",
+  "code" : "57852-6",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------

@@ -3744,7 +3744,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
     } else if (Utilities.isAbsoluteUrl(u)) {
       StructureDefinition sd = context.fetchResource(StructureDefinition.class, u);
-      if (sd != null) {
+      if (sd != null && pkp != null) {
         String disp = sd.hasTitle() ? sd.getTitle() : sd.getName();
         String ref = pkp.getLinkForProfile(null, sd.getUrl());
         if (ref != null && ref.contains("|"))
