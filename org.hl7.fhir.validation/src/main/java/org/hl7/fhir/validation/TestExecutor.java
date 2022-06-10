@@ -12,6 +12,9 @@ import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -129,20 +132,25 @@ public class TestExecutor {
     }
   }
 
-  public static void extractTerminologyCaches() {
+  public static void extractTerminologyCaches(String targetDirectory) {
 
   }
-  public static void executeTests(String[] moduleNamesArg, String classNameFilterArg) {
+
+  public static boolean pathExistsAsDirectory(String directoryPath) {
+    Path path = Paths.get(directoryPath);
+    return Files.exists(path)
+      && Files.isDirectory(path);
+  }
+
+  public static void executeTests(String[] moduleNamesArg, String classNameFilterArg, String txCacheDirectoryPath, String testCasesDirectoryPath) {
     //printClasspath();
     long start = System.currentTimeMillis();
     //Our lone JUnit 4 test.
     List<ModuleTestExecutor> jUnit4TestExecutors = getjUnit4TestExecutors(moduleNamesArg);
 
-    TestConfig.getInstance().setTxCacheDirectory("/Users/david.otasek/IN/2022-05-10-validator-run-tests/txCache");
-    TestConfig.getInstance().setFhirTestCasesDirectory("/Users/david.otasek/IN/2022-05-10-validator-run-tests/fhir-test-cases");
+    TestConfig.getInstance().setRebuildCache(true);
 
-    System.out.println("env : " + System.getenv("java.locale.providers"));
-    System.out.println("prop: " + System.getProperty("java.locale.providers"));
+    setUpDirectories(txCacheDirectoryPath, testCasesDirectoryPath);
 
     List<ModuleTestExecutor> jUnit5TestExecutors = getjUnit5TestExecutors(moduleNamesArg);
 
@@ -164,9 +172,6 @@ public class TestExecutor {
       moduleResultMap.put(moduleTestExecutor.getModuleName(), testExecutionSummary);
     }
 
-    //String dir = System.getenv(FHIR_TEST_CASES_ENV);
-    //System.out.println("FHIR Test Cases Directory: " + dir);
-
     System.out.println("\n\nAll Tests completed.");
 
     for (ModuleTestExecutor moduleTestExecutor : orderedModuleTestExecutors) {
@@ -180,13 +185,43 @@ public class TestExecutor {
     }
 
     System.out.println();
-
     System.out.println(String.format(SUMMARY_TEMPLATE, testsFoundCount, testsFailedCount, testsAbortedCount, testsSkippedCount));
-
     System.out.println("\nCompleted in " + (System.currentTimeMillis() - start) + "ms");
 
     System.exit(0);
 
+  }
+
+  private static void setUpDirectories(String txCacheDirectoryPath, String testCasesDirectoryPath) {
+    if (testCasesDirectoryPath != null
+      && pathExistsAsDirectory(testCasesDirectoryPath)
+    ) {
+      TestConfig.getInstance().setFhirTestCasesDirectory(testCasesDirectoryPath);
+    } else {
+      throw new RuntimeException("fhir-test-cases directory does not exist: " + testCasesDirectoryPath);
+    }
+    try {
+      String txCacheDirectory = getOrCreateTxCacheDirectory(txCacheDirectoryPath);
+      if (!pathExistsAsDirectory(testCasesDirectoryPath)) {
+        throw new RuntimeException("txCache directory does not exist: " + txCacheDirectory);
+      }
+      TestConfig.getInstance().setTxCacheDirectory(txCacheDirectory);
+    } catch (IOException e) {
+      throw new RuntimeException("Unable to create temporary resource directory.", e);
+    }
+  }
+
+  private static String getOrCreateTxCacheDirectory(String txCacheDirectoryParam) throws IOException {
+    final String txCacheDirectory;
+
+    if (txCacheDirectoryParam != null) {
+      txCacheDirectory = txCacheDirectoryParam;
+    } else {
+      txCacheDirectory = Files.createTempDirectory("validator-test-tx-cache").toFile().getAbsolutePath();
+      extractTerminologyCaches(txCacheDirectory);
+    }
+
+    return txCacheDirectory;
   }
 
   @Nonnull

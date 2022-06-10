@@ -11,6 +11,46 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
+  "code" : "11502-2"
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Laboratory report",
+  "code" : "11502-2",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "11502-2"
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "Laboratory report",
+  "code" : "11502-2",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "11502-2"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
+v: {
+  "display" : "Laboratory report",
+  "code" : "11502-2",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "11502-2"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Laboratory report",
+  "code" : "11502-2",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
   "code" : "60591-5"
 }, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "4.0.1", "lang":"de-CH", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
@@ -290,7 +330,7 @@ v: {
   "code" : "51726-8",
   "system" : "http://loinc.org",
   "severity" : "warning",
-  "error" : "The display \"NDC labeler code request\" is not a valid display for the code {http://loinc.org}51726-8 - should be one of ['FDA product label NDC labeler code request', 'FDA label NDC labeler code request', 'FDA 药品标签 National Drug Code' (zh-CN), 'NDC' (zh-CN), '国家药品验证号' (zh-CN), '国家药品代码' (zh-CN), '美国国家药品代码' (zh-CN), '全国药品代码' (zh-CN), 'NDC labeler code' (zh-CN), 'NDC 标识者识别代码' (zh-CN), 'NDC 厂家号' (zh-CN), 'NDC 贴签厂商代码请求' (zh-CN), 'NDC 标签号申请 叙述' (zh-CN), '叙述性文字' (zh-CN), '报告' (zh-CN), '报告型' (zh-CN), '文字叙述' (zh-CN), '文本叙述型' (zh-CN), '文本描述' (zh-CN), '文本描述型 监管类文档' (zh-CN), 'Documentazione normativa Etichetta di prodotto della Food and Drug Administ' (it-IT), 'Описательный' (ru-RU)] (from http://tx.fhir.org/r4)"
+  "error" : "The display \"NDC labeler code request\" is not a valid display for the code {http://loinc.org}51726-8 - should be one of ['FDA product label NDC labeler code request', 'FDA label NDC labeler code request', '', 'FDA 药品标签 National Drug Code' (zh-CN), 'NDC' (zh-CN), '国家药品验证号' (zh-CN), '国家药品代码' (zh-CN), '美国国家药品代码' (zh-CN), '全国药品代码' (zh-CN), 'NDC labeler code' (zh-CN), 'NDC 标识者识别代码' (zh-CN), 'NDC 厂家号' (zh-CN), 'NDC 贴签厂商代码请求' (zh-CN), 'NDC 标签号申请 叙述' (zh-CN), '叙述性文字' (zh-CN), '报告' (zh-CN), '报告型' (zh-CN), '文字叙述' (zh-CN), '文本叙述型' (zh-CN), '文本描述' (zh-CN), '文本描述型 监管类文档' (zh-CN), 'Documentazione normativa Etichetta di prodotto della Food and Drug Administ' (it-IT), 'Описательный' (ru-RU)] (from http://tx.fhir.org/r4)"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -365,7 +405,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
-  "version" : "2.71",
+  "version" : "2.72",
   "code" : "57852-6",
   "display" : "Problem list Narrative - Reported"
 }, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
@@ -1278,7 +1318,7 @@ v: {
 }, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Version 'http://loinc.org' of the code system 'http://loinc.org' is not known (encountered paired with code = 'test'). ValidVersions = [2.71]; The code provided (http://loinc.org#test) is not valid in the value set 'All codes known to the system' (from http://tx.fhir.org/r4)",
+  "error" : "Version 'http://loinc.org' of the code system 'http://loinc.org' is not known (encountered paired with code = 'test'). ValidVersions = [2.72]; The code provided (http://loinc.org#test) is not valid in the value set 'All codes known to the system' (from http://tx.fhir.org/r4)",
   "class" : "CODESYSTEM_UNSUPPORTED"
 }
 -------------------------------------------------------------------------------------
@@ -1289,58 +1329,6 @@ v: {
 v: {
   "display" : "History of allergies, reported",
   "code" : "10155-0",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "11502-2"
-}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "Laboratory report",
-  "code" : "11502-2",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "11502-2"
-}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
-v: {
-  "display" : "Laboratory report",
-  "code" : "11502-2",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "11502-2"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"true"}####
-v: {
-  "display" : "Laboratory report",
-  "code" : "11502-2",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "11502-2"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "Laboratory report",
-  "code" : "11502-2",
-  "system" : "http://loinc.org"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "version" : "2.72",
-  "code" : "57852-6",
-  "display" : "Problem list Narrative - Reported"
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "Problem list Narrative - Reported",
-  "code" : "57852-6",
   "system" : "http://loinc.org"
 }
 -------------------------------------------------------------------------------------

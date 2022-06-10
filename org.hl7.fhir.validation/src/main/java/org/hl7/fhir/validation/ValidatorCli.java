@@ -152,15 +152,13 @@ public class ValidatorCli {
 
     CliContext cliContext = Params.loadCliContext(args);
 
-    if (Params.hasParam(args, Params.TEST)) {
-      Common.runValidationEngineTests();
-    } else if (shouldDisplayHelpToUser(args)) {
+    if (shouldDisplayHelpToUser(args)) {
       Display.displayHelpDetails();
     } else if (Params.hasParam(args, Params.COMPARE)) {
       if (destinationDirectoryValid(Params.getParam(args, Params.DESTINATION))) {
         doLeftRightComparison(args, cliContext, tt);
       }
-    } else if (Params.hasParam(args, Params.RUN_TESTS)) {
+    } else if (Params.hasParam(args, Params.TEST)) {
       parseTestParamsAndExecute(args);
     }
     else {
@@ -172,14 +170,14 @@ public class ValidatorCli {
   protected static void parseTestParamsAndExecute(String[] args) {
     final String testModuleParam = Params.getParam(args, Params.TEST_MODULES);
     final String testClassnameFilter = Params.getParam(args, Params.TEST_NAME_FILTER);
-    final String testCasesDirectory = Params.getParam(args, Params.TEST_CASES_DIR);
-
+    final String testCasesDirectory = Params.getParam(args, Params.TEST);
+    final String txCacheDirectory = Params.getParam(args, Params.TERMINOLOGY_CACHE);
     assert TestExecutor.isValidModuleParam(testModuleParam) : "Invalid test module param: " + testModuleParam;
     final String[] moduleNamesArg = TestExecutor.parseModuleParam(testModuleParam);
 
     assert TestExecutor.isValidClassnameFilterParam(testClassnameFilter) : "Invalid regex for test classname filter: " + testClassnameFilter;
 
-    TestExecutor.executeTests(moduleNamesArg, testClassnameFilter);
+    TestExecutor.executeTests(moduleNamesArg, testClassnameFilter, txCacheDirectory, testCasesDirectory);
   }
 
   private static String[] preProcessArgs(String[] args) {

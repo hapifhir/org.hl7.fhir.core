@@ -12,11 +12,11 @@
     "url" : "http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown",
     "valueCode" : "both"
   }],
-  "url" : "http://fhir.healthintersections.com.au/open/metadata",
-  "version" : "1.0.2-2.0.12-SNAPSHOT",
+  "url" : "http://tx.fhir.org/r2/metadata",
+  "version" : "1.0.2-2.0.14",
   "name" : "FHIR Reference Server Conformance Statement",
   "status" : "active",
-  "date" : "2022-01-06T15:44:28.286Z",
+  "date" : "2022-06-09T21:15:44.743Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -27,8 +27,12 @@
   "kind" : "instance",
   "software" : {
     "name" : "Reference Server",
-    "version" : "2.0.12-SNAPSHOT",
-    "releaseDate" : "2021-12-20T02:28:03.769Z"
+    "version" : "2.0.14",
+    "releaseDate" : "2022-05-13T19:50:55.040Z"
+  },
+  "implementation" : {
+    "description" : "FHIR Server running at http://tx.fhir.org/r2",
+    "url" : "http://tx.fhir.org/r2"
   },
   "fhirVersion" : "1.0.2",
   "format" : ["application/xml+fhir",

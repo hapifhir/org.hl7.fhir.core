@@ -39,7 +39,7 @@ v: {
 }, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
 v: {
   "severity" : "error",
-  "error" : "Version 'http://snomed.info/sct/731000124108/version/20210201' of the code system 'http://snomed.info/sct' is not known (encountered paired with code = '132037003'). ValidVersions = [http://snomed.info/sct/11000146104/version/20210930,http://snomed.info/sct/11000172109/version/20210915,http://snomed.info/sct/20611000087101/version/20210930,http://snomed.info/sct/32506021000036107/version/20210630,http://snomed.info/sct/45991000052106/version/20210531,http://snomed.info/sct/554471000005108/version/20210930,http://snomed.info/sct/731000124108/version/20210901,http://snomed.info/sct/900000000000207008/version/20190731,http://snomed.info/sct/900000000000207008/version/20200131,http://snomed.info/sct/900000000000207008/version/20200731,http://snomed.info/sct/900000000000207008/version/20210731]; The code provided (http://snomed.info/sct#132037003) is not valid in the value set 'All codes known to the system' (from http://tx.fhir.org/r4)",
+  "error" : "Version 'http://snomed.info/sct/731000124108/version/20210201' of the code system 'http://snomed.info/sct' is not known (encountered paired with code = '132037003'). ValidVersions = [http://snomed.info/sct/11000146104/version/20210930,http://snomed.info/sct/11000172109/version/20210915,http://snomed.info/sct/20611000087101/version/20220331,http://snomed.info/sct/32506021000036107/version/20210630,http://snomed.info/sct/45991000052106/version/20210531,http://snomed.info/sct/554471000005108/version/20210930,http://snomed.info/sct/731000124108/version/20220301,http://snomed.info/sct/900000000000207008/version/20190731,http://snomed.info/sct/900000000000207008/version/20200131,http://snomed.info/sct/900000000000207008/version/20200731,http://snomed.info/sct/900000000000207008/version/20220131,http://snomed.info/sct/900000000000207008/version/20220331]; The code provided (http://snomed.info/sct#132037003) is not valid in the value set 'All codes known to the system' (from http://tx.fhir.org/r4)",
   "class" : "CODESYSTEM_UNSUPPORTED"
 }
 -------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/731000124108/version/20210901",
+  "version" : "http://snomed.info/sct/11000172109/version/20210915",
   "code" : "132037003",
   "display" : "Pineywoods pig breed. Not."
 }, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
@@ -201,19 +201,5 @@ v: {
   "display" : "Triacylglycerol",
   "code" : "85600001",
   "system" : "http://snomed.info/sct"
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/11000172109/version/20210915",
-  "code" : "132037003",
-  "display" : "Pineywoods pig breed. Not."
-}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
-v: {
-  "display" : "Pineywoods pig",
-  "code" : "132037003",
-  "system" : "http://snomed.info/sct",
-  "severity" : "warning",
-  "error" : "The display \"Pineywoods pig breed. Not.\" is not a valid display for the code {http://snomed.info/sct}132037003 - should be one of ['Pineywoods pig', 'Pineywoods pig breed (organism)', 'Pineywoods pig breed'] (from http://tx.fhir.org/r4)"
 }
 -------------------------------------------------------------------------------------

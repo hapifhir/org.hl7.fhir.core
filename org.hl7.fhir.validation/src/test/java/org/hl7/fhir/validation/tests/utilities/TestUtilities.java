@@ -27,7 +27,7 @@ public class TestUtilities {
   }
 
   public static String getTerminologyCacheDirectory(String ... testSetPath) {
-    return Paths.get(TestConfig.getInstance().getTxCacheDirectory(), testSetPath).toString();
+    return Paths.get(TestConfig.getInstance().getTxCacheDirectory("org.hl7.fhir.validation"), testSetPath).toString();
   }
 
   public static ValidationEngine getValidationEngine(java.lang.String src, java.lang.String txServer, FhirPublication version, java.lang.String vString) throws Exception {

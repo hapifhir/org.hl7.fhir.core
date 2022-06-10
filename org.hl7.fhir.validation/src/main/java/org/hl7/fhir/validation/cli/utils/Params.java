@@ -76,7 +76,6 @@ public class Params {
 
   public static final String TEST_NAME_FILTER = "-test-classname-filter";
 
-  public static final String TEST_CASES_DIR = "-test-cases-dir";
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
    *

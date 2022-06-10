@@ -8,11 +8,15 @@
       "display" : "Subsetted"
     }]
   },
-  "url" : "http://fhir.healthintersections.com.au/open/metadata",
-  "version" : "4.0.1-2.0.12-SNAPSHOT",
+  "extension" : [{
+    "url" : "http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown",
+    "valueCode" : "both"
+  }],
+  "url" : "http://tx.fhir.org/r3/metadata",
+  "version" : "3.0.2-2.0.14",
   "name" : "FHIR Reference Server Conformance Statement",
   "status" : "active",
-  "date" : "2022-01-10T11:07:19.254Z",
+  "date" : "2022-06-09T21:14:05.196Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -23,10 +27,14 @@
   "instantiates" : ["http://hl7.org/fhir/CapabilityStatement/terminology-server"],
   "software" : {
     "name" : "Reference Server",
-    "version" : "2.0.12-SNAPSHOT",
-    "releaseDate" : "2021-12-20T02:28:03.769Z"
+    "version" : "2.0.14",
+    "releaseDate" : "2022-05-13T19:50:55.040Z"
   },
-  "fhirVersion" : "4.0.1",
+  "implementation" : {
+    "description" : "FHIR Server running at http://tx.fhir.org/r3",
+    "url" : "http://tx.fhir.org/r3"
+  },
+  "fhirVersion" : "3.0.2",
   "format" : ["application/fhir+xml",
   "application/fhir+json"],
   "rest" : [{
@@ -56,7 +64,7 @@
     },
     {
       "name" : "versions",
-      "definition" : "/OperationDefinition/fso-versions"
+      "definition" : "http://tx.fhir.org/r3/OperationDefinition/fso-versions"
     }]
   }]
 }

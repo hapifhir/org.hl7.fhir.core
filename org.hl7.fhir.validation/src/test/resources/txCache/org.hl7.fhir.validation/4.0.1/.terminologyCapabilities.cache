@@ -1,11 +1,11 @@
 {
   "resourceType" : "TerminologyCapabilities",
   "id" : "FhirServer",
-  "url" : "http://fhir.healthintersections.com.au/open/metadata",
+  "url" : "http://tx.fhir.org/r4/metadata",
   "version" : "1.0.0",
   "name" : "FHIR Reference Server Teminology Capability Statement",
   "status" : "active",
-  "date" : "2022-01-07T08:11:26.721Z",
+  "date" : "2022-06-09T11:12:53.805Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -833,7 +833,13 @@
     "uri" : "http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category"
   },
   {
+    "uri" : "http://hl7.org/fhir/us/core/CodeSystem/us-core-observation-category"
+  },
+  {
     "uri" : "http://hl7.org/fhir/us/core/CodeSystem/us-core-provenance-participant-type"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/us/core/CodeSystem/us-core-tags"
   },
   {
     "uri" : "http://hl7.org/fhir/variable-type"
