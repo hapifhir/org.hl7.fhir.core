@@ -1,7 +1,5 @@
 package org.hl7.fhir.validation;
 
-import com.google.common.reflect.ClassPath;
-
 import org.hl7.fhir.utilities.tests.TestConfig;
 import org.hl7.fhir.utilities.tests.execution.CliTestSummary;
 import org.hl7.fhir.utilities.tests.execution.junit4.JUnit4TestExecutor;
@@ -9,9 +7,9 @@ import org.hl7.fhir.utilities.tests.execution.junit5.JUnit5ModuleTestExecutor;
 import org.hl7.fhir.utilities.tests.execution.ModuleTestExecutor;
 
 import javax.annotation.Nonnull;
-import java.io.File;
 import java.io.IOException;
 
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,6 +18,8 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class TestExecutor {
 
@@ -37,6 +37,7 @@ public class TestExecutor {
   };
 
   private static final List<String> JUNIT4_CLASSNAMES = Arrays.asList("org.hl7.fhir.validation.tests.ValidationTests");
+  public static final String TX_CACHE = "txCache";
 
 
   private static String SUMMARY_TEMPLATE = "Tests run: %d, Failures: %d, Errors: %d, Skipped: %d";
@@ -66,29 +67,30 @@ public class TestExecutor {
       : "FAILED";
   }
 
-  public static void printClasspath() {
+  public static void extractTxCacheResources(String targetDirectory) throws IOException {
+    Path targetPath = Paths.get(targetDirectory);
 
-    String classpath = System.getProperty("java.class.path");
-    String[] classPathValues = classpath.split(File.pathSeparator);
-    System.out.println(Arrays.toString(classPathValues));
-    try {
 
-      ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-      contextClassLoader = Thread.currentThread().getContextClassLoader();
 
-      ClassPath classPath = ClassPath.from(contextClassLoader);
-      Set<ClassPath.ClassInfo> classes = classPath.getAllClasses();
 
-      for (ClassPath.ClassInfo classInfo : classes) {
-        if (classInfo.getName().contains("junit") || classInfo.getName().contains("hl7")) {
-          System.out.println(" classInfo: " + classInfo.getName());
+    URL jar = TestExecutor.class.getProtectionDomain().getCodeSource().getLocation();
+    ZipInputStream zip = new ZipInputStream(jar.openStream());
+    while(true) {
+      ZipEntry e = zip.getNextEntry();
+      if (e == null)
+        break;
+      String name = e.getName();
+      if (name.startsWith(TX_CACHE)) {
+        Path sourcePath = Paths.get(name);
+        if (e.isDirectory()) {
+          // Make the directory
+        } else {
+
+          Path fileTargetPath = targetPath.resolve(sourcePath.subpath(1,sourcePath.getNameCount()));
+
         }
-      }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+
     }
-
-
   }
 
   public static void main(String[] args) {
@@ -132,9 +134,7 @@ public class TestExecutor {
     }
   }
 
-  public static void extractTerminologyCaches(String targetDirectory) {
 
-  }
 
   public static boolean pathExistsAsDirectory(String directoryPath) {
     Path path = Paths.get(directoryPath);
@@ -143,7 +143,7 @@ public class TestExecutor {
   }
 
   public static void executeTests(String[] moduleNamesArg, String classNameFilterArg, String txCacheDirectoryPath, String testCasesDirectoryPath) {
-    //printClasspath();
+
     long start = System.currentTimeMillis();
     //Our lone JUnit 4 test.
     List<ModuleTestExecutor> jUnit4TestExecutors = getjUnit4TestExecutors(moduleNamesArg);
@@ -218,7 +218,7 @@ public class TestExecutor {
       txCacheDirectory = txCacheDirectoryParam;
     } else {
       txCacheDirectory = Files.createTempDirectory("validator-test-tx-cache").toFile().getAbsolutePath();
-      extractTerminologyCaches(txCacheDirectory);
+      extractTxCacheResources(txCacheDirectory);
     }
 
     return txCacheDirectory;
