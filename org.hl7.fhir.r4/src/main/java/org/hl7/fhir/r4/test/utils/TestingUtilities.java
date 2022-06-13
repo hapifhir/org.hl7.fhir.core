@@ -451,6 +451,10 @@ public class TestingUtilities {
   private static boolean fileForPathExists(String path) {
     return new File(path).exists();
   }
+
+  public static String generateResourcePath(String subFolder, String name) throws IOException {
+    return Utilities.path(System.getProperty("user.dir"), "src", "test", "resources", subFolder, name);
+  }
   public static String resourceNameToFile(String subFolder, String name) throws IOException {
 
     final String resourcePath = (subFolder != null ? subFolder + "/" : "") + name;
