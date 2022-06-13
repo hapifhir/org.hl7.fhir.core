@@ -7,6 +7,7 @@ import org.hl7.fhir.utilities.tests.execution.junit5.JUnit5ModuleTestExecutor;
 import org.hl7.fhir.utilities.tests.execution.ModuleTestExecutor;
 
 import javax.annotation.Nonnull;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import java.net.URL;
@@ -70,26 +71,53 @@ public class TestExecutor {
   public static void extractTxCacheResources(String targetDirectory) throws IOException {
     Path targetPath = Paths.get(targetDirectory);
 
-
-
-
     URL jar = TestExecutor.class.getProtectionDomain().getCodeSource().getLocation();
     ZipInputStream zip = new ZipInputStream(jar.openStream());
     while(true) {
       ZipEntry e = zip.getNextEntry();
       if (e == null)
         break;
-      String name = e.getName();
-      if (name.startsWith(TX_CACHE)) {
-        Path sourcePath = Paths.get(name);
-        if (e.isDirectory()) {
-          // Make the directory
-        } else {
+      processZipEntry(zip, targetPath, e);
+    }
+  }
 
-          Path fileTargetPath = targetPath.resolve(sourcePath.subpath(1,sourcePath.getNameCount()));
+  private static void processZipEntry(ZipInputStream zip, Path targetPath, ZipEntry e) throws IOException {
+    String name = e.getName();
+    if (!name.startsWith(TX_CACHE)) {
+      zip.closeEntry();
+      return;
+    }
 
-        }
+    Path sourcePath = Paths.get(name);
+    if (sourcePath.getNameCount() <= 1) {
+      zip.closeEntry();
+      return;
+    }
 
+    if (e.isDirectory()) {
+      zip.closeEntry();
+      return;
+    }
+    extractFileFromZipInputStream(zip, sourcePath, targetPath);
+  }
+
+  private static void extractFileFromZipInputStream(ZipInputStream zip, Path sourcePath, Path targetPath) throws IOException {
+    Path fileTargetPath = targetPath.resolve(sourcePath.subpath(1, sourcePath.getNameCount()));
+
+    makeFileParentDirsIfNotExist(fileTargetPath);
+
+    FileOutputStream fileOutputStream = new FileOutputStream(fileTargetPath.toFile());
+    for (int c = zip.read(); c != -1; c = zip.read()) {
+      fileOutputStream.write(c);
+    }
+    zip.closeEntry();
+    fileOutputStream.close();
+  }
+
+  private static void makeFileParentDirsIfNotExist(Path filePath) {
+    Path parent = filePath.getParent();
+    if (!parent.toFile().exists()) {
+      parent.toFile().mkdirs();
     }
   }
 
