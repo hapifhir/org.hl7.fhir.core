@@ -1,6 +1,7 @@
 package org.hl7.fhir.r4.utils.client;
 
 import okhttp3.Headers;
+import okhttp3.Request;
 import okhttp3.internal.http2.Header;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.*;
@@ -363,6 +364,27 @@ public class FHIRToolingClient {
     return feed;
   }
 
+  public ValueSet expandValueset(String vsUrl, Parameters expParams) {
+    Map<String,String> parameters = new HashMap<>();
+    parameters.put("url", vsUrl);
+  
+    org.hl7.fhir.r4.utils.client.network.ResourceRequest<Resource> result = null;
+    try {
+      result = client.issueGetResourceRequest(resourceAddress.resolveOperationUri(ValueSet.class, "expand", parameters),
+        getPreferredResourceFormat(),
+        generateHeaders(),
+        "ValueSet/$expand?url=" + vsUrl,
+        TIMEOUT_OPERATION_EXPAND);
+      if (result.isUnsuccessfulRequest()) {
+        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return result == null ? null : (ValueSet) result.getPayload();
+  }
+
+
   public ValueSet expandValueset(ValueSet source, Parameters expParams) {
     Parameters p = expParams == null ? new Parameters() : expParams.copy();
     p.addParameter().setName("valueSet").setResource(source);
@@ -382,7 +404,6 @@ public class FHIRToolingClient {
     }
     return result == null ? null : (ValueSet) result.getPayload();
   }
-
 
   public Parameters lookupCode(Map<String, String> params) {
     org.hl7.fhir.r4.utils.client.network.ResourceRequest<Resource> result = null;
