@@ -130,14 +130,14 @@ public class JUnit5ModuleTestExecutor extends ModuleTestExecutor {
 
 
   /**
-   * Create a ModuleTestExceutor for the standard case where the module name
+   * Create a ModuleTestExecutor for the standard case where the module name
    * maps to the package name of the root package containing tests.
    *
    * For example the module "org.hl7.fhir.r5" will be assumed to have all its
    * tests in the "org.hl7.fhir.r5" package or its child packages.
    *
    * @param moduleName The name of the module and root package containing tests.
-   * @return the ModuleTestExcecutor for the module
+   * @return the ModuleTestExecutor for the module
    */
   public static JUnit5ModuleTestExecutor getStandardModuleTestExecutor(String moduleName) {
     return  new JUnit5ModuleTestExecutor(moduleName, Arrays.asList(moduleName));

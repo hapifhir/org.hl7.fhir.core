@@ -1,7 +1,5 @@
 package org.hl7.fhir.utilities.tests.execution.junit4;
 
-
-
 import lombok.Getter;
 import org.hl7.fhir.utilities.tests.execution.CliTestSummary;
 import org.hl7.fhir.utilities.tests.execution.ModuleTestExecutor;
@@ -46,7 +44,6 @@ public class JUnit4TestExecutor extends ModuleTestExecutor {
         "FINISHED");
     }
 
-
     @Override
     public void testFailure(Failure failure) {
       ModuleTestExecutor.printTestFailed(writer,
@@ -68,7 +65,7 @@ public class JUnit4TestExecutor extends ModuleTestExecutor {
       .filter(className -> pattern == null ? true : pattern.matcher(className).matches())
       .map(className -> {
         try {
-          return Class.forName("org.hl7.fhir.validation.tests.ValidationTests");
+          return Class.forName(className);
         } catch (ClassNotFoundException e) {
           throw new RuntimeException(e);
         }
