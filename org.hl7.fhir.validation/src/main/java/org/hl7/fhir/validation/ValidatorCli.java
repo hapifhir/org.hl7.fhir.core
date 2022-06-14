@@ -69,6 +69,8 @@ import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ComparisonService;
 import org.hl7.fhir.validation.cli.services.ValidationService;
 import org.hl7.fhir.validation.cli.utils.*;
+import org.hl7.fhir.validation.testexecutor.TestExecutor;
+import org.hl7.fhir.validation.testexecutor.TestExecutorParams;
 
 import java.io.File;
 import java.net.Authenticator;
@@ -152,18 +154,34 @@ public class ValidatorCli {
 
     CliContext cliContext = Params.loadCliContext(args);
 
-    if (Params.hasParam(args, Params.TEST)) {
-      Common.runValidationEngineTests();
-    } else if (shouldDisplayHelpToUser(args)) {
+    if (shouldDisplayHelpToUser(args)) {
       Display.displayHelpDetails();
     } else if (Params.hasParam(args, Params.COMPARE)) {
       if (destinationDirectoryValid(Params.getParam(args, Params.DESTINATION))) {
         doLeftRightComparison(args, cliContext, tt);
       }
-    } else {
+    } else if (Params.hasParam(args, Params.TEST)) {
+      parseTestParamsAndExecute(args);
+    }
+    else {
       Display.printCliArgumentsAndInfo(args);
       doValidation(tt, tts, cliContext);
     }
+  }
+
+  protected static void parseTestParamsAndExecute(String[] args) {
+    final String testModuleParam = Params.getParam(args, Params.TEST_MODULES);
+    final String testClassnameFilter = Params.getParam(args, Params.TEST_NAME_FILTER);
+    final String testCasesDirectory = Params.getParam(args, Params.TEST);
+    final String txCacheDirectory = Params.getParam(args, Params.TERMINOLOGY_CACHE);
+    assert TestExecutorParams.isValidModuleParam(testModuleParam) : "Invalid test module param: " + testModuleParam;
+    final String[] moduleNamesArg = TestExecutorParams.parseModuleParam(testModuleParam);
+
+    assert TestExecutorParams.isValidClassnameFilterParam(testClassnameFilter) : "Invalid regex for test classname filter: " + testClassnameFilter;
+
+    new TestExecutor(moduleNamesArg).executeTests(testClassnameFilter, txCacheDirectory, testCasesDirectory);
+
+    System.exit(0);
   }
 
   private static String[] preProcessArgs(String[] args) {

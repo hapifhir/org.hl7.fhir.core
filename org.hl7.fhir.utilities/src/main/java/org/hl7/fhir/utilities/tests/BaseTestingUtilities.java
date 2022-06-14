@@ -7,12 +7,11 @@ import org.hl7.fhir.utilities.ToolGlobalSettings;
 import org.hl7.fhir.utilities.Utilities;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BaseTestingUtilities {
 
   static public boolean silent;
+
 
   public static String loadTestResource(String... paths) throws IOException {
     /**
@@ -24,7 +23,7 @@ public class BaseTestingUtilities {
      * at the same directory level as the core project.
      */
 
-    String dir = System.getenv("FHIR-TEST-CASES");
+    String dir = TestConfig.getInstance().getFhirTestCasesDirectory();
     if (dir == null && ToolGlobalSettings.hasTestsPath()) {
       dir = ToolGlobalSettings.getTestsPath();
     }
@@ -48,7 +47,7 @@ public class BaseTestingUtilities {
 
   
   public static InputStream loadTestResourceStream(String... paths) throws IOException {
-    String dir = System.getenv("FHIR-TEST-CASES");
+    String dir = TestConfig.getInstance().getFhirTestCasesDirectory();
     if (dir == null && ToolGlobalSettings.hasTestsPath()) {
       dir = ToolGlobalSettings.getTestsPath();
     }
@@ -66,7 +65,7 @@ public class BaseTestingUtilities {
   }
 
   public static byte[] loadTestResourceBytes(String... paths) throws IOException {
-    String dir = System.getenv("FHIR-TEST-CASES");
+    String dir = TestConfig.getInstance().getFhirTestCasesDirectory();
     if (dir == null && ToolGlobalSettings.hasTestsPath()) {
       dir = ToolGlobalSettings.getTestsPath();
     }
@@ -84,7 +83,7 @@ public class BaseTestingUtilities {
   }
 
   public static boolean findTestResource(String... paths) throws IOException {
-    String dir = System.getenv("FHIR-TEST-CASES");
+    String dir = TestConfig.getInstance().getFhirTestCasesDirectory();
     if (dir == null && ToolGlobalSettings.hasTestsPath()) {
       dir = ToolGlobalSettings.getTestsPath();
     }
@@ -112,4 +111,7 @@ public class BaseTestingUtilities {
     Utilities.createDirectory(path);
     return path;
   }
+
+    public static void setFhirTestCasesDirectory(String s) {
+    }
 }

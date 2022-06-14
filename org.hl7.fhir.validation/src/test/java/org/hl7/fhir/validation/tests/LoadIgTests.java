@@ -7,7 +7,8 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 
 public class LoadIgTests {
   

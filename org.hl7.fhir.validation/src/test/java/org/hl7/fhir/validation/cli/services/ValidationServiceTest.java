@@ -1,28 +1,23 @@
 package org.hl7.fhir.validation.cli.services;
 
-import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
 import org.hl7.fhir.validation.cli.model.ValidationRequest;
-import org.hl7.fhir.validation.tests.utilities.TestConstants;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static org.hl7.fhir.validation.tests.utilities.TestUtilities.getTerminologyCacheDirectory;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ValidationServiceTest {
@@ -36,7 +31,7 @@ class ValidationServiceTest {
     List<FileInfo> filesToValidate = new ArrayList<>();
     filesToValidate.add(new FileInfo().setFileName("test_resource.json").setFileContent(resource).setFileType(Manager.FhirFormat.JSON.getExtension()));
 
-    ValidationRequest request = new ValidationRequest().setCliContext(new CliContext().setTxCache(Paths.get(TestConstants.TX_CACHE, "validationService").toString())).setFilesToValidate(filesToValidate);
+    ValidationRequest request = new ValidationRequest().setCliContext(new CliContext().setTxCache(getTerminologyCacheDirectory("validationService"))).setFilesToValidate(filesToValidate);
     // Validation run 1...nothing cached yet
     myService.validateSources(request);
     Mockito.verify(sessionCache, Mockito.times(1)).cacheSession(ArgumentMatchers.any(ValidationEngine.class));

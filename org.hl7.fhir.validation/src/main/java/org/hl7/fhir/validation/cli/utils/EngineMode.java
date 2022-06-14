@@ -10,5 +10,6 @@ public enum EngineMode {
   CONVERT,
   SPREADSHEET,
   FHIRPATH,
-  VERSION
+  VERSION,
+  RUN_TESTS
 }

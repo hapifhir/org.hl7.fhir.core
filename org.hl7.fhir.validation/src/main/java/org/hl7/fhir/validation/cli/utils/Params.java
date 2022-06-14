@@ -70,6 +70,12 @@ public class Params {
   public static final String DO_IMPLICIT_FHIRPATH_STRING_CONVERSION = "-implicit-fhirpath-string-conversions";
   private static final Object JURISDICTION = "-jurisdiction";
 
+  public static final String RUN_TESTS = "-run-tests";
+
+  public static final String TEST_MODULES = "-test-modules";
+
+  public static final String TEST_NAME_FILTER = "-test-classname-filter";
+
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
    *
@@ -208,6 +214,9 @@ public class Params {
         cliContext.setMode(EngineMode.SPREADSHEET);
       } else if (args[i].equals(SNAPSHOT)) {
         cliContext.setMode(EngineMode.SNAPSHOT);
+      } else if (args[i].equals(RUN_TESTS)) {
+        // TODO setBaseTestingUtils test directory
+        cliContext.setMode(EngineMode.RUN_TESTS);
       } else if (args[i].equals(SECURITY_CHECKS)) {
         cliContext.setSecurityChecks(true);
       } else if (args[i].equals(CRUMB_TRAIL)) {
