@@ -28,6 +28,7 @@ import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
+import org.hl7.fhir.utilities.tests.TestConfig;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -125,14 +126,18 @@ public class TestingUtilities extends BaseTestingUtilities {
     }
   }
 
+  public static String getTerminologyCacheDirectory() {
+    return TestConfig.getInstance().getTxCacheDirectory("org.hl7.fhir.r5");
+  }
+
   public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage) throws Exception {
-    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT).withTerminologyCachePath(TestConstants.TX_CACHE).fromPackage(npmPackage);
+    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT).withTerminologyCachePath(getTerminologyCacheDirectory()).fromPackage(npmPackage);
     TerminologyCache.setCacheErrors(true);
     return swc;
   }
 
   public static SimpleWorkerContext getWorkerContext(NpmPackage npmPackage, IWorkerContext.IContextResourceLoader loader) throws Exception {
-    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT).withTerminologyCachePath(TestConstants.TX_CACHE).fromPackage(npmPackage, loader);
+    SimpleWorkerContext swc = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).withUserAgent(TestConstants.USER_AGENT).withTerminologyCachePath(getTerminologyCacheDirectory()).fromPackage(npmPackage, loader);
     TerminologyCache.setCacheErrors(true);
     return swc;
   }

@@ -7,10 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
@@ -27,6 +28,7 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander;
+import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -36,7 +38,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
-public class TerminologyCacheTests {
+public class TerminologyCacheTests implements ResourceLoaderTests {
 
   static final ValueSet.ConceptSetComponent include = new ValueSet.ConceptSetComponent();
   static {
@@ -59,8 +61,9 @@ public class TerminologyCacheTests {
   private JsonParser jsonParser = new JsonParser();
 
   private JsonElement getJsonFromFile(String filename) throws URISyntaxException, IOException {
-    final Path path = Paths.get("src","test","resources", "context", filename);
-    final String stringValue = new String ( Files.readAllBytes(path));
+    InputStream inputStream = getResourceAsInputStream("context", filename);
+
+    final String stringValue = IOUtils.toString(inputStream, java.nio.charset.StandardCharsets.UTF_8);
     return jsonParser.parse(stringValue);
   };
 

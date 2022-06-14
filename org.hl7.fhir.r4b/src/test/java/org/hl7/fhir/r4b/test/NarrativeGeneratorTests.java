@@ -27,7 +27,9 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
-import org.junit.Assert;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.xmlpull.v1.XmlPullParserException;
@@ -74,13 +76,13 @@ public class NarrativeGeneratorTests {
     DateTimeType dt = new DateTimeType(src);
     String actual = new DataRenderer(rc).display(dt);
     
-    Assert.assertTrue("Actual = "+actual+", expected one of "+Utilities.toString(expected), Utilities.existsInList(actual, expected));
+    assertTrue(Utilities.existsInList(actual, expected), "Actual = "+actual+", expected one of "+Utilities.toString(expected));
     XhtmlNode node = new XhtmlNode(NodeType.Element, "p");
     new DataRenderer(rc).render(node, dt);
     actual = new XhtmlComposer(true, false).compose(node); 
-    Assert.assertTrue(actual.startsWith("<p>"));
-    Assert.assertTrue(actual.endsWith("</p>"));
-    Assert.assertTrue("Actual = "+actual+", expected one of "+Utilities.toString(expected), Utilities.existsInList(actual.substring(0, actual.length()-4).substring(3), expected));
+    assertTrue(actual.startsWith("<p>"));
+    assertTrue(actual.endsWith("</p>"));
+    assertTrue(Utilities.existsInList(actual.substring(0, actual.length()-4).substring(3), expected), "Actual = "+actual+", expected one of "+Utilities.toString(expected));
 }
   
   @Test
