@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation;
+package org.hl7.fhir.validation.testexecutor;
 
 import org.hl7.fhir.utilities.tests.TestConfig;
 import org.hl7.fhir.utilities.tests.execution.CliTestSummary;
@@ -7,37 +7,20 @@ import org.hl7.fhir.utilities.tests.execution.junit5.JUnit5ModuleTestExecutor;
 import org.hl7.fhir.utilities.tests.execution.ModuleTestExecutor;
 
 import javax.annotation.Nonnull;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+
+import static org.hl7.fhir.validation.testexecutor.TestModules.*;
 
 public class TestExecutor {
 
-  private static final String VALIDATION_MODULE = "org.hl7.fhir.validation";
-  private static final String[] JUNIT5_MODULE_NAMES = {
-    "org.hl7.fhir.utilities",
-    "org.hl7.fhir.convertors",
-    "org.hl7.fhir.dstu2",
-    "org.hl7.fhir.dstu2016may",
-    "org.hl7.fhir.dstu3",
-    "org.hl7.fhir.r4",
-    "org.hl7.fhir.r4b",
-    "org.hl7.fhir.r5",
-    VALIDATION_MODULE
-  };
 
-  private static final List<String> JUNIT4_CLASSNAMES = Arrays.asList("org.hl7.fhir.validation.tests.ValidationTests");
   public static final String TX_CACHE = "txCache";
 
 
@@ -68,99 +51,6 @@ public class TestExecutor {
       : "FAILED";
   }
 
-  public static void extractTxCacheResources(String targetDirectory) throws IOException {
-    Path targetPath = Paths.get(targetDirectory);
-
-    URL jar = TestExecutor.class.getProtectionDomain().getCodeSource().getLocation();
-    ZipInputStream zip = new ZipInputStream(jar.openStream());
-    while(true) {
-      ZipEntry e = zip.getNextEntry();
-      if (e == null)
-        break;
-      processZipEntry(zip, targetPath, e);
-    }
-  }
-
-  private static void processZipEntry(ZipInputStream zip, Path targetPath, ZipEntry e) throws IOException {
-    String name = e.getName();
-    if (!name.startsWith(TX_CACHE)) {
-      zip.closeEntry();
-      return;
-    }
-
-    Path sourcePath = Paths.get(name);
-    if (sourcePath.getNameCount() <= 1) {
-      zip.closeEntry();
-      return;
-    }
-
-    if (e.isDirectory()) {
-      zip.closeEntry();
-      return;
-    }
-    extractFileFromZipInputStream(zip, sourcePath, targetPath);
-  }
-
-  private static void extractFileFromZipInputStream(ZipInputStream zip, Path sourcePath, Path targetPath) throws IOException {
-    Path fileTargetPath = targetPath.resolve(sourcePath.subpath(1, sourcePath.getNameCount()));
-
-    makeFileParentDirsIfNotExist(fileTargetPath);
-
-    FileOutputStream fileOutputStream = new FileOutputStream(fileTargetPath.toFile());
-    for (int c = zip.read(); c != -1; c = zip.read()) {
-      fileOutputStream.write(c);
-    }
-    zip.closeEntry();
-    fileOutputStream.close();
-  }
-
-  private static void makeFileParentDirsIfNotExist(Path filePath) {
-    Path parent = filePath.getParent();
-    if (!parent.toFile().exists()) {
-      parent.toFile().mkdirs();
-    }
-  }
-
-  public static void main(String[] args) {
-    System.out.println(isValidModuleParam("org.hl6"));
-    System.out.println(isValidModuleParam("org.hl7.fhir.dstu2"));
-    System.out.println(isValidModuleParam("org.hl7.fhir.dstu2,org.hl7.fhir.r4"));
-
-    System.out.println(isValidClassnameFilterParam(".*Tests"));
-    //executeTests(null, null);
-  }
-
-  private static final String MODULE_DELIMITER = ",";
-
-  public static boolean isValidModuleParam(String param) {
-    if (param == null) {
-      return true;
-    }
-    final String[] modules = param.split(MODULE_DELIMITER);
-    for (String module : modules) {
-      if (Arrays.stream(JUNIT5_MODULE_NAMES).noneMatch(i -> i.equals(module))) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  public static String[] parseModuleParam(String param) {
-    if (param == null) {
-      return null;
-    } else {
-      return param.split(MODULE_DELIMITER);
-    }
-  }
-
-  public static boolean isValidClassnameFilterParam(String param) {
-    try {
-      Pattern.compile(param);
-     return true;
-    } catch (PatternSyntaxException e) {
-     return false;
-    }
-  }
 
 
 
@@ -246,7 +136,7 @@ public class TestExecutor {
       txCacheDirectory = txCacheDirectoryParam;
     } else {
       txCacheDirectory = Files.createTempDirectory("validator-test-tx-cache").toFile().getAbsolutePath();
-      extractTxCacheResources(txCacheDirectory);
+      TxCacheResourceExtractor.extractTxCacheResources(txCacheDirectory);
     }
 
     return txCacheDirectory;

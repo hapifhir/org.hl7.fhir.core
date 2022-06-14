@@ -6,7 +6,6 @@ import java.io.PrintStream;
 
 public abstract class ModuleTestExecutor {
   private static final String FAILURE_SUMMARY_TEMPLATE = "Test failures for module %s (%d):";
-
   private static final String STARTING_TEST_TEMPLATE = "Starting: %s";
 
   private static final String FINISHED_TEST_TEMPLATE = "Finished: %s with result: %s";

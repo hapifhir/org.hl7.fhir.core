@@ -69,6 +69,8 @@ import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ComparisonService;
 import org.hl7.fhir.validation.cli.services.ValidationService;
 import org.hl7.fhir.validation.cli.utils.*;
+import org.hl7.fhir.validation.testexecutor.TestExecutor;
+import org.hl7.fhir.validation.testexecutor.TestExecutorParams;
 
 import java.io.File;
 import java.net.Authenticator;
@@ -172,10 +174,10 @@ public class ValidatorCli {
     final String testClassnameFilter = Params.getParam(args, Params.TEST_NAME_FILTER);
     final String testCasesDirectory = Params.getParam(args, Params.TEST);
     final String txCacheDirectory = Params.getParam(args, Params.TERMINOLOGY_CACHE);
-    assert TestExecutor.isValidModuleParam(testModuleParam) : "Invalid test module param: " + testModuleParam;
-    final String[] moduleNamesArg = TestExecutor.parseModuleParam(testModuleParam);
+    assert TestExecutorParams.isValidModuleParam(testModuleParam) : "Invalid test module param: " + testModuleParam;
+    final String[] moduleNamesArg = TestExecutorParams.parseModuleParam(testModuleParam);
 
-    assert TestExecutor.isValidClassnameFilterParam(testClassnameFilter) : "Invalid regex for test classname filter: " + testClassnameFilter;
+    assert TestExecutorParams.isValidClassnameFilterParam(testClassnameFilter) : "Invalid regex for test classname filter: " + testClassnameFilter;
 
     TestExecutor.executeTests(moduleNamesArg, testClassnameFilter, txCacheDirectory, testCasesDirectory);
   }
