@@ -802,15 +802,33 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return null;
   }
 
-  protected Element resolveInBundle(List<Element> entries, String ref, String fullUrl, String type, String id) {
-    if (Utilities.isAbsoluteUrl(ref)) {
-      // if the reference is absolute, then you resolve by fullUrl. No other thinking is required.
+  protected Element resolveInBundle(Element bundle, List<Element> entries, String ref, String fullUrl, String type, String id) {
+    @SuppressWarnings("unchecked")
+    Map<String, Element> map = (Map<String, Element>) bundle.getUserData("validator.entrymap");
+    if (map == null) {
+      map = new HashMap<>();
+      bundle.setUserData("validator.entrymap", map);
       for (Element entry : entries) {
         String fu = entry.getNamedChildValue(FULL_URL);
-        if (ref.equals(fu))
-          return entry;
-      }
-      return null;
+        map.put(fu,  entry);
+        Element resource = entry.getNamedChild(RESOURCE);
+        if (resource != null) {
+          String et = resource.getType();
+          String eid = resource.getNamedChildValue(ID);
+          map.put(et+"/"+eid,  entry);
+        }
+      }      
+    }
+    
+    if (Utilities.isAbsoluteUrl(ref)) {
+      // if the reference is absolute, then you resolve by fullUrl. No other thinking is required.
+      return map.get(ref);
+//      for (Element entry : entries) {
+//        String fu = entry.getNamedChildValue(FULL_URL);
+//        if (ref.equals(fu))
+//          return entry;
+//      }
+//      return null;
     } else {
       // split into base, type, and id
       String u = null;
@@ -822,20 +840,25 @@ public class BaseValidator implements IValidationContextResourceLoader {
       if (parts.length >= 2) {
         String t = parts[0];
         String i = parts[1];
-        for (Element entry : entries) {
-          String fu = entry.getNamedChildValue(FULL_URL);
-          if (fu != null && fu.equals(u))
-            return entry;
-          if (u == null) {
-            Element resource = entry.getNamedChild(RESOURCE);
-            if (resource != null) {
-              String et = resource.getType();
-              String eid = resource.getNamedChildValue(ID);
-              if (t.equals(et) && i.equals(eid))
-                return entry;
-            }
-          }
+        Element res = map.get(u);
+        if (res == null) {
+          res = map.get(t+"/"+i);
         }
+        return res;
+//        for (Element entry : entries) {
+//          String fu = entry.getNamedChildValue(FULL_URL);
+//          if (fu != null && fu.equals(u))
+//            return entry;
+//          if (u == null) {
+//            Element resource = entry.getNamedChild(RESOURCE);
+//            if (resource != null) {
+//              String et = resource.getType();
+//              String eid = resource.getNamedChildValue(ID);
+//              if (t.equals(et) && i.equals(eid))
+//                return entry;
+//            }
+//          }
+//        }
       }
       return null;
     }
@@ -927,8 +950,34 @@ public class BaseValidator implements IValidationContextResourceLoader {
 
     if (match != null && resourceType != null)
       rule(errors, IssueType.REQUIRED, -1, -1, path, match.getType().equals(resourceType), I18nConstants.REFERENCE_REF_RESOURCETYPE, ref, match.getType());
-    if (match == null)
+    if (match == null) {
       warning(errors, IssueType.REQUIRED, -1, -1, path, !ref.startsWith("urn"), I18nConstants.BUNDLE_BUNDLE_NOT_LOCAL, ref);
+      if (!Utilities.isAbsoluteUrl(ref)) {
+        String[] p = ref.split("\\/");
+        List<Element> ml = new ArrayList<>();
+        if (p.length >= 2 && Utilities.existsInList(p[0], context.getResourceNames()) && Utilities.isValidId(p[1])) {
+          for (int i = 0; i < entries.size(); i++) {
+            Element we = entries.get(i);
+            Element r = we.getNamedChild(RESOURCE);
+            if (r != null && p[0].equals(r.fhirType()) && p[1].equals(r.getNamedChildValue("id")) ) {
+              ml.add(we);
+            }
+          }          
+        }
+        if (ml.size() > 1) {
+          warning(errors, IssueType.REQUIRED, -1, -1, path, false, I18nConstants.BUNDLE_POSSSIBLE_MATCHES, ref, targetUrl);          
+        }
+        for (Element e : ml) {
+          String fu = e.getChildValue(FULL_URL);
+          int i = entries.indexOf(e);
+          if (fu == null) {
+            warning(errors, IssueType.REQUIRED, -1, -1, path, false, I18nConstants.BUNDLE_BUNDLE_POSSIBLE_MATCH_NO_FU, i, ref, targetUrl);
+          } else {
+            warning(errors, IssueType.REQUIRED, -1, -1, path, false, I18nConstants.BUNDLE_BUNDLE_POSSIBLE_MATCH_WRONG_FU, i, ref, fu, targetUrl);            
+          }
+        }
+      }
+    }
     return match == null ? null : new IndexedElement(matchIndex, match, entries.get(matchIndex));
   }
 

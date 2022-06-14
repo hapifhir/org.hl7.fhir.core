@@ -1333,6 +1333,30 @@ public class Utilities {
     return false;
   }
 
+  public static boolean endsWithInList(String s, String... list) {
+    if (s == null) {
+      return false;
+    }
+    for (String l : list) {
+      if (s.endsWith(l)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  public static boolean endsWithInList(String s, Collection<String> list) {
+    if (s == null) {
+      return false;
+    }
+    for (String l : list) {
+      if (s.endsWith(l)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public static final int ONE_MB = 1024;
   public static final String GB = "Gb";
   public static final String MB = "Mb";
@@ -1729,6 +1753,14 @@ public class Utilities {
 
   public static Integer getTimePrecision(String value) {
     return splitTimezone(value)[0].replace("T", "").replace(":", "").replace(".", "").length();
+  }
+
+  public static String padInt(int i, int len) {
+    return Utilities.padLeft(Integer.toString(i), ' ', len);
+  }
+
+  public static String padInt(long i, int len) {
+    return Utilities.padLeft(Long.toString(i), ' ', len);
   }
 
 }

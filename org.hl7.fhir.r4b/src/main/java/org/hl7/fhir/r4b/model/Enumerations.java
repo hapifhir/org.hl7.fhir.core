@@ -29,7 +29,7 @@ package org.hl7.fhir.r4b.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Apr 22, 2022 11:20+1000 for FHIR v4.3.0-cibuild
+// Generated on Mon, Jun 13, 2022 17:19+0300 for FHIR v4.3.0
 
 
 import org.hl7.fhir.instance.model.api.*;
@@ -6113,6 +6113,10 @@ The primary difference between a medication statement and a medication administr
          */
         _4_3_0CIBUILD, 
         /**
+         * FHIR Release 4B
+         */
+        _4_3_0, 
+        /**
          * added to help the parsers
          */
         NULL;
@@ -6173,6 +6177,8 @@ The primary difference between a medication statement and a medication administr
           return _4_3_0SNAPSHOT1;
         if ("4.3.0-cibuild".equalsIgnoreCase(codeString))
           return _4_3_0CIBUILD;
+        if ("4.3.0".equalsIgnoreCase(codeString))
+          return _4_3_0;
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public String toCode() {
@@ -6204,6 +6210,7 @@ The primary difference between a medication statement and a medication administr
             case _4_2_0: return "4.2.0";
             case _4_3_0SNAPSHOT1: return "4.3.0-snapshot1";
             case _4_3_0CIBUILD: return "4.3.0-cibuild";
+            case _4_3_0: return "4.3.0";
             case NULL: return null;
             default: return "?";
           }
@@ -6237,6 +6244,7 @@ The primary difference between a medication statement and a medication administr
             case _4_2_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_3_0SNAPSHOT1: return "http://hl7.org/fhir/FHIR-version";
             case _4_3_0CIBUILD: return "http://hl7.org/fhir/FHIR-version";
+            case _4_3_0: return "http://hl7.org/fhir/FHIR-version";
             case NULL: return null;
             default: return "?";
           }
@@ -6270,6 +6278,7 @@ The primary difference between a medication statement and a medication administr
             case _4_2_0: return "FHIR Release 5 Draft #1.";
             case _4_3_0SNAPSHOT1: return "FHIR Release 4B Snapshot #1.";
             case _4_3_0CIBUILD: return "FHIR Release 4B CI-Build.";
+            case _4_3_0: return "FHIR Release 4B";
             case NULL: return null;
             default: return "?";
           }
@@ -6303,6 +6312,7 @@ The primary difference between a medication statement and a medication administr
             case _4_2_0: return "4.2.0";
             case _4_3_0SNAPSHOT1: return "4.3.0-snapshot1";
             case _4_3_0CIBUILD: return "4.3.0-cibuild";
+            case _4_3_0: return "4.3.0";
             case NULL: return null;
             default: return "?";
           }
@@ -6438,6 +6448,8 @@ public String toCode(int len) {
           return FHIRVersion._4_3_0SNAPSHOT1;
         if ("4.3.0-cibuild".equalsIgnoreCase(codeString))
           return FHIRVersion._4_3_0CIBUILD;
+        if ("4.3.0".equalsIgnoreCase(codeString))
+          return FHIRVersion._4_3_0;
         throw new IllegalArgumentException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public Enumeration<FHIRVersion> fromType(Base code) throws FHIRException {
@@ -6502,6 +6514,8 @@ public String toCode(int len) {
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0SNAPSHOT1);
         if ("4.3.0-cibuild".equalsIgnoreCase(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0CIBUILD);
+        if ("4.3.0".equalsIgnoreCase(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0);
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
     public String toCode(FHIRVersion code) {
@@ -6559,6 +6573,8 @@ public String toCode(int len) {
         return "4.3.0-snapshot1";
       if (code == FHIRVersion._4_3_0CIBUILD)
         return "4.3.0-cibuild";
+      if (code == FHIRVersion._4_3_0)
+        return "4.3.0";
       return "?";
       }
     public String toSystem(FHIRVersion code) {

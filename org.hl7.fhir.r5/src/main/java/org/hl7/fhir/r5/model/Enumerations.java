@@ -6848,6 +6848,10 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         _4_3_0CIBUILD, 
         /**
+         * R4B Release
+         */
+        _4_3_0, 
+        /**
          * R5 Preview #2.
          */
         _4_4_0, 
@@ -6928,6 +6932,8 @@ The primary difference between a medicationusage and a medicationadministration 
               return _4_3_0SNAPSHOT1;
             if ("4.3.0-cibuild".equalsIgnoreCase(codeString))
               return _4_3_0CIBUILD;
+            if ("4.3.0".equalsIgnoreCase(codeString))
+              return _4_3_0;
             if ("4.4.0".equals(codeString))
               return _4_4_0;
             if ("4.5.0".equals(codeString))
@@ -6969,6 +6975,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_2_0: return "4.2.0";
             case _4_3_0SNAPSHOT1: return "4.3.0-snapshot1";
             case _4_3_0CIBUILD: return "4.3.0-cibuild";
+            case _4_3_0: return "4.3.0";
             case _4_4_0: return "4.4.0";
             case _4_5_0: return "4.5.0";
             case _4_6_0: return "4.6.0";
@@ -7007,6 +7014,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_2_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_3_0SNAPSHOT1: return "http://hl7.org/fhir/FHIR-version";
             case _4_3_0CIBUILD: return "http://hl7.org/fhir/FHIR-version";
+            case _4_3_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_4_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_5_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_6_0: return "http://hl7.org/fhir/FHIR-version";
@@ -7045,6 +7053,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_2_0: return "R5 Preview #1.";
             case _4_3_0SNAPSHOT1: return "R4B Snapshot #1.";
             case _4_3_0CIBUILD: return "R4B Rolling CI-Build.";
+            case _4_3_0: return "FHIR Release 4B";
             case _4_4_0: return "R5 Preview #2.";
             case _4_5_0: return "R5 Preview #3.";
             case _4_6_0: return "R5 Draft Ballot.";
@@ -7083,6 +7092,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_2_0: return "4.2.0";
             case _4_3_0SNAPSHOT1: return "4.3.0-snapshot1";
             case _4_3_0CIBUILD: return "4.3.0-cibuild";
+            case _4_3_0: return "4.3.0";
             case _4_4_0: return "4.4.0";
             case _4_5_0: return "4.5.0";
             case _4_6_0: return "4.6.0";
@@ -7223,6 +7233,8 @@ public String toCode(int len) {
               return FHIRVersion._4_3_0SNAPSHOT1;
             if ("4.3.0-cibuild".equalsIgnoreCase(codeString))
               return FHIRVersion._4_3_0CIBUILD;
+            if ("4.3.0".equalsIgnoreCase(codeString))
+              return FHIRVersion._4_3_0;
             if ("4.4.0".equals(codeString))
               return FHIRVersion._4_4_0;
             if ("4.5.0".equals(codeString))
@@ -7297,6 +7309,8 @@ public String toCode(int len) {
               return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0SNAPSHOT1);
             if ("4.3.0-cibuild".equalsIgnoreCase(codeString))
               return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0CIBUILD);
+            if ("4.3.0".equalsIgnoreCase(codeString))
+              return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0);
             if ("4.4.0".equals(codeString))
               return new Enumeration<FHIRVersion>(this, FHIRVersion._4_4_0);
             if ("4.5.0".equals(codeString))
@@ -7364,6 +7378,8 @@ public String toCode(int len) {
         return "4.3.0-snapshot1";
       if (code == FHIRVersion._4_3_0CIBUILD)
         return "4.3.0-cibuild";
+      if (code == FHIRVersion._4_3_0)
+        return "4.3.0";
       if (code == FHIRVersion._4_4_0)
         return "4.4.0";
       if (code == FHIRVersion._4_5_0)

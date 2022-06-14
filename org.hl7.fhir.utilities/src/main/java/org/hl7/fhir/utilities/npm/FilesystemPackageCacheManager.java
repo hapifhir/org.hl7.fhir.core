@@ -42,7 +42,7 @@ import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.json.JSONUtil;
+import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.npm.NpmPackage.NpmPackageFolder;
 import org.slf4j.Logger;
@@ -83,6 +83,8 @@ import java.util.Map.Entry;
  */
 public class FilesystemPackageCacheManager extends BasePackageCacheManager implements IPackageCacheManager {
 
+
+
   //  private static final String SECONDARY_SERVER = "http://local.fhir.org:8080/packages";
   public static final String PACKAGE_REGEX = "^[a-zA-Z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+$";
   public static final String PACKAGE_VERSION_REGEX = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+\\#[A-Za-z0-9\\-\\_\\$]+(\\.[A-Za-z0-9\\-\\_\\$]+)*$";
@@ -96,7 +98,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private Map<String, String> ciList = new HashMap<String, String>();
   private JsonArray buildInfo;
   private boolean suppressErrors;
-
+ 
   /**
    * Constructor
    */
@@ -412,14 +414,14 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
             log(" done.");
         }
         pck = loadPackageInfo(packRoot);
-        if (!id.equals(JSONUtil.str(npm.getNpm(), "name")) || !v.equals(JSONUtil.str(npm.getNpm(), "version"))) {
-          if (!id.equals(JSONUtil.str(npm.getNpm(), "name"))) {
-            npm.getNpm().addProperty("original-name", JSONUtil.str(npm.getNpm(), "name"));
+        if (!id.equals(JsonUtilities.str(npm.getNpm(), "name")) || !v.equals(JsonUtilities.str(npm.getNpm(), "version"))) {
+          if (!id.equals(JsonUtilities.str(npm.getNpm(), "name"))) {
+            npm.getNpm().addProperty("original-name", JsonUtilities.str(npm.getNpm(), "name"));
             npm.getNpm().remove("name");
             npm.getNpm().addProperty("name", id);
           }
-          if (!v.equals(JSONUtil.str(npm.getNpm(), "version"))) {
-            npm.getNpm().addProperty("original-version", JSONUtil.str(npm.getNpm(), "version"));
+          if (!v.equals(JsonUtilities.str(npm.getNpm(), "version"))) {
+            npm.getNpm().addProperty("original-version", JsonUtilities.str(npm.getNpm(), "version"));
             npm.getNpm().remove("version");
             npm.getNpm().addProperty("version", v);
           }
@@ -564,8 +566,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     checkBuildLoaded();
     for (JsonElement n : buildInfo) {
       JsonObject o = (JsonObject) n;
-      if (packageId.equals(JSONUtil.str(o, "package-id"))) {
-        return JSONUtil.str(o, "url");
+      if (packageId.equals(JsonUtilities.str(o, "package-id"))) {
+        return JsonUtilities.str(o, "url");
       }
     }
     return null;
@@ -575,8 +577,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     checkBuildLoaded();
     for (JsonElement n : buildInfo) {
       JsonObject o = (JsonObject) n;
-      if (!specList.containsKey(JSONUtil.str(o, "package-id"))) {
-        specList.put(JSONUtil.str(o, "package-id"), JSONUtil.str(o, "url"));
+      if (!specList.containsKey(JsonUtilities.str(o, "package-id"))) {
+        specList.put(JsonUtilities.str(o, "package-id"), JsonUtilities.str(o, "url"));
       }
     }
   }
@@ -602,8 +604,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       for (String pf : listPackages()) {
         if (new File(Utilities.path(cacheFolder, pf, "package", "package.json")).exists()) {
           JsonObject npm = JsonTrackingParser.parseJsonFile(Utilities.path(cacheFolder, pf, "package", "package.json"));
-          if (canonicalUrl.equals(JSONUtil.str(npm, "canonical"))) {
-            return JSONUtil.str(npm, "name");
+          if (canonicalUrl.equals(JsonUtilities.str(npm, "canonical"))) {
+            return JsonUtilities.str(npm, "name");
           }
         }
       }
@@ -622,14 +624,14 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     if (buildInfo != null) {
       for (JsonElement n : buildInfo) {
         JsonObject o = (JsonObject) n;
-        if (canonical.equals(JSONUtil.str(o, "url"))) {
-          return JSONUtil.str(o, "package-id");
+        if (canonical.equals(JsonUtilities.str(o, "url"))) {
+          return JsonUtilities.str(o, "package-id");
         }
       }
       for (JsonElement n : buildInfo) {
         JsonObject o = (JsonObject) n;
-        if (JSONUtil.str(o, "url").startsWith(canonical + "/ImplementationGuide/")) {
-          return JSONUtil.str(o, "package-id");
+        if (JsonUtilities.str(o, "url").startsWith(canonical + "/ImplementationGuide/")) {
+          return JsonUtilities.str(o, "package-id");
         }
       }
     }
@@ -642,7 +644,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     try {
       String url = ciList.get(id);
       JsonObject json = JsonTrackingParser.fetchJson(Utilities.pathURL(url, "package.manifest.json"));
-      String currDate = JSONUtil.str(json, "date");
+      String currDate = JsonUtilities.str(json, "date");
       String packDate = p.date();
       if (!currDate.equals(packDate)) {
         return null; // nup, we need a new copy
@@ -738,13 +740,13 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         throw new FHIRException("Error fetching package directly (" + pv + "), or fetching package list for " + id + " from " + pu + ": " + e1.getMessage(), e1);
       }
     }
-    if (!id.equals(JSONUtil.str(json, "package-id")))
-      throw new FHIRException("Package ids do not match in " + pu + ": " + id + " vs " + JSONUtil.str(json, "package-id"));
+    if (!id.equals(JsonUtilities.str(json, "package-id")))
+      throw new FHIRException("Package ids do not match in " + pu + ": " + id + " vs " + JsonUtilities.str(json, "package-id"));
     for (JsonElement e : json.getAsJsonArray("list")) {
       JsonObject vo = (JsonObject) e;
-      if (v.equals(JSONUtil.str(vo, "version"))) {
-        aurl = Utilities.pathURL(JSONUtil.str(vo, "path"), "package.tgz");
-        String u = Utilities.pathURL(JSONUtil.str(vo, "path"), "package.tgz");
+      if (v.equals(JsonUtilities.str(vo, "version"))) {
+        aurl = Utilities.pathURL(JsonUtilities.str(vo, "path"), "package.tgz");
+        String u = Utilities.pathURL(JsonUtilities.str(vo, "path"), "package.tgz");
         return new InputStreamWithSrc(fetchFromUrlSpecific(u, true), u, v);
       }
     }
@@ -769,12 +771,12 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
     String pu = Utilities.pathURL(url, "package-list.json");
     JsonObject json = JsonTrackingParser.fetchJson(pu);
-    if (!id.equals(JSONUtil.str(json, "package-id")))
-      throw new FHIRException("Package ids do not match in " + pu + ": " + id + " vs " + JSONUtil.str(json, "package-id"));
+    if (!id.equals(JsonUtilities.str(json, "package-id")))
+      throw new FHIRException("Package ids do not match in " + pu + ": " + id + " vs " + JsonUtilities.str(json, "package-id"));
     for (JsonElement e : json.getAsJsonArray("list")) {
       JsonObject vo = (JsonObject) e;
-      if (JSONUtil.bool(vo, "current")) {
-        return JSONUtil.str(vo, "version");
+      if (JsonUtilities.bool(vo, "current")) {
+        return JsonUtilities.str(vo, "version");
       }
     }
 

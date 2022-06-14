@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.function.Function;
 
 public abstract class BasePackageCacheManager implements IPackageCacheManager {
+
   private static final Logger ourLog = LoggerFactory.getLogger(BasePackageCacheManager.class);
   private List<String> myPackageServers = new ArrayList<>();
   private Function<String, PackageClient> myClientFactory = address -> new CachingPackageClient(address);

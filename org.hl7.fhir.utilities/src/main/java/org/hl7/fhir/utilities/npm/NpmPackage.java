@@ -67,7 +67,7 @@ import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
-import org.hl7.fhir.utilities.json.JSONUtil;
+import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.npm.NpmPackage.ITransformingLoader;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformationSorter;
@@ -113,12 +113,12 @@ public class NpmPackage {
     
     public PackageResourceInformation(String root, JsonObject fi) throws IOException {
       super();
-      id = JSONUtil.str(fi, "id");
-      type = JSONUtil.str(fi, "resourceType");
-      url = JSONUtil.str(fi, "url");
-      version = JSONUtil.str(fi, "version");
-      filename = Utilities.path(root, JSONUtil.str(fi, "filename"));
-      supplements = JSONUtil.str(fi, "supplements");
+      id = JsonUtilities.str(fi, "id");
+      type = JsonUtilities.str(fi, "resourceType");
+      url = JsonUtilities.str(fi, "url");
+      version = JsonUtilities.str(fi, "version");
+      filename = Utilities.path(root, JsonUtilities.str(fi, "filename"));
+      supplements = JsonUtilities.str(fi, "supplements");
     }
     public String getId() {
       return id;
@@ -144,8 +144,8 @@ public class NpmPackage {
 
     @Override
     public int compare(JsonObject o0, JsonObject o1) {
-      String v0 = JSONUtil.str(o0, "version"); 
-      String v1 = JSONUtil.str(o1, "version"); 
+      String v0 = JsonUtilities.str(o0, "version"); 
+      String v1 = JsonUtilities.str(o1, "version"); 
       return v0.compareTo(v1);
     }
   }
@@ -185,8 +185,8 @@ public class NpmPackage {
       this.index = index;
       for (JsonElement e : index.getAsJsonArray("files")) {
         JsonObject file = (JsonObject) e;
-        String type = JSONUtil.str(file, "resourceType");
-        String name = JSONUtil.str(file, "filename");
+        String type = JsonUtilities.str(file, "resourceType");
+        String name = JsonUtilities.str(file, "filename");
         if (!types.containsKey(type))
           types.put(type, new ArrayList<>());
         types.get(type).add(name);
@@ -326,7 +326,8 @@ public class NpmPackage {
   }
 
   public static boolean isInternalExemptFile(File f) {
-    return Utilities.existsInList(f.getName(), ".git", ".svn") || Utilities.existsInList(f.getName(), "package-list.json");
+    return Utilities.existsInList(f.getName(), ".git", ".svn", ".DS_Store") || Utilities.existsInList(f.getName(), "package-list.json") ||
+        Utilities.endsWithInList(f.getName(), ".tgz");
   }
 
   private void loadSubFolders(String rootPath, File dir) throws IOException {
@@ -552,7 +553,7 @@ public class NpmPackage {
       if (folder.index != null) {
         for (JsonElement e : folder.index.getAsJsonArray("files")) {
           JsonObject fi = e.getAsJsonObject();
-          if (Utilities.existsInList(JSONUtil.str(fi, "resourceType"), types)) {
+          if (Utilities.existsInList(JsonUtilities.str(fi, "resourceType"), types)) {
             res.add(new PackageResourceInformation(folder.folder.getAbsolutePath(), fi));
           }
         }
@@ -625,19 +626,19 @@ public class NpmPackage {
     List<JsonObject> matches = new ArrayList<>();
     for (JsonElement e : f.index.getAsJsonArray("files")) {
       JsonObject file = (JsonObject) e;
-      if (canonical.equals(JSONUtil.str(file, "url"))) {
-        if (version != null && version.equals(JSONUtil.str(file, "version"))) {
-          return load("package", JSONUtil.str(file, "filename"));
+      if (canonical.equals(JsonUtilities.str(file, "url"))) {
+        if (version != null && version.equals(JsonUtilities.str(file, "version"))) {
+          return load("package", JsonUtilities.str(file, "filename"));
         } else if (version == null) {
           matches.add(file);
         }
       }
       if (matches.size() > 0) {
         if (matches.size() == 1) {
-          return load("package", JSONUtil.str(matches.get(0), "filename"));          
+          return load("package", JsonUtilities.str(matches.get(0), "filename"));          
         } else {
           Collections.sort(matches, new IndexVersionSorter());
-          return load("package", JSONUtil.str(matches.get(matches.size()-1), "filename"));          
+          return load("package", JsonUtilities.str(matches.get(matches.size()-1), "filename"));          
         }
       }
     }
@@ -697,7 +698,7 @@ public class NpmPackage {
    * @return
    */
   public String name() {
-    return JSONUtil.str(npm, "name");
+    return JsonUtilities.str(npm, "name");
   }
 
   /**
@@ -705,15 +706,15 @@ public class NpmPackage {
    * @return
    */
   public String id() {
-    return JSONUtil.str(npm, "name");
+    return JsonUtilities.str(npm, "name");
   }
 
   public String date() {
-    return JSONUtil.str(npm, "date");
+    return JsonUtilities.str(npm, "date");
   }
 
   public String canonical() {
-    return JSONUtil.str(npm, "canonical");
+    return JsonUtilities.str(npm, "canonical");
   }
 
   /**
@@ -721,7 +722,7 @@ public class NpmPackage {
    * @return
    */
   public String version() {
-    return JSONUtil.str(npm, "version");
+    return JsonUtilities.str(npm, "version");
   }
 
   /**
@@ -729,11 +730,11 @@ public class NpmPackage {
    * @return
    */
   public String fhirVersion() {
-    if ("hl7.fhir.core".equals(JSONUtil.str(npm, "name")))
-      return JSONUtil.str(npm, "version");
-    else if (JSONUtil.str(npm, "name").startsWith("hl7.fhir.r2.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r2b.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r3.") || 
-        JSONUtil.str(npm, "name").startsWith("hl7.fhir.r4.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r4b.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r5."))
-      return JSONUtil.str(npm, "version");
+    if ("hl7.fhir.core".equals(JsonUtilities.str(npm, "name")))
+      return JsonUtilities.str(npm, "version");
+    else if (JsonUtilities.str(npm, "name").startsWith("hl7.fhir.r2.") || JsonUtilities.str(npm, "name").startsWith("hl7.fhir.r2b.") || JsonUtilities.str(npm, "name").startsWith("hl7.fhir.r3.") || 
+        JsonUtilities.str(npm, "name").startsWith("hl7.fhir.r4.") || JsonUtilities.str(npm, "name").startsWith("hl7.fhir.r4b.") || JsonUtilities.str(npm, "name").startsWith("hl7.fhir.r5."))
+      return JsonUtilities.str(npm, "version");
     else {
       JsonObject dep = null;
       if (npm.has("dependencies") && npm.get("dependencies").isJsonObject()) {
@@ -778,11 +779,11 @@ public class NpmPackage {
   }
 
   public String type() {
-    return JSONUtil.str(npm, "type");
+    return JsonUtilities.str(npm, "type");
   }
 
   public String description() {
-    return JSONUtil.str(npm, "description");
+    return JsonUtilities.str(npm, "description");
   }
 
   public String getPath() {
@@ -800,24 +801,24 @@ public class NpmPackage {
   }
 
   public String homepage() {
-    return JSONUtil.str(npm, "homepage");
+    return JsonUtilities.str(npm, "homepage");
   }
 
   public String url() {
-    return JSONUtil.str(npm, "url");
+    return JsonUtilities.str(npm, "url");
   }
 
 
   public String title() {
-    return JSONUtil.str(npm, "title");
+    return JsonUtilities.str(npm, "title");
   }
 
   public String toolsVersion() {
-    return JSONUtil.str(npm, "tools-version");
+    return JsonUtilities.str(npm, "tools-version");
   }
 
   public String license() {
-    return JSONUtil.str(npm, "license");
+    return JsonUtilities.str(npm, "license");
   }
 
   //  /**
@@ -833,7 +834,7 @@ public class NpmPackage {
     if (npm.has("url") && npm.get("url").isJsonPrimitive()) {
       return PackageHacker.fixPackageUrl(npm.get("url").getAsString());
     } else {
-      return JSONUtil.str(npm, "canonical");
+      return JsonUtilities.str(npm, "canonical");
     }
   }
 
@@ -842,8 +843,8 @@ public class NpmPackage {
     JsonArray files = f.index.getAsJsonArray("files");
     for (JsonElement e : files) {
       JsonObject i = (JsonObject) e;
-      if (type.equals(JSONUtil.str(i, "resourceType")) && id.equals(JSONUtil.str(i, "id"))) {
-        return load("package", JSONUtil.str(i, "filename"));
+      if (type.equals(JsonUtilities.str(i, "resourceType")) && id.equals(JsonUtilities.str(i, "id"))) {
+        return load("package", JsonUtilities.str(i, "filename"));
       }
     }
     return null;
@@ -851,12 +852,15 @@ public class NpmPackage {
 
   public InputStream loadExampleResource(String type, String id) throws IOException {
     NpmPackageFolder f = folders.get("example");
+    if (f == null) {
+      f = folders.get("package/example");      
+    }
     if (f != null) {
       JsonArray files = f.index.getAsJsonArray("files");
       for (JsonElement e : files) {
         JsonObject i = (JsonObject) e;
-        if (type.equals(JSONUtil.str(i, "resourceType")) && id.equals(JSONUtil.str(i, "id"))) {
-          return load("example", JSONUtil.str(i, "filename"));
+        if (type.equals(JsonUtilities.str(i, "resourceType")) && id.equals(JsonUtilities.str(i, "id"))) {
+          return load("example", JsonUtilities.str(i, "filename"));
         }
       }
     }
@@ -1066,9 +1070,12 @@ public class NpmPackage {
     for (String folder : folders.keySet()) {
       NpmPackageFolder pf = folders.get(folder);
       String p = folder.contains("$") ? path : Utilities.path(path, folder);
-      for (File f : new File(p).listFiles()) {
-        if (!f.isDirectory() && !isInternalExemptFile(f)) {
-          pf.getContent().put(f.getName(), TextFile.fileToBytes(f));
+      File file = new File(p);
+      if (file.exists()) {
+        for (File f : file.listFiles()) {
+          if (!f.isDirectory() && !isInternalExemptFile(f)) {
+            pf.getContent().put(f.getName(), TextFile.fileToBytes(f));
+          }
         }
       }
     }
@@ -1091,7 +1098,7 @@ public class NpmPackage {
   }
 
   public boolean isCore() {
-    return Utilities.existsInList(JSONUtil.str(npm, "type"), "fhir.core", "Core");
+    return Utilities.existsInList(JsonUtilities.str(npm, "type"), "fhir.core", "Core");
   }
 
   public boolean hasCanonical(String url) {
@@ -1104,8 +1111,8 @@ public class NpmPackage {
     if (folder != null) {
       for (JsonElement e : folder.index.getAsJsonArray("files")) {
         JsonObject o = (JsonObject) e;
-        if (u.equals(JSONUtil.str(o, "url"))) {
-          if (v == null || v.equals(JSONUtil.str(o, "version"))) {
+        if (u.equals(JsonUtilities.str(o, "url"))) {
+          if (v == null || v.equals(JsonUtilities.str(o, "version"))) {
             return true;
           }
         }
@@ -1123,7 +1130,7 @@ public class NpmPackage {
     if (Utilities.existsInList(name(), "fhir.test.data.r2", "fhir.test.data.r3", "fhir.test.data.r4", "fhir.tx.support.r2", "fhir.tx.support.r3", "fhir.tx.support.r4", "us.nlm.vsac")) {
       return true;
     }
-    if (JSONUtil.bool(npm, "lazy-load")) {
+    if (JsonUtilities.bool(npm, "lazy-load")) {
       return true;
     }
     if (!hasFile("other", "spec.internals")) {
@@ -1133,7 +1140,7 @@ public class NpmPackage {
   }
 
   public boolean isNotForPublication() {
-    return JSONUtil.bool(npm, "notForPublication");
+    return JsonUtilities.bool(npm, "notForPublication");
  }
 
   public InputStream load(PackageResourceInformation p) throws FileNotFoundException {

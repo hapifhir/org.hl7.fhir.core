@@ -8,7 +8,7 @@ import org.hl7.fhir.r5.elementmodel.SHCParser.JWT;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.json.JSONUtil;
+import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 
 import com.google.gson.JsonObject;
@@ -33,9 +33,9 @@ public class ResourceChecker {
 //    return checkIsResource(context, debug, TextFile.fileToBytes(path), path);
 //  }
   public static Manager.FhirFormat checkIsResource(SimpleWorkerContext context, boolean debug, byte[] cnt, String filename, boolean guessFromExtension) {
-    System.out.println("   ..Detect format for " + filename);
+//    System.out.println("   ..Detect format for " + filename);
     if (cnt.length == 0) {
-      System.out.println("   " + filename+" is empty");
+      System.out.println("Loader: " + filename+" is empty");
       return null;
     }
     if (guessFromExtension) {
@@ -53,6 +53,9 @@ public class ResourceChecker {
         return Manager.FhirFormat.SHC;
       }
       if (Utilities.existsInList(ext, "json")) {
+        if (cnt.length > 2048) {
+          return FhirFormat.JSON;                      
+        }
         // no, we have to look inside, and decide.
         try {
           JsonObject json = JsonTrackingParser.parseJson(cnt);

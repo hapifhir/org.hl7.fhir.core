@@ -57,6 +57,7 @@ import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -100,6 +101,10 @@ import javax.annotation.Nonnull;
  * @author Grahame
  */
 public interface IWorkerContext {
+
+  public interface IPackageLoadingTracker {
+    public void packageLoaded(String pid, String version);
+  }
 
   public class CodingValidationRequest {
     private Coding coding;
@@ -790,6 +795,7 @@ public interface IWorkerContext {
    * @return
    */
 	public String oid2Uri(String code);
+	public Map<String, NamingSystem> getNSUrlMap();
 
 	/** 
 	 * @return true if the contxt has a terminology caching service internally
@@ -877,6 +883,8 @@ public interface IWorkerContext {
   public IWorkerContext setClientRetryCount(int value);
   
   public TimeTracker clock();
+  public IPackageLoadingTracker getPackageTracker();
+  public IWorkerContext setPackageTracker(IPackageLoadingTracker packageTracker);
 
   public PackageVersion getPackageForUrl(String url);
 }

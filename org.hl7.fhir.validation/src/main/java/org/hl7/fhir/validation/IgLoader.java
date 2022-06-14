@@ -24,7 +24,7 @@ import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.json.JSONUtil;
+import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -37,6 +37,7 @@ import org.w3c.dom.Document;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,7 @@ public class IgLoader {
 
   private static final String[] IGNORED_EXTENSIONS = {"md", "css", "js", "png", "gif", "jpg", "html", "tgz", "pack", "zip"};
   private static final String[] EXEMPT_FILES = {"spec.internals", "version.info", "schematron.zip", "package.json"};
+  private static final int SCAN_HEADER_SIZE = 2048;
 
   @Getter private final FilesystemPackageCacheManager packageCacheManager;
   @Getter private final SimpleWorkerContext context;
@@ -254,45 +256,87 @@ public class IgLoader {
                                boolean recursive,
                                VersionSourceInformation versions) throws Exception {
     Map<String, byte[]> source = loadIgSourceForVersion(src, recursive, true, versions);
-    if (source != null && source.containsKey("version.info"))
-      versions.see(readInfoVersion(source.get("version.info")), "version.info in " + src);
+    if (source != null) {
+      if (source.containsKey("version.info")) {
+        versions.see(readInfoVersion(source.get("version.info")), "version.info in " + src);
+      } else if (source.size() == 1) {
+        for (byte[] v : source.values()) {
+          scanForFhirVersion(versions, src, v);
+        }
+      }
+    }
   }
 
   public void scanForVersions(List<String> sources, VersionSourceInformation versions) throws FHIRException, IOException {
     List<String> refs = new ArrayList<String>();
     ValidatorUtils.parseSources(sources, refs, context);
     for (String ref : refs) {
-      Content cnt = loadContent(ref, "validate", false);
-      String s = TextFile.bytesToString(cnt.focus);
-      if (s.contains("http://hl7.org/fhir/3.0")) {
-        versions.see("3.0", "Profile in " + ref);
-      }
-      if (s.contains("http://hl7.org/fhir/1.0")) {
-        versions.see("1.0", "Profile in " + ref);
-      }
-      if (s.contains("http://hl7.org/fhir/4.0")) {
-        versions.see("4.0", "Profile in " + ref);
-      }
-      if (s.contains("http://hl7.org/fhir/1.4")) {
-        versions.see("1.4", "Profile in " + ref);
-      }
-      try {
-        if (s.startsWith("{")) {
-          JsonObject json = JsonTrackingParser.parse(s, null);
-          if (json.has("fhirVersion")) {
-            versions.see(VersionUtilities.getMajMin(JSONUtil.str(json, "fhirVersion")), "fhirVersion in " + ref);
-          }
-        } else {
-          Document doc = ValidatorUtils.parseXml(cnt.focus);
-          String v = XMLUtil.getNamedChildValue(doc.getDocumentElement(), "fhirVersion");
-          if (v != null) {
-            versions.see(VersionUtilities.getMajMin(v), "fhirVersion in " + ref);
+      Content cnt = loadContent(ref, "validate", false);      
+      scanForFhirVersion(versions, ref, cnt.focus);
+    }
+  }
+
+  private void scanForFhirVersion(VersionSourceInformation versions, String ref, byte[] cnt) throws IOException {
+    String s = TextFile.bytesToString(cnt.length > SCAN_HEADER_SIZE ? Arrays.copyOfRange(cnt, 0, SCAN_HEADER_SIZE) : cnt).trim();
+    try {
+      int i = s.indexOf("fhirVersion");
+      if (i > 1) {
+        boolean xml = s.charAt(i) == '<';
+        i = find(s, i, '"');
+        if (!xml) {
+          i = find(s, i+1, '"');          
+        }
+        if (i > 0) {
+          int j = find(s, i+1, '"');
+          if (j > 0) {
+            String v = s.substring(i+1, j);
+            if (VersionUtilities.isSemVer(v)) {
+              versions.see(VersionUtilities.getMajMin(v), "fhirVersion in " + ref);
+              return;
+            }
           }
         }
-      } catch (Exception e) {
-        // nothing
+        i = find(s, i, '\'');
+        if (!xml) {
+          i = find(s, i+1, '\'');          
+        }
+        if (i > 0) {
+          int j = find(s, i+1, '\'');
+          if (j > 0) {
+            String v = s.substring(i, j);
+            if (VersionUtilities.isSemVer(v)) {
+              versions.see(VersionUtilities.getMajMin(v), "fhirVersion in " + ref);
+              return;
+            }
+          }
+        }
       }
+    } catch (Exception e) {
+      // nothing
     }
+    if (s.contains("http://hl7.org/fhir/3.0")) {
+      versions.see("3.0", "Profile in " + ref);
+      return;
+    }
+    if (s.contains("http://hl7.org/fhir/1.0")) {
+      versions.see("1.0", "Profile in " + ref);
+      return;
+    }
+    if (s.contains("http://hl7.org/fhir/4.0")) {
+      versions.see("4.0", "Profile in " + ref);
+      return;
+    }
+    if (s.contains("http://hl7.org/fhir/1.4")) {
+      versions.see("1.4", "Profile in " + ref);
+      return;
+    }
+  }
+
+  private int find(String s, int i, char c) {
+    while (i < s.length() && s.charAt(i) != c) {
+      i++;
+    }
+    return i == s.length() ? -1 : i;
   }
 
   protected Map<String, byte[]> readZip(InputStream stream) throws IOException {

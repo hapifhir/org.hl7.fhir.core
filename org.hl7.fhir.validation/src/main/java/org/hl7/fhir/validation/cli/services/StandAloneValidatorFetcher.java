@@ -21,7 +21,7 @@ import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.VersionUtilities.VersionURLInfo;
-import org.hl7.fhir.utilities.json.JSONUtil;
+import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -165,8 +165,8 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
       JsonObject json;
       try {
         json = JsonTrackingParser.fetchJson("http://hl7.org/fhir/mappingspaces.json");
-        for (JsonObject ms : JSONUtil.objects(json, "spaces")) {
-          mappingsUris.add(JSONUtil.str(ms, "url"));
+        for (JsonObject ms : JsonUtilities.objects(json, "spaces")) {
+          mappingsUris.add(JsonUtilities.str(ms, "url"));
         }
       } catch (IOException e) {
         // frozen R4 list
@@ -248,7 +248,11 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
 
   @Override
   public CanonicalResource fetchCanonicalResource(IResourceValidator validator, String url) throws URISyntaxException {
+    if (url.contains("|")) {
+      url = url.substring(0, url.indexOf("|"));
+    }
     String[] p = url.split("\\/");
+  
     String root = getRoot(p, url);
     if (root != null) {
       TerminologyClient c;

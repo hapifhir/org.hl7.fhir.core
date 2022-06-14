@@ -233,6 +233,9 @@ public class Enumerations40_50 {
       case _4_3_0_SNAPSHOT1:
         tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._4_3_0SNAPSHOT1);
         break;
+      case _4_3_0:
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._4_3_0);
+        break;
       default:
         tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion.NULL);
         break;
@@ -323,6 +326,9 @@ public class Enumerations40_50 {
         break;
       case _4_3_0SNAPSHOT1:
         tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._4_3_0_SNAPSHOT1);
+        break;
+      case _4_3_0:
+        tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._4_3_0);
         break;
       default:
         tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion.NULL);
