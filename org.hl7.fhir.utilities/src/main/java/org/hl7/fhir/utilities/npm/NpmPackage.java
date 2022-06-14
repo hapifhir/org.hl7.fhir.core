@@ -1070,9 +1070,12 @@ public class NpmPackage {
     for (String folder : folders.keySet()) {
       NpmPackageFolder pf = folders.get(folder);
       String p = folder.contains("$") ? path : Utilities.path(path, folder);
-      for (File f : new File(p).listFiles()) {
-        if (!f.isDirectory() && !isInternalExemptFile(f)) {
-          pf.getContent().put(f.getName(), TextFile.fileToBytes(f));
+      File file = new File(p);
+      if (file.exists()) {
+        for (File f : file.listFiles()) {
+          if (!f.isDirectory() && !isInternalExemptFile(f)) {
+            pf.getContent().put(f.getName(), TextFile.fileToBytes(f));
+          }
         }
       }
     }
