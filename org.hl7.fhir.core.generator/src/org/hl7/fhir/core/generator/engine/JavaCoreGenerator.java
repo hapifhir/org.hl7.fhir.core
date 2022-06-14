@@ -81,7 +81,7 @@ public class JavaCoreGenerator {
     System.out.println("Process Expansions");
     updateExpansions(master, expansions);
     
-    System.out.println("Generate Model");   
+    System.out.println("Generate Model in "+dest);   
     System.out.println(" .. Constants");
     JavaConstantsGenerator cgen = new JavaConstantsGenerator(new FileOutputStream(Utilities.path(dest, "src", "main", "java", "org", "hl7", "fhir", jid, "model", "Constants.java")), master, config, date, npm.version(), jid);
     cgen.generate();
