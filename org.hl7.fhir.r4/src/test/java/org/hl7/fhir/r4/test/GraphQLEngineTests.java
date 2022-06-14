@@ -112,6 +112,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
       gql.getOutput().setWriteWrapper(false);
       gql.getOutput().write(str, 0);
       String actualFilePath = TestingUtilities.generateResourcePath("graphql", output + ".out");
+
       TextFile.stringToFile(str.toString(), actualFilePath);
       msg = TestingUtilities.checkJsonIsSame(actualFilePath, TestingUtilities.resourceNameToFile("graphql", output));
       Assertions.assertTrue(Utilities.noString(msg), msg);

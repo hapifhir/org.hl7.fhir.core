@@ -453,7 +453,9 @@ public class TestingUtilities {
   }
 
   public static String generateResourcePath(String subFolder, String name) throws IOException {
-    return Utilities.path(System.getProperty("user.dir"), "src", "test", "resources", subFolder, name);
+    String path = Utilities.path(System.getProperty("user.dir"), "src", "test", "resources", subFolder, name);
+    createParentDirectoryPathIfNotExists(Paths.get(path));
+    return path;
   }
   public static String resourceNameToFile(String subFolder, String name) throws IOException {
 
@@ -470,11 +472,15 @@ public class TestingUtilities {
   }
 
   private static void copyResourceToNewFile(String resourcePath, Path newFilePath) throws IOException {
+    createParentDirectoryPathIfNotExists(newFilePath);
+    ResourceLoaderTests.copyResourceToFile(TestingUtilities.class, newFilePath, resourcePath);
+  }
+
+  private static void createParentDirectoryPathIfNotExists(Path newFilePath) {
     Path parent = newFilePath.getParent();
     if (!parent.toFile().exists()) {
       parent.toFile().mkdirs();
     }
-    ResourceLoaderTests.copyResourceToFile(TestingUtilities.class, newFilePath, resourcePath);
   }
 
 }
