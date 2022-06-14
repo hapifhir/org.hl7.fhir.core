@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.testexecutor;
 
+import lombok.Getter;
 import org.hl7.fhir.utilities.tests.TestConfig;
 import org.hl7.fhir.utilities.tests.execution.CliTestSummary;
 import org.hl7.fhir.utilities.tests.execution.junit4.JUnit4TestExecutor;
@@ -21,27 +22,38 @@ import static org.hl7.fhir.validation.testexecutor.TestModules.*;
 public class TestExecutor {
 
 
-  public static final String TX_CACHE = "txCache";
+  @Getter private final List<ModuleTestExecutor> jUnit4TestExecutors;
 
+  @Getter private final List<ModuleTestExecutor> jUnit5TestExecutors;
+
+  public TestExecutor(String[] moduleNamesArg) {
+    this(getjUnit4TestExecutors(moduleNamesArg), getjUnit5TestExecutors(moduleNamesArg));
+  }
+  protected TestExecutor(List<ModuleTestExecutor> jUnit4TestExecutors, List<ModuleTestExecutor> jUnit5TestExecutors) {
+    this.jUnit4TestExecutors = jUnit4TestExecutors;
+    this.jUnit5TestExecutors = jUnit5TestExecutors;
+  }
+
+  public static final String TX_CACHE = "txCache";
 
   private static String SUMMARY_TEMPLATE = "Tests run: %d, Failures: %d, Errors: %d, Skipped: %d";
   private static final String DOT_PLACEHOLDER = new String(new char[53]).replace("\0", ".");
 
   private static final int MAX_NAME_LENGTH = 50;
 
-  private static String getModuleResultLine(String moduleName, CliTestSummary moduleTestSummary) {
+  private String getModuleResultLine(String moduleName, CliTestSummary moduleTestSummary) {
     return getModuleNameAndSpacer(moduleName)
       + " "
       + getModuleResultString(moduleTestSummary);
   }
 
-  protected static String getModuleNameAndSpacer(String moduleName) {
+  private String getModuleNameAndSpacer(String moduleName) {
     return moduleName.length() < MAX_NAME_LENGTH
       ? moduleName + " " + DOT_PLACEHOLDER.substring(moduleName.length() + 1)
       : moduleName.substring(0, MAX_NAME_LENGTH) + "...";
   }
 
-  protected static String getModuleResultString(CliTestSummary cliTestSummary) {
+  private String getModuleResultString(CliTestSummary cliTestSummary) {
     if (cliTestSummary.getTestsFoundCount() == 0) {
       return "NO TESTS";
     }
@@ -51,26 +63,23 @@ public class TestExecutor {
       : "FAILED";
   }
 
-
-
-
   public static boolean pathExistsAsDirectory(String directoryPath) {
     Path path = Paths.get(directoryPath);
     return Files.exists(path)
       && Files.isDirectory(path);
   }
 
-  public static void executeTests(String[] moduleNamesArg, String classNameFilterArg, String txCacheDirectoryPath, String testCasesDirectoryPath) {
+  public void executeTests(String classNameFilterArg, String txCacheDirectoryPath, String testCasesDirectoryPath) {
 
     long start = System.currentTimeMillis();
     //Our lone JUnit 4 test.
-    List<ModuleTestExecutor> jUnit4TestExecutors = getjUnit4TestExecutors(moduleNamesArg);
+    List<ModuleTestExecutor> jUnit4TestExecutors = getJUnit4TestExecutors();
 
     TestConfig.getInstance().setRebuildCache(true);
 
     setUpDirectories(txCacheDirectoryPath, testCasesDirectoryPath);
 
-    List<ModuleTestExecutor> jUnit5TestExecutors = getjUnit5TestExecutors(moduleNamesArg);
+    List<ModuleTestExecutor> jUnit5TestExecutors = getJUnit5TestExecutors();
 
     long testsFoundCount = 0;
     long testsFailedCount = 0;
@@ -93,7 +102,7 @@ public class TestExecutor {
     System.out.println("\n\nAll Tests completed.");
 
     for (ModuleTestExecutor moduleTestExecutor : orderedModuleTestExecutors) {
-      JUnit5ModuleTestExecutor.printSummmary(System.out, moduleResultMap.get(moduleTestExecutor.getModuleName()), moduleTestExecutor.getModuleName());
+      ModuleTestExecutor.printSummmary(System.out, moduleResultMap.get(moduleTestExecutor.getModuleName()), moduleTestExecutor.getModuleName());
     }
 
     System.out.println("\nModule Results:\n");
@@ -106,11 +115,9 @@ public class TestExecutor {
     System.out.println(String.format(SUMMARY_TEMPLATE, testsFoundCount, testsFailedCount, testsAbortedCount, testsSkippedCount));
     System.out.println("\nCompleted in " + (System.currentTimeMillis() - start) + "ms");
 
-    System.exit(0);
-
   }
 
-  private static void setUpDirectories(String txCacheDirectoryPath, String testCasesDirectoryPath) {
+  protected void setUpDirectories(String txCacheDirectoryPath, String testCasesDirectoryPath) {
     if (testCasesDirectoryPath != null
       && pathExistsAsDirectory(testCasesDirectoryPath)
     ) {
@@ -143,7 +150,7 @@ public class TestExecutor {
   }
 
   @Nonnull
-  private static List<ModuleTestExecutor> getjUnit5TestExecutors(String[] moduleNamesArg) {
+  public static List<ModuleTestExecutor> getjUnit5TestExecutors(String[] moduleNamesArg) {
     final String[] moduleNames = moduleNamesArg == null ? JUNIT5_MODULE_NAMES : moduleNamesArg;
     return Arrays.stream(moduleNames)
       .map(moduleName -> JUnit5ModuleTestExecutor.getStandardModuleTestExecutor(moduleName))
@@ -151,7 +158,7 @@ public class TestExecutor {
   }
 
   @Nonnull
-  private static List<ModuleTestExecutor> getjUnit4TestExecutors(String[] moduleNamesArg) {
+  public static List<ModuleTestExecutor> getjUnit4TestExecutors(String[] moduleNamesArg) {
 
     final List<ModuleTestExecutor> jUnit4TestExecutors = Arrays.asList(new JUnit4TestExecutor(VALIDATION_MODULE, JUNIT4_CLASSNAMES));
 

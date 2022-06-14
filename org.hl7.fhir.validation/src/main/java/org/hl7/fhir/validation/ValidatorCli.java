@@ -179,7 +179,9 @@ public class ValidatorCli {
 
     assert TestExecutorParams.isValidClassnameFilterParam(testClassnameFilter) : "Invalid regex for test classname filter: " + testClassnameFilter;
 
-    TestExecutor.executeTests(moduleNamesArg, testClassnameFilter, txCacheDirectory, testCasesDirectory);
+    new TestExecutor(moduleNamesArg).executeTests(testClassnameFilter, txCacheDirectory, testCasesDirectory);
+
+    System.exit(0);
   }
 
   private static String[] preProcessArgs(String[] args) {
