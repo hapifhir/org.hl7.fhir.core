@@ -328,8 +328,8 @@
                 <version>${jacoco_version}</version>
                 <configuration>
                     <excludes>
-                        <!-- These files blow away the JVM limit on file size. Until we refactor, we need to ignore or
-                             Jacoco complains and won't run the validator tests. -->
+                        <!-- These are auto-generated files that will exceed the JVM limit on file size.
+                             If these are not excluded, Jacoco complains and won't run the validator tests. -->
                         <exclude>org/hl7/fhir/r5/formats/JsonParser</exclude>
                         <exclude>org/hl7/fhir/r5/formats/XmlParser</exclude>
                         <exclude>org/hl7/fhir/r4b/formats/JsonParser</exclude>
