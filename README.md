@@ -2,7 +2,7 @@
 
 | CI Status (master) | 
 | :---: |
-| [![Build Status][Badge-BuildPipeline]][Link-BuildPipeline] |
+| [![Build Status][Badge-BuildPipeline]][Link-AzureMasterPipeline] |
 
 This is the java core object handling code, with utilities (including validator), for the FHIR specification. 
 included in this repo: 
@@ -23,34 +23,27 @@ FHIR Validator. In addition, this is the core code for the HL7 maintained IG pub
 and FHIR main build publisher. As such, this code is considered an authoritatively 
 correct implementation of the core FHIR specification that it implements.
 
-### CI/CD
 
-All integration and delivery done on Azure pipelines. Azure project can be viewed [here][Link-AzureProject].
+## Building this Project
 
-### Current Versions 
-| Project | Current Release | Latest SNAPSHOT |
-| :---: | :---: | :---: |
-| org.hl7.fhir.validation.cli | [![Release Artifacts][Badge-r4SonatypeRelease]][Link-cliSonatypeRelease] | [![Snapshot Artifact][Badge-cliSonatypeSnapshot]][Link-cliSonatypeSnapshot] |
-| org.hl7.fhir.validation | [![Release Artifacts][Badge-validationSonatypeRelease]][Link-validationSonatypeRelease] | [![Snapshot Artifact][Badge-validationSonatypeSnapshot]][Link-validationSonatypeSnapshot] |
-| org.hl7.fhir.dstu2 | [![Release Artifacts][Badge-dstu2SonatypeRelease]][Link-dstu2SonatypeRelease] | [![Snapshot Artifact][Badge-dstu2SonatypeSnapshot]][Link-dstu2SonatypeSnapshot] |
-| org.hl7.fhir.dstu2016may | [![Release Artifacts][Badge-dstu2016maySonatypeRelease]][Link-dstu2016maySonatypeRelease] | [![Snapshot Artifact][Badge-dstu2016maySonatypeSnapshot]][Link-dstu2016maySonatypeSnapshot] |
-| org.hl7.fhir.dstu3 | [![Release Artifacts][Badge-dstu3SonatypeRelease]][Link-dstu3SonatypeRelease] | [![Snapshot Artifact][Badge-dstu3SonatypeSnapshot]][Link-dstu3SonatypeSnapshot] |
-| org.hl7.fhir.r4 | [![Release Artifacts][Badge-r4SonatypeRelease]][Link-r4SonatypeRelease] | [![Snapshot Artifact][Badge-r4SonatypeSnapshot]][Link-r4SonatypeSnapshot] |
-| org.hl7.fhir.r5 | [![Release Artifacts][Badge-r5SonatypeRelease]][Link-r5SonatypeRelease] | [![Snapshot Artifact][Badge-r5SonatypeSnapshot]][Link-r5SonatypeSnapshot] |
+### Prerequisites
 
-### Building this Project
-This project uses [Apache Maven](http://maven.apache.org) to build. To build:
+This project uses [Apache Maven](http://maven.apache.org) and [Lombok](https://projectlombok.org/) to build. You can find detailed instructions on setting up this project in your IDE [here](https://hl7.github.io/docs/core/ide).
+
+### Build Commands
+
+To build and add artifacts to your local Maven repository:
+
 ```
 mvn install
 ```
-_Note that unit tests will run, but are currently not set to fail the build as they do not all pass. This is being worked on._
 
 To skip unit tests:
 ```
 mvn -Dmaven.test.skip install
 ```
 
-To clean and rebuild the terminology server caches.
+To clean and rebuild the terminology server caches:
 
 _clean_
 ```
@@ -66,20 +59,25 @@ _The source contains cached terminology server responses for testing. If the exp
 this cache should be cleaned and rebuilt with the above so that subsequent `mvn test` calls will have the most current 
 responses cached._
 
-#### IDE Setup
 
-This project uses the [Lombok](https://projectlombok.org/) java library, which requires some configuration to work correctly with an IDE. Currently, the 
-project works in Intellij and Eclipse, and you can find instructions on how to configure Lombok for each [here](https://www.baeldung.com/lombok-ide).
+## Releases
 
-### Publishing Binaries
+The built binary for the FHIR command-line validator is released through [GitHub releases][Link-GithubReleases]. For instructions on using this validator visit the [FHIR Validator Confluence page][Link-ConfluenceValidator].
 
-An brief overview of our publishing process is [here][Link-Publishing].
+All build artifacts are published on [OSS Sonatype][Link-Sonatype]. 
 
-For more detailed instructions on cutting a release, please read [the wiki][Link-PublishingRelease]
+### Current Versions 
+| Project | Current Release | Latest SNAPSHOT |
+| :---: | :---: | :---: |
+| org.hl7.fhir.validation.cli | [![Release Artifacts][Badge-r4SonatypeRelease]][Link-cliSonatypeRelease] | [![Snapshot Artifact][Badge-cliSonatypeSnapshot]][Link-cliSonatypeSnapshot] |
+| org.hl7.fhir.validation | [![Release Artifacts][Badge-validationSonatypeRelease]][Link-validationSonatypeRelease] | [![Snapshot Artifact][Badge-validationSonatypeSnapshot]][Link-validationSonatypeSnapshot] |
+| org.hl7.fhir.dstu2 | [![Release Artifacts][Badge-dstu2SonatypeRelease]][Link-dstu2SonatypeRelease] | [![Snapshot Artifact][Badge-dstu2SonatypeSnapshot]][Link-dstu2SonatypeSnapshot] |
+| org.hl7.fhir.dstu2016may | [![Release Artifacts][Badge-dstu2016maySonatypeRelease]][Link-dstu2016maySonatypeRelease] | [![Snapshot Artifact][Badge-dstu2016maySonatypeSnapshot]][Link-dstu2016maySonatypeSnapshot] |
+| org.hl7.fhir.dstu3 | [![Release Artifacts][Badge-dstu3SonatypeRelease]][Link-dstu3SonatypeRelease] | [![Snapshot Artifact][Badge-dstu3SonatypeSnapshot]][Link-dstu3SonatypeSnapshot] |
+| org.hl7.fhir.r4 | [![Release Artifacts][Badge-r4SonatypeRelease]][Link-r4SonatypeRelease] | [![Snapshot Artifact][Badge-r4SonatypeSnapshot]][Link-r4SonatypeSnapshot] |
+| org.hl7.fhir.r5 | [![Release Artifacts][Badge-r5SonatypeRelease]][Link-r5SonatypeRelease] | [![Snapshot Artifact][Badge-r5SonatypeSnapshot]][Link-r5SonatypeSnapshot] |
 
-### Download
-
-All binaries are published on [OSS Sonatype][Link-Sonatype]. You will need to add the proper dependency to your `pom.xml` file, or your `build.gradle.kts` file.
+To use these artifacts in your project will need to add the proper dependency to your `pom.xml` file, or your `build.gradle.kts` file.
 
 ###### pom.xml
 ```
@@ -184,12 +182,27 @@ compile group: 'ca.uhn.hapi.fhir', name: 'hapi-fhir-structures-r4', version: '(l
 compile group: 'ca.uhn.hapi.fhir', name: 'hapi-fhir-structures-r5', version: '(latest version)'
 ```
 
-Note that the built binary validator is released through GitHub releases.
-### Maintenance
-This project is maintained by [Grahame Grieve][Link-grahameGithub], [James Agnew][Link-jamesGithub] and [Mark Iantorno][Link-markGithub] on behalf of the FHIR community.
+## CI/CD
 
-[Link-AzureProject]: https://dev.azure.com/fhir-pipelines/fhir-core-library
-[Link-BuildPipeline]: https://dev.azure.com/fhir-pipelines/fhir-core-library/_build/latest?definitionId=29&branchName=master
+All integration and delivery done on Azure pipelines. Azure project can be viewed [here][Link-AzureProject].
+
+* **Pull Request Pipeline** is automatically run for every Pull Request to ensure that the project can be built via maven. [[Azure Pipeline]][Link-AzurePullRequestPipeline] [[source]](pull-request-pipeline.yml)
+* **Master Branch Pipeline** is automatically run whenever code is merged to the master branch and builds the SNAPSHOT binaries distributed to OSSRH [[Azure Pipeline]][Link-AzureMasterPipeline][[source]](master-branch-pipeline.yml)
+* **Release Branch Pipeline** is run manually whenever a release is ready to be made. It builds the [release binaries](#releases), distributes them to artifact repositories and sends release notifications. [[Azure Pipeline]][Link-AzureReleasePipeline][[source]](release-branch-pipeline.yml)
+
+An brief overview of our publishing process is [here][Link-Publishing].
+
+For more detailed instructions on cutting a release, please read [the wiki][Link-PublishingRelease]
+
+## Maintenance
+
+Have you found an issue? Do you have a feature request? Great! Submit it [here][Link-GithubIssues] and we'll try to fix it as soon as possible.
+
+This project is maintained by [Grahame Grieve][Link-grahameGithub], [James Agnew][Link-jamesGithub], [David Otasek][Link-davidGithub] and [Mark Iantorno][Link-markGithub] on behalf of the FHIR community.
+
+
+[Link-ConfluenceValidator]: https://confluence.hl7.org/display/FHIR/Using+the+FHIR+Validator
+
 [Link-SnapshotPipeline]: https://dev.azure.com/fhir-pipelines/fhir-core-library/_build/latest?definitionId=17&branchName=master
 [Link-dstu2SonatypeSnapshot]: https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=ca.uhn.hapi.fhir&a=org.hl7.fhir.dstu2&v=LATEST "Sonatype Snapshot"
 [Link-dstu2SonatypeRelease]: https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=ca.uhn.hapi.fhir&a=org.hl7.fhir.dstu2&v=LATEST "Sonatype Release"
@@ -205,12 +218,21 @@ This project is maintained by [Grahame Grieve][Link-grahameGithub], [James Agnew
 [Link-cliSonatypeRelease]: https://github.com/hapifhir/org.hl7.fhir.core/releases/latest/download/validator_cli.jar
 [Link-validationSonatypeSnapshot]: https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=ca.uhn.hapi.fhir&a=org.hl7.fhir.validation&v=LATEST "Sonatype Snapshot"
 [Link-validationSonatypeRelease]: https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=ca.uhn.hapi.fhir&a=org.hl7.fhir.validation&v=LATEST "Sonatype Release"
+
+[Link-AzureProject]: https://dev.azure.com/fhir-pipelines/fhir-core-library
+[Link-AzureMasterPipeline]: https://dev.azure.com/fhir-pipelines/fhir-core-library/_build/latest?definitionId=29&branchName=master
+[Link-AzurePullRequestPipeline]: https://dev.azure.com/fhir-pipelines/fhir-core-library/_build?definitionId=31
+[Link-AzureReleasePipeline]: https://dev.azure.com/fhir-pipelines/fhir-core-library/_build?definitionId=30
+
 [Link-sonatype]: https://oss.sonatype.org/
+[Link-davidGithub]: https://github.com/dotasek
 [Link-grahameGithub]: https://github.com/grahamegrieve
 [Link-jamesGithub]: https://github.com/jamesagnew
 [Link-markGithub]: https://github.com/markiantorno
-[Link-Publishing]: https://github.com/FHIR/fhir-test-cases/wiki/Publishing-Binaries
-[Link-PublishingRelease]: https://github.com/FHIR/fhir-test-cases/wiki/Detailed-Release-Instructions
+[Link-PublishingRelease]: https://hl7.github.io/docs/ci-cd-building-release
+[Link-Publishing]: https://hl7.github.io/docs/ci-cd-publishing-binaries
+[Link-GithubIssues]: https://github.com/hapifhir/org.hl7.fhir.core/issues
+[Link-GithubReleases]: https://github.com/hapifhir/org.hl7.fhir.core/releases
 
 [Badge-BuildPipeline]: https://dev.azure.com/fhir-pipelines/fhir-core-library/_apis/build/status/Master%20Branch%20Pipeline?branchName=master
 [Badge-SnapshotPipeline]: https://dev.azure.com/fhir-pipelines/fhir-core-library/_apis/build/status/Module%20SNAPSHOT%20Publisher?branchName=master
