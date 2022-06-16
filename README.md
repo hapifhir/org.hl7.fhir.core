@@ -190,7 +190,7 @@ All integration and delivery done on Azure pipelines. Azure project can be viewe
 * **Master Branch Pipeline** is automatically run whenever code is merged to the master branch and builds the SNAPSHOT binaries distributed to OSSRH [[Azure Pipeline]][Link-AzureMasterPipeline][[source]](master-branch-pipeline.yml)
 * **Release Branch Pipeline** is run manually whenever a release is ready to be made. It builds the [release binaries](#releases), distributes them to artifact repositories and sends release notifications. [[Azure Pipeline]][Link-AzureReleasePipeline][[source]](release-branch-pipeline.yml)
 
-An brief overview of our publishing process is [here][Link-Publishing].
+A brief overview of our publishing process is [here][Link-Publishing].
 
 For more detailed instructions on cutting a release, please read [the wiki][Link-PublishingRelease]
 
