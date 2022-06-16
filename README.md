@@ -62,7 +62,7 @@ responses cached._
 
 ## Releases
 
-The built binary for the FHIR command-line validator is released through [GitHub releases][Link-GithubReleases]. For instructions on using this validator visit the [FHIR Validator Confluence page][Link-ConfluenceValidator].
+The built binary for the FHIR command-line validator is released through [GitHub releases][Link-GithubReleases] and can be downloaded directly [here][Link-GithubZipRelease]. For instructions on using this validator visit the [FHIR Validator Confluence page][Link-ConfluenceValidator].
 
 All build artifacts are published on [OSS Sonatype][Link-Sonatype]. 
 
@@ -233,6 +233,7 @@ This project is maintained by [Grahame Grieve][Link-grahameGithub], [James Agnew
 [Link-Publishing]: https://hl7.github.io/docs/ci-cd-publishing-binaries
 [Link-GithubIssues]: https://github.com/hapifhir/org.hl7.fhir.core/issues
 [Link-GithubReleases]: https://github.com/hapifhir/org.hl7.fhir.core/releases
+[Link-GithubZipRelease]: https://github.com/hapifhir/org.hl7.fhir.core/releases/latest/download/validator_cli.jar
 
 [Badge-BuildPipeline]: https://dev.azure.com/fhir-pipelines/fhir-core-library/_apis/build/status/Master%20Branch%20Pipeline?branchName=master
 [Badge-SnapshotPipeline]: https://dev.azure.com/fhir-pipelines/fhir-core-library/_apis/build/status/Module%20SNAPSHOT%20Publisher?branchName=master
