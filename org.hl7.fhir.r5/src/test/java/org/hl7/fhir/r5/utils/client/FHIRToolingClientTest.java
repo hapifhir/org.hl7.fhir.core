@@ -32,7 +32,9 @@ import okhttp3.Headers;
 import okhttp3.Request;
 import okhttp3.internal.http2.Header;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.times;
 
 class FHIRToolingClientTest {
 
@@ -170,11 +172,14 @@ class FHIRToolingClientTest {
       .thenReturn(new ResourceRequest<>(new CapabilityStatement(), 200, "location"));
 
     ArgumentCaptor<Headers> headersArgumentCaptor = ArgumentCaptor.forClass(Headers.class);
+    assertEquals(ResourceFormat.RESOURCE_JSON.getHeader(), toolingClient.getPreferredResourceFormat());
+
     toolingClient.setClientHeaders(getHeaders());
     toolingClient.getCapabilitiesStatement();
     Mockito.verify(mockClient).issueGetResourceRequest(ArgumentMatchers.any(URI.class), ArgumentMatchers.anyString(),
       headersArgumentCaptor.capture(), ArgumentMatchers.anyString(), ArgumentMatchers.anyLong());
 
+    assertEquals(ResourceFormat.RESOURCE_JSON.getHeader(), toolingClient.getPreferredResourceFormat());
     Headers argumentCaptorValue = headersArgumentCaptor.getValue();
     checkHeaders(argumentCaptorValue);
   }
@@ -187,10 +192,12 @@ class FHIRToolingClientTest {
       .thenReturn(new ResourceRequest<>(new CapabilityStatement(), 200, "location"));
 
     ArgumentCaptor<Headers> headersArgumentCaptor = ArgumentCaptor.forClass(Headers.class);
+    assertEquals(ResourceFormat.RESOURCE_JSON.getHeader(), toolingClient.getPreferredResourceFormat());
     toolingClient.setClientHeaders(getHeaders());
     toolingClient.getCapabilitiesStatement();
-    Mockito.verify(mockClient).issueGetResourceRequest(ArgumentMatchers.any(URI.class), ArgumentMatchers.anyString(),
+    Mockito.verify(mockClient, times(2)).issueGetResourceRequest(ArgumentMatchers.any(URI.class), ArgumentMatchers.anyString(),
       headersArgumentCaptor.capture(), ArgumentMatchers.anyString(), ArgumentMatchers.anyLong());
+    assertEquals(ResourceFormat.RESOURCE_XML.getHeader(), toolingClient.getPreferredResourceFormat());
 
     Headers argumentCaptorValue = headersArgumentCaptor.getValue();
     checkHeaders(argumentCaptorValue);
@@ -202,10 +209,12 @@ class FHIRToolingClientTest {
         Mockito.any(Headers.class), Mockito.eq("CapabilitiesStatement"), Mockito.anyLong()))
       .thenThrow(new FHIRFormatError("dummy error"))
       .thenThrow(new FHIRFormatError("dummy error 2"));
-
-    Exception exception = assertThrows(FHIRException.class, () -> { ArgumentCaptor<Headers> headersArgumentCaptor = ArgumentCaptor.forClass(Headers.class);
+    assertEquals(ResourceFormat.RESOURCE_JSON.getHeader(), toolingClient.getPreferredResourceFormat());
     toolingClient.setClientHeaders(getHeaders());
+    Exception exception = assertThrows(FHIRException.class, () -> { ArgumentCaptor<Headers> headersArgumentCaptor = ArgumentCaptor.forClass(Headers.class);
+
     toolingClient.getCapabilitiesStatement(); });
+    assertEquals(ResourceFormat.RESOURCE_JSON.getHeader(), toolingClient.getPreferredResourceFormat());
   }
 
   @Test
