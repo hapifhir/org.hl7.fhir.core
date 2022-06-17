@@ -40,6 +40,9 @@ import org.hl7.fhir.r5.utils.client.network.Client;
 import org.hl7.fhir.r5.utils.client.network.ResourceRequest;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
@@ -74,6 +77,9 @@ import java.util.stream.Stream;
  * @author Claude Nanjo
  */
 public class FHIRToolingClient {
+
+  private static final Logger logger = LoggerFactory.getLogger(FHIRToolingClient.class);
+
 
   public static final String DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssK";
   public static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -144,7 +150,6 @@ public class FHIRToolingClient {
   private <T extends Resource> T getCapabilities(URI resourceUri, String message, String exceptionMessage) throws FHIRException {
     final List<ResourceFormat> resourceFormats = getResourceFormatsWithPreferredFirst();
 
-    FHIRException fhirException = null;
     for (ResourceFormat attemptedResourceFormat : resourceFormats) {
       try {
         T output =  (T) client.issueGetResourceRequest(resourceUri,
@@ -157,12 +162,10 @@ public class FHIRToolingClient {
         }
         return output;
       } catch (Exception e) {
-        fhirException = fhirException == null
-          ? new FHIRException(exceptionMessage)
-          : new FHIRException(exceptionMessage, fhirException);
+        logger.warn("Failed attempt to fetch " + resourceUri, e);
       }
     }
-    throw fhirException;
+    throw new FHIRException(exceptionMessage);
   }
 
   public TerminologyCapabilities getTerminologyCapabilities() {
