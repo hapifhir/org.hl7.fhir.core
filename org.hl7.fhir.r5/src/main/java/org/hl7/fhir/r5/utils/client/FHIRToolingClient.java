@@ -170,15 +170,11 @@ public class FHIRToolingClient {
 
   public TerminologyCapabilities getTerminologyCapabilities() {
     TerminologyCapabilities capabilities = null;
-    try {
-      capabilities = (TerminologyCapabilities) client.issueGetResourceRequest(resourceAddress.resolveMetadataTxCaps(),
-        getPreferredResourceFormat(),
-        generateHeaders(),
+
+      capabilities = (TerminologyCapabilities) getCapabilities(resourceAddress.resolveMetadataTxCaps(),
         "TerminologyCapabilities",
-        TIMEOUT_NORMAL).getReference();
-    } catch (Exception e) {
-      throw new FHIRException("Error fetching the server's terminology capabilities", e);
-    }
+        "Error fetching the server's terminology capabilities");
+
     return capabilities;
   }
 

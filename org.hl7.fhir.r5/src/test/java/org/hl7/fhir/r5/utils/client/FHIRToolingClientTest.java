@@ -166,6 +166,36 @@ class FHIRToolingClientTest {
   }
 
   @Test
+  void getTerminologyCapabilitiesFailsForJSON() throws IOException {
+    Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
+        Mockito.any(Headers.class), Mockito.eq("TerminologyCapabilities"), Mockito.anyLong()))
+      .thenThrow(new FHIRFormatError("dummy error"))
+      .thenReturn(new ResourceRequest<>(new TerminologyCapabilities(), 200, "location"));
+
+    ArgumentCaptor<Headers> headersArgumentCaptor = ArgumentCaptor.forClass(Headers.class);
+    toolingClient.setClientHeaders(getHeaders());
+    toolingClient.getTerminologyCapabilities();
+    Mockito.verify(mockClient, times(2)).issueGetResourceRequest(ArgumentMatchers.any(URI.class), ArgumentMatchers.anyString(),
+      headersArgumentCaptor.capture(), ArgumentMatchers.anyString(), ArgumentMatchers.anyLong());
+
+    Headers argumentCaptorValue = headersArgumentCaptor.getValue();
+    checkHeaders(argumentCaptorValue);
+  }
+
+  @Test
+  void getTerminologyCapabilitiesStatementFailsForJSONandXML() throws IOException {
+    Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
+        Mockito.any(Headers.class), Mockito.eq("TerminologyCapabilities"), Mockito.anyLong()))
+      .thenThrow(new FHIRFormatError("dummy error"))
+      .thenThrow(new FHIRFormatError("dummy error 2"));
+    assertEquals(ResourceFormat.RESOURCE_JSON.getHeader(), toolingClient.getPreferredResourceFormat());
+    toolingClient.setClientHeaders(getHeaders());
+    Exception exception = assertThrows(FHIRException.class, () -> { ArgumentCaptor<Headers> headersArgumentCaptor = ArgumentCaptor.forClass(Headers.class);
+      toolingClient.getTerminologyCapabilities(); });
+    assertEquals(ResourceFormat.RESOURCE_JSON.getHeader(), toolingClient.getPreferredResourceFormat());
+  }
+
+  @Test
   void getCapabilitiesStatement() throws IOException {
     Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
        Mockito.any(Headers.class), Mockito.eq("CapabilitiesStatement"), Mockito.anyLong()))
