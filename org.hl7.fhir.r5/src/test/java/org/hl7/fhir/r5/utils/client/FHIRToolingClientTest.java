@@ -212,7 +212,6 @@ class FHIRToolingClientTest {
     assertEquals(ResourceFormat.RESOURCE_JSON.getHeader(), toolingClient.getPreferredResourceFormat());
     toolingClient.setClientHeaders(getHeaders());
     Exception exception = assertThrows(FHIRException.class, () -> { ArgumentCaptor<Headers> headersArgumentCaptor = ArgumentCaptor.forClass(Headers.class);
-
     toolingClient.getCapabilitiesStatement(); });
     assertEquals(ResourceFormat.RESOURCE_JSON.getHeader(), toolingClient.getPreferredResourceFormat());
   }
