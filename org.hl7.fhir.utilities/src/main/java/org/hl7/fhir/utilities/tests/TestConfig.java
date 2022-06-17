@@ -13,7 +13,7 @@ public class TestConfig {
   public static final String FHIR_TEST_CASES = "FHIR-TEST-CASES";
 
   @Getter @Setter
-  private boolean rebuildCache = System.getProperty(FHIR_TXCACHE_REBUILD) != null && "TRUE".equals(System.getProperty(FHIR_TXCACHE_REBUILD));
+  private boolean rebuildCache = System.getProperty(FHIR_TXCACHE_REBUILD) != null && "TRUE".equalsIgnoreCase(System.getProperty(FHIR_TXCACHE_REBUILD));
 
   @Getter @Setter
   private String txCacheDirectory = TestConstants.TX_CACHE;
