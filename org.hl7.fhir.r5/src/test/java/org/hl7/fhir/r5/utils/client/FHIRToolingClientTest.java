@@ -56,9 +56,6 @@ class FHIRToolingClientTest {
     Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
       Mockito.any(Headers.class), Mockito.anyString(), Mockito.anyLong()))
       .thenReturn(resourceResourceRequest);
-       Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
-      Mockito.any(Headers.class), Mockito.eq("CapabilitiesStatement-Quick"), Mockito.anyLong()))
-      .thenReturn(new ResourceRequest<>(new CapabilityStatement(), 200, "location"));
 
     //PUT
     Mockito.when(mockClient.issuePutRequest(Mockito.any(URI.class), Mockito.any(byte[].class), Mockito.anyString(),
@@ -248,6 +245,11 @@ class FHIRToolingClientTest {
 
   @Test
   void getCapabilitiesStatementQuick() throws IOException {
+    Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
+        Mockito.any(Headers.class), Mockito.eq("CapabilitiesStatement-Quick"), Mockito.anyLong()))
+      .thenReturn(new ResourceRequest<>(new CapabilityStatement(), 200, "location"));
+    assertEquals(ResourceFormat.RESOURCE_JSON.getHeader(), toolingClient.getPreferredResourceFormat());
+
     ArgumentCaptor<Headers> headersArgumentCaptor = ArgumentCaptor.forClass(Headers.class);
     toolingClient.setClientHeaders(getHeaders());
     toolingClient.getCapabilitiesStatementQuick();
@@ -256,6 +258,46 @@ class FHIRToolingClientTest {
 
     Headers argumentCaptorValue = headersArgumentCaptor.getValue();
     checkHeaders(argumentCaptorValue);
+    assertEquals(ResourceFormat.RESOURCE_JSON.getHeader(), toolingClient.getPreferredResourceFormat());
+
+  }
+
+  @Test
+  void getCapabilitiesStatementQuickFailsForJSON() throws IOException {
+    Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
+        Mockito.any(Headers.class), Mockito.eq("CapabilitiesStatement-Quick"), Mockito.anyLong()))
+      .thenThrow(new FHIRFormatError("dummy error"))
+      .thenReturn(new ResourceRequest<>(new CapabilityStatement(), 200, "location"));
+
+    assertEquals(ResourceFormat.RESOURCE_JSON.getHeader(), toolingClient.getPreferredResourceFormat());
+
+    ArgumentCaptor<Headers> headersArgumentCaptor = ArgumentCaptor.forClass(Headers.class);
+    toolingClient.setClientHeaders(getHeaders());
+    toolingClient.getCapabilitiesStatementQuick();
+    Mockito.verify(mockClient, times(2)).issueGetResourceRequest(ArgumentMatchers.any(URI.class), ArgumentMatchers.anyString(),
+      headersArgumentCaptor.capture(), ArgumentMatchers.anyString(), ArgumentMatchers.anyLong());
+
+    Headers argumentCaptorValue = headersArgumentCaptor.getValue();
+    checkHeaders(argumentCaptorValue);
+    assertEquals(ResourceFormat.RESOURCE_XML.getHeader(), toolingClient.getPreferredResourceFormat());
+
+  }
+
+  @Test
+  void getCapabilitiesStatementQuickFailsForJSONandXML() throws IOException {
+    Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
+        Mockito.any(Headers.class), Mockito.eq("CapabilitiesStatement-Quick"), Mockito.anyLong()))
+      .thenThrow(new FHIRFormatError("dummy error"))
+      .thenThrow(new FHIRFormatError("dummy error 2"));
+
+    ArgumentCaptor<Headers> headersArgumentCaptor = ArgumentCaptor.forClass(Headers.class);
+    toolingClient.setClientHeaders(getHeaders());
+    assertEquals(ResourceFormat.RESOURCE_JSON.getHeader(), toolingClient.getPreferredResourceFormat());
+    Exception exception = assertThrows(FHIRException.class, () -> {
+      toolingClient.getCapabilitiesStatementQuick();
+    });
+    assertEquals(ResourceFormat.RESOURCE_JSON.getHeader(), toolingClient.getPreferredResourceFormat());
+
   }
 
   @Test

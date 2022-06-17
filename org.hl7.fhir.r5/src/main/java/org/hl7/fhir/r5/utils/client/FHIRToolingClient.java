@@ -171,7 +171,7 @@ public class FHIRToolingClient {
   public TerminologyCapabilities getTerminologyCapabilities() {
     TerminologyCapabilities capabilities = null;
 
-      capabilities = (TerminologyCapabilities) getCapabilities(resourceAddress.resolveMetadataTxCaps(),
+      capabilities =  getCapabilities(resourceAddress.resolveMetadataTxCaps(),
         "TerminologyCapabilities",
         "Error fetching the server's terminology capabilities");
 
@@ -181,7 +181,7 @@ public class FHIRToolingClient {
   public CapabilityStatement getCapabilitiesStatement() {
     CapabilityStatement capabilityStatement = null;
 
-      capabilityStatement = (CapabilityStatement) getCapabilities(resourceAddress.resolveMetadataUri(false),
+      capabilityStatement = getCapabilities(resourceAddress.resolveMetadataUri(false),
 
         "CapabilitiesStatement", "Error fetching the server's conformance statement");
     return capabilityStatement;
@@ -189,15 +189,12 @@ public class FHIRToolingClient {
 
   public CapabilityStatement getCapabilitiesStatementQuick() throws EFhirClientException {
     if (capabilities != null) return capabilities;
-    try {
-       capabilities = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(true),
-        getPreferredResourceFormat(),
-        generateHeaders(),
+
+       capabilities = getCapabilities(resourceAddress.resolveMetadataUri(true),
+
         "CapabilitiesStatement-Quick",
-        TIMEOUT_NORMAL).getReference();
-    } catch (Exception e) {
-      throw new FHIRException("Error fetching the server's capability statement: "+e.getMessage(), e);
-    }
+        "Error fetching the server's capability statement");
+
     return capabilities;
   }
 
