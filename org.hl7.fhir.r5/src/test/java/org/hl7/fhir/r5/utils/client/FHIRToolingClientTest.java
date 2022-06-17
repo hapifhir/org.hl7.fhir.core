@@ -6,6 +6,8 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.Enumerations;
@@ -30,6 +32,8 @@ import okhttp3.Headers;
 import okhttp3.Request;
 import okhttp3.internal.http2.Header;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 class FHIRToolingClientTest {
 
   String TX_ADDR = "http://tx.fhir.org";
@@ -50,13 +54,7 @@ class FHIRToolingClientTest {
     Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
       Mockito.any(Headers.class), Mockito.anyString(), Mockito.anyLong()))
       .thenReturn(resourceResourceRequest);
-    Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
-      Mockito.any(Headers.class), Mockito.eq("TerminologyCapabilities"), Mockito.anyLong()))
-      .thenReturn(new ResourceRequest<>(new TerminologyCapabilities(), 200, "location"));
-    Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
-      Mockito.any(Headers.class), Mockito.eq("CapabilitiesStatement"), Mockito.anyLong()))
-      .thenReturn(new ResourceRequest<>(new CapabilityStatement(), 200, "location"));
-    Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
+       Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
       Mockito.any(Headers.class), Mockito.eq("CapabilitiesStatement-Quick"), Mockito.anyLong()))
       .thenReturn(new ResourceRequest<>(new CapabilityStatement(), 200, "location"));
 
@@ -151,6 +149,10 @@ class FHIRToolingClientTest {
 
   @Test
   void getTerminologyCapabilities() throws IOException {
+    Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
+        Mockito.any(Headers.class), Mockito.eq("TerminologyCapabilities"), Mockito.anyLong()))
+      .thenReturn(new ResourceRequest<>(new TerminologyCapabilities(), 200, "location"));
+
     ArgumentCaptor<Headers> headersArgumentCaptor = ArgumentCaptor.forClass(Headers.class);
     toolingClient.setClientHeaders(getHeaders());
     toolingClient.getTerminologyCapabilities();
@@ -163,6 +165,10 @@ class FHIRToolingClientTest {
 
   @Test
   void getCapabilitiesStatement() throws IOException {
+    Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
+       Mockito.any(Headers.class), Mockito.eq("CapabilitiesStatement"), Mockito.anyLong()))
+      .thenReturn(new ResourceRequest<>(new CapabilityStatement(), 200, "location"));
+
     ArgumentCaptor<Headers> headersArgumentCaptor = ArgumentCaptor.forClass(Headers.class);
     toolingClient.setClientHeaders(getHeaders());
     toolingClient.getCapabilitiesStatement();
@@ -171,6 +177,35 @@ class FHIRToolingClientTest {
 
     Headers argumentCaptorValue = headersArgumentCaptor.getValue();
     checkHeaders(argumentCaptorValue);
+  }
+
+  @Test
+  void getCapabilitiesStatementFailsForJSON() throws IOException {
+    Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
+        Mockito.any(Headers.class), Mockito.eq("CapabilitiesStatement"), Mockito.anyLong()))
+      .thenThrow(new FHIRFormatError("dummy error"))
+      .thenReturn(new ResourceRequest<>(new CapabilityStatement(), 200, "location"));
+
+    ArgumentCaptor<Headers> headersArgumentCaptor = ArgumentCaptor.forClass(Headers.class);
+    toolingClient.setClientHeaders(getHeaders());
+    toolingClient.getCapabilitiesStatement();
+    Mockito.verify(mockClient).issueGetResourceRequest(ArgumentMatchers.any(URI.class), ArgumentMatchers.anyString(),
+      headersArgumentCaptor.capture(), ArgumentMatchers.anyString(), ArgumentMatchers.anyLong());
+
+    Headers argumentCaptorValue = headersArgumentCaptor.getValue();
+    checkHeaders(argumentCaptorValue);
+  }
+
+  @Test
+  void getCapabilitiesStatementFailsForJSONandXML() throws IOException {
+    Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
+        Mockito.any(Headers.class), Mockito.eq("CapabilitiesStatement"), Mockito.anyLong()))
+      .thenThrow(new FHIRFormatError("dummy error"))
+      .thenThrow(new FHIRFormatError("dummy error 2"));
+
+    Exception exception = assertThrows(FHIRException.class, () -> { ArgumentCaptor<Headers> headersArgumentCaptor = ArgumentCaptor.forClass(Headers.class);
+    toolingClient.setClientHeaders(getHeaders());
+    toolingClient.getCapabilitiesStatement(); });
   }
 
   @Test
