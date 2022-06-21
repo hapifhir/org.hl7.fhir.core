@@ -40,11 +40,16 @@ import org.hl7.fhir.r5.utils.client.network.Client;
 import org.hl7.fhir.r5.utils.client.network.ResourceRequest;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Very Simple RESTful client. This is purely for use in the standalone
@@ -73,6 +78,9 @@ import java.util.*;
  */
 public class FHIRToolingClient {
 
+  private static final Logger logger = LoggerFactory.getLogger(FHIRToolingClient.class);
+
+
   public static final String DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssK";
   public static final String DATE_FORMAT = "yyyy-MM-dd";
   public static final String hostKey = "http.proxyHost";
@@ -97,7 +105,7 @@ public class FHIRToolingClient {
 
   //Pass endpoint for client - URI
   public FHIRToolingClient(String baseServiceUrl, String userAgent) throws URISyntaxException {
-    preferredResourceFormat = ResourceFormat.RESOURCE_XML;
+    preferredResourceFormat = ResourceFormat.RESOURCE_JSON;
     this.userAgent = userAgent;
     initialize(baseServiceUrl);
   }
@@ -132,45 +140,61 @@ public class FHIRToolingClient {
     this.maxResultSetSize = maxResultSetSize;
   }
 
+  private List<ResourceFormat> getResourceFormatsWithPreferredFirst() {
+    return Stream.concat(
+      Arrays.stream(new ResourceFormat[]{preferredResourceFormat}),
+      Arrays.stream(ResourceFormat.values()).filter(a -> a != preferredResourceFormat)
+    ).collect(Collectors.toList());
+  }
+
+  private <T extends Resource> T getCapabilities(URI resourceUri, String message, String exceptionMessage) throws FHIRException {
+    final List<ResourceFormat> resourceFormats = getResourceFormatsWithPreferredFirst();
+
+    for (ResourceFormat attemptedResourceFormat : resourceFormats) {
+      try {
+        T output =  (T) client.issueGetResourceRequest(resourceUri,
+          preferredResourceFormat.getHeader(),
+          generateHeaders(),
+          message,
+          TIMEOUT_NORMAL).getReference();
+        if (attemptedResourceFormat != preferredResourceFormat) {
+          setPreferredResourceFormat(attemptedResourceFormat);
+        }
+        return output;
+      } catch (Exception e) {
+        logger.warn("Failed attempt to fetch " + resourceUri, e);
+      }
+    }
+    throw new FHIRException(exceptionMessage);
+  }
+
   public TerminologyCapabilities getTerminologyCapabilities() {
     TerminologyCapabilities capabilities = null;
-    try {
-      capabilities = (TerminologyCapabilities) client.issueGetResourceRequest(resourceAddress.resolveMetadataTxCaps(),
-        getPreferredResourceFormat(),
-        generateHeaders(),
+
+      capabilities =  getCapabilities(resourceAddress.resolveMetadataTxCaps(),
         "TerminologyCapabilities",
-        TIMEOUT_NORMAL).getReference();
-    } catch (Exception e) {
-      throw new FHIRException("Error fetching the server's terminology capabilities", e);
-    }
+        "Error fetching the server's terminology capabilities");
+
     return capabilities;
   }
 
   public CapabilityStatement getCapabilitiesStatement() {
     CapabilityStatement capabilityStatement = null;
-    try {
-      capabilityStatement = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(false),
-        getPreferredResourceFormat(),
-        generateHeaders(),
-        "CapabilitiesStatement",
-        TIMEOUT_NORMAL).getReference();
-    } catch (Exception e) {
-      throw new FHIRException("Error fetching the server's conformance statement", e);
-    }
+
+      capabilityStatement = getCapabilities(resourceAddress.resolveMetadataUri(false),
+
+        "CapabilitiesStatement", "Error fetching the server's conformance statement");
     return capabilityStatement;
   }
 
   public CapabilityStatement getCapabilitiesStatementQuick() throws EFhirClientException {
     if (capabilities != null) return capabilities;
-    try {
-       capabilities = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(true),
-        getPreferredResourceFormat(),
-        generateHeaders(),
+
+       capabilities = getCapabilities(resourceAddress.resolveMetadataUri(true),
+
         "CapabilitiesStatement-Quick",
-        TIMEOUT_NORMAL).getReference();
-    } catch (Exception e) {
-      throw new FHIRException("Error fetching the server's capability statement: "+e.getMessage(), e);
-    }
+        "Error fetching the server's capability statement");
+
     return capabilities;
   }
 
