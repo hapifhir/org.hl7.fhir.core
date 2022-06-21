@@ -129,8 +129,8 @@ public class DateType extends BaseDateTimeType {
 	private static GregorianCalendar toCalendarZulu(int theYear, int theMonth, int theDay) {
 		Validate.isTrue(theMonth >= 0, "theMonth must be between 0 and 11");
 		Validate.isTrue(theMonth <= 11, "theMonth must be between 0 and 11");
-		Validate.isTrue(theDay >= 1, "theMonth must be between 0 and 11");
-		Validate.isTrue(theDay <= 31, "theMonth must be between 0 and 11");
+		Validate.isTrue(theDay >= 1, "theDay must be between 1 and 31");
+		Validate.isTrue(theDay <= 31, "theDay must be between 1 and 31");
 		
 		GregorianCalendar retVal = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
 		retVal.set(Calendar.YEAR, theYear);
