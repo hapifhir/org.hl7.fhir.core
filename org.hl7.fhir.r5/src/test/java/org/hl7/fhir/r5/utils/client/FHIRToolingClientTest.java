@@ -163,6 +163,22 @@ class FHIRToolingClientTest {
   }
 
   @Test
+  void getTerminologyCapabilitiesNotSupported() throws IOException {
+    Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
+        Mockito.any(Headers.class), Mockito.eq("TerminologyCapabilities"), Mockito.anyLong()))
+      .thenReturn(new ResourceRequest<>(new CapabilityStatement(), 200, "location"));
+
+    ArgumentCaptor<Headers> headersArgumentCaptor = ArgumentCaptor.forClass(Headers.class);
+    toolingClient.setClientHeaders(getHeaders());
+    toolingClient.getTerminologyCapabilities();
+    Mockito.verify(mockClient).issueGetResourceRequest(ArgumentMatchers.any(URI.class), ArgumentMatchers.anyString(),
+      headersArgumentCaptor.capture(), ArgumentMatchers.anyString(), ArgumentMatchers.anyLong());
+
+    Headers argumentCaptorValue = headersArgumentCaptor.getValue();
+    checkHeaders(argumentCaptorValue);
+  }
+
+  @Test
   void getTerminologyCapabilitiesFailsForJSON() throws IOException {
     Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
         Mockito.any(Headers.class), Mockito.eq("TerminologyCapabilities"), Mockito.anyLong()))
