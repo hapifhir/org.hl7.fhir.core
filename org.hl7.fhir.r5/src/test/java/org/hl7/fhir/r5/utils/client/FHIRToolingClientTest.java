@@ -170,12 +170,11 @@ class FHIRToolingClientTest {
 
     ArgumentCaptor<Headers> headersArgumentCaptor = ArgumentCaptor.forClass(Headers.class);
     toolingClient.setClientHeaders(getHeaders());
-    toolingClient.getTerminologyCapabilities();
-    Mockito.verify(mockClient).issueGetResourceRequest(ArgumentMatchers.any(URI.class), ArgumentMatchers.anyString(),
-      headersArgumentCaptor.capture(), ArgumentMatchers.anyString(), ArgumentMatchers.anyLong());
+    Exception exception = assertThrows(FHIRException.class, () -> {
 
-    Headers argumentCaptorValue = headersArgumentCaptor.getValue();
-    checkHeaders(argumentCaptorValue);
+      toolingClient.getTerminologyCapabilities();
+
+    });
   }
 
   @Test
