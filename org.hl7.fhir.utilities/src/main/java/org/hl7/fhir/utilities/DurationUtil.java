@@ -2,7 +2,7 @@ package org.hl7.fhir.utilities;
 
 import java.util.concurrent.TimeUnit;
 
-public class TimeUtil {
+public class DurationUtil {
   public static String presentDuration(long duration) {
     duration = duration / 1000000;
     String res = "";    // ;
@@ -17,11 +17,11 @@ public class TimeUtil {
         TimeUnit.SECONDS.toMillis(TimeUnit.MILLISECONDS.toSeconds(duration));
 
     if (days > 0)
-      res = String.format("%dd %02d:%02d:%02d.%04d", days, hours, minutes, seconds, millis);
+      res = String.format("%dd %02d:%02d:%02d.%03d", days, hours, minutes, seconds, millis);
     else if (hours > 0)
-      res = String.format("%02d:%02d:%02d.%04d", hours, minutes, seconds, millis);
+      res = String.format("%02d:%02d:%02d.%03d", hours, minutes, seconds, millis);
     else //
-      res = String.format("%02d:%02d.%04d", minutes, seconds, millis);
+      res = String.format("%02d:%02d.%03d", minutes, seconds, millis);
 //    else
 //      res = String.format("%02d.%04d", seconds, millis);
     return res;
