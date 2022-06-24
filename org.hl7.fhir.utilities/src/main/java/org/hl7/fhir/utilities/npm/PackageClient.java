@@ -108,7 +108,7 @@ public class PackageClient {
       params.append("name="+name);
     }
     if (!Utilities.noString(canonical)) {
-      params.append("canonical="+canonical);
+      params.append("pkgcanonical="+canonical);
     }
     if (!Utilities.noString(fhirVersion)) {
       params.append("fhirversion="+fhirVersion);
