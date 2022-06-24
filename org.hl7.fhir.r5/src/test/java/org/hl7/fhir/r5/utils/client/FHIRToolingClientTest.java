@@ -32,8 +32,7 @@ import okhttp3.Headers;
 import okhttp3.Request;
 import okhttp3.internal.http2.Header;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 
 class FHIRToolingClientTest {
@@ -160,6 +159,20 @@ class FHIRToolingClientTest {
 
     Headers argumentCaptorValue = headersArgumentCaptor.getValue();
     checkHeaders(argumentCaptorValue);
+  }
+
+  @Test
+  void getTerminologyCapabilitiesNotSupported() throws IOException {
+    Mockito.when(mockClient.issueGetResourceRequest(Mockito.any(URI.class), Mockito.anyString(),
+        Mockito.any(Headers.class), Mockito.eq("TerminologyCapabilities"), Mockito.anyLong()))
+      .thenReturn(new ResourceRequest<>(new CapabilityStatement(), 200, "location"));
+
+    ArgumentCaptor<Headers> headersArgumentCaptor = ArgumentCaptor.forClass(Headers.class);
+    toolingClient.setClientHeaders(getHeaders());
+    Exception exception = assertThrows(FHIRException.class, () -> {
+      toolingClient.getTerminologyCapabilities();
+    });
+    assertEquals(exception.getCause().getClass(), ClassCastException.class);
   }
 
   @Test
