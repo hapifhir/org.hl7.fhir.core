@@ -56,6 +56,7 @@ public class ComparisonService {
 //    File htmlFile = cr.render(left, right);
 //    Desktop.getDesktop().browse(htmlFile.toURI());
 //    System.out.println("Done");
+//    cr.getTemplates().put("CapabilityStatement", new String(context.getBinaries().get("template-comparison-CapabilityStatement.html")));
   }
 
   public static void compareStructureDefinitions(String dest, ValidationEngine validator, String left, String right, StructureDefinition resLeft, StructureDefinition resRight) throws IOException, FHIRException, EOperationOutcome {
@@ -70,6 +71,7 @@ public class ComparisonService {
     cr.getTemplates().put("ValueSet", new String(validator.getContext().getBinaries().get("template-comparison-ValueSet.html")));
     cr.getTemplates().put("Profile", new String(validator.getContext().getBinaries().get("template-comparison-Profile.html")));
     cr.getTemplates().put("Index", new String(validator.getContext().getBinaries().get("template-comparison-index.html")));
+    cr.getTemplates().put("CapabilityStatement", new String(validator.getContext().getBinaries().get("template-comparison-CapabilityStatement.html")));
     File htmlFile = cr.render(left, right);
     Desktop.getDesktop().browse(htmlFile.toURI());
     System.out.println("Done");

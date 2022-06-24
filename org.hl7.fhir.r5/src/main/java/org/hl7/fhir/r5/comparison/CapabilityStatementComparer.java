@@ -9,6 +9,8 @@ import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.comparison.ProfileComparer.ProfileComparison;
 import org.hl7.fhir.r5.comparison.ResourceComparer.MessageCounts;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.BackboneElement;
@@ -86,7 +88,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     super(session);
   }
 
-  public CapabilityStatementComparison compare(CapabilityStatement left, CapabilityStatement right) {    
+  public CapabilityStatementComparison compare(CapabilityStatement left, CapabilityStatement right) throws DefinitionException, FHIRFormatError, IOException {    
     if (left == null)
       throw new DefinitionException("No CapabilityStatement provided (left)");
     if (right == null)
@@ -130,7 +132,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     return res;
   }
 
-  private void compareRests(List<CapabilityStatementRestComponent> left, List<CapabilityStatementRestComponent> right, StructuralMatch<Element> combined, List<CapabilityStatementRestComponent> union, List<CapabilityStatementRestComponent> intersection, CapabilityStatement csU, CapabilityStatement csI, CapabilityStatementComparison res, String path) {
+  private void compareRests(List<CapabilityStatementRestComponent> left, List<CapabilityStatementRestComponent> right, StructuralMatch<Element> combined, List<CapabilityStatementRestComponent> union, List<CapabilityStatementRestComponent> intersection, CapabilityStatement csU, CapabilityStatement csI, CapabilityStatementComparison res, String path) throws DefinitionException, FHIRFormatError, IOException {
     List<CapabilityStatementRestComponent> matchR = new ArrayList<>();
     for (CapabilityStatementRestComponent l : left) {
       CapabilityStatementRestComponent r = findInList(right, l);
@@ -203,10 +205,12 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
         combined.getChildren().add(sm);
       }
     }
-    for (CodeableConcept r : right.getService()) {
-      if (!matchR.contains(r)) {
-        union.getService().add(r);
-        combined.getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.INFORMATION, "Added this concept", path), r));        
+    if (right != null) {
+      for (CodeableConcept r : right.getService()) {
+        if (!matchR.contains(r)) {
+          union.getService().add(r);
+          combined.getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.INFORMATION, "Added this concept", path), r));        
+        }
       }
     }
   }
@@ -384,7 +388,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     tgt.removeAll(toRemove);
   }
 
-  private void compareRestResources(CapabilityStatementRestComponent left, CapabilityStatementRestComponent right, StructuralMatch<Element> combined, CapabilityStatementRestComponent union, CapabilityStatementRestComponent intersection, CapabilityStatement csU, CapabilityStatement csI, CapabilityStatementComparison res, String path) {
+  private void compareRestResources(CapabilityStatementRestComponent left, CapabilityStatementRestComponent right, StructuralMatch<Element> combined, CapabilityStatementRestComponent union, CapabilityStatementRestComponent intersection, CapabilityStatement csU, CapabilityStatement csI, CapabilityStatementComparison res, String path) throws DefinitionException, FHIRFormatError, IOException {
     List<CapabilityStatementRestResourceComponent> matchR = new ArrayList<>();
     for (CapabilityStatementRestResourceComponent l : left.getResource()) {
       CapabilityStatementRestResourceComponent r = findInList(right.getResource(), l);
@@ -410,7 +414,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     }
   }
   
-  private void compareRestResource(StructuralMatch<Element> sm, CapabilityStatementRestResourceComponent l, CapabilityStatementRestResourceComponent r, String path, CapabilityStatementComparison res, CapabilityStatementRestResourceComponent union, CapabilityStatementRestResourceComponent intersection) {
+  private void compareRestResource(StructuralMatch<Element> sm, CapabilityStatementRestResourceComponent l, CapabilityStatementRestResourceComponent r, String path, CapabilityStatementComparison res, CapabilityStatementRestResourceComponent union, CapabilityStatementRestResourceComponent intersection) throws DefinitionException, FHIRFormatError, IOException {
     compareProfiles(path, sm, l.getProfileElement(), r.getProfileElement(), res, union, intersection);
     // todo: supported profiles
     compareStrings(path, sm.getMessages(), l.getDocumentation(), r.getDocumentation(), "documentation", IssueSeverity.INFORMATION, res);
@@ -430,7 +434,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     compareOperations(sm, l.getOperation(), r.getOperation(), path, res, union.getOperation(), intersection.getOperation());
   }
 
-  private void compareProfiles(String path, StructuralMatch<Element> combined, CanonicalType left, CanonicalType right, CapabilityStatementComparison res, CapabilityStatementRestResourceComponent union, CapabilityStatementRestResourceComponent intersection) {
+  private void compareProfiles(String path, StructuralMatch<Element> combined, CanonicalType left, CanonicalType right, CapabilityStatementComparison res, CapabilityStatementRestResourceComponent union, CapabilityStatementRestResourceComponent intersection) throws DefinitionException, FHIRFormatError, IOException {
     if (!left.hasValue() && !right.hasValue()) {
       // nothing in this case 
     } else if (!left.hasValue()) {
@@ -466,7 +470,9 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
         combined.getChildren().add(new StructuralMatch<Element>(left, right, vmI(IssueSeverity.WARNING, "Changed this profile to a narrower one", path)).setName("profile"));                
       } else {
         combined.getChildren().add(new StructuralMatch<Element>(left, right, vmI(IssueSeverity.WARNING, "Different", path)).setName("profile"));                
-        throw new Error("Not done yet");
+        ProfileComparison pc = (ProfileComparison) session.compare(sdLeft, sdRight);
+        intersection.setProfile(pc.getIntersection().getUrl());
+        union.setProfile(pc.getUnion().getUrl());
       }
     }
   }

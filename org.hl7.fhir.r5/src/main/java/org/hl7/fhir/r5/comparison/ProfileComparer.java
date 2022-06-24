@@ -19,10 +19,12 @@ import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.ElementDefinition.AggregationMode;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.PrimitiveType;
@@ -539,10 +541,13 @@ public class ProfileComparer extends CanonicalResourceComparer {
     boolean pfound = false;
     boolean tfound = false;
     nw = nw.copy();
-    if (nw.hasAggregation())
-      throw new DefinitionException("Aggregation not supported: "+path);
     for (TypeRefComponent ex : results) {
       if (Utilities.equals(ex.getWorkingCode(), nw.getWorkingCode())) {
+        for (Enumeration<AggregationMode> a : nw.getAggregation()) {
+          if (!ex.hasAggregation(a.getValue())) {
+            ex.addAggregation(a.getValue());
+          }
+        }
         if (!ex.hasProfile() && !nw.hasProfile())
           pfound = true;
         else if (!ex.hasProfile()) {
@@ -635,14 +640,10 @@ public class ProfileComparer extends CanonicalResourceComparer {
   private Collection<? extends TypeRefComponent> intersectTypes(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, ElementDefinition ed, String path, List<TypeRefComponent> left, List<TypeRefComponent> right) throws DefinitionException, IOException, FHIRFormatError {
     List<TypeRefComponent> result = new ArrayList<TypeRefComponent>();
     for (TypeRefComponent l : left) {
-      if (l.hasAggregation())
-        throw new DefinitionException("Aggregation not supported: "+path);
       boolean pfound = false;
       boolean tfound = false;
       TypeRefComponent c = l.copy();
       for (TypeRefComponent r : right) {
-        if (r.hasAggregation())
-          throw new DefinitionException("Aggregation not supported: "+path);
         if (!l.hasProfile() && !r.hasProfile()) {
           pfound = true;    
         } else if (!r.hasProfile()) {
@@ -697,9 +698,17 @@ public class ProfileComparer extends CanonicalResourceComparer {
             }
           }
         }
+        if (pfound && tfound) {
+          for (Enumeration<AggregationMode> a : l.getAggregation()) {
+            if (!r.hasAggregation(a.getValue())) {
+              c.getAggregation().removeIf(n -> n.getValue() == a.getValue());
+            }
+          }
+        }
       }
-      if (pfound && tfound)
+      if (pfound && tfound) {
         result.add(c);
+      }
     }
     return result;
   }

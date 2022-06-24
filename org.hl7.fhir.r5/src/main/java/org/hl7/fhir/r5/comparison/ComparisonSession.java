@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.comparison.CapabilityStatementComparer.CapabilityStatementComparison;
 import org.hl7.fhir.r5.comparison.CodeSystemComparer.CodeSystemComparison;
 import org.hl7.fhir.r5.comparison.ProfileComparer.ProfileComparison;
 import org.hl7.fhir.r5.comparison.ResourceComparer.ResourceComparison;
@@ -16,6 +17,7 @@ import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -24,6 +26,7 @@ import org.hl7.fhir.utilities.Utilities;
 
 public class ComparisonSession {
 
+  
   private Map<String, ResourceComparison> compares = new HashMap<>();
   private IWorkerContext contextLeft;
   private IWorkerContext contextRight;
@@ -42,7 +45,7 @@ public class ComparisonSession {
     this.title = title;
     this.pkpLeft = pkpLeft;
     this.pkpRight = pkpRight;
-//    debug = true;
+    debug = false;
   }
   
   public IWorkerContext getContextLeft() {
@@ -94,10 +97,18 @@ public class ComparisonSession {
           ProfileComparison csc = cs.compare((StructureDefinition) left, (StructureDefinition) right);
           compares.put(key, csc);
           return csc;
+        } else if (left instanceof CapabilityStatement && right instanceof CapabilityStatement) {
+          CapabilityStatementComparer cs = new CapabilityStatementComparer(this);
+          CapabilityStatementComparison csc = cs.compare((CapabilityStatement) left, (CapabilityStatement) right);
+          compares.put(key, csc);
+          return csc;
         } else {
           throw new FHIRException("Unable to compare resources of type "+left.fhirType()+" and "+right.fhirType());
         }
       } catch (Throwable e) {
+        if (debug) {
+          e.printStackTrace();
+        }
         ResourceComparer.PlaceHolderComparison csc = new ResourceComparer.PlaceHolderComparison(left, right, e);
         compares.put(key, csc);
         return csc;      

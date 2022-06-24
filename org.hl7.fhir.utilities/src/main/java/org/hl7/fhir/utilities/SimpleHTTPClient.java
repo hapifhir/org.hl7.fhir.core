@@ -78,6 +78,10 @@ public class SimpleHTTPClient {
           throw new IOException("Invalid HTTP response "+code+" from "+source+" ("+message+") (content in "+filename+")");
         }
       }      
+    }
+
+    public String getMessage() {
+      return message;
     }    
   }
 

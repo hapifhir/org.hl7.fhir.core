@@ -192,7 +192,7 @@ public class ValidatorCli {
         res.add("-version");
         res.add("4.0");
         res.add("-ig");
-        res.add("hl7.fhir.uv.ips#current$connectathon-2");
+        res.add("hl7.fhir.uv.ips#current");
         res.add("-profile");
         res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips");
       } else if (a.startsWith("-ips$")) {
