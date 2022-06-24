@@ -133,7 +133,7 @@ class FHIRToolingClientTest {
 
   private void checkHeaders(Headers argumentCaptorValue) {
     getHeaders().forEach(header -> {
-      System.out.println("Checking header <" + header.component1().utf8() + ", " + header.component2().utf8() + ">");
+//      System.out.println("Checking header <" + header.component1().utf8() + ", " + header.component2().utf8() + ">");
       Assertions.assertEquals(argumentCaptorValue.get(header.component1().utf8()), header.component2().utf8());
     });
   }

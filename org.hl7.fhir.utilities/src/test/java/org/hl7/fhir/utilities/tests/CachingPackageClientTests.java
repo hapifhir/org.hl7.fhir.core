@@ -35,9 +35,9 @@ public class CachingPackageClientTests {
   public void testSearch() throws IOException {
     CachingPackageClient client = new CachingPackageClient(CachingPackageClientTests.SERVER1);
     List<PackageInfo> matches = client.search("core", null, null, false);
-    for (PackageInfo pi : matches) {
-      System.out.println(pi.toString());
-    }
+//    for (PackageInfo pi : matches) {
+//      System.out.println(pi.toString());
+//    }
     Assertions.assertTrue(matches.size() > 0);
   }
 
@@ -52,9 +52,9 @@ public class CachingPackageClientTests {
   public void testVersions() throws IOException {
     CachingPackageClient client = new CachingPackageClient(CachingPackageClientTests.SERVER1);
     List<PackageInfo> matches = client.getVersions("Simplifier.Core.STU3");
-    for (PackageInfo pi : matches) {
-      System.out.println(pi.toString());
-    }
+//    for (PackageInfo pi : matches) {
+//      System.out.println(pi.toString());
+//    }
     Assertions.assertTrue(matches.size() > 0);
   }
 
@@ -78,9 +78,9 @@ public class CachingPackageClientTests {
   public void testSearch2() throws IOException {
     CachingPackageClient client = new CachingPackageClient(CachingPackageClientTests.SERVER2);
     List<PackageInfo> matches = client.search("core", null, null, false);
-    for (PackageInfo pi : matches) {
-      System.out.println(pi.toString());
-    }
+//    for (PackageInfo pi : matches) {
+//      System.out.println(pi.toString());
+//    }
     Assertions.assertTrue(matches.size() > 0);
   }
 
@@ -105,9 +105,9 @@ public class CachingPackageClientTests {
   public void testVersions2A() throws IOException {
     CachingPackageClient client = new CachingPackageClient(CachingPackageClientTests.SERVER2);
     List<PackageInfo> matches = client.getVersions("hl7.fhir.us.core");
-    for (PackageInfo pi : matches) {
-      System.out.println(pi.toString());
-    }
+//    for (PackageInfo pi : matches) {
+//      System.out.println(pi.toString());
+//    }
     Assertions.assertTrue(matches.size() > 0);
   }
 

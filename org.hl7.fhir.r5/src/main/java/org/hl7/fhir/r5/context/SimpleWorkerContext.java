@@ -487,7 +487,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
           t++;
         } catch (Exception e) {
           throw new FHIRException(formatMessage(I18nConstants.ERROR_READING__FROM_PACKAGE__, s, pi.name(), pi.version(), e.getMessage()), e);
-        }
+        }      
       }
     } else {
       if (types.length == 0) {

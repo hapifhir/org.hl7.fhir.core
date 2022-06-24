@@ -680,7 +680,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         if (disp == null) {
           disp = getDisplayForUrl(url);
         }
-        if (disp != null && !designations.containsKey(url)) {
+        if (disp != null && !designations.containsKey(url) && url != null) {
           designations.put(url, disp);
         }
       }
