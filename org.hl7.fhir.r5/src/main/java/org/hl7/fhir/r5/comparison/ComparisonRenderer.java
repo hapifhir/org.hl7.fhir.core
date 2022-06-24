@@ -14,6 +14,7 @@ import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
+import org.hl7.fhir.r5.comparison.CapabilityStatementComparer.CapabilityStatementComparison;
 import org.hl7.fhir.r5.comparison.CodeSystemComparer.CodeSystemComparison;
 import org.hl7.fhir.r5.comparison.ProfileComparer.ProfileComparison;
 import org.hl7.fhir.r5.comparison.ResourceComparer.PlaceHolderComparison;
@@ -133,6 +134,8 @@ public class ComparisonRenderer implements IEvaluationContext {
       renderValueSet(id, (ValueSetComparison) comp);
     } else if (comp instanceof CodeSystemComparison) {
       renderCodeSystem(id, (CodeSystemComparison) comp);
+    } else if (comp instanceof CapabilityStatementComparison) {
+      renderCapabilityStatement(id, (CapabilityStatementComparison) comp);
     } else if (comp instanceof PlaceHolderComparison) {
       renderPlaceHolder(id, (PlaceHolderComparison) comp);
     }   
@@ -207,6 +210,25 @@ public class ComparisonRenderer implements IEvaluationContext {
     vars.put("metadata", new StringType(new XhtmlComposer(true).compose(cs.renderMetadata(comp, "", ""))));
     vars.put("structure", new StringType(new XhtmlComposer(true).compose(cs.renderStructure(comp, "", "", "http://hl7.org/fhir"))));
     String cnt = processTemplate(template, "CodeSystem", vars);
+    TextFile.stringToFile(cnt, file(comp.getId()+".html"));
+    new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
+    new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
+  }
+  
+  private void renderCapabilityStatement(String id, CapabilityStatementComparison comp) throws IOException {  
+    String template = templates.get("CapabilityStatement");
+    Map<String, Base> vars = new HashMap<>();
+    CapabilityStatementComparer cs = new CapabilityStatementComparer(session);
+    vars.put("left", new StringType(comp.getLeft().present()));
+    vars.put("right", new StringType(comp.getRight().present()));
+    vars.put("leftId", new StringType(comp.getLeft().getId()));
+    vars.put("rightId", new StringType(comp.getRight().getId()));
+    vars.put("leftUrl", new StringType(comp.getLeft().getUrl()));
+    vars.put("rightUrl", new StringType(comp.getRight().getUrl()));
+    vars.put("errors", new StringType(new XhtmlComposer(true).compose(cs.renderErrors(comp))));
+    vars.put("metadata", new StringType(new XhtmlComposer(true).compose(cs.renderMetadata(comp, "", ""))));
+    vars.put("statement", new StringType(new XhtmlComposer(true).compose(cs.renderStatements(comp, "", ""))));
+    String cnt = processTemplate(template, "CapabilityStatement", vars);
     TextFile.stringToFile(cnt, file(comp.getId()+".html"));
     new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
     new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
