@@ -1,9 +1,22 @@
 package org.hl7.fhir.validation.ipa;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.hl7.fhir.r4.model.Patient;
+import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.elementmodel.JsonParser;
+import org.hl7.fhir.utilities.SimpleHTTPClient;
+import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.validation.instance.InstanceValidator;
+import org.hl7.fhir.validation.ipa.IPAValidator.ValidationNode;
 
 /**
  * You give this validator three parameters:
@@ -15,6 +28,24 @@ import org.hl7.fhir.validation.instance.InstanceValidator;
  *
  */
 public class IPAValidator {
+
+  public class ValidationNode {
+
+    public ValidationNode(String string) {
+      // TODO Auto-generated constructor stub
+    }
+
+    public List<ValidationMessage> getIssues() {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    public String getName() {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+  }
 
   private String address;
   private String token;
@@ -32,32 +63,39 @@ public class IPAValidator {
   public String getAddress() {
     return address;
   }
+  
   public void setAddress(String address) {
     this.address = address;
   }
+  
   public String getToken() {
     return token;
   }
+  
   public void setToken(String token) {
     this.token = token;
   }
+  
   public String getUrn() {
     return urn;
   }
+  
   public void setUrn(String urn) {
     this.urn = urn;
   }
+  
   public InstanceValidator getValidator() {
     return validator;
   }
+  
   public void setValidator(InstanceValidator validator) {
     this.validator = validator;
   }
 
   public void validate() {
-    List<Patient> patients = searchPatients();
-    // check list of patients that have access to
-    // require that at least one of the patients matches the URL
+    List<Element> patients = searchPatients();
+    if (patients.size() > 0) {
+      
     // validate all resources and links
     // validate search parameters
     // check self links
@@ -71,14 +109,84 @@ public class IPAValidator {
 //    Observation patient+category, patient+code, patient+category+date patient+category+status, patient+code+date
 //    Patient _id, identifier birthdate, family, gender, given, name, family+gender, birthdate+family, birthdate+name, gender+name
     
-    
+    }
     
     
     
   }
 
-  private List<Patient> searchPatients() {
+  private List<Element> searchPatients() {
+    ValidationNode vn = new ValidationNode("Patient Search");
+    log("Searching Patients");
+    Element bundle = makeRequest(vn, "/Patient");
+    List<Element> list = new ArrayList<>();
+    if (bundle != null) {
+      checkSelfLink(vn, bundle, null);
+      List<Element> entries = bundle.getChildren("entry");
+      int i = 0;
+      for (Element entry : entries) {
+        Element resource = entry.getNamedChild("resource");
+        if (resource != null && resource.fhirType().equals("Patient")) {
+          validator.validate(this, vn.getIssues(), "Bundle.entry["+i+"].resource", resource, "http://hl7.org/fhir/uv/ipa/StructureDefinition/ipa-patient");        
+          list.add(resource);
+        }
+      }
+    }
+    if (list.size() > 1) {
+      vn.getIssues().add(new ValidationMessage(Source.IPAValidator, IssueType.EXCEPTION, "patient.search", 
+          "Multiple Patients found; check that this is an expected outcome",
+          IssueSeverity.WARNING));              
+    } else if (list.size() == 0) {
+      vn.getIssues().add(new ValidationMessage(Source.IPAValidator, IssueType.EXCEPTION, "patient.search", 
+          "No Patients found, unable to continue",
+          IssueSeverity.ERROR));              
+    }
+    return list;
+  }
+
+  private void checkSelfLink(ValidationNode vn, Element bundle, Map<String, String> params) {
+    // we check that there's a self link 
+    Element sl = null;
+    for (Element e : bundle.getChildren("link")) {
+      if ("self".equals(e.getNamedChildValue("relation"))) {
+        sl = e.getNamedChild("url");
+      }
+    }
+    if (sl == null) {
+      vn.getIssues().add(new ValidationMessage(Source.IPAValidator, IssueType.EXCEPTION, vn.getName(), 
+          "Self link not found in search result",
+          IssueSeverity.ERROR));                    
+    } else if (params != null) {
+      // we check that all the provided params are in the self link
+    }
+  }
+
+  private Element makeRequest(ValidationNode vn, String url)  {
+    try {
+      SimpleHTTPClient http = new SimpleHTTPClient();
+      HTTPResult result = http.get(url, "application/fhir+json");
+      if (result.getCode() >= 300) {
+        vn.getIssues().add(new ValidationMessage(Source.IPAValidator, IssueType.EXCEPTION, "http.request", 
+            "HTTP Return code is "+result.getCode()+" "+result.getMessage(),
+            IssueSeverity.FATAL));        
+        return null;
+      } else if (result.getContent() == null || result.getContent().length == 0) {
+        vn.getIssues().add(new ValidationMessage(Source.IPAValidator, IssueType.EXCEPTION, "http.request", 
+            "No Content Returned",
+            IssueSeverity.FATAL));        
+        return null;
+      } else {
+        return new JsonParser(validator.getContext()).parse(new ByteArrayInputStream(result.getContent())).get(0).getElement();
+      }
+    } catch (Exception e) {
+      vn.getIssues().add(new ValidationMessage(Source.IPAValidator, IssueType.EXCEPTION, "http.request", e.getMessage(),
+          IssueSeverity.FATAL));
+      return null;
+    }
     
-    return null;
+  }
+
+  private void log(String msg) {
+    System.out.println(msg);
   }
 }
