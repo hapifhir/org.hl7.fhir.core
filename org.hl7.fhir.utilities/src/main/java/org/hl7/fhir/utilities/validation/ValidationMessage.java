@@ -83,7 +83,8 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
     Ontology, 
     ProfileComparer, 
     TerminologyEngine,
-    QuestionnaireResponseValidator
+    QuestionnaireResponseValidator, 
+    IPAValidator
   }
 
   public enum IssueSeverity {
