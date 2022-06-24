@@ -13,6 +13,9 @@ schematron checking is performed, then some additional checks are performed.
 If requested, instances will also be verified against the appropriate schema W3C
 XML Schema, JSON schema or ShEx, as appropriate
 
+Default Usage
+=============
+
 Usage: java -jar [validator].jar (parameters)
 
 The following parameters are supported:
@@ -111,9 +114,11 @@ proxy
 
 Parameters can appear in any order
 
-Alternatively, you can use the validator to execute a transformation as
-described by a structure map. To do this, you must provide some additional
-parameters:
+Transforms
+==========
+
+You can use the validator to execute a transformation as described by a
+structure map. To do this, you must provide some additional parameters:
 
  -transform [map]
 
@@ -124,24 +129,33 @@ Any other dependency maps have to be loaded through an -ig reference
 -transform uses the parameters -defn, -txserver, -ig (at least one with the map
 files), and -output
 
-Alternatively, you can use the validator to generate narrative for a resource.
-To do this, you must provide a specific parameter:
+Narratives
+==========
+
+You can use the validator to generate narrative for a resource. To do this, you
+must provide a specific parameter:
 
  -narrative
 
 -narrative requires the parameters -defn, -txserver, -source, and -output. ig
 and profile may be used
 
-Alternatively, you can use the validator to convert a resource or logical model.
-To do this, you must provide a specific parameter:
+Conversion
+==========
+
+You can use the validator to convert a resource or logical model. To do this,
+you must provide a specific parameter:
 
  -convert
 
 -convert requires the parameters -source and -output. ig may be used to provide
 a logical model
 
-Alternatively, you can use the validator to evaluate a FHIRPath expression on a
-resource or logical model. To do this, you must provide a specific parameter:
+FHIRPath
+========
+
+You can use the validator to evaluate a FHIRPath expression on a resource or
+logical model. To do this, you must provide a specific parameter:
 
  -fhirpath [FHIRPath]
 
@@ -150,10 +164,41 @@ resource or logical model. To do this, you must provide a specific parameter:
 -fhirpath requires the parameters -source. ig may be used to provide a logical
 model
 
-Finally, you can use the validator to generate a snapshot for a profile.
-To do this, you must provide a specific parameter:
+Snapshots
+=========
+
+You can use the validator to generate a snapshot for a profile. To do this, you
+must provide a specific parameter:
 
  -snapshot
 
 -snapshot requires the parameters -defn, -txserver, -source, and -output. ig may
 be used to provide necessary base profiles
+
+Tests
+=====
+
+The validator can be run in test mode, which executes all JUnit tests for the
+FHIR core library against a set of test cases in a local directory. To do this,
+you must provide a specific parameter with a directory value:
+
+ -test [directory]
+
+The directory must follow the same conventions as the reference test cases found
+at https://github.com/FHIR/fhir-test-cases. This mode must also be executed with
+the Java property java.locale.providers set to COMPAT as below:
+
+  java -Djava.locale.providers=COMPAT -jar validator_cli.jar -tests
+  ./my/path/to/fhir-test-cases
+
+This parameter is compatible with -txCache, -test-modules, and
+-test-classname-filter parameters.
+
+The following test-specific parameters can be used to limit which tests are run:
+-test-modules [module-names] A comma delimited list of Java module names for
+    which to run JUnit tests. By default, all modules are used to run tests.
+    Example: -test-modules org.hl7.fhir.dstu2,org.hl7.fhir.dstu2016may
+
+-test-classname-filter [regex] A regex filter applied to test Java class names
+    for selecting which JUnit tests to run. By default, all tests are run.
+    Example: -test-classname-filter .*ShexGeneratorTests

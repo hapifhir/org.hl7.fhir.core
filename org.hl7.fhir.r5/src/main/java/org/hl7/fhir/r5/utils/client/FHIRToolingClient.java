@@ -171,10 +171,13 @@ public class FHIRToolingClient {
   public TerminologyCapabilities getTerminologyCapabilities() {
     TerminologyCapabilities capabilities = null;
 
-      capabilities =  getCapabilities(resourceAddress.resolveMetadataTxCaps(),
+    try {
+      capabilities = getCapabilities(resourceAddress.resolveMetadataTxCaps(),
         "TerminologyCapabilities",
         "Error fetching the server's terminology capabilities");
-
+    } catch (ClassCastException e) {
+      throw new FHIRException("Unexpected response format for Terminology Capability metadata", e);
+    }
     return capabilities;
   }
 

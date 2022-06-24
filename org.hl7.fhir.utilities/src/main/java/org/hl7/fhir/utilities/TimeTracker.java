@@ -1,11 +1,7 @@
 package org.hl7.fhir.utilities;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.hl7.fhir.utilities.TimeTracker.Counter;
 
 public class TimeTracker {
 
@@ -72,29 +68,29 @@ public class TimeTracker {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (Counter c : records) {
       if (c.count == 1) {
-        b.append(c.name+": "+Utilities.presentDuration(c.length));
+        b.append(c.name+": "+ DurationUtil.presentDuration(c.length));
       }
     }
     for (Counter c : records) {
       if (c.count > 1) {
-        b.append(c.name+": "+Utilities.presentDuration(c.length)+" (#"+c.count+")");
+        b.append(c.name+": "+ DurationUtil.presentDuration(c.length)+" (#"+c.count+")");
       }
     }
     return "Times: "+b.toString();
   }
   
   public String clock() {
-    return Utilities.presentDuration(System.nanoTime() - globalStart);
+    return DurationUtil.presentDuration(System.nanoTime() - globalStart);
   }
 
   public String instant() {
-    return Utilities.presentDuration(System.nanoTime() - globalStart);
+    return DurationUtil.presentDuration(System.nanoTime() - globalStart);
   }
 
   public String milestone() {
     long start = milestone == 0 ? globalStart : milestone ;
     milestone = System.nanoTime();
-    return Utilities.presentDuration(milestone - start);
+    return DurationUtil.presentDuration(milestone - start);
   }
 
 }
