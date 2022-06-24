@@ -916,7 +916,7 @@ public class DataRenderer extends Renderer {
       CodeSystem cs = context.getWorker().fetchCodeSystem(system, version);
       if (cs != null && cs.hasUserData("path")) {
         if (!Utilities.noString(code)) {
-          return cs.getUserString("path")+"#"+Utilities.nmtokenize(code);
+          return cs.getUserString("path")+"#"+cs.getId()+"-"+Utilities.nmtokenize(code);
         } else {
           return cs.getUserString("path");
         }
@@ -932,8 +932,9 @@ public class DataRenderer extends Renderer {
     if (Utilities.noString(s))
       s = lookupCode(c.getSystem(), c.getVersion(), c.getCode());
 
+    CodeSystem cs = context.getWorker().fetchCodeSystem(c.getSystem());
 
-    String sn = describeSystem(c.getSystem());
+    String sn = cs != null ? cs.present() : describeSystem(c.getSystem());
     String link = getLinkForCode(c.getSystem(), c.getVersion(), c.getCode());
     if (link != null) {
       x.ah(link).tx(sn);
