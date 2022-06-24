@@ -67,7 +67,7 @@ class I18nBaseTest {
         BufferedReader reader = new BufferedReader(streamReader)) {
         String line;
         while ((line = reader.readLine()) != null) {
-          System.out.println("Searching for umlauts -> " + line);
+//          System.out.println("Searching for umlauts -> " + line);
           Assertions.assertFalse(stringContainsItemFromList(line, UMLAUTS));
         }
     } catch (IOException e) {
