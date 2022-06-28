@@ -122,7 +122,7 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   }
 
   /**
-   * parse xml that is known to be a resource, and that has already been read into a JSON object  
+   * Parse JSON that is known to be a resource, and that has already been read into a JSON object
    * @throws IOException 
    * @throws FHIRFormatError 
    */
