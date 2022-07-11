@@ -53,6 +53,8 @@ public String toCode(int len) {
         return true;
       if ("4.2.0".equals(codeString))
         return true;
+      if ("4.3.0".equals(codeString))
+        return true;
       return false;
       }
 
@@ -63,6 +65,6 @@ public String toCode(int len) {
         
         
         public boolean isR4B() {
-          return toCode().startsWith("4.1");
+          return toCode().startsWith("4.1") || toCode().startsWith("4.3");
         }
         

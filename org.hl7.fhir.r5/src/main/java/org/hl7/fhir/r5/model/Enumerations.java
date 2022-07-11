@@ -7158,6 +7158,8 @@ public String toCode(int len) {
             return true;
           if ("4.2.0".equals(codeString))
             return true;
+          if ("4.3.0".equals(codeString))
+            return true;
           return false;
       }
 
