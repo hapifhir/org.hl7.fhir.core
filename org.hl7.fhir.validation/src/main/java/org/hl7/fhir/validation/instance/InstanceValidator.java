@@ -4012,10 +4012,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               throw new DefinitionException(context.formatMessage(I18nConstants.DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_MULTIPLE_TYPES_, discriminator, ed.getId(), profile.getUrl(), criteriaElement.typeSummary()));
             } else
               throw new DefinitionException(context.formatMessage(I18nConstants.DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_NO_TYPES, discriminator, ed.getId(), profile.getUrl()));
-            if (discriminator.isEmpty())
+            if (discriminator.isEmpty()) {
               expression.append(" and $this is " + type);
-            else
+            } else {
               expression.append(" and " + discriminator + " is " + type);
+            }
           } else if (s.getType() == DiscriminatorType.PROFILE) {
             if (criteriaElement.getType().size() == 0) {
               throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_A_TYPE__IN_PROFILE_, criteriaElement.getId(), profile.getUrl()));
@@ -4036,12 +4037,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               expression.append(" and " + discriminator + ".conformsTo('" + list.get(0).getValue() + "')");
             }
           } else if (s.getType() == DiscriminatorType.EXISTS) {
-            if (criteriaElement.hasMin() && criteriaElement.getMin() >= 1)
+            if (criteriaElement.hasMin() && criteriaElement.getMin() >= 1) {
               expression.append(" and (" + discriminator + ".exists())");
-            else if (criteriaElement.hasMax() && criteriaElement.getMax().equals("0"))
+            } else if (criteriaElement.hasMax() && criteriaElement.getMax().equals("0")) {
               expression.append(" and (" + discriminator + ".exists().not())");
-            else
+            } else {
               throw new FHIRException(context.formatMessage(I18nConstants.DISCRIMINATOR__IS_BASED_ON_ELEMENT_EXISTENCE_BUT_SLICE__NEITHER_SETS_MIN1_OR_MAX0, discriminator, ed.getId()));
+            }
           } else if (criteriaElement.hasFixed()) {
             buildFixedExpression(ed, expression, discriminator, criteriaElement);
           } else if (criteriaElement.hasPattern()) {
@@ -4072,12 +4074,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       timeTracker.fpe(t);
       ed.setUserData("slice.expression.cache", n);
+    } else {
     }
 
     ValidatorHostContext shc = hostContext.forSlicing();
     boolean pass = evaluateSlicingExpression(shc, element, path, profile, n);
     if (!pass) {
-      slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false, isProfile(slicer), (context.formatMessage(I18nConstants.DOES_NOT_MATCH_SLICE_, ed.getSliceName())), "discriminator = " + Utilities.escapeXml(n.toString()), null);
+      slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false, isProfile(slicer), (context.formatMessage(I18nConstants.DOES_NOT_MATCH_SLICE_, ed.getSliceName(), n.toString().substring(8).trim())), "discriminator = " + Utilities.escapeXml(n.toString()), null);
       for (String url : shc.getSliceRecords().keySet()) {
         slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false, isProfile(slicer), 
          context.formatMessage(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_, stack.getLiteralPath(), url),
@@ -4087,6 +4090,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     return pass;
+  }
+
+  private boolean isBaseDefinition(String url) {
+    boolean b = url.startsWith("http://hl7.org/fhir/") && !url.substring(40).contains("/");
+    return b;
+  }
+
+  private String descSD(String url) {
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+    return sd == null ? url : sd.present();
   }
 
   private boolean isProfile(ElementDefinition slicer) {

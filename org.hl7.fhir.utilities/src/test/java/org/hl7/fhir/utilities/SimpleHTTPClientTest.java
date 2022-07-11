@@ -16,8 +16,8 @@ public class SimpleHTTPClientTest {
 
     SimpleHTTPClient.HTTPResult res = http.get(url, "application/json");
 
-    System.out.println(res.getCode());
-    System.out.println(new String(res.getContent(), StandardCharsets.UTF_8));
+//    System.out.println(res.getCode());
+//    System.out.println(new String(res.getContent(), StandardCharsets.UTF_8));
     assertTrue(res.getCode() != 400);
   }
 }

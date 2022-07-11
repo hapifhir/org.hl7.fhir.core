@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>ca.uhn.hapi.fhir</groupId>
 		<artifactId>org.hl7.fhir.core</artifactId>
-		<version>5.6.49-SNAPSHOT</version>
+		<version>5.6.51-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -20,7 +20,7 @@
 		</dependency>
 
 		<dependency>
-		 <groupId>ca.uhn.hapi.fhir</groupId>
+			<groupId>ca.uhn.hapi.fhir</groupId>
 			<artifactId>hapi-fhir-base</artifactId>
 			<exclusions>
 				<exclusion>
@@ -61,7 +61,7 @@
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>4.0.1</version>
+			<version>4.1.1</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -146,6 +146,16 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>com.atlassian.commonmark</groupId>
+			<artifactId>commonmark</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.atlassian.commonmark</groupId>
+			<artifactId>commonmark-ext-gfm-tables</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- JUnit Jupiter -->
 		<dependency>
@@ -158,16 +168,6 @@
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-params</artifactId>
 			<version>${junit_jupiter_version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.atlassian.commonmark</groupId>
-			<artifactId>commonmark</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.atlassian.commonmark</groupId>
-			<artifactId>commonmark-ext-gfm-tables</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

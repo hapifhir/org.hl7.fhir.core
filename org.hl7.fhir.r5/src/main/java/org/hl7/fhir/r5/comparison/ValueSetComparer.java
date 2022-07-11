@@ -193,7 +193,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
 
     if (matchCount == 1 && sourceCount == 1) {
       for (ConceptSetComponent t : matches) {
-        if (t.getSystem().equals(item.getSystem())) {
+        if (t.getSystem() != null && t.getSystem().equals(item.getSystem())) {
           return t;
         }
       }

@@ -71,7 +71,7 @@ public class XhtmlNodeTest {
       "</xhtml:div>");
 
     String output = node.getValueAsString();
-    ourLog.info(output);
+//    ourLog.info(output);
 
     Assertions.assertEquals("<div xmlns=\"http://www.w3.org/1999/xhtml\"><img src=\"http://pbs.twimg.com/profile_images/544507893991485440/r_vo3uj2_bigger.png\" alt=\"Twitter Avatar\"/>@fhirabend</div>", output);
   }

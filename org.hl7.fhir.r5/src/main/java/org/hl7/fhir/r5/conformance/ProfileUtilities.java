@@ -56,13 +56,17 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider.BindingResolution;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.elementmodel.Property;
 import org.hl7.fhir.r5.formats.IParser;
+import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
@@ -106,6 +110,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.renderers.TerminologyRenderer;
@@ -125,6 +130,10 @@ import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -6838,4 +6847,99 @@ public class ProfileUtilities extends TranslatingUtilities {
     this.masterSourceFileNames = masterSourceFileNames;
   }
  
+  public static int loadR5Extensions(BasePackageCacheManager pcm, IWorkerContext context) throws FHIRException, IOException {
+    NpmPackage npm = pcm.loadPackage("hl7.fhir.r5.core", "current");
+    String[] types = new String[] { "StructureDefinition", "ValueSet", "CodeSystem" };
+    Map<String, ValueSet> valueSets = new HashMap<>();
+    Map<String, CodeSystem> codeSystems = new HashMap<>();
+    List<StructureDefinition> extensions = new ArrayList<>();
+    JsonParser json = new JsonParser();
+    for (PackageResourceInformation pri : npm.listIndexedResources(types)) {
+      CanonicalResource r = (CanonicalResource) json.parse(npm.load(pri));
+      if (r instanceof CodeSystem) {
+        codeSystems.put(r.getUrl(), (CodeSystem) r);
+      } else if (r instanceof ValueSet) {
+        valueSets.put(r.getUrl(), (ValueSet) r);
+      } else if (r instanceof StructureDefinition)  {
+        extensions.add((StructureDefinition) r);
+      }
+    } 
+    PackageVersion pd = new PackageVersion(npm.name(), npm.version(), npm.dateAsDate());
+    int c = 0;
+    List<String> typeNames = context.getTypeNames();
+    for (StructureDefinition sd : extensions) {    
+      if (sd.getType().equals("Extension") && sd.getDerivation() == TypeDerivationRule.CONSTRAINT &&
+          !context.hasResource(StructureDefinition.class, sd.getUrl())) {
+        if (survivesStrippingTypes(sd, context, typeNames)) {
+          c++;
+          sd.setUserData("path", Utilities.pathURL(npm.getWebLocation(), "extension-"+sd.getId()+".html"));
+          context.cacheResourceFromPackage(sd, pd);
+          registerTerminologies(sd, context, valueSets, codeSystems, pd);
+        }
+      }
+    }
+    return c;
+  }
+
+  private static void registerTerminologies(StructureDefinition sd, IWorkerContext context, Map<String, ValueSet> valueSets, Map<String, CodeSystem> codeSystems, PackageVersion pd) {
+    for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+      if (ed.hasBinding() && ed.getBinding().hasValueSet()) {
+        String vs = ed.getBinding().getValueSet();
+        if (!context.hasResource(StructureDefinition.class, vs)) {
+          loadValueSet(vs, context, valueSets, codeSystems, pd);
+        }
+      }
+    }
+    
+  }
+
+  private static void loadValueSet(String url, IWorkerContext context, Map<String, ValueSet> valueSets, Map<String, CodeSystem> codeSystems, PackageVersion pd) {
+    if (valueSets.containsKey(url)) {
+      ValueSet vs = valueSets.get(url);
+      context.cacheResourceFromPackage(vs, pd);
+      for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
+        for (CanonicalType t : inc.getValueSet()) {
+          loadValueSet(t.asStringValue(), context, valueSets, codeSystems, pd);
+        }
+        if (inc.hasSystem()) {
+          if (!context.hasResource(CodeSystem.class, inc.getSystem()) && codeSystems.containsKey(inc.getSystem())) {
+            context.cacheResourceFromPackage(codeSystems.get(inc.getSystem()), pd);
+          }
+        }
+      }
+    }
+    
+  }
+
+  private static boolean survivesStrippingTypes(StructureDefinition sd, IWorkerContext context, List<String> typeNames) {
+    for (ElementDefinition ed : sd.getDifferential().getElement()) {
+      stripTypes(ed, context, typeNames);
+    }
+    for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+      if (!stripTypes(ed, context, typeNames)) {
+        return false;
+      }
+    }  
+    return true;
+  }
+
+  private static boolean stripTypes(ElementDefinition ed, IWorkerContext context, List<String> typeNames) {
+    if (!ed.getPath().contains(".") || !ed.hasType()) {
+      return true;
+    }
+    ed.getType().removeIf(tr -> !typeNames.contains(tr.getWorkingCode()));
+    if (!ed.hasType()) {
+      return false;
+    }
+    for (TypeRefComponent tr : ed.getType()) {
+      if (tr.hasTargetProfile()) {
+        tr.getTargetProfile().removeIf(n -> !context.hasResource(StructureDefinition.class, n.asStringValue()));
+        if (!tr.hasTargetProfile()) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
 }

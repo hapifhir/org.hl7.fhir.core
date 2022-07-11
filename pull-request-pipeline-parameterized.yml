@@ -14,7 +14,7 @@ jobs:
           VERSION:
 
         steps:
-          # Runs 'mvn clean package'
+          # Runs 'mvn clean install'
           - task: Maven@3
             inputs:
               mavenPomFile: 'pom.xml'
@@ -24,7 +24,7 @@ jobs:
               jdkArchitectureOption: 'x64'
               publishJUnitResults: true
               testResultsFiles: '**/surefire-reports/TEST-*.xml'
-              goals: 'package'
+              goals: 'install'
 
           - task: Maven@3
             inputs:

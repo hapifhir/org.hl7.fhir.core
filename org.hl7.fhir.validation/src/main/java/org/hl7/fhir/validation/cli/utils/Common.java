@@ -67,18 +67,6 @@ public class Common {
   }
 
   /**
-   * Triggers the validation engine tests to run.
-   */
-  public static void runValidationEngineTests() {
-    try {
-      Class<?> clazz = Class.forName("org.hl7.fhir.validation.r5.tests.ValidationEngineTests");
-      clazz.getMethod("execute").invoke(clazz);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
-
-  /**
    * Default validation engine will point to "http://tx.fhir.org" terminology server.
    */
   public static ValidationEngine getValidationEngine(String version, String definitions, String txLog, TimeTracker tt) throws Exception {
