@@ -833,7 +833,29 @@ public interface IWorkerContext {
   public void setUcumService(UcumService ucumService);
 
   public String getLinkForUrl(String corePath, String s);
+
+  /**
+   * Returns a map of available binaries if the implementation uses an internal
+   * map. This can be null if the implementation does not use a map internally.
+   *
+   * @return a map of binaries or null
+   */
   public Map<String, byte[]> getBinaries();
+
+  /**
+   * Returns true if this worker context contains a binary for this key.
+   *
+   * @param binaryKey
+   * @return true if binary is available for this key
+   */
+  public boolean hasBinaryKey(String binaryKey);
+
+  /**
+   * Returns the binary for the key
+   * @param binaryKey
+   * @return
+   */
+  public byte[] getBinaryForKey(String binaryKey);
 
   /**
    * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package
