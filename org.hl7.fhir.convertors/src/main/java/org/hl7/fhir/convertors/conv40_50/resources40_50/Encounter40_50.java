@@ -50,13 +50,13 @@ public class Encounter40_50 {
     for (org.hl7.fhir.r4.model.Encounter.StatusHistoryComponent t : src.getStatusHistory())
       tgt.addStatusHistory(convertStatusHistoryComponent(t));
     if (src.hasClass_())
-      tgt.setClass_(Coding40_50.convertCoding(src.getClass_()));
+      tgt.setClass_(new org.hl7.fhir.r5.model.CodeableConcept().addCoding(Coding40_50.convertCoding(src.getClass_())));
     for (org.hl7.fhir.r4.model.Encounter.ClassHistoryComponent t : src.getClassHistory())
       tgt.addClassHistory(convertClassHistoryComponent(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType())
       tgt.addType(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasServiceType())
-      tgt.setServiceType(CodeableConcept40_50.convertCodeableConcept(src.getServiceType()));
+      tgt.setServiceType(new CodeableReference(CodeableConcept40_50.convertCodeableConcept(src.getServiceType())));
     if (src.hasPriority())
       tgt.setPriority(CodeableConcept40_50.convertCodeableConcept(src.getPriority()));
     if (src.hasSubject())
@@ -102,13 +102,13 @@ public class Encounter40_50 {
     for (org.hl7.fhir.r5.model.Encounter.StatusHistoryComponent t : src.getStatusHistory())
       tgt.addStatusHistory(convertStatusHistoryComponent(t));
     if (src.hasClass_())
-      tgt.setClass_(Coding40_50.convertCoding(src.getClass_()));
+      tgt.setClass_(Coding40_50.convertCoding(src.getClass_().getCodingFirstRep()));
     for (org.hl7.fhir.r5.model.Encounter.ClassHistoryComponent t : src.getClassHistory())
       tgt.addClassHistory(convertClassHistoryComponent(t));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType())
       tgt.addType(CodeableConcept40_50.convertCodeableConcept(t));
-    if (src.hasServiceType())
-      tgt.setServiceType(CodeableConcept40_50.convertCodeableConcept(src.getServiceType()));
+    if (src.getServiceType().hasConcept())
+      tgt.setServiceType(CodeableConcept40_50.convertCodeableConcept(src.getServiceType().getConcept()));
     if (src.hasPriority())
       tgt.setPriority(CodeableConcept40_50.convertCodeableConcept(src.getPriority()));
     if (src.hasSubject())

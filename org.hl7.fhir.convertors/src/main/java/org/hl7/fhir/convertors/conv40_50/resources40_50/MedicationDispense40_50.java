@@ -53,10 +53,10 @@ public class MedicationDispense40_50 {
     for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_50.convertReference(t));
     if (src.hasStatus())
       tgt.setStatusElement(convertMedicationStatus(src.getStatusElement()));
-    if (src.hasStatusReasonCodeableConcept())
-      tgt.getStatusReason().setConcept(CodeableConcept40_50.convertCodeableConcept(src.getStatusReasonCodeableConcept()));
-    if (src.hasStatusReasonReference())
-      tgt.getStatusReason().setReference(Reference40_50.convertReference(src.getStatusReasonReference()));
+//    if (src.hasStatusReasonCodeableConcept())
+//      tgt.getStatusReason().setConcept(CodeableConcept40_50.convertCodeableConcept(src.getStatusReasonCodeableConcept()));
+//    if (src.hasStatusReasonReference())
+//      tgt.getStatusReason().setReference(Reference40_50.convertReference(src.getStatusReasonReference()));
     if (src.hasCategory())
       tgt.addCategory(CodeableConcept40_50.convertCodeableConcept(src.getCategory()));
     if (src.hasMedicationCodeableConcept())
@@ -93,8 +93,8 @@ public class MedicationDispense40_50 {
       tgt.addDosageInstruction(Dosage40_50.convertDosage(t));
     if (src.hasSubstitution())
       tgt.setSubstitution(convertMedicationDispenseSubstitutionComponent(src.getSubstitution()));
-    for (org.hl7.fhir.r4.model.Reference t : src.getDetectedIssue())
-      tgt.addDetectedIssue(Reference40_50.convertReference(t));
+//    for (org.hl7.fhir.r4.model.Reference t : src.getDetectedIssue())
+//      tgt.addDetectedIssue(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getEventHistory())
       tgt.addEventHistory(Reference40_50.convertReference(t));
     return tgt;
@@ -110,10 +110,10 @@ public class MedicationDispense40_50 {
     for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_50.convertReference(t));
     if (src.hasStatus())
       tgt.setStatusElement(convertStatus(src.getStatusElement()));
-    if (src.getStatusReason().hasConcept())
-      tgt.setStatusReason(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getStatusReason().getConcept()));
-    if (src.getStatusReason().hasReference())
-      tgt.setStatusReason(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getStatusReason().getReference()));
+//    if (src.getStatusReason().hasConcept())
+//      tgt.setStatusReason(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getStatusReason().getConcept()));
+//    if (src.getStatusReason().hasReference())
+//      tgt.setStatusReason(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getStatusReason().getReference()));
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept40_50.convertCodeableConcept(src.getCategoryFirstRep()));
     if (src.getMedication().hasConcept())
@@ -150,8 +150,8 @@ public class MedicationDispense40_50 {
       tgt.addDosageInstruction(Dosage40_50.convertDosage(t));
     if (src.hasSubstitution())
       tgt.setSubstitution(convertMedicationDispenseSubstitutionComponent(src.getSubstitution()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getDetectedIssue())
-      tgt.addDetectedIssue(Reference40_50.convertReference(t));
+//    for (org.hl7.fhir.r5.model.Reference t : src.getDetectedIssue())
+//      tgt.addDetectedIssue(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getEventHistory())
       tgt.addEventHistory(Reference40_50.convertReference(t));
     return tgt;

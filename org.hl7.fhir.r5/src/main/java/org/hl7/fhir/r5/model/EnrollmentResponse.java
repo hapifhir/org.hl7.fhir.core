@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,6 +96,7 @@ public class EnrollmentResponse extends DomainResource {
             case COMPLETE: return "complete";
             case ERROR: return "error";
             case PARTIAL: return "partial";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +106,7 @@ public class EnrollmentResponse extends DomainResource {
             case COMPLETE: return "http://hl7.org/fhir/enrollment-outcome";
             case ERROR: return "http://hl7.org/fhir/enrollment-outcome";
             case PARTIAL: return "http://hl7.org/fhir/enrollment-outcome";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +116,7 @@ public class EnrollmentResponse extends DomainResource {
             case COMPLETE: return "The processing has completed without errors";
             case ERROR: return "One or more errors have been detected in the Claim";
             case PARTIAL: return "No errors have been detected in the Claim and some of the adjudication has been performed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -123,6 +126,7 @@ public class EnrollmentResponse extends DomainResource {
             case COMPLETE: return "Processing Complete";
             case ERROR: return "Error";
             case PARTIAL: return "Partial Processing";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -797,72 +801,6 @@ public class EnrollmentResponse extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.EnrollmentResponse;
    }
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>The business identifier of the EnrollmentResponse</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>EnrollmentResponse.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="EnrollmentResponse.identifier", description="The business identifier of the EnrollmentResponse", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>The business identifier of the EnrollmentResponse</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>EnrollmentResponse.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>request</b>
-   * <p>
-   * Description: <b>The reference to the claim</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>EnrollmentResponse.request</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="request", path="EnrollmentResponse.request", description="The reference to the claim", type="reference", target={EnrollmentRequest.class } )
-  public static final String SP_REQUEST = "request";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>request</b>
-   * <p>
-   * Description: <b>The reference to the claim</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>EnrollmentResponse.request</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REQUEST = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REQUEST);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>EnrollmentResponse:request</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_REQUEST = new ca.uhn.fhir.model.api.Include("EnrollmentResponse:request").toLocked();
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>The status of the enrollment response</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>EnrollmentResponse.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="EnrollmentResponse.status", description="The status of the enrollment response", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>The status of the enrollment response</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>EnrollmentResponse.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
 
 }

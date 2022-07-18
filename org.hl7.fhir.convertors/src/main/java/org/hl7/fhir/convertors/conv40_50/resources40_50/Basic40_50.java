@@ -50,7 +50,7 @@ public class Basic40_50 {
     if (src.hasSubject())
       tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
     if (src.hasCreated())
-      tgt.setCreatedElement(Date40_50.convertDate(src.getCreatedElement()));
+      tgt.setCreatedElement(Date40_50.convertDatetoDateTime(src.getCreatedElement()));
     if (src.hasAuthor())
       tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
     return tgt;
@@ -68,7 +68,7 @@ public class Basic40_50 {
     if (src.hasSubject())
       tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
     if (src.hasCreated())
-      tgt.setCreatedElement(Date40_50.convertDate(src.getCreatedElement()));
+      tgt.setCreatedElement(Date40_50.convertDateTimeToDate(src.getCreatedElement()));
     if (src.hasAuthor())
       tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
     return tgt;

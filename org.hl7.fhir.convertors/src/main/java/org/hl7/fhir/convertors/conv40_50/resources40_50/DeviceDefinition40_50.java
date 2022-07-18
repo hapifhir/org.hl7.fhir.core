@@ -50,8 +50,8 @@ public class DeviceDefinition40_50 {
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     for (org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionUdiDeviceIdentifierComponent t : src.getUdiDeviceIdentifier())
       tgt.addUdiDeviceIdentifier(convertDeviceDefinitionUdiDeviceIdentifierComponent(t));
-    if (src.hasManufacturer())
-      tgt.setManufacturer(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getManufacturer()));
+    if (src.hasManufacturerReference())
+      tgt.setManufacturer(Reference40_50.convertReference(src.getManufacturerReference()));
     for (org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionDeviceNameComponent t : src.getDeviceName())
       tgt.addDeviceName(convertDeviceDefinitionDeviceNameComponent(t));
     if (src.hasModelNumber())

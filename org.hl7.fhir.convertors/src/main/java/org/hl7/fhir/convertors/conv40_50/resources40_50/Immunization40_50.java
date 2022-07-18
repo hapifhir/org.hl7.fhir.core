@@ -60,12 +60,12 @@ public class Immunization40_50 {
       tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
     if (src.hasOccurrence())
       tgt.setOccurrence(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getOccurrence()));
-    if (src.hasRecorded())
-      tgt.setRecordedElement(DateTime40_50.convertDateTime(src.getRecordedElement()));
+//    if (src.hasRecorded())
+//      tgt.setRecordedElement(DateTime40_50.convertDateTime(src.getRecordedElement()));
     if (src.hasPrimarySource())
       tgt.setPrimarySourceElement(Boolean40_50.convertBoolean(src.getPrimarySourceElement()));
     if (src.hasReportOrigin())
-      tgt.setInformationSource(CodeableConcept40_50.convertCodeableConcept(src.getReportOrigin()));
+      tgt.setInformationSource(new CodeableReference(CodeableConcept40_50.convertCodeableConcept(src.getReportOrigin())));
     if (src.hasLocation())
       tgt.setLocation(Reference40_50.convertReference(src.getLocation()));
     if (src.hasManufacturer())
@@ -123,12 +123,12 @@ public class Immunization40_50 {
       tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
     if (src.hasOccurrence())
       tgt.setOccurrence(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getOccurrence()));
-    if (src.hasRecorded())
-      tgt.setRecordedElement(DateTime40_50.convertDateTime(src.getRecordedElement()));
+//    if (src.hasRecorded())
+//      tgt.setRecordedElement(DateTime40_50.convertDateTime(src.getRecordedElement()));
     if (src.hasPrimarySource())
       tgt.setPrimarySourceElement(Boolean40_50.convertBoolean(src.getPrimarySourceElement()));
-    if (src.hasInformationSourceCodeableConcept())
-      tgt.setReportOrigin(CodeableConcept40_50.convertCodeableConcept(src.getInformationSourceCodeableConcept()));
+    if (src.getInformationSource().hasConcept())
+      tgt.setReportOrigin(CodeableConcept40_50.convertCodeableConcept(src.getInformationSource().getConcept()));
     if (src.hasLocation())
       tgt.setLocation(Reference40_50.convertReference(src.getLocation()));
     if (src.hasManufacturer())
@@ -277,7 +277,7 @@ public class Immunization40_50 {
     if (src.hasDate())
       tgt.setDateElement(DateTime40_50.convertDateTime(src.getDateElement()));
     if (src.hasDetail())
-      tgt.setDetail(Reference40_50.convertReference(src.getDetail()));
+      tgt.setManifestation(new CodeableReference(Reference40_50.convertReference(src.getDetail())));
     if (src.hasReported())
       tgt.setReportedElement(Boolean40_50.convertBoolean(src.getReportedElement()));
     return tgt;
@@ -290,8 +290,8 @@ public class Immunization40_50 {
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasDate())
       tgt.setDateElement(DateTime40_50.convertDateTime(src.getDateElement()));
-    if (src.hasDetail())
-      tgt.setDetail(Reference40_50.convertReference(src.getDetail()));
+    if (src.hasManifestation())
+      tgt.setDetail(Reference40_50.convertReference(src.getManifestation().getReference()));
     if (src.hasReported())
       tgt.setReportedElement(Boolean40_50.convertBoolean(src.getReportedElement()));
     return tgt;

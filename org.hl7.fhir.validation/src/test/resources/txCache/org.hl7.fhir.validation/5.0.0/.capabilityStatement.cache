@@ -1,0 +1,66 @@
+{
+  "resourceType" : "CapabilityStatement",
+  "id" : "FhirServer",
+  "meta" : {
+    "tag" : [{
+      "system" : "http://hl7.org/fhir/v3/ObservationValue",
+      "code" : "SUBSETTED",
+      "display" : "Subsetted"
+    }]
+  },
+  "url" : "http://tx.fhir.org/r4/metadata",
+  "version" : "4.0.1-2.0.14",
+  "name" : "FHIR Reference Server Conformance Statement",
+  "status" : "active",
+  "date" : "2022-07-13T16:07:09.351Z",
+  "contact" : [{
+    "telecom" : [{
+      "system" : "other",
+      "value" : "http://healthintersections.com.au/"
+    }]
+  }],
+  "kind" : "instance",
+  "instantiates" : ["http://hl7.org/fhir/CapabilityStatement/terminology-server"],
+  "software" : {
+    "name" : "Reference Server",
+    "version" : "2.0.14",
+    "releaseDate" : "2022-05-13T19:50:55.040Z"
+  },
+  "implementation" : {
+    "description" : "FHIR Server running at http://tx.fhir.org/r4",
+    "url" : "http://tx.fhir.org/r4"
+  },
+  "fhirVersion" : "4.0.1",
+  "format" : ["application/fhir+xml",
+  "application/fhir+json"],
+  "rest" : [{
+    "mode" : "server",
+    "security" : {
+      "cors" : true
+    },
+    "operation" : [{
+      "name" : "expand",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/ValueSet-expand"
+    },
+    {
+      "name" : "lookup",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/ValueSet-lookup"
+    },
+    {
+      "name" : "validate-code",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/Resource-validate"
+    },
+    {
+      "name" : "translate",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/ConceptMap-translate"
+    },
+    {
+      "name" : "closure",
+      "definition" : "http://hl7.org/fhir/OperationDefinition/ConceptMap-closure"
+    },
+    {
+      "name" : "versions",
+      "definition" : "http://tx.fhir.org/r4/OperationDefinition/fso-versions"
+    }]
+  }]
+}

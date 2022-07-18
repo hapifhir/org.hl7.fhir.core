@@ -50,12 +50,12 @@ public class Organization10_50 {
     for (org.hl7.fhir.r5.model.Address t : src.getAddress()) tgt.addAddress(Address10_50.convertAddress(t));
     if (src.hasPartOf())
       tgt.setPartOf(Reference10_50.convertReference(src.getPartOf()));
-    for (org.hl7.fhir.r5.model.Organization.OrganizationContactComponent t : src.getContact())
+    for (org.hl7.fhir.r5.model.ExtendedContactDetail t : src.getContact())
       tgt.addContact(convertOrganizationContactComponent(t));
     return tgt;
   }
 
-  public static org.hl7.fhir.dstu2.model.Organization.OrganizationContactComponent convertOrganizationContactComponent(org.hl7.fhir.r5.model.Organization.OrganizationContactComponent src) throws FHIRException {
+  public static org.hl7.fhir.dstu2.model.Organization.OrganizationContactComponent convertOrganizationContactComponent(org.hl7.fhir.r5.model.ExtendedContactDetail src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Organization.OrganizationContactComponent tgt = new org.hl7.fhir.dstu2.model.Organization.OrganizationContactComponent();
@@ -71,10 +71,10 @@ public class Organization10_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Organization.OrganizationContactComponent convertOrganizationContactComponent(org.hl7.fhir.dstu2.model.Organization.OrganizationContactComponent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.ExtendedContactDetail convertOrganizationContactComponent(org.hl7.fhir.dstu2.model.Organization.OrganizationContactComponent src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Organization.OrganizationContactComponent tgt = new org.hl7.fhir.r5.model.Organization.OrganizationContactComponent();
+    org.hl7.fhir.r5.model.ExtendedContactDetail tgt = new org.hl7.fhir.r5.model.ExtendedContactDetail();
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
     if (src.hasPurpose())
       tgt.setPurpose(CodeableConcept10_50.convertCodeableConcept(src.getPurpose()));

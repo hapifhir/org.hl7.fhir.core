@@ -90,7 +90,7 @@ public class MessageDefinition40_50 {
       tgt.setResponseRequiredElement(convertMessageheaderResponseRequest(src.getResponseRequiredElement()));
     for (org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionAllowedResponseComponent t : src.getAllowedResponse())
       tgt.addAllowedResponse(convertMessageDefinitionAllowedResponseComponent(t));
-    for (org.hl7.fhir.r4.model.CanonicalType t : src.getGraph()) tgt.getGraph().add(Canonical40_50.convertCanonical(t));
+    for (org.hl7.fhir.r4.model.CanonicalType t : src.getGraph()) tgt.setGraphElement(Canonical40_50.convertCanonical(t));
     return tgt;
   }
 
@@ -145,7 +145,8 @@ public class MessageDefinition40_50 {
       tgt.setResponseRequiredElement(convertMessageheaderResponseRequest(src.getResponseRequiredElement()));
     for (org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionAllowedResponseComponent t : src.getAllowedResponse())
       tgt.addAllowedResponse(convertMessageDefinitionAllowedResponseComponent(t));
-    for (org.hl7.fhir.r5.model.CanonicalType t : src.getGraph()) tgt.getGraph().add(Canonical40_50.convertCanonical(t));
+    if (src.hasGraph()) 
+      tgt.getGraph().add(Canonical40_50.convertCanonical(src.getGraphElement()));
     return tgt;
   }
 

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * The technical details of an endpoint that can be used for electronic services, such as for web services providing XDS.b or a REST endpoint for another FHIR server. This may include any security context information.
+ * The technical details of an endpoint that can be used for electronic services, such as for web services providing XDS.b, a REST endpoint for another FHIR server, or a s/Mime email address. This may include any security context information.
  */
 @ResourceDef(name="Endpoint", profile="http://hl7.org/fhir/StructureDefinition/Endpoint")
 public class Endpoint extends DomainResource {
@@ -110,6 +110,7 @@ public class Endpoint extends DomainResource {
             case OFF: return "off";
             case ENTEREDINERROR: return "entered-in-error";
             case TEST: return "test";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -121,6 +122,7 @@ public class Endpoint extends DomainResource {
             case OFF: return "http://hl7.org/fhir/endpoint-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/endpoint-status";
             case TEST: return "http://hl7.org/fhir/endpoint-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -132,6 +134,7 @@ public class Endpoint extends DomainResource {
             case OFF: return "This endpoint is no longer to be used.";
             case ENTEREDINERROR: return "This instance should not have been part of this patient's medical record.";
             case TEST: return "This endpoint is not intended for production usage.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -143,6 +146,7 @@ public class Endpoint extends DomainResource {
             case OFF: return "Off";
             case ENTEREDINERROR: return "Entered in error";
             case TEST: return "Test";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -217,20 +221,20 @@ public class Endpoint extends DomainResource {
     protected List<Identifier> identifier;
 
     /**
-     * active | suspended | error | off | test.
+     * The endpoint status represents the general expected availability of an endpoint.
      */
     @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="active | suspended | error | off | entered-in-error | test", formalDefinition="active | suspended | error | off | test." )
+    @Description(shortDefinition="active | suspended | error | off | entered-in-error | test", formalDefinition="The endpoint status represents the general expected availability of an endpoint." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/endpoint-status")
     protected Enumeration<EndpointStatus> status;
 
     /**
      * A coded value that represents the technical details of the usage of this endpoint, such as what WSDLs should be used in what way. (e.g. XDS.b/DICOM/cds-hook).
      */
-    @Child(name = "connectionType", type = {Coding.class}, order=2, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "connectionType", type = {Coding.class}, order=2, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Protocol/Profile/Standard to be used with this endpoint connection", formalDefinition="A coded value that represents the technical details of the usage of this endpoint, such as what WSDLs should be used in what way. (e.g. XDS.b/DICOM/cds-hook)." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/endpoint-connection-type")
-    protected Coding connectionType;
+    protected List<Coding> connectionType;
 
     /**
      * A friendly name that this endpoint can be referred to with.
@@ -263,7 +267,7 @@ public class Endpoint extends DomainResource {
     /**
      * The payload type describes the acceptable content that can be communicated on the endpoint.
      */
-    @Child(name = "payloadType", type = {CodeableConcept.class}, order=7, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "payloadType", type = {CodeableConcept.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The type of content that may be used at this endpoint (e.g. XDS Discharge summaries)", formalDefinition="The payload type describes the acceptable content that can be communicated on the endpoint." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/endpoint-payload-type")
     protected List<CodeableConcept> payloadType;
@@ -290,7 +294,7 @@ public class Endpoint extends DomainResource {
     @Description(shortDefinition="Usage depends on the channel type", formalDefinition="Additional headers / information to send as part of the notification." )
     protected List<StringType> header;
 
-    private static final long serialVersionUID = 1528960001L;
+    private static final long serialVersionUID = 2125513493L;
 
   /**
    * Constructor
@@ -302,11 +306,10 @@ public class Endpoint extends DomainResource {
   /**
    * Constructor
    */
-    public Endpoint(EndpointStatus status, Coding connectionType, CodeableConcept payloadType, String address) {
+    public Endpoint(EndpointStatus status, Coding connectionType, String address) {
       super();
       this.setStatus(status);
-      this.setConnectionType(connectionType);
-      this.addPayloadType(payloadType);
+      this.addConnectionType(connectionType);
       this.setAddress(address);
     }
 
@@ -364,7 +367,7 @@ public class Endpoint extends DomainResource {
     }
 
     /**
-     * @return {@link #status} (active | suspended | error | off | test.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @return {@link #status} (The endpoint status represents the general expected availability of an endpoint.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public Enumeration<EndpointStatus> getStatusElement() { 
       if (this.status == null)
@@ -384,7 +387,7 @@ public class Endpoint extends DomainResource {
     }
 
     /**
-     * @param value {@link #status} (active | suspended | error | off | test.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @param value {@link #status} (The endpoint status represents the general expected availability of an endpoint.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public Endpoint setStatusElement(Enumeration<EndpointStatus> value) { 
       this.status = value;
@@ -392,14 +395,14 @@ public class Endpoint extends DomainResource {
     }
 
     /**
-     * @return active | suspended | error | off | test.
+     * @return The endpoint status represents the general expected availability of an endpoint.
      */
     public EndpointStatus getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
-     * @param value active | suspended | error | off | test.
+     * @param value The endpoint status represents the general expected availability of an endpoint.
      */
     public Endpoint setStatus(EndpointStatus value) { 
         if (this.status == null)
@@ -411,25 +414,54 @@ public class Endpoint extends DomainResource {
     /**
      * @return {@link #connectionType} (A coded value that represents the technical details of the usage of this endpoint, such as what WSDLs should be used in what way. (e.g. XDS.b/DICOM/cds-hook).)
      */
-    public Coding getConnectionType() { 
+    public List<Coding> getConnectionType() { 
       if (this.connectionType == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Endpoint.connectionType");
-        else if (Configuration.doAutoCreate())
-          this.connectionType = new Coding(); // cc
+        this.connectionType = new ArrayList<Coding>();
       return this.connectionType;
     }
 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Endpoint setConnectionType(List<Coding> theConnectionType) { 
+      this.connectionType = theConnectionType;
+      return this;
+    }
+
     public boolean hasConnectionType() { 
-      return this.connectionType != null && !this.connectionType.isEmpty();
+      if (this.connectionType == null)
+        return false;
+      for (Coding item : this.connectionType)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Coding addConnectionType() { //3
+      Coding t = new Coding();
+      if (this.connectionType == null)
+        this.connectionType = new ArrayList<Coding>();
+      this.connectionType.add(t);
+      return t;
+    }
+
+    public Endpoint addConnectionType(Coding t) { //3
+      if (t == null)
+        return this;
+      if (this.connectionType == null)
+        this.connectionType = new ArrayList<Coding>();
+      this.connectionType.add(t);
+      return this;
     }
 
     /**
-     * @param value {@link #connectionType} (A coded value that represents the technical details of the usage of this endpoint, such as what WSDLs should be used in what way. (e.g. XDS.b/DICOM/cds-hook).)
+     * @return The first repetition of repeating field {@link #connectionType}, creating it if it does not already exist {3}
      */
-    public Endpoint setConnectionType(Coding value) { 
-      this.connectionType = value;
-      return this;
+    public Coding getConnectionTypeFirstRep() { 
+      if (getConnectionType().isEmpty()) {
+        addConnectionType();
+      }
+      return getConnectionType().get(0);
     }
 
     /**
@@ -805,8 +837,8 @@ public class Endpoint extends DomainResource {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Identifier for the organization that is used to identify the endpoint across multiple disparate systems.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("status", "code", "active | suspended | error | off | test.", 0, 1, status));
-        children.add(new Property("connectionType", "Coding", "A coded value that represents the technical details of the usage of this endpoint, such as what WSDLs should be used in what way. (e.g. XDS.b/DICOM/cds-hook).", 0, 1, connectionType));
+        children.add(new Property("status", "code", "The endpoint status represents the general expected availability of an endpoint.", 0, 1, status));
+        children.add(new Property("connectionType", "Coding", "A coded value that represents the technical details of the usage of this endpoint, such as what WSDLs should be used in what way. (e.g. XDS.b/DICOM/cds-hook).", 0, java.lang.Integer.MAX_VALUE, connectionType));
         children.add(new Property("name", "string", "A friendly name that this endpoint can be referred to with.", 0, 1, name));
         children.add(new Property("managingOrganization", "Reference(Organization)", "The organization that manages this endpoint (even if technically another organization is hosting this in the cloud, it is the organization associated with the data).", 0, 1, managingOrganization));
         children.add(new Property("contact", "ContactPoint", "Contact details for a human to contact about the subscription. The primary use of this for system administrator troubleshooting.", 0, java.lang.Integer.MAX_VALUE, contact));
@@ -821,8 +853,8 @@ public class Endpoint extends DomainResource {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifier for the organization that is used to identify the endpoint across multiple disparate systems.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case -892481550: /*status*/  return new Property("status", "code", "active | suspended | error | off | test.", 0, 1, status);
-        case 1270211384: /*connectionType*/  return new Property("connectionType", "Coding", "A coded value that represents the technical details of the usage of this endpoint, such as what WSDLs should be used in what way. (e.g. XDS.b/DICOM/cds-hook).", 0, 1, connectionType);
+        case -892481550: /*status*/  return new Property("status", "code", "The endpoint status represents the general expected availability of an endpoint.", 0, 1, status);
+        case 1270211384: /*connectionType*/  return new Property("connectionType", "Coding", "A coded value that represents the technical details of the usage of this endpoint, such as what WSDLs should be used in what way. (e.g. XDS.b/DICOM/cds-hook).", 0, java.lang.Integer.MAX_VALUE, connectionType);
         case 3373707: /*name*/  return new Property("name", "string", "A friendly name that this endpoint can be referred to with.", 0, 1, name);
         case -2058947787: /*managingOrganization*/  return new Property("managingOrganization", "Reference(Organization)", "The organization that manages this endpoint (even if technically another organization is hosting this in the cloud, it is the organization associated with the data).", 0, 1, managingOrganization);
         case 951526432: /*contact*/  return new Property("contact", "ContactPoint", "Contact details for a human to contact about the subscription. The primary use of this for system administrator troubleshooting.", 0, java.lang.Integer.MAX_VALUE, contact);
@@ -841,7 +873,7 @@ public class Endpoint extends DomainResource {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<EndpointStatus>
-        case 1270211384: /*connectionType*/ return this.connectionType == null ? new Base[0] : new Base[] {this.connectionType}; // Coding
+        case 1270211384: /*connectionType*/ return this.connectionType == null ? new Base[0] : this.connectionType.toArray(new Base[this.connectionType.size()]); // Coding
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case -2058947787: /*managingOrganization*/ return this.managingOrganization == null ? new Base[0] : new Base[] {this.managingOrganization}; // Reference
         case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ContactPoint
@@ -866,7 +898,7 @@ public class Endpoint extends DomainResource {
           this.status = (Enumeration) value; // Enumeration<EndpointStatus>
           return value;
         case 1270211384: // connectionType
-          this.connectionType = TypeConvertor.castToCoding(value); // Coding
+          this.getConnectionType().add(TypeConvertor.castToCoding(value)); // Coding
           return value;
         case 3373707: // name
           this.name = TypeConvertor.castToString(value); // StringType
@@ -905,7 +937,7 @@ public class Endpoint extends DomainResource {
           value = new EndpointStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<EndpointStatus>
         } else if (name.equals("connectionType")) {
-          this.connectionType = TypeConvertor.castToCoding(value); // Coding
+          this.getConnectionType().add(TypeConvertor.castToCoding(value));
         } else if (name.equals("name")) {
           this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("managingOrganization")) {
@@ -932,7 +964,7 @@ public class Endpoint extends DomainResource {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
         case -892481550:  return getStatusElement();
-        case 1270211384:  return getConnectionType();
+        case 1270211384:  return addConnectionType(); 
         case 3373707:  return getNameElement();
         case -2058947787:  return getManagingOrganization();
         case 951526432:  return addContact(); 
@@ -974,8 +1006,7 @@ public class Endpoint extends DomainResource {
           throw new FHIRException("Cannot call addChild on a primitive type Endpoint.status");
         }
         else if (name.equals("connectionType")) {
-          this.connectionType = new Coding();
-          return this.connectionType;
+          return addConnectionType();
         }
         else if (name.equals("name")) {
           throw new FHIRException("Cannot call addChild on a primitive type Endpoint.name");
@@ -1026,7 +1057,11 @@ public class Endpoint extends DomainResource {
             dst.identifier.add(i.copy());
         };
         dst.status = status == null ? null : status.copy();
-        dst.connectionType = connectionType == null ? null : connectionType.copy();
+        if (connectionType != null) {
+          dst.connectionType = new ArrayList<Coding>();
+          for (Coding i : connectionType)
+            dst.connectionType.add(i.copy());
+        };
         dst.name = name == null ? null : name.copy();
         dst.managingOrganization = managingOrganization == null ? null : managingOrganization.copy();
         if (contact != null) {
@@ -1092,132 +1127,6 @@ public class Endpoint extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.Endpoint;
    }
-
- /**
-   * Search parameter: <b>connection-type</b>
-   * <p>
-   * Description: <b>Protocol/Profile/Standard to be used with this endpoint connection</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Endpoint.connectionType</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="connection-type", path="Endpoint.connectionType", description="Protocol/Profile/Standard to be used with this endpoint connection", type="token" )
-  public static final String SP_CONNECTION_TYPE = "connection-type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>connection-type</b>
-   * <p>
-   * Description: <b>Protocol/Profile/Standard to be used with this endpoint connection</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Endpoint.connectionType</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONNECTION_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONNECTION_TYPE);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>Identifies this endpoint across multiple systems</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Endpoint.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="Endpoint.identifier", description="Identifies this endpoint across multiple systems", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>Identifies this endpoint across multiple systems</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Endpoint.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>name</b>
-   * <p>
-   * Description: <b>A name that this endpoint can be identified by</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Endpoint.name</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="name", path="Endpoint.name", description="A name that this endpoint can be identified by", type="string" )
-  public static final String SP_NAME = "name";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>name</b>
-   * <p>
-   * Description: <b>A name that this endpoint can be identified by</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Endpoint.name</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
-
- /**
-   * Search parameter: <b>organization</b>
-   * <p>
-   * Description: <b>The organization that is managing the endpoint</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Endpoint.managingOrganization</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="organization", path="Endpoint.managingOrganization", description="The organization that is managing the endpoint", type="reference", target={Organization.class } )
-  public static final String SP_ORGANIZATION = "organization";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>organization</b>
-   * <p>
-   * Description: <b>The organization that is managing the endpoint</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Endpoint.managingOrganization</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ORGANIZATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ORGANIZATION);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Endpoint:organization</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ORGANIZATION = new ca.uhn.fhir.model.api.Include("Endpoint:organization").toLocked();
-
- /**
-   * Search parameter: <b>payload-type</b>
-   * <p>
-   * Description: <b>The type of content that may be used at this endpoint (e.g. XDS Discharge summaries)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Endpoint.payloadType</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="payload-type", path="Endpoint.payloadType", description="The type of content that may be used at this endpoint (e.g. XDS Discharge summaries)", type="token" )
-  public static final String SP_PAYLOAD_TYPE = "payload-type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>payload-type</b>
-   * <p>
-   * Description: <b>The type of content that may be used at this endpoint (e.g. XDS Discharge summaries)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Endpoint.payloadType</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PAYLOAD_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PAYLOAD_TYPE);
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>The current status of the Endpoint (usually expected to be active)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Endpoint.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="Endpoint.status", description="The current status of the Endpoint (usually expected to be active)", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>The current status of the Endpoint (usually expected to be active)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Endpoint.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
 
 }

@@ -71,7 +71,7 @@ public class MedicationStatement40_50 {
     if (src.hasDateAsserted())
       tgt.setDateAssertedElement(DateTime40_50.convertDateTime(src.getDateAssertedElement()));
     if (src.hasInformationSource())
-      tgt.setInformationSource(Reference40_50.convertReference(src.getInformationSource()));
+      tgt.addInformationSource(Reference40_50.convertReference(src.getInformationSource()));
     for (org.hl7.fhir.r4.model.Reference t : src.getDerivedFrom())
       tgt.addDerivedFrom(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
@@ -113,7 +113,7 @@ public class MedicationStatement40_50 {
     if (src.hasDateAsserted())
       tgt.setDateAssertedElement(DateTime40_50.convertDateTime(src.getDateAssertedElement()));
     if (src.hasInformationSource())
-      tgt.setInformationSource(Reference40_50.convertReference(src.getInformationSource()));
+      tgt.setInformationSource(Reference40_50.convertReference(src.getInformationSourceFirstRep()));
     for (org.hl7.fhir.r5.model.Reference t : src.getDerivedFrom())
       tgt.addDerivedFrom(Reference40_50.convertReference(t));
     for (CodeableReference t : src.getReason())

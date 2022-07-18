@@ -376,7 +376,7 @@ public class TestScript10_50 {
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
     if (src.hasType())
       tgt.setType(Coding10_50.convertCoding(src.getType()));
-    tgt.setResource(src.getResource().toCode());
+    tgt.setResource(src.getResource());
     if (src.hasLabelElement())
       tgt.setLabelElement(String10_50.convertString(src.getLabelElement()));
     if (src.hasDescriptionElement())
@@ -412,7 +412,7 @@ public class TestScript10_50 {
     if (src.hasType())
       tgt.setType(Coding10_50.convertCoding(src.getType()));
     if (src.hasResource())
-      tgt.setResource(TestScript.FHIRDefinedType.fromCode(src.getResource()));
+      tgt.setResource(src.getResource());
     if (src.hasLabelElement())
       tgt.setLabelElement(String10_50.convertString(src.getLabelElement()));
     if (src.hasDescriptionElement())

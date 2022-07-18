@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -118,6 +118,7 @@ public class ChargeItem extends DomainResource {
             case BILLED: return "billed";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public class ChargeItem extends DomainResource {
             case BILLED: return "http://hl7.org/fhir/chargeitem-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/chargeitem-status";
             case UNKNOWN: return "http://hl7.org/fhir/chargeitem-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -142,6 +144,7 @@ public class ChargeItem extends DomainResource {
             case BILLED: return "The charge item has been billed (e.g. a billing engine has generated financial transactions by applying the associated ruled for the charge item to the context of the Encounter, and placed them into Claims/Invoices.";
             case ENTEREDINERROR: return "The charge item has been entered in error and should not be processed for billing.";
             case UNKNOWN: return "The authoring system does not know which of the status values currently applies for this charge item  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply, it's just not known which one.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -154,6 +157,7 @@ public class ChargeItem extends DomainResource {
             case BILLED: return "Billed";
             case ENTEREDINERROR: return "Entered in Error";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2343,400 +2347,6 @@ public class ChargeItem extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.ChargeItem;
    }
-
- /**
-   * Search parameter: <b>account</b>
-   * <p>
-   * Description: <b>Account to place this charge</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.account</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="account", path="ChargeItem.account", description="Account to place this charge", type="reference", target={Account.class } )
-  public static final String SP_ACCOUNT = "account";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>account</b>
-   * <p>
-   * Description: <b>Account to place this charge</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.account</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ACCOUNT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ACCOUNT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ChargeItem:account</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ACCOUNT = new ca.uhn.fhir.model.api.Include("ChargeItem:account").toLocked();
-
- /**
-   * Search parameter: <b>code</b>
-   * <p>
-   * Description: <b>A code that identifies the charge, like a billing code</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItem.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="code", path="ChargeItem.code", description="A code that identifies the charge, like a billing code", type="token" )
-  public static final String SP_CODE = "code";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>code</b>
-   * <p>
-   * Description: <b>A code that identifies the charge, like a billing code</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItem.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
-
- /**
-   * Search parameter: <b>context</b>
-   * <p>
-   * Description: <b>Encounter / Episode associated with event</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.context</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context", path="ChargeItem.context", description="Encounter / Episode associated with event", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Encounter") }, target={Encounter.class, EpisodeOfCare.class } )
-  public static final String SP_CONTEXT = "context";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
-   * <p>
-   * Description: <b>Encounter / Episode associated with event</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.context</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_CONTEXT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ChargeItem:context</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_CONTEXT = new ca.uhn.fhir.model.api.Include("ChargeItem:context").toLocked();
-
- /**
-   * Search parameter: <b>entered-date</b>
-   * <p>
-   * Description: <b>Date the charge item was entered</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ChargeItem.enteredDate</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="entered-date", path="ChargeItem.enteredDate", description="Date the charge item was entered", type="date" )
-  public static final String SP_ENTERED_DATE = "entered-date";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>entered-date</b>
-   * <p>
-   * Description: <b>Date the charge item was entered</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ChargeItem.enteredDate</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam ENTERED_DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_ENTERED_DATE);
-
- /**
-   * Search parameter: <b>enterer</b>
-   * <p>
-   * Description: <b>Individual who was entering</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.enterer</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="enterer", path="ChargeItem.enterer", description="Individual who was entering", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_ENTERER = "enterer";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>enterer</b>
-   * <p>
-   * Description: <b>Individual who was entering</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.enterer</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENTERER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENTERER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ChargeItem:enterer</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENTERER = new ca.uhn.fhir.model.api.Include("ChargeItem:enterer").toLocked();
-
- /**
-   * Search parameter: <b>factor-override</b>
-   * <p>
-   * Description: <b>Factor overriding the associated rules</b><br>
-   * Type: <b>number</b><br>
-   * Path: <b>ChargeItem.factorOverride</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="factor-override", path="ChargeItem.factorOverride", description="Factor overriding the associated rules", type="number" )
-  public static final String SP_FACTOR_OVERRIDE = "factor-override";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>factor-override</b>
-   * <p>
-   * Description: <b>Factor overriding the associated rules</b><br>
-   * Type: <b>number</b><br>
-   * Path: <b>ChargeItem.factorOverride</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.NumberClientParam FACTOR_OVERRIDE = new ca.uhn.fhir.rest.gclient.NumberClientParam(SP_FACTOR_OVERRIDE);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>Business Identifier for item</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItem.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="ChargeItem.identifier", description="Business Identifier for item", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>Business Identifier for item</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItem.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>occurrence</b>
-   * <p>
-   * Description: <b>When the charged service was applied</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ChargeItem.occurrence</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="occurrence", path="ChargeItem.occurrence", description="When the charged service was applied", type="date" )
-  public static final String SP_OCCURRENCE = "occurrence";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>occurrence</b>
-   * <p>
-   * Description: <b>When the charged service was applied</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ChargeItem.occurrence</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam OCCURRENCE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_OCCURRENCE);
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>Individual service was done for/to</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.subject.where(resolve() is Patient)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="ChargeItem.subject.where(resolve() is Patient)", description="Individual service was done for/to", type="reference", target={Group.class, Patient.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>Individual service was done for/to</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.subject.where(resolve() is Patient)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ChargeItem:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("ChargeItem:patient").toLocked();
-
- /**
-   * Search parameter: <b>performer-actor</b>
-   * <p>
-   * Description: <b>Individual who was performing</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.performer.actor</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="performer-actor", path="ChargeItem.performer.actor", description="Individual who was performing", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={CareTeam.class, Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_PERFORMER_ACTOR = "performer-actor";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>performer-actor</b>
-   * <p>
-   * Description: <b>Individual who was performing</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.performer.actor</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PERFORMER_ACTOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PERFORMER_ACTOR);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ChargeItem:performer-actor</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PERFORMER_ACTOR = new ca.uhn.fhir.model.api.Include("ChargeItem:performer-actor").toLocked();
-
- /**
-   * Search parameter: <b>performer-function</b>
-   * <p>
-   * Description: <b>What type of performance was done</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItem.performer.function</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="performer-function", path="ChargeItem.performer.function", description="What type of performance was done", type="token" )
-  public static final String SP_PERFORMER_FUNCTION = "performer-function";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>performer-function</b>
-   * <p>
-   * Description: <b>What type of performance was done</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItem.performer.function</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PERFORMER_FUNCTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PERFORMER_FUNCTION);
-
- /**
-   * Search parameter: <b>performing-organization</b>
-   * <p>
-   * Description: <b>Organization providing the charged service</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.performingOrganization</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="performing-organization", path="ChargeItem.performingOrganization", description="Organization providing the charged service", type="reference", target={Organization.class } )
-  public static final String SP_PERFORMING_ORGANIZATION = "performing-organization";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>performing-organization</b>
-   * <p>
-   * Description: <b>Organization providing the charged service</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.performingOrganization</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PERFORMING_ORGANIZATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PERFORMING_ORGANIZATION);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ChargeItem:performing-organization</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PERFORMING_ORGANIZATION = new ca.uhn.fhir.model.api.Include("ChargeItem:performing-organization").toLocked();
-
- /**
-   * Search parameter: <b>price-override</b>
-   * <p>
-   * Description: <b>Price overriding the associated rules</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>ChargeItem.priceOverride</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="price-override", path="ChargeItem.priceOverride", description="Price overriding the associated rules", type="quantity" )
-  public static final String SP_PRICE_OVERRIDE = "price-override";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>price-override</b>
-   * <p>
-   * Description: <b>Price overriding the associated rules</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>ChargeItem.priceOverride</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam PRICE_OVERRIDE = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_PRICE_OVERRIDE);
-
- /**
-   * Search parameter: <b>quantity</b>
-   * <p>
-   * Description: <b>Quantity of which the charge item has been serviced</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>ChargeItem.quantity</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="quantity", path="ChargeItem.quantity", description="Quantity of which the charge item has been serviced", type="quantity" )
-  public static final String SP_QUANTITY = "quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>quantity</b>
-   * <p>
-   * Description: <b>Quantity of which the charge item has been serviced</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>ChargeItem.quantity</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_QUANTITY);
-
- /**
-   * Search parameter: <b>requesting-organization</b>
-   * <p>
-   * Description: <b>Organization requesting the charged service</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.requestingOrganization</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="requesting-organization", path="ChargeItem.requestingOrganization", description="Organization requesting the charged service", type="reference", target={Organization.class } )
-  public static final String SP_REQUESTING_ORGANIZATION = "requesting-organization";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>requesting-organization</b>
-   * <p>
-   * Description: <b>Organization requesting the charged service</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.requestingOrganization</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REQUESTING_ORGANIZATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REQUESTING_ORGANIZATION);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ChargeItem:requesting-organization</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_REQUESTING_ORGANIZATION = new ca.uhn.fhir.model.api.Include("ChargeItem:requesting-organization").toLocked();
-
- /**
-   * Search parameter: <b>service</b>
-   * <p>
-   * Description: <b>Which rendered service is being charged?</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.service</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="service", path="ChargeItem.service", description="Which rendered service is being charged?", type="reference", target={DiagnosticReport.class, ImagingStudy.class, Immunization.class, MedicationAdministration.class, MedicationDispense.class, Observation.class, Procedure.class, SupplyDelivery.class } )
-  public static final String SP_SERVICE = "service";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>service</b>
-   * <p>
-   * Description: <b>Which rendered service is being charged?</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.service</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SERVICE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SERVICE);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ChargeItem:service</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SERVICE = new ca.uhn.fhir.model.api.Include("ChargeItem:service").toLocked();
-
- /**
-   * Search parameter: <b>subject</b>
-   * <p>
-   * Description: <b>Individual service was done for/to</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.subject</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="subject", path="ChargeItem.subject", description="Individual service was done for/to", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Group.class, Patient.class } )
-  public static final String SP_SUBJECT = "subject";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
-   * <p>
-   * Description: <b>Individual service was done for/to</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ChargeItem.subject</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ChargeItem:subject</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("ChargeItem:subject").toLocked();
 
 
 }
