@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,6 +82,7 @@ public class TestScript extends CanonicalResource {
           switch (this) {
             case RESPONSE: return "response";
             case REQUEST: return "request";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -89,6 +90,7 @@ public class TestScript extends CanonicalResource {
           switch (this) {
             case RESPONSE: return "http://hl7.org/fhir/assert-direction-codes";
             case REQUEST: return "http://hl7.org/fhir/assert-direction-codes";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -96,6 +98,7 @@ public class TestScript extends CanonicalResource {
           switch (this) {
             case RESPONSE: return "The assertion is evaluated on the response. This is the default value.";
             case REQUEST: return "The assertion is evaluated on the request.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -103,6 +106,7 @@ public class TestScript extends CanonicalResource {
           switch (this) {
             case RESPONSE: return "response";
             case REQUEST: return "request";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -237,6 +241,7 @@ public class TestScript extends CanonicalResource {
             case CONTAINS: return "contains";
             case NOTCONTAINS: return "notContains";
             case EVAL: return "eval";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -253,6 +258,7 @@ public class TestScript extends CanonicalResource {
             case CONTAINS: return "http://hl7.org/fhir/assert-operator-codes";
             case NOTCONTAINS: return "http://hl7.org/fhir/assert-operator-codes";
             case EVAL: return "http://hl7.org/fhir/assert-operator-codes";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -269,6 +275,7 @@ public class TestScript extends CanonicalResource {
             case CONTAINS: return "Compare value string contains a known value.";
             case NOTCONTAINS: return "Compare value string does not contain a known value.";
             case EVAL: return "Evaluate the FHIRPath expression as a boolean condition.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -285,6 +292,7 @@ public class TestScript extends CanonicalResource {
             case CONTAINS: return "contains";
             case NOTCONTAINS: return "notContains";
             case EVAL: return "evaluate";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -480,6 +488,7 @@ public class TestScript extends CanonicalResource {
             case GONE: return "gone";
             case PRECONDITIONFAILED: return "preconditionFailed";
             case UNPROCESSABLE: return "unprocessable";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -497,6 +506,7 @@ public class TestScript extends CanonicalResource {
             case GONE: return "http://hl7.org/fhir/assert-response-code-types";
             case PRECONDITIONFAILED: return "http://hl7.org/fhir/assert-response-code-types";
             case UNPROCESSABLE: return "http://hl7.org/fhir/assert-response-code-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -514,6 +524,7 @@ public class TestScript extends CanonicalResource {
             case GONE: return "Response code is 410.";
             case PRECONDITIONFAILED: return "Response code is 412.";
             case UNPROCESSABLE: return "Response code is 422.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -531,6 +542,7 @@ public class TestScript extends CanonicalResource {
             case GONE: return "gone";
             case PRECONDITIONFAILED: return "preconditionFailed";
             case UNPROCESSABLE: return "unprocessable";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -667,7 +679,7 @@ public class TestScript extends CanonicalResource {
          */
         CODEABLECONCEPT, 
         /**
-         * A reference to a resource (by instance), or instead, a reference to a cencept defined in a terminology or ontology (by class).
+         * A reference to a resource (by instance), or instead, a reference to a concept defined in a terminology or ontology (by class).
          */
         CODEABLEREFERENCE, 
         /**
@@ -723,6 +735,10 @@ public class TestScript extends CanonicalResource {
          */
         EXPRESSION, 
         /**
+         * Specifies contact information for a specific purpose over a period of time, might be handled/monitored by a specific named person or organization.
+         */
+        EXTENDEDCONTACTDETAIL, 
+        /**
          * Optional Extension Element - found in all resources.
          */
         EXTENSION, 
@@ -770,10 +786,6 @@ public class TestScript extends CanonicalResource {
          * The base type for all re-useable types defined that have a simple property.
          */
         PRIMITIVETYPE, 
-        /**
-         * The marketing status describes the date when a medicinal product is actually put on the market or the date as of which it is no longer available.
-         */
-        PRODCHARACTERISTIC, 
         /**
          * The shelf-life and storage information for a medicinal product item or container can be described using this class.
          */
@@ -951,6 +963,10 @@ public class TestScript extends CanonicalResource {
          */
         APPOINTMENTRESPONSE, 
         /**
+         * This Resource provides one or more comments, classifiers or ratings about a Resource and supports attribution and rights management metadata for the added content.
+         */
+        ARTIFACTASSESSMENT, 
+        /**
          * A record of an event relevant for purposes such as operations, privacy, security, maintenance, and performance analysis.
          */
         AUDITEVENT, 
@@ -987,14 +1003,6 @@ public class TestScript extends CanonicalResource {
          */
         COMPARTMENTDEFINITION, 
         /**
-         * A statement of relationships from one set of concepts to one or more other concepts - either concepts in code systems, or data element/data element concepts, or classes in class models.
-         */
-        CONCEPTMAP, 
-        /**
-         * A statement of relationships from one set of concepts to one or more other concepts - either concepts in code systems, or data element/data element concepts, or classes in class models.
-         */
-        CONCEPTMAP2, 
-        /**
          * Example of workflow instance.
          */
         EXAMPLESCENARIO, 
@@ -1019,10 +1027,6 @@ public class TestScript extends CanonicalResource {
          */
         ACTIVITYDEFINITION, 
         /**
-         * This Resource provides one or more comments, classifiers or ratings about a Resource and supports attribution and rights management metadata for the added content.
-         */
-        ARTIFACTASSESSMENT, 
-        /**
          * The ChargeItemDefinition resource provides the properties that apply to the (billing) codes necessary to calculate costs and prices. The properties may differ largely depending on type and realm, therefore this resource gives only a rough structure and requires profiling for each type of billing code system.
          */
         CHARGEITEMDEFINITION, 
@@ -1030,6 +1034,10 @@ public class TestScript extends CanonicalResource {
          * The Citation Resource enables reference to any knowledge artifact for purposes of identification and attribution. The Citation Resource supports existing reference structures and developing publication practices such as versioning, expressing complex contributorship roles, and referencing computable resources.
          */
         CITATION, 
+        /**
+         * A statement of relationships from one set of concepts to one or more other concepts - either concepts in code systems, or data element/data element concepts, or classes in class models.
+         */
+        CONCEPTMAP, 
         /**
          * A definition of a condition and information relevant to managing it.
          */
@@ -1059,6 +1067,10 @@ public class TestScript extends CanonicalResource {
          */
         MEASURE, 
         /**
+         * A curated namespace that issues unique symbols within that namespace for the identification of concepts, people, devices, etc.  Represents a \"System\" used within the Identifier and Coding data types.
+         */
+        NAMINGSYSTEM, 
+        /**
          * This resource allows for the definition of various types of plans as a sharable, consumable, and executable artifact. The resource is general enough to support the description of a broad range of clinical and non-clinical artifacts such as clinical decision support rules, order sets, protocols, and drug quality specifications.
          */
         PLANDEFINITION, 
@@ -1066,10 +1078,6 @@ public class TestScript extends CanonicalResource {
          * A structured set of questions intended to guide the collection of answers from end-users. Questionnaires provide detailed control over order, presentation, phraseology and grouping to allow coherent, consistent data collection.
          */
         QUESTIONNAIRE, 
-        /**
-         * A curated namespace that issues unique symbols within that namespace for the identification of concepts, people, devices, etc.  Represents a \"System\" used within the Identifier and Coding data types.
-         */
-        NAMINGSYSTEM, 
         /**
          * A formal computable definition of an operation (on the RESTful interface) or a named query (using the search interaction).
          */
@@ -1086,6 +1094,10 @@ public class TestScript extends CanonicalResource {
          * A Map of relationships between 2 structures that can be used to transform data.
          */
         STRUCTUREMAP, 
+        /**
+         * Describes a stream of resource state changes identified by trigger criteria and annotated with labels useful to filter projections from this topic.
+         */
+        SUBSCRIPTIONTOPIC, 
         /**
          * A TerminologyCapabilities resource documents a set of capabilities (behaviors) of a FHIR Terminology Server that may be used as a statement of actual server functionality or a statement of required or desired server implementation.
          */
@@ -1126,10 +1138,6 @@ public class TestScript extends CanonicalResource {
          * A single issue - either an indication, contraindication, interaction or an undesirable effect for a medicinal product, medication, device or procedure.
          */
         CLINICALUSEDEFINITION, 
-        /**
-         * A single issue - either an indication, contraindication, interaction or an undesirable effect for a medicinal product, medication, device or procedure.
-         */
-        CLINICALUSEISSUE, 
         /**
          * A clinical or business level record of information being transmitted or shared; e.g. an alert that was sent to a responsible provider, a public health agency communication to a provider/reporter in response to a case report for a reportable condition.
          */
@@ -1211,7 +1219,7 @@ public class TestScript extends CanonicalResource {
          */
         ENCOUNTER, 
         /**
-         * The technical details of an endpoint that can be used for electronic services, such as for web services providing XDS.b or a REST endpoint for another FHIR server. This may include any security context information.
+         * The technical details of an endpoint that can be used for electronic services, such as for web services providing XDS.b, a REST endpoint for another FHIR server, or a s/Mime email address. This may include any security context information.
          */
         ENDPOINT, 
         /**
@@ -1238,6 +1246,10 @@ public class TestScript extends CanonicalResource {
          * Prospective warnings of potential issues when providing care to the patient.
          */
         FLAG, 
+        /**
+         * This resource describes a product or service that is available through a program and includes the conditions and constraints of availability.  All of the information in this resource is specific to the inclusion of the item in the formulary and is not inherent to the item itself.
+         */
+        FORMULARYITEM, 
         /**
          * Describes the intended objective(s) for a patient, group or organization care, for example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, etc.
          */
@@ -1335,7 +1347,7 @@ public class TestScript extends CanonicalResource {
          */
         MEDICATIONUSAGE, 
         /**
-         * Detailed definition of a medicinal product, typically for uses other than direct patient care (e.g. regulatory use, drug catalogs).
+         * Detailed definition of a medicinal product, typically for uses other than direct patient care (e.g. regulatory use, drug catalogs, to support prescribing, adverse events management etc.).
          */
         MEDICINALPRODUCTDEFINITION, 
         /**
@@ -1343,11 +1355,11 @@ public class TestScript extends CanonicalResource {
          */
         MESSAGEHEADER, 
         /**
-         * Raw data describing a biological sequence.
+         * Representation of a molecular sequence.
          */
         MOLECULARSEQUENCE, 
         /**
-         * A record of food or fluid that is being consumed by a patient.   A NutritionIntake may indicate that the patient may be consuming the food or fluid now or has consumed the food or fluid in the past.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay or through an app that tracks food or fluids consumed.   The consumption information may come from sources such as the patient's memory, from a nutrition label,  or from a clinician documenting observed intake.
+         * A record of food or fluid that is being consumed by a patient.  A NutritionIntake may indicate that the patient may be consuming the food or fluid now or has consumed the food or fluid in the past.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay or through an app that tracks food or fluids consumed.   The consumption information may come from sources such as the patient's memory, from a nutrition label,  or from a clinician documenting observed intake.
          */
         NUTRITIONINTAKE, 
         /**
@@ -1355,7 +1367,7 @@ public class TestScript extends CanonicalResource {
          */
         NUTRITIONORDER, 
         /**
-         * A food or fluid product that is consumed by patients.
+         * A food or supplement that is consumed by patients.
          */
         NUTRITIONPRODUCT, 
         /**
@@ -1427,7 +1439,7 @@ public class TestScript extends CanonicalResource {
          */
         REGULATEDAUTHORIZATION, 
         /**
-         * Information about a person that is involved in the care for a patient, but who is not the target of healthcare, nor has a formal responsibility in the care process.
+         * Information about a person that is involved in a patient's health or the care for a patient, but who is not the target of healthcare, nor has a formal responsibility in the care process.
          */
         RELATEDPERSON, 
         /**
@@ -1475,10 +1487,6 @@ public class TestScript extends CanonicalResource {
          */
         SUBSCRIPTIONSTATUS, 
         /**
-         * Describes a stream of resource state changes identified by trigger criteria and annotated with labels useful to filter projections from this topic.
-         */
-        SUBSCRIPTIONTOPIC, 
-        /**
          * A homogeneous material with a definite composition.
          */
         SUBSTANCE, 
@@ -1523,6 +1531,10 @@ public class TestScript extends CanonicalResource {
          */
         TESTREPORT, 
         /**
+         * Record of transport.
+         */
+        TRANSPORT, 
+        /**
          * Describes validation requirements, source(s), status and dates for one or more elements.
          */
         VERIFICATIONRESULT, 
@@ -1531,7 +1543,7 @@ public class TestScript extends CanonicalResource {
          */
         VISIONPRESCRIPTION, 
         /**
-         * This resource is a non-persisted resource used to pass information into and back from an [operation](operations.html). It has no other use, and there is no RESTful endpoint associated with it.
+         * This resource is a non-persisted resource primarily used to pass information into and back from an [operation](operations.html). There is no RESTful endpoint associated with it.
          */
         PARAMETERS, 
         /**
@@ -1585,6 +1597,8 @@ public class TestScript extends CanonicalResource {
           return ELEMENTDEFINITION;
         if ("Expression".equals(codeString))
           return EXPRESSION;
+        if ("ExtendedContactDetail".equals(codeString))
+          return EXTENDEDCONTACTDETAIL;
         if ("Extension".equals(codeString))
           return EXTENSION;
         if ("HumanName".equals(codeString))
@@ -1609,8 +1623,6 @@ public class TestScript extends CanonicalResource {
           return POPULATION;
         if ("PrimitiveType".equals(codeString))
           return PRIMITIVETYPE;
-        if ("ProdCharacteristic".equals(codeString))
-          return PRODCHARACTERISTIC;
         if ("ProductShelfLife".equals(codeString))
           return PRODUCTSHELFLIFE;
         if ("Quantity".equals(codeString))
@@ -1699,6 +1711,8 @@ public class TestScript extends CanonicalResource {
           return APPOINTMENT;
         if ("AppointmentResponse".equals(codeString))
           return APPOINTMENTRESPONSE;
+        if ("ArtifactAssessment".equals(codeString))
+          return ARTIFACTASSESSMENT;
         if ("AuditEvent".equals(codeString))
           return AUDITEVENT;
         if ("Basic".equals(codeString))
@@ -1717,10 +1731,6 @@ public class TestScript extends CanonicalResource {
           return CODESYSTEM;
         if ("CompartmentDefinition".equals(codeString))
           return COMPARTMENTDEFINITION;
-        if ("ConceptMap".equals(codeString))
-          return CONCEPTMAP;
-        if ("ConceptMap2".equals(codeString))
-          return CONCEPTMAP2;
         if ("ExampleScenario".equals(codeString))
           return EXAMPLESCENARIO;
         if ("GraphDefinition".equals(codeString))
@@ -1733,12 +1743,12 @@ public class TestScript extends CanonicalResource {
           return METADATARESOURCE;
         if ("ActivityDefinition".equals(codeString))
           return ACTIVITYDEFINITION;
-        if ("ArtifactAssessment".equals(codeString))
-          return ARTIFACTASSESSMENT;
         if ("ChargeItemDefinition".equals(codeString))
           return CHARGEITEMDEFINITION;
         if ("Citation".equals(codeString))
           return CITATION;
+        if ("ConceptMap".equals(codeString))
+          return CONCEPTMAP;
         if ("ConditionDefinition".equals(codeString))
           return CONDITIONDEFINITION;
         if ("EventDefinition".equals(codeString))
@@ -1753,12 +1763,12 @@ public class TestScript extends CanonicalResource {
           return LIBRARY;
         if ("Measure".equals(codeString))
           return MEASURE;
+        if ("NamingSystem".equals(codeString))
+          return NAMINGSYSTEM;
         if ("PlanDefinition".equals(codeString))
           return PLANDEFINITION;
         if ("Questionnaire".equals(codeString))
           return QUESTIONNAIRE;
-        if ("NamingSystem".equals(codeString))
-          return NAMINGSYSTEM;
         if ("OperationDefinition".equals(codeString))
           return OPERATIONDEFINITION;
         if ("SearchParameter".equals(codeString))
@@ -1767,6 +1777,8 @@ public class TestScript extends CanonicalResource {
           return STRUCTUREDEFINITION;
         if ("StructureMap".equals(codeString))
           return STRUCTUREMAP;
+        if ("SubscriptionTopic".equals(codeString))
+          return SUBSCRIPTIONTOPIC;
         if ("TerminologyCapabilities".equals(codeString))
           return TERMINOLOGYCAPABILITIES;
         if ("TestScript".equals(codeString))
@@ -1787,8 +1799,6 @@ public class TestScript extends CanonicalResource {
           return CLINICALIMPRESSION;
         if ("ClinicalUseDefinition".equals(codeString))
           return CLINICALUSEDEFINITION;
-        if ("ClinicalUseIssue".equals(codeString))
-          return CLINICALUSEISSUE;
         if ("Communication".equals(codeString))
           return COMMUNICATION;
         if ("CommunicationRequest".equals(codeString))
@@ -1843,6 +1853,8 @@ public class TestScript extends CanonicalResource {
           return FAMILYMEMBERHISTORY;
         if ("Flag".equals(codeString))
           return FLAG;
+        if ("FormularyItem".equals(codeString))
+          return FORMULARYITEM;
         if ("Goal".equals(codeString))
           return GOAL;
         if ("Group".equals(codeString))
@@ -1961,8 +1973,6 @@ public class TestScript extends CanonicalResource {
           return SUBSCRIPTION;
         if ("SubscriptionStatus".equals(codeString))
           return SUBSCRIPTIONSTATUS;
-        if ("SubscriptionTopic".equals(codeString))
-          return SUBSCRIPTIONTOPIC;
         if ("Substance".equals(codeString))
           return SUBSTANCE;
         if ("SubstanceDefinition".equals(codeString))
@@ -1985,6 +1995,8 @@ public class TestScript extends CanonicalResource {
           return TASK;
         if ("TestReport".equals(codeString))
           return TESTREPORT;
+        if ("Transport".equals(codeString))
+          return TRANSPORT;
         if ("VerificationResult".equals(codeString))
           return VERIFICATIONRESULT;
         if ("VisionPrescription".equals(codeString))
@@ -2020,6 +2032,7 @@ public class TestScript extends CanonicalResource {
             case ELEMENT: return "Element";
             case ELEMENTDEFINITION: return "ElementDefinition";
             case EXPRESSION: return "Expression";
+            case EXTENDEDCONTACTDETAIL: return "ExtendedContactDetail";
             case EXTENSION: return "Extension";
             case HUMANNAME: return "HumanName";
             case IDENTIFIER: return "Identifier";
@@ -2032,7 +2045,6 @@ public class TestScript extends CanonicalResource {
             case PERIOD: return "Period";
             case POPULATION: return "Population";
             case PRIMITIVETYPE: return "PrimitiveType";
-            case PRODCHARACTERISTIC: return "ProdCharacteristic";
             case PRODUCTSHELFLIFE: return "ProductShelfLife";
             case QUANTITY: return "Quantity";
             case RANGE: return "Range";
@@ -2077,6 +2089,7 @@ public class TestScript extends CanonicalResource {
             case ALLERGYINTOLERANCE: return "AllergyIntolerance";
             case APPOINTMENT: return "Appointment";
             case APPOINTMENTRESPONSE: return "AppointmentResponse";
+            case ARTIFACTASSESSMENT: return "ArtifactAssessment";
             case AUDITEVENT: return "AuditEvent";
             case BASIC: return "Basic";
             case BIOLOGICALLYDERIVEDPRODUCT: return "BiologicallyDerivedProduct";
@@ -2086,17 +2099,15 @@ public class TestScript extends CanonicalResource {
             case CAPABILITYSTATEMENT2: return "CapabilityStatement2";
             case CODESYSTEM: return "CodeSystem";
             case COMPARTMENTDEFINITION: return "CompartmentDefinition";
-            case CONCEPTMAP: return "ConceptMap";
-            case CONCEPTMAP2: return "ConceptMap2";
             case EXAMPLESCENARIO: return "ExampleScenario";
             case GRAPHDEFINITION: return "GraphDefinition";
             case IMPLEMENTATIONGUIDE: return "ImplementationGuide";
             case MESSAGEDEFINITION: return "MessageDefinition";
             case METADATARESOURCE: return "MetadataResource";
             case ACTIVITYDEFINITION: return "ActivityDefinition";
-            case ARTIFACTASSESSMENT: return "ArtifactAssessment";
             case CHARGEITEMDEFINITION: return "ChargeItemDefinition";
             case CITATION: return "Citation";
+            case CONCEPTMAP: return "ConceptMap";
             case CONDITIONDEFINITION: return "ConditionDefinition";
             case EVENTDEFINITION: return "EventDefinition";
             case EVIDENCE: return "Evidence";
@@ -2104,13 +2115,14 @@ public class TestScript extends CanonicalResource {
             case EVIDENCEVARIABLE: return "EvidenceVariable";
             case LIBRARY: return "Library";
             case MEASURE: return "Measure";
+            case NAMINGSYSTEM: return "NamingSystem";
             case PLANDEFINITION: return "PlanDefinition";
             case QUESTIONNAIRE: return "Questionnaire";
-            case NAMINGSYSTEM: return "NamingSystem";
             case OPERATIONDEFINITION: return "OperationDefinition";
             case SEARCHPARAMETER: return "SearchParameter";
             case STRUCTUREDEFINITION: return "StructureDefinition";
             case STRUCTUREMAP: return "StructureMap";
+            case SUBSCRIPTIONTOPIC: return "SubscriptionTopic";
             case TERMINOLOGYCAPABILITIES: return "TerminologyCapabilities";
             case TESTSCRIPT: return "TestScript";
             case VALUESET: return "ValueSet";
@@ -2121,7 +2133,6 @@ public class TestScript extends CanonicalResource {
             case CLAIMRESPONSE: return "ClaimResponse";
             case CLINICALIMPRESSION: return "ClinicalImpression";
             case CLINICALUSEDEFINITION: return "ClinicalUseDefinition";
-            case CLINICALUSEISSUE: return "ClinicalUseIssue";
             case COMMUNICATION: return "Communication";
             case COMMUNICATIONREQUEST: return "CommunicationRequest";
             case COMPOSITION: return "Composition";
@@ -2149,6 +2160,7 @@ public class TestScript extends CanonicalResource {
             case EXPLANATIONOFBENEFIT: return "ExplanationOfBenefit";
             case FAMILYMEMBERHISTORY: return "FamilyMemberHistory";
             case FLAG: return "Flag";
+            case FORMULARYITEM: return "FormularyItem";
             case GOAL: return "Goal";
             case GROUP: return "Group";
             case GUIDANCERESPONSE: return "GuidanceResponse";
@@ -2208,7 +2220,6 @@ public class TestScript extends CanonicalResource {
             case SPECIMENDEFINITION: return "SpecimenDefinition";
             case SUBSCRIPTION: return "Subscription";
             case SUBSCRIPTIONSTATUS: return "SubscriptionStatus";
-            case SUBSCRIPTIONTOPIC: return "SubscriptionTopic";
             case SUBSTANCE: return "Substance";
             case SUBSTANCEDEFINITION: return "SubstanceDefinition";
             case SUBSTANCENUCLEICACID: return "SubstanceNucleicAcid";
@@ -2220,9 +2231,11 @@ public class TestScript extends CanonicalResource {
             case SUPPLYREQUEST: return "SupplyRequest";
             case TASK: return "Task";
             case TESTREPORT: return "TestReport";
+            case TRANSPORT: return "Transport";
             case VERIFICATIONRESULT: return "VerificationResult";
             case VISIONPRESCRIPTION: return "VisionPrescription";
             case PARAMETERS: return "Parameters";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2250,6 +2263,7 @@ public class TestScript extends CanonicalResource {
             case ELEMENT: return "http://hl7.org/fhir/data-types";
             case ELEMENTDEFINITION: return "http://hl7.org/fhir/data-types";
             case EXPRESSION: return "http://hl7.org/fhir/data-types";
+            case EXTENDEDCONTACTDETAIL: return "http://hl7.org/fhir/data-types";
             case EXTENSION: return "http://hl7.org/fhir/data-types";
             case HUMANNAME: return "http://hl7.org/fhir/data-types";
             case IDENTIFIER: return "http://hl7.org/fhir/data-types";
@@ -2262,7 +2276,6 @@ public class TestScript extends CanonicalResource {
             case PERIOD: return "http://hl7.org/fhir/data-types";
             case POPULATION: return "http://hl7.org/fhir/data-types";
             case PRIMITIVETYPE: return "http://hl7.org/fhir/data-types";
-            case PRODCHARACTERISTIC: return "http://hl7.org/fhir/data-types";
             case PRODUCTSHELFLIFE: return "http://hl7.org/fhir/data-types";
             case QUANTITY: return "http://hl7.org/fhir/data-types";
             case RANGE: return "http://hl7.org/fhir/data-types";
@@ -2307,6 +2320,7 @@ public class TestScript extends CanonicalResource {
             case ALLERGYINTOLERANCE: return "http://hl7.org/fhir/resource-types";
             case APPOINTMENT: return "http://hl7.org/fhir/resource-types";
             case APPOINTMENTRESPONSE: return "http://hl7.org/fhir/resource-types";
+            case ARTIFACTASSESSMENT: return "http://hl7.org/fhir/resource-types";
             case AUDITEVENT: return "http://hl7.org/fhir/resource-types";
             case BASIC: return "http://hl7.org/fhir/resource-types";
             case BIOLOGICALLYDERIVEDPRODUCT: return "http://hl7.org/fhir/resource-types";
@@ -2316,17 +2330,15 @@ public class TestScript extends CanonicalResource {
             case CAPABILITYSTATEMENT2: return "http://hl7.org/fhir/resource-types";
             case CODESYSTEM: return "http://hl7.org/fhir/resource-types";
             case COMPARTMENTDEFINITION: return "http://hl7.org/fhir/resource-types";
-            case CONCEPTMAP: return "http://hl7.org/fhir/resource-types";
-            case CONCEPTMAP2: return "http://hl7.org/fhir/resource-types";
             case EXAMPLESCENARIO: return "http://hl7.org/fhir/resource-types";
             case GRAPHDEFINITION: return "http://hl7.org/fhir/resource-types";
             case IMPLEMENTATIONGUIDE: return "http://hl7.org/fhir/resource-types";
             case MESSAGEDEFINITION: return "http://hl7.org/fhir/resource-types";
             case METADATARESOURCE: return "http://hl7.org/fhir/resource-types";
             case ACTIVITYDEFINITION: return "http://hl7.org/fhir/resource-types";
-            case ARTIFACTASSESSMENT: return "http://hl7.org/fhir/resource-types";
             case CHARGEITEMDEFINITION: return "http://hl7.org/fhir/resource-types";
             case CITATION: return "http://hl7.org/fhir/resource-types";
+            case CONCEPTMAP: return "http://hl7.org/fhir/resource-types";
             case CONDITIONDEFINITION: return "http://hl7.org/fhir/resource-types";
             case EVENTDEFINITION: return "http://hl7.org/fhir/resource-types";
             case EVIDENCE: return "http://hl7.org/fhir/resource-types";
@@ -2334,13 +2346,14 @@ public class TestScript extends CanonicalResource {
             case EVIDENCEVARIABLE: return "http://hl7.org/fhir/resource-types";
             case LIBRARY: return "http://hl7.org/fhir/resource-types";
             case MEASURE: return "http://hl7.org/fhir/resource-types";
+            case NAMINGSYSTEM: return "http://hl7.org/fhir/resource-types";
             case PLANDEFINITION: return "http://hl7.org/fhir/resource-types";
             case QUESTIONNAIRE: return "http://hl7.org/fhir/resource-types";
-            case NAMINGSYSTEM: return "http://hl7.org/fhir/resource-types";
             case OPERATIONDEFINITION: return "http://hl7.org/fhir/resource-types";
             case SEARCHPARAMETER: return "http://hl7.org/fhir/resource-types";
             case STRUCTUREDEFINITION: return "http://hl7.org/fhir/resource-types";
             case STRUCTUREMAP: return "http://hl7.org/fhir/resource-types";
+            case SUBSCRIPTIONTOPIC: return "http://hl7.org/fhir/resource-types";
             case TERMINOLOGYCAPABILITIES: return "http://hl7.org/fhir/resource-types";
             case TESTSCRIPT: return "http://hl7.org/fhir/resource-types";
             case VALUESET: return "http://hl7.org/fhir/resource-types";
@@ -2351,7 +2364,6 @@ public class TestScript extends CanonicalResource {
             case CLAIMRESPONSE: return "http://hl7.org/fhir/resource-types";
             case CLINICALIMPRESSION: return "http://hl7.org/fhir/resource-types";
             case CLINICALUSEDEFINITION: return "http://hl7.org/fhir/resource-types";
-            case CLINICALUSEISSUE: return "http://hl7.org/fhir/resource-types";
             case COMMUNICATION: return "http://hl7.org/fhir/resource-types";
             case COMMUNICATIONREQUEST: return "http://hl7.org/fhir/resource-types";
             case COMPOSITION: return "http://hl7.org/fhir/resource-types";
@@ -2379,6 +2391,7 @@ public class TestScript extends CanonicalResource {
             case EXPLANATIONOFBENEFIT: return "http://hl7.org/fhir/resource-types";
             case FAMILYMEMBERHISTORY: return "http://hl7.org/fhir/resource-types";
             case FLAG: return "http://hl7.org/fhir/resource-types";
+            case FORMULARYITEM: return "http://hl7.org/fhir/resource-types";
             case GOAL: return "http://hl7.org/fhir/resource-types";
             case GROUP: return "http://hl7.org/fhir/resource-types";
             case GUIDANCERESPONSE: return "http://hl7.org/fhir/resource-types";
@@ -2438,7 +2451,6 @@ public class TestScript extends CanonicalResource {
             case SPECIMENDEFINITION: return "http://hl7.org/fhir/resource-types";
             case SUBSCRIPTION: return "http://hl7.org/fhir/resource-types";
             case SUBSCRIPTIONSTATUS: return "http://hl7.org/fhir/resource-types";
-            case SUBSCRIPTIONTOPIC: return "http://hl7.org/fhir/resource-types";
             case SUBSTANCE: return "http://hl7.org/fhir/resource-types";
             case SUBSTANCEDEFINITION: return "http://hl7.org/fhir/resource-types";
             case SUBSTANCENUCLEICACID: return "http://hl7.org/fhir/resource-types";
@@ -2450,9 +2462,11 @@ public class TestScript extends CanonicalResource {
             case SUPPLYREQUEST: return "http://hl7.org/fhir/resource-types";
             case TASK: return "http://hl7.org/fhir/resource-types";
             case TESTREPORT: return "http://hl7.org/fhir/resource-types";
+            case TRANSPORT: return "http://hl7.org/fhir/resource-types";
             case VERIFICATIONRESULT: return "http://hl7.org/fhir/resource-types";
             case VISIONPRESCRIPTION: return "http://hl7.org/fhir/resource-types";
             case PARAMETERS: return "http://hl7.org/fhir/resource-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2466,7 +2480,7 @@ public class TestScript extends CanonicalResource {
             case BACKBONETYPE: return "Base definition for the few data types that are allowed to carry modifier extensions.";
             case BASE: return "Base definition for all types defined in FHIR type system.";
             case CODEABLECONCEPT: return "A concept that may be defined by a formal reference to a terminology or ontology or may be provided by text.";
-            case CODEABLEREFERENCE: return "A reference to a resource (by instance), or instead, a reference to a cencept defined in a terminology or ontology (by class).";
+            case CODEABLEREFERENCE: return "A reference to a resource (by instance), or instead, a reference to a concept defined in a terminology or ontology (by class).";
             case CODING: return "A reference to a code defined by a terminology system.";
             case CONTACTDETAIL: return "Specifies contact information for a person or organization.";
             case CONTACTPOINT: return "Details for all kinds of technology mediated contact points for a person or organization, including telephone, email, etc.";
@@ -2480,6 +2494,7 @@ public class TestScript extends CanonicalResource {
             case ELEMENT: return "Base definition for all elements in a resource.";
             case ELEMENTDEFINITION: return "Captures constraints on each element within the resource, profile, or extension.";
             case EXPRESSION: return "A expression that is evaluated in a specified context and returns a value. The context of use of the expression must specify the context in which the expression is evaluated, and how the result of the expression is used.";
+            case EXTENDEDCONTACTDETAIL: return "Specifies contact information for a specific purpose over a period of time, might be handled/monitored by a specific named person or organization.";
             case EXTENSION: return "Optional Extension Element - found in all resources.";
             case HUMANNAME: return "A human's name with the ability to identify parts and usage.";
             case IDENTIFIER: return "An identifier - identifies some entity uniquely and unambiguously. Typically this is used for business identifiers.";
@@ -2492,7 +2507,6 @@ public class TestScript extends CanonicalResource {
             case PERIOD: return "A time period defined by a start and end date and optionally time.";
             case POPULATION: return "A populatioof people with some set of grouping criteria.";
             case PRIMITIVETYPE: return "The base type for all re-useable types defined that have a simple property.";
-            case PRODCHARACTERISTIC: return "The marketing status describes the date when a medicinal product is actually put on the market or the date as of which it is no longer available.";
             case PRODUCTSHELFLIFE: return "The shelf-life and storage information for a medicinal product item or container can be described using this class.";
             case QUANTITY: return "A measured amount (or an amount that can potentially be measured). Note that measured amounts include amounts that are not precisely quantified, including amounts involving arbitrary units and floating currencies.";
             case RANGE: return "A set of ordered Quantities defined by a low and high limit.";
@@ -2537,6 +2551,7 @@ public class TestScript extends CanonicalResource {
             case ALLERGYINTOLERANCE: return "Risk of harmful or undesirable, physiological response which is unique to an individual and associated with exposure to a substance.";
             case APPOINTMENT: return "A booking of a healthcare event among patient(s), practitioner(s), related person(s) and/or device(s) for a specific date/time. This may result in one or more Encounter(s).";
             case APPOINTMENTRESPONSE: return "A reply to an appointment request for a patient and/or practitioner(s), such as a confirmation or rejection.";
+            case ARTIFACTASSESSMENT: return "This Resource provides one or more comments, classifiers or ratings about a Resource and supports attribution and rights management metadata for the added content.";
             case AUDITEVENT: return "A record of an event relevant for purposes such as operations, privacy, security, maintenance, and performance analysis.";
             case BASIC: return "Basic is used for handling concepts not yet defined in FHIR, narrative-only resources that don't map to an existing resource, and custom resources not appropriate for inclusion in the FHIR specification.";
             case BIOLOGICALLYDERIVEDPRODUCT: return "A biological material originating from a biological entity intended to be transplanted or infused into another (possibly the same) biological entity.";
@@ -2546,17 +2561,15 @@ public class TestScript extends CanonicalResource {
             case CAPABILITYSTATEMENT2: return "A Capability Statement documents a set of capabilities (behaviors) of a FHIR Server for a particular version of FHIR that may be used as a statement of actual server functionality or a statement of required or desired server implementation.";
             case CODESYSTEM: return "The CodeSystem resource is used to declare the existence of and describe a code system or code system supplement and its key properties, and optionally define a part or all of its content.";
             case COMPARTMENTDEFINITION: return "A compartment definition that defines how resources are accessed on a server.";
-            case CONCEPTMAP: return "A statement of relationships from one set of concepts to one or more other concepts - either concepts in code systems, or data element/data element concepts, or classes in class models.";
-            case CONCEPTMAP2: return "A statement of relationships from one set of concepts to one or more other concepts - either concepts in code systems, or data element/data element concepts, or classes in class models.";
             case EXAMPLESCENARIO: return "Example of workflow instance.";
             case GRAPHDEFINITION: return "A formal computable definition of a graph of resources - that is, a coherent set of resources that form a graph by following references. The Graph Definition resource defines a set and makes rules about the set.";
             case IMPLEMENTATIONGUIDE: return "A set of rules of how a particular interoperability or standards problem is solved - typically through the use of FHIR resources. This resource is used to gather all the parts of an implementation guide into a logical whole and to publish a computable definition of all the parts.";
             case MESSAGEDEFINITION: return "Defines the characteristics of a message that can be shared between systems, including the type of event that initiates the message, the content to be transmitted and what response(s), if any, are permitted.";
             case METADATARESOURCE: return "--- Abstract Type! ---Common Ancestor declaration for conformance and knowledge artifact resources.";
             case ACTIVITYDEFINITION: return "This resource allows for the definition of some activity to be performed, independent of a particular patient, practitioner, or other performance context.";
-            case ARTIFACTASSESSMENT: return "This Resource provides one or more comments, classifiers or ratings about a Resource and supports attribution and rights management metadata for the added content.";
             case CHARGEITEMDEFINITION: return "The ChargeItemDefinition resource provides the properties that apply to the (billing) codes necessary to calculate costs and prices. The properties may differ largely depending on type and realm, therefore this resource gives only a rough structure and requires profiling for each type of billing code system.";
             case CITATION: return "The Citation Resource enables reference to any knowledge artifact for purposes of identification and attribution. The Citation Resource supports existing reference structures and developing publication practices such as versioning, expressing complex contributorship roles, and referencing computable resources.";
+            case CONCEPTMAP: return "A statement of relationships from one set of concepts to one or more other concepts - either concepts in code systems, or data element/data element concepts, or classes in class models.";
             case CONDITIONDEFINITION: return "A definition of a condition and information relevant to managing it.";
             case EVENTDEFINITION: return "The EventDefinition resource provides a reusable description of when a particular event can occur.";
             case EVIDENCE: return "The Evidence Resource provides a machine-interpretable expression of an evidence concept including the evidence variables (e.g., population, exposures/interventions, comparators, outcomes, measured variables, confounding variables), the statistics, and the certainty of this evidence.";
@@ -2564,13 +2577,14 @@ public class TestScript extends CanonicalResource {
             case EVIDENCEVARIABLE: return "The EvidenceVariable resource describes an element that knowledge (Evidence) is about.";
             case LIBRARY: return "The Library resource is a general-purpose container for knowledge asset definitions. It can be used to describe and expose existing knowledge assets such as logic libraries and information model descriptions, as well as to describe a collection of knowledge assets.";
             case MEASURE: return "The Measure resource provides the definition of a quality measure.";
+            case NAMINGSYSTEM: return "A curated namespace that issues unique symbols within that namespace for the identification of concepts, people, devices, etc.  Represents a \"System\" used within the Identifier and Coding data types.";
             case PLANDEFINITION: return "This resource allows for the definition of various types of plans as a sharable, consumable, and executable artifact. The resource is general enough to support the description of a broad range of clinical and non-clinical artifacts such as clinical decision support rules, order sets, protocols, and drug quality specifications.";
             case QUESTIONNAIRE: return "A structured set of questions intended to guide the collection of answers from end-users. Questionnaires provide detailed control over order, presentation, phraseology and grouping to allow coherent, consistent data collection.";
-            case NAMINGSYSTEM: return "A curated namespace that issues unique symbols within that namespace for the identification of concepts, people, devices, etc.  Represents a \"System\" used within the Identifier and Coding data types.";
             case OPERATIONDEFINITION: return "A formal computable definition of an operation (on the RESTful interface) or a named query (using the search interaction).";
             case SEARCHPARAMETER: return "A search parameter that defines a named search item that can be used to search/filter on a resource.";
             case STRUCTUREDEFINITION: return "A definition of a FHIR structure. This resource is used to describe the underlying resources, data types defined in FHIR, and also for describing extensions and constraints on resources and data types.";
             case STRUCTUREMAP: return "A Map of relationships between 2 structures that can be used to transform data.";
+            case SUBSCRIPTIONTOPIC: return "Describes a stream of resource state changes identified by trigger criteria and annotated with labels useful to filter projections from this topic.";
             case TERMINOLOGYCAPABILITIES: return "A TerminologyCapabilities resource documents a set of capabilities (behaviors) of a FHIR Terminology Server that may be used as a statement of actual server functionality or a statement of required or desired server implementation.";
             case TESTSCRIPT: return "A structured set of tests against a FHIR server or client implementation to determine compliance against the FHIR specification.";
             case VALUESET: return "A ValueSet resource instance specifies a set of codes drawn from one or more code systems, intended for use in a particular context. Value sets link between [[[CodeSystem]]] definitions and their use in [coded elements](terminologies.html).";
@@ -2581,7 +2595,6 @@ public class TestScript extends CanonicalResource {
             case CLAIMRESPONSE: return "This resource provides the adjudication details from the processing of a Claim resource.";
             case CLINICALIMPRESSION: return "A record of a clinical assessment performed to determine what problem(s) may affect the patient and before planning the treatments or management strategies that are best to manage a patient's condition. Assessments are often 1:1 with a clinical consultation / encounter,  but this varies greatly depending on the clinical workflow. This resource is called \"ClinicalImpression\" rather than \"ClinicalAssessment\" to avoid confusion with the recording of assessment tools such as Apgar score.";
             case CLINICALUSEDEFINITION: return "A single issue - either an indication, contraindication, interaction or an undesirable effect for a medicinal product, medication, device or procedure.";
-            case CLINICALUSEISSUE: return "A single issue - either an indication, contraindication, interaction or an undesirable effect for a medicinal product, medication, device or procedure.";
             case COMMUNICATION: return "A clinical or business level record of information being transmitted or shared; e.g. an alert that was sent to a responsible provider, a public health agency communication to a provider/reporter in response to a case report for a reportable condition.";
             case COMMUNICATIONREQUEST: return "A request to convey information; e.g. the CDS system proposes that an alert be sent to a responsible provider, the CDS system proposes that the public health agency be notified about a reportable condition.";
             case COMPOSITION: return "A set of healthcare-related information that is assembled together into a single logical package that provides a single coherent statement of meaning, establishes its own context and that has clinical attestation with regard to who is making the statement. A Composition defines the structure and narrative content necessary for a document. However, a Composition alone does not constitute a document. Rather, the Composition must be the first entry in a Bundle where Bundle.type=document, and any other resources referenced from Composition must be included as subsequent entries in the Bundle (for example Patient, Practitioner, Encounter, etc.).";
@@ -2602,13 +2615,14 @@ public class TestScript extends CanonicalResource {
             case DOCUMENTMANIFEST: return "A collection of documents compiled for a purpose together with metadata that applies to the collection.";
             case DOCUMENTREFERENCE: return "A reference to a document of any kind for any purpose. While the term “document” implies a more narrow focus, for this resource this \"document\" encompasses *any* serialized object with a mime-type, it includes formal patient-centric documents (CDA), clinical notes, scanned paper, non-patient specific documents like policy text, as well as a photo, video, or audio recording acquired or used in healthcare.  The DocumentReference resource provides metadata about the document so that the document can be discovered and managed.  The actual content may be inline base64 encoded data or provided by direct reference.";
             case ENCOUNTER: return "An interaction between a patient and healthcare provider(s) for the purpose of providing healthcare service(s) or assessing the health status of a patient.";
-            case ENDPOINT: return "The technical details of an endpoint that can be used for electronic services, such as for web services providing XDS.b or a REST endpoint for another FHIR server. This may include any security context information.";
+            case ENDPOINT: return "The technical details of an endpoint that can be used for electronic services, such as for web services providing XDS.b, a REST endpoint for another FHIR server, or a s/Mime email address. This may include any security context information.";
             case ENROLLMENTREQUEST: return "This resource provides the insurance enrollment details to the insurer regarding a specified coverage.";
             case ENROLLMENTRESPONSE: return "This resource provides enrollment and plan details from the processing of an EnrollmentRequest resource.";
             case EPISODEOFCARE: return "An association between a patient and an organization / healthcare provider(s) during which time encounters may occur. The managing organization assumes a level of responsibility for the patient during this time.";
             case EXPLANATIONOFBENEFIT: return "This resource provides: the claim details; adjudication details from the processing of a Claim; and optionally account balance information, for informing the subscriber of the benefits provided.";
             case FAMILYMEMBERHISTORY: return "Significant health conditions for a person related to the patient relevant in the context of care for the patient.";
             case FLAG: return "Prospective warnings of potential issues when providing care to the patient.";
+            case FORMULARYITEM: return "This resource describes a product or service that is available through a program and includes the conditions and constraints of availability.  All of the information in this resource is specific to the inclusion of the item in the formulary and is not inherent to the item itself.";
             case GOAL: return "Describes the intended objective(s) for a patient, group or organization care, for example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, etc.";
             case GROUP: return "Represents a defined collection of entities that may be discussed or acted upon collectively but which are not expected to act collectively, and are not formally or legally recognized; i.e. a collection of entities that isn't an Organization.";
             case GUIDANCERESPONSE: return "A guidance response is the formal response to a guidance request, including any output parameters returned by the evaluation, as well as the description of any proposed actions to be taken.";
@@ -2633,12 +2647,12 @@ public class TestScript extends CanonicalResource {
             case MEDICATIONKNOWLEDGE: return "Information about a medication that is used to support knowledge.";
             case MEDICATIONREQUEST: return "An order or request for both supply of the medication and the instructions for administration of the medication to a patient. The resource is called \"MedicationRequest\" rather than \"MedicationPrescription\" or \"MedicationOrder\" to generalize the use across inpatient and outpatient settings, including care plans, etc., and to harmonize with workflow patterns.";
             case MEDICATIONUSAGE: return "A record of a medication that is being consumed by a patient.   A MedicationUsage may indicate that the patient may be taking the medication now or has taken the medication in the past or will be taking the medication in the future.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay.   The medication information may come from sources such as the patient's memory, from a prescription bottle,  or from a list of medications the patient, clinician or other party maintains. \n\nThe primary difference between a medicationusage and a medicationadministration is that the medication administration has complete administration information and is based on actual administration information from the person who administered the medication.  A medicationusage is often, if not always, less specific.  There is no required date/time when the medication was administered, in fact we only know that a source has reported the patient is taking this medication, where details such as time, quantity, or rate or even medication product may be incomplete or missing or less precise.  As stated earlier, the Medication Usage information may come from the patient's memory, from a prescription bottle or from a list of medications the patient, clinician or other party maintains.  Medication administration is more formal and is not missing detailed information.";
-            case MEDICINALPRODUCTDEFINITION: return "Detailed definition of a medicinal product, typically for uses other than direct patient care (e.g. regulatory use, drug catalogs).";
+            case MEDICINALPRODUCTDEFINITION: return "Detailed definition of a medicinal product, typically for uses other than direct patient care (e.g. regulatory use, drug catalogs, to support prescribing, adverse events management etc.).";
             case MESSAGEHEADER: return "The header for a message exchange that is either requesting or responding to an action.  The reference(s) that are the subject of the action as well as other information related to the action are typically transmitted in a bundle in which the MessageHeader resource instance is the first resource in the bundle.";
-            case MOLECULARSEQUENCE: return "Raw data describing a biological sequence.";
-            case NUTRITIONINTAKE: return "A record of food or fluid that is being consumed by a patient.   A NutritionIntake may indicate that the patient may be consuming the food or fluid now or has consumed the food or fluid in the past.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay or through an app that tracks food or fluids consumed.   The consumption information may come from sources such as the patient's memory, from a nutrition label,  or from a clinician documenting observed intake.";
+            case MOLECULARSEQUENCE: return "Representation of a molecular sequence.";
+            case NUTRITIONINTAKE: return "A record of food or fluid that is being consumed by a patient.  A NutritionIntake may indicate that the patient may be consuming the food or fluid now or has consumed the food or fluid in the past.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay or through an app that tracks food or fluids consumed.   The consumption information may come from sources such as the patient's memory, from a nutrition label,  or from a clinician documenting observed intake.";
             case NUTRITIONORDER: return "A request to supply a diet, formula feeding (enteral) or oral nutritional supplement to a patient/resident.";
-            case NUTRITIONPRODUCT: return "A food or fluid product that is consumed by patients.";
+            case NUTRITIONPRODUCT: return "A food or supplement that is consumed by patients.";
             case OBSERVATION: return "Measurements and simple assertions made about a patient, device or other subject.";
             case OBSERVATIONDEFINITION: return "Set of definitional characteristics for a kind of observation or measurement produced or consumed by an orderable health care service.";
             case OPERATIONOUTCOME: return "A collection of error, warning, or information messages that result from a system action.";
@@ -2656,7 +2670,7 @@ public class TestScript extends CanonicalResource {
             case PROVENANCE: return "Provenance of a resource is a record that describes entities and processes involved in producing and delivering or otherwise influencing that resource. Provenance provides a critical foundation for assessing authenticity, enabling trust, and allowing reproducibility. Provenance assertions are a form of contextual metadata and can themselves become important records with their own provenance. Provenance statement indicates clinical significance in terms of confidence in authenticity, reliability, and trustworthiness, integrity, and stage in lifecycle (e.g. Document Completion - has the artifact been legally authenticated), all of which may impact security, privacy, and trust policies.";
             case QUESTIONNAIRERESPONSE: return "A structured set of questions and their answers. The questions are ordered and grouped into coherent subsets, corresponding to the structure of the grouping of the questionnaire being responded to.";
             case REGULATEDAUTHORIZATION: return "Regulatory approval, clearance or licencing related to a regulated product, treatment, facility or activity that is cited in a guidance, regulation, rule or legislative act. An example is Market Authorization relating to a Medicinal Product.";
-            case RELATEDPERSON: return "Information about a person that is involved in the care for a patient, but who is not the target of healthcare, nor has a formal responsibility in the care process.";
+            case RELATEDPERSON: return "Information about a person that is involved in a patient's health or the care for a patient, but who is not the target of healthcare, nor has a formal responsibility in the care process.";
             case REQUESTGROUP: return "A group of related requests that can be used to capture intended activities that have inter-dependencies such as \"give this medication after that one\".";
             case RESEARCHSTUDY: return "A process where a researcher or organization plans and then executes a series of steps intended to increase the field of healthcare-related knowledge.  This includes studies of safety, efficacy, comparative effectiveness and other information about medications, devices, therapies and other interventional and investigative techniques.  A ResearchStudy involves the gathering of information about human or animal subjects.";
             case RESEARCHSUBJECT: return "A physical entity which is the primary unit of operational and/or administrative interest in a study.";
@@ -2668,7 +2682,6 @@ public class TestScript extends CanonicalResource {
             case SPECIMENDEFINITION: return "A kind of specimen with associated set of requirements.";
             case SUBSCRIPTION: return "The subscription resource describes a particular client's request to be notified about a SubscriptionTopic.";
             case SUBSCRIPTIONSTATUS: return "The SubscriptionStatus resource describes the state of a Subscription during notifications.";
-            case SUBSCRIPTIONTOPIC: return "Describes a stream of resource state changes identified by trigger criteria and annotated with labels useful to filter projections from this topic.";
             case SUBSTANCE: return "A homogeneous material with a definite composition.";
             case SUBSTANCEDEFINITION: return "The detailed description of a substance, typically at a level beyond what is used for prescribing.";
             case SUBSTANCENUCLEICACID: return "Nucleic acids are defined by three distinct elements: the base, sugar and linkage. Individual substance/moiety IDs will be created for each of these elements. The nucleotide sequence will be always entered in the 5’-3’ direction.";
@@ -2680,9 +2693,11 @@ public class TestScript extends CanonicalResource {
             case SUPPLYREQUEST: return "A record of a non-patient specific request for a medication, substance, device, certain types of biologically derived product, and nutrition product used in the healthcare setting.";
             case TASK: return "A task to be performed.";
             case TESTREPORT: return "A summary of information based on the results of executing a TestScript.";
+            case TRANSPORT: return "Record of transport.";
             case VERIFICATIONRESULT: return "Describes validation requirements, source(s), status and dates for one or more elements.";
             case VISIONPRESCRIPTION: return "An authorization for the provision of glasses and/or contact lenses to a patient.";
-            case PARAMETERS: return "This resource is a non-persisted resource used to pass information into and back from an [operation](operations.html). It has no other use, and there is no RESTful endpoint associated with it.";
+            case PARAMETERS: return "This resource is a non-persisted resource primarily used to pass information into and back from an [operation](operations.html). There is no RESTful endpoint associated with it.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2710,6 +2725,7 @@ public class TestScript extends CanonicalResource {
             case ELEMENT: return "Element";
             case ELEMENTDEFINITION: return "ElementDefinition";
             case EXPRESSION: return "Expression";
+            case EXTENDEDCONTACTDETAIL: return "ExtendedContactDetail";
             case EXTENSION: return "Extension";
             case HUMANNAME: return "HumanName";
             case IDENTIFIER: return "Identifier";
@@ -2722,7 +2738,6 @@ public class TestScript extends CanonicalResource {
             case PERIOD: return "Period";
             case POPULATION: return "Population";
             case PRIMITIVETYPE: return "PrimitiveType";
-            case PRODCHARACTERISTIC: return "ProdCharacteristic";
             case PRODUCTSHELFLIFE: return "ProductShelfLife";
             case QUANTITY: return "Quantity";
             case RANGE: return "Range";
@@ -2767,6 +2782,7 @@ public class TestScript extends CanonicalResource {
             case ALLERGYINTOLERANCE: return "AllergyIntolerance";
             case APPOINTMENT: return "Appointment";
             case APPOINTMENTRESPONSE: return "AppointmentResponse";
+            case ARTIFACTASSESSMENT: return "ArtifactAssessment";
             case AUDITEVENT: return "AuditEvent";
             case BASIC: return "Basic";
             case BIOLOGICALLYDERIVEDPRODUCT: return "BiologicallyDerivedProduct";
@@ -2776,17 +2792,15 @@ public class TestScript extends CanonicalResource {
             case CAPABILITYSTATEMENT2: return "CapabilityStatement2";
             case CODESYSTEM: return "CodeSystem";
             case COMPARTMENTDEFINITION: return "CompartmentDefinition";
-            case CONCEPTMAP: return "ConceptMap";
-            case CONCEPTMAP2: return "ConceptMap2";
             case EXAMPLESCENARIO: return "ExampleScenario";
             case GRAPHDEFINITION: return "GraphDefinition";
             case IMPLEMENTATIONGUIDE: return "ImplementationGuide";
             case MESSAGEDEFINITION: return "MessageDefinition";
             case METADATARESOURCE: return "MetadataResource";
             case ACTIVITYDEFINITION: return "ActivityDefinition";
-            case ARTIFACTASSESSMENT: return "ArtifactAssessment";
             case CHARGEITEMDEFINITION: return "ChargeItemDefinition";
             case CITATION: return "Citation";
+            case CONCEPTMAP: return "ConceptMap";
             case CONDITIONDEFINITION: return "ConditionDefinition";
             case EVENTDEFINITION: return "EventDefinition";
             case EVIDENCE: return "Evidence";
@@ -2794,13 +2808,14 @@ public class TestScript extends CanonicalResource {
             case EVIDENCEVARIABLE: return "EvidenceVariable";
             case LIBRARY: return "Library";
             case MEASURE: return "Measure";
+            case NAMINGSYSTEM: return "NamingSystem";
             case PLANDEFINITION: return "PlanDefinition";
             case QUESTIONNAIRE: return "Questionnaire";
-            case NAMINGSYSTEM: return "NamingSystem";
             case OPERATIONDEFINITION: return "OperationDefinition";
             case SEARCHPARAMETER: return "SearchParameter";
             case STRUCTUREDEFINITION: return "StructureDefinition";
             case STRUCTUREMAP: return "StructureMap";
+            case SUBSCRIPTIONTOPIC: return "SubscriptionTopic";
             case TERMINOLOGYCAPABILITIES: return "TerminologyCapabilities";
             case TESTSCRIPT: return "TestScript";
             case VALUESET: return "ValueSet";
@@ -2811,7 +2826,6 @@ public class TestScript extends CanonicalResource {
             case CLAIMRESPONSE: return "ClaimResponse";
             case CLINICALIMPRESSION: return "ClinicalImpression";
             case CLINICALUSEDEFINITION: return "ClinicalUseDefinition";
-            case CLINICALUSEISSUE: return "ClinicalUseIssue";
             case COMMUNICATION: return "Communication";
             case COMMUNICATIONREQUEST: return "CommunicationRequest";
             case COMPOSITION: return "Composition";
@@ -2839,6 +2853,7 @@ public class TestScript extends CanonicalResource {
             case EXPLANATIONOFBENEFIT: return "ExplanationOfBenefit";
             case FAMILYMEMBERHISTORY: return "FamilyMemberHistory";
             case FLAG: return "Flag";
+            case FORMULARYITEM: return "FormularyItem";
             case GOAL: return "Goal";
             case GROUP: return "Group";
             case GUIDANCERESPONSE: return "GuidanceResponse";
@@ -2898,7 +2913,6 @@ public class TestScript extends CanonicalResource {
             case SPECIMENDEFINITION: return "SpecimenDefinition";
             case SUBSCRIPTION: return "Subscription";
             case SUBSCRIPTIONSTATUS: return "SubscriptionStatus";
-            case SUBSCRIPTIONTOPIC: return "SubscriptionTopic";
             case SUBSTANCE: return "Substance";
             case SUBSTANCEDEFINITION: return "SubstanceDefinition";
             case SUBSTANCENUCLEICACID: return "SubstanceNucleicAcid";
@@ -2910,9 +2924,11 @@ public class TestScript extends CanonicalResource {
             case SUPPLYREQUEST: return "SupplyRequest";
             case TASK: return "Task";
             case TESTREPORT: return "TestReport";
+            case TRANSPORT: return "Transport";
             case VERIFICATIONRESULT: return "VerificationResult";
             case VISIONPRESCRIPTION: return "VisionPrescription";
             case PARAMETERS: return "Parameters";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2967,6 +2983,8 @@ public class TestScript extends CanonicalResource {
           return FHIRDefinedType.ELEMENTDEFINITION;
         if ("Expression".equals(codeString))
           return FHIRDefinedType.EXPRESSION;
+        if ("ExtendedContactDetail".equals(codeString))
+          return FHIRDefinedType.EXTENDEDCONTACTDETAIL;
         if ("Extension".equals(codeString))
           return FHIRDefinedType.EXTENSION;
         if ("HumanName".equals(codeString))
@@ -2991,8 +3009,6 @@ public class TestScript extends CanonicalResource {
           return FHIRDefinedType.POPULATION;
         if ("PrimitiveType".equals(codeString))
           return FHIRDefinedType.PRIMITIVETYPE;
-        if ("ProdCharacteristic".equals(codeString))
-          return FHIRDefinedType.PRODCHARACTERISTIC;
         if ("ProductShelfLife".equals(codeString))
           return FHIRDefinedType.PRODUCTSHELFLIFE;
         if ("Quantity".equals(codeString))
@@ -3081,6 +3097,8 @@ public class TestScript extends CanonicalResource {
           return FHIRDefinedType.APPOINTMENT;
         if ("AppointmentResponse".equals(codeString))
           return FHIRDefinedType.APPOINTMENTRESPONSE;
+        if ("ArtifactAssessment".equals(codeString))
+          return FHIRDefinedType.ARTIFACTASSESSMENT;
         if ("AuditEvent".equals(codeString))
           return FHIRDefinedType.AUDITEVENT;
         if ("Basic".equals(codeString))
@@ -3099,10 +3117,6 @@ public class TestScript extends CanonicalResource {
           return FHIRDefinedType.CODESYSTEM;
         if ("CompartmentDefinition".equals(codeString))
           return FHIRDefinedType.COMPARTMENTDEFINITION;
-        if ("ConceptMap".equals(codeString))
-          return FHIRDefinedType.CONCEPTMAP;
-        if ("ConceptMap2".equals(codeString))
-          return FHIRDefinedType.CONCEPTMAP2;
         if ("ExampleScenario".equals(codeString))
           return FHIRDefinedType.EXAMPLESCENARIO;
         if ("GraphDefinition".equals(codeString))
@@ -3115,12 +3129,12 @@ public class TestScript extends CanonicalResource {
           return FHIRDefinedType.METADATARESOURCE;
         if ("ActivityDefinition".equals(codeString))
           return FHIRDefinedType.ACTIVITYDEFINITION;
-        if ("ArtifactAssessment".equals(codeString))
-          return FHIRDefinedType.ARTIFACTASSESSMENT;
         if ("ChargeItemDefinition".equals(codeString))
           return FHIRDefinedType.CHARGEITEMDEFINITION;
         if ("Citation".equals(codeString))
           return FHIRDefinedType.CITATION;
+        if ("ConceptMap".equals(codeString))
+          return FHIRDefinedType.CONCEPTMAP;
         if ("ConditionDefinition".equals(codeString))
           return FHIRDefinedType.CONDITIONDEFINITION;
         if ("EventDefinition".equals(codeString))
@@ -3135,12 +3149,12 @@ public class TestScript extends CanonicalResource {
           return FHIRDefinedType.LIBRARY;
         if ("Measure".equals(codeString))
           return FHIRDefinedType.MEASURE;
+        if ("NamingSystem".equals(codeString))
+          return FHIRDefinedType.NAMINGSYSTEM;
         if ("PlanDefinition".equals(codeString))
           return FHIRDefinedType.PLANDEFINITION;
         if ("Questionnaire".equals(codeString))
           return FHIRDefinedType.QUESTIONNAIRE;
-        if ("NamingSystem".equals(codeString))
-          return FHIRDefinedType.NAMINGSYSTEM;
         if ("OperationDefinition".equals(codeString))
           return FHIRDefinedType.OPERATIONDEFINITION;
         if ("SearchParameter".equals(codeString))
@@ -3149,6 +3163,8 @@ public class TestScript extends CanonicalResource {
           return FHIRDefinedType.STRUCTUREDEFINITION;
         if ("StructureMap".equals(codeString))
           return FHIRDefinedType.STRUCTUREMAP;
+        if ("SubscriptionTopic".equals(codeString))
+          return FHIRDefinedType.SUBSCRIPTIONTOPIC;
         if ("TerminologyCapabilities".equals(codeString))
           return FHIRDefinedType.TERMINOLOGYCAPABILITIES;
         if ("TestScript".equals(codeString))
@@ -3169,8 +3185,6 @@ public class TestScript extends CanonicalResource {
           return FHIRDefinedType.CLINICALIMPRESSION;
         if ("ClinicalUseDefinition".equals(codeString))
           return FHIRDefinedType.CLINICALUSEDEFINITION;
-        if ("ClinicalUseIssue".equals(codeString))
-          return FHIRDefinedType.CLINICALUSEISSUE;
         if ("Communication".equals(codeString))
           return FHIRDefinedType.COMMUNICATION;
         if ("CommunicationRequest".equals(codeString))
@@ -3225,6 +3239,8 @@ public class TestScript extends CanonicalResource {
           return FHIRDefinedType.FAMILYMEMBERHISTORY;
         if ("Flag".equals(codeString))
           return FHIRDefinedType.FLAG;
+        if ("FormularyItem".equals(codeString))
+          return FHIRDefinedType.FORMULARYITEM;
         if ("Goal".equals(codeString))
           return FHIRDefinedType.GOAL;
         if ("Group".equals(codeString))
@@ -3343,8 +3359,6 @@ public class TestScript extends CanonicalResource {
           return FHIRDefinedType.SUBSCRIPTION;
         if ("SubscriptionStatus".equals(codeString))
           return FHIRDefinedType.SUBSCRIPTIONSTATUS;
-        if ("SubscriptionTopic".equals(codeString))
-          return FHIRDefinedType.SUBSCRIPTIONTOPIC;
         if ("Substance".equals(codeString))
           return FHIRDefinedType.SUBSTANCE;
         if ("SubstanceDefinition".equals(codeString))
@@ -3367,6 +3381,8 @@ public class TestScript extends CanonicalResource {
           return FHIRDefinedType.TASK;
         if ("TestReport".equals(codeString))
           return FHIRDefinedType.TESTREPORT;
+        if ("Transport".equals(codeString))
+          return FHIRDefinedType.TRANSPORT;
         if ("VerificationResult".equals(codeString))
           return FHIRDefinedType.VERIFICATIONRESULT;
         if ("VisionPrescription".equals(codeString))
@@ -3427,6 +3443,8 @@ public class TestScript extends CanonicalResource {
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.ELEMENTDEFINITION);
         if ("Expression".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.EXPRESSION);
+        if ("ExtendedContactDetail".equals(codeString))
+          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.EXTENDEDCONTACTDETAIL);
         if ("Extension".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.EXTENSION);
         if ("HumanName".equals(codeString))
@@ -3451,8 +3469,6 @@ public class TestScript extends CanonicalResource {
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.POPULATION);
         if ("PrimitiveType".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.PRIMITIVETYPE);
-        if ("ProdCharacteristic".equals(codeString))
-          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.PRODCHARACTERISTIC);
         if ("ProductShelfLife".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.PRODUCTSHELFLIFE);
         if ("Quantity".equals(codeString))
@@ -3541,6 +3557,8 @@ public class TestScript extends CanonicalResource {
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.APPOINTMENT);
         if ("AppointmentResponse".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.APPOINTMENTRESPONSE);
+        if ("ArtifactAssessment".equals(codeString))
+          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.ARTIFACTASSESSMENT);
         if ("AuditEvent".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.AUDITEVENT);
         if ("Basic".equals(codeString))
@@ -3559,10 +3577,6 @@ public class TestScript extends CanonicalResource {
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.CODESYSTEM);
         if ("CompartmentDefinition".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.COMPARTMENTDEFINITION);
-        if ("ConceptMap".equals(codeString))
-          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.CONCEPTMAP);
-        if ("ConceptMap2".equals(codeString))
-          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.CONCEPTMAP2);
         if ("ExampleScenario".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.EXAMPLESCENARIO);
         if ("GraphDefinition".equals(codeString))
@@ -3575,12 +3589,12 @@ public class TestScript extends CanonicalResource {
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.METADATARESOURCE);
         if ("ActivityDefinition".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.ACTIVITYDEFINITION);
-        if ("ArtifactAssessment".equals(codeString))
-          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.ARTIFACTASSESSMENT);
         if ("ChargeItemDefinition".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.CHARGEITEMDEFINITION);
         if ("Citation".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.CITATION);
+        if ("ConceptMap".equals(codeString))
+          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.CONCEPTMAP);
         if ("ConditionDefinition".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.CONDITIONDEFINITION);
         if ("EventDefinition".equals(codeString))
@@ -3595,12 +3609,12 @@ public class TestScript extends CanonicalResource {
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.LIBRARY);
         if ("Measure".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.MEASURE);
+        if ("NamingSystem".equals(codeString))
+          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.NAMINGSYSTEM);
         if ("PlanDefinition".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.PLANDEFINITION);
         if ("Questionnaire".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.QUESTIONNAIRE);
-        if ("NamingSystem".equals(codeString))
-          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.NAMINGSYSTEM);
         if ("OperationDefinition".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.OPERATIONDEFINITION);
         if ("SearchParameter".equals(codeString))
@@ -3609,6 +3623,8 @@ public class TestScript extends CanonicalResource {
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.STRUCTUREDEFINITION);
         if ("StructureMap".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.STRUCTUREMAP);
+        if ("SubscriptionTopic".equals(codeString))
+          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.SUBSCRIPTIONTOPIC);
         if ("TerminologyCapabilities".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.TERMINOLOGYCAPABILITIES);
         if ("TestScript".equals(codeString))
@@ -3629,8 +3645,6 @@ public class TestScript extends CanonicalResource {
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.CLINICALIMPRESSION);
         if ("ClinicalUseDefinition".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.CLINICALUSEDEFINITION);
-        if ("ClinicalUseIssue".equals(codeString))
-          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.CLINICALUSEISSUE);
         if ("Communication".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.COMMUNICATION);
         if ("CommunicationRequest".equals(codeString))
@@ -3685,6 +3699,8 @@ public class TestScript extends CanonicalResource {
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.FAMILYMEMBERHISTORY);
         if ("Flag".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.FLAG);
+        if ("FormularyItem".equals(codeString))
+          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.FORMULARYITEM);
         if ("Goal".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.GOAL);
         if ("Group".equals(codeString))
@@ -3803,8 +3819,6 @@ public class TestScript extends CanonicalResource {
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.SUBSCRIPTION);
         if ("SubscriptionStatus".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.SUBSCRIPTIONSTATUS);
-        if ("SubscriptionTopic".equals(codeString))
-          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.SUBSCRIPTIONTOPIC);
         if ("Substance".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.SUBSTANCE);
         if ("SubstanceDefinition".equals(codeString))
@@ -3827,6 +3841,8 @@ public class TestScript extends CanonicalResource {
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.TASK);
         if ("TestReport".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.TESTREPORT);
+        if ("Transport".equals(codeString))
+          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.TRANSPORT);
         if ("VerificationResult".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.VERIFICATIONRESULT);
         if ("VisionPrescription".equals(codeString))
@@ -3880,6 +3896,8 @@ public class TestScript extends CanonicalResource {
         return "ElementDefinition";
       if (code == FHIRDefinedType.EXPRESSION)
         return "Expression";
+      if (code == FHIRDefinedType.EXTENDEDCONTACTDETAIL)
+        return "ExtendedContactDetail";
       if (code == FHIRDefinedType.EXTENSION)
         return "Extension";
       if (code == FHIRDefinedType.HUMANNAME)
@@ -3904,8 +3922,6 @@ public class TestScript extends CanonicalResource {
         return "Population";
       if (code == FHIRDefinedType.PRIMITIVETYPE)
         return "PrimitiveType";
-      if (code == FHIRDefinedType.PRODCHARACTERISTIC)
-        return "ProdCharacteristic";
       if (code == FHIRDefinedType.PRODUCTSHELFLIFE)
         return "ProductShelfLife";
       if (code == FHIRDefinedType.QUANTITY)
@@ -3994,6 +4010,8 @@ public class TestScript extends CanonicalResource {
         return "Appointment";
       if (code == FHIRDefinedType.APPOINTMENTRESPONSE)
         return "AppointmentResponse";
+      if (code == FHIRDefinedType.ARTIFACTASSESSMENT)
+        return "ArtifactAssessment";
       if (code == FHIRDefinedType.AUDITEVENT)
         return "AuditEvent";
       if (code == FHIRDefinedType.BASIC)
@@ -4012,10 +4030,6 @@ public class TestScript extends CanonicalResource {
         return "CodeSystem";
       if (code == FHIRDefinedType.COMPARTMENTDEFINITION)
         return "CompartmentDefinition";
-      if (code == FHIRDefinedType.CONCEPTMAP)
-        return "ConceptMap";
-      if (code == FHIRDefinedType.CONCEPTMAP2)
-        return "ConceptMap2";
       if (code == FHIRDefinedType.EXAMPLESCENARIO)
         return "ExampleScenario";
       if (code == FHIRDefinedType.GRAPHDEFINITION)
@@ -4028,12 +4042,12 @@ public class TestScript extends CanonicalResource {
         return "MetadataResource";
       if (code == FHIRDefinedType.ACTIVITYDEFINITION)
         return "ActivityDefinition";
-      if (code == FHIRDefinedType.ARTIFACTASSESSMENT)
-        return "ArtifactAssessment";
       if (code == FHIRDefinedType.CHARGEITEMDEFINITION)
         return "ChargeItemDefinition";
       if (code == FHIRDefinedType.CITATION)
         return "Citation";
+      if (code == FHIRDefinedType.CONCEPTMAP)
+        return "ConceptMap";
       if (code == FHIRDefinedType.CONDITIONDEFINITION)
         return "ConditionDefinition";
       if (code == FHIRDefinedType.EVENTDEFINITION)
@@ -4048,12 +4062,12 @@ public class TestScript extends CanonicalResource {
         return "Library";
       if (code == FHIRDefinedType.MEASURE)
         return "Measure";
+      if (code == FHIRDefinedType.NAMINGSYSTEM)
+        return "NamingSystem";
       if (code == FHIRDefinedType.PLANDEFINITION)
         return "PlanDefinition";
       if (code == FHIRDefinedType.QUESTIONNAIRE)
         return "Questionnaire";
-      if (code == FHIRDefinedType.NAMINGSYSTEM)
-        return "NamingSystem";
       if (code == FHIRDefinedType.OPERATIONDEFINITION)
         return "OperationDefinition";
       if (code == FHIRDefinedType.SEARCHPARAMETER)
@@ -4062,6 +4076,8 @@ public class TestScript extends CanonicalResource {
         return "StructureDefinition";
       if (code == FHIRDefinedType.STRUCTUREMAP)
         return "StructureMap";
+      if (code == FHIRDefinedType.SUBSCRIPTIONTOPIC)
+        return "SubscriptionTopic";
       if (code == FHIRDefinedType.TERMINOLOGYCAPABILITIES)
         return "TerminologyCapabilities";
       if (code == FHIRDefinedType.TESTSCRIPT)
@@ -4082,8 +4098,6 @@ public class TestScript extends CanonicalResource {
         return "ClinicalImpression";
       if (code == FHIRDefinedType.CLINICALUSEDEFINITION)
         return "ClinicalUseDefinition";
-      if (code == FHIRDefinedType.CLINICALUSEISSUE)
-        return "ClinicalUseIssue";
       if (code == FHIRDefinedType.COMMUNICATION)
         return "Communication";
       if (code == FHIRDefinedType.COMMUNICATIONREQUEST)
@@ -4138,6 +4152,8 @@ public class TestScript extends CanonicalResource {
         return "FamilyMemberHistory";
       if (code == FHIRDefinedType.FLAG)
         return "Flag";
+      if (code == FHIRDefinedType.FORMULARYITEM)
+        return "FormularyItem";
       if (code == FHIRDefinedType.GOAL)
         return "Goal";
       if (code == FHIRDefinedType.GROUP)
@@ -4256,8 +4272,6 @@ public class TestScript extends CanonicalResource {
         return "Subscription";
       if (code == FHIRDefinedType.SUBSCRIPTIONSTATUS)
         return "SubscriptionStatus";
-      if (code == FHIRDefinedType.SUBSCRIPTIONTOPIC)
-        return "SubscriptionTopic";
       if (code == FHIRDefinedType.SUBSTANCE)
         return "Substance";
       if (code == FHIRDefinedType.SUBSTANCEDEFINITION)
@@ -4280,6 +4294,8 @@ public class TestScript extends CanonicalResource {
         return "Task";
       if (code == FHIRDefinedType.TESTREPORT)
         return "TestReport";
+      if (code == FHIRDefinedType.TRANSPORT)
+        return "Transport";
       if (code == FHIRDefinedType.VERIFICATIONRESULT)
         return "VerificationResult";
       if (code == FHIRDefinedType.VISIONPRESCRIPTION)
@@ -4357,6 +4373,7 @@ public class TestScript extends CanonicalResource {
             case POST: return "post";
             case PUT: return "put";
             case HEAD: return "head";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -4369,6 +4386,7 @@ public class TestScript extends CanonicalResource {
             case POST: return "http://hl7.org/fhir/http-operations";
             case PUT: return "http://hl7.org/fhir/http-operations";
             case HEAD: return "http://hl7.org/fhir/http-operations";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -4381,6 +4399,7 @@ public class TestScript extends CanonicalResource {
             case POST: return "HTTP POST operation.";
             case PUT: return "HTTP PUT operation.";
             case HEAD: return "HTTP HEAD operation.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -4393,6 +4412,7 @@ public class TestScript extends CanonicalResource {
             case POST: return "POST";
             case PUT: return "PUT";
             case HEAD: return "HEAD";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -6093,10 +6113,10 @@ public class TestScript extends CanonicalResource {
         protected CanonicalType artifact;
 
         /**
-         * The expectation of whether the test must pass for the system to be considered conformant with the artifact: required - all tests must pass, optional - all test are expected to pass but non-pass status may be allowed.
+         * The expectation of whether the test must pass for the system to be considered conformant with the artifact: required - all tests are expected to pass, optional - all test are expected to pass but non-pass status may be allowed, strict - all tests are expected to pass and warnings are treated as a failure.
          */
         @Child(name = "conformance", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="required | optional", formalDefinition="The expectation of whether the test must pass for the system to be considered conformant with the artifact: required - all tests must pass, optional - all test are expected to pass but non-pass status may be allowed." )
+        @Description(shortDefinition="required | optional | strict", formalDefinition="The expectation of whether the test must pass for the system to be considered conformant with the artifact: required - all tests are expected to pass, optional - all test are expected to pass but non-pass status may be allowed, strict - all tests are expected to pass and warnings are treated as a failure." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/testscript-scope-conformance-codes")
         protected CodeableConcept conformance;
 
@@ -6171,7 +6191,7 @@ public class TestScript extends CanonicalResource {
         }
 
         /**
-         * @return {@link #conformance} (The expectation of whether the test must pass for the system to be considered conformant with the artifact: required - all tests must pass, optional - all test are expected to pass but non-pass status may be allowed.)
+         * @return {@link #conformance} (The expectation of whether the test must pass for the system to be considered conformant with the artifact: required - all tests are expected to pass, optional - all test are expected to pass but non-pass status may be allowed, strict - all tests are expected to pass and warnings are treated as a failure.)
          */
         public CodeableConcept getConformance() { 
           if (this.conformance == null)
@@ -6187,7 +6207,7 @@ public class TestScript extends CanonicalResource {
         }
 
         /**
-         * @param value {@link #conformance} (The expectation of whether the test must pass for the system to be considered conformant with the artifact: required - all tests must pass, optional - all test are expected to pass but non-pass status may be allowed.)
+         * @param value {@link #conformance} (The expectation of whether the test must pass for the system to be considered conformant with the artifact: required - all tests are expected to pass, optional - all test are expected to pass but non-pass status may be allowed, strict - all tests are expected to pass and warnings are treated as a failure.)
          */
         public TestScriptScopeComponent setConformance(CodeableConcept value) { 
           this.conformance = value;
@@ -6221,7 +6241,7 @@ public class TestScript extends CanonicalResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("artifact", "canonical(Any)", "The specific conformance artifact being tested. The canonical reference can be version-specific.", 0, 1, artifact));
-          children.add(new Property("conformance", "CodeableConcept", "The expectation of whether the test must pass for the system to be considered conformant with the artifact: required - all tests must pass, optional - all test are expected to pass but non-pass status may be allowed.", 0, 1, conformance));
+          children.add(new Property("conformance", "CodeableConcept", "The expectation of whether the test must pass for the system to be considered conformant with the artifact: required - all tests are expected to pass, optional - all test are expected to pass but non-pass status may be allowed, strict - all tests are expected to pass and warnings are treated as a failure.", 0, 1, conformance));
           children.add(new Property("phase", "CodeableConcept", "The phase of testing for this artifact: unit - development / implementation phase, integration - internal system to system phase, production - live system to system phase (Note, this may involve pii/phi data).", 0, 1, phase));
         }
 
@@ -6229,7 +6249,7 @@ public class TestScript extends CanonicalResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case -1228798510: /*artifact*/  return new Property("artifact", "canonical(Any)", "The specific conformance artifact being tested. The canonical reference can be version-specific.", 0, 1, artifact);
-          case 1374858133: /*conformance*/  return new Property("conformance", "CodeableConcept", "The expectation of whether the test must pass for the system to be considered conformant with the artifact: required - all tests must pass, optional - all test are expected to pass but non-pass status may be allowed.", 0, 1, conformance);
+          case 1374858133: /*conformance*/  return new Property("conformance", "CodeableConcept", "The expectation of whether the test must pass for the system to be considered conformant with the artifact: required - all tests are expected to pass, optional - all test are expected to pass but non-pass status may be allowed, strict - all tests are expected to pass and warnings are treated as a failure.", 0, 1, conformance);
           case 106629499: /*phase*/  return new Property("phase", "CodeableConcept", "The phase of testing for this artifact: unit - development / implementation phase, integration - internal system to system phase, production - live system to system phase (Note, this may involve pii/phi data).", 0, 1, phase);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -7748,12 +7768,12 @@ public class TestScript extends CanonicalResource {
         protected Coding type;
 
         /**
-         * The type of the resource.  See http://build.fhir.org/resourcelist.html.
+         * The type of the FHIR resource. See http://build.fhir.org/resourcelist.html. Data type of uri is needed when non-HL7 artifacts are identified.
          */
-        @Child(name = "resource", type = {CodeType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Resource type", formalDefinition="The type of the resource.  See http://build.fhir.org/resourcelist.html." )
+        @Child(name = "resource", type = {UriType.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Resource type", formalDefinition="The type of the FHIR resource. See http://build.fhir.org/resourcelist.html. Data type of uri is needed when non-HL7 artifacts are identified." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/defined-types")
-        protected Enumeration<FHIRDefinedType> resource;
+        protected UriType resource;
 
         /**
          * The label would be used for tracking/logging purposes by test engines.
@@ -7863,7 +7883,7 @@ public class TestScript extends CanonicalResource {
         @Description(shortDefinition="Request URL", formalDefinition="Complete request URL." )
         protected StringType url;
 
-        private static final long serialVersionUID = -1301448722L;
+        private static final long serialVersionUID = 308704897L;
 
     /**
      * Constructor
@@ -7905,14 +7925,14 @@ public class TestScript extends CanonicalResource {
         }
 
         /**
-         * @return {@link #resource} (The type of the resource.  See http://build.fhir.org/resourcelist.html.). This is the underlying object with id, value and extensions. The accessor "getResource" gives direct access to the value
+         * @return {@link #resource} (The type of the FHIR resource. See http://build.fhir.org/resourcelist.html. Data type of uri is needed when non-HL7 artifacts are identified.). This is the underlying object with id, value and extensions. The accessor "getResource" gives direct access to the value
          */
-        public Enumeration<FHIRDefinedType> getResourceElement() { 
+        public UriType getResourceElement() { 
           if (this.resource == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SetupActionOperationComponent.resource");
             else if (Configuration.doAutoCreate())
-              this.resource = new Enumeration<FHIRDefinedType>(new FHIRDefinedTypeEnumFactory()); // bb
+              this.resource = new UriType(); // bb
           return this.resource;
         }
 
@@ -7925,29 +7945,29 @@ public class TestScript extends CanonicalResource {
         }
 
         /**
-         * @param value {@link #resource} (The type of the resource.  See http://build.fhir.org/resourcelist.html.). This is the underlying object with id, value and extensions. The accessor "getResource" gives direct access to the value
+         * @param value {@link #resource} (The type of the FHIR resource. See http://build.fhir.org/resourcelist.html. Data type of uri is needed when non-HL7 artifacts are identified.). This is the underlying object with id, value and extensions. The accessor "getResource" gives direct access to the value
          */
-        public SetupActionOperationComponent setResourceElement(Enumeration<FHIRDefinedType> value) { 
+        public SetupActionOperationComponent setResourceElement(UriType value) { 
           this.resource = value;
           return this;
         }
 
         /**
-         * @return The type of the resource.  See http://build.fhir.org/resourcelist.html.
+         * @return The type of the FHIR resource. See http://build.fhir.org/resourcelist.html. Data type of uri is needed when non-HL7 artifacts are identified.
          */
-        public FHIRDefinedType getResource() { 
+        public String getResource() { 
           return this.resource == null ? null : this.resource.getValue();
         }
 
         /**
-         * @param value The type of the resource.  See http://build.fhir.org/resourcelist.html.
+         * @param value The type of the FHIR resource. See http://build.fhir.org/resourcelist.html. Data type of uri is needed when non-HL7 artifacts are identified.
          */
-        public SetupActionOperationComponent setResource(FHIRDefinedType value) { 
-          if (value == null)
+        public SetupActionOperationComponent setResource(String value) { 
+          if (Utilities.noString(value))
             this.resource = null;
           else {
             if (this.resource == null)
-              this.resource = new Enumeration<FHIRDefinedType>(new FHIRDefinedTypeEnumFactory());
+              this.resource = new UriType();
             this.resource.setValue(value);
           }
           return this;
@@ -8683,7 +8703,7 @@ public class TestScript extends CanonicalResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "Coding", "Server interaction or operation type.", 0, 1, type));
-          children.add(new Property("resource", "code", "The type of the resource.  See http://build.fhir.org/resourcelist.html.", 0, 1, resource));
+          children.add(new Property("resource", "uri", "The type of the FHIR resource. See http://build.fhir.org/resourcelist.html. Data type of uri is needed when non-HL7 artifacts are identified.", 0, 1, resource));
           children.add(new Property("label", "string", "The label would be used for tracking/logging purposes by test engines.", 0, 1, label));
           children.add(new Property("description", "string", "The description would be used by test engines for tracking and reporting purposes.", 0, 1, description));
           children.add(new Property("accept", "code", "The mime-type to use for RESTful operation in the 'Accept' header.", 0, 1, accept));
@@ -8705,7 +8725,7 @@ public class TestScript extends CanonicalResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "Coding", "Server interaction or operation type.", 0, 1, type);
-          case -341064690: /*resource*/  return new Property("resource", "code", "The type of the resource.  See http://build.fhir.org/resourcelist.html.", 0, 1, resource);
+          case -341064690: /*resource*/  return new Property("resource", "uri", "The type of the FHIR resource. See http://build.fhir.org/resourcelist.html. Data type of uri is needed when non-HL7 artifacts are identified.", 0, 1, resource);
           case 102727412: /*label*/  return new Property("label", "string", "The label would be used for tracking/logging purposes by test engines.", 0, 1, label);
           case -1724546052: /*description*/  return new Property("description", "string", "The description would be used by test engines for tracking and reporting purposes.", 0, 1, description);
           case -1423461112: /*accept*/  return new Property("accept", "code", "The mime-type to use for RESTful operation in the 'Accept' header.", 0, 1, accept);
@@ -8730,7 +8750,7 @@ public class TestScript extends CanonicalResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Coding
-        case -341064690: /*resource*/ return this.resource == null ? new Base[0] : new Base[] {this.resource}; // Enumeration<FHIRDefinedType>
+        case -341064690: /*resource*/ return this.resource == null ? new Base[0] : new Base[] {this.resource}; // UriType
         case 102727412: /*label*/ return this.label == null ? new Base[0] : new Base[] {this.label}; // StringType
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case -1423461112: /*accept*/ return this.accept == null ? new Base[0] : new Base[] {this.accept}; // CodeType
@@ -8758,8 +8778,7 @@ public class TestScript extends CanonicalResource {
           this.type = TypeConvertor.castToCoding(value); // Coding
           return value;
         case -341064690: // resource
-          value = new FHIRDefinedTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.resource = (Enumeration) value; // Enumeration<FHIRDefinedType>
+          this.resource = TypeConvertor.castToUri(value); // UriType
           return value;
         case 102727412: // label
           this.label = TypeConvertor.castToString(value); // StringType
@@ -8817,8 +8836,7 @@ public class TestScript extends CanonicalResource {
         if (name.equals("type")) {
           this.type = TypeConvertor.castToCoding(value); // Coding
         } else if (name.equals("resource")) {
-          value = new FHIRDefinedTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.resource = (Enumeration) value; // Enumeration<FHIRDefinedType>
+          this.resource = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("label")) {
           this.label = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("description")) {
@@ -8884,7 +8902,7 @@ public class TestScript extends CanonicalResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"Coding"};
-        case -341064690: /*resource*/ return new String[] {"code"};
+        case -341064690: /*resource*/ return new String[] {"uri"};
         case 102727412: /*label*/ return new String[] {"string"};
         case -1724546052: /*description*/ return new String[] {"string"};
         case -1423461112: /*accept*/ return new String[] {"code"};
@@ -13832,352 +13850,6 @@ public class TestScript extends CanonicalResource {
   public ResourceType getResourceType() {
     return ResourceType.TestScript;
    }
-
- /**
-   * Search parameter: <b>context-quantity</b>
-   * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the test script</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>(TestScript.useContext.value as Quantity) | (TestScript.useContext.value as Range)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-quantity", path="(TestScript.useContext.value as Quantity) | (TestScript.useContext.value as Range)", description="A quantity- or range-valued use context assigned to the test script", type="quantity" )
-  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
-   * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the test script</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>(TestScript.useContext.value as Quantity) | (TestScript.useContext.value as Range)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
-
- /**
-   * Search parameter: <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the test script</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>TestScript.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-quantity", path="TestScript.useContext", description="A use context type and quantity- or range-based value assigned to the test script", type="composite", compositeOf={"context-type", "context-quantity"} )
-  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the test script</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>TestScript.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
-
- /**
-   * Search parameter: <b>context-type-value</b>
-   * <p>
-   * Description: <b>A use context type and value assigned to the test script</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>TestScript.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-value", path="TestScript.useContext", description="A use context type and value assigned to the test script", type="composite", compositeOf={"context-type", "context"} )
-  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
-   * <p>
-   * Description: <b>A use context type and value assigned to the test script</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>TestScript.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
-
- /**
-   * Search parameter: <b>context-type</b>
-   * <p>
-   * Description: <b>A type of use context assigned to the test script</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestScript.useContext.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type", path="TestScript.useContext.code", description="A type of use context assigned to the test script", type="token" )
-  public static final String SP_CONTEXT_TYPE = "context-type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type</b>
-   * <p>
-   * Description: <b>A type of use context assigned to the test script</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestScript.useContext.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
-
- /**
-   * Search parameter: <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the test script</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(TestScript.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context", path="(TestScript.useContext.value as CodeableConcept)", description="A use context assigned to the test script", type="token" )
-  public static final String SP_CONTEXT = "context";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the test script</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(TestScript.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
-
- /**
-   * Search parameter: <b>date</b>
-   * <p>
-   * Description: <b>The test script publication date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>TestScript.date</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="date", path="TestScript.date", description="The test script publication date", type="date" )
-  public static final String SP_DATE = "date";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>date</b>
-   * <p>
-   * Description: <b>The test script publication date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>TestScript.date</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
-
- /**
-   * Search parameter: <b>description</b>
-   * <p>
-   * Description: <b>The description of the test script</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestScript.description</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="description", path="TestScript.description", description="The description of the test script", type="string" )
-  public static final String SP_DESCRIPTION = "description";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>description</b>
-   * <p>
-   * Description: <b>The description of the test script</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestScript.description</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>External identifier for the test script</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestScript.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="TestScript.identifier", description="External identifier for the test script", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>External identifier for the test script</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestScript.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the test script</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestScript.jurisdiction</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="jurisdiction", path="TestScript.jurisdiction", description="Intended jurisdiction for the test script", type="token" )
-  public static final String SP_JURISDICTION = "jurisdiction";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the test script</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestScript.jurisdiction</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
-
- /**
-   * Search parameter: <b>name</b>
-   * <p>
-   * Description: <b>Computationally friendly name of the test script</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestScript.name</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="name", path="TestScript.name", description="Computationally friendly name of the test script", type="string" )
-  public static final String SP_NAME = "name";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>name</b>
-   * <p>
-   * Description: <b>Computationally friendly name of the test script</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestScript.name</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
-
- /**
-   * Search parameter: <b>publisher</b>
-   * <p>
-   * Description: <b>Name of the publisher of the test script</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestScript.publisher</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="publisher", path="TestScript.publisher", description="Name of the publisher of the test script", type="string" )
-  public static final String SP_PUBLISHER = "publisher";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>publisher</b>
-   * <p>
-   * Description: <b>Name of the publisher of the test script</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestScript.publisher</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam PUBLISHER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PUBLISHER);
-
- /**
-   * Search parameter: <b>scope-artifact</b>
-   * <p>
-   * Description: <b>The artifact under test</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>TestScript.scope.artifact</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="scope-artifact", path="TestScript.scope.artifact", description="The artifact under test", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
-  public static final String SP_SCOPE_ARTIFACT = "scope-artifact";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>scope-artifact</b>
-   * <p>
-   * Description: <b>The artifact under test</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>TestScript.scope.artifact</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SCOPE_ARTIFACT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SCOPE_ARTIFACT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>TestScript:scope-artifact</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SCOPE_ARTIFACT = new ca.uhn.fhir.model.api.Include("TestScript:scope-artifact").toLocked();
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>The current status of the test script</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestScript.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="TestScript.status", description="The current status of the test script", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>The current status of the test script</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestScript.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
-
- /**
-   * Search parameter: <b>testscript-capability</b>
-   * <p>
-   * Description: <b>TestScript required and validated capability</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestScript.metadata.capability.description</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="testscript-capability", path="TestScript.metadata.capability.description", description="TestScript required and validated capability", type="string" )
-  public static final String SP_TESTSCRIPT_CAPABILITY = "testscript-capability";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>testscript-capability</b>
-   * <p>
-   * Description: <b>TestScript required and validated capability</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestScript.metadata.capability.description</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TESTSCRIPT_CAPABILITY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TESTSCRIPT_CAPABILITY);
-
- /**
-   * Search parameter: <b>title</b>
-   * <p>
-   * Description: <b>The human-friendly name of the test script</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestScript.title</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="title", path="TestScript.title", description="The human-friendly name of the test script", type="string" )
-  public static final String SP_TITLE = "title";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>title</b>
-   * <p>
-   * Description: <b>The human-friendly name of the test script</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestScript.title</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
-
- /**
-   * Search parameter: <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the test script</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>TestScript.url</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="url", path="TestScript.url", description="The uri that identifies the test script", type="uri" )
-  public static final String SP_URL = "url";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the test script</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>TestScript.url</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
-
- /**
-   * Search parameter: <b>version</b>
-   * <p>
-   * Description: <b>The business version of the test script</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestScript.version</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="version", path="TestScript.version", description="The business version of the test script", type="token" )
-  public static final String SP_VERSION = "version";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>version</b>
-   * <p>
-   * Description: <b>The business version of the test script</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestScript.version</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
 
 }

@@ -201,7 +201,7 @@ public class ExampleScenario40_50 {
     if (src.hasResourceId())
       tgt.setResourceIdElement(String40_50.convertString(src.getResourceIdElement()));
     if (src.hasResourceType())
-      tgt.setResourceTypeElement(convertFHIRResourceType(src.getResourceTypeElement()));
+      tgt.setTypeElement(convertFHIRResourceType(src.getResourceTypeElement()));
     if (src.hasName())
       tgt.setNameElement(String40_50.convertString(src.getNameElement()));
     if (src.hasDescription())
@@ -220,8 +220,8 @@ public class ExampleScenario40_50 {
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasResourceId())
       tgt.setResourceIdElement(String40_50.convertString(src.getResourceIdElement()));
-    if (src.hasResourceType())
-      tgt.setResourceTypeElement(convertFHIRResourceType(src.getResourceTypeElement()));
+    if (src.hasType())
+      tgt.setResourceTypeElement(convertFHIRResourceType(src.getTypeElement()));
     if (src.hasName())
       tgt.setNameElement(String40_50.convertString(src.getNameElement()));
     if (src.hasDescription())

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -427,17 +427,24 @@ public class Dosage extends BackboneType implements ICompositeType {
     protected Timing timing;
 
     /**
-     * Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).
+     * Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option).
      */
-    @Child(name = "asNeeded", type = {BooleanType.class, CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Take \"as needed\" (for x)", formalDefinition="Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept)." )
+    @Child(name = "asNeeded", type = {BooleanType.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Take \"as needed\"", formalDefinition="Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option)." )
+    protected BooleanType asNeeded;
+
+    /**
+     * Indicates whether the Medication is only taken based on a precondition for taking the Medication (CodeableConcept).
+     */
+    @Child(name = "asNeededFor", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Take \"as needed\" (for x)", formalDefinition="Indicates whether the Medication is only taken based on a precondition for taking the Medication (CodeableConcept)." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medication-as-needed-reason")
-    protected DataType asNeeded;
+    protected List<CodeableConcept> asNeededFor;
 
     /**
      * Body site to administer to.
      */
-    @Child(name = "site", type = {CodeableConcept.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "site", type = {CodeableConcept.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Body site to administer to", formalDefinition="Body site to administer to." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/approach-site-codes")
     protected CodeableConcept site;
@@ -445,7 +452,7 @@ public class Dosage extends BackboneType implements ICompositeType {
     /**
      * How drug should enter body.
      */
-    @Child(name = "route", type = {CodeableConcept.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "route", type = {CodeableConcept.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="How drug should enter body", formalDefinition="How drug should enter body." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/route-codes")
     protected CodeableConcept route;
@@ -453,40 +460,40 @@ public class Dosage extends BackboneType implements ICompositeType {
     /**
      * Technique for administering medication.
      */
-    @Child(name = "method", type = {CodeableConcept.class}, order=8, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "method", type = {CodeableConcept.class}, order=9, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Technique for administering medication", formalDefinition="Technique for administering medication." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/administration-method-codes")
     protected CodeableConcept method;
 
     /**
-     * The amount of medication administered.
+     * Depending on the resource,this is the amount of medication administered, to  be administered or typical amount to be administered.
      */
-    @Child(name = "doseAndRate", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Amount of medication administered", formalDefinition="The amount of medication administered." )
+    @Child(name = "doseAndRate", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Amount of medication administered, to be administered or typical amount to be administered", formalDefinition="Depending on the resource,this is the amount of medication administered, to  be administered or typical amount to be administered." )
     protected List<DosageDoseAndRateComponent> doseAndRate;
 
     /**
      * Upper limit on medication per unit of time.
      */
-    @Child(name = "maxDosePerPeriod", type = {Ratio.class}, order=10, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "maxDosePerPeriod", type = {Ratio.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Upper limit on medication per unit of time", formalDefinition="Upper limit on medication per unit of time." )
-    protected Ratio maxDosePerPeriod;
+    protected List<Ratio> maxDosePerPeriod;
 
     /**
      * Upper limit on medication per administration.
      */
-    @Child(name = "maxDosePerAdministration", type = {Quantity.class}, order=11, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "maxDosePerAdministration", type = {Quantity.class}, order=12, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Upper limit on medication per administration", formalDefinition="Upper limit on medication per administration." )
     protected Quantity maxDosePerAdministration;
 
     /**
      * Upper limit on medication per lifetime of the patient.
      */
-    @Child(name = "maxDosePerLifetime", type = {Quantity.class}, order=12, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "maxDosePerLifetime", type = {Quantity.class}, order=13, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Upper limit on medication per lifetime of the patient", formalDefinition="Upper limit on medication per lifetime of the patient." )
     protected Quantity maxDosePerLifetime;
 
-    private static final long serialVersionUID = 1743553833L;
+    private static final long serialVersionUID = 386091152L;
 
   /**
    * Constructor
@@ -716,40 +723,19 @@ public class Dosage extends BackboneType implements ICompositeType {
     }
 
     /**
-     * @return {@link #asNeeded} (Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).)
+     * @return {@link #asNeeded} (Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option).). This is the underlying object with id, value and extensions. The accessor "getAsNeeded" gives direct access to the value
      */
-    public DataType getAsNeeded() { 
+    public BooleanType getAsNeededElement() { 
+      if (this.asNeeded == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Dosage.asNeeded");
+        else if (Configuration.doAutoCreate())
+          this.asNeeded = new BooleanType(); // bb
       return this.asNeeded;
     }
 
-    /**
-     * @return {@link #asNeeded} (Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).)
-     */
-    public BooleanType getAsNeededBooleanType() throws FHIRException { 
-      if (this.asNeeded == null)
-        this.asNeeded = new BooleanType();
-      if (!(this.asNeeded instanceof BooleanType))
-        throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.asNeeded.getClass().getName()+" was encountered");
-      return (BooleanType) this.asNeeded;
-    }
-
-    public boolean hasAsNeededBooleanType() { 
-      return this != null && this.asNeeded instanceof BooleanType;
-    }
-
-    /**
-     * @return {@link #asNeeded} (Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).)
-     */
-    public CodeableConcept getAsNeededCodeableConcept() throws FHIRException { 
-      if (this.asNeeded == null)
-        this.asNeeded = new CodeableConcept();
-      if (!(this.asNeeded instanceof CodeableConcept))
-        throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.asNeeded.getClass().getName()+" was encountered");
-      return (CodeableConcept) this.asNeeded;
-    }
-
-    public boolean hasAsNeededCodeableConcept() { 
-      return this != null && this.asNeeded instanceof CodeableConcept;
+    public boolean hasAsNeededElement() { 
+      return this.asNeeded != null && !this.asNeeded.isEmpty();
     }
 
     public boolean hasAsNeeded() { 
@@ -757,13 +743,81 @@ public class Dosage extends BackboneType implements ICompositeType {
     }
 
     /**
-     * @param value {@link #asNeeded} (Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).)
+     * @param value {@link #asNeeded} (Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option).). This is the underlying object with id, value and extensions. The accessor "getAsNeeded" gives direct access to the value
      */
-    public Dosage setAsNeeded(DataType value) { 
-      if (value != null && !(value instanceof BooleanType || value instanceof CodeableConcept))
-        throw new Error("Not the right type for Dosage.asNeeded[x]: "+value.fhirType());
+    public Dosage setAsNeededElement(BooleanType value) { 
       this.asNeeded = value;
       return this;
+    }
+
+    /**
+     * @return Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option).
+     */
+    public boolean getAsNeeded() { 
+      return this.asNeeded == null || this.asNeeded.isEmpty() ? false : this.asNeeded.getValue();
+    }
+
+    /**
+     * @param value Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option).
+     */
+    public Dosage setAsNeeded(boolean value) { 
+        if (this.asNeeded == null)
+          this.asNeeded = new BooleanType();
+        this.asNeeded.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #asNeededFor} (Indicates whether the Medication is only taken based on a precondition for taking the Medication (CodeableConcept).)
+     */
+    public List<CodeableConcept> getAsNeededFor() { 
+      if (this.asNeededFor == null)
+        this.asNeededFor = new ArrayList<CodeableConcept>();
+      return this.asNeededFor;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Dosage setAsNeededFor(List<CodeableConcept> theAsNeededFor) { 
+      this.asNeededFor = theAsNeededFor;
+      return this;
+    }
+
+    public boolean hasAsNeededFor() { 
+      if (this.asNeededFor == null)
+        return false;
+      for (CodeableConcept item : this.asNeededFor)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableConcept addAsNeededFor() { //3
+      CodeableConcept t = new CodeableConcept();
+      if (this.asNeededFor == null)
+        this.asNeededFor = new ArrayList<CodeableConcept>();
+      this.asNeededFor.add(t);
+      return t;
+    }
+
+    public Dosage addAsNeededFor(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.asNeededFor == null)
+        this.asNeededFor = new ArrayList<CodeableConcept>();
+      this.asNeededFor.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #asNeededFor}, creating it if it does not already exist {3}
+     */
+    public CodeableConcept getAsNeededForFirstRep() { 
+      if (getAsNeededFor().isEmpty()) {
+        addAsNeededFor();
+      }
+      return getAsNeededFor().get(0);
     }
 
     /**
@@ -839,7 +893,7 @@ public class Dosage extends BackboneType implements ICompositeType {
     }
 
     /**
-     * @return {@link #doseAndRate} (The amount of medication administered.)
+     * @return {@link #doseAndRate} (Depending on the resource,this is the amount of medication administered, to  be administered or typical amount to be administered.)
      */
     public List<DosageDoseAndRateComponent> getDoseAndRate() { 
       if (this.doseAndRate == null)
@@ -894,25 +948,54 @@ public class Dosage extends BackboneType implements ICompositeType {
     /**
      * @return {@link #maxDosePerPeriod} (Upper limit on medication per unit of time.)
      */
-    public Ratio getMaxDosePerPeriod() { 
+    public List<Ratio> getMaxDosePerPeriod() { 
       if (this.maxDosePerPeriod == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Dosage.maxDosePerPeriod");
-        else if (Configuration.doAutoCreate())
-          this.maxDosePerPeriod = new Ratio(); // cc
+        this.maxDosePerPeriod = new ArrayList<Ratio>();
       return this.maxDosePerPeriod;
     }
 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Dosage setMaxDosePerPeriod(List<Ratio> theMaxDosePerPeriod) { 
+      this.maxDosePerPeriod = theMaxDosePerPeriod;
+      return this;
+    }
+
     public boolean hasMaxDosePerPeriod() { 
-      return this.maxDosePerPeriod != null && !this.maxDosePerPeriod.isEmpty();
+      if (this.maxDosePerPeriod == null)
+        return false;
+      for (Ratio item : this.maxDosePerPeriod)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Ratio addMaxDosePerPeriod() { //3
+      Ratio t = new Ratio();
+      if (this.maxDosePerPeriod == null)
+        this.maxDosePerPeriod = new ArrayList<Ratio>();
+      this.maxDosePerPeriod.add(t);
+      return t;
+    }
+
+    public Dosage addMaxDosePerPeriod(Ratio t) { //3
+      if (t == null)
+        return this;
+      if (this.maxDosePerPeriod == null)
+        this.maxDosePerPeriod = new ArrayList<Ratio>();
+      this.maxDosePerPeriod.add(t);
+      return this;
     }
 
     /**
-     * @param value {@link #maxDosePerPeriod} (Upper limit on medication per unit of time.)
+     * @return The first repetition of repeating field {@link #maxDosePerPeriod}, creating it if it does not already exist {3}
      */
-    public Dosage setMaxDosePerPeriod(Ratio value) { 
-      this.maxDosePerPeriod = value;
-      return this;
+    public Ratio getMaxDosePerPeriodFirstRep() { 
+      if (getMaxDosePerPeriod().isEmpty()) {
+        addMaxDosePerPeriod();
+      }
+      return getMaxDosePerPeriod().get(0);
     }
 
     /**
@@ -970,12 +1053,13 @@ public class Dosage extends BackboneType implements ICompositeType {
         children.add(new Property("additionalInstruction", "CodeableConcept", "Supplemental instructions to the patient on how to take the medication  (e.g. \"with meals\" or\"take half to one hour before food\") or warnings for the patient about the medication (e.g. \"may cause drowsiness\" or \"avoid exposure of skin to direct sunlight or sunlamps\").", 0, java.lang.Integer.MAX_VALUE, additionalInstruction));
         children.add(new Property("patientInstruction", "string", "Instructions in terms that are understood by the patient or consumer.", 0, 1, patientInstruction));
         children.add(new Property("timing", "Timing", "When medication should be administered.", 0, 1, timing));
-        children.add(new Property("asNeeded[x]", "boolean|CodeableConcept", "Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).", 0, 1, asNeeded));
+        children.add(new Property("asNeeded", "boolean", "Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option).", 0, 1, asNeeded));
+        children.add(new Property("asNeededFor", "CodeableConcept", "Indicates whether the Medication is only taken based on a precondition for taking the Medication (CodeableConcept).", 0, java.lang.Integer.MAX_VALUE, asNeededFor));
         children.add(new Property("site", "CodeableConcept", "Body site to administer to.", 0, 1, site));
         children.add(new Property("route", "CodeableConcept", "How drug should enter body.", 0, 1, route));
         children.add(new Property("method", "CodeableConcept", "Technique for administering medication.", 0, 1, method));
-        children.add(new Property("doseAndRate", "", "The amount of medication administered.", 0, java.lang.Integer.MAX_VALUE, doseAndRate));
-        children.add(new Property("maxDosePerPeriod", "Ratio", "Upper limit on medication per unit of time.", 0, 1, maxDosePerPeriod));
+        children.add(new Property("doseAndRate", "", "Depending on the resource,this is the amount of medication administered, to  be administered or typical amount to be administered.", 0, java.lang.Integer.MAX_VALUE, doseAndRate));
+        children.add(new Property("maxDosePerPeriod", "Ratio", "Upper limit on medication per unit of time.", 0, java.lang.Integer.MAX_VALUE, maxDosePerPeriod));
         children.add(new Property("maxDosePerAdministration", "Quantity", "Upper limit on medication per administration.", 0, 1, maxDosePerAdministration));
         children.add(new Property("maxDosePerLifetime", "Quantity", "Upper limit on medication per lifetime of the patient.", 0, 1, maxDosePerLifetime));
       }
@@ -988,15 +1072,13 @@ public class Dosage extends BackboneType implements ICompositeType {
         case 1623641575: /*additionalInstruction*/  return new Property("additionalInstruction", "CodeableConcept", "Supplemental instructions to the patient on how to take the medication  (e.g. \"with meals\" or\"take half to one hour before food\") or warnings for the patient about the medication (e.g. \"may cause drowsiness\" or \"avoid exposure of skin to direct sunlight or sunlamps\").", 0, java.lang.Integer.MAX_VALUE, additionalInstruction);
         case 737543241: /*patientInstruction*/  return new Property("patientInstruction", "string", "Instructions in terms that are understood by the patient or consumer.", 0, 1, patientInstruction);
         case -873664438: /*timing*/  return new Property("timing", "Timing", "When medication should be administered.", 0, 1, timing);
-        case -544329575: /*asNeeded[x]*/  return new Property("asNeeded[x]", "boolean|CodeableConcept", "Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).", 0, 1, asNeeded);
-        case -1432923513: /*asNeeded*/  return new Property("asNeeded[x]", "boolean|CodeableConcept", "Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).", 0, 1, asNeeded);
-        case -591717471: /*asNeededBoolean*/  return new Property("asNeeded[x]", "boolean", "Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).", 0, 1, asNeeded);
-        case 1556420122: /*asNeededCodeableConcept*/  return new Property("asNeeded[x]", "CodeableConcept", "Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option), or it indicates the precondition for taking the Medication (CodeableConcept).", 0, 1, asNeeded);
+        case -1432923513: /*asNeeded*/  return new Property("asNeeded", "boolean", "Indicates whether the Medication is only taken when needed within a specific dosing schedule (Boolean option).", 0, 1, asNeeded);
+        case -544350014: /*asNeededFor*/  return new Property("asNeededFor", "CodeableConcept", "Indicates whether the Medication is only taken based on a precondition for taking the Medication (CodeableConcept).", 0, java.lang.Integer.MAX_VALUE, asNeededFor);
         case 3530567: /*site*/  return new Property("site", "CodeableConcept", "Body site to administer to.", 0, 1, site);
         case 108704329: /*route*/  return new Property("route", "CodeableConcept", "How drug should enter body.", 0, 1, route);
         case -1077554975: /*method*/  return new Property("method", "CodeableConcept", "Technique for administering medication.", 0, 1, method);
-        case -611024774: /*doseAndRate*/  return new Property("doseAndRate", "", "The amount of medication administered.", 0, java.lang.Integer.MAX_VALUE, doseAndRate);
-        case 1506263709: /*maxDosePerPeriod*/  return new Property("maxDosePerPeriod", "Ratio", "Upper limit on medication per unit of time.", 0, 1, maxDosePerPeriod);
+        case -611024774: /*doseAndRate*/  return new Property("doseAndRate", "", "Depending on the resource,this is the amount of medication administered, to  be administered or typical amount to be administered.", 0, java.lang.Integer.MAX_VALUE, doseAndRate);
+        case 1506263709: /*maxDosePerPeriod*/  return new Property("maxDosePerPeriod", "Ratio", "Upper limit on medication per unit of time.", 0, java.lang.Integer.MAX_VALUE, maxDosePerPeriod);
         case 2004889914: /*maxDosePerAdministration*/  return new Property("maxDosePerAdministration", "Quantity", "Upper limit on medication per administration.", 0, 1, maxDosePerAdministration);
         case 642099621: /*maxDosePerLifetime*/  return new Property("maxDosePerLifetime", "Quantity", "Upper limit on medication per lifetime of the patient.", 0, 1, maxDosePerLifetime);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -1012,12 +1094,13 @@ public class Dosage extends BackboneType implements ICompositeType {
         case 1623641575: /*additionalInstruction*/ return this.additionalInstruction == null ? new Base[0] : this.additionalInstruction.toArray(new Base[this.additionalInstruction.size()]); // CodeableConcept
         case 737543241: /*patientInstruction*/ return this.patientInstruction == null ? new Base[0] : new Base[] {this.patientInstruction}; // StringType
         case -873664438: /*timing*/ return this.timing == null ? new Base[0] : new Base[] {this.timing}; // Timing
-        case -1432923513: /*asNeeded*/ return this.asNeeded == null ? new Base[0] : new Base[] {this.asNeeded}; // DataType
+        case -1432923513: /*asNeeded*/ return this.asNeeded == null ? new Base[0] : new Base[] {this.asNeeded}; // BooleanType
+        case -544350014: /*asNeededFor*/ return this.asNeededFor == null ? new Base[0] : this.asNeededFor.toArray(new Base[this.asNeededFor.size()]); // CodeableConcept
         case 3530567: /*site*/ return this.site == null ? new Base[0] : new Base[] {this.site}; // CodeableConcept
         case 108704329: /*route*/ return this.route == null ? new Base[0] : new Base[] {this.route}; // CodeableConcept
         case -1077554975: /*method*/ return this.method == null ? new Base[0] : new Base[] {this.method}; // CodeableConcept
         case -611024774: /*doseAndRate*/ return this.doseAndRate == null ? new Base[0] : this.doseAndRate.toArray(new Base[this.doseAndRate.size()]); // DosageDoseAndRateComponent
-        case 1506263709: /*maxDosePerPeriod*/ return this.maxDosePerPeriod == null ? new Base[0] : new Base[] {this.maxDosePerPeriod}; // Ratio
+        case 1506263709: /*maxDosePerPeriod*/ return this.maxDosePerPeriod == null ? new Base[0] : this.maxDosePerPeriod.toArray(new Base[this.maxDosePerPeriod.size()]); // Ratio
         case 2004889914: /*maxDosePerAdministration*/ return this.maxDosePerAdministration == null ? new Base[0] : new Base[] {this.maxDosePerAdministration}; // Quantity
         case 642099621: /*maxDosePerLifetime*/ return this.maxDosePerLifetime == null ? new Base[0] : new Base[] {this.maxDosePerLifetime}; // Quantity
         default: return super.getProperty(hash, name, checkValid);
@@ -1044,7 +1127,10 @@ public class Dosage extends BackboneType implements ICompositeType {
           this.timing = TypeConvertor.castToTiming(value); // Timing
           return value;
         case -1432923513: // asNeeded
-          this.asNeeded = TypeConvertor.castToType(value); // DataType
+          this.asNeeded = TypeConvertor.castToBoolean(value); // BooleanType
+          return value;
+        case -544350014: // asNeededFor
+          this.getAsNeededFor().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 3530567: // site
           this.site = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -1059,7 +1145,7 @@ public class Dosage extends BackboneType implements ICompositeType {
           this.getDoseAndRate().add((DosageDoseAndRateComponent) value); // DosageDoseAndRateComponent
           return value;
         case 1506263709: // maxDosePerPeriod
-          this.maxDosePerPeriod = TypeConvertor.castToRatio(value); // Ratio
+          this.getMaxDosePerPeriod().add(TypeConvertor.castToRatio(value)); // Ratio
           return value;
         case 2004889914: // maxDosePerAdministration
           this.maxDosePerAdministration = TypeConvertor.castToQuantity(value); // Quantity
@@ -1084,8 +1170,10 @@ public class Dosage extends BackboneType implements ICompositeType {
           this.patientInstruction = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("timing")) {
           this.timing = TypeConvertor.castToTiming(value); // Timing
-        } else if (name.equals("asNeeded[x]")) {
-          this.asNeeded = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("asNeeded")) {
+          this.asNeeded = TypeConvertor.castToBoolean(value); // BooleanType
+        } else if (name.equals("asNeededFor")) {
+          this.getAsNeededFor().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("site")) {
           this.site = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("route")) {
@@ -1095,7 +1183,7 @@ public class Dosage extends BackboneType implements ICompositeType {
         } else if (name.equals("doseAndRate")) {
           this.getDoseAndRate().add((DosageDoseAndRateComponent) value);
         } else if (name.equals("maxDosePerPeriod")) {
-          this.maxDosePerPeriod = TypeConvertor.castToRatio(value); // Ratio
+          this.getMaxDosePerPeriod().add(TypeConvertor.castToRatio(value));
         } else if (name.equals("maxDosePerAdministration")) {
           this.maxDosePerAdministration = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("maxDosePerLifetime")) {
@@ -1113,13 +1201,13 @@ public class Dosage extends BackboneType implements ICompositeType {
         case 1623641575:  return addAdditionalInstruction(); 
         case 737543241:  return getPatientInstructionElement();
         case -873664438:  return getTiming();
-        case -544329575:  return getAsNeeded();
-        case -1432923513:  return getAsNeeded();
+        case -1432923513:  return getAsNeededElement();
+        case -544350014:  return addAsNeededFor(); 
         case 3530567:  return getSite();
         case 108704329:  return getRoute();
         case -1077554975:  return getMethod();
         case -611024774:  return addDoseAndRate(); 
-        case 1506263709:  return getMaxDosePerPeriod();
+        case 1506263709:  return addMaxDosePerPeriod(); 
         case 2004889914:  return getMaxDosePerAdministration();
         case 642099621:  return getMaxDosePerLifetime();
         default: return super.makeProperty(hash, name);
@@ -1135,7 +1223,8 @@ public class Dosage extends BackboneType implements ICompositeType {
         case 1623641575: /*additionalInstruction*/ return new String[] {"CodeableConcept"};
         case 737543241: /*patientInstruction*/ return new String[] {"string"};
         case -873664438: /*timing*/ return new String[] {"Timing"};
-        case -1432923513: /*asNeeded*/ return new String[] {"boolean", "CodeableConcept"};
+        case -1432923513: /*asNeeded*/ return new String[] {"boolean"};
+        case -544350014: /*asNeededFor*/ return new String[] {"CodeableConcept"};
         case 3530567: /*site*/ return new String[] {"CodeableConcept"};
         case 108704329: /*route*/ return new String[] {"CodeableConcept"};
         case -1077554975: /*method*/ return new String[] {"CodeableConcept"};
@@ -1166,13 +1255,11 @@ public class Dosage extends BackboneType implements ICompositeType {
           this.timing = new Timing();
           return this.timing;
         }
-        else if (name.equals("asNeededBoolean")) {
-          this.asNeeded = new BooleanType();
-          return this.asNeeded;
+        else if (name.equals("asNeeded")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Dosage.asNeeded");
         }
-        else if (name.equals("asNeededCodeableConcept")) {
-          this.asNeeded = new CodeableConcept();
-          return this.asNeeded;
+        else if (name.equals("asNeededFor")) {
+          return addAsNeededFor();
         }
         else if (name.equals("site")) {
           this.site = new CodeableConcept();
@@ -1190,8 +1277,7 @@ public class Dosage extends BackboneType implements ICompositeType {
           return addDoseAndRate();
         }
         else if (name.equals("maxDosePerPeriod")) {
-          this.maxDosePerPeriod = new Ratio();
-          return this.maxDosePerPeriod;
+          return addMaxDosePerPeriod();
         }
         else if (name.equals("maxDosePerAdministration")) {
           this.maxDosePerAdministration = new Quantity();
@@ -1228,6 +1314,11 @@ public class Dosage extends BackboneType implements ICompositeType {
         dst.patientInstruction = patientInstruction == null ? null : patientInstruction.copy();
         dst.timing = timing == null ? null : timing.copy();
         dst.asNeeded = asNeeded == null ? null : asNeeded.copy();
+        if (asNeededFor != null) {
+          dst.asNeededFor = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : asNeededFor)
+            dst.asNeededFor.add(i.copy());
+        };
         dst.site = site == null ? null : site.copy();
         dst.route = route == null ? null : route.copy();
         dst.method = method == null ? null : method.copy();
@@ -1236,7 +1327,11 @@ public class Dosage extends BackboneType implements ICompositeType {
           for (DosageDoseAndRateComponent i : doseAndRate)
             dst.doseAndRate.add(i.copy());
         };
-        dst.maxDosePerPeriod = maxDosePerPeriod == null ? null : maxDosePerPeriod.copy();
+        if (maxDosePerPeriod != null) {
+          dst.maxDosePerPeriod = new ArrayList<Ratio>();
+          for (Ratio i : maxDosePerPeriod)
+            dst.maxDosePerPeriod.add(i.copy());
+        };
         dst.maxDosePerAdministration = maxDosePerAdministration == null ? null : maxDosePerAdministration.copy();
         dst.maxDosePerLifetime = maxDosePerLifetime == null ? null : maxDosePerLifetime.copy();
       }
@@ -1254,10 +1349,10 @@ public class Dosage extends BackboneType implements ICompositeType {
         Dosage o = (Dosage) other_;
         return compareDeep(sequence, o.sequence, true) && compareDeep(text, o.text, true) && compareDeep(additionalInstruction, o.additionalInstruction, true)
            && compareDeep(patientInstruction, o.patientInstruction, true) && compareDeep(timing, o.timing, true)
-           && compareDeep(asNeeded, o.asNeeded, true) && compareDeep(site, o.site, true) && compareDeep(route, o.route, true)
-           && compareDeep(method, o.method, true) && compareDeep(doseAndRate, o.doseAndRate, true) && compareDeep(maxDosePerPeriod, o.maxDosePerPeriod, true)
-           && compareDeep(maxDosePerAdministration, o.maxDosePerAdministration, true) && compareDeep(maxDosePerLifetime, o.maxDosePerLifetime, true)
-          ;
+           && compareDeep(asNeeded, o.asNeeded, true) && compareDeep(asNeededFor, o.asNeededFor, true) && compareDeep(site, o.site, true)
+           && compareDeep(route, o.route, true) && compareDeep(method, o.method, true) && compareDeep(doseAndRate, o.doseAndRate, true)
+           && compareDeep(maxDosePerPeriod, o.maxDosePerPeriod, true) && compareDeep(maxDosePerAdministration, o.maxDosePerAdministration, true)
+           && compareDeep(maxDosePerLifetime, o.maxDosePerLifetime, true);
       }
 
       @Override
@@ -1268,13 +1363,13 @@ public class Dosage extends BackboneType implements ICompositeType {
           return false;
         Dosage o = (Dosage) other_;
         return compareValues(sequence, o.sequence, true) && compareValues(text, o.text, true) && compareValues(patientInstruction, o.patientInstruction, true)
-          ;
+           && compareValues(asNeeded, o.asNeeded, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(sequence, text, additionalInstruction
-          , patientInstruction, timing, asNeeded, site, route, method, doseAndRate, maxDosePerPeriod
-          , maxDosePerAdministration, maxDosePerLifetime);
+          , patientInstruction, timing, asNeeded, asNeededFor, site, route, method, doseAndRate
+          , maxDosePerPeriod, maxDosePerAdministration, maxDosePerLifetime);
       }
 
 

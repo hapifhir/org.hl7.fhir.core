@@ -449,7 +449,7 @@ public class TestScript40_50 {
     if (src.hasType())
       tgt.setType(Coding40_50.convertCoding(src.getType()));
     if (src.hasResource())
-      tgt.setResource(org.hl7.fhir.r5.model.TestScript.FHIRDefinedType.fromCode(src.getResource()));
+      tgt.setResource(src.getResource());
     if (src.hasLabel())
       tgt.setLabelElement(String40_50.convertString(src.getLabelElement()));
     if (src.hasDescription())
@@ -491,7 +491,7 @@ public class TestScript40_50 {
     if (src.hasType())
       tgt.setType(Coding40_50.convertCoding(src.getType()));
     if (src.hasResource())
-      tgt.setResource(src.getResource().toCode());
+      tgt.setResource(src.getResource());
     if (src.hasLabel())
       tgt.setLabelElement(String40_50.convertString(src.getLabelElement()));
     if (src.hasDescription())

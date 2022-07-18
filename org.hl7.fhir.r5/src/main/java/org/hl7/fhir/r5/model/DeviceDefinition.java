@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -89,6 +89,7 @@ public class DeviceDefinition extends DomainResource {
             case MODEL: return "model";
             case LOTNUMBERS: return "lot-numbers";
             case SERIALNUMBERS: return "serial-numbers";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +98,7 @@ public class DeviceDefinition extends DomainResource {
             case MODEL: return "http://hl7.org/fhir/device-correctiveactionscope";
             case LOTNUMBERS: return "http://hl7.org/fhir/device-correctiveactionscope";
             case SERIALNUMBERS: return "http://hl7.org/fhir/device-correctiveactionscope";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +107,7 @@ public class DeviceDefinition extends DomainResource {
             case MODEL: return "The corrective action was intended for all units of the same model.";
             case LOTNUMBERS: return "The corrective action was intended for a specific batch of units identified by a lot number.";
             case SERIALNUMBERS: return "The corrective action was intended for an individual unit (or a set of units) individually identified by serial number.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +116,7 @@ public class DeviceDefinition extends DomainResource {
             case MODEL: return "Model";
             case LOTNUMBERS: return "Lot Numbers";
             case SERIALNUMBERS: return "Serial Numbers";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -218,6 +222,7 @@ public class DeviceDefinition extends DomainResource {
             case EXPIRATIONDATE: return "expiration-date";
             case BIOLOGICALSOURCE: return "biological-source";
             case SOFTWAREVERSION: return "software-version";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -229,6 +234,7 @@ public class DeviceDefinition extends DomainResource {
             case EXPIRATIONDATE: return "http://terminology.hl7.org/CodeSystem/device-productidentifierinudi";
             case BIOLOGICALSOURCE: return "http://terminology.hl7.org/CodeSystem/device-productidentifierinudi";
             case SOFTWAREVERSION: return "http://terminology.hl7.org/CodeSystem/device-productidentifierinudi";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -240,6 +246,7 @@ public class DeviceDefinition extends DomainResource {
             case EXPIRATIONDATE: return "The label includes the expiration date.";
             case BIOLOGICALSOURCE: return "The label includes the biological source identifier.";
             case SOFTWAREVERSION: return "The label includes the software version.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -251,6 +258,7 @@ public class DeviceDefinition extends DomainResource {
             case EXPIRATIONDATE: return "Expiration date";
             case BIOLOGICALSOURCE: return "Biological source";
             case SOFTWAREVERSION: return "Software Version";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -341,10 +349,10 @@ public class DeviceDefinition extends DomainResource {
         protected UriType jurisdiction;
 
         /**
-         * The organization that assigns the identifier algorithm.
+         * Indicates where and when the device is available on the market.
          */
         @Child(name = "marketDistribution", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Indicates whether and when the device is available on the market", formalDefinition="The organization that assigns the identifier algorithm." )
+        @Description(shortDefinition="Indicates whether and when the device is available on the market", formalDefinition="Indicates where and when the device is available on the market." )
         protected List<DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent> marketDistribution;
 
         private static final long serialVersionUID = -1659077973L;
@@ -502,7 +510,7 @@ public class DeviceDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #marketDistribution} (The organization that assigns the identifier algorithm.)
+         * @return {@link #marketDistribution} (Indicates where and when the device is available on the market.)
          */
         public List<DeviceDefinitionUdiDeviceIdentifierMarketDistributionComponent> getMarketDistribution() { 
           if (this.marketDistribution == null)
@@ -559,7 +567,7 @@ public class DeviceDefinition extends DomainResource {
           children.add(new Property("deviceIdentifier", "string", "The identifier that is to be associated with every Device that references this DeviceDefintiion for the issuer and jurisdiction provided in the DeviceDefinition.udiDeviceIdentifier.", 0, 1, deviceIdentifier));
           children.add(new Property("issuer", "uri", "The organization that assigns the identifier algorithm.", 0, 1, issuer));
           children.add(new Property("jurisdiction", "uri", "The jurisdiction to which the deviceIdentifier applies.", 0, 1, jurisdiction));
-          children.add(new Property("marketDistribution", "", "The organization that assigns the identifier algorithm.", 0, java.lang.Integer.MAX_VALUE, marketDistribution));
+          children.add(new Property("marketDistribution", "", "Indicates where and when the device is available on the market.", 0, java.lang.Integer.MAX_VALUE, marketDistribution));
         }
 
         @Override
@@ -568,7 +576,7 @@ public class DeviceDefinition extends DomainResource {
           case 1322005407: /*deviceIdentifier*/  return new Property("deviceIdentifier", "string", "The identifier that is to be associated with every Device that references this DeviceDefintiion for the issuer and jurisdiction provided in the DeviceDefinition.udiDeviceIdentifier.", 0, 1, deviceIdentifier);
           case -1179159879: /*issuer*/  return new Property("issuer", "uri", "The organization that assigns the identifier algorithm.", 0, 1, issuer);
           case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "uri", "The jurisdiction to which the deviceIdentifier applies.", 0, 1, jurisdiction);
-          case 530037984: /*marketDistribution*/  return new Property("marketDistribution", "", "The organization that assigns the identifier algorithm.", 0, java.lang.Integer.MAX_VALUE, marketDistribution);
+          case 530037984: /*marketDistribution*/  return new Property("marketDistribution", "", "Indicates where and when the device is available on the market.", 0, java.lang.Integer.MAX_VALUE, marketDistribution);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -3322,7 +3330,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         /**
          * Property value - the data type depends on the property type.
          */
-        @Child(name = "value", type = {Quantity.class, CodeableConcept.class, StringType.class, BooleanType.class, IntegerType.class, Range.class, Attachment.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "value", type = {Quantity.class, CodeableConcept.class, StringType.class, BooleanType.class, IntegerType.class, Range.class, Attachment.class}, order=2, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Property value - as a code or quantity", formalDefinition="Property value - the data type depends on the property type." )
         protected DataType value;
 
@@ -3338,9 +3346,10 @@ RegisteredName | UserFriendlyName | PatientReportedName.
     /**
      * Constructor
      */
-      public DeviceDefinitionPropertyComponent(CodeableConcept type) {
+      public DeviceDefinitionPropertyComponent(CodeableConcept type, DataType value) {
         super();
         this.setType(type);
+        this.setValue(value);
       }
 
         /**
@@ -5480,9 +5489,9 @@ RegisteredName | UserFriendlyName | PatientReportedName.
     /**
      * A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.
      */
-    @Child(name = "manufacturer", type = {StringType.class, Organization.class}, order=4, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "manufacturer", type = {Organization.class}, order=4, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Name of device manufacturer", formalDefinition="A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction." )
-    protected DataType manufacturer;
+    protected Reference manufacturer;
 
     /**
      * The name or names of the device as given by the manufacturer.
@@ -5633,7 +5642,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
     @Description(shortDefinition="Billing code or reference associated with the device", formalDefinition="Billing code or reference associated with the device." )
     protected List<DeviceDefinitionChargeItemComponent> chargeItem;
 
-    private static final long serialVersionUID = 1434026898L;
+    private static final long serialVersionUID = -1006753471L;
 
   /**
    * Constructor
@@ -5849,38 +5858,13 @@ RegisteredName | UserFriendlyName | PatientReportedName.
     /**
      * @return {@link #manufacturer} (A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.)
      */
-    public DataType getManufacturer() { 
+    public Reference getManufacturer() { 
+      if (this.manufacturer == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create DeviceDefinition.manufacturer");
+        else if (Configuration.doAutoCreate())
+          this.manufacturer = new Reference(); // cc
       return this.manufacturer;
-    }
-
-    /**
-     * @return {@link #manufacturer} (A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.)
-     */
-    public StringType getManufacturerStringType() throws FHIRException { 
-      if (this.manufacturer == null)
-        this.manufacturer = new StringType();
-      if (!(this.manufacturer instanceof StringType))
-        throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.manufacturer.getClass().getName()+" was encountered");
-      return (StringType) this.manufacturer;
-    }
-
-    public boolean hasManufacturerStringType() { 
-      return this != null && this.manufacturer instanceof StringType;
-    }
-
-    /**
-     * @return {@link #manufacturer} (A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.)
-     */
-    public Reference getManufacturerReference() throws FHIRException { 
-      if (this.manufacturer == null)
-        this.manufacturer = new Reference();
-      if (!(this.manufacturer instanceof Reference))
-        throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.manufacturer.getClass().getName()+" was encountered");
-      return (Reference) this.manufacturer;
-    }
-
-    public boolean hasManufacturerReference() { 
-      return this != null && this.manufacturer instanceof Reference;
     }
 
     public boolean hasManufacturer() { 
@@ -5890,9 +5874,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
     /**
      * @param value {@link #manufacturer} (A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.)
      */
-    public DeviceDefinition setManufacturer(DataType value) { 
-      if (value != null && !(value instanceof StringType || value instanceof Reference))
-        throw new Error("Not the right type for DeviceDefinition.manufacturer[x]: "+value.fhirType());
+    public DeviceDefinition setManufacturer(Reference value) { 
       this.manufacturer = value;
       return this;
     }
@@ -6904,7 +6886,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         children.add(new Property("identifier", "Identifier", "Unique instance identifiers assigned to a device by the software, manufacturers, other organizations or owners. For example: handle ID. The identifier is typically valued if the udiDeviceIdentifier, partNumber or modelNumber is not valued and represents a different type of identifier.  However, it is permissible to still include those identifiers in DeviceDefinition.identifier with the appropriate identifier.type.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("udiDeviceIdentifier", "", "Unique device identifier (UDI) assigned to device label or package.  Note that the Device may include multiple udiCarriers as it either may include just the udiCarrier for the jurisdiction it is sold, or for multiple jurisdictions it could have been sold.", 0, java.lang.Integer.MAX_VALUE, udiDeviceIdentifier));
         children.add(new Property("partNumber", "string", "The part number or catalog number of the device.", 0, 1, partNumber));
-        children.add(new Property("manufacturer[x]", "string|Reference(Organization)", "A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.", 0, 1, manufacturer));
+        children.add(new Property("manufacturer", "Reference(Organization)", "A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.", 0, 1, manufacturer));
         children.add(new Property("deviceName", "", "The name or names of the device as given by the manufacturer.", 0, java.lang.Integer.MAX_VALUE, deviceName));
         children.add(new Property("modelNumber", "string", "The model number for the device for example as defined by the manufacturer or labeler, or other agency.", 0, 1, modelNumber));
         children.add(new Property("classification", "", "What kind of device or device system this is.", 0, java.lang.Integer.MAX_VALUE, classification));
@@ -6935,10 +6917,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Unique instance identifiers assigned to a device by the software, manufacturers, other organizations or owners. For example: handle ID. The identifier is typically valued if the udiDeviceIdentifier, partNumber or modelNumber is not valued and represents a different type of identifier.  However, it is permissible to still include those identifiers in DeviceDefinition.identifier with the appropriate identifier.type.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case -99121287: /*udiDeviceIdentifier*/  return new Property("udiDeviceIdentifier", "", "Unique device identifier (UDI) assigned to device label or package.  Note that the Device may include multiple udiCarriers as it either may include just the udiCarrier for the jurisdiction it is sold, or for multiple jurisdictions it could have been sold.", 0, java.lang.Integer.MAX_VALUE, udiDeviceIdentifier);
         case -731502308: /*partNumber*/  return new Property("partNumber", "string", "The part number or catalog number of the device.", 0, 1, partNumber);
-        case 418079503: /*manufacturer[x]*/  return new Property("manufacturer[x]", "string|Reference(Organization)", "A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.", 0, 1, manufacturer);
-        case -1969347631: /*manufacturer*/  return new Property("manufacturer[x]", "string|Reference(Organization)", "A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.", 0, 1, manufacturer);
-        case -630681790: /*manufacturerString*/  return new Property("manufacturer[x]", "string", "A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.", 0, 1, manufacturer);
-        case 1104934522: /*manufacturerReference*/  return new Property("manufacturer[x]", "Reference(Organization)", "A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.", 0, 1, manufacturer);
+        case -1969347631: /*manufacturer*/  return new Property("manufacturer", "Reference(Organization)", "A name of the manufacturer  or legal representative e.g. labeler. Whether this is the actual manufacturer or the labeler or responsible depends on implementation and jurisdiction.", 0, 1, manufacturer);
         case 780988929: /*deviceName*/  return new Property("deviceName", "", "The name or names of the device as given by the manufacturer.", 0, java.lang.Integer.MAX_VALUE, deviceName);
         case 346619858: /*modelNumber*/  return new Property("modelNumber", "string", "The model number for the device for example as defined by the manufacturer or labeler, or other agency.", 0, 1, modelNumber);
         case 382350310: /*classification*/  return new Property("classification", "", "What kind of device or device system this is.", 0, java.lang.Integer.MAX_VALUE, classification);
@@ -6972,7 +6951,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case -99121287: /*udiDeviceIdentifier*/ return this.udiDeviceIdentifier == null ? new Base[0] : this.udiDeviceIdentifier.toArray(new Base[this.udiDeviceIdentifier.size()]); // DeviceDefinitionUdiDeviceIdentifierComponent
         case -731502308: /*partNumber*/ return this.partNumber == null ? new Base[0] : new Base[] {this.partNumber}; // StringType
-        case -1969347631: /*manufacturer*/ return this.manufacturer == null ? new Base[0] : new Base[] {this.manufacturer}; // DataType
+        case -1969347631: /*manufacturer*/ return this.manufacturer == null ? new Base[0] : new Base[] {this.manufacturer}; // Reference
         case 780988929: /*deviceName*/ return this.deviceName == null ? new Base[0] : this.deviceName.toArray(new Base[this.deviceName.size()]); // DeviceDefinitionDeviceNameComponent
         case 346619858: /*modelNumber*/ return this.modelNumber == null ? new Base[0] : new Base[] {this.modelNumber}; // StringType
         case 382350310: /*classification*/ return this.classification == null ? new Base[0] : this.classification.toArray(new Base[this.classification.size()]); // DeviceDefinitionClassificationComponent
@@ -7015,7 +6994,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           this.partNumber = TypeConvertor.castToString(value); // StringType
           return value;
         case -1969347631: // manufacturer
-          this.manufacturer = TypeConvertor.castToType(value); // DataType
+          this.manufacturer = TypeConvertor.castToReference(value); // Reference
           return value;
         case 780988929: // deviceName
           this.getDeviceName().add((DeviceDefinitionDeviceNameComponent) value); // DeviceDefinitionDeviceNameComponent
@@ -7096,8 +7075,8 @@ RegisteredName | UserFriendlyName | PatientReportedName.
           this.getUdiDeviceIdentifier().add((DeviceDefinitionUdiDeviceIdentifierComponent) value);
         } else if (name.equals("partNumber")) {
           this.partNumber = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("manufacturer[x]")) {
-          this.manufacturer = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("manufacturer")) {
+          this.manufacturer = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("deviceName")) {
           this.getDeviceName().add((DeviceDefinitionDeviceNameComponent) value);
         } else if (name.equals("modelNumber")) {
@@ -7153,7 +7132,6 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         case -1618432855:  return addIdentifier(); 
         case -99121287:  return addUdiDeviceIdentifier(); 
         case -731502308:  return getPartNumberElement();
-        case 418079503:  return getManufacturer();
         case -1969347631:  return getManufacturer();
         case 780988929:  return addDeviceName(); 
         case 346619858:  return getModelNumberElement();
@@ -7188,7 +7166,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case -99121287: /*udiDeviceIdentifier*/ return new String[] {};
         case -731502308: /*partNumber*/ return new String[] {"string"};
-        case -1969347631: /*manufacturer*/ return new String[] {"string", "Reference"};
+        case -1969347631: /*manufacturer*/ return new String[] {"Reference"};
         case 780988929: /*deviceName*/ return new String[] {};
         case 346619858: /*modelNumber*/ return new String[] {"string"};
         case 382350310: /*classification*/ return new String[] {};
@@ -7229,11 +7207,7 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         else if (name.equals("partNumber")) {
           throw new FHIRException("Cannot call addChild on a primitive type DeviceDefinition.partNumber");
         }
-        else if (name.equals("manufacturerString")) {
-          this.manufacturer = new StringType();
-          return this.manufacturer;
-        }
-        else if (name.equals("manufacturerReference")) {
+        else if (name.equals("manufacturer")) {
           this.manufacturer = new Reference();
           return this.manufacturer;
         }
@@ -7470,72 +7444,6 @@ RegisteredName | UserFriendlyName | PatientReportedName.
   public ResourceType getResourceType() {
     return ResourceType.DeviceDefinition;
    }
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>The identifier of the component</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceDefinition.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="DeviceDefinition.identifier", description="The identifier of the component", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>The identifier of the component</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceDefinition.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>parent</b>
-   * <p>
-   * Description: <b>The parent DeviceDefinition resource</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>DeviceDefinition.parentDevice</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="parent", path="DeviceDefinition.parentDevice", description="The parent DeviceDefinition resource", type="reference", target={DeviceDefinition.class } )
-  public static final String SP_PARENT = "parent";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>parent</b>
-   * <p>
-   * Description: <b>The parent DeviceDefinition resource</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>DeviceDefinition.parentDevice</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PARENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PARENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>DeviceDefinition:parent</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PARENT = new ca.uhn.fhir.model.api.Include("DeviceDefinition:parent").toLocked();
-
- /**
-   * Search parameter: <b>type</b>
-   * <p>
-   * Description: <b>The device component type</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceDefinition.classification.type</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="type", path="DeviceDefinition.classification.type", description="The device component type", type="token" )
-  public static final String SP_TYPE = "type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>type</b>
-   * <p>
-   * Description: <b>The device component type</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceDefinition.classification.type</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
 
 }

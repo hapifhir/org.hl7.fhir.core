@@ -426,7 +426,7 @@ public class TestScript30_50 {
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasType()) tgt.setType(Coding30_50.convertCoding(src.getType()));
     if (src.hasResource())
-      tgt.setResource(org.hl7.fhir.r5.model.TestScript.FHIRDefinedType.fromCode(src.getResource()));
+      tgt.setResource(src.getResource());
     if (src.hasLabel()) tgt.setLabelElement(String30_50.convertString(src.getLabelElement()));
     if (src.hasDescription()) tgt.setDescriptionElement(String30_50.convertString(src.getDescriptionElement()));
     if (src.hasAccept()) tgt.setAccept(convertContentType(src.getAccept()));
@@ -451,7 +451,7 @@ public class TestScript30_50 {
     org.hl7.fhir.dstu3.model.TestScript.SetupActionOperationComponent tgt = new org.hl7.fhir.dstu3.model.TestScript.SetupActionOperationComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasType()) tgt.setType(Coding30_50.convertCoding(src.getType()));
-    if (src.hasResource()) tgt.setResource(src.getResource().toCode());
+    if (src.hasResource()) tgt.setResource(src.getResource());
     if (src.hasLabel()) tgt.setLabelElement(String30_50.convertString(src.getLabelElement()));
     if (src.hasDescription()) tgt.setDescriptionElement(String30_50.convertString(src.getDescriptionElement()));
     if (src.hasAccept()) tgt.setAccept(convertContentType(src.getAccept()));

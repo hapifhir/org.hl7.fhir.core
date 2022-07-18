@@ -71,7 +71,7 @@ public class CarePlan40_50 {
     if (src.hasCreated())
       tgt.setCreatedElement(DateTime40_50.convertDateTime(src.getCreatedElement()));
     if (src.hasAuthor())
-      tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
+      tgt.setCustodian(Reference40_50.convertReference(src.getAuthor()));
     for (org.hl7.fhir.r4.model.Reference t : src.getContributor())
       tgt.addContributor(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getCareTeam()) tgt.addCareTeam(Reference40_50.convertReference(t));
@@ -118,8 +118,8 @@ public class CarePlan40_50 {
       tgt.setPeriod(Period40_50.convertPeriod(src.getPeriod()));
     if (src.hasCreated())
       tgt.setCreatedElement(DateTime40_50.convertDateTime(src.getCreatedElement()));
-    if (src.hasAuthor())
-      tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
+    if (src.hasCustodian())
+      tgt.setAuthor(Reference40_50.convertReference(src.getCustodian()));
     for (org.hl7.fhir.r5.model.Reference t : src.getContributor())
       tgt.addContributor(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getCareTeam()) tgt.addCareTeam(Reference40_50.convertReference(t));

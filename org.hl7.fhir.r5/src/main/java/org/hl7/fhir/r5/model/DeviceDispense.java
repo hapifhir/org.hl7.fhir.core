@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -131,6 +131,7 @@ public class DeviceDispense extends DomainResource {
             case STOPPED: return "stopped";
             case DECLINED: return "declined";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -145,6 +146,7 @@ public class DeviceDispense extends DomainResource {
             case STOPPED: return "http://terminology.hl7.org/CodeSystem/devicedispense-status";
             case DECLINED: return "http://terminology.hl7.org/CodeSystem/devicedispense-status";
             case UNKNOWN: return "http://terminology.hl7.org/CodeSystem/devicedispense-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -159,6 +161,7 @@ public class DeviceDispense extends DomainResource {
             case STOPPED: return "Actions implied by the dispense have been permanently halted, before all of them occurred.";
             case DECLINED: return "The dispense was declined and not performed.";
             case UNKNOWN: return "The authoring system does not know which of the status values applies for this dispense.  Note: this concept is not to be used for other - one of the listed statuses is presumed to apply, it's just now known which one.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -173,6 +176,7 @@ public class DeviceDispense extends DomainResource {
             case STOPPED: return "Stopped";
             case DECLINED: return "Declined";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1872,52 +1876,6 @@ public class DeviceDispense extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.DeviceDispense;
    }
-
- /**
-   * Search parameter: <b>code</b>
-   * <p>
-   * Description: <b>Search for devices that match this code</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceDispense.device.concept</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="code", path="DeviceDispense.device.concept", description="Search for devices that match this code", type="token" )
-  public static final String SP_CODE = "code";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>code</b>
-   * <p>
-   * Description: <b>Search for devices that match this code</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceDispense.device.concept</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
-
- /**
-   * Search parameter: <b>subject</b>
-   * <p>
-   * Description: <b>The identity of a patient for whom to list dispenses</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>DeviceDispense.subject</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="subject", path="DeviceDispense.subject", description="The identity of a patient for whom to list dispenses", type="reference", target={Patient.class } )
-  public static final String SP_SUBJECT = "subject";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
-   * <p>
-   * Description: <b>The identity of a patient for whom to list dispenses</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>DeviceDispense.subject</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>DeviceDispense:subject</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("DeviceDispense:subject").toLocked();
 
 
 }
