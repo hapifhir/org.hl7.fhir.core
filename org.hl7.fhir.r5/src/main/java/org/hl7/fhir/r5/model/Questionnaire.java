@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,6 +82,7 @@ public class Questionnaire extends MetadataResource {
           switch (this) {
             case ALL: return "all";
             case ANY: return "any";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -89,6 +90,7 @@ public class Questionnaire extends MetadataResource {
           switch (this) {
             case ALL: return "http://hl7.org/fhir/questionnaire-enable-behavior";
             case ANY: return "http://hl7.org/fhir/questionnaire-enable-behavior";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -96,6 +98,7 @@ public class Questionnaire extends MetadataResource {
           switch (this) {
             case ALL: return "Enable the question when all the enableWhen criteria are satisfied.";
             case ANY: return "Enable the question when any of the enableWhen criteria are satisfied.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -103,6 +106,7 @@ public class Questionnaire extends MetadataResource {
           switch (this) {
             case ALL: return "All";
             case ANY: return "Any";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -181,6 +185,7 @@ public class Questionnaire extends MetadataResource {
             case OPTIONSONLY: return "optionsOnly";
             case OPTIONSORTYPE: return "optionsOrType";
             case OPTIONSORSTRING: return "optionsOrString";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -189,6 +194,7 @@ public class Questionnaire extends MetadataResource {
             case OPTIONSONLY: return "http://hl7.org/fhir/questionnaire-answer-constraint";
             case OPTIONSORTYPE: return "http://hl7.org/fhir/questionnaire-answer-constraint";
             case OPTIONSORSTRING: return "http://hl7.org/fhir/questionnaire-answer-constraint";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -197,6 +203,7 @@ public class Questionnaire extends MetadataResource {
             case OPTIONSONLY: return "Only values listed as answerOption or in the expansion of the answerValueSet are permitted";
             case OPTIONSORTYPE: return "In addition to the values listed as answerOption or in the expansion of the answerValueSet, any other values that correspond to the specified item.type are permitted";
             case OPTIONSORSTRING: return "In addition to the values listed as answerOption or in the expansion of the answerValueSet, free-text strings are permitted.  Answers will have a type of 'string'.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -205,6 +212,7 @@ public class Questionnaire extends MetadataResource {
             case OPTIONSONLY: return "Options only";
             case OPTIONSORTYPE: return "Options or 'type'";
             case OPTIONSORSTRING: return "Options or string";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -282,6 +290,7 @@ public class Questionnaire extends MetadataResource {
           switch (this) {
             case HIDDEN: return "hidden";
             case PROTECTED: return "protected";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -289,6 +298,7 @@ public class Questionnaire extends MetadataResource {
           switch (this) {
             case HIDDEN: return "http://hl7.org/fhir/questionnaire-disabled-display";
             case PROTECTED: return "http://hl7.org/fhir/questionnaire-disabled-display";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -296,6 +306,7 @@ public class Questionnaire extends MetadataResource {
           switch (this) {
             case HIDDEN: return "The item (and its children) should not be visible to the user at all.";
             case PROTECTED: return "The item (and possibly its children) should not be selectable or editable but should still be visible - to allow the user to see what questions *could* have been completed had other answers caused the item to be enabled.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -303,6 +314,7 @@ public class Questionnaire extends MetadataResource {
           switch (this) {
             case HIDDEN: return "Hidden";
             case PROTECTED: return "Protected";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -409,6 +421,7 @@ public class Questionnaire extends MetadataResource {
             case LESS_THAN: return "<";
             case GREATER_OR_EQUAL: return ">=";
             case LESS_OR_EQUAL: return "<=";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -421,6 +434,7 @@ public class Questionnaire extends MetadataResource {
             case LESS_THAN: return "http://hl7.org/fhir/questionnaire-enable-operator";
             case GREATER_OR_EQUAL: return "http://hl7.org/fhir/questionnaire-enable-operator";
             case LESS_OR_EQUAL: return "http://hl7.org/fhir/questionnaire-enable-operator";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -433,6 +447,7 @@ public class Questionnaire extends MetadataResource {
             case LESS_THAN: return "True if at least one answer has a value that is less than the enableWhen answer.";
             case GREATER_OR_EQUAL: return "True if at least one answer has a value that is greater or equal to the enableWhen answer.";
             case LESS_OR_EQUAL: return "True if at least one answer has a value that is less or equal to the enableWhen answer.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -445,6 +460,7 @@ public class Questionnaire extends MetadataResource {
             case LESS_THAN: return "Less Than";
             case GREATER_OR_EQUAL: return "Greater or Equals";
             case LESS_OR_EQUAL: return "Less or Equals";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -644,6 +660,7 @@ public class Questionnaire extends MetadataResource {
             case ATTACHMENT: return "attachment";
             case REFERENCE: return "reference";
             case QUANTITY: return "quantity";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -665,6 +682,7 @@ public class Questionnaire extends MetadataResource {
             case ATTACHMENT: return "http://hl7.org/fhir/item-type";
             case REFERENCE: return "http://hl7.org/fhir/item-type";
             case QUANTITY: return "http://hl7.org/fhir/item-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -686,6 +704,7 @@ public class Questionnaire extends MetadataResource {
             case ATTACHMENT: return "Question with binary content such as an image, PDF, etc. as an answer (valueAttachment).";
             case REFERENCE: return "Question with a reference to another resource (practitioner, organization, etc.) as an answer (valueReference).";
             case QUANTITY: return "Question with a combination of a numeric value and unit, potentially with a comparator (<, >, etc.) as an answer. (valueQuantity) There is an extension 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit' that can be used to define what unit should be captured (or the unit that has a ucum conversion from the provided unit).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -707,6 +726,7 @@ public class Questionnaire extends MetadataResource {
             case ATTACHMENT: return "Attachment";
             case REFERENCE: return "Reference";
             case QUANTITY: return "Quantity";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -4811,7 +4831,7 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
       return 0;
     }
     /**
-     * @return {@link #topic} (Descriptive topics related to the content of the library. Topics provide a high-level categorization of the library that can be useful for filtering and searching.)
+     * @return {@link #topic} (Descriptive topics related to the content of the questionnaire. Topics provide a high-level categorization of the questionnaire that can be useful for filtering and searching.)
      */
     public List<CodeableConcept> getTopic() { 
       return new ArrayList<>();
@@ -5476,426 +5496,6 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
   public ResourceType getResourceType() {
     return ResourceType.Questionnaire;
    }
-
- /**
-   * Search parameter: <b>combo-code</b>
-   * <p>
-   * Description: <b>A code that corresponds to one of its items in the questionnaire</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Questionnaire.code | Questionnaire.item.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="combo-code", path="Questionnaire.code | Questionnaire.item.code", description="A code that corresponds to one of its items in the questionnaire", type="token" )
-  public static final String SP_COMBO_CODE = "combo-code";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>combo-code</b>
-   * <p>
-   * Description: <b>A code that corresponds to one of its items in the questionnaire</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Questionnaire.code | Questionnaire.item.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam COMBO_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_COMBO_CODE);
-
- /**
-   * Search parameter: <b>context-quantity</b>
-   * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the questionnaire</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>(Questionnaire.useContext.value as Quantity) | (Questionnaire.useContext.value as Range)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-quantity", path="(Questionnaire.useContext.value as Quantity) | (Questionnaire.useContext.value as Range)", description="A quantity- or range-valued use context assigned to the questionnaire", type="quantity" )
-  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
-   * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the questionnaire</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>(Questionnaire.useContext.value as Quantity) | (Questionnaire.useContext.value as Range)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
-
- /**
-   * Search parameter: <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the questionnaire</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>Questionnaire.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-quantity", path="Questionnaire.useContext", description="A use context type and quantity- or range-based value assigned to the questionnaire", type="composite", compositeOf={"context-type", "context-quantity"} )
-  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the questionnaire</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>Questionnaire.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
-
- /**
-   * Search parameter: <b>context-type-value</b>
-   * <p>
-   * Description: <b>A use context type and value assigned to the questionnaire</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>Questionnaire.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-value", path="Questionnaire.useContext", description="A use context type and value assigned to the questionnaire", type="composite", compositeOf={"context-type", "context"} )
-  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
-   * <p>
-   * Description: <b>A use context type and value assigned to the questionnaire</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>Questionnaire.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
-
- /**
-   * Search parameter: <b>context-type</b>
-   * <p>
-   * Description: <b>A type of use context assigned to the questionnaire</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Questionnaire.useContext.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type", path="Questionnaire.useContext.code", description="A type of use context assigned to the questionnaire", type="token" )
-  public static final String SP_CONTEXT_TYPE = "context-type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type</b>
-   * <p>
-   * Description: <b>A type of use context assigned to the questionnaire</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Questionnaire.useContext.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
-
- /**
-   * Search parameter: <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the questionnaire</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(Questionnaire.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context", path="(Questionnaire.useContext.value as CodeableConcept)", description="A use context assigned to the questionnaire", type="token" )
-  public static final String SP_CONTEXT = "context";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the questionnaire</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(Questionnaire.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
-
- /**
-   * Search parameter: <b>date</b>
-   * <p>
-   * Description: <b>The questionnaire publication date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Questionnaire.date</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="date", path="Questionnaire.date", description="The questionnaire publication date", type="date" )
-  public static final String SP_DATE = "date";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>date</b>
-   * <p>
-   * Description: <b>The questionnaire publication date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Questionnaire.date</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
-
- /**
-   * Search parameter: <b>definition</b>
-   * <p>
-   * Description: <b>ElementDefinition - details for the item</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>Questionnaire.item.definition</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="definition", path="Questionnaire.item.definition", description="ElementDefinition - details for the item", type="uri" )
-  public static final String SP_DEFINITION = "definition";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>definition</b>
-   * <p>
-   * Description: <b>ElementDefinition - details for the item</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>Questionnaire.item.definition</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam DEFINITION = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_DEFINITION);
-
- /**
-   * Search parameter: <b>description</b>
-   * <p>
-   * Description: <b>The description of the questionnaire</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Questionnaire.description</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="description", path="Questionnaire.description", description="The description of the questionnaire", type="string" )
-  public static final String SP_DESCRIPTION = "description";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>description</b>
-   * <p>
-   * Description: <b>The description of the questionnaire</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Questionnaire.description</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
-
- /**
-   * Search parameter: <b>effective</b>
-   * <p>
-   * Description: <b>The time during which the questionnaire is intended to be in use</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Questionnaire.effectivePeriod</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="effective", path="Questionnaire.effectivePeriod", description="The time during which the questionnaire is intended to be in use", type="date" )
-  public static final String SP_EFFECTIVE = "effective";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>effective</b>
-   * <p>
-   * Description: <b>The time during which the questionnaire is intended to be in use</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Questionnaire.effectivePeriod</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam EFFECTIVE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_EFFECTIVE);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>External identifier for the questionnaire</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Questionnaire.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="Questionnaire.identifier", description="External identifier for the questionnaire", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>External identifier for the questionnaire</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Questionnaire.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>item-code</b>
-   * <p>
-   * Description: <b>A code that corresponds to one of the items in the questionnaire</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Questionnaire.item.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="item-code", path="Questionnaire.item.code", description="A code that corresponds to one of the items in the questionnaire", type="token" )
-  public static final String SP_ITEM_CODE = "item-code";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>item-code</b>
-   * <p>
-   * Description: <b>A code that corresponds to one of the items in the questionnaire</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Questionnaire.item.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ITEM_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ITEM_CODE);
-
- /**
-   * Search parameter: <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the questionnaire</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Questionnaire.jurisdiction</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="jurisdiction", path="Questionnaire.jurisdiction", description="Intended jurisdiction for the questionnaire", type="token" )
-  public static final String SP_JURISDICTION = "jurisdiction";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the questionnaire</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Questionnaire.jurisdiction</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
-
- /**
-   * Search parameter: <b>name</b>
-   * <p>
-   * Description: <b>Computationally friendly name of the questionnaire</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Questionnaire.name</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="name", path="Questionnaire.name", description="Computationally friendly name of the questionnaire", type="string" )
-  public static final String SP_NAME = "name";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>name</b>
-   * <p>
-   * Description: <b>Computationally friendly name of the questionnaire</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Questionnaire.name</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
-
- /**
-   * Search parameter: <b>publisher</b>
-   * <p>
-   * Description: <b>Name of the publisher of the questionnaire</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Questionnaire.publisher</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="publisher", path="Questionnaire.publisher", description="Name of the publisher of the questionnaire", type="string" )
-  public static final String SP_PUBLISHER = "publisher";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>publisher</b>
-   * <p>
-   * Description: <b>Name of the publisher of the questionnaire</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Questionnaire.publisher</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam PUBLISHER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PUBLISHER);
-
- /**
-   * Search parameter: <b>questionnaire-code</b>
-   * <p>
-   * Description: <b>A code that matches one of the Questionnaire.code codings</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Questionnaire.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="questionnaire-code", path="Questionnaire.code", description="A code that matches one of the Questionnaire.code codings", type="token" )
-  public static final String SP_QUESTIONNAIRE_CODE = "questionnaire-code";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>questionnaire-code</b>
-   * <p>
-   * Description: <b>A code that matches one of the Questionnaire.code codings</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Questionnaire.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam QUESTIONNAIRE_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_QUESTIONNAIRE_CODE);
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>The current status of the questionnaire</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Questionnaire.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="Questionnaire.status", description="The current status of the questionnaire", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>The current status of the questionnaire</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Questionnaire.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
-
- /**
-   * Search parameter: <b>subject-type</b>
-   * <p>
-   * Description: <b>Resource that can be subject of QuestionnaireResponse</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Questionnaire.subjectType</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="subject-type", path="Questionnaire.subjectType", description="Resource that can be subject of QuestionnaireResponse", type="token" )
-  public static final String SP_SUBJECT_TYPE = "subject-type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>subject-type</b>
-   * <p>
-   * Description: <b>Resource that can be subject of QuestionnaireResponse</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Questionnaire.subjectType</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SUBJECT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SUBJECT_TYPE);
-
- /**
-   * Search parameter: <b>title</b>
-   * <p>
-   * Description: <b>The human-friendly name of the questionnaire</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Questionnaire.title</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="title", path="Questionnaire.title", description="The human-friendly name of the questionnaire", type="string" )
-  public static final String SP_TITLE = "title";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>title</b>
-   * <p>
-   * Description: <b>The human-friendly name of the questionnaire</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Questionnaire.title</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
-
- /**
-   * Search parameter: <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the questionnaire</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>Questionnaire.url</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="url", path="Questionnaire.url", description="The uri that identifies the questionnaire", type="uri" )
-  public static final String SP_URL = "url";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the questionnaire</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>Questionnaire.url</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
-
- /**
-   * Search parameter: <b>version</b>
-   * <p>
-   * Description: <b>The business version of the questionnaire</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Questionnaire.version</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="version", path="Questionnaire.version", description="The business version of the questionnaire", type="token" )
-  public static final String SP_VERSION = "version";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>version</b>
-   * <p>
-   * Description: <b>The business version of the questionnaire</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Questionnaire.version</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
 // Manual code (from Configuration.txt):
 public QuestionnaireItemComponent getQuestion(String linkId) {

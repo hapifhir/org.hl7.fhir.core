@@ -44,13 +44,13 @@ public class ConceptMapRenderer extends TerminologyRenderer {
 
     XhtmlNode p = x.para();
     p.tx("Mapping from ");
-    if (cm.hasSource())
-      AddVsRef(cm.getSource().primitiveValue(), p);
+    if (cm.hasSourceScope())
+      AddVsRef(cm.getSourceScope().primitiveValue(), p);
     else
       p.tx("(not specified)");
     p.tx(" to ");
-    if (cm.hasTarget())
-      AddVsRef(cm.getTarget().primitiveValue(), p);
+    if (cm.hasTargetScope())
+      AddVsRef(cm.getTargetScope().primitiveValue(), p);
     else 
       p.tx("(not specified)");
 
@@ -112,12 +112,12 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           for (OtherElementComponent d : ccm.getDependsOn()) {
             if (!sources.containsKey(d.getProperty()))
               sources.put(d.getProperty(), new HashSet<String>());
-            sources.get(d.getProperty()).add(d.getSystem());
+//            sources.get(d.getProperty()).add(d.getSystem());
           }
           for (OtherElementComponent d : ccm.getProduct()) {
             if (!targets.containsKey(d.getProperty()))
               targets.put(d.getProperty(), new HashSet<String>());
-            targets.get(d.getProperty()).add(d.getSystem());
+//            targets.get(d.getProperty()).add(d.getSystem());
           }
         }
       }
@@ -425,17 +425,18 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     for (OtherElementComponent c : list) {
       if (s.equals(c.getProperty()))
         if (withSystem)
-          return c.getSystem()+" / "+c.getValue();
+          return /*c.getSystem()+" / "+*/c.getValue().primitiveValue();
         else
-          return c.getValue();
+          return c.getValue().primitiveValue();
     }
     return null;
   }
 
   private String getDisplay(List<OtherElementComponent> list, String s) {
     for (OtherElementComponent c : list) {
-      if (s.equals(c.getProperty()))
-        return getDisplayForConcept(systemFromCanonical(c.getSystem()), versionFromCanonical(c.getSystem()), c.getValue());
+      if (s.equals(c.getProperty())) {
+        // return getDisplayForConcept(systemFromCanonical(c.getSystem()), versionFromCanonical(c.getSystem()), c.getValue());
+      }
     }
     return null;
   }

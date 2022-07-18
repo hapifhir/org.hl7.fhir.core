@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -174,6 +174,7 @@ public class Contract extends DomainResource {
             case REVOKED: return "revoked";
             case RESOLVED: return "resolved";
             case TERMINATED: return "terminated";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -194,6 +195,7 @@ public class Contract extends DomainResource {
             case REVOKED: return "http://hl7.org/fhir/contract-publicationstatus";
             case RESOLVED: return "http://hl7.org/fhir/contract-publicationstatus";
             case TERMINATED: return "http://hl7.org/fhir/contract-publicationstatus";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -214,6 +216,7 @@ public class Contract extends DomainResource {
             case REVOKED: return "A Contract that is rescinded.  May be required prior to replacing with an updated Contract. Comparable FHIR and v.3 status codes: nullified.";
             case RESOLVED: return "Contract is reactivated after being pended because of faulty execution. *E.g., competency of the signer(s), or where the policy is substantially different from and did not accompany the application/form so that the applicant could not compare them. Aka - ''reactivated''. Usage: Optional stage where a pended contract is reactivated. Precedence Order = 8. Comparable FHIR and v.3 status codes: reactivated.";
             case TERMINATED: return "Contract reaches its expiry date. It might or might not be renewed or renegotiated. Usage: Normal end of contract period. Precedence Order = 12. Comparable FHIR and v.3 status codes: Obsoleted.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -234,6 +237,7 @@ public class Contract extends DomainResource {
             case REVOKED: return "Revoked";
             case RESOLVED: return "Resolved";
             case TERMINATED: return "Terminated";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -474,6 +478,7 @@ public class Contract extends DomainResource {
             case REVOKED: return "revoked";
             case RESOLVED: return "resolved";
             case TERMINATED: return "terminated";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -494,6 +499,7 @@ public class Contract extends DomainResource {
             case REVOKED: return "http://hl7.org/fhir/contract-status";
             case RESOLVED: return "http://hl7.org/fhir/contract-status";
             case TERMINATED: return "http://hl7.org/fhir/contract-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -514,6 +520,7 @@ public class Contract extends DomainResource {
             case REVOKED: return "A Contract that is rescinded.  May be required prior to replacing with an updated Contract. Comparable FHIR and v.3 status codes: nullified.";
             case RESOLVED: return "Contract is reactivated after being pended because of faulty execution. *E.g., competency of the signer(s), or where the policy is substantially different from and did not accompany the application/form so that the applicant could not compare them. Aka - ''reactivated''. Usage: Optional stage where a pended contract is reactivated. Precedence Order = 8. Comparable FHIR and v.3 status codes: reactivated.";
             case TERMINATED: return "Contract reaches its expiry date. It might or might not be renewed or renegotiated. Usage: Normal end of contract period. Precedence Order = 12. Comparable FHIR and v.3 status codes: Obsoleted.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -534,6 +541,7 @@ public class Contract extends DomainResource {
             case REVOKED: return "Revoked";
             case RESOLVED: return "Resolved";
             case TERMINATED: return "Terminated";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -11429,236 +11437,6 @@ public class Contract extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.Contract;
    }
-
- /**
-   * Search parameter: <b>authority</b>
-   * <p>
-   * Description: <b>The authority of the contract</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Contract.authority</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="authority", path="Contract.authority", description="The authority of the contract", type="reference", target={Organization.class } )
-  public static final String SP_AUTHORITY = "authority";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>authority</b>
-   * <p>
-   * Description: <b>The authority of the contract</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Contract.authority</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam AUTHORITY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_AUTHORITY);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Contract:authority</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_AUTHORITY = new ca.uhn.fhir.model.api.Include("Contract:authority").toLocked();
-
- /**
-   * Search parameter: <b>domain</b>
-   * <p>
-   * Description: <b>The domain of the contract</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Contract.domain</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="domain", path="Contract.domain", description="The domain of the contract", type="reference", target={Location.class } )
-  public static final String SP_DOMAIN = "domain";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>domain</b>
-   * <p>
-   * Description: <b>The domain of the contract</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Contract.domain</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DOMAIN = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DOMAIN);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Contract:domain</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_DOMAIN = new ca.uhn.fhir.model.api.Include("Contract:domain").toLocked();
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>The identity of the contract</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Contract.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="Contract.identifier", description="The identity of the contract", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>The identity of the contract</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Contract.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>instantiates</b>
-   * <p>
-   * Description: <b>A source definition of the contract</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>Contract.instantiatesUri</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="instantiates", path="Contract.instantiatesUri", description="A source definition of the contract", type="uri" )
-  public static final String SP_INSTANTIATES = "instantiates";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>instantiates</b>
-   * <p>
-   * Description: <b>A source definition of the contract</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>Contract.instantiatesUri</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam INSTANTIATES = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_INSTANTIATES);
-
- /**
-   * Search parameter: <b>issued</b>
-   * <p>
-   * Description: <b>The date/time the contract was issued</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Contract.issued</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="issued", path="Contract.issued", description="The date/time the contract was issued", type="date" )
-  public static final String SP_ISSUED = "issued";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>issued</b>
-   * <p>
-   * Description: <b>The date/time the contract was issued</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Contract.issued</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam ISSUED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_ISSUED);
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>The identity of the subject of the contract (if a patient)</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Contract.subject.where(resolve() is Patient)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="Contract.subject.where(resolve() is Patient)", description="The identity of the subject of the contract (if a patient)", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>The identity of the subject of the contract (if a patient)</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Contract.subject.where(resolve() is Patient)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Contract:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Contract:patient").toLocked();
-
- /**
-   * Search parameter: <b>signer</b>
-   * <p>
-   * Description: <b>Contract Signatory Party</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Contract.signer.party</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="signer", path="Contract.signer.party", description="Contract Signatory Party", type="reference", target={Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_SIGNER = "signer";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>signer</b>
-   * <p>
-   * Description: <b>Contract Signatory Party</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Contract.signer.party</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SIGNER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SIGNER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Contract:signer</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SIGNER = new ca.uhn.fhir.model.api.Include("Contract:signer").toLocked();
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>The status of the contract</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Contract.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="Contract.status", description="The status of the contract", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>The status of the contract</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Contract.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
-
- /**
-   * Search parameter: <b>subject</b>
-   * <p>
-   * Description: <b>The identity of the subject of the contract</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Contract.subject</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="subject", path="Contract.subject", description="The identity of the subject of the contract", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
-  public static final String SP_SUBJECT = "subject";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
-   * <p>
-   * Description: <b>The identity of the subject of the contract</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Contract.subject</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Contract:subject</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("Contract:subject").toLocked();
-
- /**
-   * Search parameter: <b>url</b>
-   * <p>
-   * Description: <b>The basal contract definition</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>Contract.url</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="url", path="Contract.url", description="The basal contract definition", type="uri" )
-  public static final String SP_URL = "url";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>url</b>
-   * <p>
-   * Description: <b>The basal contract definition</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>Contract.url</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
 
 
 }

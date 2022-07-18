@@ -1,12 +1,18 @@
 package org.hl7.fhir.convertors.conv30_50.resources30_50;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hl7.fhir.convertors.context.ConversionContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Annotation30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.DateTime30_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.Coding;
 
 public class Condition30_50 {
 
@@ -48,11 +54,11 @@ public class Condition30_50 {
     if (src.hasAssertedDate())
       tgt.setRecordedDateElement(DateTime30_50.convertDateTime(src.getAssertedDateElement()));
     if (src.hasAsserter())
-      tgt.setAsserter(Reference30_50.convertReference(src.getAsserter()));
+      tgt.addParticipant().setFunction(new CodeableConcept(new Coding("http://terminology.hl7.org/CodeSystem/provenance-participant-type", "informant", "Informant"))).setActor(Reference30_50.convertReference(src.getAsserter()));
     if (src.hasStage())
       tgt.addStage(convertConditionStageComponent(src.getStage()));
     for (org.hl7.fhir.dstu3.model.Condition.ConditionEvidenceComponent t : src.getEvidence())
-      tgt.addEvidence(convertConditionEvidenceComponent(t));
+      tgt.getEvidence().addAll(convertConditionEvidenceComponent(t));
     for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(Annotation30_50.convertAnnotation(t));
     return tgt;
   }
@@ -86,11 +92,13 @@ public class Condition30_50 {
       tgt.setAbatement(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getAbatement()));
     if (src.hasRecordedDate())
       tgt.setAssertedDateElement(DateTime30_50.convertDateTime(src.getRecordedDateElement()));
-    if (src.hasAsserter())
-      tgt.setAsserter(Reference30_50.convertReference(src.getAsserter()));
+    for (org.hl7.fhir.r5.model.Condition.ConditionParticipantComponent t : src.getParticipant()) {
+      if (t.getFunction().hasCoding("http://terminology.hl7.org/CodeSystem/provenance-participant-type", "informant"))
+        tgt.setAsserter(Reference30_50.convertReference(t.getActor()));
+    }
     if (src.hasStage())
       tgt.setStage(convertConditionStageComponent(src.getStageFirstRep()));
-    for (org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent t : src.getEvidence())
+    for (org.hl7.fhir.r5.model.CodeableReference t : src.getEvidence())
       tgt.addEvidence(convertConditionEvidenceComponent(t));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(Annotation30_50.convertAnnotation(t));
     return tgt;
@@ -137,25 +145,34 @@ public class Condition30_50 {
     }
   }
 
-  public static org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent convertConditionEvidenceComponent(org.hl7.fhir.dstu3.model.Condition.ConditionEvidenceComponent src) throws FHIRException {
+  public static List<org.hl7.fhir.r5.model.CodeableReference> convertConditionEvidenceComponent(org.hl7.fhir.dstu3.model.Condition.ConditionEvidenceComponent src) throws FHIRException {
     if (src == null)
       return null;
-    org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent tgt = new org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCode())
-      tgt.addCode(CodeableConcept30_50.convertCodeableConcept(t));
-    for (org.hl7.fhir.dstu3.model.Reference t : src.getDetail()) tgt.addDetail(Reference30_50.convertReference(t));
-    return tgt;
+    List<org.hl7.fhir.r5.model.CodeableReference> list = new ArrayList<>();
+    for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCode()) {
+      org.hl7.fhir.r5.model.CodeableReference tgt = new org.hl7.fhir.r5.model.CodeableReference();
+      ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+      tgt.setConcept(CodeableConcept30_50.convertCodeableConcept(t));
+      list.add(tgt);
+    }
+    for (org.hl7.fhir.dstu3.model.Reference t : src.getDetail()) {
+      org.hl7.fhir.r5.model.CodeableReference tgt = new org.hl7.fhir.r5.model.CodeableReference();
+      ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+      tgt.setReference(Reference30_50.convertReference(t));
+      list.add(tgt);
+    }
+    return list;
   }
 
-  public static org.hl7.fhir.dstu3.model.Condition.ConditionEvidenceComponent convertConditionEvidenceComponent(org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent src) throws FHIRException {
+  public static org.hl7.fhir.dstu3.model.Condition.ConditionEvidenceComponent convertConditionEvidenceComponent(org.hl7.fhir.r5.model.CodeableReference src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Condition.ConditionEvidenceComponent tgt = new org.hl7.fhir.dstu3.model.Condition.ConditionEvidenceComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode())
-      tgt.addCode(CodeableConcept30_50.convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getDetail()) tgt.addDetail(Reference30_50.convertReference(t));
+    if (src.hasConcept())
+      tgt.addCode(CodeableConcept30_50.convertCodeableConcept(src.getConcept()));
+    if (src.hasReference())
+      tgt.addDetail(Reference30_50.convertReference(src.getReference()));
     return tgt;
   }
 
