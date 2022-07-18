@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,334 +52,6 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="InsurancePlan", profile="http://hl7.org/fhir/StructureDefinition/InsurancePlan")
 public class InsurancePlan extends DomainResource {
-
-    @Block()
-    public static class InsurancePlanContactComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * Indicates a purpose for which the contact can be reached.
-         */
-        @Child(name = "purpose", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The type of contact", formalDefinition="Indicates a purpose for which the contact can be reached." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/contactentity-type")
-        protected CodeableConcept purpose;
-
-        /**
-         * A name associated with the contact.
-         */
-        @Child(name = "name", type = {HumanName.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="A name associated with the contact", formalDefinition="A name associated with the contact." )
-        protected HumanName name;
-
-        /**
-         * A contact detail (e.g. a telephone number or an email address) by which the party may be contacted.
-         */
-        @Child(name = "telecom", type = {ContactPoint.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Contact details (telephone, email, etc.)  for a contact", formalDefinition="A contact detail (e.g. a telephone number or an email address) by which the party may be contacted." )
-        protected List<ContactPoint> telecom;
-
-        /**
-         * Visiting or postal addresses for the contact.
-         */
-        @Child(name = "address", type = {Address.class}, order=4, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Visiting or postal addresses for the contact", formalDefinition="Visiting or postal addresses for the contact." )
-        protected Address address;
-
-        private static final long serialVersionUID = 1831121305L;
-
-    /**
-     * Constructor
-     */
-      public InsurancePlanContactComponent() {
-        super();
-      }
-
-        /**
-         * @return {@link #purpose} (Indicates a purpose for which the contact can be reached.)
-         */
-        public CodeableConcept getPurpose() { 
-          if (this.purpose == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create InsurancePlanContactComponent.purpose");
-            else if (Configuration.doAutoCreate())
-              this.purpose = new CodeableConcept(); // cc
-          return this.purpose;
-        }
-
-        public boolean hasPurpose() { 
-          return this.purpose != null && !this.purpose.isEmpty();
-        }
-
-        /**
-         * @param value {@link #purpose} (Indicates a purpose for which the contact can be reached.)
-         */
-        public InsurancePlanContactComponent setPurpose(CodeableConcept value) { 
-          this.purpose = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #name} (A name associated with the contact.)
-         */
-        public HumanName getName() { 
-          if (this.name == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create InsurancePlanContactComponent.name");
-            else if (Configuration.doAutoCreate())
-              this.name = new HumanName(); // cc
-          return this.name;
-        }
-
-        public boolean hasName() { 
-          return this.name != null && !this.name.isEmpty();
-        }
-
-        /**
-         * @param value {@link #name} (A name associated with the contact.)
-         */
-        public InsurancePlanContactComponent setName(HumanName value) { 
-          this.name = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #telecom} (A contact detail (e.g. a telephone number or an email address) by which the party may be contacted.)
-         */
-        public List<ContactPoint> getTelecom() { 
-          if (this.telecom == null)
-            this.telecom = new ArrayList<ContactPoint>();
-          return this.telecom;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public InsurancePlanContactComponent setTelecom(List<ContactPoint> theTelecom) { 
-          this.telecom = theTelecom;
-          return this;
-        }
-
-        public boolean hasTelecom() { 
-          if (this.telecom == null)
-            return false;
-          for (ContactPoint item : this.telecom)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public ContactPoint addTelecom() { //3
-          ContactPoint t = new ContactPoint();
-          if (this.telecom == null)
-            this.telecom = new ArrayList<ContactPoint>();
-          this.telecom.add(t);
-          return t;
-        }
-
-        public InsurancePlanContactComponent addTelecom(ContactPoint t) { //3
-          if (t == null)
-            return this;
-          if (this.telecom == null)
-            this.telecom = new ArrayList<ContactPoint>();
-          this.telecom.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #telecom}, creating it if it does not already exist {3}
-         */
-        public ContactPoint getTelecomFirstRep() { 
-          if (getTelecom().isEmpty()) {
-            addTelecom();
-          }
-          return getTelecom().get(0);
-        }
-
-        /**
-         * @return {@link #address} (Visiting or postal addresses for the contact.)
-         */
-        public Address getAddress() { 
-          if (this.address == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create InsurancePlanContactComponent.address");
-            else if (Configuration.doAutoCreate())
-              this.address = new Address(); // cc
-          return this.address;
-        }
-
-        public boolean hasAddress() { 
-          return this.address != null && !this.address.isEmpty();
-        }
-
-        /**
-         * @param value {@link #address} (Visiting or postal addresses for the contact.)
-         */
-        public InsurancePlanContactComponent setAddress(Address value) { 
-          this.address = value;
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("purpose", "CodeableConcept", "Indicates a purpose for which the contact can be reached.", 0, 1, purpose));
-          children.add(new Property("name", "HumanName", "A name associated with the contact.", 0, 1, name));
-          children.add(new Property("telecom", "ContactPoint", "A contact detail (e.g. a telephone number or an email address) by which the party may be contacted.", 0, java.lang.Integer.MAX_VALUE, telecom));
-          children.add(new Property("address", "Address", "Visiting or postal addresses for the contact.", 0, 1, address));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case -220463842: /*purpose*/  return new Property("purpose", "CodeableConcept", "Indicates a purpose for which the contact can be reached.", 0, 1, purpose);
-          case 3373707: /*name*/  return new Property("name", "HumanName", "A name associated with the contact.", 0, 1, name);
-          case -1429363305: /*telecom*/  return new Property("telecom", "ContactPoint", "A contact detail (e.g. a telephone number or an email address) by which the party may be contacted.", 0, java.lang.Integer.MAX_VALUE, telecom);
-          case -1147692044: /*address*/  return new Property("address", "Address", "Visiting or postal addresses for the contact.", 0, 1, address);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case -220463842: /*purpose*/ return this.purpose == null ? new Base[0] : new Base[] {this.purpose}; // CodeableConcept
-        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // HumanName
-        case -1429363305: /*telecom*/ return this.telecom == null ? new Base[0] : this.telecom.toArray(new Base[this.telecom.size()]); // ContactPoint
-        case -1147692044: /*address*/ return this.address == null ? new Base[0] : new Base[] {this.address}; // Address
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case -220463842: // purpose
-          this.purpose = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case 3373707: // name
-          this.name = TypeConvertor.castToHumanName(value); // HumanName
-          return value;
-        case -1429363305: // telecom
-          this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
-          return value;
-        case -1147692044: // address
-          this.address = TypeConvertor.castToAddress(value); // Address
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("purpose")) {
-          this.purpose = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("name")) {
-          this.name = TypeConvertor.castToHumanName(value); // HumanName
-        } else if (name.equals("telecom")) {
-          this.getTelecom().add(TypeConvertor.castToContactPoint(value));
-        } else if (name.equals("address")) {
-          this.address = TypeConvertor.castToAddress(value); // Address
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -220463842:  return getPurpose();
-        case 3373707:  return getName();
-        case -1429363305:  return addTelecom(); 
-        case -1147692044:  return getAddress();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -220463842: /*purpose*/ return new String[] {"CodeableConcept"};
-        case 3373707: /*name*/ return new String[] {"HumanName"};
-        case -1429363305: /*telecom*/ return new String[] {"ContactPoint"};
-        case -1147692044: /*address*/ return new String[] {"Address"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("purpose")) {
-          this.purpose = new CodeableConcept();
-          return this.purpose;
-        }
-        else if (name.equals("name")) {
-          this.name = new HumanName();
-          return this.name;
-        }
-        else if (name.equals("telecom")) {
-          return addTelecom();
-        }
-        else if (name.equals("address")) {
-          this.address = new Address();
-          return this.address;
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public InsurancePlanContactComponent copy() {
-        InsurancePlanContactComponent dst = new InsurancePlanContactComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(InsurancePlanContactComponent dst) {
-        super.copyValues(dst);
-        dst.purpose = purpose == null ? null : purpose.copy();
-        dst.name = name == null ? null : name.copy();
-        if (telecom != null) {
-          dst.telecom = new ArrayList<ContactPoint>();
-          for (ContactPoint i : telecom)
-            dst.telecom.add(i.copy());
-        };
-        dst.address = address == null ? null : address.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof InsurancePlanContactComponent))
-          return false;
-        InsurancePlanContactComponent o = (InsurancePlanContactComponent) other_;
-        return compareDeep(purpose, o.purpose, true) && compareDeep(name, o.name, true) && compareDeep(telecom, o.telecom, true)
-           && compareDeep(address, o.address, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof InsurancePlanContactComponent))
-          return false;
-        InsurancePlanContactComponent o = (InsurancePlanContactComponent) other_;
-        return true;
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(purpose, name, telecom, address
-          );
-      }
-
-  public String fhirType() {
-    return "InsurancePlan.contact";
-
-  }
-
-  }
 
     @Block()
     public static class InsurancePlanCoverageComponent extends BackboneElement implements IBaseBackboneElement {
@@ -2987,11 +2659,11 @@ public class InsurancePlan extends DomainResource {
     protected List<Reference> coverageArea;
 
     /**
-     * The contact for the health insurance product for a certain purpose.
+     * The contact details of communication devices available relevant to the specific Insurance Plan/Product. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.
      */
-    @Child(name = "contact", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Contact for the product", formalDefinition="The contact for the health insurance product for a certain purpose." )
-    protected List<InsurancePlanContactComponent> contact;
+    @Child(name = "contact", type = {ExtendedContactDetail.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Official contact details relevant to the health insurance plan/product", formalDefinition="The contact details of communication devices available relevant to the specific Insurance Plan/Product. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites." )
+    protected List<ExtendedContactDetail> contact;
 
     /**
      * The technical endpoints providing access to services operated for the health insurance product.
@@ -3021,7 +2693,7 @@ public class InsurancePlan extends DomainResource {
     @Description(shortDefinition="Plan details", formalDefinition="Details about an insurance plan." )
     protected List<InsurancePlanPlanComponent> plan;
 
-    private static final long serialVersionUID = -947586130L;
+    private static final long serialVersionUID = -292692522L;
 
   /**
    * Constructor
@@ -3421,18 +3093,18 @@ public class InsurancePlan extends DomainResource {
     }
 
     /**
-     * @return {@link #contact} (The contact for the health insurance product for a certain purpose.)
+     * @return {@link #contact} (The contact details of communication devices available relevant to the specific Insurance Plan/Product. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.)
      */
-    public List<InsurancePlanContactComponent> getContact() { 
+    public List<ExtendedContactDetail> getContact() { 
       if (this.contact == null)
-        this.contact = new ArrayList<InsurancePlanContactComponent>();
+        this.contact = new ArrayList<ExtendedContactDetail>();
       return this.contact;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public InsurancePlan setContact(List<InsurancePlanContactComponent> theContact) { 
+    public InsurancePlan setContact(List<ExtendedContactDetail> theContact) { 
       this.contact = theContact;
       return this;
     }
@@ -3440,25 +3112,25 @@ public class InsurancePlan extends DomainResource {
     public boolean hasContact() { 
       if (this.contact == null)
         return false;
-      for (InsurancePlanContactComponent item : this.contact)
+      for (ExtendedContactDetail item : this.contact)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public InsurancePlanContactComponent addContact() { //3
-      InsurancePlanContactComponent t = new InsurancePlanContactComponent();
+    public ExtendedContactDetail addContact() { //3
+      ExtendedContactDetail t = new ExtendedContactDetail();
       if (this.contact == null)
-        this.contact = new ArrayList<InsurancePlanContactComponent>();
+        this.contact = new ArrayList<ExtendedContactDetail>();
       this.contact.add(t);
       return t;
     }
 
-    public InsurancePlan addContact(InsurancePlanContactComponent t) { //3
+    public InsurancePlan addContact(ExtendedContactDetail t) { //3
       if (t == null)
         return this;
       if (this.contact == null)
-        this.contact = new ArrayList<InsurancePlanContactComponent>();
+        this.contact = new ArrayList<ExtendedContactDetail>();
       this.contact.add(t);
       return this;
     }
@@ -3466,7 +3138,7 @@ public class InsurancePlan extends DomainResource {
     /**
      * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {3}
      */
-    public InsurancePlanContactComponent getContactFirstRep() { 
+    public ExtendedContactDetail getContactFirstRep() { 
       if (getContact().isEmpty()) {
         addContact();
       }
@@ -3696,7 +3368,7 @@ public class InsurancePlan extends DomainResource {
         children.add(new Property("ownedBy", "Reference(Organization)", "The entity that is providing  the health insurance product and underwriting the risk.  This is typically an insurance carriers, other third-party payers, or health plan sponsors comonly referred to as 'payers'.", 0, 1, ownedBy));
         children.add(new Property("administeredBy", "Reference(Organization)", "An organization which administer other services such as underwriting, customer service and/or claims processing on behalf of the health insurance product owner.", 0, 1, administeredBy));
         children.add(new Property("coverageArea", "Reference(Location)", "The geographic region in which a health insurance product's benefits apply.", 0, java.lang.Integer.MAX_VALUE, coverageArea));
-        children.add(new Property("contact", "", "The contact for the health insurance product for a certain purpose.", 0, java.lang.Integer.MAX_VALUE, contact));
+        children.add(new Property("contact", "ExtendedContactDetail", "The contact details of communication devices available relevant to the specific Insurance Plan/Product. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("endpoint", "Reference(Endpoint)", "The technical endpoints providing access to services operated for the health insurance product.", 0, java.lang.Integer.MAX_VALUE, endpoint));
         children.add(new Property("network", "Reference(Organization)", "Reference to the network included in the health insurance product.", 0, java.lang.Integer.MAX_VALUE, network));
         children.add(new Property("coverage", "", "Details about the coverage offered by the insurance product.", 0, java.lang.Integer.MAX_VALUE, coverage));
@@ -3715,7 +3387,7 @@ public class InsurancePlan extends DomainResource {
         case -1054743076: /*ownedBy*/  return new Property("ownedBy", "Reference(Organization)", "The entity that is providing  the health insurance product and underwriting the risk.  This is typically an insurance carriers, other third-party payers, or health plan sponsors comonly referred to as 'payers'.", 0, 1, ownedBy);
         case 898770462: /*administeredBy*/  return new Property("administeredBy", "Reference(Organization)", "An organization which administer other services such as underwriting, customer service and/or claims processing on behalf of the health insurance product owner.", 0, 1, administeredBy);
         case -1532328299: /*coverageArea*/  return new Property("coverageArea", "Reference(Location)", "The geographic region in which a health insurance product's benefits apply.", 0, java.lang.Integer.MAX_VALUE, coverageArea);
-        case 951526432: /*contact*/  return new Property("contact", "", "The contact for the health insurance product for a certain purpose.", 0, java.lang.Integer.MAX_VALUE, contact);
+        case 951526432: /*contact*/  return new Property("contact", "ExtendedContactDetail", "The contact details of communication devices available relevant to the specific Insurance Plan/Product. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.", 0, java.lang.Integer.MAX_VALUE, contact);
         case 1741102485: /*endpoint*/  return new Property("endpoint", "Reference(Endpoint)", "The technical endpoints providing access to services operated for the health insurance product.", 0, java.lang.Integer.MAX_VALUE, endpoint);
         case 1843485230: /*network*/  return new Property("network", "Reference(Organization)", "Reference to the network included in the health insurance product.", 0, java.lang.Integer.MAX_VALUE, network);
         case -351767064: /*coverage*/  return new Property("coverage", "", "Details about the coverage offered by the insurance product.", 0, java.lang.Integer.MAX_VALUE, coverage);
@@ -3737,7 +3409,7 @@ public class InsurancePlan extends DomainResource {
         case -1054743076: /*ownedBy*/ return this.ownedBy == null ? new Base[0] : new Base[] {this.ownedBy}; // Reference
         case 898770462: /*administeredBy*/ return this.administeredBy == null ? new Base[0] : new Base[] {this.administeredBy}; // Reference
         case -1532328299: /*coverageArea*/ return this.coverageArea == null ? new Base[0] : this.coverageArea.toArray(new Base[this.coverageArea.size()]); // Reference
-        case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // InsurancePlanContactComponent
+        case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ExtendedContactDetail
         case 1741102485: /*endpoint*/ return this.endpoint == null ? new Base[0] : this.endpoint.toArray(new Base[this.endpoint.size()]); // Reference
         case 1843485230: /*network*/ return this.network == null ? new Base[0] : this.network.toArray(new Base[this.network.size()]); // Reference
         case -351767064: /*coverage*/ return this.coverage == null ? new Base[0] : this.coverage.toArray(new Base[this.coverage.size()]); // InsurancePlanCoverageComponent
@@ -3779,7 +3451,7 @@ public class InsurancePlan extends DomainResource {
           this.getCoverageArea().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 951526432: // contact
-          this.getContact().add((InsurancePlanContactComponent) value); // InsurancePlanContactComponent
+          this.getContact().add(TypeConvertor.castToExtendedContactDetail(value)); // ExtendedContactDetail
           return value;
         case 1741102485: // endpoint
           this.getEndpoint().add(TypeConvertor.castToReference(value)); // Reference
@@ -3820,7 +3492,7 @@ public class InsurancePlan extends DomainResource {
         } else if (name.equals("coverageArea")) {
           this.getCoverageArea().add(TypeConvertor.castToReference(value));
         } else if (name.equals("contact")) {
-          this.getContact().add((InsurancePlanContactComponent) value);
+          this.getContact().add(TypeConvertor.castToExtendedContactDetail(value));
         } else if (name.equals("endpoint")) {
           this.getEndpoint().add(TypeConvertor.castToReference(value));
         } else if (name.equals("network")) {
@@ -3868,7 +3540,7 @@ public class InsurancePlan extends DomainResource {
         case -1054743076: /*ownedBy*/ return new String[] {"Reference"};
         case 898770462: /*administeredBy*/ return new String[] {"Reference"};
         case -1532328299: /*coverageArea*/ return new String[] {"Reference"};
-        case 951526432: /*contact*/ return new String[] {};
+        case 951526432: /*contact*/ return new String[] {"ExtendedContactDetail"};
         case 1741102485: /*endpoint*/ return new String[] {"Reference"};
         case 1843485230: /*network*/ return new String[] {"Reference"};
         case -351767064: /*coverage*/ return new String[] {};
@@ -3968,8 +3640,8 @@ public class InsurancePlan extends DomainResource {
             dst.coverageArea.add(i.copy());
         };
         if (contact != null) {
-          dst.contact = new ArrayList<InsurancePlanContactComponent>();
-          for (InsurancePlanContactComponent i : contact)
+          dst.contact = new ArrayList<ExtendedContactDetail>();
+          for (ExtendedContactDetail i : contact)
             dst.contact.add(i.copy());
         };
         if (endpoint != null) {
@@ -4034,304 +3706,6 @@ public class InsurancePlan extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.InsurancePlan;
    }
-
- /**
-   * Search parameter: <b>address-city</b>
-   * <p>
-   * Description: <b>A city specified in an address</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.contact.address.city</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address-city", path="InsurancePlan.contact.address.city", description="A city specified in an address", type="string" )
-  public static final String SP_ADDRESS_CITY = "address-city";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-city</b>
-   * <p>
-   * Description: <b>A city specified in an address</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.contact.address.city</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_CITY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_CITY);
-
- /**
-   * Search parameter: <b>address-country</b>
-   * <p>
-   * Description: <b>A country specified in an address</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.contact.address.country</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address-country", path="InsurancePlan.contact.address.country", description="A country specified in an address", type="string" )
-  public static final String SP_ADDRESS_COUNTRY = "address-country";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-country</b>
-   * <p>
-   * Description: <b>A country specified in an address</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.contact.address.country</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_COUNTRY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_COUNTRY);
-
- /**
-   * Search parameter: <b>address-postalcode</b>
-   * <p>
-   * Description: <b>A postal code specified in an address</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.contact.address.postalCode</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address-postalcode", path="InsurancePlan.contact.address.postalCode", description="A postal code specified in an address", type="string" )
-  public static final String SP_ADDRESS_POSTALCODE = "address-postalcode";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-postalcode</b>
-   * <p>
-   * Description: <b>A postal code specified in an address</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.contact.address.postalCode</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_POSTALCODE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_POSTALCODE);
-
- /**
-   * Search parameter: <b>address-state</b>
-   * <p>
-   * Description: <b>A state specified in an address</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.contact.address.state</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address-state", path="InsurancePlan.contact.address.state", description="A state specified in an address", type="string" )
-  public static final String SP_ADDRESS_STATE = "address-state";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-state</b>
-   * <p>
-   * Description: <b>A state specified in an address</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.contact.address.state</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_STATE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_STATE);
-
- /**
-   * Search parameter: <b>address-use</b>
-   * <p>
-   * Description: <b>A use code specified in an address</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>InsurancePlan.contact.address.use</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address-use", path="InsurancePlan.contact.address.use", description="A use code specified in an address", type="token" )
-  public static final String SP_ADDRESS_USE = "address-use";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-use</b>
-   * <p>
-   * Description: <b>A use code specified in an address</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>InsurancePlan.contact.address.use</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ADDRESS_USE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ADDRESS_USE);
-
- /**
-   * Search parameter: <b>address</b>
-   * <p>
-   * Description: <b>A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.contact.address</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address", path="InsurancePlan.contact.address", description="A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text", type="string" )
-  public static final String SP_ADDRESS = "address";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address</b>
-   * <p>
-   * Description: <b>A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.contact.address</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS);
-
- /**
-   * Search parameter: <b>administered-by</b>
-   * <p>
-   * Description: <b>Product administrator</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>InsurancePlan.administeredBy</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="administered-by", path="InsurancePlan.administeredBy", description="Product administrator", type="reference", target={Organization.class } )
-  public static final String SP_ADMINISTERED_BY = "administered-by";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>administered-by</b>
-   * <p>
-   * Description: <b>Product administrator</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>InsurancePlan.administeredBy</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ADMINISTERED_BY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ADMINISTERED_BY);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>InsurancePlan:administered-by</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ADMINISTERED_BY = new ca.uhn.fhir.model.api.Include("InsurancePlan:administered-by").toLocked();
-
- /**
-   * Search parameter: <b>endpoint</b>
-   * <p>
-   * Description: <b>Technical endpoint</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>InsurancePlan.endpoint</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="endpoint", path="InsurancePlan.endpoint", description="Technical endpoint", type="reference", target={Endpoint.class } )
-  public static final String SP_ENDPOINT = "endpoint";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>endpoint</b>
-   * <p>
-   * Description: <b>Technical endpoint</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>InsurancePlan.endpoint</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENDPOINT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENDPOINT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>InsurancePlan:endpoint</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENDPOINT = new ca.uhn.fhir.model.api.Include("InsurancePlan:endpoint").toLocked();
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>Any identifier for the organization (not the accreditation issuer's identifier)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>InsurancePlan.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="InsurancePlan.identifier", description="Any identifier for the organization (not the accreditation issuer's identifier)", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>Any identifier for the organization (not the accreditation issuer's identifier)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>InsurancePlan.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>name</b>
-   * <p>
-   * Description: <b>A portion of the organization's name or alias</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.name | InsurancePlan.alias</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="name", path="InsurancePlan.name | InsurancePlan.alias", description="A portion of the organization's name or alias", type="string" )
-  public static final String SP_NAME = "name";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>name</b>
-   * <p>
-   * Description: <b>A portion of the organization's name or alias</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.name | InsurancePlan.alias</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
-
- /**
-   * Search parameter: <b>owned-by</b>
-   * <p>
-   * Description: <b>An organization of which this organization forms a part</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>InsurancePlan.ownedBy</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="owned-by", path="InsurancePlan.ownedBy", description="An organization of which this organization forms a part", type="reference", target={Organization.class } )
-  public static final String SP_OWNED_BY = "owned-by";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>owned-by</b>
-   * <p>
-   * Description: <b>An organization of which this organization forms a part</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>InsurancePlan.ownedBy</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam OWNED_BY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_OWNED_BY);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>InsurancePlan:owned-by</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_OWNED_BY = new ca.uhn.fhir.model.api.Include("InsurancePlan:owned-by").toLocked();
-
- /**
-   * Search parameter: <b>phonetic</b>
-   * <p>
-   * Description: <b>A portion of the organization's name using some kind of phonetic matching algorithm</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.name</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="phonetic", path="InsurancePlan.name", description="A portion of the organization's name using some kind of phonetic matching algorithm", type="string" )
-  public static final String SP_PHONETIC = "phonetic";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>phonetic</b>
-   * <p>
-   * Description: <b>A portion of the organization's name using some kind of phonetic matching algorithm</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>InsurancePlan.name</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam PHONETIC = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PHONETIC);
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>Is the Organization record active</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>InsurancePlan.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="InsurancePlan.status", description="Is the Organization record active", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>Is the Organization record active</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>InsurancePlan.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
-
- /**
-   * Search parameter: <b>type</b>
-   * <p>
-   * Description: <b>A code for the type of organization</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>InsurancePlan.type</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="type", path="InsurancePlan.type", description="A code for the type of organization", type="token" )
-  public static final String SP_TYPE = "type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>type</b>
-   * <p>
-   * Description: <b>A code for the type of organization</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>InsurancePlan.type</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
 
 }

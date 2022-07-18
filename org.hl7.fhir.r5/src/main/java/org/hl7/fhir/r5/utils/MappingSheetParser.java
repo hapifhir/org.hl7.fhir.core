@@ -194,13 +194,13 @@ public class MappingSheetParser {
       else {
         element.getTargetFirstRep().setRelationship(ConceptMapRelationship.RELATEDTO);
         if (row.getCondition() != null)
-          element.getTargetFirstRep().addDependsOn().setProperty("http://hl7.org/fhirpath").setValue(processCondition(row.getCondition()));
+          element.getTargetFirstRep().addDependsOn().setProperty("http://hl7.org/fhirpath").setValue(new StringType(processCondition(row.getCondition())));
         element.getTargetFirstRep().setCode(row.getAttribute());
         element.getTargetFirstRep().setDisplay(row.getType()+" : ["+row.getMinMax()+"]");
         element.getTargetFirstRep().addExtension(ToolingExtensions.EXT_MAPPING_TGTTYPE, new StringType(row.getType()));
         element.getTargetFirstRep().addExtension(ToolingExtensions.EXT_MAPPING_TGTCARD, new StringType(row.getMinMax()));
         if (row.getDerived() != null) 
-          element.getTargetFirstRep().getProductFirstRep().setProperty(row.getDerived()).setValue(row.getDerivedMapping());
+          element.getTargetFirstRep().getProductFirstRep().setProperty(row.getDerived()).setValue(new StringType(row.getDerivedMapping()));
         if (row.getComments() != null)
           element.getTargetFirstRep().setComment(row.getComments());
         if (row.getDtMapping() != null)
@@ -384,7 +384,7 @@ public class MappingSheetParser {
           } else {
             OtherElementComponent dep = getDependency(t, "http://hl7.org/fhirpath");
             if (dep != null)
-              row.condition = dep.getValue();
+              row.condition = dep.getValue().primitiveValue();
             row.attribute = t.getCode();
             row.type = t.getExtensionString(ToolingExtensions.EXT_MAPPING_TGTTYPE);
             row.minMax = t.getExtensionString(ToolingExtensions.EXT_MAPPING_TGTCARD);
@@ -392,7 +392,7 @@ public class MappingSheetParser {
             row.vocabMapping = t.getExtensionString("http://hl7.org/fhir/StructureDefinition/ConceptMap-vocab-mapping");
             if (t.getProduct().size() > 0) {
               row.derived = t.getProductFirstRep().getProperty();
-              row.derivedMapping = t.getProductFirstRep().getValue();
+              row.derivedMapping = t.getProductFirstRep().getValue().primitiveValue();
             }
           }
           row.comments = t.getComment();

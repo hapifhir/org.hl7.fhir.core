@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -146,6 +146,7 @@ public class ObservationDefinition extends DomainResource {
             case TIME: return "time";
             case DATETIME: return "dateTime";
             case PERIOD: return "Period";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -162,6 +163,7 @@ public class ObservationDefinition extends DomainResource {
             case TIME: return "http://hl7.org/fhir/permitted-data-type";
             case DATETIME: return "http://hl7.org/fhir/permitted-data-type";
             case PERIOD: return "http://hl7.org/fhir/permitted-data-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -178,6 +180,7 @@ public class ObservationDefinition extends DomainResource {
             case TIME: return "A time during the day, in the format hh:mm:ss.";
             case DATETIME: return "A date, date-time or partial date (e.g. just year or year + month) as used in human communication.";
             case PERIOD: return "A time range defined by start and end date/time.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -194,6 +197,7 @@ public class ObservationDefinition extends DomainResource {
             case TIME: return "time";
             case DATETIME: return "dateTime";
             case PERIOD: return "Period";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -326,6 +330,7 @@ public class ObservationDefinition extends DomainResource {
             case REFERENCE: return "reference";
             case CRITICAL: return "critical";
             case ABSOLUTE: return "absolute";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -334,6 +339,7 @@ public class ObservationDefinition extends DomainResource {
             case REFERENCE: return "http://hl7.org/fhir/observation-range-category";
             case CRITICAL: return "http://hl7.org/fhir/observation-range-category";
             case ABSOLUTE: return "http://hl7.org/fhir/observation-range-category";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -342,6 +348,7 @@ public class ObservationDefinition extends DomainResource {
             case REFERENCE: return "Reference (Normal) Range for Ordinal and Continuous Observations.";
             case CRITICAL: return "Critical Range for Ordinal and Continuous Observations. Results outside this range are critical.";
             case ABSOLUTE: return "Absolute Range for Ordinal and Continuous Observations. Results outside this range are not possible.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -350,6 +357,7 @@ public class ObservationDefinition extends DomainResource {
             case REFERENCE: return "reference range";
             case CRITICAL: return "critical range";
             case ABSOLUTE: return "absolute range";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -4549,166 +4557,6 @@ public class ObservationDefinition extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.ObservationDefinition;
    }
-
- /**
-   * Search parameter: <b>category</b>
-   * <p>
-   * Description: <b>Category (class) of observation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ObservationDefinition.category</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="category", path="ObservationDefinition.category", description="Category (class) of observation", type="token" )
-  public static final String SP_CATEGORY = "category";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>category</b>
-   * <p>
-   * Description: <b>Category (class) of observation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ObservationDefinition.category</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CATEGORY);
-
- /**
-   * Search parameter: <b>code</b>
-   * <p>
-   * Description: <b>Observation code</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ObservationDefinition.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="code", path="ObservationDefinition.code", description="Observation code", type="token" )
-  public static final String SP_CODE = "code";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>code</b>
-   * <p>
-   * Description: <b>Observation code</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ObservationDefinition.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
-
- /**
-   * Search parameter: <b>experimental</b>
-   * <p>
-   * Description: <b>Not for genuine usage (true)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ObservationDefinition.experimental</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="experimental", path="ObservationDefinition.experimental", description="Not for genuine usage (true)", type="token" )
-  public static final String SP_EXPERIMENTAL = "experimental";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>experimental</b>
-   * <p>
-   * Description: <b>Not for genuine usage (true)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ObservationDefinition.experimental</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EXPERIMENTAL = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EXPERIMENTAL);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>The unique identifier associated with the specimen definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ObservationDefinition.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="ObservationDefinition.identifier", description="The unique identifier associated with the specimen definition", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>The unique identifier associated with the specimen definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ObservationDefinition.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>method</b>
-   * <p>
-   * Description: <b>Method of observation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ObservationDefinition.method</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="method", path="ObservationDefinition.method", description="Method of observation", type="token" )
-  public static final String SP_METHOD = "method";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>method</b>
-   * <p>
-   * Description: <b>Method of observation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ObservationDefinition.method</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam METHOD = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_METHOD);
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>Publication status of the ObservationDefinition: draft, active, retired, unknown</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ObservationDefinition.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="ObservationDefinition.status", description="Publication status of the ObservationDefinition: draft, active, retired, unknown", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>Publication status of the ObservationDefinition: draft, active, retired, unknown</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ObservationDefinition.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
-
- /**
-   * Search parameter: <b>title</b>
-   * <p>
-   * Description: <b>Human-friendly name of the ObservationDefinition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ObservationDefinition.title</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="title", path="ObservationDefinition.title", description="Human-friendly name of the ObservationDefinition", type="string" )
-  public static final String SP_TITLE = "title";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>title</b>
-   * <p>
-   * Description: <b>Human-friendly name of the ObservationDefinition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ObservationDefinition.title</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
-
- /**
-   * Search parameter: <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the observation definition</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>ObservationDefinition.url</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="url", path="ObservationDefinition.url", description="The uri that identifies the observation definition", type="uri" )
-  public static final String SP_URL = "url";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the observation definition</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>ObservationDefinition.url</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
 
 
 }

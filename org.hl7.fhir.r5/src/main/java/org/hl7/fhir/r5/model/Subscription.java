@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -89,6 +89,7 @@ public class Subscription extends DomainResource {
             case EMPTY: return "empty";
             case IDONLY: return "id-only";
             case FULLRESOURCE: return "full-resource";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +98,7 @@ public class Subscription extends DomainResource {
             case EMPTY: return "http://hl7.org/fhir/subscription-payload-content";
             case IDONLY: return "http://hl7.org/fhir/subscription-payload-content";
             case FULLRESOURCE: return "http://hl7.org/fhir/subscription-payload-content";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +107,7 @@ public class Subscription extends DomainResource {
             case EMPTY: return "No resource content is transacted in the notification payload.";
             case IDONLY: return "Only the resource id is transacted in the notification payload.";
             case FULLRESOURCE: return "The entire resource is transacted in the notification payload.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +116,7 @@ public class Subscription extends DomainResource {
             case EMPTY: return "empty";
             case IDONLY: return "id-only";
             case FULLRESOURCE: return "full-resource";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -161,130 +165,6 @@ public class Subscription extends DomainResource {
       }
     }
 
-    public enum SubscriptionUrlLocation {
-        /**
-         * URLs should NOT be included in notifications.
-         */
-        NONE, 
-        /**
-         * URLs should be placed in Bundle.entry.fullUrl.
-         */
-        FULLURL, 
-        /**
-         * URLs should be placed in Bundle.entry.request and/or Bundle.entry.response.
-         */
-        REQUESTRESPONSE, 
-        /**
-         * URLS should be filled out in all available locations.
-         */
-        ALL, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static SubscriptionUrlLocation fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("none".equals(codeString))
-          return NONE;
-        if ("full-url".equals(codeString))
-          return FULLURL;
-        if ("request-response".equals(codeString))
-          return REQUESTRESPONSE;
-        if ("all".equals(codeString))
-          return ALL;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown SubscriptionUrlLocation code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case NONE: return "none";
-            case FULLURL: return "full-url";
-            case REQUESTRESPONSE: return "request-response";
-            case ALL: return "all";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case NONE: return "http://hl7.org/fhir/subscription-url-location";
-            case FULLURL: return "http://hl7.org/fhir/subscription-url-location";
-            case REQUESTRESPONSE: return "http://hl7.org/fhir/subscription-url-location";
-            case ALL: return "http://hl7.org/fhir/subscription-url-location";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case NONE: return "URLs should NOT be included in notifications.";
-            case FULLURL: return "URLs should be placed in Bundle.entry.fullUrl.";
-            case REQUESTRESPONSE: return "URLs should be placed in Bundle.entry.request and/or Bundle.entry.response.";
-            case ALL: return "URLS should be filled out in all available locations.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case NONE: return "none";
-            case FULLURL: return "full-url";
-            case REQUESTRESPONSE: return "request-response";
-            case ALL: return "all";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class SubscriptionUrlLocationEnumFactory implements EnumFactory<SubscriptionUrlLocation> {
-    public SubscriptionUrlLocation fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("none".equals(codeString))
-          return SubscriptionUrlLocation.NONE;
-        if ("full-url".equals(codeString))
-          return SubscriptionUrlLocation.FULLURL;
-        if ("request-response".equals(codeString))
-          return SubscriptionUrlLocation.REQUESTRESPONSE;
-        if ("all".equals(codeString))
-          return SubscriptionUrlLocation.ALL;
-        throw new IllegalArgumentException("Unknown SubscriptionUrlLocation code '"+codeString+"'");
-        }
-        public Enumeration<SubscriptionUrlLocation> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<SubscriptionUrlLocation>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("none".equals(codeString))
-          return new Enumeration<SubscriptionUrlLocation>(this, SubscriptionUrlLocation.NONE);
-        if ("full-url".equals(codeString))
-          return new Enumeration<SubscriptionUrlLocation>(this, SubscriptionUrlLocation.FULLURL);
-        if ("request-response".equals(codeString))
-          return new Enumeration<SubscriptionUrlLocation>(this, SubscriptionUrlLocation.REQUESTRESPONSE);
-        if ("all".equals(codeString))
-          return new Enumeration<SubscriptionUrlLocation>(this, SubscriptionUrlLocation.ALL);
-        throw new FHIRException("Unknown SubscriptionUrlLocation code '"+codeString+"'");
-        }
-    public String toCode(SubscriptionUrlLocation code) {
-      if (code == SubscriptionUrlLocation.NONE)
-        return "none";
-      if (code == SubscriptionUrlLocation.FULLURL)
-        return "full-url";
-      if (code == SubscriptionUrlLocation.REQUESTRESPONSE)
-        return "request-response";
-      if (code == SubscriptionUrlLocation.ALL)
-        return "all";
-      return "?";
-      }
-    public String toSystem(SubscriptionUrlLocation code) {
-      return code.getSystem();
-      }
-    }
-
     @Block()
     public static class SubscriptionFilterByComponent extends BackboneElement implements IBaseBackboneElement {
         /**
@@ -296,19 +176,19 @@ public class Subscription extends DomainResource {
         protected UriType resourceType;
 
         /**
-         * The filter label (=key) as defined in the `SubscriptionTopic.canfilterBy.searchParamName`  element.
+         * The filter label (=key) as defined in the `SubscriptionTopic.canfilterBy.filterParameter`  element.
          */
-        @Child(name = "searchParamName", type = {StringType.class}, order=2, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Filter label defined in SubscriptionTopic", formalDefinition="The filter label (=key) as defined in the `SubscriptionTopic.canfilterBy.searchParamName`  element." )
-        protected StringType searchParamName;
+        @Child(name = "filterParameter", type = {StringType.class}, order=2, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Filter label defined in SubscriptionTopic", formalDefinition="The filter label (=key) as defined in the `SubscriptionTopic.canfilterBy.filterParameter`  element." )
+        protected StringType filterParameter;
 
         /**
-         * The operator to apply to the filter value when determining matches (Search modifiers).
+         * Operator to apply when determining matches (Search Modifiers), from the list of allowed modifiers for this filter in the relevant SubscriptionTopic.
          */
-        @Child(name = "searchModifier", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="= | eq | ne | gt | lt | ge | le | sa | eb | ap | above | below | in | not-in | of-type", formalDefinition="The operator to apply to the filter value when determining matches (Search modifiers)." )
+        @Child(name = "modifier", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="= | eq | ne | gt | lt | ge | le | sa | eb | ap | above | below | in | not-in | of-type", formalDefinition="Operator to apply when determining matches (Search Modifiers), from the list of allowed modifiers for this filter in the relevant SubscriptionTopic." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subscription-search-modifier")
-        protected Enumeration<SubscriptionSearchModifier> searchModifier;
+        protected Enumeration<SubscriptionSearchModifier> modifier;
 
         /**
          * The literal value or resource path as is legal in search - for example, "Patient/123" or "le1950".
@@ -317,7 +197,7 @@ public class Subscription extends DomainResource {
         @Description(shortDefinition="Literal value or resource path", formalDefinition="The literal value or resource path as is legal in search - for example, \"Patient/123\" or \"le1950\"." )
         protected StringType value;
 
-        private static final long serialVersionUID = 1179250301L;
+        private static final long serialVersionUID = -642146252L;
 
     /**
      * Constructor
@@ -329,9 +209,9 @@ public class Subscription extends DomainResource {
     /**
      * Constructor
      */
-      public SubscriptionFilterByComponent(String searchParamName, String value) {
+      public SubscriptionFilterByComponent(String filterParameter, String value) {
         super();
-        this.setSearchParamName(searchParamName);
+        this.setFilterParameter(filterParameter);
         this.setValue(value);
       }
 
@@ -385,95 +265,95 @@ public class Subscription extends DomainResource {
         }
 
         /**
-         * @return {@link #searchParamName} (The filter label (=key) as defined in the `SubscriptionTopic.canfilterBy.searchParamName`  element.). This is the underlying object with id, value and extensions. The accessor "getSearchParamName" gives direct access to the value
+         * @return {@link #filterParameter} (The filter label (=key) as defined in the `SubscriptionTopic.canfilterBy.filterParameter`  element.). This is the underlying object with id, value and extensions. The accessor "getFilterParameter" gives direct access to the value
          */
-        public StringType getSearchParamNameElement() { 
-          if (this.searchParamName == null)
+        public StringType getFilterParameterElement() { 
+          if (this.filterParameter == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubscriptionFilterByComponent.searchParamName");
+              throw new Error("Attempt to auto-create SubscriptionFilterByComponent.filterParameter");
             else if (Configuration.doAutoCreate())
-              this.searchParamName = new StringType(); // bb
-          return this.searchParamName;
+              this.filterParameter = new StringType(); // bb
+          return this.filterParameter;
         }
 
-        public boolean hasSearchParamNameElement() { 
-          return this.searchParamName != null && !this.searchParamName.isEmpty();
+        public boolean hasFilterParameterElement() { 
+          return this.filterParameter != null && !this.filterParameter.isEmpty();
         }
 
-        public boolean hasSearchParamName() { 
-          return this.searchParamName != null && !this.searchParamName.isEmpty();
+        public boolean hasFilterParameter() { 
+          return this.filterParameter != null && !this.filterParameter.isEmpty();
         }
 
         /**
-         * @param value {@link #searchParamName} (The filter label (=key) as defined in the `SubscriptionTopic.canfilterBy.searchParamName`  element.). This is the underlying object with id, value and extensions. The accessor "getSearchParamName" gives direct access to the value
+         * @param value {@link #filterParameter} (The filter label (=key) as defined in the `SubscriptionTopic.canfilterBy.filterParameter`  element.). This is the underlying object with id, value and extensions. The accessor "getFilterParameter" gives direct access to the value
          */
-        public SubscriptionFilterByComponent setSearchParamNameElement(StringType value) { 
-          this.searchParamName = value;
+        public SubscriptionFilterByComponent setFilterParameterElement(StringType value) { 
+          this.filterParameter = value;
           return this;
         }
 
         /**
-         * @return The filter label (=key) as defined in the `SubscriptionTopic.canfilterBy.searchParamName`  element.
+         * @return The filter label (=key) as defined in the `SubscriptionTopic.canfilterBy.filterParameter`  element.
          */
-        public String getSearchParamName() { 
-          return this.searchParamName == null ? null : this.searchParamName.getValue();
+        public String getFilterParameter() { 
+          return this.filterParameter == null ? null : this.filterParameter.getValue();
         }
 
         /**
-         * @param value The filter label (=key) as defined in the `SubscriptionTopic.canfilterBy.searchParamName`  element.
+         * @param value The filter label (=key) as defined in the `SubscriptionTopic.canfilterBy.filterParameter`  element.
          */
-        public SubscriptionFilterByComponent setSearchParamName(String value) { 
-            if (this.searchParamName == null)
-              this.searchParamName = new StringType();
-            this.searchParamName.setValue(value);
+        public SubscriptionFilterByComponent setFilterParameter(String value) { 
+            if (this.filterParameter == null)
+              this.filterParameter = new StringType();
+            this.filterParameter.setValue(value);
           return this;
         }
 
         /**
-         * @return {@link #searchModifier} (The operator to apply to the filter value when determining matches (Search modifiers).). This is the underlying object with id, value and extensions. The accessor "getSearchModifier" gives direct access to the value
+         * @return {@link #modifier} (Operator to apply when determining matches (Search Modifiers), from the list of allowed modifiers for this filter in the relevant SubscriptionTopic.). This is the underlying object with id, value and extensions. The accessor "getModifier" gives direct access to the value
          */
-        public Enumeration<SubscriptionSearchModifier> getSearchModifierElement() { 
-          if (this.searchModifier == null)
+        public Enumeration<SubscriptionSearchModifier> getModifierElement() { 
+          if (this.modifier == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubscriptionFilterByComponent.searchModifier");
+              throw new Error("Attempt to auto-create SubscriptionFilterByComponent.modifier");
             else if (Configuration.doAutoCreate())
-              this.searchModifier = new Enumeration<SubscriptionSearchModifier>(new SubscriptionSearchModifierEnumFactory()); // bb
-          return this.searchModifier;
+              this.modifier = new Enumeration<SubscriptionSearchModifier>(new SubscriptionSearchModifierEnumFactory()); // bb
+          return this.modifier;
         }
 
-        public boolean hasSearchModifierElement() { 
-          return this.searchModifier != null && !this.searchModifier.isEmpty();
+        public boolean hasModifierElement() { 
+          return this.modifier != null && !this.modifier.isEmpty();
         }
 
-        public boolean hasSearchModifier() { 
-          return this.searchModifier != null && !this.searchModifier.isEmpty();
+        public boolean hasModifier() { 
+          return this.modifier != null && !this.modifier.isEmpty();
         }
 
         /**
-         * @param value {@link #searchModifier} (The operator to apply to the filter value when determining matches (Search modifiers).). This is the underlying object with id, value and extensions. The accessor "getSearchModifier" gives direct access to the value
+         * @param value {@link #modifier} (Operator to apply when determining matches (Search Modifiers), from the list of allowed modifiers for this filter in the relevant SubscriptionTopic.). This is the underlying object with id, value and extensions. The accessor "getModifier" gives direct access to the value
          */
-        public SubscriptionFilterByComponent setSearchModifierElement(Enumeration<SubscriptionSearchModifier> value) { 
-          this.searchModifier = value;
+        public SubscriptionFilterByComponent setModifierElement(Enumeration<SubscriptionSearchModifier> value) { 
+          this.modifier = value;
           return this;
         }
 
         /**
-         * @return The operator to apply to the filter value when determining matches (Search modifiers).
+         * @return Operator to apply when determining matches (Search Modifiers), from the list of allowed modifiers for this filter in the relevant SubscriptionTopic.
          */
-        public SubscriptionSearchModifier getSearchModifier() { 
-          return this.searchModifier == null ? null : this.searchModifier.getValue();
+        public SubscriptionSearchModifier getModifier() { 
+          return this.modifier == null ? null : this.modifier.getValue();
         }
 
         /**
-         * @param value The operator to apply to the filter value when determining matches (Search modifiers).
+         * @param value Operator to apply when determining matches (Search Modifiers), from the list of allowed modifiers for this filter in the relevant SubscriptionTopic.
          */
-        public SubscriptionFilterByComponent setSearchModifier(SubscriptionSearchModifier value) { 
+        public SubscriptionFilterByComponent setModifier(SubscriptionSearchModifier value) { 
           if (value == null)
-            this.searchModifier = null;
+            this.modifier = null;
           else {
-            if (this.searchModifier == null)
-              this.searchModifier = new Enumeration<SubscriptionSearchModifier>(new SubscriptionSearchModifierEnumFactory());
-            this.searchModifier.setValue(value);
+            if (this.modifier == null)
+              this.modifier = new Enumeration<SubscriptionSearchModifier>(new SubscriptionSearchModifierEnumFactory());
+            this.modifier.setValue(value);
           }
           return this;
         }
@@ -526,8 +406,8 @@ public class Subscription extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("resourceType", "uri", "If the element is a reference to another resource, this element contains \"Reference\", and the targetProfile element defines what resources can be referenced. The targetProfile may be a reference to the general definition of a resource (e.g. http://hl7.org/fhir/StructureDefinition/Patient).", 0, 1, resourceType));
-          children.add(new Property("searchParamName", "string", "The filter label (=key) as defined in the `SubscriptionTopic.canfilterBy.searchParamName`  element.", 0, 1, searchParamName));
-          children.add(new Property("searchModifier", "code", "The operator to apply to the filter value when determining matches (Search modifiers).", 0, 1, searchModifier));
+          children.add(new Property("filterParameter", "string", "The filter label (=key) as defined in the `SubscriptionTopic.canfilterBy.filterParameter`  element.", 0, 1, filterParameter));
+          children.add(new Property("modifier", "code", "Operator to apply when determining matches (Search Modifiers), from the list of allowed modifiers for this filter in the relevant SubscriptionTopic.", 0, 1, modifier));
           children.add(new Property("value", "string", "The literal value or resource path as is legal in search - for example, \"Patient/123\" or \"le1950\".", 0, 1, value));
         }
 
@@ -535,8 +415,8 @@ public class Subscription extends DomainResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case -384364440: /*resourceType*/  return new Property("resourceType", "uri", "If the element is a reference to another resource, this element contains \"Reference\", and the targetProfile element defines what resources can be referenced. The targetProfile may be a reference to the general definition of a resource (e.g. http://hl7.org/fhir/StructureDefinition/Patient).", 0, 1, resourceType);
-          case 83857392: /*searchParamName*/  return new Property("searchParamName", "string", "The filter label (=key) as defined in the `SubscriptionTopic.canfilterBy.searchParamName`  element.", 0, 1, searchParamName);
-          case 1540924575: /*searchModifier*/  return new Property("searchModifier", "code", "The operator to apply to the filter value when determining matches (Search modifiers).", 0, 1, searchModifier);
+          case 618257: /*filterParameter*/  return new Property("filterParameter", "string", "The filter label (=key) as defined in the `SubscriptionTopic.canfilterBy.filterParameter`  element.", 0, 1, filterParameter);
+          case -615513385: /*modifier*/  return new Property("modifier", "code", "Operator to apply when determining matches (Search Modifiers), from the list of allowed modifiers for this filter in the relevant SubscriptionTopic.", 0, 1, modifier);
           case 111972721: /*value*/  return new Property("value", "string", "The literal value or resource path as is legal in search - for example, \"Patient/123\" or \"le1950\".", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -547,8 +427,8 @@ public class Subscription extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -384364440: /*resourceType*/ return this.resourceType == null ? new Base[0] : new Base[] {this.resourceType}; // UriType
-        case 83857392: /*searchParamName*/ return this.searchParamName == null ? new Base[0] : new Base[] {this.searchParamName}; // StringType
-        case 1540924575: /*searchModifier*/ return this.searchModifier == null ? new Base[0] : new Base[] {this.searchModifier}; // Enumeration<SubscriptionSearchModifier>
+        case 618257: /*filterParameter*/ return this.filterParameter == null ? new Base[0] : new Base[] {this.filterParameter}; // StringType
+        case -615513385: /*modifier*/ return this.modifier == null ? new Base[0] : new Base[] {this.modifier}; // Enumeration<SubscriptionSearchModifier>
         case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // StringType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -561,12 +441,12 @@ public class Subscription extends DomainResource {
         case -384364440: // resourceType
           this.resourceType = TypeConvertor.castToUri(value); // UriType
           return value;
-        case 83857392: // searchParamName
-          this.searchParamName = TypeConvertor.castToString(value); // StringType
+        case 618257: // filterParameter
+          this.filterParameter = TypeConvertor.castToString(value); // StringType
           return value;
-        case 1540924575: // searchModifier
+        case -615513385: // modifier
           value = new SubscriptionSearchModifierEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.searchModifier = (Enumeration) value; // Enumeration<SubscriptionSearchModifier>
+          this.modifier = (Enumeration) value; // Enumeration<SubscriptionSearchModifier>
           return value;
         case 111972721: // value
           this.value = TypeConvertor.castToString(value); // StringType
@@ -580,11 +460,11 @@ public class Subscription extends DomainResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("resourceType")) {
           this.resourceType = TypeConvertor.castToUri(value); // UriType
-        } else if (name.equals("searchParamName")) {
-          this.searchParamName = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("searchModifier")) {
+        } else if (name.equals("filterParameter")) {
+          this.filterParameter = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("modifier")) {
           value = new SubscriptionSearchModifierEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.searchModifier = (Enumeration) value; // Enumeration<SubscriptionSearchModifier>
+          this.modifier = (Enumeration) value; // Enumeration<SubscriptionSearchModifier>
         } else if (name.equals("value")) {
           this.value = TypeConvertor.castToString(value); // StringType
         } else
@@ -596,8 +476,8 @@ public class Subscription extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -384364440:  return getResourceTypeElement();
-        case 83857392:  return getSearchParamNameElement();
-        case 1540924575:  return getSearchModifierElement();
+        case 618257:  return getFilterParameterElement();
+        case -615513385:  return getModifierElement();
         case 111972721:  return getValueElement();
         default: return super.makeProperty(hash, name);
         }
@@ -608,8 +488,8 @@ public class Subscription extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -384364440: /*resourceType*/ return new String[] {"uri"};
-        case 83857392: /*searchParamName*/ return new String[] {"string"};
-        case 1540924575: /*searchModifier*/ return new String[] {"code"};
+        case 618257: /*filterParameter*/ return new String[] {"string"};
+        case -615513385: /*modifier*/ return new String[] {"code"};
         case 111972721: /*value*/ return new String[] {"string"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -621,11 +501,11 @@ public class Subscription extends DomainResource {
         if (name.equals("resourceType")) {
           throw new FHIRException("Cannot call addChild on a primitive type Subscription.filterBy.resourceType");
         }
-        else if (name.equals("searchParamName")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Subscription.filterBy.searchParamName");
+        else if (name.equals("filterParameter")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Subscription.filterBy.filterParameter");
         }
-        else if (name.equals("searchModifier")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Subscription.filterBy.searchModifier");
+        else if (name.equals("modifier")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Subscription.filterBy.modifier");
         }
         else if (name.equals("value")) {
           throw new FHIRException("Cannot call addChild on a primitive type Subscription.filterBy.value");
@@ -643,8 +523,8 @@ public class Subscription extends DomainResource {
       public void copyValues(SubscriptionFilterByComponent dst) {
         super.copyValues(dst);
         dst.resourceType = resourceType == null ? null : resourceType.copy();
-        dst.searchParamName = searchParamName == null ? null : searchParamName.copy();
-        dst.searchModifier = searchModifier == null ? null : searchModifier.copy();
+        dst.filterParameter = filterParameter == null ? null : filterParameter.copy();
+        dst.modifier = modifier == null ? null : modifier.copy();
         dst.value = value == null ? null : value.copy();
       }
 
@@ -655,8 +535,8 @@ public class Subscription extends DomainResource {
         if (!(other_ instanceof SubscriptionFilterByComponent))
           return false;
         SubscriptionFilterByComponent o = (SubscriptionFilterByComponent) other_;
-        return compareDeep(resourceType, o.resourceType, true) && compareDeep(searchParamName, o.searchParamName, true)
-           && compareDeep(searchModifier, o.searchModifier, true) && compareDeep(value, o.value, true);
+        return compareDeep(resourceType, o.resourceType, true) && compareDeep(filterParameter, o.filterParameter, true)
+           && compareDeep(modifier, o.modifier, true) && compareDeep(value, o.value, true);
       }
 
       @Override
@@ -666,13 +546,13 @@ public class Subscription extends DomainResource {
         if (!(other_ instanceof SubscriptionFilterByComponent))
           return false;
         SubscriptionFilterByComponent o = (SubscriptionFilterByComponent) other_;
-        return compareValues(resourceType, o.resourceType, true) && compareValues(searchParamName, o.searchParamName, true)
-           && compareValues(searchModifier, o.searchModifier, true) && compareValues(value, o.value, true);
+        return compareValues(resourceType, o.resourceType, true) && compareValues(filterParameter, o.filterParameter, true)
+           && compareValues(modifier, o.modifier, true) && compareValues(value, o.value, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(resourceType, searchParamName
-          , searchModifier, value);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(resourceType, filterParameter
+          , modifier, value);
       }
 
   public String fhirType() {
@@ -701,8 +581,8 @@ public class Subscription extends DomainResource {
      */
     @Child(name = "status", type = {CodeType.class}, order=2, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="requested | active | error | off | entered-in-error", formalDefinition="The status of the subscription, which marks the server state for managing the subscription." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subscription-state")
-    protected Enumeration<SubscriptionState> status;
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subscription-status")
+    protected Enumeration<SubscriptionStatusCodes> status;
 
     /**
      * The reference to the subscription topic to be notified about.
@@ -792,21 +672,13 @@ public class Subscription extends DomainResource {
     protected Enumeration<SubscriptionPayloadContent> content;
 
     /**
-     * If present, where to place URLs of resources in notifications.
-     */
-    @Child(name = "notificationUrlLocation", type = {CodeType.class}, order=15, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="none | full-url | request-response | all", formalDefinition="If present, where to place URLs of resources in notifications." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subscription-url-location")
-    protected Enumeration<SubscriptionUrlLocation> notificationUrlLocation;
-
-    /**
      * If present, the maximum number of triggering resources that will be included in a notification bundle (e.g., a server will not include more than this number of trigger resources in a single notification).  Note that this is not a strict limit on the number of entries in a bundle, as dependent resources can be included.
      */
-    @Child(name = "maxCount", type = {PositiveIntType.class}, order=16, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "maxCount", type = {PositiveIntType.class}, order=15, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Maximum number of triggering resources included in notification bundles", formalDefinition="If present, the maximum number of triggering resources that will be included in a notification bundle (e.g., a server will not include more than this number of trigger resources in a single notification).  Note that this is not a strict limit on the number of entries in a bundle, as dependent resources can be included." )
     protected PositiveIntType maxCount;
 
-    private static final long serialVersionUID = -1188922658L;
+    private static final long serialVersionUID = -881003340L;
 
   /**
    * Constructor
@@ -818,7 +690,7 @@ public class Subscription extends DomainResource {
   /**
    * Constructor
    */
-    public Subscription(SubscriptionState status, String topic, Coding channelType) {
+    public Subscription(SubscriptionStatusCodes status, String topic, Coding channelType) {
       super();
       this.setStatus(status);
       this.setTopic(topic);
@@ -930,12 +802,12 @@ public class Subscription extends DomainResource {
     /**
      * @return {@link #status} (The status of the subscription, which marks the server state for managing the subscription.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Enumeration<SubscriptionState> getStatusElement() { 
+    public Enumeration<SubscriptionStatusCodes> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Subscription.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<SubscriptionState>(new SubscriptionStateEnumFactory()); // bb
+          this.status = new Enumeration<SubscriptionStatusCodes>(new SubscriptionStatusCodesEnumFactory()); // bb
       return this.status;
     }
 
@@ -950,7 +822,7 @@ public class Subscription extends DomainResource {
     /**
      * @param value {@link #status} (The status of the subscription, which marks the server state for managing the subscription.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Subscription setStatusElement(Enumeration<SubscriptionState> value) { 
+    public Subscription setStatusElement(Enumeration<SubscriptionStatusCodes> value) { 
       this.status = value;
       return this;
     }
@@ -958,16 +830,16 @@ public class Subscription extends DomainResource {
     /**
      * @return The status of the subscription, which marks the server state for managing the subscription.
      */
-    public SubscriptionState getStatus() { 
+    public SubscriptionStatusCodes getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
      * @param value The status of the subscription, which marks the server state for managing the subscription.
      */
-    public Subscription setStatus(SubscriptionState value) { 
+    public Subscription setStatus(SubscriptionStatusCodes value) { 
         if (this.status == null)
-          this.status = new Enumeration<SubscriptionState>(new SubscriptionStateEnumFactory());
+          this.status = new Enumeration<SubscriptionStatusCodes>(new SubscriptionStatusCodesEnumFactory());
         this.status.setValue(value);
       return this;
     }
@@ -1544,55 +1416,6 @@ public class Subscription extends DomainResource {
     }
 
     /**
-     * @return {@link #notificationUrlLocation} (If present, where to place URLs of resources in notifications.). This is the underlying object with id, value and extensions. The accessor "getNotificationUrlLocation" gives direct access to the value
-     */
-    public Enumeration<SubscriptionUrlLocation> getNotificationUrlLocationElement() { 
-      if (this.notificationUrlLocation == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Subscription.notificationUrlLocation");
-        else if (Configuration.doAutoCreate())
-          this.notificationUrlLocation = new Enumeration<SubscriptionUrlLocation>(new SubscriptionUrlLocationEnumFactory()); // bb
-      return this.notificationUrlLocation;
-    }
-
-    public boolean hasNotificationUrlLocationElement() { 
-      return this.notificationUrlLocation != null && !this.notificationUrlLocation.isEmpty();
-    }
-
-    public boolean hasNotificationUrlLocation() { 
-      return this.notificationUrlLocation != null && !this.notificationUrlLocation.isEmpty();
-    }
-
-    /**
-     * @param value {@link #notificationUrlLocation} (If present, where to place URLs of resources in notifications.). This is the underlying object with id, value and extensions. The accessor "getNotificationUrlLocation" gives direct access to the value
-     */
-    public Subscription setNotificationUrlLocationElement(Enumeration<SubscriptionUrlLocation> value) { 
-      this.notificationUrlLocation = value;
-      return this;
-    }
-
-    /**
-     * @return If present, where to place URLs of resources in notifications.
-     */
-    public SubscriptionUrlLocation getNotificationUrlLocation() { 
-      return this.notificationUrlLocation == null ? null : this.notificationUrlLocation.getValue();
-    }
-
-    /**
-     * @param value If present, where to place URLs of resources in notifications.
-     */
-    public Subscription setNotificationUrlLocation(SubscriptionUrlLocation value) { 
-      if (value == null)
-        this.notificationUrlLocation = null;
-      else {
-        if (this.notificationUrlLocation == null)
-          this.notificationUrlLocation = new Enumeration<SubscriptionUrlLocation>(new SubscriptionUrlLocationEnumFactory());
-        this.notificationUrlLocation.setValue(value);
-      }
-      return this;
-    }
-
-    /**
      * @return {@link #maxCount} (If present, the maximum number of triggering resources that will be included in a notification bundle (e.g., a server will not include more than this number of trigger resources in a single notification).  Note that this is not a strict limit on the number of entries in a bundle, as dependent resources can be included.). This is the underlying object with id, value and extensions. The accessor "getMaxCount" gives direct access to the value
      */
     public PositiveIntType getMaxCountElement() { 
@@ -1654,7 +1477,6 @@ public class Subscription extends DomainResource {
         children.add(new Property("timeout", "unsignedInt", "If present, the maximum amount of time a server will allow before failing a notification attempt.", 0, 1, timeout));
         children.add(new Property("contentType", "code", "The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The MIME types \"text/plain\" and \"text/html\" may also be used for Email subscriptions.", 0, 1, contentType));
         children.add(new Property("content", "code", "How much of the resource content to deliver in the notification payload. The choices are an empty payload, only the resource id, or the full resource content.", 0, 1, content));
-        children.add(new Property("notificationUrlLocation", "code", "If present, where to place URLs of resources in notifications.", 0, 1, notificationUrlLocation));
         children.add(new Property("maxCount", "positiveInt", "If present, the maximum number of triggering resources that will be included in a notification bundle (e.g., a server will not include more than this number of trigger resources in a single notification).  Note that this is not a strict limit on the number of entries in a bundle, as dependent resources can be included.", 0, 1, maxCount));
       }
 
@@ -1676,7 +1498,6 @@ public class Subscription extends DomainResource {
         case -1313911455: /*timeout*/  return new Property("timeout", "unsignedInt", "If present, the maximum amount of time a server will allow before failing a notification attempt.", 0, 1, timeout);
         case -389131437: /*contentType*/  return new Property("contentType", "code", "The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The MIME types \"text/plain\" and \"text/html\" may also be used for Email subscriptions.", 0, 1, contentType);
         case 951530617: /*content*/  return new Property("content", "code", "How much of the resource content to deliver in the notification payload. The choices are an empty payload, only the resource id, or the full resource content.", 0, 1, content);
-        case 1994381401: /*notificationUrlLocation*/  return new Property("notificationUrlLocation", "code", "If present, where to place URLs of resources in notifications.", 0, 1, notificationUrlLocation);
         case 382106123: /*maxCount*/  return new Property("maxCount", "positiveInt", "If present, the maximum number of triggering resources that will be included in a notification bundle (e.g., a server will not include more than this number of trigger resources in a single notification).  Note that this is not a strict limit on the number of entries in a bundle, as dependent resources can be included.", 0, 1, maxCount);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -1688,7 +1509,7 @@ public class Subscription extends DomainResource {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<SubscriptionState>
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<SubscriptionStatusCodes>
         case 110546223: /*topic*/ return this.topic == null ? new Base[0] : new Base[] {this.topic}; // CanonicalType
         case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ContactPoint
         case 100571: /*end*/ return this.end == null ? new Base[0] : new Base[] {this.end}; // InstantType
@@ -1701,7 +1522,6 @@ public class Subscription extends DomainResource {
         case -1313911455: /*timeout*/ return this.timeout == null ? new Base[0] : new Base[] {this.timeout}; // UnsignedIntType
         case -389131437: /*contentType*/ return this.contentType == null ? new Base[0] : new Base[] {this.contentType}; // CodeType
         case 951530617: /*content*/ return this.content == null ? new Base[0] : new Base[] {this.content}; // Enumeration<SubscriptionPayloadContent>
-        case 1994381401: /*notificationUrlLocation*/ return this.notificationUrlLocation == null ? new Base[0] : new Base[] {this.notificationUrlLocation}; // Enumeration<SubscriptionUrlLocation>
         case 382106123: /*maxCount*/ return this.maxCount == null ? new Base[0] : new Base[] {this.maxCount}; // PositiveIntType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -1718,8 +1538,8 @@ public class Subscription extends DomainResource {
           this.name = TypeConvertor.castToString(value); // StringType
           return value;
         case -892481550: // status
-          value = new SubscriptionStateEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<SubscriptionState>
+          value = new SubscriptionStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<SubscriptionStatusCodes>
           return value;
         case 110546223: // topic
           this.topic = TypeConvertor.castToCanonical(value); // CanonicalType
@@ -1758,10 +1578,6 @@ public class Subscription extends DomainResource {
           value = new SubscriptionPayloadContentEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.content = (Enumeration) value; // Enumeration<SubscriptionPayloadContent>
           return value;
-        case 1994381401: // notificationUrlLocation
-          value = new SubscriptionUrlLocationEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.notificationUrlLocation = (Enumeration) value; // Enumeration<SubscriptionUrlLocation>
-          return value;
         case 382106123: // maxCount
           this.maxCount = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
@@ -1777,8 +1593,8 @@ public class Subscription extends DomainResource {
         } else if (name.equals("name")) {
           this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
-          value = new SubscriptionStateEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<SubscriptionState>
+          value = new SubscriptionStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<SubscriptionStatusCodes>
         } else if (name.equals("topic")) {
           this.topic = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("contact")) {
@@ -1804,9 +1620,6 @@ public class Subscription extends DomainResource {
         } else if (name.equals("content")) {
           value = new SubscriptionPayloadContentEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.content = (Enumeration) value; // Enumeration<SubscriptionPayloadContent>
-        } else if (name.equals("notificationUrlLocation")) {
-          value = new SubscriptionUrlLocationEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.notificationUrlLocation = (Enumeration) value; // Enumeration<SubscriptionUrlLocation>
         } else if (name.equals("maxCount")) {
           this.maxCount = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else
@@ -1832,7 +1645,6 @@ public class Subscription extends DomainResource {
         case -1313911455:  return getTimeoutElement();
         case -389131437:  return getContentTypeElement();
         case 951530617:  return getContentElement();
-        case 1994381401:  return getNotificationUrlLocationElement();
         case 382106123:  return getMaxCountElement();
         default: return super.makeProperty(hash, name);
         }
@@ -1857,7 +1669,6 @@ public class Subscription extends DomainResource {
         case -1313911455: /*timeout*/ return new String[] {"unsignedInt"};
         case -389131437: /*contentType*/ return new String[] {"code"};
         case 951530617: /*content*/ return new String[] {"code"};
-        case 1994381401: /*notificationUrlLocation*/ return new String[] {"code"};
         case 382106123: /*maxCount*/ return new String[] {"positiveInt"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -1912,9 +1723,6 @@ public class Subscription extends DomainResource {
         else if (name.equals("content")) {
           throw new FHIRException("Cannot call addChild on a primitive type Subscription.content");
         }
-        else if (name.equals("notificationUrlLocation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Subscription.notificationUrlLocation");
-        }
         else if (name.equals("maxCount")) {
           throw new FHIRException("Cannot call addChild on a primitive type Subscription.maxCount");
         }
@@ -1966,7 +1774,6 @@ public class Subscription extends DomainResource {
         dst.timeout = timeout == null ? null : timeout.copy();
         dst.contentType = contentType == null ? null : contentType.copy();
         dst.content = content == null ? null : content.copy();
-        dst.notificationUrlLocation = notificationUrlLocation == null ? null : notificationUrlLocation.copy();
         dst.maxCount = maxCount == null ? null : maxCount.copy();
       }
 
@@ -1986,8 +1793,7 @@ public class Subscription extends DomainResource {
            && compareDeep(reason, o.reason, true) && compareDeep(filterBy, o.filterBy, true) && compareDeep(channelType, o.channelType, true)
            && compareDeep(endpoint, o.endpoint, true) && compareDeep(header, o.header, true) && compareDeep(heartbeatPeriod, o.heartbeatPeriod, true)
            && compareDeep(timeout, o.timeout, true) && compareDeep(contentType, o.contentType, true) && compareDeep(content, o.content, true)
-           && compareDeep(notificationUrlLocation, o.notificationUrlLocation, true) && compareDeep(maxCount, o.maxCount, true)
-          ;
+           && compareDeep(maxCount, o.maxCount, true);
       }
 
       @Override
@@ -2001,140 +1807,19 @@ public class Subscription extends DomainResource {
            && compareValues(end, o.end, true) && compareValues(reason, o.reason, true) && compareValues(endpoint, o.endpoint, true)
            && compareValues(header, o.header, true) && compareValues(heartbeatPeriod, o.heartbeatPeriod, true)
            && compareValues(timeout, o.timeout, true) && compareValues(contentType, o.contentType, true) && compareValues(content, o.content, true)
-           && compareValues(notificationUrlLocation, o.notificationUrlLocation, true) && compareValues(maxCount, o.maxCount, true)
-          ;
+           && compareValues(maxCount, o.maxCount, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, name, status
           , topic, contact, end, reason, filterBy, channelType, endpoint, header, heartbeatPeriod
-          , timeout, contentType, content, notificationUrlLocation, maxCount);
+          , timeout, contentType, content, maxCount);
       }
 
   @Override
   public ResourceType getResourceType() {
     return ResourceType.Subscription;
    }
-
- /**
-   * Search parameter: <b>contact</b>
-   * <p>
-   * Description: <b>Contact details for the subscription</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Subscription.contact</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="contact", path="Subscription.contact", description="Contact details for the subscription", type="token" )
-  public static final String SP_CONTACT = "contact";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>contact</b>
-   * <p>
-   * Description: <b>Contact details for the subscription</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Subscription.contact</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTACT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTACT);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>A subscription identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Subscription.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="Subscription.identifier", description="A subscription identifier", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>A subscription identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Subscription.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>payload</b>
-   * <p>
-   * Description: <b>The mime-type of the notification payload</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>null</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="payload", path="", description="The mime-type of the notification payload", type="token" )
-  public static final String SP_PAYLOAD = "payload";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>payload</b>
-   * <p>
-   * Description: <b>The mime-type of the notification payload</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>null</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PAYLOAD = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PAYLOAD);
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>The current state of the subscription</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Subscription.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="Subscription.status", description="The current state of the subscription", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>The current state of the subscription</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Subscription.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
-
- /**
-   * Search parameter: <b>type</b>
-   * <p>
-   * Description: <b>The type of channel for the sent notifications</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>null</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="type", path="", description="The type of channel for the sent notifications", type="token" )
-  public static final String SP_TYPE = "type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>type</b>
-   * <p>
-   * Description: <b>The type of channel for the sent notifications</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>null</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
-
- /**
-   * Search parameter: <b>url</b>
-   * <p>
-   * Description: <b>The uri that will receive the notifications</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>null</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="url", path="", description="The uri that will receive the notifications", type="uri" )
-  public static final String SP_URL = "url";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>url</b>
-   * <p>
-   * Description: <b>The uri that will receive the notifications</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>null</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
 
 
 }
