@@ -82,16 +82,16 @@ public class Organization40_50 {
     for (org.hl7.fhir.r5.model.Address t : src.getAddress()) tgt.addAddress(Address40_50.convertAddress(t));
     if (src.hasPartOf())
       tgt.setPartOf(Reference40_50.convertReference(src.getPartOf()));
-    for (org.hl7.fhir.r5.model.Organization.OrganizationContactComponent t : src.getContact())
+    for (org.hl7.fhir.r5.model.ExtendedContactDetail t : src.getContact())
       tgt.addContact(convertOrganizationContactComponent(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference40_50.convertReference(t));
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Organization.OrganizationContactComponent convertOrganizationContactComponent(org.hl7.fhir.r4.model.Organization.OrganizationContactComponent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.ExtendedContactDetail convertOrganizationContactComponent(org.hl7.fhir.r4.model.Organization.OrganizationContactComponent src) throws FHIRException {
     if (src == null)
       return null;
-    org.hl7.fhir.r5.model.Organization.OrganizationContactComponent tgt = new org.hl7.fhir.r5.model.Organization.OrganizationContactComponent();
+    org.hl7.fhir.r5.model.ExtendedContactDetail tgt = new org.hl7.fhir.r5.model.ExtendedContactDetail();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasPurpose())
       tgt.setPurpose(CodeableConcept40_50.convertCodeableConcept(src.getPurpose()));
@@ -104,7 +104,7 @@ public class Organization40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r4.model.Organization.OrganizationContactComponent convertOrganizationContactComponent(org.hl7.fhir.r5.model.Organization.OrganizationContactComponent src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Organization.OrganizationContactComponent convertOrganizationContactComponent(org.hl7.fhir.r5.model.ExtendedContactDetail src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Organization.OrganizationContactComponent tgt = new org.hl7.fhir.r4.model.Organization.OrganizationContactComponent();

@@ -10,7 +10,9 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Stri
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.UnsignedInt30_50;
 import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.CodeableReference;
+import org.hl7.fhir.r5.model.Coding;
 
 import java.util.List;
 
@@ -48,8 +50,9 @@ public class ImagingStudy30_50 {
           break;
       }
     }
-    for (org.hl7.fhir.r5.model.Coding t : src.getModality()) {
-      tgt.addModalityList(Coding30_50.convertCoding(t));
+    for (CodeableConcept t : src.getModality()) {
+      for (Coding tt : t.getCoding())
+      tgt.addModalityList(Coding30_50.convertCoding(tt));
     }
     if (src.hasSubject()) {
       if (src.hasSubject())
@@ -143,7 +146,7 @@ public class ImagingStudy30_50 {
       tgt.setStatus(org.hl7.fhir.r5.model.ImagingStudy.ImagingStudyStatus.UNKNOWN);
     }
     for (org.hl7.fhir.dstu3.model.Coding t : src.getModalityList()) {
-      tgt.addModality(Coding30_50.convertCoding(t));
+      tgt.addModality(new CodeableConcept().addCoding(Coding30_50.convertCoding(t)));
     }
     if (src.hasPatient())
       tgt.setSubject(Reference30_50.convertReference(src.getPatient()));
@@ -225,9 +228,8 @@ public class ImagingStudy30_50 {
     for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) {
       tgt.addEndpoint(Reference30_50.convertReference(t));
     }
-    if (src.hasBodySite()) {
-      if (src.hasBodySite())
-        tgt.setBodySite(Coding30_50.convertCoding(src.getBodySite()));
+    if (src.getBodySite().hasConcept()) {
+        tgt.setBodySite(Coding30_50.convertCoding(src.getBodySite().getConcept().getCodingFirstRep()));
     }
     if (src.hasLaterality()) {
       if (src.hasLaterality())
@@ -258,7 +260,7 @@ public class ImagingStudy30_50 {
     }
     if (src.hasModality()) {
       if (src.hasModality())
-        tgt.setModality(Coding30_50.convertCoding(src.getModality()));
+        tgt.setModality(new CodeableConcept().addCoding(Coding30_50.convertCoding(src.getModality())));
     }
     if (src.hasDescription()) {
       if (src.hasDescriptionElement())
@@ -273,11 +275,11 @@ public class ImagingStudy30_50 {
     }
     if (src.hasBodySite()) {
       if (src.hasBodySite())
-        tgt.setBodySite(Coding30_50.convertCoding(src.getBodySite()));
+        tgt.setBodySite(new CodeableReference(new CodeableConcept(Coding30_50.convertCoding(src.getBodySite()))));
     }
     if (src.hasLaterality()) {
       if (src.hasLaterality())
-        tgt.setLaterality(Coding30_50.convertCoding(src.getLaterality()));
+        tgt.setLaterality(new CodeableConcept(Coding30_50.convertCoding(src.getLaterality())));
     }
     if (src.hasStarted()) {
       if (src.hasStartedElement())

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -89,6 +89,7 @@ public class MessageDefinition extends CanonicalResource {
             case CONSEQUENCE: return "consequence";
             case CURRENCY: return "currency";
             case NOTIFICATION: return "notification";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +98,7 @@ public class MessageDefinition extends CanonicalResource {
             case CONSEQUENCE: return "http://hl7.org/fhir/message-significance-category";
             case CURRENCY: return "http://hl7.org/fhir/message-significance-category";
             case NOTIFICATION: return "http://hl7.org/fhir/message-significance-category";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +107,7 @@ public class MessageDefinition extends CanonicalResource {
             case CONSEQUENCE: return "The message represents/requests a change that should not be processed more than once; e.g., making a booking for an appointment.";
             case CURRENCY: return "The message represents a response to query for current information. Retrospective processing is wrong and/or wasteful.";
             case NOTIFICATION: return "The content is not necessarily intended to be current, and it can be reprocessed, though there may be version issues created by processing old notifications.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +116,7 @@ public class MessageDefinition extends CanonicalResource {
             case CONSEQUENCE: return "Consequence";
             case CURRENCY: return "Currency";
             case NOTIFICATION: return "Notification";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -204,6 +208,7 @@ public class MessageDefinition extends CanonicalResource {
             case ONERROR: return "on-error";
             case NEVER: return "never";
             case ONSUCCESS: return "on-success";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -213,6 +218,7 @@ public class MessageDefinition extends CanonicalResource {
             case ONERROR: return "http://hl7.org/fhir/messageheader-response-request";
             case NEVER: return "http://hl7.org/fhir/messageheader-response-request";
             case ONSUCCESS: return "http://hl7.org/fhir/messageheader-response-request";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -222,6 +228,7 @@ public class MessageDefinition extends CanonicalResource {
             case ONERROR: return "initiator expects a response only if in error.";
             case NEVER: return "initiator does not expect a response.";
             case ONSUCCESS: return "initiator expects a response only if successful.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -231,6 +238,7 @@ public class MessageDefinition extends CanonicalResource {
             case ONERROR: return "Error/reject conditions only";
             case NEVER: return "Never";
             case ONSUCCESS: return "Successful completion only";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1101,11 +1109,11 @@ public class MessageDefinition extends CanonicalResource {
     /**
      * Canonical reference to a GraphDefinition. If a URL is provided, it is the canonical reference to a [GraphDefinition](graphdefinition.html) that it controls what resources are to be added to the bundle when building the document. The GraphDefinition can also specify profiles that apply to the various resources.
      */
-    @Child(name = "graph", type = {CanonicalType.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "graph", type = {CanonicalType.class}, order=23, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Canonical reference to a GraphDefinition", formalDefinition="Canonical reference to a GraphDefinition. If a URL is provided, it is the canonical reference to a [GraphDefinition](graphdefinition.html) that it controls what resources are to be added to the bundle when building the document. The GraphDefinition can also specify profiles that apply to the various resources." )
-    protected List<CanonicalType> graph;
+    protected CanonicalType graph;
 
-    private static final long serialVersionUID = -1567425385L;
+    private static final long serialVersionUID = -1381412553L;
 
   /**
    * Constructor
@@ -2290,64 +2298,52 @@ public class MessageDefinition extends CanonicalResource {
     }
 
     /**
-     * @return {@link #graph} (Canonical reference to a GraphDefinition. If a URL is provided, it is the canonical reference to a [GraphDefinition](graphdefinition.html) that it controls what resources are to be added to the bundle when building the document. The GraphDefinition can also specify profiles that apply to the various resources.)
+     * @return {@link #graph} (Canonical reference to a GraphDefinition. If a URL is provided, it is the canonical reference to a [GraphDefinition](graphdefinition.html) that it controls what resources are to be added to the bundle when building the document. The GraphDefinition can also specify profiles that apply to the various resources.). This is the underlying object with id, value and extensions. The accessor "getGraph" gives direct access to the value
      */
-    public List<CanonicalType> getGraph() { 
+    public CanonicalType getGraphElement() { 
       if (this.graph == null)
-        this.graph = new ArrayList<CanonicalType>();
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create MessageDefinition.graph");
+        else if (Configuration.doAutoCreate())
+          this.graph = new CanonicalType(); // bb
       return this.graph;
     }
 
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public MessageDefinition setGraph(List<CanonicalType> theGraph) { 
-      this.graph = theGraph;
-      return this;
+    public boolean hasGraphElement() { 
+      return this.graph != null && !this.graph.isEmpty();
     }
 
     public boolean hasGraph() { 
-      if (this.graph == null)
-        return false;
-      for (CanonicalType item : this.graph)
-        if (!item.isEmpty())
-          return true;
-      return false;
+      return this.graph != null && !this.graph.isEmpty();
     }
 
     /**
-     * @return {@link #graph} (Canonical reference to a GraphDefinition. If a URL is provided, it is the canonical reference to a [GraphDefinition](graphdefinition.html) that it controls what resources are to be added to the bundle when building the document. The GraphDefinition can also specify profiles that apply to the various resources.)
+     * @param value {@link #graph} (Canonical reference to a GraphDefinition. If a URL is provided, it is the canonical reference to a [GraphDefinition](graphdefinition.html) that it controls what resources are to be added to the bundle when building the document. The GraphDefinition can also specify profiles that apply to the various resources.). This is the underlying object with id, value and extensions. The accessor "getGraph" gives direct access to the value
      */
-    public CanonicalType addGraphElement() {//2 
-      CanonicalType t = new CanonicalType();
-      if (this.graph == null)
-        this.graph = new ArrayList<CanonicalType>();
-      this.graph.add(t);
-      return t;
-    }
-
-    /**
-     * @param value {@link #graph} (Canonical reference to a GraphDefinition. If a URL is provided, it is the canonical reference to a [GraphDefinition](graphdefinition.html) that it controls what resources are to be added to the bundle when building the document. The GraphDefinition can also specify profiles that apply to the various resources.)
-     */
-    public MessageDefinition addGraph(String value) { //1
-      CanonicalType t = new CanonicalType();
-      t.setValue(value);
-      if (this.graph == null)
-        this.graph = new ArrayList<CanonicalType>();
-      this.graph.add(t);
+    public MessageDefinition setGraphElement(CanonicalType value) { 
+      this.graph = value;
       return this;
     }
 
     /**
-     * @param value {@link #graph} (Canonical reference to a GraphDefinition. If a URL is provided, it is the canonical reference to a [GraphDefinition](graphdefinition.html) that it controls what resources are to be added to the bundle when building the document. The GraphDefinition can also specify profiles that apply to the various resources.)
+     * @return Canonical reference to a GraphDefinition. If a URL is provided, it is the canonical reference to a [GraphDefinition](graphdefinition.html) that it controls what resources are to be added to the bundle when building the document. The GraphDefinition can also specify profiles that apply to the various resources.
      */
-    public boolean hasGraph(String value) { 
-      if (this.graph == null)
-        return false;
-      for (CanonicalType v : this.graph)
-        if (v.getValue().equals(value)) // canonical
-          return true;
-      return false;
+    public String getGraph() { 
+      return this.graph == null ? null : this.graph.getValue();
+    }
+
+    /**
+     * @param value Canonical reference to a GraphDefinition. If a URL is provided, it is the canonical reference to a [GraphDefinition](graphdefinition.html) that it controls what resources are to be added to the bundle when building the document. The GraphDefinition can also specify profiles that apply to the various resources.
+     */
+    public MessageDefinition setGraph(String value) { 
+      if (Utilities.noString(value))
+        this.graph = null;
+      else {
+        if (this.graph == null)
+          this.graph = new CanonicalType();
+        this.graph.setValue(value);
+      }
+      return this;
     }
 
       protected void listChildren(List<Property> children) {
@@ -2375,7 +2371,7 @@ public class MessageDefinition extends CanonicalResource {
         children.add(new Property("focus", "", "Identifies the resource (or resources) that are being addressed by the event.  For example, the Encounter for an admit message or two Account records for a merge.", 0, java.lang.Integer.MAX_VALUE, focus));
         children.add(new Property("responseRequired", "code", "Declare at a message definition level whether a response is required or only upon error or success, or never.", 0, 1, responseRequired));
         children.add(new Property("allowedResponse", "", "Indicates what types of messages may be sent as an application-level response to this message.", 0, java.lang.Integer.MAX_VALUE, allowedResponse));
-        children.add(new Property("graph", "canonical(GraphDefinition)", "Canonical reference to a GraphDefinition. If a URL is provided, it is the canonical reference to a [GraphDefinition](graphdefinition.html) that it controls what resources are to be added to the bundle when building the document. The GraphDefinition can also specify profiles that apply to the various resources.", 0, java.lang.Integer.MAX_VALUE, graph));
+        children.add(new Property("graph", "canonical(GraphDefinition)", "Canonical reference to a GraphDefinition. If a URL is provided, it is the canonical reference to a [GraphDefinition](graphdefinition.html) that it controls what resources are to be added to the bundle when building the document. The GraphDefinition can also specify profiles that apply to the various resources.", 0, 1, graph));
       }
 
       @Override
@@ -2407,7 +2403,7 @@ public class MessageDefinition extends CanonicalResource {
         case 97604824: /*focus*/  return new Property("focus", "", "Identifies the resource (or resources) that are being addressed by the event.  For example, the Encounter for an admit message or two Account records for a merge.", 0, java.lang.Integer.MAX_VALUE, focus);
         case 791597824: /*responseRequired*/  return new Property("responseRequired", "code", "Declare at a message definition level whether a response is required or only upon error or success, or never.", 0, 1, responseRequired);
         case -1130933751: /*allowedResponse*/  return new Property("allowedResponse", "", "Indicates what types of messages may be sent as an application-level response to this message.", 0, java.lang.Integer.MAX_VALUE, allowedResponse);
-        case 98615630: /*graph*/  return new Property("graph", "canonical(GraphDefinition)", "Canonical reference to a GraphDefinition. If a URL is provided, it is the canonical reference to a [GraphDefinition](graphdefinition.html) that it controls what resources are to be added to the bundle when building the document. The GraphDefinition can also specify profiles that apply to the various resources.", 0, java.lang.Integer.MAX_VALUE, graph);
+        case 98615630: /*graph*/  return new Property("graph", "canonical(GraphDefinition)", "Canonical reference to a GraphDefinition. If a URL is provided, it is the canonical reference to a [GraphDefinition](graphdefinition.html) that it controls what resources are to be added to the bundle when building the document. The GraphDefinition can also specify profiles that apply to the various resources.", 0, 1, graph);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -2439,7 +2435,7 @@ public class MessageDefinition extends CanonicalResource {
         case 97604824: /*focus*/ return this.focus == null ? new Base[0] : this.focus.toArray(new Base[this.focus.size()]); // MessageDefinitionFocusComponent
         case 791597824: /*responseRequired*/ return this.responseRequired == null ? new Base[0] : new Base[] {this.responseRequired}; // Enumeration<MessageheaderResponseRequest>
         case -1130933751: /*allowedResponse*/ return this.allowedResponse == null ? new Base[0] : this.allowedResponse.toArray(new Base[this.allowedResponse.size()]); // MessageDefinitionAllowedResponseComponent
-        case 98615630: /*graph*/ return this.graph == null ? new Base[0] : this.graph.toArray(new Base[this.graph.size()]); // CanonicalType
+        case 98615630: /*graph*/ return this.graph == null ? new Base[0] : new Base[] {this.graph}; // CanonicalType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -2521,7 +2517,7 @@ public class MessageDefinition extends CanonicalResource {
           this.getAllowedResponse().add((MessageDefinitionAllowedResponseComponent) value); // MessageDefinitionAllowedResponseComponent
           return value;
         case 98615630: // graph
-          this.getGraph().add(TypeConvertor.castToCanonical(value)); // CanonicalType
+          this.graph = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2580,7 +2576,7 @@ public class MessageDefinition extends CanonicalResource {
         } else if (name.equals("allowedResponse")) {
           this.getAllowedResponse().add((MessageDefinitionAllowedResponseComponent) value);
         } else if (name.equals("graph")) {
-          this.getGraph().add(TypeConvertor.castToCanonical(value));
+          this.graph = TypeConvertor.castToCanonical(value); // CanonicalType
         } else
           return super.setProperty(name, value);
         return value;
@@ -2613,7 +2609,7 @@ public class MessageDefinition extends CanonicalResource {
         case 97604824:  return addFocus(); 
         case 791597824:  return getResponseRequiredElement();
         case -1130933751:  return addAllowedResponse(); 
-        case 98615630:  return addGraphElement();
+        case 98615630:  return getGraphElement();
         default: return super.makeProperty(hash, name);
         }
 
@@ -2802,11 +2798,7 @@ public class MessageDefinition extends CanonicalResource {
           for (MessageDefinitionAllowedResponseComponent i : allowedResponse)
             dst.allowedResponse.add(i.copy());
         };
-        if (graph != null) {
-          dst.graph = new ArrayList<CanonicalType>();
-          for (CanonicalType i : graph)
-            dst.graph.add(i.copy());
-        };
+        dst.graph = graph == null ? null : graph.copy();
       }
 
       protected MessageDefinition typedCopy() {
@@ -2858,848 +2850,6 @@ public class MessageDefinition extends CanonicalResource {
   public ResourceType getResourceType() {
     return ResourceType.MessageDefinition;
    }
-
- /**
-   * Search parameter: <b>category</b>
-   * <p>
-   * Description: <b>The behavior associated with the message</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>MessageDefinition.category</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="category", path="MessageDefinition.category", description="The behavior associated with the message", type="token" )
-  public static final String SP_CATEGORY = "category";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>category</b>
-   * <p>
-   * Description: <b>The behavior associated with the message</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>MessageDefinition.category</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CATEGORY);
-
- /**
-   * Search parameter: <b>event</b>
-   * <p>
-   * Description: <b>The event that triggers the message or link to the event definition.</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>MessageDefinition.event</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="event", path="MessageDefinition.event", description="The event that triggers the message or link to the event definition.", type="token" )
-  public static final String SP_EVENT = "event";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>event</b>
-   * <p>
-   * Description: <b>The event that triggers the message or link to the event definition.</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>MessageDefinition.event</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EVENT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EVENT);
-
- /**
-   * Search parameter: <b>focus</b>
-   * <p>
-   * Description: <b>A resource that is a permitted focus of the message</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>MessageDefinition.focus.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="focus", path="MessageDefinition.focus.code", description="A resource that is a permitted focus of the message", type="token" )
-  public static final String SP_FOCUS = "focus";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>focus</b>
-   * <p>
-   * Description: <b>A resource that is a permitted focus of the message</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>MessageDefinition.focus.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam FOCUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FOCUS);
-
- /**
-   * Search parameter: <b>parent</b>
-   * <p>
-   * Description: <b>A resource that is the parent of the definition</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>MessageDefinition.parent</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="parent", path="MessageDefinition.parent", description="A resource that is the parent of the definition", type="reference", target={ActivityDefinition.class, PlanDefinition.class } )
-  public static final String SP_PARENT = "parent";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>parent</b>
-   * <p>
-   * Description: <b>A resource that is the parent of the definition</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>MessageDefinition.parent</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PARENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PARENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>MessageDefinition:parent</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PARENT = new ca.uhn.fhir.model.api.Include("MessageDefinition:parent").toLocked();
-
- /**
-   * Search parameter: <b>context-quantity</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A quantity- or range-valued use context assigned to the capability statement
-* [CodeSystem](codesystem.html): A quantity- or range-valued use context assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A quantity- or range-valued use context assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A quantity- or range-valued use context assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A quantity- or range-valued use context assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A quantity- or range-valued use context assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A quantity- or range-valued use context assigned to the message definition
-* [NamingSystem](namingsystem.html): A quantity- or range-valued use context assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A quantity- or range-valued use context assigned to the operation definition
-* [SearchParameter](searchparameter.html): A quantity- or range-valued use context assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A quantity- or range-valued use context assigned to the structure definition
-* [StructureMap](structuremap.html): A quantity- or range-valued use context assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A quantity- or range-valued use context assigned to the terminology capabilities
-* [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set
-</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>(CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range) | (CodeSystem.useContext.value as Quantity) | (CodeSystem.useContext.value as Range) | (CompartmentDefinition.useContext.value as Quantity) | (CompartmentDefinition.useContext.value as Range) | (ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range) | (GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range) | (ImplementationGuide.useContext.value as Quantity) | (ImplementationGuide.useContext.value as Range) | (MessageDefinition.useContext.value as Quantity) | (MessageDefinition.useContext.value as Range) | (NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range) | (OperationDefinition.useContext.value as Quantity) | (OperationDefinition.useContext.value as Range) | (SearchParameter.useContext.value as Quantity) | (SearchParameter.useContext.value as Range) | (StructureDefinition.useContext.value as Quantity) | (StructureDefinition.useContext.value as Range) | (StructureMap.useContext.value as Quantity) | (StructureMap.useContext.value as Range) | (TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range) | (ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-quantity", path="(CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range) | (CodeSystem.useContext.value as Quantity) | (CodeSystem.useContext.value as Range) | (CompartmentDefinition.useContext.value as Quantity) | (CompartmentDefinition.useContext.value as Range) | (ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range) | (GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range) | (ImplementationGuide.useContext.value as Quantity) | (ImplementationGuide.useContext.value as Range) | (MessageDefinition.useContext.value as Quantity) | (MessageDefinition.useContext.value as Range) | (NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range) | (OperationDefinition.useContext.value as Quantity) | (OperationDefinition.useContext.value as Range) | (SearchParameter.useContext.value as Quantity) | (SearchParameter.useContext.value as Range) | (StructureDefinition.useContext.value as Quantity) | (StructureDefinition.useContext.value as Range) | (StructureMap.useContext.value as Quantity) | (StructureMap.useContext.value as Range) | (TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range) | (ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range)", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): A quantity- or range-valued use context assigned to the capability statement\r\n* [CodeSystem](codesystem.html): A quantity- or range-valued use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A quantity- or range-valued use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A quantity- or range-valued use context assigned to the concept map\r\n* [GraphDefinition](graphdefinition.html): A quantity- or range-valued use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A quantity- or range-valued use context assigned to the implementation guide\r\n* [MessageDefinition](messagedefinition.html): A quantity- or range-valued use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A quantity- or range-valued use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A quantity- or range-valued use context assigned to the operation definition\r\n* [SearchParameter](searchparameter.html): A quantity- or range-valued use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A quantity- or range-valued use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A quantity- or range-valued use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A quantity- or range-valued use context assigned to the terminology capabilities\r\n* [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set\r\n", type="quantity" )
-  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A quantity- or range-valued use context assigned to the capability statement
-* [CodeSystem](codesystem.html): A quantity- or range-valued use context assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A quantity- or range-valued use context assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A quantity- or range-valued use context assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A quantity- or range-valued use context assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A quantity- or range-valued use context assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A quantity- or range-valued use context assigned to the message definition
-* [NamingSystem](namingsystem.html): A quantity- or range-valued use context assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A quantity- or range-valued use context assigned to the operation definition
-* [SearchParameter](searchparameter.html): A quantity- or range-valued use context assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A quantity- or range-valued use context assigned to the structure definition
-* [StructureMap](structuremap.html): A quantity- or range-valued use context assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A quantity- or range-valued use context assigned to the terminology capabilities
-* [ValueSet](valueset.html): A quantity- or range-valued use context assigned to the value set
-</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>(CapabilityStatement.useContext.value as Quantity) | (CapabilityStatement.useContext.value as Range) | (CodeSystem.useContext.value as Quantity) | (CodeSystem.useContext.value as Range) | (CompartmentDefinition.useContext.value as Quantity) | (CompartmentDefinition.useContext.value as Range) | (ConceptMap.useContext.value as Quantity) | (ConceptMap.useContext.value as Range) | (GraphDefinition.useContext.value as Quantity) | (GraphDefinition.useContext.value as Range) | (ImplementationGuide.useContext.value as Quantity) | (ImplementationGuide.useContext.value as Range) | (MessageDefinition.useContext.value as Quantity) | (MessageDefinition.useContext.value as Range) | (NamingSystem.useContext.value as Quantity) | (NamingSystem.useContext.value as Range) | (OperationDefinition.useContext.value as Quantity) | (OperationDefinition.useContext.value as Range) | (SearchParameter.useContext.value as Quantity) | (SearchParameter.useContext.value as Range) | (StructureDefinition.useContext.value as Quantity) | (StructureDefinition.useContext.value as Range) | (StructureMap.useContext.value as Quantity) | (StructureMap.useContext.value as Range) | (TerminologyCapabilities.useContext.value as Quantity) | (TerminologyCapabilities.useContext.value as Range) | (ValueSet.useContext.value as Quantity) | (ValueSet.useContext.value as Range)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
-
- /**
-   * Search parameter: <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A use context type and quantity- or range-based value assigned to the capability statement
-* [CodeSystem](codesystem.html): A use context type and quantity- or range-based value assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A use context type and quantity- or range-based value assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A use context type and quantity- or range-based value assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A use context type and quantity- or range-based value assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A use context type and quantity- or range-based value assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A use context type and quantity- or range-based value assigned to the message definition
-* [NamingSystem](namingsystem.html): A use context type and quantity- or range-based value assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A use context type and quantity- or range-based value assigned to the operation definition
-* [SearchParameter](searchparameter.html): A use context type and quantity- or range-based value assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A use context type and quantity- or range-based value assigned to the structure definition
-* [StructureMap](structuremap.html): A use context type and quantity- or range-based value assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A use context type and quantity- or range-based value assigned to the terminology capabilities
-* [ValueSet](valueset.html): A use context type and quantity- or range-based value assigned to the value set
-</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-quantity", path="CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): A use context type and quantity- or range-based value assigned to the capability statement\r\n* [CodeSystem](codesystem.html): A use context type and quantity- or range-based value assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context type and quantity- or range-based value assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context type and quantity- or range-based value assigned to the concept map\r\n* [GraphDefinition](graphdefinition.html): A use context type and quantity- or range-based value assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context type and quantity- or range-based value assigned to the implementation guide\r\n* [MessageDefinition](messagedefinition.html): A use context type and quantity- or range-based value assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context type and quantity- or range-based value assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context type and quantity- or range-based value assigned to the operation definition\r\n* [SearchParameter](searchparameter.html): A use context type and quantity- or range-based value assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context type and quantity- or range-based value assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context type and quantity- or range-based value assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context type and quantity- or range-based value assigned to the terminology capabilities\r\n* [ValueSet](valueset.html): A use context type and quantity- or range-based value assigned to the value set\r\n", type="composite", compositeOf={"context-type", "context-quantity"} )
-  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A use context type and quantity- or range-based value assigned to the capability statement
-* [CodeSystem](codesystem.html): A use context type and quantity- or range-based value assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A use context type and quantity- or range-based value assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A use context type and quantity- or range-based value assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A use context type and quantity- or range-based value assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A use context type and quantity- or range-based value assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A use context type and quantity- or range-based value assigned to the message definition
-* [NamingSystem](namingsystem.html): A use context type and quantity- or range-based value assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A use context type and quantity- or range-based value assigned to the operation definition
-* [SearchParameter](searchparameter.html): A use context type and quantity- or range-based value assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A use context type and quantity- or range-based value assigned to the structure definition
-* [StructureMap](structuremap.html): A use context type and quantity- or range-based value assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A use context type and quantity- or range-based value assigned to the terminology capabilities
-* [ValueSet](valueset.html): A use context type and quantity- or range-based value assigned to the value set
-</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
-
- /**
-   * Search parameter: <b>context-type-value</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A use context type and value assigned to the capability statement
-* [CodeSystem](codesystem.html): A use context type and value assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A use context type and value assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A use context type and value assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A use context type and value assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A use context type and value assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A use context type and value assigned to the message definition
-* [NamingSystem](namingsystem.html): A use context type and value assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A use context type and value assigned to the operation definition
-* [SearchParameter](searchparameter.html): A use context type and value assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A use context type and value assigned to the structure definition
-* [StructureMap](structuremap.html): A use context type and value assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A use context type and value assigned to the terminology capabilities
-* [ValueSet](valueset.html): A use context type and value assigned to the value set
-</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-value", path="CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): A use context type and value assigned to the capability statement\r\n* [CodeSystem](codesystem.html): A use context type and value assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context type and value assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context type and value assigned to the concept map\r\n* [GraphDefinition](graphdefinition.html): A use context type and value assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context type and value assigned to the implementation guide\r\n* [MessageDefinition](messagedefinition.html): A use context type and value assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context type and value assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context type and value assigned to the operation definition\r\n* [SearchParameter](searchparameter.html): A use context type and value assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context type and value assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context type and value assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context type and value assigned to the terminology capabilities\r\n* [ValueSet](valueset.html): A use context type and value assigned to the value set\r\n", type="composite", compositeOf={"context-type", "context"} )
-  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A use context type and value assigned to the capability statement
-* [CodeSystem](codesystem.html): A use context type and value assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A use context type and value assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A use context type and value assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A use context type and value assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A use context type and value assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A use context type and value assigned to the message definition
-* [NamingSystem](namingsystem.html): A use context type and value assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A use context type and value assigned to the operation definition
-* [SearchParameter](searchparameter.html): A use context type and value assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A use context type and value assigned to the structure definition
-* [StructureMap](structuremap.html): A use context type and value assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A use context type and value assigned to the terminology capabilities
-* [ValueSet](valueset.html): A use context type and value assigned to the value set
-</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
-
- /**
-   * Search parameter: <b>context-type</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A type of use context assigned to the capability statement
-* [CodeSystem](codesystem.html): A type of use context assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A type of use context assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A type of use context assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A type of use context assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A type of use context assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A type of use context assigned to the message definition
-* [NamingSystem](namingsystem.html): A type of use context assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A type of use context assigned to the operation definition
-* [SearchParameter](searchparameter.html): A type of use context assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A type of use context assigned to the structure definition
-* [StructureMap](structuremap.html): A type of use context assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A type of use context assigned to the terminology capabilities
-* [ValueSet](valueset.html): A type of use context assigned to the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.useContext.code | CodeSystem.useContext.code | CompartmentDefinition.useContext.code | ConceptMap.useContext.code | GraphDefinition.useContext.code | ImplementationGuide.useContext.code | MessageDefinition.useContext.code | NamingSystem.useContext.code | OperationDefinition.useContext.code | SearchParameter.useContext.code | StructureDefinition.useContext.code | StructureMap.useContext.code | TerminologyCapabilities.useContext.code | ValueSet.useContext.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type", path="CapabilityStatement.useContext.code | CodeSystem.useContext.code | CompartmentDefinition.useContext.code | ConceptMap.useContext.code | GraphDefinition.useContext.code | ImplementationGuide.useContext.code | MessageDefinition.useContext.code | NamingSystem.useContext.code | OperationDefinition.useContext.code | SearchParameter.useContext.code | StructureDefinition.useContext.code | StructureMap.useContext.code | TerminologyCapabilities.useContext.code | ValueSet.useContext.code", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): A type of use context assigned to the capability statement\r\n* [CodeSystem](codesystem.html): A type of use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A type of use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A type of use context assigned to the concept map\r\n* [GraphDefinition](graphdefinition.html): A type of use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A type of use context assigned to the implementation guide\r\n* [MessageDefinition](messagedefinition.html): A type of use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A type of use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A type of use context assigned to the operation definition\r\n* [SearchParameter](searchparameter.html): A type of use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A type of use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A type of use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A type of use context assigned to the terminology capabilities\r\n* [ValueSet](valueset.html): A type of use context assigned to the value set\r\n", type="token" )
-  public static final String SP_CONTEXT_TYPE = "context-type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A type of use context assigned to the capability statement
-* [CodeSystem](codesystem.html): A type of use context assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A type of use context assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A type of use context assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A type of use context assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A type of use context assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A type of use context assigned to the message definition
-* [NamingSystem](namingsystem.html): A type of use context assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A type of use context assigned to the operation definition
-* [SearchParameter](searchparameter.html): A type of use context assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A type of use context assigned to the structure definition
-* [StructureMap](structuremap.html): A type of use context assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A type of use context assigned to the terminology capabilities
-* [ValueSet](valueset.html): A type of use context assigned to the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.useContext.code | CodeSystem.useContext.code | CompartmentDefinition.useContext.code | ConceptMap.useContext.code | GraphDefinition.useContext.code | ImplementationGuide.useContext.code | MessageDefinition.useContext.code | NamingSystem.useContext.code | OperationDefinition.useContext.code | SearchParameter.useContext.code | StructureDefinition.useContext.code | StructureMap.useContext.code | TerminologyCapabilities.useContext.code | ValueSet.useContext.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
-
- /**
-   * Search parameter: <b>context</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement
-* [CodeSystem](codesystem.html): A use context assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A use context assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition
-* [NamingSystem](namingsystem.html): A use context assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition
-* [SearchParameter](searchparameter.html): A use context assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition
-* [StructureMap](structuremap.html): A use context assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities
-* [ValueSet](valueset.html): A use context assigned to the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(CapabilityStatement.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context", path="(CapabilityStatement.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement\r\n* [CodeSystem](codesystem.html): A use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context assigned to the concept map\r\n* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide\r\n* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition\r\n* [SearchParameter](searchparameter.html): A use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities\r\n* [ValueSet](valueset.html): A use context assigned to the value set\r\n", type="token" )
-  public static final String SP_CONTEXT = "context";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement
-* [CodeSystem](codesystem.html): A use context assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A use context assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition
-* [NamingSystem](namingsystem.html): A use context assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition
-* [SearchParameter](searchparameter.html): A use context assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition
-* [StructureMap](structuremap.html): A use context assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities
-* [ValueSet](valueset.html): A use context assigned to the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(CapabilityStatement.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
-
- /**
-   * Search parameter: <b>date</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The capability statement publication date
-* [CodeSystem](codesystem.html): The code system publication date
-* [CompartmentDefinition](compartmentdefinition.html): The compartment definition publication date
-* [ConceptMap](conceptmap.html): The concept map publication date
-* [GraphDefinition](graphdefinition.html): The graph definition publication date
-* [ImplementationGuide](implementationguide.html): The implementation guide publication date
-* [MessageDefinition](messagedefinition.html): The message definition publication date
-* [NamingSystem](namingsystem.html): The naming system publication date
-* [OperationDefinition](operationdefinition.html): The operation definition publication date
-* [SearchParameter](searchparameter.html): The search parameter publication date
-* [StructureDefinition](structuredefinition.html): The structure definition publication date
-* [StructureMap](structuremap.html): The structure map publication date
-* [TerminologyCapabilities](terminologycapabilities.html): The terminology capabilities publication date
-* [ValueSet](valueset.html): The value set publication date
-</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>CapabilityStatement.date | CodeSystem.date | CompartmentDefinition.date | ConceptMap.date | GraphDefinition.date | ImplementationGuide.date | MessageDefinition.date | NamingSystem.date | OperationDefinition.date | SearchParameter.date | StructureDefinition.date | StructureMap.date | TerminologyCapabilities.date | ValueSet.date</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="date", path="CapabilityStatement.date | CodeSystem.date | CompartmentDefinition.date | ConceptMap.date | GraphDefinition.date | ImplementationGuide.date | MessageDefinition.date | NamingSystem.date | OperationDefinition.date | SearchParameter.date | StructureDefinition.date | StructureMap.date | TerminologyCapabilities.date | ValueSet.date", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The capability statement publication date\r\n* [CodeSystem](codesystem.html): The code system publication date\r\n* [CompartmentDefinition](compartmentdefinition.html): The compartment definition publication date\r\n* [ConceptMap](conceptmap.html): The concept map publication date\r\n* [GraphDefinition](graphdefinition.html): The graph definition publication date\r\n* [ImplementationGuide](implementationguide.html): The implementation guide publication date\r\n* [MessageDefinition](messagedefinition.html): The message definition publication date\r\n* [NamingSystem](namingsystem.html): The naming system publication date\r\n* [OperationDefinition](operationdefinition.html): The operation definition publication date\r\n* [SearchParameter](searchparameter.html): The search parameter publication date\r\n* [StructureDefinition](structuredefinition.html): The structure definition publication date\r\n* [StructureMap](structuremap.html): The structure map publication date\r\n* [TerminologyCapabilities](terminologycapabilities.html): The terminology capabilities publication date\r\n* [ValueSet](valueset.html): The value set publication date\r\n", type="date" )
-  public static final String SP_DATE = "date";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>date</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The capability statement publication date
-* [CodeSystem](codesystem.html): The code system publication date
-* [CompartmentDefinition](compartmentdefinition.html): The compartment definition publication date
-* [ConceptMap](conceptmap.html): The concept map publication date
-* [GraphDefinition](graphdefinition.html): The graph definition publication date
-* [ImplementationGuide](implementationguide.html): The implementation guide publication date
-* [MessageDefinition](messagedefinition.html): The message definition publication date
-* [NamingSystem](namingsystem.html): The naming system publication date
-* [OperationDefinition](operationdefinition.html): The operation definition publication date
-* [SearchParameter](searchparameter.html): The search parameter publication date
-* [StructureDefinition](structuredefinition.html): The structure definition publication date
-* [StructureMap](structuremap.html): The structure map publication date
-* [TerminologyCapabilities](terminologycapabilities.html): The terminology capabilities publication date
-* [ValueSet](valueset.html): The value set publication date
-</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>CapabilityStatement.date | CodeSystem.date | CompartmentDefinition.date | ConceptMap.date | GraphDefinition.date | ImplementationGuide.date | MessageDefinition.date | NamingSystem.date | OperationDefinition.date | SearchParameter.date | StructureDefinition.date | StructureMap.date | TerminologyCapabilities.date | ValueSet.date</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
-
- /**
-   * Search parameter: <b>description</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The description of the capability statement
-* [CodeSystem](codesystem.html): The description of the code system
-* [CompartmentDefinition](compartmentdefinition.html): The description of the compartment definition
-* [ConceptMap](conceptmap.html): The description of the concept map
-* [GraphDefinition](graphdefinition.html): The description of the graph definition
-* [ImplementationGuide](implementationguide.html): The description of the implementation guide
-* [MessageDefinition](messagedefinition.html): The description of the message definition
-* [NamingSystem](namingsystem.html): The description of the naming system
-* [OperationDefinition](operationdefinition.html): The description of the operation definition
-* [SearchParameter](searchparameter.html): The description of the search parameter
-* [StructureDefinition](structuredefinition.html): The description of the structure definition
-* [StructureMap](structuremap.html): The description of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): The description of the terminology capabilities
-* [ValueSet](valueset.html): The description of the value set
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.description | CodeSystem.description | CompartmentDefinition.description | ConceptMap.description | GraphDefinition.description | ImplementationGuide.description | MessageDefinition.description | NamingSystem.description | OperationDefinition.description | SearchParameter.description | StructureDefinition.description | StructureMap.description | TerminologyCapabilities.description | ValueSet.description</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="description", path="CapabilityStatement.description | CodeSystem.description | CompartmentDefinition.description | ConceptMap.description | GraphDefinition.description | ImplementationGuide.description | MessageDefinition.description | NamingSystem.description | OperationDefinition.description | SearchParameter.description | StructureDefinition.description | StructureMap.description | TerminologyCapabilities.description | ValueSet.description", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The description of the capability statement\r\n* [CodeSystem](codesystem.html): The description of the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The description of the compartment definition\r\n* [ConceptMap](conceptmap.html): The description of the concept map\r\n* [GraphDefinition](graphdefinition.html): The description of the graph definition\r\n* [ImplementationGuide](implementationguide.html): The description of the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The description of the message definition\r\n* [NamingSystem](namingsystem.html): The description of the naming system\r\n* [OperationDefinition](operationdefinition.html): The description of the operation definition\r\n* [SearchParameter](searchparameter.html): The description of the search parameter\r\n* [StructureDefinition](structuredefinition.html): The description of the structure definition\r\n* [StructureMap](structuremap.html): The description of the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The description of the terminology capabilities\r\n* [ValueSet](valueset.html): The description of the value set\r\n", type="string" )
-  public static final String SP_DESCRIPTION = "description";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>description</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The description of the capability statement
-* [CodeSystem](codesystem.html): The description of the code system
-* [CompartmentDefinition](compartmentdefinition.html): The description of the compartment definition
-* [ConceptMap](conceptmap.html): The description of the concept map
-* [GraphDefinition](graphdefinition.html): The description of the graph definition
-* [ImplementationGuide](implementationguide.html): The description of the implementation guide
-* [MessageDefinition](messagedefinition.html): The description of the message definition
-* [NamingSystem](namingsystem.html): The description of the naming system
-* [OperationDefinition](operationdefinition.html): The description of the operation definition
-* [SearchParameter](searchparameter.html): The description of the search parameter
-* [StructureDefinition](structuredefinition.html): The description of the structure definition
-* [StructureMap](structuremap.html): The description of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): The description of the terminology capabilities
-* [ValueSet](valueset.html): The description of the value set
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.description | CodeSystem.description | CompartmentDefinition.description | ConceptMap.description | GraphDefinition.description | ImplementationGuide.description | MessageDefinition.description | NamingSystem.description | OperationDefinition.description | SearchParameter.description | StructureDefinition.description | StructureMap.description | TerminologyCapabilities.description | ValueSet.description</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CodeSystem](codesystem.html): External identifier for the code system
-* [ConceptMap](conceptmap.html): External identifier for the concept map
-* [MessageDefinition](messagedefinition.html): External identifier for the message definition
-* [StructureDefinition](structuredefinition.html): External identifier for the structure definition
-* [StructureMap](structuremap.html): External identifier for the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities
-* [ValueSet](valueset.html): External identifier for the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier", description="Multiple Resources: \r\n\r\n* [CodeSystem](codesystem.html): External identifier for the code system\r\n* [ConceptMap](conceptmap.html): External identifier for the concept map\r\n* [MessageDefinition](messagedefinition.html): External identifier for the message definition\r\n* [StructureDefinition](structuredefinition.html): External identifier for the structure definition\r\n* [StructureMap](structuremap.html): External identifier for the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities\r\n* [ValueSet](valueset.html): External identifier for the value set\r\n", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CodeSystem](codesystem.html): External identifier for the code system
-* [ConceptMap](conceptmap.html): External identifier for the concept map
-* [MessageDefinition](messagedefinition.html): External identifier for the message definition
-* [StructureDefinition](structuredefinition.html): External identifier for the structure definition
-* [StructureMap](structuremap.html): External identifier for the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities
-* [ValueSet](valueset.html): External identifier for the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): Intended jurisdiction for the capability statement
-* [CodeSystem](codesystem.html): Intended jurisdiction for the code system
-* [ConceptMap](conceptmap.html): Intended jurisdiction for the concept map
-* [GraphDefinition](graphdefinition.html): Intended jurisdiction for the graph definition
-* [ImplementationGuide](implementationguide.html): Intended jurisdiction for the implementation guide
-* [MessageDefinition](messagedefinition.html): Intended jurisdiction for the message definition
-* [NamingSystem](namingsystem.html): Intended jurisdiction for the naming system
-* [OperationDefinition](operationdefinition.html): Intended jurisdiction for the operation definition
-* [SearchParameter](searchparameter.html): Intended jurisdiction for the search parameter
-* [StructureDefinition](structuredefinition.html): Intended jurisdiction for the structure definition
-* [StructureMap](structuremap.html): Intended jurisdiction for the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): Intended jurisdiction for the terminology capabilities
-* [ValueSet](valueset.html): Intended jurisdiction for the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.jurisdiction | CodeSystem.jurisdiction | ConceptMap.jurisdiction | GraphDefinition.jurisdiction | ImplementationGuide.jurisdiction | MessageDefinition.jurisdiction | NamingSystem.jurisdiction | OperationDefinition.jurisdiction | SearchParameter.jurisdiction | StructureDefinition.jurisdiction | StructureMap.jurisdiction | TerminologyCapabilities.jurisdiction | ValueSet.jurisdiction</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="jurisdiction", path="CapabilityStatement.jurisdiction | CodeSystem.jurisdiction | ConceptMap.jurisdiction | GraphDefinition.jurisdiction | ImplementationGuide.jurisdiction | MessageDefinition.jurisdiction | NamingSystem.jurisdiction | OperationDefinition.jurisdiction | SearchParameter.jurisdiction | StructureDefinition.jurisdiction | StructureMap.jurisdiction | TerminologyCapabilities.jurisdiction | ValueSet.jurisdiction", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): Intended jurisdiction for the capability statement\r\n* [CodeSystem](codesystem.html): Intended jurisdiction for the code system\r\n* [ConceptMap](conceptmap.html): Intended jurisdiction for the concept map\r\n* [GraphDefinition](graphdefinition.html): Intended jurisdiction for the graph definition\r\n* [ImplementationGuide](implementationguide.html): Intended jurisdiction for the implementation guide\r\n* [MessageDefinition](messagedefinition.html): Intended jurisdiction for the message definition\r\n* [NamingSystem](namingsystem.html): Intended jurisdiction for the naming system\r\n* [OperationDefinition](operationdefinition.html): Intended jurisdiction for the operation definition\r\n* [SearchParameter](searchparameter.html): Intended jurisdiction for the search parameter\r\n* [StructureDefinition](structuredefinition.html): Intended jurisdiction for the structure definition\r\n* [StructureMap](structuremap.html): Intended jurisdiction for the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): Intended jurisdiction for the terminology capabilities\r\n* [ValueSet](valueset.html): Intended jurisdiction for the value set\r\n", type="token" )
-  public static final String SP_JURISDICTION = "jurisdiction";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): Intended jurisdiction for the capability statement
-* [CodeSystem](codesystem.html): Intended jurisdiction for the code system
-* [ConceptMap](conceptmap.html): Intended jurisdiction for the concept map
-* [GraphDefinition](graphdefinition.html): Intended jurisdiction for the graph definition
-* [ImplementationGuide](implementationguide.html): Intended jurisdiction for the implementation guide
-* [MessageDefinition](messagedefinition.html): Intended jurisdiction for the message definition
-* [NamingSystem](namingsystem.html): Intended jurisdiction for the naming system
-* [OperationDefinition](operationdefinition.html): Intended jurisdiction for the operation definition
-* [SearchParameter](searchparameter.html): Intended jurisdiction for the search parameter
-* [StructureDefinition](structuredefinition.html): Intended jurisdiction for the structure definition
-* [StructureMap](structuremap.html): Intended jurisdiction for the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): Intended jurisdiction for the terminology capabilities
-* [ValueSet](valueset.html): Intended jurisdiction for the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.jurisdiction | CodeSystem.jurisdiction | ConceptMap.jurisdiction | GraphDefinition.jurisdiction | ImplementationGuide.jurisdiction | MessageDefinition.jurisdiction | NamingSystem.jurisdiction | OperationDefinition.jurisdiction | SearchParameter.jurisdiction | StructureDefinition.jurisdiction | StructureMap.jurisdiction | TerminologyCapabilities.jurisdiction | ValueSet.jurisdiction</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
-
- /**
-   * Search parameter: <b>name</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): Computationally friendly name of the capability statement
-* [CodeSystem](codesystem.html): Computationally friendly name of the code system
-* [CompartmentDefinition](compartmentdefinition.html): Computationally friendly name of the compartment definition
-* [ConceptMap](conceptmap.html): Computationally friendly name of the concept map
-* [GraphDefinition](graphdefinition.html): Computationally friendly name of the graph definition
-* [ImplementationGuide](implementationguide.html): Computationally friendly name of the implementation guide
-* [MessageDefinition](messagedefinition.html): Computationally friendly name of the message definition
-* [NamingSystem](namingsystem.html): Computationally friendly name of the naming system
-* [OperationDefinition](operationdefinition.html): Computationally friendly name of the operation definition
-* [SearchParameter](searchparameter.html): Computationally friendly name of the search parameter
-* [StructureDefinition](structuredefinition.html): Computationally friendly name of the structure definition
-* [StructureMap](structuremap.html): Computationally friendly name of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): Computationally friendly name of the terminology capabilities
-* [ValueSet](valueset.html): Computationally friendly name of the value set
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.name | CodeSystem.name | CompartmentDefinition.name | ConceptMap.name | GraphDefinition.name | ImplementationGuide.name | MessageDefinition.name | NamingSystem.name | OperationDefinition.name | SearchParameter.name | StructureDefinition.name | StructureMap.name | TerminologyCapabilities.name | ValueSet.name</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="name", path="CapabilityStatement.name | CodeSystem.name | CompartmentDefinition.name | ConceptMap.name | GraphDefinition.name | ImplementationGuide.name | MessageDefinition.name | NamingSystem.name | OperationDefinition.name | SearchParameter.name | StructureDefinition.name | StructureMap.name | TerminologyCapabilities.name | ValueSet.name", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): Computationally friendly name of the capability statement\r\n* [CodeSystem](codesystem.html): Computationally friendly name of the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): Computationally friendly name of the compartment definition\r\n* [ConceptMap](conceptmap.html): Computationally friendly name of the concept map\r\n* [GraphDefinition](graphdefinition.html): Computationally friendly name of the graph definition\r\n* [ImplementationGuide](implementationguide.html): Computationally friendly name of the implementation guide\r\n* [MessageDefinition](messagedefinition.html): Computationally friendly name of the message definition\r\n* [NamingSystem](namingsystem.html): Computationally friendly name of the naming system\r\n* [OperationDefinition](operationdefinition.html): Computationally friendly name of the operation definition\r\n* [SearchParameter](searchparameter.html): Computationally friendly name of the search parameter\r\n* [StructureDefinition](structuredefinition.html): Computationally friendly name of the structure definition\r\n* [StructureMap](structuremap.html): Computationally friendly name of the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): Computationally friendly name of the terminology capabilities\r\n* [ValueSet](valueset.html): Computationally friendly name of the value set\r\n", type="string" )
-  public static final String SP_NAME = "name";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>name</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): Computationally friendly name of the capability statement
-* [CodeSystem](codesystem.html): Computationally friendly name of the code system
-* [CompartmentDefinition](compartmentdefinition.html): Computationally friendly name of the compartment definition
-* [ConceptMap](conceptmap.html): Computationally friendly name of the concept map
-* [GraphDefinition](graphdefinition.html): Computationally friendly name of the graph definition
-* [ImplementationGuide](implementationguide.html): Computationally friendly name of the implementation guide
-* [MessageDefinition](messagedefinition.html): Computationally friendly name of the message definition
-* [NamingSystem](namingsystem.html): Computationally friendly name of the naming system
-* [OperationDefinition](operationdefinition.html): Computationally friendly name of the operation definition
-* [SearchParameter](searchparameter.html): Computationally friendly name of the search parameter
-* [StructureDefinition](structuredefinition.html): Computationally friendly name of the structure definition
-* [StructureMap](structuremap.html): Computationally friendly name of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): Computationally friendly name of the terminology capabilities
-* [ValueSet](valueset.html): Computationally friendly name of the value set
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.name | CodeSystem.name | CompartmentDefinition.name | ConceptMap.name | GraphDefinition.name | ImplementationGuide.name | MessageDefinition.name | NamingSystem.name | OperationDefinition.name | SearchParameter.name | StructureDefinition.name | StructureMap.name | TerminologyCapabilities.name | ValueSet.name</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
-
- /**
-   * Search parameter: <b>publisher</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): Name of the publisher of the capability statement
-* [CodeSystem](codesystem.html): Name of the publisher of the code system
-* [CompartmentDefinition](compartmentdefinition.html): Name of the publisher of the compartment definition
-* [ConceptMap](conceptmap.html): Name of the publisher of the concept map
-* [GraphDefinition](graphdefinition.html): Name of the publisher of the graph definition
-* [ImplementationGuide](implementationguide.html): Name of the publisher of the implementation guide
-* [MessageDefinition](messagedefinition.html): Name of the publisher of the message definition
-* [NamingSystem](namingsystem.html): Name of the publisher of the naming system
-* [OperationDefinition](operationdefinition.html): Name of the publisher of the operation definition
-* [SearchParameter](searchparameter.html): Name of the publisher of the search parameter
-* [StructureDefinition](structuredefinition.html): Name of the publisher of the structure definition
-* [StructureMap](structuremap.html): Name of the publisher of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): Name of the publisher of the terminology capabilities
-* [ValueSet](valueset.html): Name of the publisher of the value set
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.publisher | CodeSystem.publisher | CompartmentDefinition.publisher | ConceptMap.publisher | GraphDefinition.publisher | ImplementationGuide.publisher | MessageDefinition.publisher | NamingSystem.publisher | OperationDefinition.publisher | SearchParameter.publisher | StructureDefinition.publisher | StructureMap.publisher | TerminologyCapabilities.publisher | ValueSet.publisher</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="publisher", path="CapabilityStatement.publisher | CodeSystem.publisher | CompartmentDefinition.publisher | ConceptMap.publisher | GraphDefinition.publisher | ImplementationGuide.publisher | MessageDefinition.publisher | NamingSystem.publisher | OperationDefinition.publisher | SearchParameter.publisher | StructureDefinition.publisher | StructureMap.publisher | TerminologyCapabilities.publisher | ValueSet.publisher", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): Name of the publisher of the capability statement\r\n* [CodeSystem](codesystem.html): Name of the publisher of the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): Name of the publisher of the compartment definition\r\n* [ConceptMap](conceptmap.html): Name of the publisher of the concept map\r\n* [GraphDefinition](graphdefinition.html): Name of the publisher of the graph definition\r\n* [ImplementationGuide](implementationguide.html): Name of the publisher of the implementation guide\r\n* [MessageDefinition](messagedefinition.html): Name of the publisher of the message definition\r\n* [NamingSystem](namingsystem.html): Name of the publisher of the naming system\r\n* [OperationDefinition](operationdefinition.html): Name of the publisher of the operation definition\r\n* [SearchParameter](searchparameter.html): Name of the publisher of the search parameter\r\n* [StructureDefinition](structuredefinition.html): Name of the publisher of the structure definition\r\n* [StructureMap](structuremap.html): Name of the publisher of the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): Name of the publisher of the terminology capabilities\r\n* [ValueSet](valueset.html): Name of the publisher of the value set\r\n", type="string" )
-  public static final String SP_PUBLISHER = "publisher";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>publisher</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): Name of the publisher of the capability statement
-* [CodeSystem](codesystem.html): Name of the publisher of the code system
-* [CompartmentDefinition](compartmentdefinition.html): Name of the publisher of the compartment definition
-* [ConceptMap](conceptmap.html): Name of the publisher of the concept map
-* [GraphDefinition](graphdefinition.html): Name of the publisher of the graph definition
-* [ImplementationGuide](implementationguide.html): Name of the publisher of the implementation guide
-* [MessageDefinition](messagedefinition.html): Name of the publisher of the message definition
-* [NamingSystem](namingsystem.html): Name of the publisher of the naming system
-* [OperationDefinition](operationdefinition.html): Name of the publisher of the operation definition
-* [SearchParameter](searchparameter.html): Name of the publisher of the search parameter
-* [StructureDefinition](structuredefinition.html): Name of the publisher of the structure definition
-* [StructureMap](structuremap.html): Name of the publisher of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): Name of the publisher of the terminology capabilities
-* [ValueSet](valueset.html): Name of the publisher of the value set
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.publisher | CodeSystem.publisher | CompartmentDefinition.publisher | ConceptMap.publisher | GraphDefinition.publisher | ImplementationGuide.publisher | MessageDefinition.publisher | NamingSystem.publisher | OperationDefinition.publisher | SearchParameter.publisher | StructureDefinition.publisher | StructureMap.publisher | TerminologyCapabilities.publisher | ValueSet.publisher</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam PUBLISHER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PUBLISHER);
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The current status of the capability statement
-* [CodeSystem](codesystem.html): The current status of the code system
-* [CompartmentDefinition](compartmentdefinition.html): The current status of the compartment definition
-* [ConceptMap](conceptmap.html): The current status of the concept map
-* [GraphDefinition](graphdefinition.html): The current status of the graph definition
-* [ImplementationGuide](implementationguide.html): The current status of the implementation guide
-* [MessageDefinition](messagedefinition.html): The current status of the message definition
-* [NamingSystem](namingsystem.html): The current status of the naming system
-* [OperationDefinition](operationdefinition.html): The current status of the operation definition
-* [SearchParameter](searchparameter.html): The current status of the search parameter
-* [StructureDefinition](structuredefinition.html): The current status of the structure definition
-* [StructureMap](structuremap.html): The current status of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): The current status of the terminology capabilities
-* [ValueSet](valueset.html): The current status of the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.status | CodeSystem.status | CompartmentDefinition.status | ConceptMap.status | GraphDefinition.status | ImplementationGuide.status | MessageDefinition.status | NamingSystem.status | OperationDefinition.status | SearchParameter.status | StructureDefinition.status | StructureMap.status | TerminologyCapabilities.status | ValueSet.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="CapabilityStatement.status | CodeSystem.status | CompartmentDefinition.status | ConceptMap.status | GraphDefinition.status | ImplementationGuide.status | MessageDefinition.status | NamingSystem.status | OperationDefinition.status | SearchParameter.status | StructureDefinition.status | StructureMap.status | TerminologyCapabilities.status | ValueSet.status", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The current status of the capability statement\r\n* [CodeSystem](codesystem.html): The current status of the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The current status of the compartment definition\r\n* [ConceptMap](conceptmap.html): The current status of the concept map\r\n* [GraphDefinition](graphdefinition.html): The current status of the graph definition\r\n* [ImplementationGuide](implementationguide.html): The current status of the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The current status of the message definition\r\n* [NamingSystem](namingsystem.html): The current status of the naming system\r\n* [OperationDefinition](operationdefinition.html): The current status of the operation definition\r\n* [SearchParameter](searchparameter.html): The current status of the search parameter\r\n* [StructureDefinition](structuredefinition.html): The current status of the structure definition\r\n* [StructureMap](structuremap.html): The current status of the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The current status of the terminology capabilities\r\n* [ValueSet](valueset.html): The current status of the value set\r\n", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The current status of the capability statement
-* [CodeSystem](codesystem.html): The current status of the code system
-* [CompartmentDefinition](compartmentdefinition.html): The current status of the compartment definition
-* [ConceptMap](conceptmap.html): The current status of the concept map
-* [GraphDefinition](graphdefinition.html): The current status of the graph definition
-* [ImplementationGuide](implementationguide.html): The current status of the implementation guide
-* [MessageDefinition](messagedefinition.html): The current status of the message definition
-* [NamingSystem](namingsystem.html): The current status of the naming system
-* [OperationDefinition](operationdefinition.html): The current status of the operation definition
-* [SearchParameter](searchparameter.html): The current status of the search parameter
-* [StructureDefinition](structuredefinition.html): The current status of the structure definition
-* [StructureMap](structuremap.html): The current status of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): The current status of the terminology capabilities
-* [ValueSet](valueset.html): The current status of the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.status | CodeSystem.status | CompartmentDefinition.status | ConceptMap.status | GraphDefinition.status | ImplementationGuide.status | MessageDefinition.status | NamingSystem.status | OperationDefinition.status | SearchParameter.status | StructureDefinition.status | StructureMap.status | TerminologyCapabilities.status | ValueSet.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
-
- /**
-   * Search parameter: <b>title</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The human-friendly name of the capability statement
-* [CodeSystem](codesystem.html): The human-friendly name of the code system
-* [ConceptMap](conceptmap.html): The human-friendly name of the concept map
-* [ImplementationGuide](implementationguide.html): The human-friendly name of the implementation guide
-* [MessageDefinition](messagedefinition.html): The human-friendly name of the message definition
-* [OperationDefinition](operationdefinition.html): The human-friendly name of the operation definition
-* [StructureDefinition](structuredefinition.html): The human-friendly name of the structure definition
-* [StructureMap](structuremap.html): The human-friendly name of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): The human-friendly name of the terminology capabilities
-* [ValueSet](valueset.html): The human-friendly name of the value set
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.title | CodeSystem.title | ConceptMap.title | ImplementationGuide.title | MessageDefinition.title | OperationDefinition.title | StructureDefinition.title | StructureMap.title | TerminologyCapabilities.title | ValueSet.title</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="title", path="CapabilityStatement.title | CodeSystem.title | ConceptMap.title | ImplementationGuide.title | MessageDefinition.title | OperationDefinition.title | StructureDefinition.title | StructureMap.title | TerminologyCapabilities.title | ValueSet.title", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The human-friendly name of the capability statement\r\n* [CodeSystem](codesystem.html): The human-friendly name of the code system\r\n* [ConceptMap](conceptmap.html): The human-friendly name of the concept map\r\n* [ImplementationGuide](implementationguide.html): The human-friendly name of the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The human-friendly name of the message definition\r\n* [OperationDefinition](operationdefinition.html): The human-friendly name of the operation definition\r\n* [StructureDefinition](structuredefinition.html): The human-friendly name of the structure definition\r\n* [StructureMap](structuremap.html): The human-friendly name of the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The human-friendly name of the terminology capabilities\r\n* [ValueSet](valueset.html): The human-friendly name of the value set\r\n", type="string" )
-  public static final String SP_TITLE = "title";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>title</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The human-friendly name of the capability statement
-* [CodeSystem](codesystem.html): The human-friendly name of the code system
-* [ConceptMap](conceptmap.html): The human-friendly name of the concept map
-* [ImplementationGuide](implementationguide.html): The human-friendly name of the implementation guide
-* [MessageDefinition](messagedefinition.html): The human-friendly name of the message definition
-* [OperationDefinition](operationdefinition.html): The human-friendly name of the operation definition
-* [StructureDefinition](structuredefinition.html): The human-friendly name of the structure definition
-* [StructureMap](structuremap.html): The human-friendly name of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): The human-friendly name of the terminology capabilities
-* [ValueSet](valueset.html): The human-friendly name of the value set
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CapabilityStatement.title | CodeSystem.title | ConceptMap.title | ImplementationGuide.title | MessageDefinition.title | OperationDefinition.title | StructureDefinition.title | StructureMap.title | TerminologyCapabilities.title | ValueSet.title</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
-
- /**
-   * Search parameter: <b>url</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement
-* [CodeSystem](codesystem.html): The uri that identifies the code system
-* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition
-* [ConceptMap](conceptmap.html): The uri that identifies the concept map
-* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition
-* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide
-* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition
-* [NamingSystem](namingsystem.html): The uri that identifies the naming system
-* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition
-* [SearchParameter](searchparameter.html): The uri that identifies the search parameter
-* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition
-* [StructureMap](structuremap.html): The uri that identifies the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities
-* [ValueSet](valueset.html): The uri that identifies the value set
-</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="url", path="CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement\r\n* [CodeSystem](codesystem.html): The uri that identifies the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition\r\n* [ConceptMap](conceptmap.html): The uri that identifies the concept map\r\n* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition\r\n* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition\r\n* [NamingSystem](namingsystem.html): The uri that identifies the naming system\r\n* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition\r\n* [SearchParameter](searchparameter.html): The uri that identifies the search parameter\r\n* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition\r\n* [StructureMap](structuremap.html): The uri that identifies the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities\r\n* [ValueSet](valueset.html): The uri that identifies the value set\r\n", type="uri" )
-  public static final String SP_URL = "url";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>url</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement
-* [CodeSystem](codesystem.html): The uri that identifies the code system
-* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition
-* [ConceptMap](conceptmap.html): The uri that identifies the concept map
-* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition
-* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide
-* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition
-* [NamingSystem](namingsystem.html): The uri that identifies the naming system
-* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition
-* [SearchParameter](searchparameter.html): The uri that identifies the search parameter
-* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition
-* [StructureMap](structuremap.html): The uri that identifies the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities
-* [ValueSet](valueset.html): The uri that identifies the value set
-</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
-
- /**
-   * Search parameter: <b>version</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The business version of the capability statement
-* [CodeSystem](codesystem.html): The business version of the code system
-* [CompartmentDefinition](compartmentdefinition.html): The business version of the compartment definition
-* [ConceptMap](conceptmap.html): The business version of the concept map
-* [GraphDefinition](graphdefinition.html): The business version of the graph definition
-* [ImplementationGuide](implementationguide.html): The business version of the implementation guide
-* [MessageDefinition](messagedefinition.html): The business version of the message definition
-* [NamingSystem](namingsystem.html): The business version of the naming system
-* [OperationDefinition](operationdefinition.html): The business version of the operation definition
-* [SearchParameter](searchparameter.html): The business version of the search parameter
-* [StructureDefinition](structuredefinition.html): The business version of the structure definition
-* [StructureMap](structuremap.html): The business version of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): The business version of the terminology capabilities
-* [ValueSet](valueset.html): The business version of the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.version | CodeSystem.version | CompartmentDefinition.version | ConceptMap.version | GraphDefinition.version | ImplementationGuide.version | MessageDefinition.version | NamingSystem.version | OperationDefinition.version | SearchParameter.version | StructureDefinition.version | StructureMap.version | TerminologyCapabilities.version | ValueSet.version</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="version", path="CapabilityStatement.version | CodeSystem.version | CompartmentDefinition.version | ConceptMap.version | GraphDefinition.version | ImplementationGuide.version | MessageDefinition.version | NamingSystem.version | OperationDefinition.version | SearchParameter.version | StructureDefinition.version | StructureMap.version | TerminologyCapabilities.version | ValueSet.version", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The business version of the capability statement\r\n* [CodeSystem](codesystem.html): The business version of the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The business version of the compartment definition\r\n* [ConceptMap](conceptmap.html): The business version of the concept map\r\n* [GraphDefinition](graphdefinition.html): The business version of the graph definition\r\n* [ImplementationGuide](implementationguide.html): The business version of the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The business version of the message definition\r\n* [NamingSystem](namingsystem.html): The business version of the naming system\r\n* [OperationDefinition](operationdefinition.html): The business version of the operation definition\r\n* [SearchParameter](searchparameter.html): The business version of the search parameter\r\n* [StructureDefinition](structuredefinition.html): The business version of the structure definition\r\n* [StructureMap](structuremap.html): The business version of the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The business version of the terminology capabilities\r\n* [ValueSet](valueset.html): The business version of the value set\r\n", type="token" )
-  public static final String SP_VERSION = "version";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>version</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): The business version of the capability statement
-* [CodeSystem](codesystem.html): The business version of the code system
-* [CompartmentDefinition](compartmentdefinition.html): The business version of the compartment definition
-* [ConceptMap](conceptmap.html): The business version of the concept map
-* [GraphDefinition](graphdefinition.html): The business version of the graph definition
-* [ImplementationGuide](implementationguide.html): The business version of the implementation guide
-* [MessageDefinition](messagedefinition.html): The business version of the message definition
-* [NamingSystem](namingsystem.html): The business version of the naming system
-* [OperationDefinition](operationdefinition.html): The business version of the operation definition
-* [SearchParameter](searchparameter.html): The business version of the search parameter
-* [StructureDefinition](structuredefinition.html): The business version of the structure definition
-* [StructureMap](structuremap.html): The business version of the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): The business version of the terminology capabilities
-* [ValueSet](valueset.html): The business version of the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement.version | CodeSystem.version | CompartmentDefinition.version | ConceptMap.version | GraphDefinition.version | ImplementationGuide.version | MessageDefinition.version | NamingSystem.version | OperationDefinition.version | SearchParameter.version | StructureDefinition.version | StructureMap.version | TerminologyCapabilities.version | ValueSet.version</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
 
 }

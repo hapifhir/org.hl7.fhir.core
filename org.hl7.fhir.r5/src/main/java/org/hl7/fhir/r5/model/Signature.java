@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,7 +54,7 @@ public class Signature extends DataType implements ICompositeType {
     /**
      * An indication of the reason that the entity signed this document. This may be explicitly included as part of the signature information and can be used when determining accountability for various actions concerning the document.
      */
-    @Child(name = "type", type = {Coding.class}, order=0, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "type", type = {Coding.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Indication of the reason the entity signed the object(s)", formalDefinition="An indication of the reason that the entity signed this document. This may be explicitly included as part of the signature information and can be used when determining accountability for various actions concerning the document." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/signature-type")
     protected List<Coding> type;
@@ -62,14 +62,14 @@ public class Signature extends DataType implements ICompositeType {
     /**
      * When the digital signature was signed.
      */
-    @Child(name = "when", type = {InstantType.class}, order=1, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "when", type = {InstantType.class}, order=1, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When the signature was created", formalDefinition="When the digital signature was signed." )
     protected InstantType when;
 
     /**
      * A reference to an application-usable description of the identity that signed  (e.g. the signature used their private key).
      */
-    @Child(name = "who", type = {Practitioner.class, PractitionerRole.class, RelatedPerson.class, Patient.class, Device.class, Organization.class}, order=2, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "who", type = {Practitioner.class, PractitionerRole.class, RelatedPerson.class, Patient.class, Device.class, Organization.class}, order=2, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who signed", formalDefinition="A reference to an application-usable description of the identity that signed  (e.g. the signature used their private key)." )
     protected Reference who;
 
@@ -110,16 +110,6 @@ public class Signature extends DataType implements ICompositeType {
    */
     public Signature() {
       super();
-    }
-
-  /**
-   * Constructor
-   */
-    public Signature(Coding type, Date when, Reference who) {
-      super();
-      this.addType(type);
-      this.setWhen(when);
-      this.setWho(who);
     }
 
     /**
@@ -214,9 +204,13 @@ public class Signature extends DataType implements ICompositeType {
      * @param value When the digital signature was signed.
      */
     public Signature setWhen(Date value) { 
+      if (value == null)
+        this.when = null;
+      else {
         if (this.when == null)
           this.when = new InstantType();
         this.when.setValue(value);
+      }
       return this;
     }
 

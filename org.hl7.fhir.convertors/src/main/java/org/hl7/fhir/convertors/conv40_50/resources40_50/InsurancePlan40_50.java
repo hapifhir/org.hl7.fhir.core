@@ -6,6 +6,7 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.PositiveI
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.ExtendedContactDetail;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -93,7 +94,7 @@ public class InsurancePlan40_50 {
       tgt.setAdministeredBy(Reference40_50.convertReference(src.getAdministeredBy()));
     for (org.hl7.fhir.r5.model.Reference t : src.getCoverageArea())
       tgt.addCoverageArea(Reference40_50.convertReference(t));
-    for (org.hl7.fhir.r5.model.InsurancePlan.InsurancePlanContactComponent t : src.getContact())
+    for (ExtendedContactDetail t : src.getContact())
       tgt.addContact(convertInsurancePlanContactComponent(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getNetwork()) tgt.addNetwork(Reference40_50.convertReference(t));
@@ -104,10 +105,10 @@ public class InsurancePlan40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.InsurancePlan.InsurancePlanContactComponent convertInsurancePlanContactComponent(org.hl7.fhir.r4.model.InsurancePlan.InsurancePlanContactComponent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.ExtendedContactDetail convertInsurancePlanContactComponent(org.hl7.fhir.r4.model.InsurancePlan.InsurancePlanContactComponent src) throws FHIRException {
     if (src == null)
       return null;
-    org.hl7.fhir.r5.model.InsurancePlan.InsurancePlanContactComponent tgt = new org.hl7.fhir.r5.model.InsurancePlan.InsurancePlanContactComponent();
+    org.hl7.fhir.r5.model.ExtendedContactDetail tgt = new org.hl7.fhir.r5.model.ExtendedContactDetail();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasPurpose())
       tgt.setPurpose(CodeableConcept40_50.convertCodeableConcept(src.getPurpose()));
@@ -120,7 +121,7 @@ public class InsurancePlan40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r4.model.InsurancePlan.InsurancePlanContactComponent convertInsurancePlanContactComponent(org.hl7.fhir.r5.model.InsurancePlan.InsurancePlanContactComponent src) throws FHIRException {
+  public static org.hl7.fhir.r4.model.InsurancePlan.InsurancePlanContactComponent convertInsurancePlanContactComponent(org.hl7.fhir.r5.model.ExtendedContactDetail src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.InsurancePlan.InsurancePlanContactComponent tgt = new org.hl7.fhir.r4.model.InsurancePlan.InsurancePlanContactComponent();

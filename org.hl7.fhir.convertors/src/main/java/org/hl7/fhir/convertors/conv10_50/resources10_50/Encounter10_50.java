@@ -21,7 +21,7 @@ public class Encounter10_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertEncounterState(src.getStatusElement()));
     if (src.hasClass_())
-      tgt.setClass_(convertEncounterClass(src.getClass_()));
+      tgt.setClass_( convertEncounterClass(src.getClass_().getCodingFirstRep()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType())
       tgt.addType(CodeableConcept10_50.convertCodeableConcept(t));
     if (src.hasPriority())
@@ -64,7 +64,7 @@ public class Encounter10_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertEncounterState(src.getStatusElement()));
     if (src.hasClass_())
-      tgt.setClass_(convertEncounterClass(src.getClass_()));
+      tgt.setClass_(new org.hl7.fhir.r5.model.CodeableConcept().addCoding(convertEncounterClass(src.getClass_())));
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getType())
       tgt.addType(CodeableConcept10_50.convertCodeableConcept(t));
     if (src.hasPriority())

@@ -65,7 +65,7 @@ public class CarePlan30_50 {
     }
     List<Reference> authors = src.getAuthor();
     if (authors.size() > 0) {
-      tgt.setAuthor(Reference30_50.convertReference(authors.get(0)));
+      tgt.setCustodian(Reference30_50.convertReference(authors.get(0)));
       if (authors.size() > 1) {
       }
     }
@@ -137,9 +137,8 @@ public class CarePlan30_50 {
       if (src.hasPeriod())
         tgt.setPeriod(Period30_50.convertPeriod(src.getPeriod()));
     }
-    if (src.hasAuthor()) {
-      if (src.hasAuthor())
-        tgt.addAuthor(Reference30_50.convertReference(src.getAuthor()));
+    if (src.hasCustodian()) {
+      tgt.addAuthor(Reference30_50.convertReference(src.getCustodian()));
     }
     for (org.hl7.fhir.r5.model.Reference t : src.getCareTeam()) {
       tgt.addCareTeam(Reference30_50.convertReference(t));
