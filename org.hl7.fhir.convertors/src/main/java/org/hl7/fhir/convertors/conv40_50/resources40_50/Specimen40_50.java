@@ -229,18 +229,18 @@ public class Specimen40_50 {
       return null;
     org.hl7.fhir.r5.model.Specimen.SpecimenContainerComponent tgt = new org.hl7.fhir.r5.model.Specimen.SpecimenContainerComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-    if (src.hasDescription())
-      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-    if (src.hasType())
-      tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
-    if (src.hasCapacity())
-      tgt.setCapacity(SimpleQuantity40_50.convertSimpleQuantity(src.getCapacity()));
-    if (src.hasSpecimenQuantity())
-      tgt.setSpecimenQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getSpecimenQuantity()));
-    if (src.hasAdditive())
-      tgt.setAdditive(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAdditive()));
+//    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
+//      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+//    if (src.hasDescription())
+//      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+//    if (src.hasType())
+//      tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
+//    if (src.hasCapacity())
+//      tgt.setCapacity(SimpleQuantity40_50.convertSimpleQuantity(src.getCapacity()));
+//    if (src.hasSpecimenQuantity())
+//      tgt.setSpecimenQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getSpecimenQuantity()));
+//    if (src.hasAdditive())
+//      tgt.setAdditive(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAdditive()));
     return tgt;
   }
 
@@ -249,18 +249,18 @@ public class Specimen40_50 {
       return null;
     org.hl7.fhir.r4.model.Specimen.SpecimenContainerComponent tgt = new org.hl7.fhir.r4.model.Specimen.SpecimenContainerComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-    if (src.hasDescription())
-      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-    if (src.hasType())
-      tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
-    if (src.hasCapacity())
-      tgt.setCapacity(SimpleQuantity40_50.convertSimpleQuantity(src.getCapacity()));
-    if (src.hasSpecimenQuantity())
-      tgt.setSpecimenQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getSpecimenQuantity()));
-    if (src.hasAdditive())
-      tgt.setAdditive(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAdditive()));
+//    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
+//      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+//    if (src.hasDescription())
+//      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+//    if (src.hasType())
+//      tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
+//    if (src.hasCapacity())
+//      tgt.setCapacity(SimpleQuantity40_50.convertSimpleQuantity(src.getCapacity()));
+//    if (src.hasSpecimenQuantity())
+//      tgt.setSpecimenQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getSpecimenQuantity()));
+//    if (src.hasAdditive())
+//      tgt.setAdditive(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAdditive()));
     return tgt;
   }
 }

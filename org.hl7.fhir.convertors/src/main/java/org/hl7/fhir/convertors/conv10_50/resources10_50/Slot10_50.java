@@ -8,6 +8,7 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Bool
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Instant10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeableReference;
 
 public class Slot10_50 {
 
@@ -19,7 +20,7 @@ public class Slot10_50 {
     for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_50.convertIdentifier(t));
     if (src.hasType())
-      tgt.addServiceType(CodeableConcept10_50.convertCodeableConcept(src.getType()));
+      tgt.addServiceType(new CodeableReference().setConcept(CodeableConcept10_50.convertCodeableConcept(src.getType())));
     if (src.hasSchedule())
       tgt.setSchedule(Reference10_50.convertReference(src.getSchedule()));
     if (src.hasStartElement())
@@ -40,8 +41,9 @@ public class Slot10_50 {
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_50.convertIdentifier(t));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceType())
-      tgt.setType(CodeableConcept10_50.convertCodeableConcept(t));
+    for (CodeableReference t : src.getServiceType())
+      if (t.hasConcept())
+        tgt.setType(CodeableConcept10_50.convertCodeableConcept(t.getConcept()));
     if (src.hasSchedule())
       tgt.setSchedule(Reference10_50.convertReference(src.getSchedule()));
     if (src.hasStartElement())

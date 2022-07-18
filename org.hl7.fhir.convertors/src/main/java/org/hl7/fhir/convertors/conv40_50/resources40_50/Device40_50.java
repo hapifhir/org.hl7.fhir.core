@@ -56,7 +56,7 @@ public class Device40_50 {
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getStatusReason())
       tgt.addStatusReason(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasDistinctIdentifier())
-      tgt.getBiologicalSource().setValueElement(String40_50.convertString(src.getDistinctIdentifierElement()));
+      tgt.getBiologicalSourceEvent().setValueElement(String40_50.convertString(src.getDistinctIdentifierElement()));
     if (src.hasManufacturer())
       tgt.setManufacturerElement(String40_50.convertString(src.getManufacturerElement()));
     if (src.hasManufactureDate())
@@ -114,8 +114,8 @@ public class Device40_50 {
       tgt.setStatusElement(convertFHIRDeviceStatus(src.getStatusElement()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getStatusReason())
       tgt.addStatusReason(CodeableConcept40_50.convertCodeableConcept(t));
-    if (src.hasBiologicalSource())
-      tgt.setDistinctIdentifierElement(String40_50.convertString(src.getBiologicalSource().getValueElement()));
+    if (src.hasBiologicalSourceEvent())
+      tgt.setDistinctIdentifierElement(String40_50.convertString(src.getBiologicalSourceEvent().getValueElement()));
     if (src.hasManufacturer())
       tgt.setManufacturerElement(String40_50.convertString(src.getManufacturerElement()));
     if (src.hasManufactureDate())

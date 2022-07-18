@@ -172,8 +172,6 @@ public class Resource30_50 {
       return Schedule30_50.convertSchedule((org.hl7.fhir.dstu3.model.Schedule) src);
     if (src instanceof org.hl7.fhir.dstu3.model.SearchParameter)
       return SearchParameter30_50.convertSearchParameter((org.hl7.fhir.dstu3.model.SearchParameter) src);
-    if (src instanceof org.hl7.fhir.dstu3.model.Sequence)
-      return Sequence30_50.convertSequence((org.hl7.fhir.dstu3.model.Sequence) src);
     if (src instanceof org.hl7.fhir.dstu3.model.Slot) return Slot30_50.convertSlot((org.hl7.fhir.dstu3.model.Slot) src);
     if (src instanceof org.hl7.fhir.dstu3.model.Specimen)
       return Specimen30_50.convertSpecimen((org.hl7.fhir.dstu3.model.Specimen) src);
@@ -332,8 +330,6 @@ public class Resource30_50 {
       return Schedule30_50.convertSchedule((org.hl7.fhir.r5.model.Schedule) src);
     if (src instanceof org.hl7.fhir.r5.model.SearchParameter)
       return SearchParameter30_50.convertSearchParameter((org.hl7.fhir.r5.model.SearchParameter) src);
-    if (src instanceof org.hl7.fhir.r5.model.MolecularSequence)
-      return Sequence30_50.convertSequence((org.hl7.fhir.r5.model.MolecularSequence) src);
     if (src instanceof org.hl7.fhir.r5.model.Slot) return Slot30_50.convertSlot((org.hl7.fhir.r5.model.Slot) src);
     if (src instanceof org.hl7.fhir.r5.model.Specimen)
       return Specimen30_50.convertSpecimen((org.hl7.fhir.r5.model.Specimen) src);

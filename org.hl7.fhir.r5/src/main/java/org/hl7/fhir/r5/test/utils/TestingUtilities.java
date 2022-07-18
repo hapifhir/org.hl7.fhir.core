@@ -92,9 +92,7 @@ public class TestingUtilities extends BaseTestingUtilities {
    * @return
    */
   public static IWorkerContext getSharedWorkerContext(String version) {
-    if ("4.5.0".equals(version)) {
-      version = "4.4.0"; // temporary work around
-    }
+
     
     String v = VersionUtilities.getMajMin(version);
     if (fcontexts == null) {

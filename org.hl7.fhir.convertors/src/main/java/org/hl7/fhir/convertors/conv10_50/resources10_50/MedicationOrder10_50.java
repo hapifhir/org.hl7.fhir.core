@@ -4,6 +4,7 @@ import org.hl7.fhir.convertors.context.ConversionContext10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.CodeableConcept10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Ratio10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Timing10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Boolean10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Dosage;
@@ -15,8 +16,8 @@ public class MedicationOrder10_50 {
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
     if (src.hasTextElement()) tgt.setTextElement(String10_50.convertString(src.getTextElement()));
     if (src.hasTiming()) tgt.setTiming(Timing10_50.convertTiming(src.getTiming()));
-    if (src.hasAsNeeded())
-      tgt.setAsNeeded(ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getAsNeeded()));
+    if (src.hasAsNeededBooleanType())
+      tgt.setAsNeededElement(Boolean10_50.convertBoolean(src.getAsNeededBooleanType()));
     if (src.hasSiteCodeableConcept())
       tgt.setSite(CodeableConcept10_50.convertCodeableConcept(src.getSiteCodeableConcept()));
     if (src.hasRoute()) tgt.setRoute(CodeableConcept10_50.convertCodeableConcept(src.getRoute()));
@@ -28,7 +29,7 @@ public class MedicationOrder10_50 {
       if (src.hasRate())
         dr.setRate(ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getRate()));
     }
-    if (src.hasMaxDosePerPeriod()) tgt.setMaxDosePerPeriod(Ratio10_50.convertRatio(src.getMaxDosePerPeriod()));
+    if (src.hasMaxDosePerPeriod()) tgt.addMaxDosePerPeriod(Ratio10_50.convertRatio(src.getMaxDosePerPeriod()));
     return tgt;
   }
 
@@ -39,7 +40,7 @@ public class MedicationOrder10_50 {
     if (src.hasTextElement()) tgt.setTextElement(String10_50.convertString(src.getTextElement()));
     if (src.hasTiming()) tgt.setTiming(Timing10_50.convertTiming(src.getTiming()));
     if (src.hasAsNeeded())
-      tgt.setAsNeeded(ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getAsNeeded()));
+      tgt.setAsNeeded(Boolean10_50.convertBoolean(src.getAsNeededElement()));
     if (src.hasSite())
       tgt.setSite(ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getSite()));
     if (src.hasRoute()) tgt.setRoute(CodeableConcept10_50.convertCodeableConcept(src.getRoute()));
@@ -48,7 +49,7 @@ public class MedicationOrder10_50 {
       tgt.setDose(ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getDoseAndRate().get(0).getDose()));
     if (src.hasDoseAndRate() && src.getDoseAndRate().get(0).hasRate())
       tgt.setRate(ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getDoseAndRate().get(0).getRate()));
-    if (src.hasMaxDosePerPeriod()) tgt.setMaxDosePerPeriod(Ratio10_50.convertRatio(src.getMaxDosePerPeriod()));
+    if (src.hasMaxDosePerPeriod()) tgt.setMaxDosePerPeriod(Ratio10_50.convertRatio(src.getMaxDosePerPeriodFirstRep()));
     return tgt;
   }
 }

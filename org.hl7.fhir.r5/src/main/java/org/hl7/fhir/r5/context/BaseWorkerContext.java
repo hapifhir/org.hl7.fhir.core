@@ -331,7 +331,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (Utilities.existsInList(url, "http://hl7.org/fhir/SearchParameter/example")) {
           return;
         }
-        throw new DefinitionException(formatMessage(I18nConstants.DUPLICATE_RESOURCE_, url));
+        throw new DefinitionException(formatMessage(I18nConstants.DUPLICATE_RESOURCE_, url, 
+            fetchResourceWithException(r.getType(), url).fhirType()));
       }
       switch(r.getType()) {
       case "StructureDefinition":
@@ -412,7 +413,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           if (Utilities.existsInList(url, "http://hl7.org/fhir/SearchParameter/example")) {
             return;
           }
-          throw new DefinitionException(formatMessage(I18nConstants.DUPLICATE_RESOURCE_, url));
+          throw new DefinitionException(formatMessage(I18nConstants.DUPLICATE_RESOURCE_, url, 
+              fetchResourceWithException(r.getClass(), url).fhirType()));
         }
         if (r instanceof StructureDefinition) {
           StructureDefinition sd = (StructureDefinition) m;
@@ -1296,7 +1298,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     synchronized (lock) {
       List<ConceptMap> res = new ArrayList<ConceptMap>();
       for (ConceptMap map : maps.getList()) {
-        if (((Reference) map.getSource()).getReference().equals(url)) { 
+        if (((Reference) map.getSourceScope()).getReference().equals(url)) { 
           res.add(map);
         } 
       } 

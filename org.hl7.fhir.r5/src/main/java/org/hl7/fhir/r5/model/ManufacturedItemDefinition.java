@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,6 +60,7 @@ public class ManufacturedItemDefinition extends DomainResource {
          */
         @Child(name = "type", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="A code expressing the type of characteristic", formalDefinition="A code expressing the type of characteristic." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/product-characteristic-codes")
         protected CodeableConcept type;
 
         /**
@@ -376,14 +377,16 @@ public class ManufacturedItemDefinition extends DomainResource {
      * Dose form as manufactured and before any transformation into the pharmaceutical product.
      */
     @Child(name = "manufacturedDoseForm", type = {CodeableConcept.class}, order=2, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Dose form as manufactured and before any transformation into the pharmaceutical product", formalDefinition="Dose form as manufactured and before any transformation into the pharmaceutical product." )
+    @Description(shortDefinition="Dose form as manufactured (before any necessary transformation)", formalDefinition="Dose form as manufactured and before any transformation into the pharmaceutical product." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/manufactured-dose-form")
     protected CodeableConcept manufacturedDoseForm;
 
     /**
      * The “real world” units in which the quantity of the manufactured item is described.
      */
     @Child(name = "unitOfPresentation", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The “real world” units in which the quantity of the manufactured item is described", formalDefinition="The “real world” units in which the quantity of the manufactured item is described." )
+    @Description(shortDefinition="The “real world” units in which the quantity of the item is described", formalDefinition="The “real world” units in which the quantity of the manufactured item is described." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/unit-of-presentation")
     protected CodeableConcept unitOfPresentation;
 
     /**
@@ -397,7 +400,8 @@ public class ManufacturedItemDefinition extends DomainResource {
      * The ingredients of this manufactured item. This is only needed if the ingredients are not specified by incoming references from the Ingredient resource.
      */
     @Child(name = "ingredient", type = {CodeableConcept.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The ingredients of this manufactured item. This is only needed if the ingredients are not specified by incoming references from the Ingredient resource", formalDefinition="The ingredients of this manufactured item. This is only needed if the ingredients are not specified by incoming references from the Ingredient resource." )
+    @Description(shortDefinition="The ingredients of this manufactured item. Only needed if these are not specified by incoming references from the Ingredient resource", formalDefinition="The ingredients of this manufactured item. This is only needed if the ingredients are not specified by incoming references from the Ingredient resource." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/substance-codes")
     protected List<CodeableConcept> ingredient;
 
     /**
@@ -955,66 +959,6 @@ public class ManufacturedItemDefinition extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.ManufacturedItemDefinition;
    }
-
- /**
-   * Search parameter: <b>dose-form</b>
-   * <p>
-   * Description: <b>Dose form as manufactured and before any transformation into the pharmaceutical product</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ManufacturedItemDefinition.manufacturedDoseForm</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="dose-form", path="ManufacturedItemDefinition.manufacturedDoseForm", description="Dose form as manufactured and before any transformation into the pharmaceutical product", type="token" )
-  public static final String SP_DOSE_FORM = "dose-form";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>dose-form</b>
-   * <p>
-   * Description: <b>Dose form as manufactured and before any transformation into the pharmaceutical product</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ManufacturedItemDefinition.manufacturedDoseForm</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam DOSE_FORM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_DOSE_FORM);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>Unique identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ManufacturedItemDefinition.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="ManufacturedItemDefinition.identifier", description="Unique identifier", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>Unique identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ManufacturedItemDefinition.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>ingredient</b>
-   * <p>
-   * Description: <b>An ingredient of this item</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ManufacturedItemDefinition.ingredient</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="ingredient", path="ManufacturedItemDefinition.ingredient", description="An ingredient of this item", type="token" )
-  public static final String SP_INGREDIENT = "ingredient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>ingredient</b>
-   * <p>
-   * Description: <b>An ingredient of this item</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ManufacturedItemDefinition.ingredient</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INGREDIENT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INGREDIENT);
 
 
 }

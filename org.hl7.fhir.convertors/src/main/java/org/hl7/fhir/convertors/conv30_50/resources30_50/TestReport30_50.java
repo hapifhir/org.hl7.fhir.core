@@ -4,6 +4,7 @@ import org.hl7.fhir.convertors.context.ConversionContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.*;
+import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class TestReport30_50 {
@@ -20,7 +21,7 @@ public class TestReport30_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertTestReportStatus(src.getStatusElement()));
     if (src.hasTestScript())
-      tgt.setTestScript(Reference30_50.convertReference(src.getTestScript()));
+      tgt.setTestScript(new Reference().setReference(src.getTestScript()));
     if (src.hasResult())
       tgt.setResultElement(convertTestReportResult(src.getResultElement()));
     if (src.hasScore())
@@ -52,7 +53,7 @@ public class TestReport30_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertTestReportStatus(src.getStatusElement()));
     if (src.hasTestScript())
-      tgt.setTestScript(Reference30_50.convertReference(src.getTestScript()));
+      tgt.setTestScript(src.getTestScript().getReference());
     if (src.hasResult())
       tgt.setResultElement(convertTestReportResult(src.getResultElement()));
     if (src.hasScore())

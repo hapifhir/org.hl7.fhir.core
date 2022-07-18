@@ -132,12 +132,7 @@ public class SearchParameter14_50 {
       case PHONETIC:
         tgt.setValue(org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.PHONETIC);
         break;
-      case NEARBY:
-        tgt.setValue(org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.NEARBY);
-        break;
-      case DISTANCE:
-        tgt.setValue(org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.DISTANCE);
-        break;
+
       case OTHER:
         tgt.setValue(org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.OTHER);
         break;
@@ -161,10 +156,10 @@ public class SearchParameter14_50 {
         tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.XPathUsageType.PHONETIC);
         break;
       case NEARBY:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.XPathUsageType.NEARBY);
+        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.XPathUsageType.OTHER);
         break;
       case DISTANCE:
-        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.XPathUsageType.DISTANCE);
+        tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.XPathUsageType.OTHER);
         break;
       case OTHER:
         tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.XPathUsageType.OTHER);

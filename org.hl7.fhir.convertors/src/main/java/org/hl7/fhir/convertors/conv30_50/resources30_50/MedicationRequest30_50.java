@@ -58,8 +58,8 @@ public class MedicationRequest30_50 {
       tgt.setSubstitution(convertMedicationRequestSubstitutionComponent(src.getSubstitution()));
     if (src.hasPriorPrescription())
       tgt.setPriorPrescription(Reference30_50.convertReference(src.getPriorPrescription()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getDetectedIssue())
-      tgt.addDetectedIssue(Reference30_50.convertReference(t));
+//    for (org.hl7.fhir.r5.model.Reference t : src.getDetectedIssue())
+//      tgt.addDetectedIssue(Reference30_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getEventHistory())
       tgt.addEventHistory(Reference30_50.convertReference(t));
     return tgt;
@@ -108,8 +108,8 @@ public class MedicationRequest30_50 {
       tgt.setSubstitution(convertMedicationRequestSubstitutionComponent(src.getSubstitution()));
     if (src.hasPriorPrescription())
       tgt.setPriorPrescription(Reference30_50.convertReference(src.getPriorPrescription()));
-    for (org.hl7.fhir.dstu3.model.Reference t : src.getDetectedIssue())
-      tgt.addDetectedIssue(Reference30_50.convertReference(t));
+//    for (org.hl7.fhir.dstu3.model.Reference t : src.getDetectedIssue())
+//      tgt.addDetectedIssue(Reference30_50.convertReference(t));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getEventHistory())
       tgt.addEventHistory(Reference30_50.convertReference(t));
     return tgt;

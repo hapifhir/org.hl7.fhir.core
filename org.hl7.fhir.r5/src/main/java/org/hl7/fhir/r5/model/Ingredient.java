@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,15 +53,127 @@ import ca.uhn.fhir.model.api.annotation.Block;
 @ResourceDef(name="Ingredient", profile="http://hl7.org/fhir/StructureDefinition/Ingredient")
 public class Ingredient extends DomainResource {
 
+    public enum IngredientManufacturerRole {
+        /**
+         * 
+         */
+        ALLOWED, 
+        /**
+         * 
+         */
+        POSSIBLE, 
+        /**
+         * 
+         */
+        ACTUAL, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static IngredientManufacturerRole fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("allowed".equals(codeString))
+          return ALLOWED;
+        if ("possible".equals(codeString))
+          return POSSIBLE;
+        if ("actual".equals(codeString))
+          return ACTUAL;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown IngredientManufacturerRole code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case ALLOWED: return "allowed";
+            case POSSIBLE: return "possible";
+            case ACTUAL: return "actual";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case ALLOWED: return "http://hl7.org/fhir/ingredient-manufacturer-role";
+            case POSSIBLE: return "http://hl7.org/fhir/ingredient-manufacturer-role";
+            case ACTUAL: return "http://hl7.org/fhir/ingredient-manufacturer-role";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case ALLOWED: return "";
+            case POSSIBLE: return "";
+            case ACTUAL: return "";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case ALLOWED: return "Manufacturer is specifically allowed for this ingredient";
+            case POSSIBLE: return "Manufacturer is known to make this ingredient in general";
+            case ACTUAL: return "Manufacturer actually makes this particular ingredient";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+    }
+
+  public static class IngredientManufacturerRoleEnumFactory implements EnumFactory<IngredientManufacturerRole> {
+    public IngredientManufacturerRole fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("allowed".equals(codeString))
+          return IngredientManufacturerRole.ALLOWED;
+        if ("possible".equals(codeString))
+          return IngredientManufacturerRole.POSSIBLE;
+        if ("actual".equals(codeString))
+          return IngredientManufacturerRole.ACTUAL;
+        throw new IllegalArgumentException("Unknown IngredientManufacturerRole code '"+codeString+"'");
+        }
+        public Enumeration<IngredientManufacturerRole> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<IngredientManufacturerRole>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("allowed".equals(codeString))
+          return new Enumeration<IngredientManufacturerRole>(this, IngredientManufacturerRole.ALLOWED);
+        if ("possible".equals(codeString))
+          return new Enumeration<IngredientManufacturerRole>(this, IngredientManufacturerRole.POSSIBLE);
+        if ("actual".equals(codeString))
+          return new Enumeration<IngredientManufacturerRole>(this, IngredientManufacturerRole.ACTUAL);
+        throw new FHIRException("Unknown IngredientManufacturerRole code '"+codeString+"'");
+        }
+    public String toCode(IngredientManufacturerRole code) {
+      if (code == IngredientManufacturerRole.ALLOWED)
+        return "allowed";
+      if (code == IngredientManufacturerRole.POSSIBLE)
+        return "possible";
+      if (code == IngredientManufacturerRole.ACTUAL)
+        return "actual";
+      return "?";
+      }
+    public String toSystem(IngredientManufacturerRole code) {
+      return code.getSystem();
+      }
+    }
+
     @Block()
     public static class IngredientManufacturerComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * The way in which this manufacturer is associated with the ingredient. For example whether it is a possible one (others allowed), or an exclusive authorized one for this ingredient. Note that this is not the manufacturing process role.
          */
-        @Child(name = "role", type = {Coding.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The way in which this manufacturer is associated with the ingredient. For example whether it is a possible one (others allowed), or an exclusive authorized one for this ingredient. Note that this is not the manufacturing process role", formalDefinition="The way in which this manufacturer is associated with the ingredient. For example whether it is a possible one (others allowed), or an exclusive authorized one for this ingredient. Note that this is not the manufacturing process role." )
+        @Child(name = "role", type = {CodeType.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="allowed | possible | actual", formalDefinition="The way in which this manufacturer is associated with the ingredient. For example whether it is a possible one (others allowed), or an exclusive authorized one for this ingredient. Note that this is not the manufacturing process role." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ingredient-manufacturer-role")
-        protected Coding role;
+        protected Enumeration<IngredientManufacturerRole> role;
 
         /**
          * An organization that manufactures this ingredient.
@@ -70,7 +182,7 @@ public class Ingredient extends DomainResource {
         @Description(shortDefinition="An organization that manufactures this ingredient", formalDefinition="An organization that manufactures this ingredient." )
         protected Reference manufacturer;
 
-        private static final long serialVersionUID = -1240157438L;
+        private static final long serialVersionUID = -1226688097L;
 
     /**
      * Constructor
@@ -88,15 +200,19 @@ public class Ingredient extends DomainResource {
       }
 
         /**
-         * @return {@link #role} (The way in which this manufacturer is associated with the ingredient. For example whether it is a possible one (others allowed), or an exclusive authorized one for this ingredient. Note that this is not the manufacturing process role.)
+         * @return {@link #role} (The way in which this manufacturer is associated with the ingredient. For example whether it is a possible one (others allowed), or an exclusive authorized one for this ingredient. Note that this is not the manufacturing process role.). This is the underlying object with id, value and extensions. The accessor "getRole" gives direct access to the value
          */
-        public Coding getRole() { 
+        public Enumeration<IngredientManufacturerRole> getRoleElement() { 
           if (this.role == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create IngredientManufacturerComponent.role");
             else if (Configuration.doAutoCreate())
-              this.role = new Coding(); // cc
+              this.role = new Enumeration<IngredientManufacturerRole>(new IngredientManufacturerRoleEnumFactory()); // bb
           return this.role;
+        }
+
+        public boolean hasRoleElement() { 
+          return this.role != null && !this.role.isEmpty();
         }
 
         public boolean hasRole() { 
@@ -104,10 +220,31 @@ public class Ingredient extends DomainResource {
         }
 
         /**
-         * @param value {@link #role} (The way in which this manufacturer is associated with the ingredient. For example whether it is a possible one (others allowed), or an exclusive authorized one for this ingredient. Note that this is not the manufacturing process role.)
+         * @param value {@link #role} (The way in which this manufacturer is associated with the ingredient. For example whether it is a possible one (others allowed), or an exclusive authorized one for this ingredient. Note that this is not the manufacturing process role.). This is the underlying object with id, value and extensions. The accessor "getRole" gives direct access to the value
          */
-        public IngredientManufacturerComponent setRole(Coding value) { 
+        public IngredientManufacturerComponent setRoleElement(Enumeration<IngredientManufacturerRole> value) { 
           this.role = value;
+          return this;
+        }
+
+        /**
+         * @return The way in which this manufacturer is associated with the ingredient. For example whether it is a possible one (others allowed), or an exclusive authorized one for this ingredient. Note that this is not the manufacturing process role.
+         */
+        public IngredientManufacturerRole getRole() { 
+          return this.role == null ? null : this.role.getValue();
+        }
+
+        /**
+         * @param value The way in which this manufacturer is associated with the ingredient. For example whether it is a possible one (others allowed), or an exclusive authorized one for this ingredient. Note that this is not the manufacturing process role.
+         */
+        public IngredientManufacturerComponent setRole(IngredientManufacturerRole value) { 
+          if (value == null)
+            this.role = null;
+          else {
+            if (this.role == null)
+              this.role = new Enumeration<IngredientManufacturerRole>(new IngredientManufacturerRoleEnumFactory());
+            this.role.setValue(value);
+          }
           return this;
         }
 
@@ -137,14 +274,14 @@ public class Ingredient extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("role", "Coding", "The way in which this manufacturer is associated with the ingredient. For example whether it is a possible one (others allowed), or an exclusive authorized one for this ingredient. Note that this is not the manufacturing process role.", 0, 1, role));
+          children.add(new Property("role", "code", "The way in which this manufacturer is associated with the ingredient. For example whether it is a possible one (others allowed), or an exclusive authorized one for this ingredient. Note that this is not the manufacturing process role.", 0, 1, role));
           children.add(new Property("manufacturer", "Reference(Organization)", "An organization that manufactures this ingredient.", 0, 1, manufacturer));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3506294: /*role*/  return new Property("role", "Coding", "The way in which this manufacturer is associated with the ingredient. For example whether it is a possible one (others allowed), or an exclusive authorized one for this ingredient. Note that this is not the manufacturing process role.", 0, 1, role);
+          case 3506294: /*role*/  return new Property("role", "code", "The way in which this manufacturer is associated with the ingredient. For example whether it is a possible one (others allowed), or an exclusive authorized one for this ingredient. Note that this is not the manufacturing process role.", 0, 1, role);
           case -1969347631: /*manufacturer*/  return new Property("manufacturer", "Reference(Organization)", "An organization that manufactures this ingredient.", 0, 1, manufacturer);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -154,7 +291,7 @@ public class Ingredient extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3506294: /*role*/ return this.role == null ? new Base[0] : new Base[] {this.role}; // Coding
+        case 3506294: /*role*/ return this.role == null ? new Base[0] : new Base[] {this.role}; // Enumeration<IngredientManufacturerRole>
         case -1969347631: /*manufacturer*/ return this.manufacturer == null ? new Base[0] : new Base[] {this.manufacturer}; // Reference
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -165,7 +302,8 @@ public class Ingredient extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3506294: // role
-          this.role = TypeConvertor.castToCoding(value); // Coding
+          value = new IngredientManufacturerRoleEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.role = (Enumeration) value; // Enumeration<IngredientManufacturerRole>
           return value;
         case -1969347631: // manufacturer
           this.manufacturer = TypeConvertor.castToReference(value); // Reference
@@ -178,7 +316,8 @@ public class Ingredient extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("role")) {
-          this.role = TypeConvertor.castToCoding(value); // Coding
+          value = new IngredientManufacturerRoleEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.role = (Enumeration) value; // Enumeration<IngredientManufacturerRole>
         } else if (name.equals("manufacturer")) {
           this.manufacturer = TypeConvertor.castToReference(value); // Reference
         } else
@@ -189,7 +328,7 @@ public class Ingredient extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3506294:  return getRole();
+        case 3506294:  return getRoleElement();
         case -1969347631:  return getManufacturer();
         default: return super.makeProperty(hash, name);
         }
@@ -199,7 +338,7 @@ public class Ingredient extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3506294: /*role*/ return new String[] {"Coding"};
+        case 3506294: /*role*/ return new String[] {"code"};
         case -1969347631: /*manufacturer*/ return new String[] {"Reference"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -209,8 +348,7 @@ public class Ingredient extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("role")) {
-          this.role = new Coding();
-          return this.role;
+          throw new FHIRException("Cannot call addChild on a primitive type Ingredient.manufacturer.role");
         }
         else if (name.equals("manufacturer")) {
           this.manufacturer = new Reference();
@@ -249,7 +387,7 @@ public class Ingredient extends DomainResource {
         if (!(other_ instanceof IngredientManufacturerComponent))
           return false;
         IngredientManufacturerComponent o = (IngredientManufacturerComponent) other_;
-        return true;
+        return compareValues(role, o.role, true);
       }
 
       public boolean isEmpty() {
@@ -266,17 +404,18 @@ public class Ingredient extends DomainResource {
     @Block()
     public static class IngredientSubstanceComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * A code or full resource that represents the ingredient substance.
+         * A code or full resource that represents the ingredient's substance.
          */
         @Child(name = "code", type = {CodeableReference.class}, order=1, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="A code or full resource that represents the ingredient substance", formalDefinition="A code or full resource that represents the ingredient substance." )
+        @Description(shortDefinition="A code or full resource that represents the ingredient substance", formalDefinition="A code or full resource that represents the ingredient's substance." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/substance-codes")
         protected CodeableReference code;
 
         /**
-         * The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item.
+         * The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item. The allowed repetitions do not represent different strengths, but are different representations - mathematically equivalent - of a single strength.
          */
         @Child(name = "strength", type = {}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item", formalDefinition="The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item." )
+        @Description(shortDefinition="The quantity of substance, per presentation, or per volume or mass, and type of quantity", formalDefinition="The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item. The allowed repetitions do not represent different strengths, but are different representations - mathematically equivalent - of a single strength." )
         protected List<IngredientSubstanceStrengthComponent> strength;
 
         private static final long serialVersionUID = 538347209L;
@@ -297,7 +436,7 @@ public class Ingredient extends DomainResource {
       }
 
         /**
-         * @return {@link #code} (A code or full resource that represents the ingredient substance.)
+         * @return {@link #code} (A code or full resource that represents the ingredient's substance.)
          */
         public CodeableReference getCode() { 
           if (this.code == null)
@@ -313,7 +452,7 @@ public class Ingredient extends DomainResource {
         }
 
         /**
-         * @param value {@link #code} (A code or full resource that represents the ingredient substance.)
+         * @param value {@link #code} (A code or full resource that represents the ingredient's substance.)
          */
         public IngredientSubstanceComponent setCode(CodeableReference value) { 
           this.code = value;
@@ -321,7 +460,7 @@ public class Ingredient extends DomainResource {
         }
 
         /**
-         * @return {@link #strength} (The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item.)
+         * @return {@link #strength} (The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item. The allowed repetitions do not represent different strengths, but are different representations - mathematically equivalent - of a single strength.)
          */
         public List<IngredientSubstanceStrengthComponent> getStrength() { 
           if (this.strength == null)
@@ -375,15 +514,15 @@ public class Ingredient extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("code", "CodeableReference(SubstanceDefinition)", "A code or full resource that represents the ingredient substance.", 0, 1, code));
-          children.add(new Property("strength", "", "The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item.", 0, java.lang.Integer.MAX_VALUE, strength));
+          children.add(new Property("code", "CodeableReference(SubstanceDefinition)", "A code or full resource that represents the ingredient's substance.", 0, 1, code));
+          children.add(new Property("strength", "", "The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item. The allowed repetitions do not represent different strengths, but are different representations - mathematically equivalent - of a single strength.", 0, java.lang.Integer.MAX_VALUE, strength));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3059181: /*code*/  return new Property("code", "CodeableReference(SubstanceDefinition)", "A code or full resource that represents the ingredient substance.", 0, 1, code);
-          case 1791316033: /*strength*/  return new Property("strength", "", "The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item.", 0, java.lang.Integer.MAX_VALUE, strength);
+          case 3059181: /*code*/  return new Property("code", "CodeableReference(SubstanceDefinition)", "A code or full resource that represents the ingredient's substance.", 0, 1, code);
+          case 1791316033: /*strength*/  return new Property("strength", "", "The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item. The allowed repetitions do not represent different strengths, but are different representations - mathematically equivalent - of a single strength.", 0, java.lang.Integer.MAX_VALUE, strength);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -507,18 +646,18 @@ public class Ingredient extends DomainResource {
     @Block()
     public static class IngredientSubstanceStrengthComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item.
+         * The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item. Unit of presentation refers to the quantity that the item occurs in e.g. a strength per tablet size, perhaps 'per 20mg' (the size of the tablet). It is not generally normalized as a unitary unit, which would be 'per mg').
          */
         @Child(name = "presentation", type = {Ratio.class, RatioRange.class, CodeableConcept.class, Quantity.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item", formalDefinition="The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item." )
+        @Description(shortDefinition="The quantity of substance in the unit of presentation", formalDefinition="The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item. Unit of presentation refers to the quantity that the item occurs in e.g. a strength per tablet size, perhaps 'per 20mg' (the size of the tablet). It is not generally normalized as a unitary unit, which would be 'per mg')." )
         protected DataType presentation;
 
         /**
          * A textual represention of either the whole of the presentation strength or a part of it - with the rest being in Strength.presentation as a ratio.
          */
-        @Child(name = "presentationText", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="A textual represention of either the whole of the presentation strength or a part of it - with the rest being in Strength.presentation as a ratio", formalDefinition="A textual represention of either the whole of the presentation strength or a part of it - with the rest being in Strength.presentation as a ratio." )
-        protected StringType presentationText;
+        @Child(name = "textPresentation", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Text of either the whole presentation strength or a part of it (rest being in Strength.presentation as a ratio)", formalDefinition="A textual represention of either the whole of the presentation strength or a part of it - with the rest being in Strength.presentation as a ratio." )
+        protected StringType textPresentation;
 
         /**
          * The strength per unitary volume (or mass).
@@ -530,9 +669,9 @@ public class Ingredient extends DomainResource {
         /**
          * A textual represention of either the whole of the concentration strength or a part of it - with the rest being in Strength.concentration as a ratio.
          */
-        @Child(name = "concentrationText", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="A textual represention of either the whole of the concentration strength or a part of it - with the rest being in Strength.concentration as a ratio", formalDefinition="A textual represention of either the whole of the concentration strength or a part of it - with the rest being in Strength.concentration as a ratio." )
-        protected StringType concentrationText;
+        @Child(name = "textConcentration", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Text of either the whole concentration strength or a part of it (rest being in Strength.concentration as a ratio)", formalDefinition="A textual represention of either the whole of the concentration strength or a part of it - with the rest being in Strength.concentration as a ratio." )
+        protected StringType textConcentration;
 
         /**
          * A code that indicates if the strength is, for example, based on the ingredient substance as stated or on the substance base (when the ingredient is a salt).
@@ -542,27 +681,28 @@ public class Ingredient extends DomainResource {
         protected CodeableConcept basis;
 
         /**
-         * For when strength is measured at a particular point or distance.
+         * For when strength is measured at a particular point or distance. There are products where strength is measured at a particular point. For example, the strength of the ingredient in some inhalers is measured at a particular position relative to the point of aerosolization.
          */
         @Child(name = "measurementPoint", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="For when strength is measured at a particular point or distance", formalDefinition="For when strength is measured at a particular point or distance." )
+        @Description(shortDefinition="When strength is measured at a particular point or distance", formalDefinition="For when strength is measured at a particular point or distance. There are products where strength is measured at a particular point. For example, the strength of the ingredient in some inhalers is measured at a particular position relative to the point of aerosolization." )
         protected StringType measurementPoint;
 
         /**
          * The country or countries for which the strength range applies.
          */
         @Child(name = "country", type = {CodeableConcept.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="The country or countries for which the strength range applies", formalDefinition="The country or countries for which the strength range applies." )
+        @Description(shortDefinition="Where the strength range applies", formalDefinition="The country or countries for which the strength range applies." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/country")
         protected List<CodeableConcept> country;
 
         /**
-         * Strength expressed in terms of a reference substance.
+         * Strength expressed in terms of a reference substance. For when the ingredient strength is additionally expressed as equivalent to the strength of some other closely related substance (e.g. salt vs. base). Reference strength represents the strength (quantitative composition) of the active moiety of the active substance. There are situations when the active substance and active moiety are different, therefore both a strength and a reference strength are needed.
          */
         @Child(name = "referenceStrength", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Strength expressed in terms of a reference substance", formalDefinition="Strength expressed in terms of a reference substance." )
+        @Description(shortDefinition="Strength expressed in terms of a reference substance", formalDefinition="Strength expressed in terms of a reference substance. For when the ingredient strength is additionally expressed as equivalent to the strength of some other closely related substance (e.g. salt vs. base). Reference strength represents the strength (quantitative composition) of the active moiety of the active substance. There are situations when the active substance and active moiety are different, therefore both a strength and a reference strength are needed." )
         protected List<IngredientSubstanceStrengthReferenceStrengthComponent> referenceStrength;
 
-        private static final long serialVersionUID = 2084203430L;
+        private static final long serialVersionUID = 1409093088L;
 
     /**
      * Constructor
@@ -572,14 +712,14 @@ public class Ingredient extends DomainResource {
       }
 
         /**
-         * @return {@link #presentation} (The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item.)
+         * @return {@link #presentation} (The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item. Unit of presentation refers to the quantity that the item occurs in e.g. a strength per tablet size, perhaps 'per 20mg' (the size of the tablet). It is not generally normalized as a unitary unit, which would be 'per mg').)
          */
         public DataType getPresentation() { 
           return this.presentation;
         }
 
         /**
-         * @return {@link #presentation} (The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item.)
+         * @return {@link #presentation} (The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item. Unit of presentation refers to the quantity that the item occurs in e.g. a strength per tablet size, perhaps 'per 20mg' (the size of the tablet). It is not generally normalized as a unitary unit, which would be 'per mg').)
          */
         public Ratio getPresentationRatio() throws FHIRException { 
           if (this.presentation == null)
@@ -594,7 +734,7 @@ public class Ingredient extends DomainResource {
         }
 
         /**
-         * @return {@link #presentation} (The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item.)
+         * @return {@link #presentation} (The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item. Unit of presentation refers to the quantity that the item occurs in e.g. a strength per tablet size, perhaps 'per 20mg' (the size of the tablet). It is not generally normalized as a unitary unit, which would be 'per mg').)
          */
         public RatioRange getPresentationRatioRange() throws FHIRException { 
           if (this.presentation == null)
@@ -609,7 +749,7 @@ public class Ingredient extends DomainResource {
         }
 
         /**
-         * @return {@link #presentation} (The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item.)
+         * @return {@link #presentation} (The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item. Unit of presentation refers to the quantity that the item occurs in e.g. a strength per tablet size, perhaps 'per 20mg' (the size of the tablet). It is not generally normalized as a unitary unit, which would be 'per mg').)
          */
         public CodeableConcept getPresentationCodeableConcept() throws FHIRException { 
           if (this.presentation == null)
@@ -624,7 +764,7 @@ public class Ingredient extends DomainResource {
         }
 
         /**
-         * @return {@link #presentation} (The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item.)
+         * @return {@link #presentation} (The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item. Unit of presentation refers to the quantity that the item occurs in e.g. a strength per tablet size, perhaps 'per 20mg' (the size of the tablet). It is not generally normalized as a unitary unit, which would be 'per mg').)
          */
         public Quantity getPresentationQuantity() throws FHIRException { 
           if (this.presentation == null)
@@ -643,7 +783,7 @@ public class Ingredient extends DomainResource {
         }
 
         /**
-         * @param value {@link #presentation} (The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item.)
+         * @param value {@link #presentation} (The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item. Unit of presentation refers to the quantity that the item occurs in e.g. a strength per tablet size, perhaps 'per 20mg' (the size of the tablet). It is not generally normalized as a unitary unit, which would be 'per mg').)
          */
         public IngredientSubstanceStrengthComponent setPresentation(DataType value) { 
           if (value != null && !(value instanceof Ratio || value instanceof RatioRange || value instanceof CodeableConcept || value instanceof Quantity))
@@ -653,50 +793,50 @@ public class Ingredient extends DomainResource {
         }
 
         /**
-         * @return {@link #presentationText} (A textual represention of either the whole of the presentation strength or a part of it - with the rest being in Strength.presentation as a ratio.). This is the underlying object with id, value and extensions. The accessor "getPresentationText" gives direct access to the value
+         * @return {@link #textPresentation} (A textual represention of either the whole of the presentation strength or a part of it - with the rest being in Strength.presentation as a ratio.). This is the underlying object with id, value and extensions. The accessor "getTextPresentation" gives direct access to the value
          */
-        public StringType getPresentationTextElement() { 
-          if (this.presentationText == null)
+        public StringType getTextPresentationElement() { 
+          if (this.textPresentation == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create IngredientSubstanceStrengthComponent.presentationText");
+              throw new Error("Attempt to auto-create IngredientSubstanceStrengthComponent.textPresentation");
             else if (Configuration.doAutoCreate())
-              this.presentationText = new StringType(); // bb
-          return this.presentationText;
+              this.textPresentation = new StringType(); // bb
+          return this.textPresentation;
         }
 
-        public boolean hasPresentationTextElement() { 
-          return this.presentationText != null && !this.presentationText.isEmpty();
+        public boolean hasTextPresentationElement() { 
+          return this.textPresentation != null && !this.textPresentation.isEmpty();
         }
 
-        public boolean hasPresentationText() { 
-          return this.presentationText != null && !this.presentationText.isEmpty();
+        public boolean hasTextPresentation() { 
+          return this.textPresentation != null && !this.textPresentation.isEmpty();
         }
 
         /**
-         * @param value {@link #presentationText} (A textual represention of either the whole of the presentation strength or a part of it - with the rest being in Strength.presentation as a ratio.). This is the underlying object with id, value and extensions. The accessor "getPresentationText" gives direct access to the value
+         * @param value {@link #textPresentation} (A textual represention of either the whole of the presentation strength or a part of it - with the rest being in Strength.presentation as a ratio.). This is the underlying object with id, value and extensions. The accessor "getTextPresentation" gives direct access to the value
          */
-        public IngredientSubstanceStrengthComponent setPresentationTextElement(StringType value) { 
-          this.presentationText = value;
+        public IngredientSubstanceStrengthComponent setTextPresentationElement(StringType value) { 
+          this.textPresentation = value;
           return this;
         }
 
         /**
          * @return A textual represention of either the whole of the presentation strength or a part of it - with the rest being in Strength.presentation as a ratio.
          */
-        public String getPresentationText() { 
-          return this.presentationText == null ? null : this.presentationText.getValue();
+        public String getTextPresentation() { 
+          return this.textPresentation == null ? null : this.textPresentation.getValue();
         }
 
         /**
          * @param value A textual represention of either the whole of the presentation strength or a part of it - with the rest being in Strength.presentation as a ratio.
          */
-        public IngredientSubstanceStrengthComponent setPresentationText(String value) { 
+        public IngredientSubstanceStrengthComponent setTextPresentation(String value) { 
           if (Utilities.noString(value))
-            this.presentationText = null;
+            this.textPresentation = null;
           else {
-            if (this.presentationText == null)
-              this.presentationText = new StringType();
-            this.presentationText.setValue(value);
+            if (this.textPresentation == null)
+              this.textPresentation = new StringType();
+            this.textPresentation.setValue(value);
           }
           return this;
         }
@@ -783,50 +923,50 @@ public class Ingredient extends DomainResource {
         }
 
         /**
-         * @return {@link #concentrationText} (A textual represention of either the whole of the concentration strength or a part of it - with the rest being in Strength.concentration as a ratio.). This is the underlying object with id, value and extensions. The accessor "getConcentrationText" gives direct access to the value
+         * @return {@link #textConcentration} (A textual represention of either the whole of the concentration strength or a part of it - with the rest being in Strength.concentration as a ratio.). This is the underlying object with id, value and extensions. The accessor "getTextConcentration" gives direct access to the value
          */
-        public StringType getConcentrationTextElement() { 
-          if (this.concentrationText == null)
+        public StringType getTextConcentrationElement() { 
+          if (this.textConcentration == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create IngredientSubstanceStrengthComponent.concentrationText");
+              throw new Error("Attempt to auto-create IngredientSubstanceStrengthComponent.textConcentration");
             else if (Configuration.doAutoCreate())
-              this.concentrationText = new StringType(); // bb
-          return this.concentrationText;
+              this.textConcentration = new StringType(); // bb
+          return this.textConcentration;
         }
 
-        public boolean hasConcentrationTextElement() { 
-          return this.concentrationText != null && !this.concentrationText.isEmpty();
+        public boolean hasTextConcentrationElement() { 
+          return this.textConcentration != null && !this.textConcentration.isEmpty();
         }
 
-        public boolean hasConcentrationText() { 
-          return this.concentrationText != null && !this.concentrationText.isEmpty();
+        public boolean hasTextConcentration() { 
+          return this.textConcentration != null && !this.textConcentration.isEmpty();
         }
 
         /**
-         * @param value {@link #concentrationText} (A textual represention of either the whole of the concentration strength or a part of it - with the rest being in Strength.concentration as a ratio.). This is the underlying object with id, value and extensions. The accessor "getConcentrationText" gives direct access to the value
+         * @param value {@link #textConcentration} (A textual represention of either the whole of the concentration strength or a part of it - with the rest being in Strength.concentration as a ratio.). This is the underlying object with id, value and extensions. The accessor "getTextConcentration" gives direct access to the value
          */
-        public IngredientSubstanceStrengthComponent setConcentrationTextElement(StringType value) { 
-          this.concentrationText = value;
+        public IngredientSubstanceStrengthComponent setTextConcentrationElement(StringType value) { 
+          this.textConcentration = value;
           return this;
         }
 
         /**
          * @return A textual represention of either the whole of the concentration strength or a part of it - with the rest being in Strength.concentration as a ratio.
          */
-        public String getConcentrationText() { 
-          return this.concentrationText == null ? null : this.concentrationText.getValue();
+        public String getTextConcentration() { 
+          return this.textConcentration == null ? null : this.textConcentration.getValue();
         }
 
         /**
          * @param value A textual represention of either the whole of the concentration strength or a part of it - with the rest being in Strength.concentration as a ratio.
          */
-        public IngredientSubstanceStrengthComponent setConcentrationText(String value) { 
+        public IngredientSubstanceStrengthComponent setTextConcentration(String value) { 
           if (Utilities.noString(value))
-            this.concentrationText = null;
+            this.textConcentration = null;
           else {
-            if (this.concentrationText == null)
-              this.concentrationText = new StringType();
-            this.concentrationText.setValue(value);
+            if (this.textConcentration == null)
+              this.textConcentration = new StringType();
+            this.textConcentration.setValue(value);
           }
           return this;
         }
@@ -856,7 +996,7 @@ public class Ingredient extends DomainResource {
         }
 
         /**
-         * @return {@link #measurementPoint} (For when strength is measured at a particular point or distance.). This is the underlying object with id, value and extensions. The accessor "getMeasurementPoint" gives direct access to the value
+         * @return {@link #measurementPoint} (For when strength is measured at a particular point or distance. There are products where strength is measured at a particular point. For example, the strength of the ingredient in some inhalers is measured at a particular position relative to the point of aerosolization.). This is the underlying object with id, value and extensions. The accessor "getMeasurementPoint" gives direct access to the value
          */
         public StringType getMeasurementPointElement() { 
           if (this.measurementPoint == null)
@@ -876,7 +1016,7 @@ public class Ingredient extends DomainResource {
         }
 
         /**
-         * @param value {@link #measurementPoint} (For when strength is measured at a particular point or distance.). This is the underlying object with id, value and extensions. The accessor "getMeasurementPoint" gives direct access to the value
+         * @param value {@link #measurementPoint} (For when strength is measured at a particular point or distance. There are products where strength is measured at a particular point. For example, the strength of the ingredient in some inhalers is measured at a particular position relative to the point of aerosolization.). This is the underlying object with id, value and extensions. The accessor "getMeasurementPoint" gives direct access to the value
          */
         public IngredientSubstanceStrengthComponent setMeasurementPointElement(StringType value) { 
           this.measurementPoint = value;
@@ -884,14 +1024,14 @@ public class Ingredient extends DomainResource {
         }
 
         /**
-         * @return For when strength is measured at a particular point or distance.
+         * @return For when strength is measured at a particular point or distance. There are products where strength is measured at a particular point. For example, the strength of the ingredient in some inhalers is measured at a particular position relative to the point of aerosolization.
          */
         public String getMeasurementPoint() { 
           return this.measurementPoint == null ? null : this.measurementPoint.getValue();
         }
 
         /**
-         * @param value For when strength is measured at a particular point or distance.
+         * @param value For when strength is measured at a particular point or distance. There are products where strength is measured at a particular point. For example, the strength of the ingredient in some inhalers is measured at a particular position relative to the point of aerosolization.
          */
         public IngredientSubstanceStrengthComponent setMeasurementPoint(String value) { 
           if (Utilities.noString(value))
@@ -958,7 +1098,7 @@ public class Ingredient extends DomainResource {
         }
 
         /**
-         * @return {@link #referenceStrength} (Strength expressed in terms of a reference substance.)
+         * @return {@link #referenceStrength} (Strength expressed in terms of a reference substance. For when the ingredient strength is additionally expressed as equivalent to the strength of some other closely related substance (e.g. salt vs. base). Reference strength represents the strength (quantitative composition) of the active moiety of the active substance. There are situations when the active substance and active moiety are different, therefore both a strength and a reference strength are needed.)
          */
         public List<IngredientSubstanceStrengthReferenceStrengthComponent> getReferenceStrength() { 
           if (this.referenceStrength == null)
@@ -1012,37 +1152,37 @@ public class Ingredient extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("presentation[x]", "Ratio|RatioRange|CodeableConcept|Quantity", "The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item.", 0, 1, presentation));
-          children.add(new Property("presentationText", "string", "A textual represention of either the whole of the presentation strength or a part of it - with the rest being in Strength.presentation as a ratio.", 0, 1, presentationText));
+          children.add(new Property("presentation[x]", "Ratio|RatioRange|CodeableConcept|Quantity", "The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item. Unit of presentation refers to the quantity that the item occurs in e.g. a strength per tablet size, perhaps 'per 20mg' (the size of the tablet). It is not generally normalized as a unitary unit, which would be 'per mg').", 0, 1, presentation));
+          children.add(new Property("textPresentation", "string", "A textual represention of either the whole of the presentation strength or a part of it - with the rest being in Strength.presentation as a ratio.", 0, 1, textPresentation));
           children.add(new Property("concentration[x]", "Ratio|RatioRange|CodeableConcept|Quantity", "The strength per unitary volume (or mass).", 0, 1, concentration));
-          children.add(new Property("concentrationText", "string", "A textual represention of either the whole of the concentration strength or a part of it - with the rest being in Strength.concentration as a ratio.", 0, 1, concentrationText));
+          children.add(new Property("textConcentration", "string", "A textual represention of either the whole of the concentration strength or a part of it - with the rest being in Strength.concentration as a ratio.", 0, 1, textConcentration));
           children.add(new Property("basis", "CodeableConcept", "A code that indicates if the strength is, for example, based on the ingredient substance as stated or on the substance base (when the ingredient is a salt).", 0, 1, basis));
-          children.add(new Property("measurementPoint", "string", "For when strength is measured at a particular point or distance.", 0, 1, measurementPoint));
+          children.add(new Property("measurementPoint", "string", "For when strength is measured at a particular point or distance. There are products where strength is measured at a particular point. For example, the strength of the ingredient in some inhalers is measured at a particular position relative to the point of aerosolization.", 0, 1, measurementPoint));
           children.add(new Property("country", "CodeableConcept", "The country or countries for which the strength range applies.", 0, java.lang.Integer.MAX_VALUE, country));
-          children.add(new Property("referenceStrength", "", "Strength expressed in terms of a reference substance.", 0, java.lang.Integer.MAX_VALUE, referenceStrength));
+          children.add(new Property("referenceStrength", "", "Strength expressed in terms of a reference substance. For when the ingredient strength is additionally expressed as equivalent to the strength of some other closely related substance (e.g. salt vs. base). Reference strength represents the strength (quantitative composition) of the active moiety of the active substance. There are situations when the active substance and active moiety are different, therefore both a strength and a reference strength are needed.", 0, java.lang.Integer.MAX_VALUE, referenceStrength));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 1714280230: /*presentation[x]*/  return new Property("presentation[x]", "Ratio|RatioRange|CodeableConcept|Quantity", "The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item.", 0, 1, presentation);
-          case 696975130: /*presentation*/  return new Property("presentation[x]", "Ratio|RatioRange|CodeableConcept|Quantity", "The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item.", 0, 1, presentation);
-          case -1853112047: /*presentationRatio*/  return new Property("presentation[x]", "Ratio", "The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item.", 0, 1, presentation);
-          case 643336876: /*presentationRatioRange*/  return new Property("presentation[x]", "RatioRange", "The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item.", 0, 1, presentation);
-          case 1095127335: /*presentationCodeableConcept*/  return new Property("presentation[x]", "CodeableConcept", "The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item.", 0, 1, presentation);
-          case -263057979: /*presentationQuantity*/  return new Property("presentation[x]", "Quantity", "The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item.", 0, 1, presentation);
-          case 1602853735: /*presentationText*/  return new Property("presentationText", "string", "A textual represention of either the whole of the presentation strength or a part of it - with the rest being in Strength.presentation as a ratio.", 0, 1, presentationText);
+          case 1714280230: /*presentation[x]*/  return new Property("presentation[x]", "Ratio|RatioRange|CodeableConcept|Quantity", "The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item. Unit of presentation refers to the quantity that the item occurs in e.g. a strength per tablet size, perhaps 'per 20mg' (the size of the tablet). It is not generally normalized as a unitary unit, which would be 'per mg').", 0, 1, presentation);
+          case 696975130: /*presentation*/  return new Property("presentation[x]", "Ratio|RatioRange|CodeableConcept|Quantity", "The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item. Unit of presentation refers to the quantity that the item occurs in e.g. a strength per tablet size, perhaps 'per 20mg' (the size of the tablet). It is not generally normalized as a unitary unit, which would be 'per mg').", 0, 1, presentation);
+          case -1853112047: /*presentationRatio*/  return new Property("presentation[x]", "Ratio", "The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item. Unit of presentation refers to the quantity that the item occurs in e.g. a strength per tablet size, perhaps 'per 20mg' (the size of the tablet). It is not generally normalized as a unitary unit, which would be 'per mg').", 0, 1, presentation);
+          case 643336876: /*presentationRatioRange*/  return new Property("presentation[x]", "RatioRange", "The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item. Unit of presentation refers to the quantity that the item occurs in e.g. a strength per tablet size, perhaps 'per 20mg' (the size of the tablet). It is not generally normalized as a unitary unit, which would be 'per mg').", 0, 1, presentation);
+          case 1095127335: /*presentationCodeableConcept*/  return new Property("presentation[x]", "CodeableConcept", "The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item. Unit of presentation refers to the quantity that the item occurs in e.g. a strength per tablet size, perhaps 'per 20mg' (the size of the tablet). It is not generally normalized as a unitary unit, which would be 'per mg').", 0, 1, presentation);
+          case -263057979: /*presentationQuantity*/  return new Property("presentation[x]", "Quantity", "The quantity of substance in the unit of presentation, or in the volume (or mass) of the single pharmaceutical product or manufactured item. Unit of presentation refers to the quantity that the item occurs in e.g. a strength per tablet size, perhaps 'per 20mg' (the size of the tablet). It is not generally normalized as a unitary unit, which would be 'per mg').", 0, 1, presentation);
+          case -799720217: /*textPresentation*/  return new Property("textPresentation", "string", "A textual represention of either the whole of the presentation strength or a part of it - with the rest being in Strength.presentation as a ratio.", 0, 1, textPresentation);
           case 1153502451: /*concentration[x]*/  return new Property("concentration[x]", "Ratio|RatioRange|CodeableConcept|Quantity", "The strength per unitary volume (or mass).", 0, 1, concentration);
           case -410557331: /*concentration*/  return new Property("concentration[x]", "Ratio|RatioRange|CodeableConcept|Quantity", "The strength per unitary volume (or mass).", 0, 1, concentration);
           case 405321630: /*concentrationRatio*/  return new Property("concentration[x]", "Ratio", "The strength per unitary volume (or mass).", 0, 1, concentration);
           case 436249663: /*concentrationRatioRange*/  return new Property("concentration[x]", "RatioRange", "The strength per unitary volume (or mass).", 0, 1, concentration);
           case -90293388: /*concentrationCodeableConcept*/  return new Property("concentration[x]", "CodeableConcept", "The strength per unitary volume (or mass).", 0, 1, concentration);
           case 71921688: /*concentrationQuantity*/  return new Property("concentration[x]", "Quantity", "The strength per unitary volume (or mass).", 0, 1, concentration);
-          case 1398611770: /*concentrationText*/  return new Property("concentrationText", "string", "A textual represention of either the whole of the concentration strength or a part of it - with the rest being in Strength.concentration as a ratio.", 0, 1, concentrationText);
+          case 436527168: /*textConcentration*/  return new Property("textConcentration", "string", "A textual represention of either the whole of the concentration strength or a part of it - with the rest being in Strength.concentration as a ratio.", 0, 1, textConcentration);
           case 93508670: /*basis*/  return new Property("basis", "CodeableConcept", "A code that indicates if the strength is, for example, based on the ingredient substance as stated or on the substance base (when the ingredient is a salt).", 0, 1, basis);
-          case 235437876: /*measurementPoint*/  return new Property("measurementPoint", "string", "For when strength is measured at a particular point or distance.", 0, 1, measurementPoint);
+          case 235437876: /*measurementPoint*/  return new Property("measurementPoint", "string", "For when strength is measured at a particular point or distance. There are products where strength is measured at a particular point. For example, the strength of the ingredient in some inhalers is measured at a particular position relative to the point of aerosolization.", 0, 1, measurementPoint);
           case 957831062: /*country*/  return new Property("country", "CodeableConcept", "The country or countries for which the strength range applies.", 0, java.lang.Integer.MAX_VALUE, country);
-          case 1943566508: /*referenceStrength*/  return new Property("referenceStrength", "", "Strength expressed in terms of a reference substance.", 0, java.lang.Integer.MAX_VALUE, referenceStrength);
+          case 1943566508: /*referenceStrength*/  return new Property("referenceStrength", "", "Strength expressed in terms of a reference substance. For when the ingredient strength is additionally expressed as equivalent to the strength of some other closely related substance (e.g. salt vs. base). Reference strength represents the strength (quantitative composition) of the active moiety of the active substance. There are situations when the active substance and active moiety are different, therefore both a strength and a reference strength are needed.", 0, java.lang.Integer.MAX_VALUE, referenceStrength);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1052,9 +1192,9 @@ public class Ingredient extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 696975130: /*presentation*/ return this.presentation == null ? new Base[0] : new Base[] {this.presentation}; // DataType
-        case 1602853735: /*presentationText*/ return this.presentationText == null ? new Base[0] : new Base[] {this.presentationText}; // StringType
+        case -799720217: /*textPresentation*/ return this.textPresentation == null ? new Base[0] : new Base[] {this.textPresentation}; // StringType
         case -410557331: /*concentration*/ return this.concentration == null ? new Base[0] : new Base[] {this.concentration}; // DataType
-        case 1398611770: /*concentrationText*/ return this.concentrationText == null ? new Base[0] : new Base[] {this.concentrationText}; // StringType
+        case 436527168: /*textConcentration*/ return this.textConcentration == null ? new Base[0] : new Base[] {this.textConcentration}; // StringType
         case 93508670: /*basis*/ return this.basis == null ? new Base[0] : new Base[] {this.basis}; // CodeableConcept
         case 235437876: /*measurementPoint*/ return this.measurementPoint == null ? new Base[0] : new Base[] {this.measurementPoint}; // StringType
         case 957831062: /*country*/ return this.country == null ? new Base[0] : this.country.toArray(new Base[this.country.size()]); // CodeableConcept
@@ -1070,14 +1210,14 @@ public class Ingredient extends DomainResource {
         case 696975130: // presentation
           this.presentation = TypeConvertor.castToType(value); // DataType
           return value;
-        case 1602853735: // presentationText
-          this.presentationText = TypeConvertor.castToString(value); // StringType
+        case -799720217: // textPresentation
+          this.textPresentation = TypeConvertor.castToString(value); // StringType
           return value;
         case -410557331: // concentration
           this.concentration = TypeConvertor.castToType(value); // DataType
           return value;
-        case 1398611770: // concentrationText
-          this.concentrationText = TypeConvertor.castToString(value); // StringType
+        case 436527168: // textConcentration
+          this.textConcentration = TypeConvertor.castToString(value); // StringType
           return value;
         case 93508670: // basis
           this.basis = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -1100,12 +1240,12 @@ public class Ingredient extends DomainResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("presentation[x]")) {
           this.presentation = TypeConvertor.castToType(value); // DataType
-        } else if (name.equals("presentationText")) {
-          this.presentationText = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("textPresentation")) {
+          this.textPresentation = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("concentration[x]")) {
           this.concentration = TypeConvertor.castToType(value); // DataType
-        } else if (name.equals("concentrationText")) {
-          this.concentrationText = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("textConcentration")) {
+          this.textConcentration = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("basis")) {
           this.basis = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("measurementPoint")) {
@@ -1124,10 +1264,10 @@ public class Ingredient extends DomainResource {
         switch (hash) {
         case 1714280230:  return getPresentation();
         case 696975130:  return getPresentation();
-        case 1602853735:  return getPresentationTextElement();
+        case -799720217:  return getTextPresentationElement();
         case 1153502451:  return getConcentration();
         case -410557331:  return getConcentration();
-        case 1398611770:  return getConcentrationTextElement();
+        case 436527168:  return getTextConcentrationElement();
         case 93508670:  return getBasis();
         case 235437876:  return getMeasurementPointElement();
         case 957831062:  return addCountry(); 
@@ -1141,9 +1281,9 @@ public class Ingredient extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 696975130: /*presentation*/ return new String[] {"Ratio", "RatioRange", "CodeableConcept", "Quantity"};
-        case 1602853735: /*presentationText*/ return new String[] {"string"};
+        case -799720217: /*textPresentation*/ return new String[] {"string"};
         case -410557331: /*concentration*/ return new String[] {"Ratio", "RatioRange", "CodeableConcept", "Quantity"};
-        case 1398611770: /*concentrationText*/ return new String[] {"string"};
+        case 436527168: /*textConcentration*/ return new String[] {"string"};
         case 93508670: /*basis*/ return new String[] {"CodeableConcept"};
         case 235437876: /*measurementPoint*/ return new String[] {"string"};
         case 957831062: /*country*/ return new String[] {"CodeableConcept"};
@@ -1171,8 +1311,8 @@ public class Ingredient extends DomainResource {
           this.presentation = new Quantity();
           return this.presentation;
         }
-        else if (name.equals("presentationText")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Ingredient.substance.strength.presentationText");
+        else if (name.equals("textPresentation")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Ingredient.substance.strength.textPresentation");
         }
         else if (name.equals("concentrationRatio")) {
           this.concentration = new Ratio();
@@ -1190,8 +1330,8 @@ public class Ingredient extends DomainResource {
           this.concentration = new Quantity();
           return this.concentration;
         }
-        else if (name.equals("concentrationText")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Ingredient.substance.strength.concentrationText");
+        else if (name.equals("textConcentration")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Ingredient.substance.strength.textConcentration");
         }
         else if (name.equals("basis")) {
           this.basis = new CodeableConcept();
@@ -1219,9 +1359,9 @@ public class Ingredient extends DomainResource {
       public void copyValues(IngredientSubstanceStrengthComponent dst) {
         super.copyValues(dst);
         dst.presentation = presentation == null ? null : presentation.copy();
-        dst.presentationText = presentationText == null ? null : presentationText.copy();
+        dst.textPresentation = textPresentation == null ? null : textPresentation.copy();
         dst.concentration = concentration == null ? null : concentration.copy();
-        dst.concentrationText = concentrationText == null ? null : concentrationText.copy();
+        dst.textConcentration = textConcentration == null ? null : textConcentration.copy();
         dst.basis = basis == null ? null : basis.copy();
         dst.measurementPoint = measurementPoint == null ? null : measurementPoint.copy();
         if (country != null) {
@@ -1243,8 +1383,8 @@ public class Ingredient extends DomainResource {
         if (!(other_ instanceof IngredientSubstanceStrengthComponent))
           return false;
         IngredientSubstanceStrengthComponent o = (IngredientSubstanceStrengthComponent) other_;
-        return compareDeep(presentation, o.presentation, true) && compareDeep(presentationText, o.presentationText, true)
-           && compareDeep(concentration, o.concentration, true) && compareDeep(concentrationText, o.concentrationText, true)
+        return compareDeep(presentation, o.presentation, true) && compareDeep(textPresentation, o.textPresentation, true)
+           && compareDeep(concentration, o.concentration, true) && compareDeep(textConcentration, o.textConcentration, true)
            && compareDeep(basis, o.basis, true) && compareDeep(measurementPoint, o.measurementPoint, true)
            && compareDeep(country, o.country, true) && compareDeep(referenceStrength, o.referenceStrength, true)
           ;
@@ -1257,13 +1397,13 @@ public class Ingredient extends DomainResource {
         if (!(other_ instanceof IngredientSubstanceStrengthComponent))
           return false;
         IngredientSubstanceStrengthComponent o = (IngredientSubstanceStrengthComponent) other_;
-        return compareValues(presentationText, o.presentationText, true) && compareValues(concentrationText, o.concentrationText, true)
+        return compareValues(textPresentation, o.textPresentation, true) && compareValues(textConcentration, o.textConcentration, true)
            && compareValues(measurementPoint, o.measurementPoint, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(presentation, presentationText
-          , concentration, concentrationText, basis, measurementPoint, country, referenceStrength
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(presentation, textPresentation
+          , concentration, textConcentration, basis, measurementPoint, country, referenceStrength
           );
       }
 
@@ -1281,6 +1421,7 @@ public class Ingredient extends DomainResource {
          */
         @Child(name = "substance", type = {CodeableReference.class}, order=1, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Relevant reference substance", formalDefinition="Relevant reference substance." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/substance-codes")
         protected CodeableReference substance;
 
         /**
@@ -1294,14 +1435,15 @@ public class Ingredient extends DomainResource {
          * For when strength is measured at a particular point or distance.
          */
         @Child(name = "measurementPoint", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="For when strength is measured at a particular point or distance", formalDefinition="For when strength is measured at a particular point or distance." )
+        @Description(shortDefinition="When strength is measured at a particular point or distance", formalDefinition="For when strength is measured at a particular point or distance." )
         protected StringType measurementPoint;
 
         /**
          * The country or countries for which the strength range applies.
          */
         @Child(name = "country", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="The country or countries for which the strength range applies", formalDefinition="The country or countries for which the strength range applies." )
+        @Description(shortDefinition="Where the strength range applies", formalDefinition="The country or countries for which the strength range applies." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/country")
         protected List<CodeableConcept> country;
 
         private static final long serialVersionUID = 1700529245L;
@@ -1714,14 +1856,16 @@ public class Ingredient extends DomainResource {
      * A classification of the ingredient identifying its purpose within the product, e.g. active, inactive.
      */
     @Child(name = "role", type = {CodeableConcept.class}, order=3, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="A classification of the ingredient identifying its purpose within the product, e.g. active, inactive", formalDefinition="A classification of the ingredient identifying its purpose within the product, e.g. active, inactive." )
+    @Description(shortDefinition="Purpose of the ingredient within the product, e.g. active, inactive", formalDefinition="A classification of the ingredient identifying its purpose within the product, e.g. active, inactive." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ingredient-role")
     protected CodeableConcept role;
 
     /**
-     * A classification of the ingredient identifying its precise purpose(s) in the drug product. This extends the Ingredient.role to add more detail. Example: Antioxidant, Alkalizing Agent.
+     * A classification of the ingredient identifying its precise purpose(s) in the drug product. This extends the Ingredient.role to add more detail. Example: antioxidant, alkalizing agent.
      */
     @Child(name = "function", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="A classification of the ingredient identifying its precise purpose(s) in the drug product. This extends the Ingredient.role to add more detail. Example: Antioxidant, Alkalizing Agent", formalDefinition="A classification of the ingredient identifying its precise purpose(s) in the drug product. This extends the Ingredient.role to add more detail. Example: Antioxidant, Alkalizing Agent." )
+    @Description(shortDefinition="Precise action within the drug product, e.g. antioxidant, alkalizing agent", formalDefinition="A classification of the ingredient identifying its precise purpose(s) in the drug product. This extends the Ingredient.role to add more detail. Example: antioxidant, alkalizing agent." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/ingredient-function")
     protected List<CodeableConcept> function;
 
     /**
@@ -1732,17 +1876,17 @@ public class Ingredient extends DomainResource {
     protected CodeableConcept group;
 
     /**
-     * If the ingredient is a known or suspected allergen.
+     * If the ingredient is a known or suspected allergen. Note that this is a property of the substance, so if a reference to a SubstanceDefinition is used to decribe that (rather than just a code), the allergen information should go there, not here.
      */
     @Child(name = "allergenicIndicator", type = {BooleanType.class}, order=6, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="If the ingredient is a known or suspected allergen", formalDefinition="If the ingredient is a known or suspected allergen." )
+    @Description(shortDefinition="If the ingredient is a known or suspected allergen", formalDefinition="If the ingredient is a known or suspected allergen. Note that this is a property of the substance, so if a reference to a SubstanceDefinition is used to decribe that (rather than just a code), the allergen information should go there, not here." )
     protected BooleanType allergenicIndicator;
 
     /**
-     * An organization that manufactures this ingredient.
+     * The organization(s) that manufacture this ingredient. Can be used to indicate:         1) Organizations we are aware of that manufacture this ingredient         2) Specific Manufacturer(s) currently being used         3) Set of organisations allowed to manufacture this ingredient for this product         Users must be clear on the application of context relevant to their use case.
      */
     @Child(name = "manufacturer", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="An organization that manufactures this ingredient", formalDefinition="An organization that manufactures this ingredient." )
+    @Description(shortDefinition="An organization that manufactures this ingredient", formalDefinition="The organization(s) that manufacture this ingredient. Can be used to indicate:         1) Organizations we are aware of that manufacture this ingredient         2) Specific Manufacturer(s) currently being used         3) Set of organisations allowed to manufacture this ingredient for this product         Users must be clear on the application of context relevant to their use case." )
     protected List<IngredientManufacturerComponent> manufacturer;
 
     /**
@@ -1918,7 +2062,7 @@ public class Ingredient extends DomainResource {
     }
 
     /**
-     * @return {@link #function} (A classification of the ingredient identifying its precise purpose(s) in the drug product. This extends the Ingredient.role to add more detail. Example: Antioxidant, Alkalizing Agent.)
+     * @return {@link #function} (A classification of the ingredient identifying its precise purpose(s) in the drug product. This extends the Ingredient.role to add more detail. Example: antioxidant, alkalizing agent.)
      */
     public List<CodeableConcept> getFunction() { 
       if (this.function == null)
@@ -1995,7 +2139,7 @@ public class Ingredient extends DomainResource {
     }
 
     /**
-     * @return {@link #allergenicIndicator} (If the ingredient is a known or suspected allergen.). This is the underlying object with id, value and extensions. The accessor "getAllergenicIndicator" gives direct access to the value
+     * @return {@link #allergenicIndicator} (If the ingredient is a known or suspected allergen. Note that this is a property of the substance, so if a reference to a SubstanceDefinition is used to decribe that (rather than just a code), the allergen information should go there, not here.). This is the underlying object with id, value and extensions. The accessor "getAllergenicIndicator" gives direct access to the value
      */
     public BooleanType getAllergenicIndicatorElement() { 
       if (this.allergenicIndicator == null)
@@ -2015,7 +2159,7 @@ public class Ingredient extends DomainResource {
     }
 
     /**
-     * @param value {@link #allergenicIndicator} (If the ingredient is a known or suspected allergen.). This is the underlying object with id, value and extensions. The accessor "getAllergenicIndicator" gives direct access to the value
+     * @param value {@link #allergenicIndicator} (If the ingredient is a known or suspected allergen. Note that this is a property of the substance, so if a reference to a SubstanceDefinition is used to decribe that (rather than just a code), the allergen information should go there, not here.). This is the underlying object with id, value and extensions. The accessor "getAllergenicIndicator" gives direct access to the value
      */
     public Ingredient setAllergenicIndicatorElement(BooleanType value) { 
       this.allergenicIndicator = value;
@@ -2023,14 +2167,14 @@ public class Ingredient extends DomainResource {
     }
 
     /**
-     * @return If the ingredient is a known or suspected allergen.
+     * @return If the ingredient is a known or suspected allergen. Note that this is a property of the substance, so if a reference to a SubstanceDefinition is used to decribe that (rather than just a code), the allergen information should go there, not here.
      */
     public boolean getAllergenicIndicator() { 
       return this.allergenicIndicator == null || this.allergenicIndicator.isEmpty() ? false : this.allergenicIndicator.getValue();
     }
 
     /**
-     * @param value If the ingredient is a known or suspected allergen.
+     * @param value If the ingredient is a known or suspected allergen. Note that this is a property of the substance, so if a reference to a SubstanceDefinition is used to decribe that (rather than just a code), the allergen information should go there, not here.
      */
     public Ingredient setAllergenicIndicator(boolean value) { 
         if (this.allergenicIndicator == null)
@@ -2040,7 +2184,7 @@ public class Ingredient extends DomainResource {
     }
 
     /**
-     * @return {@link #manufacturer} (An organization that manufactures this ingredient.)
+     * @return {@link #manufacturer} (The organization(s) that manufacture this ingredient. Can be used to indicate:         1) Organizations we are aware of that manufacture this ingredient         2) Specific Manufacturer(s) currently being used         3) Set of organisations allowed to manufacture this ingredient for this product         Users must be clear on the application of context relevant to their use case.)
      */
     public List<IngredientManufacturerComponent> getManufacturer() { 
       if (this.manufacturer == null)
@@ -2122,10 +2266,10 @@ public class Ingredient extends DomainResource {
         children.add(new Property("status", "code", "The status of this ingredient. Enables tracking the life-cycle of the content.", 0, 1, status));
         children.add(new Property("for", "Reference(MedicinalProductDefinition|AdministrableProductDefinition|ManufacturedItemDefinition)", "The product which this ingredient is a constituent part of.", 0, java.lang.Integer.MAX_VALUE, for_));
         children.add(new Property("role", "CodeableConcept", "A classification of the ingredient identifying its purpose within the product, e.g. active, inactive.", 0, 1, role));
-        children.add(new Property("function", "CodeableConcept", "A classification of the ingredient identifying its precise purpose(s) in the drug product. This extends the Ingredient.role to add more detail. Example: Antioxidant, Alkalizing Agent.", 0, java.lang.Integer.MAX_VALUE, function));
+        children.add(new Property("function", "CodeableConcept", "A classification of the ingredient identifying its precise purpose(s) in the drug product. This extends the Ingredient.role to add more detail. Example: antioxidant, alkalizing agent.", 0, java.lang.Integer.MAX_VALUE, function));
         children.add(new Property("group", "CodeableConcept", "A classification of the ingredient according to where in the physical item it tends to be used, such the outer shell of a tablet, inner body or ink.", 0, 1, group));
-        children.add(new Property("allergenicIndicator", "boolean", "If the ingredient is a known or suspected allergen.", 0, 1, allergenicIndicator));
-        children.add(new Property("manufacturer", "", "An organization that manufactures this ingredient.", 0, java.lang.Integer.MAX_VALUE, manufacturer));
+        children.add(new Property("allergenicIndicator", "boolean", "If the ingredient is a known or suspected allergen. Note that this is a property of the substance, so if a reference to a SubstanceDefinition is used to decribe that (rather than just a code), the allergen information should go there, not here.", 0, 1, allergenicIndicator));
+        children.add(new Property("manufacturer", "", "The organization(s) that manufacture this ingredient. Can be used to indicate:         1) Organizations we are aware of that manufacture this ingredient         2) Specific Manufacturer(s) currently being used         3) Set of organisations allowed to manufacture this ingredient for this product         Users must be clear on the application of context relevant to their use case.", 0, java.lang.Integer.MAX_VALUE, manufacturer));
         children.add(new Property("substance", "", "The substance that comprises this ingredient.", 0, 1, substance));
       }
 
@@ -2136,10 +2280,10 @@ public class Ingredient extends DomainResource {
         case -892481550: /*status*/  return new Property("status", "code", "The status of this ingredient. Enables tracking the life-cycle of the content.", 0, 1, status);
         case 101577: /*for*/  return new Property("for", "Reference(MedicinalProductDefinition|AdministrableProductDefinition|ManufacturedItemDefinition)", "The product which this ingredient is a constituent part of.", 0, java.lang.Integer.MAX_VALUE, for_);
         case 3506294: /*role*/  return new Property("role", "CodeableConcept", "A classification of the ingredient identifying its purpose within the product, e.g. active, inactive.", 0, 1, role);
-        case 1380938712: /*function*/  return new Property("function", "CodeableConcept", "A classification of the ingredient identifying its precise purpose(s) in the drug product. This extends the Ingredient.role to add more detail. Example: Antioxidant, Alkalizing Agent.", 0, java.lang.Integer.MAX_VALUE, function);
+        case 1380938712: /*function*/  return new Property("function", "CodeableConcept", "A classification of the ingredient identifying its precise purpose(s) in the drug product. This extends the Ingredient.role to add more detail. Example: antioxidant, alkalizing agent.", 0, java.lang.Integer.MAX_VALUE, function);
         case 98629247: /*group*/  return new Property("group", "CodeableConcept", "A classification of the ingredient according to where in the physical item it tends to be used, such the outer shell of a tablet, inner body or ink.", 0, 1, group);
-        case 75406931: /*allergenicIndicator*/  return new Property("allergenicIndicator", "boolean", "If the ingredient is a known or suspected allergen.", 0, 1, allergenicIndicator);
-        case -1969347631: /*manufacturer*/  return new Property("manufacturer", "", "An organization that manufactures this ingredient.", 0, java.lang.Integer.MAX_VALUE, manufacturer);
+        case 75406931: /*allergenicIndicator*/  return new Property("allergenicIndicator", "boolean", "If the ingredient is a known or suspected allergen. Note that this is a property of the substance, so if a reference to a SubstanceDefinition is used to decribe that (rather than just a code), the allergen information should go there, not here.", 0, 1, allergenicIndicator);
+        case -1969347631: /*manufacturer*/  return new Property("manufacturer", "", "The organization(s) that manufacture this ingredient. Can be used to indicate:         1) Organizations we are aware of that manufacture this ingredient         2) Specific Manufacturer(s) currently being used         3) Set of organisations allowed to manufacture this ingredient for this product         Users must be clear on the application of context relevant to their use case.", 0, java.lang.Integer.MAX_VALUE, manufacturer);
         case 530040176: /*substance*/  return new Property("substance", "", "The substance that comprises this ingredient.", 0, 1, substance);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -2369,190 +2513,6 @@ public class Ingredient extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.Ingredient;
    }
-
- /**
-   * Search parameter: <b>for</b>
-   * <p>
-   * Description: <b>The product which this ingredient is a constituent part of</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Ingredient.for</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="for", path="Ingredient.for", description="The product which this ingredient is a constituent part of", type="reference", target={AdministrableProductDefinition.class, ManufacturedItemDefinition.class, MedicinalProductDefinition.class } )
-  public static final String SP_FOR = "for";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>for</b>
-   * <p>
-   * Description: <b>The product which this ingredient is a constituent part of</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Ingredient.for</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam FOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_FOR);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Ingredient:for</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_FOR = new ca.uhn.fhir.model.api.Include("Ingredient:for").toLocked();
-
- /**
-   * Search parameter: <b>function</b>
-   * <p>
-   * Description: <b>A classification of the ingredient identifying its precise purpose(s) in the drug product. This extends the Ingredient.role to add more detail. Example: Antioxidant, Alkalizing Agent</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Ingredient.function</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="function", path="Ingredient.function", description="A classification of the ingredient identifying its precise purpose(s) in the drug product. This extends the Ingredient.role to add more detail. Example: Antioxidant, Alkalizing Agent", type="token" )
-  public static final String SP_FUNCTION = "function";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>function</b>
-   * <p>
-   * Description: <b>A classification of the ingredient identifying its precise purpose(s) in the drug product. This extends the Ingredient.role to add more detail. Example: Antioxidant, Alkalizing Agent</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Ingredient.function</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam FUNCTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FUNCTION);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>An identifier or code by which the ingredient can be referenced</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Ingredient.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="Ingredient.identifier", description="An identifier or code by which the ingredient can be referenced", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>An identifier or code by which the ingredient can be referenced</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Ingredient.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>manufacturer</b>
-   * <p>
-   * Description: <b>The organization that manufactures this ingredient</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Ingredient.manufacturer</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="manufacturer", path="Ingredient.manufacturer", description="The organization that manufactures this ingredient", type="reference" )
-  public static final String SP_MANUFACTURER = "manufacturer";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>manufacturer</b>
-   * <p>
-   * Description: <b>The organization that manufactures this ingredient</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Ingredient.manufacturer</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MANUFACTURER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MANUFACTURER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Ingredient:manufacturer</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_MANUFACTURER = new ca.uhn.fhir.model.api.Include("Ingredient:manufacturer").toLocked();
-
- /**
-   * Search parameter: <b>role</b>
-   * <p>
-   * Description: <b>A classification of the ingredient identifying its purpose within the product, e.g. active, inactive</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Ingredient.role</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="role", path="Ingredient.role", description="A classification of the ingredient identifying its purpose within the product, e.g. active, inactive", type="token" )
-  public static final String SP_ROLE = "role";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>role</b>
-   * <p>
-   * Description: <b>A classification of the ingredient identifying its purpose within the product, e.g. active, inactive</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Ingredient.role</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ROLE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ROLE);
-
- /**
-   * Search parameter: <b>substance-code</b>
-   * <p>
-   * Description: <b>Reference to a concept (by class)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Ingredient.substance.code.concept</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="substance-code", path="Ingredient.substance.code.concept", description="Reference to a concept (by class)", type="token" )
-  public static final String SP_SUBSTANCE_CODE = "substance-code";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>substance-code</b>
-   * <p>
-   * Description: <b>Reference to a concept (by class)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Ingredient.substance.code.concept</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SUBSTANCE_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SUBSTANCE_CODE);
-
- /**
-   * Search parameter: <b>substance-definition</b>
-   * <p>
-   * Description: <b>Reference to a resource (by instance)</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Ingredient.substance.code.reference</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="substance-definition", path="Ingredient.substance.code.reference", description="Reference to a resource (by instance)", type="reference" )
-  public static final String SP_SUBSTANCE_DEFINITION = "substance-definition";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>substance-definition</b>
-   * <p>
-   * Description: <b>Reference to a resource (by instance)</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Ingredient.substance.code.reference</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBSTANCE_DEFINITION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBSTANCE_DEFINITION);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Ingredient:substance-definition</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBSTANCE_DEFINITION = new ca.uhn.fhir.model.api.Include("Ingredient:substance-definition").toLocked();
-
- /**
-   * Search parameter: <b>substance</b>
-   * <p>
-   * Description: <b>Reference to a resource (by instance)</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Ingredient.substance.code.reference</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="substance", path="Ingredient.substance.code.reference", description="Reference to a resource (by instance)", type="reference" )
-  public static final String SP_SUBSTANCE = "substance";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>substance</b>
-   * <p>
-   * Description: <b>Reference to a resource (by instance)</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Ingredient.substance.code.reference</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBSTANCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBSTANCE);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Ingredient:substance</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBSTANCE = new ca.uhn.fhir.model.api.Include("Ingredient:substance").toLocked();
 
 
 }
