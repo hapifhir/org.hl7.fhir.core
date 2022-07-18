@@ -27,8 +27,8 @@ public class CarePlan10_50 {
     if (src.hasPeriod())
       tgt.setPeriod(Period10_50.convertPeriod(src.getPeriod()));
     for (org.hl7.fhir.dstu2.model.Reference t : src.getAuthor())
-      if (!tgt.hasAuthor())
-        tgt.setAuthor(Reference10_50.convertReference(t));
+      if (!tgt.hasCustodian())
+        tgt.setCustodian(Reference10_50.convertReference(t));
       else
         tgt.addContributor(Reference10_50.convertReference(t));
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getCategory())
@@ -58,8 +58,8 @@ public class CarePlan10_50 {
       tgt.setContext(Reference10_50.convertReference(src.getEncounter()));
     if (src.hasPeriod())
       tgt.setPeriod(Period10_50.convertPeriod(src.getPeriod()));
-    if (src.hasAuthor())
-      tgt.addAuthor(Reference10_50.convertReference(src.getAuthor()));
+    if (src.hasCustodian())
+      tgt.addAuthor(Reference10_50.convertReference(src.getCustodian()));
     for (org.hl7.fhir.r5.model.Reference t : src.getContributor()) tgt.addAuthor(Reference10_50.convertReference(t));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory())
       tgt.addCategory(CodeableConcept10_50.convertCodeableConcept(t));

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,6 +60,7 @@ public class AdministrableProductDefinition extends DomainResource {
          */
         @Child(name = "type", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="A code expressing the type of characteristic", formalDefinition="A code expressing the type of characteristic." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/product-characteristic-codes")
         protected CodeableConcept type;
 
         /**
@@ -74,6 +75,7 @@ public class AdministrableProductDefinition extends DomainResource {
          */
         @Child(name = "status", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="The status of characteristic e.g. assigned or pending", formalDefinition="The status of characteristic e.g. assigned or pending." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
         protected CodeableConcept status;
 
         private static final long serialVersionUID = -872048207L;
@@ -411,27 +413,28 @@ public class AdministrableProductDefinition extends DomainResource {
          */
         @Child(name = "code", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Coded expression for the route", formalDefinition="Coded expression for the route." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/route-codes")
         protected CodeableConcept code;
 
         /**
          * The first dose (dose quantity) administered can be specified for the product, using a numerical value and its unit of measurement.
          */
         @Child(name = "firstDose", type = {Quantity.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The first dose (dose quantity) administered can be specified for the product, using a numerical value and its unit of measurement", formalDefinition="The first dose (dose quantity) administered can be specified for the product, using a numerical value and its unit of measurement." )
+        @Description(shortDefinition="The first dose (dose quantity) administered can be specified for the product", formalDefinition="The first dose (dose quantity) administered can be specified for the product, using a numerical value and its unit of measurement." )
         protected Quantity firstDose;
 
         /**
-         * The maximum single dose that can be administered, can be specified using a numerical value and its unit of measurement.
+         * The maximum single dose that can be administered, specified using a numerical value and its unit of measurement.
          */
         @Child(name = "maxSingleDose", type = {Quantity.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The maximum single dose that can be administered, can be specified using a numerical value and its unit of measurement", formalDefinition="The maximum single dose that can be administered, can be specified using a numerical value and its unit of measurement." )
+        @Description(shortDefinition="The maximum single dose that can be administered", formalDefinition="The maximum single dose that can be administered, specified using a numerical value and its unit of measurement." )
         protected Quantity maxSingleDose;
 
         /**
          * The maximum dose per day (maximum dose quantity to be administered in any one 24-h period) that can be administered.
          */
         @Child(name = "maxDosePerDay", type = {Quantity.class}, order=4, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The maximum dose per day (maximum dose quantity to be administered in any one 24-h period) that can be administered", formalDefinition="The maximum dose per day (maximum dose quantity to be administered in any one 24-h period) that can be administered." )
+        @Description(shortDefinition="The maximum dose quantity to be administered in any one 24-h period", formalDefinition="The maximum dose per day (maximum dose quantity to be administered in any one 24-h period) that can be administered." )
         protected Quantity maxDosePerDay;
 
         /**
@@ -442,10 +445,10 @@ public class AdministrableProductDefinition extends DomainResource {
         protected Ratio maxDosePerTreatmentPeriod;
 
         /**
-         * The maximum treatment period during which an Investigational Medicinal Product can be administered.
+         * The maximum treatment period during which the product can be administered.
          */
         @Child(name = "maxTreatmentPeriod", type = {Duration.class}, order=6, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The maximum treatment period during which an Investigational Medicinal Product can be administered", formalDefinition="The maximum treatment period during which an Investigational Medicinal Product can be administered." )
+        @Description(shortDefinition="The maximum treatment period during which the product can be administered", formalDefinition="The maximum treatment period during which the product can be administered." )
         protected Duration maxTreatmentPeriod;
 
         /**
@@ -521,7 +524,7 @@ public class AdministrableProductDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #maxSingleDose} (The maximum single dose that can be administered, can be specified using a numerical value and its unit of measurement.)
+         * @return {@link #maxSingleDose} (The maximum single dose that can be administered, specified using a numerical value and its unit of measurement.)
          */
         public Quantity getMaxSingleDose() { 
           if (this.maxSingleDose == null)
@@ -537,7 +540,7 @@ public class AdministrableProductDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #maxSingleDose} (The maximum single dose that can be administered, can be specified using a numerical value and its unit of measurement.)
+         * @param value {@link #maxSingleDose} (The maximum single dose that can be administered, specified using a numerical value and its unit of measurement.)
          */
         public AdministrableProductDefinitionRouteOfAdministrationComponent setMaxSingleDose(Quantity value) { 
           this.maxSingleDose = value;
@@ -593,7 +596,7 @@ public class AdministrableProductDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #maxTreatmentPeriod} (The maximum treatment period during which an Investigational Medicinal Product can be administered.)
+         * @return {@link #maxTreatmentPeriod} (The maximum treatment period during which the product can be administered.)
          */
         public Duration getMaxTreatmentPeriod() { 
           if (this.maxTreatmentPeriod == null)
@@ -609,7 +612,7 @@ public class AdministrableProductDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #maxTreatmentPeriod} (The maximum treatment period during which an Investigational Medicinal Product can be administered.)
+         * @param value {@link #maxTreatmentPeriod} (The maximum treatment period during which the product can be administered.)
          */
         public AdministrableProductDefinitionRouteOfAdministrationComponent setMaxTreatmentPeriod(Duration value) { 
           this.maxTreatmentPeriod = value;
@@ -673,10 +676,10 @@ public class AdministrableProductDefinition extends DomainResource {
           super.listChildren(children);
           children.add(new Property("code", "CodeableConcept", "Coded expression for the route.", 0, 1, code));
           children.add(new Property("firstDose", "Quantity", "The first dose (dose quantity) administered can be specified for the product, using a numerical value and its unit of measurement.", 0, 1, firstDose));
-          children.add(new Property("maxSingleDose", "Quantity", "The maximum single dose that can be administered, can be specified using a numerical value and its unit of measurement.", 0, 1, maxSingleDose));
+          children.add(new Property("maxSingleDose", "Quantity", "The maximum single dose that can be administered, specified using a numerical value and its unit of measurement.", 0, 1, maxSingleDose));
           children.add(new Property("maxDosePerDay", "Quantity", "The maximum dose per day (maximum dose quantity to be administered in any one 24-h period) that can be administered.", 0, 1, maxDosePerDay));
           children.add(new Property("maxDosePerTreatmentPeriod", "Ratio", "The maximum dose per treatment period that can be administered.", 0, 1, maxDosePerTreatmentPeriod));
-          children.add(new Property("maxTreatmentPeriod", "Duration", "The maximum treatment period during which an Investigational Medicinal Product can be administered.", 0, 1, maxTreatmentPeriod));
+          children.add(new Property("maxTreatmentPeriod", "Duration", "The maximum treatment period during which the product can be administered.", 0, 1, maxTreatmentPeriod));
           children.add(new Property("targetSpecies", "", "A species for which this route applies.", 0, java.lang.Integer.MAX_VALUE, targetSpecies));
         }
 
@@ -685,10 +688,10 @@ public class AdministrableProductDefinition extends DomainResource {
           switch (_hash) {
           case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Coded expression for the route.", 0, 1, code);
           case 132551405: /*firstDose*/  return new Property("firstDose", "Quantity", "The first dose (dose quantity) administered can be specified for the product, using a numerical value and its unit of measurement.", 0, 1, firstDose);
-          case -259207927: /*maxSingleDose*/  return new Property("maxSingleDose", "Quantity", "The maximum single dose that can be administered, can be specified using a numerical value and its unit of measurement.", 0, 1, maxSingleDose);
+          case -259207927: /*maxSingleDose*/  return new Property("maxSingleDose", "Quantity", "The maximum single dose that can be administered, specified using a numerical value and its unit of measurement.", 0, 1, maxSingleDose);
           case -2017475520: /*maxDosePerDay*/  return new Property("maxDosePerDay", "Quantity", "The maximum dose per day (maximum dose quantity to be administered in any one 24-h period) that can be administered.", 0, 1, maxDosePerDay);
           case -608040195: /*maxDosePerTreatmentPeriod*/  return new Property("maxDosePerTreatmentPeriod", "Ratio", "The maximum dose per treatment period that can be administered.", 0, 1, maxDosePerTreatmentPeriod);
-          case 920698453: /*maxTreatmentPeriod*/  return new Property("maxTreatmentPeriod", "Duration", "The maximum treatment period during which an Investigational Medicinal Product can be administered.", 0, 1, maxTreatmentPeriod);
+          case 920698453: /*maxTreatmentPeriod*/  return new Property("maxTreatmentPeriod", "Duration", "The maximum treatment period during which the product can be administered.", 0, 1, maxTreatmentPeriod);
           case 295481963: /*targetSpecies*/  return new Property("targetSpecies", "", "A species for which this route applies.", 0, java.lang.Integer.MAX_VALUE, targetSpecies);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -886,6 +889,7 @@ public class AdministrableProductDefinition extends DomainResource {
          */
         @Child(name = "code", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Coded expression for the species", formalDefinition="Coded expression for the species." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/target-species")
         protected CodeableConcept code;
 
         /**
@@ -1124,10 +1128,11 @@ public class AdministrableProductDefinition extends DomainResource {
     @Block()
     public static class AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Coded expression for the type of tissue for which the withdrawal period applues, e.g. meat, milk.
+         * Coded expression for the type of tissue for which the withdrawal period applies, e.g. meat, milk.
          */
         @Child(name = "tissue", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Coded expression for the type of tissue for which the withdrawal period applues, e.g. meat, milk", formalDefinition="Coded expression for the type of tissue for which the withdrawal period applues, e.g. meat, milk." )
+        @Description(shortDefinition="The type of tissue for which the withdrawal period applies, e.g. meat, milk", formalDefinition="Coded expression for the type of tissue for which the withdrawal period applies, e.g. meat, milk." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/animal-tissue-type")
         protected CodeableConcept tissue;
 
         /**
@@ -1163,7 +1168,7 @@ public class AdministrableProductDefinition extends DomainResource {
       }
 
         /**
-         * @return {@link #tissue} (Coded expression for the type of tissue for which the withdrawal period applues, e.g. meat, milk.)
+         * @return {@link #tissue} (Coded expression for the type of tissue for which the withdrawal period applies, e.g. meat, milk.)
          */
         public CodeableConcept getTissue() { 
           if (this.tissue == null)
@@ -1179,7 +1184,7 @@ public class AdministrableProductDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #tissue} (Coded expression for the type of tissue for which the withdrawal period applues, e.g. meat, milk.)
+         * @param value {@link #tissue} (Coded expression for the type of tissue for which the withdrawal period applies, e.g. meat, milk.)
          */
         public AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent setTissue(CodeableConcept value) { 
           this.tissue = value;
@@ -1261,7 +1266,7 @@ public class AdministrableProductDefinition extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("tissue", "CodeableConcept", "Coded expression for the type of tissue for which the withdrawal period applues, e.g. meat, milk.", 0, 1, tissue));
+          children.add(new Property("tissue", "CodeableConcept", "Coded expression for the type of tissue for which the withdrawal period applies, e.g. meat, milk.", 0, 1, tissue));
           children.add(new Property("value", "Quantity", "A value for the time.", 0, 1, value));
           children.add(new Property("supportingInformation", "string", "Extra information about the withdrawal period.", 0, 1, supportingInformation));
         }
@@ -1269,7 +1274,7 @@ public class AdministrableProductDefinition extends DomainResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -873475867: /*tissue*/  return new Property("tissue", "CodeableConcept", "Coded expression for the type of tissue for which the withdrawal period applues, e.g. meat, milk.", 0, 1, tissue);
+          case -873475867: /*tissue*/  return new Property("tissue", "CodeableConcept", "Coded expression for the type of tissue for which the withdrawal period applies, e.g. meat, milk.", 0, 1, tissue);
           case 111972721: /*value*/  return new Property("value", "Quantity", "A value for the time.", 0, 1, value);
           case -1248768647: /*supportingInformation*/  return new Property("supportingInformation", "string", "Extra information about the withdrawal period.", 0, 1, supportingInformation);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -1419,59 +1424,62 @@ public class AdministrableProductDefinition extends DomainResource {
     protected Enumeration<PublicationStatus> status;
 
     /**
-     * The medicinal product that this is a prepared administrable form of. This element is not a reference to the item(s) that make up this administrable form (for which see AdministrableProductDefinition.producedFrom). It is medicinal product as a whole, which may have several components (as well as packaging, devices etc.), that are given to the patient in this final administrable form. A single medicinal product may have several different administrable products (e.g. a tablet and a cream), and these could have different administrable forms (e.g. tablet as oral solid, or tablet crushed).
+     * References a product from which one or more of the constituent parts of that product can be prepared and used as described by this administrable product.  If this administrable product describes the administration of a crushed tablet, the 'formOf' would be the product representing a distribution containing tablets and possibly also a cream.  This is distinct from the 'producedFrom' which refers to the specific components of the product that are used in this preparation, rather than the product as a whole.
      */
     @Child(name = "formOf", type = {MedicinalProductDefinition.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The medicinal product that this is a prepared administrable form of. This element is not a reference to the item(s) that make up this administrable form (for which see AdministrableProductDefinition.producedFrom). It is medicinal product as a whole, which may have several components (as well as packaging, devices etc.), that are given to the patient in this final administrable form. A single medicinal product may have several different administrable products (e.g. a tablet and a cream), and these could have different administrable forms (e.g. tablet as oral solid, or tablet crushed)", formalDefinition="The medicinal product that this is a prepared administrable form of. This element is not a reference to the item(s) that make up this administrable form (for which see AdministrableProductDefinition.producedFrom). It is medicinal product as a whole, which may have several components (as well as packaging, devices etc.), that are given to the patient in this final administrable form. A single medicinal product may have several different administrable products (e.g. a tablet and a cream), and these could have different administrable forms (e.g. tablet as oral solid, or tablet crushed)." )
+    @Description(shortDefinition="References a product from which one or more of the constituent parts of that product can be prepared and used as described by this administrable product", formalDefinition="References a product from which one or more of the constituent parts of that product can be prepared and used as described by this administrable product.  If this administrable product describes the administration of a crushed tablet, the 'formOf' would be the product representing a distribution containing tablets and possibly also a cream.  This is distinct from the 'producedFrom' which refers to the specific components of the product that are used in this preparation, rather than the product as a whole." )
     protected List<Reference> formOf;
 
     /**
      * The dose form of the final product after necessary reconstitution or processing. Contrasts to the manufactured dose form (see ManufacturedItemDefinition). If the manufactured form was 'powder for solution for injection', the administrable dose form could be 'solution for injection' (once mixed with another item having manufactured form 'solvent for solution for injection').
      */
     @Child(name = "administrableDoseForm", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The dose form of the final product after necessary reconstitution or processing. Contrasts to the manufactured dose form (see ManufacturedItemDefinition). If the manufactured form was 'powder for solution for injection', the administrable dose form could be 'solution for injection' (once mixed with another item having manufactured form 'solvent for solution for injection')", formalDefinition="The dose form of the final product after necessary reconstitution or processing. Contrasts to the manufactured dose form (see ManufacturedItemDefinition). If the manufactured form was 'powder for solution for injection', the administrable dose form could be 'solution for injection' (once mixed with another item having manufactured form 'solvent for solution for injection')." )
+    @Description(shortDefinition="The dose form of the final product after necessary reconstitution or processing", formalDefinition="The dose form of the final product after necessary reconstitution or processing. Contrasts to the manufactured dose form (see ManufacturedItemDefinition). If the manufactured form was 'powder for solution for injection', the administrable dose form could be 'solution for injection' (once mixed with another item having manufactured form 'solvent for solution for injection')." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/administrable-dose-form")
     protected CodeableConcept administrableDoseForm;
 
     /**
      * The presentation type in which this item is given to a patient. e.g. for a spray - 'puff' (as in 'contains 100 mcg per puff'), or for a liquid - 'vial' (as in 'contains 5 ml per vial').
      */
     @Child(name = "unitOfPresentation", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The presentation type in which this item is given to a patient. e.g. for a spray - 'puff' (as in 'contains 100 mcg per puff'), or for a liquid - 'vial' (as in 'contains 5 ml per vial')", formalDefinition="The presentation type in which this item is given to a patient. e.g. for a spray - 'puff' (as in 'contains 100 mcg per puff'), or for a liquid - 'vial' (as in 'contains 5 ml per vial')." )
+    @Description(shortDefinition="The presentation type in which this item is given to a patient. e.g. for a spray - 'puff'", formalDefinition="The presentation type in which this item is given to a patient. e.g. for a spray - 'puff' (as in 'contains 100 mcg per puff'), or for a liquid - 'vial' (as in 'contains 5 ml per vial')." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/unit-of-presentation")
     protected CodeableConcept unitOfPresentation;
 
     /**
-     * The constituent manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solvent item, to make a consumable solution). Note the items this is produced from are not raw ingredients (see AdministrableProductDefinition.ingredient), but manufactured medication items (ManufacturedItemDefinitions), which may be combined or prepared and transformed for patient use. The constituent items that this administrable form is produced from are all part of the product (for which see AdministrableProductDefinition.formOf).
+     * Indicates the specific manufactured items that are part of the 'formOf' product that are used in the preparation of this specific administrable form.  In some cases, an administrable form might use all of the items from the overall product (or there might only be one item), while in other cases, an administrable form might use only a subset of the items available in the overall product.  For example, an administrable form might involve combining a liquid and a powder available as part of an overall product, but not involve applying the also supplied cream.
      */
     @Child(name = "producedFrom", type = {ManufacturedItemDefinition.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The constituent manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solvent item, to make a consumable solution). Note the items this is produced from are not raw ingredients (see AdministrableProductDefinition.ingredient), but manufactured medication items (ManufacturedItemDefinitions), which may be combined or prepared and transformed for patient use. The constituent items that this administrable form is produced from are all part of the product (for which see AdministrableProductDefinition.formOf)", formalDefinition="The constituent manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solvent item, to make a consumable solution). Note the items this is produced from are not raw ingredients (see AdministrableProductDefinition.ingredient), but manufactured medication items (ManufacturedItemDefinitions), which may be combined or prepared and transformed for patient use. The constituent items that this administrable form is produced from are all part of the product (for which see AdministrableProductDefinition.formOf)." )
+    @Description(shortDefinition="Indicates the specific manufactured items that are part of the 'formOf' product that are used in the preparation of this specific administrable form", formalDefinition="Indicates the specific manufactured items that are part of the 'formOf' product that are used in the preparation of this specific administrable form.  In some cases, an administrable form might use all of the items from the overall product (or there might only be one item), while in other cases, an administrable form might use only a subset of the items available in the overall product.  For example, an administrable form might involve combining a liquid and a powder available as part of an overall product, but not involve applying the also supplied cream." )
     protected List<Reference> producedFrom;
 
     /**
      * The ingredients of this administrable medicinal product. This is only needed if the ingredients are not specified either using ManufacturedItemDefiniton (via AdministrableProductDefinition.producedFrom) to state which component items are used to make this, or using by incoming references from the Ingredient resource, to state in detail which substances exist within this. This element allows a basic coded ingredient to be used.
      */
     @Child(name = "ingredient", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The ingredients of this administrable medicinal product. This is only needed if the ingredients are not specified either using ManufacturedItemDefiniton (via AdministrableProductDefinition.producedFrom) to state which component items are used to make this, or using by incoming references from the Ingredient resource, to state in detail which substances exist within this. This element allows a basic coded ingredient to be used", formalDefinition="The ingredients of this administrable medicinal product. This is only needed if the ingredients are not specified either using ManufacturedItemDefiniton (via AdministrableProductDefinition.producedFrom) to state which component items are used to make this, or using by incoming references from the Ingredient resource, to state in detail which substances exist within this. This element allows a basic coded ingredient to be used." )
+    @Description(shortDefinition="The ingredients of this administrable medicinal product. This is only needed if the ingredients are not specified either using ManufacturedItemDefiniton, or using by incoming references from the Ingredient resource", formalDefinition="The ingredients of this administrable medicinal product. This is only needed if the ingredients are not specified either using ManufacturedItemDefiniton (via AdministrableProductDefinition.producedFrom) to state which component items are used to make this, or using by incoming references from the Ingredient resource, to state in detail which substances exist within this. This element allows a basic coded ingredient to be used." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/substance-codes")
     protected List<CodeableConcept> ingredient;
 
     /**
      * A device that is integral to the medicinal product, in effect being considered as an "ingredient" of the medicinal product. This is not intended for devices that are just co-packaged.
      */
     @Child(name = "device", type = {DeviceDefinition.class}, order=7, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="A device that is integral to the medicinal product, in effect being considered as an \"ingredient\" of the medicinal product. This is not intended for devices that are just co-packaged", formalDefinition="A device that is integral to the medicinal product, in effect being considered as an \"ingredient\" of the medicinal product. This is not intended for devices that are just co-packaged." )
+    @Description(shortDefinition="A device that is integral to the medicinal product, in effect being considered as an \"ingredient\" of the medicinal product", formalDefinition="A device that is integral to the medicinal product, in effect being considered as an \"ingredient\" of the medicinal product. This is not intended for devices that are just co-packaged." )
     protected Reference device;
 
     /**
-     * Characteristics e.g. a products onset of action.
+     * Characteristics e.g. a product's onset of action.
      */
     @Child(name = "property", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Characteristics e.g. a products onset of action", formalDefinition="Characteristics e.g. a products onset of action." )
+    @Description(shortDefinition="Characteristics e.g. a product's onset of action", formalDefinition="Characteristics e.g. a product's onset of action." )
     protected List<AdministrableProductDefinitionPropertyComponent> property;
 
     /**
-     * The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route.
+     * The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route. RouteOfAdministration cannot be used when the 'formOf' product already uses MedicinalProductDefinition.route (and vice versa).
      */
     @Child(name = "routeOfAdministration", type = {}, order=9, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route", formalDefinition="The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route." )
+    @Description(shortDefinition="The path by which the product is taken into or makes contact with the body", formalDefinition="The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route. RouteOfAdministration cannot be used when the 'formOf' product already uses MedicinalProductDefinition.route (and vice versa)." )
     protected List<AdministrableProductDefinitionRouteOfAdministrationComponent> routeOfAdministration;
 
     private static final long serialVersionUID = 1447528370L;
@@ -1591,7 +1599,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #formOf} (The medicinal product that this is a prepared administrable form of. This element is not a reference to the item(s) that make up this administrable form (for which see AdministrableProductDefinition.producedFrom). It is medicinal product as a whole, which may have several components (as well as packaging, devices etc.), that are given to the patient in this final administrable form. A single medicinal product may have several different administrable products (e.g. a tablet and a cream), and these could have different administrable forms (e.g. tablet as oral solid, or tablet crushed).)
+     * @return {@link #formOf} (References a product from which one or more of the constituent parts of that product can be prepared and used as described by this administrable product.  If this administrable product describes the administration of a crushed tablet, the 'formOf' would be the product representing a distribution containing tablets and possibly also a cream.  This is distinct from the 'producedFrom' which refers to the specific components of the product that are used in this preparation, rather than the product as a whole.)
      */
     public List<Reference> getFormOf() { 
       if (this.formOf == null)
@@ -1692,7 +1700,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #producedFrom} (The constituent manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solvent item, to make a consumable solution). Note the items this is produced from are not raw ingredients (see AdministrableProductDefinition.ingredient), but manufactured medication items (ManufacturedItemDefinitions), which may be combined or prepared and transformed for patient use. The constituent items that this administrable form is produced from are all part of the product (for which see AdministrableProductDefinition.formOf).)
+     * @return {@link #producedFrom} (Indicates the specific manufactured items that are part of the 'formOf' product that are used in the preparation of this specific administrable form.  In some cases, an administrable form might use all of the items from the overall product (or there might only be one item), while in other cases, an administrable form might use only a subset of the items available in the overall product.  For example, an administrable form might involve combining a liquid and a powder available as part of an overall product, but not involve applying the also supplied cream.)
      */
     public List<Reference> getProducedFrom() { 
       if (this.producedFrom == null)
@@ -1822,7 +1830,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #property} (Characteristics e.g. a products onset of action.)
+     * @return {@link #property} (Characteristics e.g. a product's onset of action.)
      */
     public List<AdministrableProductDefinitionPropertyComponent> getProperty() { 
       if (this.property == null)
@@ -1875,7 +1883,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #routeOfAdministration} (The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route.)
+     * @return {@link #routeOfAdministration} (The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route. RouteOfAdministration cannot be used when the 'formOf' product already uses MedicinalProductDefinition.route (and vice versa).)
      */
     public List<AdministrableProductDefinitionRouteOfAdministrationComponent> getRouteOfAdministration() { 
       if (this.routeOfAdministration == null)
@@ -1931,14 +1939,14 @@ public class AdministrableProductDefinition extends DomainResource {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "An identifier for the administrable product.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("status", "code", "The status of this administrable product. Enables tracking the life-cycle of the content.", 0, 1, status));
-        children.add(new Property("formOf", "Reference(MedicinalProductDefinition)", "The medicinal product that this is a prepared administrable form of. This element is not a reference to the item(s) that make up this administrable form (for which see AdministrableProductDefinition.producedFrom). It is medicinal product as a whole, which may have several components (as well as packaging, devices etc.), that are given to the patient in this final administrable form. A single medicinal product may have several different administrable products (e.g. a tablet and a cream), and these could have different administrable forms (e.g. tablet as oral solid, or tablet crushed).", 0, java.lang.Integer.MAX_VALUE, formOf));
+        children.add(new Property("formOf", "Reference(MedicinalProductDefinition)", "References a product from which one or more of the constituent parts of that product can be prepared and used as described by this administrable product.  If this administrable product describes the administration of a crushed tablet, the 'formOf' would be the product representing a distribution containing tablets and possibly also a cream.  This is distinct from the 'producedFrom' which refers to the specific components of the product that are used in this preparation, rather than the product as a whole.", 0, java.lang.Integer.MAX_VALUE, formOf));
         children.add(new Property("administrableDoseForm", "CodeableConcept", "The dose form of the final product after necessary reconstitution or processing. Contrasts to the manufactured dose form (see ManufacturedItemDefinition). If the manufactured form was 'powder for solution for injection', the administrable dose form could be 'solution for injection' (once mixed with another item having manufactured form 'solvent for solution for injection').", 0, 1, administrableDoseForm));
         children.add(new Property("unitOfPresentation", "CodeableConcept", "The presentation type in which this item is given to a patient. e.g. for a spray - 'puff' (as in 'contains 100 mcg per puff'), or for a liquid - 'vial' (as in 'contains 5 ml per vial').", 0, 1, unitOfPresentation));
-        children.add(new Property("producedFrom", "Reference(ManufacturedItemDefinition)", "The constituent manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solvent item, to make a consumable solution). Note the items this is produced from are not raw ingredients (see AdministrableProductDefinition.ingredient), but manufactured medication items (ManufacturedItemDefinitions), which may be combined or prepared and transformed for patient use. The constituent items that this administrable form is produced from are all part of the product (for which see AdministrableProductDefinition.formOf).", 0, java.lang.Integer.MAX_VALUE, producedFrom));
+        children.add(new Property("producedFrom", "Reference(ManufacturedItemDefinition)", "Indicates the specific manufactured items that are part of the 'formOf' product that are used in the preparation of this specific administrable form.  In some cases, an administrable form might use all of the items from the overall product (or there might only be one item), while in other cases, an administrable form might use only a subset of the items available in the overall product.  For example, an administrable form might involve combining a liquid and a powder available as part of an overall product, but not involve applying the also supplied cream.", 0, java.lang.Integer.MAX_VALUE, producedFrom));
         children.add(new Property("ingredient", "CodeableConcept", "The ingredients of this administrable medicinal product. This is only needed if the ingredients are not specified either using ManufacturedItemDefiniton (via AdministrableProductDefinition.producedFrom) to state which component items are used to make this, or using by incoming references from the Ingredient resource, to state in detail which substances exist within this. This element allows a basic coded ingredient to be used.", 0, java.lang.Integer.MAX_VALUE, ingredient));
         children.add(new Property("device", "Reference(DeviceDefinition)", "A device that is integral to the medicinal product, in effect being considered as an \"ingredient\" of the medicinal product. This is not intended for devices that are just co-packaged.", 0, 1, device));
-        children.add(new Property("property", "", "Characteristics e.g. a products onset of action.", 0, java.lang.Integer.MAX_VALUE, property));
-        children.add(new Property("routeOfAdministration", "", "The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route.", 0, java.lang.Integer.MAX_VALUE, routeOfAdministration));
+        children.add(new Property("property", "", "Characteristics e.g. a product's onset of action.", 0, java.lang.Integer.MAX_VALUE, property));
+        children.add(new Property("routeOfAdministration", "", "The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route. RouteOfAdministration cannot be used when the 'formOf' product already uses MedicinalProductDefinition.route (and vice versa).", 0, java.lang.Integer.MAX_VALUE, routeOfAdministration));
       }
 
       @Override
@@ -1946,14 +1954,14 @@ public class AdministrableProductDefinition extends DomainResource {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "An identifier for the administrable product.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case -892481550: /*status*/  return new Property("status", "code", "The status of this administrable product. Enables tracking the life-cycle of the content.", 0, 1, status);
-        case -1268779589: /*formOf*/  return new Property("formOf", "Reference(MedicinalProductDefinition)", "The medicinal product that this is a prepared administrable form of. This element is not a reference to the item(s) that make up this administrable form (for which see AdministrableProductDefinition.producedFrom). It is medicinal product as a whole, which may have several components (as well as packaging, devices etc.), that are given to the patient in this final administrable form. A single medicinal product may have several different administrable products (e.g. a tablet and a cream), and these could have different administrable forms (e.g. tablet as oral solid, or tablet crushed).", 0, java.lang.Integer.MAX_VALUE, formOf);
+        case -1268779589: /*formOf*/  return new Property("formOf", "Reference(MedicinalProductDefinition)", "References a product from which one or more of the constituent parts of that product can be prepared and used as described by this administrable product.  If this administrable product describes the administration of a crushed tablet, the 'formOf' would be the product representing a distribution containing tablets and possibly also a cream.  This is distinct from the 'producedFrom' which refers to the specific components of the product that are used in this preparation, rather than the product as a whole.", 0, java.lang.Integer.MAX_VALUE, formOf);
         case 1446105202: /*administrableDoseForm*/  return new Property("administrableDoseForm", "CodeableConcept", "The dose form of the final product after necessary reconstitution or processing. Contrasts to the manufactured dose form (see ManufacturedItemDefinition). If the manufactured form was 'powder for solution for injection', the administrable dose form could be 'solution for injection' (once mixed with another item having manufactured form 'solvent for solution for injection').", 0, 1, administrableDoseForm);
         case -1427765963: /*unitOfPresentation*/  return new Property("unitOfPresentation", "CodeableConcept", "The presentation type in which this item is given to a patient. e.g. for a spray - 'puff' (as in 'contains 100 mcg per puff'), or for a liquid - 'vial' (as in 'contains 5 ml per vial').", 0, 1, unitOfPresentation);
-        case 588380494: /*producedFrom*/  return new Property("producedFrom", "Reference(ManufacturedItemDefinition)", "The constituent manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solvent item, to make a consumable solution). Note the items this is produced from are not raw ingredients (see AdministrableProductDefinition.ingredient), but manufactured medication items (ManufacturedItemDefinitions), which may be combined or prepared and transformed for patient use. The constituent items that this administrable form is produced from are all part of the product (for which see AdministrableProductDefinition.formOf).", 0, java.lang.Integer.MAX_VALUE, producedFrom);
+        case 588380494: /*producedFrom*/  return new Property("producedFrom", "Reference(ManufacturedItemDefinition)", "Indicates the specific manufactured items that are part of the 'formOf' product that are used in the preparation of this specific administrable form.  In some cases, an administrable form might use all of the items from the overall product (or there might only be one item), while in other cases, an administrable form might use only a subset of the items available in the overall product.  For example, an administrable form might involve combining a liquid and a powder available as part of an overall product, but not involve applying the also supplied cream.", 0, java.lang.Integer.MAX_VALUE, producedFrom);
         case -206409263: /*ingredient*/  return new Property("ingredient", "CodeableConcept", "The ingredients of this administrable medicinal product. This is only needed if the ingredients are not specified either using ManufacturedItemDefiniton (via AdministrableProductDefinition.producedFrom) to state which component items are used to make this, or using by incoming references from the Ingredient resource, to state in detail which substances exist within this. This element allows a basic coded ingredient to be used.", 0, java.lang.Integer.MAX_VALUE, ingredient);
         case -1335157162: /*device*/  return new Property("device", "Reference(DeviceDefinition)", "A device that is integral to the medicinal product, in effect being considered as an \"ingredient\" of the medicinal product. This is not intended for devices that are just co-packaged.", 0, 1, device);
-        case -993141291: /*property*/  return new Property("property", "", "Characteristics e.g. a products onset of action.", 0, java.lang.Integer.MAX_VALUE, property);
-        case 1742084734: /*routeOfAdministration*/  return new Property("routeOfAdministration", "", "The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route.", 0, java.lang.Integer.MAX_VALUE, routeOfAdministration);
+        case -993141291: /*property*/  return new Property("property", "", "Characteristics e.g. a product's onset of action.", 0, java.lang.Integer.MAX_VALUE, property);
+        case 1742084734: /*routeOfAdministration*/  return new Property("routeOfAdministration", "", "The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route. RouteOfAdministration cannot be used when the 'formOf' product already uses MedicinalProductDefinition.route (and vice versa).", 0, java.lang.Integer.MAX_VALUE, routeOfAdministration);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -2206,184 +2214,6 @@ public class AdministrableProductDefinition extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.AdministrableProductDefinition;
    }
-
- /**
-   * Search parameter: <b>device</b>
-   * <p>
-   * Description: <b>A device that is integral to the medicinal product, in effect being considered as an "ingredient" of the medicinal product. This is not intended for devices that are just co-packaged</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AdministrableProductDefinition.device</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="device", path="AdministrableProductDefinition.device", description="A device that is integral to the medicinal product, in effect being considered as an \"ingredient\" of the medicinal product. This is not intended for devices that are just co-packaged", type="reference", target={DeviceDefinition.class } )
-  public static final String SP_DEVICE = "device";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>device</b>
-   * <p>
-   * Description: <b>A device that is integral to the medicinal product, in effect being considered as an "ingredient" of the medicinal product. This is not intended for devices that are just co-packaged</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AdministrableProductDefinition.device</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DEVICE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DEVICE);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>AdministrableProductDefinition:device</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_DEVICE = new ca.uhn.fhir.model.api.Include("AdministrableProductDefinition:device").toLocked();
-
- /**
-   * Search parameter: <b>dose-form</b>
-   * <p>
-   * Description: <b>The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AdministrableProductDefinition.administrableDoseForm</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="dose-form", path="AdministrableProductDefinition.administrableDoseForm", description="The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing", type="token" )
-  public static final String SP_DOSE_FORM = "dose-form";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>dose-form</b>
-   * <p>
-   * Description: <b>The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AdministrableProductDefinition.administrableDoseForm</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam DOSE_FORM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_DOSE_FORM);
-
- /**
-   * Search parameter: <b>form-of</b>
-   * <p>
-   * Description: <b>The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AdministrableProductDefinition.formOf</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="form-of", path="AdministrableProductDefinition.formOf", description="The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product", type="reference", target={MedicinalProductDefinition.class } )
-  public static final String SP_FORM_OF = "form-of";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>form-of</b>
-   * <p>
-   * Description: <b>The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AdministrableProductDefinition.formOf</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam FORM_OF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_FORM_OF);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>AdministrableProductDefinition:form-of</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_FORM_OF = new ca.uhn.fhir.model.api.Include("AdministrableProductDefinition:form-of").toLocked();
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>An identifier for the administrable product</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AdministrableProductDefinition.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="AdministrableProductDefinition.identifier", description="An identifier for the administrable product", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>An identifier for the administrable product</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AdministrableProductDefinition.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>ingredient</b>
-   * <p>
-   * Description: <b>The ingredients of this administrable medicinal product</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AdministrableProductDefinition.ingredient</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="ingredient", path="AdministrableProductDefinition.ingredient", description="The ingredients of this administrable medicinal product", type="token" )
-  public static final String SP_INGREDIENT = "ingredient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>ingredient</b>
-   * <p>
-   * Description: <b>The ingredients of this administrable medicinal product</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AdministrableProductDefinition.ingredient</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INGREDIENT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INGREDIENT);
-
- /**
-   * Search parameter: <b>manufactured-item</b>
-   * <p>
-   * Description: <b>The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AdministrableProductDefinition.producedFrom</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="manufactured-item", path="AdministrableProductDefinition.producedFrom", description="The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients", type="reference", target={ManufacturedItemDefinition.class } )
-  public static final String SP_MANUFACTURED_ITEM = "manufactured-item";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>manufactured-item</b>
-   * <p>
-   * Description: <b>The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AdministrableProductDefinition.producedFrom</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MANUFACTURED_ITEM = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MANUFACTURED_ITEM);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>AdministrableProductDefinition:manufactured-item</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_MANUFACTURED_ITEM = new ca.uhn.fhir.model.api.Include("AdministrableProductDefinition:manufactured-item").toLocked();
-
- /**
-   * Search parameter: <b>route</b>
-   * <p>
-   * Description: <b>Coded expression for the route</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AdministrableProductDefinition.routeOfAdministration.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="route", path="AdministrableProductDefinition.routeOfAdministration.code", description="Coded expression for the route", type="token" )
-  public static final String SP_ROUTE = "route";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>route</b>
-   * <p>
-   * Description: <b>Coded expression for the route</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AdministrableProductDefinition.routeOfAdministration.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ROUTE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ROUTE);
-
- /**
-   * Search parameter: <b>target-species</b>
-   * <p>
-   * Description: <b>Coded expression for the species</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AdministrableProductDefinition.routeOfAdministration.targetSpecies.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="target-species", path="AdministrableProductDefinition.routeOfAdministration.targetSpecies.code", description="Coded expression for the species", type="token" )
-  public static final String SP_TARGET_SPECIES = "target-species";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>target-species</b>
-   * <p>
-   * Description: <b>Coded expression for the species</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AdministrableProductDefinition.routeOfAdministration.targetSpecies.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TARGET_SPECIES = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TARGET_SPECIES);
 
 
 }

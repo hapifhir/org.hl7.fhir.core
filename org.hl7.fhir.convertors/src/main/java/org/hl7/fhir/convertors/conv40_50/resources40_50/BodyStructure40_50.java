@@ -51,8 +51,8 @@ public class BodyStructure40_50 {
       tgt.setActiveElement(Boolean40_50.convertBoolean(src.getActiveElement()));
     if (src.hasMorphology())
       tgt.setMorphology(CodeableConcept40_50.convertCodeableConcept(src.getMorphology()));
-    if (src.hasLocation())
-      tgt.setLocation(CodeableConcept40_50.convertCodeableConcept(src.getLocation()));
+//    if (src.hasLocation())
+//      tgt.setLocation(CodeableConcept40_50.convertCodeableConcept(src.getLocation()));
 //    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getLocationQualifier())
 //      tgt.addLocationQualifier(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasDescription())
@@ -74,8 +74,8 @@ public class BodyStructure40_50 {
       tgt.setActiveElement(Boolean40_50.convertBoolean(src.getActiveElement()));
     if (src.hasMorphology())
       tgt.setMorphology(CodeableConcept40_50.convertCodeableConcept(src.getMorphology()));
-    if (src.hasLocation())
-      tgt.setLocation(CodeableConcept40_50.convertCodeableConcept(src.getLocation()));
+//    if (src.hasLocation())
+//      tgt.setLocation(CodeableConcept40_50.convertCodeableConcept(src.getLocation()));
 //    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getLocationQualifier())
 //      tgt.addLocationQualifier(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasDescription())

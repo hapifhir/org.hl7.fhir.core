@@ -8,6 +8,7 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Bool
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Instant30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeableReference;
 
 public class Slot30_50 {
 
@@ -21,7 +22,7 @@ public class Slot30_50 {
     if (src.hasServiceCategory())
       tgt.addServiceCategory(CodeableConcept30_50.convertCodeableConcept(src.getServiceCategory()));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getServiceType())
-      tgt.addServiceType(CodeableConcept30_50.convertCodeableConcept(t));
+      tgt.addServiceType(new CodeableReference().setConcept(CodeableConcept30_50.convertCodeableConcept(t)));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getSpecialty())
       tgt.addSpecialty(CodeableConcept30_50.convertCodeableConcept(t));
     if (src.hasAppointmentType())
@@ -50,8 +51,9 @@ public class Slot30_50 {
       tgt.addIdentifier(Identifier30_50.convertIdentifier(t));
     if (src.hasServiceCategory())
       tgt.setServiceCategory(CodeableConcept30_50.convertCodeableConcept(src.getServiceCategoryFirstRep()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceType())
-      tgt.addServiceType(CodeableConcept30_50.convertCodeableConcept(t));
+    for (CodeableReference t : src.getServiceType())
+      if (t.hasConcept())
+        tgt.addServiceType(CodeableConcept30_50.convertCodeableConcept(t.getConcept()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSpecialty())
       tgt.addSpecialty(CodeableConcept30_50.convertCodeableConcept(t));
     if (src.hasAppointmentType())

@@ -11,6 +11,7 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Date
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.DateTime30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.codesystems.CoverageeligibilityresponseExAuthSupportEnumFactory;
 import org.hl7.fhir.r5.model.CodeableReference;
 
 public class Immunization30_50 {
@@ -35,7 +36,7 @@ public class Immunization30_50 {
     if (src.hasPrimarySource())
       tgt.setPrimarySourceElement(Boolean30_50.convertBoolean(src.getPrimarySourceElement()));
     if (src.hasReportOrigin())
-      tgt.setInformationSource(CodeableConcept30_50.convertCodeableConcept(src.getReportOrigin()));
+      tgt.setInformationSource(new CodeableReference(CodeableConcept30_50.convertCodeableConcept(src.getReportOrigin())));
     if (src.hasLocation())
       tgt.setLocation(Reference30_50.convertReference(src.getLocation()));
     if (src.hasManufacturer())
@@ -77,8 +78,8 @@ public class Immunization30_50 {
       tgt.setDateElement(DateTime30_50.convertDateTime(src.getOccurrenceDateTimeType()));
     if (src.hasPrimarySource())
       tgt.setPrimarySourceElement(Boolean30_50.convertBoolean(src.getPrimarySourceElement()));
-    if (src.hasInformationSourceCodeableConcept())
-      tgt.setReportOrigin(CodeableConcept30_50.convertCodeableConcept(src.getInformationSourceCodeableConcept()));
+    if (src.getInformationSource().hasConcept())
+      tgt.setReportOrigin(CodeableConcept30_50.convertCodeableConcept(src.getInformationSource().getConcept()));
     if (src.hasLocation())
       tgt.setLocation(Reference30_50.convertReference(src.getLocation()));
     if (src.hasManufacturer())

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -117,6 +117,7 @@ public class DeviceUsage extends DomainResource {
             case INTENDED: return "intended";
             case STOPPED: return "stopped";
             case ONHOLD: return "on-hold";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -129,6 +130,7 @@ public class DeviceUsage extends DomainResource {
             case INTENDED: return "http://hl7.org/fhir/device-usage-status";
             case STOPPED: return "http://hl7.org/fhir/device-usage-status";
             case ONHOLD: return "http://hl7.org/fhir/device-usage-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -141,6 +143,7 @@ public class DeviceUsage extends DomainResource {
             case INTENDED: return "The device may be used at some time in the future.";
             case STOPPED: return "Actions implied by the statement have been permanently halted, before all of them occurred.";
             case ONHOLD: return "Actions implied by the statement have been temporarily halted, but are expected to continue later. May also be called \"suspended\".";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +156,7 @@ public class DeviceUsage extends DomainResource {
             case INTENDED: return "Intended";
             case STOPPED: return "Stopped";
             case ONHOLD: return "On Hold";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -224,6 +228,250 @@ public class DeviceUsage extends DomainResource {
       return code.getSystem();
       }
     }
+
+    @Block()
+    public static class DeviceUsageAdherenceComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Type of adherence.
+         */
+        @Child(name = "code", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="always | never | sometimes", formalDefinition="Type of adherence." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/deviceusage-adherence-code")
+        protected CodeableConcept code;
+
+        /**
+         * Reason for adherence type.
+         */
+        @Child(name = "reason", type = {CodeableConcept.class}, order=2, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="lost | stolen | prescribed | broken | burned | forgot", formalDefinition="Reason for adherence type." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/deviceusage-adherence-reason")
+        protected List<CodeableConcept> reason;
+
+        private static final long serialVersionUID = -1932336797L;
+
+    /**
+     * Constructor
+     */
+      public DeviceUsageAdherenceComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public DeviceUsageAdherenceComponent(CodeableConcept code, CodeableConcept reason) {
+        super();
+        this.setCode(code);
+        this.addReason(reason);
+      }
+
+        /**
+         * @return {@link #code} (Type of adherence.)
+         */
+        public CodeableConcept getCode() { 
+          if (this.code == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create DeviceUsageAdherenceComponent.code");
+            else if (Configuration.doAutoCreate())
+              this.code = new CodeableConcept(); // cc
+          return this.code;
+        }
+
+        public boolean hasCode() { 
+          return this.code != null && !this.code.isEmpty();
+        }
+
+        /**
+         * @param value {@link #code} (Type of adherence.)
+         */
+        public DeviceUsageAdherenceComponent setCode(CodeableConcept value) { 
+          this.code = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #reason} (Reason for adherence type.)
+         */
+        public List<CodeableConcept> getReason() { 
+          if (this.reason == null)
+            this.reason = new ArrayList<CodeableConcept>();
+          return this.reason;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public DeviceUsageAdherenceComponent setReason(List<CodeableConcept> theReason) { 
+          this.reason = theReason;
+          return this;
+        }
+
+        public boolean hasReason() { 
+          if (this.reason == null)
+            return false;
+          for (CodeableConcept item : this.reason)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CodeableConcept addReason() { //3
+          CodeableConcept t = new CodeableConcept();
+          if (this.reason == null)
+            this.reason = new ArrayList<CodeableConcept>();
+          this.reason.add(t);
+          return t;
+        }
+
+        public DeviceUsageAdherenceComponent addReason(CodeableConcept t) { //3
+          if (t == null)
+            return this;
+          if (this.reason == null)
+            this.reason = new ArrayList<CodeableConcept>();
+          this.reason.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #reason}, creating it if it does not already exist {3}
+         */
+        public CodeableConcept getReasonFirstRep() { 
+          if (getReason().isEmpty()) {
+            addReason();
+          }
+          return getReason().get(0);
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("code", "CodeableConcept", "Type of adherence.", 0, 1, code));
+          children.add(new Property("reason", "CodeableConcept", "Reason for adherence type.", 0, java.lang.Integer.MAX_VALUE, reason));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Type of adherence.", 0, 1, code);
+          case -934964668: /*reason*/  return new Property("reason", "CodeableConcept", "Reason for adherence type.", 0, java.lang.Integer.MAX_VALUE, reason);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
+        case -934964668: /*reason*/ return this.reason == null ? new Base[0] : this.reason.toArray(new Base[this.reason.size()]); // CodeableConcept
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3059181: // code
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -934964668: // reason
+          this.getReason().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("reason")) {
+          this.getReason().add(TypeConvertor.castToCodeableConcept(value));
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3059181:  return getCode();
+        case -934964668:  return addReason(); 
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3059181: /*code*/ return new String[] {"CodeableConcept"};
+        case -934964668: /*reason*/ return new String[] {"CodeableConcept"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = new CodeableConcept();
+          return this.code;
+        }
+        else if (name.equals("reason")) {
+          return addReason();
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public DeviceUsageAdherenceComponent copy() {
+        DeviceUsageAdherenceComponent dst = new DeviceUsageAdherenceComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceUsageAdherenceComponent dst) {
+        super.copyValues(dst);
+        dst.code = code == null ? null : code.copy();
+        if (reason != null) {
+          dst.reason = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : reason)
+            dst.reason.add(i.copy());
+        };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof DeviceUsageAdherenceComponent))
+          return false;
+        DeviceUsageAdherenceComponent o = (DeviceUsageAdherenceComponent) other_;
+        return compareDeep(code, o.code, true) && compareDeep(reason, o.reason, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof DeviceUsageAdherenceComponent))
+          return false;
+        DeviceUsageAdherenceComponent o = (DeviceUsageAdherenceComponent) other_;
+        return true;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, reason);
+      }
+
+  public String fhirType() {
+    return "DeviceUsage.adherence";
+
+  }
+
+  }
 
     /**
      * An external identifier for this statement such as an IRI.
@@ -305,30 +553,37 @@ public class DeviceUsage extends DomainResource {
     protected List<CodeableConcept> usageReason;
 
     /**
+     * This indicates how or if the device is being used.
+     */
+    @Child(name = "adherence", type = {}, order=11, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="How device is being used", formalDefinition="This indicates how or if the device is being used." )
+    protected DeviceUsageAdherenceComponent adherence;
+
+    /**
      * Who reported the device was being used by the patient.
      */
-    @Child(name = "informationSource", type = {Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, Organization.class}, order=11, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "informationSource", type = {Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, Organization.class}, order=12, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who made the statement", formalDefinition="Who reported the device was being used by the patient." )
     protected Reference informationSource;
 
     /**
      * Code or Reference to device used.
      */
-    @Child(name = "device", type = {CodeableReference.class}, order=12, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "device", type = {CodeableReference.class}, order=13, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Code or Reference to device used", formalDefinition="Code or Reference to device used." )
     protected CodeableReference device;
 
     /**
      * Reason or justification for the use of the device. A coded concept, or another resource whose existence justifies this DeviceUsage.
      */
-    @Child(name = "reason", type = {CodeableReference.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "reason", type = {CodeableReference.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Why device was used", formalDefinition="Reason or justification for the use of the device. A coded concept, or another resource whose existence justifies this DeviceUsage." )
     protected List<CodeableReference> reason;
 
     /**
      * Indicates the anotomic location on the subject's body where the device was used ( i.e. the target).
      */
-    @Child(name = "bodySite", type = {CodeableReference.class}, order=14, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "bodySite", type = {CodeableReference.class}, order=15, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Target body site", formalDefinition="Indicates the anotomic location on the subject's body where the device was used ( i.e. the target)." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/body-site")
     protected CodeableReference bodySite;
@@ -336,11 +591,11 @@ public class DeviceUsage extends DomainResource {
     /**
      * Details about the device statement that were not represented at all or sufficiently in one of the attributes provided in a class. These may include for example a comment, an instruction, or a note associated with the statement.
      */
-    @Child(name = "note", type = {Annotation.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Addition details (comments, instructions)", formalDefinition="Details about the device statement that were not represented at all or sufficiently in one of the attributes provided in a class. These may include for example a comment, an instruction, or a note associated with the statement." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = 979004394L;
+    private static final long serialVersionUID = -10803928L;
 
   /**
    * Constructor
@@ -857,6 +1112,30 @@ public class DeviceUsage extends DomainResource {
     }
 
     /**
+     * @return {@link #adherence} (This indicates how or if the device is being used.)
+     */
+    public DeviceUsageAdherenceComponent getAdherence() { 
+      if (this.adherence == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create DeviceUsage.adherence");
+        else if (Configuration.doAutoCreate())
+          this.adherence = new DeviceUsageAdherenceComponent(); // cc
+      return this.adherence;
+    }
+
+    public boolean hasAdherence() { 
+      return this.adherence != null && !this.adherence.isEmpty();
+    }
+
+    /**
+     * @param value {@link #adherence} (This indicates how or if the device is being used.)
+     */
+    public DeviceUsage setAdherence(DeviceUsageAdherenceComponent value) { 
+      this.adherence = value;
+      return this;
+    }
+
+    /**
      * @return {@link #informationSource} (Who reported the device was being used by the patient.)
      */
     public Reference getInformationSource() { 
@@ -1047,9 +1326,10 @@ public class DeviceUsage extends DomainResource {
         children.add(new Property("dateAsserted", "dateTime", "The time at which the statement was recorded by informationSource.", 0, 1, dateAsserted));
         children.add(new Property("usageStatus", "CodeableConcept", "The status of the device usage, for example always, sometimes, never. This is not the same as the status of the statement.", 0, 1, usageStatus));
         children.add(new Property("usageReason", "CodeableConcept", "The reason for asserting the usage status - for example forgot, lost, stolen, broken.", 0, java.lang.Integer.MAX_VALUE, usageReason));
+        children.add(new Property("adherence", "", "This indicates how or if the device is being used.", 0, 1, adherence));
         children.add(new Property("informationSource", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson|Organization)", "Who reported the device was being used by the patient.", 0, 1, informationSource));
         children.add(new Property("device", "CodeableReference(Device|DeviceDefinition)", "Code or Reference to device used.", 0, 1, device));
-        children.add(new Property("reason", "CodeableReference(Condition|Observation|DiagnosticReport|DocumentReference)", "Reason or justification for the use of the device. A coded concept, or another resource whose existence justifies this DeviceUsage.", 0, java.lang.Integer.MAX_VALUE, reason));
+        children.add(new Property("reason", "CodeableReference(Condition|Observation|DiagnosticReport|DocumentReference|Procedure)", "Reason or justification for the use of the device. A coded concept, or another resource whose existence justifies this DeviceUsage.", 0, java.lang.Integer.MAX_VALUE, reason));
         children.add(new Property("bodySite", "CodeableReference(BodyStructure)", "Indicates the anotomic location on the subject's body where the device was used ( i.e. the target).", 0, 1, bodySite));
         children.add(new Property("note", "Annotation", "Details about the device statement that were not represented at all or sufficiently in one of the attributes provided in a class. These may include for example a comment, an instruction, or a note associated with the statement.", 0, java.lang.Integer.MAX_VALUE, note));
       }
@@ -1072,9 +1352,10 @@ public class DeviceUsage extends DomainResource {
         case -1980855245: /*dateAsserted*/  return new Property("dateAsserted", "dateTime", "The time at which the statement was recorded by informationSource.", 0, 1, dateAsserted);
         case 907197683: /*usageStatus*/  return new Property("usageStatus", "CodeableConcept", "The status of the device usage, for example always, sometimes, never. This is not the same as the status of the statement.", 0, 1, usageStatus);
         case 864714565: /*usageReason*/  return new Property("usageReason", "CodeableConcept", "The reason for asserting the usage status - for example forgot, lost, stolen, broken.", 0, java.lang.Integer.MAX_VALUE, usageReason);
+        case -231003683: /*adherence*/  return new Property("adherence", "", "This indicates how or if the device is being used.", 0, 1, adherence);
         case -2123220889: /*informationSource*/  return new Property("informationSource", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson|Organization)", "Who reported the device was being used by the patient.", 0, 1, informationSource);
         case -1335157162: /*device*/  return new Property("device", "CodeableReference(Device|DeviceDefinition)", "Code or Reference to device used.", 0, 1, device);
-        case -934964668: /*reason*/  return new Property("reason", "CodeableReference(Condition|Observation|DiagnosticReport|DocumentReference)", "Reason or justification for the use of the device. A coded concept, or another resource whose existence justifies this DeviceUsage.", 0, java.lang.Integer.MAX_VALUE, reason);
+        case -934964668: /*reason*/  return new Property("reason", "CodeableReference(Condition|Observation|DiagnosticReport|DocumentReference|Procedure)", "Reason or justification for the use of the device. A coded concept, or another resource whose existence justifies this DeviceUsage.", 0, java.lang.Integer.MAX_VALUE, reason);
         case 1702620169: /*bodySite*/  return new Property("bodySite", "CodeableReference(BodyStructure)", "Indicates the anotomic location on the subject's body where the device was used ( i.e. the target).", 0, 1, bodySite);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Details about the device statement that were not represented at all or sufficiently in one of the attributes provided in a class. These may include for example a comment, an instruction, or a note associated with the statement.", 0, java.lang.Integer.MAX_VALUE, note);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -1096,6 +1377,7 @@ public class DeviceUsage extends DomainResource {
         case -1980855245: /*dateAsserted*/ return this.dateAsserted == null ? new Base[0] : new Base[] {this.dateAsserted}; // DateTimeType
         case 907197683: /*usageStatus*/ return this.usageStatus == null ? new Base[0] : new Base[] {this.usageStatus}; // CodeableConcept
         case 864714565: /*usageReason*/ return this.usageReason == null ? new Base[0] : this.usageReason.toArray(new Base[this.usageReason.size()]); // CodeableConcept
+        case -231003683: /*adherence*/ return this.adherence == null ? new Base[0] : new Base[] {this.adherence}; // DeviceUsageAdherenceComponent
         case -2123220889: /*informationSource*/ return this.informationSource == null ? new Base[0] : new Base[] {this.informationSource}; // Reference
         case -1335157162: /*device*/ return this.device == null ? new Base[0] : new Base[] {this.device}; // CodeableReference
         case -934964668: /*reason*/ return this.reason == null ? new Base[0] : this.reason.toArray(new Base[this.reason.size()]); // CodeableReference
@@ -1143,6 +1425,9 @@ public class DeviceUsage extends DomainResource {
         case 864714565: // usageReason
           this.getUsageReason().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
+        case -231003683: // adherence
+          this.adherence = (DeviceUsageAdherenceComponent) value; // DeviceUsageAdherenceComponent
+          return value;
         case -2123220889: // informationSource
           this.informationSource = TypeConvertor.castToReference(value); // Reference
           return value;
@@ -1188,6 +1473,8 @@ public class DeviceUsage extends DomainResource {
           this.usageStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("usageReason")) {
           this.getUsageReason().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("adherence")) {
+          this.adherence = (DeviceUsageAdherenceComponent) value; // DeviceUsageAdherenceComponent
         } else if (name.equals("informationSource")) {
           this.informationSource = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("device")) {
@@ -1218,6 +1505,7 @@ public class DeviceUsage extends DomainResource {
         case -1980855245:  return getDateAssertedElement();
         case 907197683:  return getUsageStatus();
         case 864714565:  return addUsageReason(); 
+        case -231003683:  return getAdherence();
         case -2123220889:  return getInformationSource();
         case -1335157162:  return getDevice();
         case -934964668:  return addReason(); 
@@ -1242,6 +1530,7 @@ public class DeviceUsage extends DomainResource {
         case -1980855245: /*dateAsserted*/ return new String[] {"dateTime"};
         case 907197683: /*usageStatus*/ return new String[] {"CodeableConcept"};
         case 864714565: /*usageReason*/ return new String[] {"CodeableConcept"};
+        case -231003683: /*adherence*/ return new String[] {};
         case -2123220889: /*informationSource*/ return new String[] {"Reference"};
         case -1335157162: /*device*/ return new String[] {"CodeableReference"};
         case -934964668: /*reason*/ return new String[] {"CodeableReference"};
@@ -1298,6 +1587,10 @@ public class DeviceUsage extends DomainResource {
         }
         else if (name.equals("usageReason")) {
           return addUsageReason();
+        }
+        else if (name.equals("adherence")) {
+          this.adherence = new DeviceUsageAdherenceComponent();
+          return this.adherence;
         }
         else if (name.equals("informationSource")) {
           this.informationSource = new Reference();
@@ -1365,6 +1658,7 @@ public class DeviceUsage extends DomainResource {
           for (CodeableConcept i : usageReason)
             dst.usageReason.add(i.copy());
         };
+        dst.adherence = adherence == null ? null : adherence.copy();
         dst.informationSource = informationSource == null ? null : informationSource.copy();
         dst.device = device == null ? null : device.copy();
         if (reason != null) {
@@ -1395,9 +1689,9 @@ public class DeviceUsage extends DomainResource {
            && compareDeep(category, o.category, true) && compareDeep(patient, o.patient, true) && compareDeep(derivedFrom, o.derivedFrom, true)
            && compareDeep(context, o.context, true) && compareDeep(timing, o.timing, true) && compareDeep(dateAsserted, o.dateAsserted, true)
            && compareDeep(usageStatus, o.usageStatus, true) && compareDeep(usageReason, o.usageReason, true)
-           && compareDeep(informationSource, o.informationSource, true) && compareDeep(device, o.device, true)
-           && compareDeep(reason, o.reason, true) && compareDeep(bodySite, o.bodySite, true) && compareDeep(note, o.note, true)
-          ;
+           && compareDeep(adherence, o.adherence, true) && compareDeep(informationSource, o.informationSource, true)
+           && compareDeep(device, o.device, true) && compareDeep(reason, o.reason, true) && compareDeep(bodySite, o.bodySite, true)
+           && compareDeep(note, o.note, true);
       }
 
       @Override
@@ -1413,147 +1707,13 @@ public class DeviceUsage extends DomainResource {
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, basedOn, status
           , category, patient, derivedFrom, context, timing, dateAsserted, usageStatus, usageReason
-          , informationSource, device, reason, bodySite, note);
+          , adherence, informationSource, device, reason, bodySite, note);
       }
 
   @Override
   public ResourceType getResourceType() {
     return ResourceType.DeviceUsage;
    }
-
- /**
-   * Search parameter: <b>device</b>
-   * <p>
-   * Description: <b>Search by device</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceUsage.device.concept</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="device", path="DeviceUsage.device.concept", description="Search by device", type="token" )
-  public static final String SP_DEVICE = "device";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>device</b>
-   * <p>
-   * Description: <b>Search by device</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceUsage.device.concept</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam DEVICE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_DEVICE);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>Search by identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceUsage.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="DeviceUsage.identifier", description="Search by identifier", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>Search by identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>DeviceUsage.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
-* [CarePlan](careplan.html): Who the care plan is for
-* [CareTeam](careteam.html): Who care team is for
-* [ClinicalImpression](clinicalimpression.html): Patient assessed
-* [Composition](composition.html): Who and/or what the composition is about
-* [Condition](condition.html): Who has the condition?
-* [Consent](consent.html): Who the consent applies to
-* [DetectedIssue](detectedissue.html): Associated patient
-* [DeviceRequest](devicerequest.html): Individual the service is ordered for
-* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device
-* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
-* [DocumentManifest](documentmanifest.html): The subject of the set of documents
-* [DocumentReference](documentreference.html): Who/what is the subject of the document
-* [Encounter](encounter.html): The patient present at the encounter
-* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
-* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
-* [Flag](flag.html): The identity of a subject to list flags for
-* [Goal](goal.html): Who this goal is intended for
-* [ImagingStudy](imagingstudy.html): Who the study is about
-* [Immunization](immunization.html): The patient for the vaccination record
-* [List](list.html): If all resources have the same subject
-* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for
-* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
-* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
-* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
-* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
-* [Observation](observation.html): The subject that the observation is about (if patient)
-* [Procedure](procedure.html): Search by subject - a patient
-* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
-* [ServiceRequest](servicerequest.html): Search by subject - a patient
-* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
-* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
-</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
-* [CarePlan](careplan.html): Who the care plan is for
-* [CareTeam](careteam.html): Who care team is for
-* [ClinicalImpression](clinicalimpression.html): Patient assessed
-* [Composition](composition.html): Who and/or what the composition is about
-* [Condition](condition.html): Who has the condition?
-* [Consent](consent.html): Who the consent applies to
-* [DetectedIssue](detectedissue.html): Associated patient
-* [DeviceRequest](devicerequest.html): Individual the service is ordered for
-* [DeviceUsage](deviceusage.html): Search by patient who used / uses the device
-* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
-* [DocumentManifest](documentmanifest.html): The subject of the set of documents
-* [DocumentReference](documentreference.html): Who/what is the subject of the document
-* [Encounter](encounter.html): The patient present at the encounter
-* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
-* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
-* [Flag](flag.html): The identity of a subject to list flags for
-* [Goal](goal.html): Who this goal is intended for
-* [ImagingStudy](imagingstudy.html): Who the study is about
-* [Immunization](immunization.html): The patient for the vaccination record
-* [List](list.html): If all resources have the same subject
-* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for
-* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
-* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
-* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
-* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
-* [Observation](observation.html): The subject that the observation is about (if patient)
-* [Procedure](procedure.html): Search by subject - a patient
-* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
-* [ServiceRequest](servicerequest.html): Search by subject - a patient
-* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
-* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
-</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.patient | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>DeviceUsage:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("DeviceUsage:patient").toLocked();
 
 
 }

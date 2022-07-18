@@ -23,8 +23,8 @@ public class Appointment10_50 {
       tgt.addIdentifier(Identifier10_50.convertIdentifier(t));
     if (src.hasStatus())
       tgt.setStatusElement(convertAppointmentStatus(src.getStatusElement()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceType())
-      tgt.setType(CodeableConcept10_50.convertCodeableConcept(t));
+    for (org.hl7.fhir.r5.model.CodeableReference t : src.getServiceType())
+      tgt.setType(CodeableConcept10_50.convertCodeableConcept(t.getConcept()));
     if (src.hasPriority())
       tgt.setPriorityElement(convertAppointmentPriority(src.getPriority()));
     if (src.hasDescriptionElement())
@@ -73,7 +73,7 @@ public class Appointment10_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertAppointmentStatus(src.getStatusElement()));
     if (src.hasType())
-      tgt.addServiceType(CodeableConcept10_50.convertCodeableConcept(src.getType()));
+      tgt.addServiceType().setConcept(CodeableConcept10_50.convertCodeableConcept(src.getType()));
     if (src.hasPriorityElement())
       tgt.setPriority(convertAppointmentPriority(src.getPriorityElement()));
     if (src.hasDescriptionElement())

@@ -57,8 +57,8 @@ public class MedicationDispense30_50 {
       tgt.addDosageInstruction(Dosage30_50.convertDosage(t));
     if (src.hasSubstitution())
       tgt.setSubstitution(convertMedicationDispenseSubstitutionComponent(src.getSubstitution()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getDetectedIssue())
-      tgt.addDetectedIssue(Reference30_50.convertReference(t));
+//    for (org.hl7.fhir.r5.model.Reference t : src.getDetectedIssue())
+//      tgt.addDetectedIssue(Reference30_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getEventHistory())
       tgt.addEventHistory(Reference30_50.convertReference(t));
     return tgt;
@@ -108,8 +108,8 @@ public class MedicationDispense30_50 {
       tgt.addDosageInstruction(Dosage30_50.convertDosage(t));
     if (src.hasSubstitution())
       tgt.setSubstitution(convertMedicationDispenseSubstitutionComponent(src.getSubstitution()));
-    for (org.hl7.fhir.dstu3.model.Reference t : src.getDetectedIssue())
-      tgt.addDetectedIssue(Reference30_50.convertReference(t));
+//    for (org.hl7.fhir.dstu3.model.Reference t : src.getDetectedIssue())
+//      tgt.addDetectedIssue(Reference30_50.convertReference(t));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getEventHistory())
       tgt.addEventHistory(Reference30_50.convertReference(t));
     return tgt;

@@ -1332,3 +1332,148 @@ v: {
   "system" : "http://loinc.org"
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "18842-5"
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Discharge summary",
+  "code" : "18842-5",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "18842-5",
+  "display" : "Discharge Summary"
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "4.0.1", "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "versionFlexible":"false"}####
+v: {
+  "display" : "Discharge summary",
+  "code" : "18842-5",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "18842-5"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Discharge summary",
+  "code" : "18842-5",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "29299-5"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Reason for visit Narrative",
+  "code" : "29299-5",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "�g��",
+  "display" : "8302-2"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "severity" : "error",
+  "error" : "The code \"�g��\" is not valid in the system http://loinc.org; The code provided (http://loinc.org#�g��) is not valid in the value set 'All codes known to the system' (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "8867-4",
+  "display" : "Heart rate"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Heart rate",
+  "code" : "8867-4",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "10331-7",
+  "display" : "Rh [Type] in Blood"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Rh [Type] in Blood",
+  "code" : "10331-7",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "18684-1",
+  "display" : "����"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "First Blood pressure Set",
+  "code" : "18684-1",
+  "system" : "http://loinc.org",
+  "severity" : "warning",
+  "error" : "The display \"����\" is not a valid display for the code {http://loinc.org}18684-1 - should be one of ['First Blood pressure Set', '', 'ED Health Insurance Portability and Accountability Act of 1996' (zh-CN), 'HIPAA' (zh-CN), '健康保險可攜與責任法' (zh-CN), 'HIPAA法案' (zh-CN), '健康保险可移植性和问责法1996年' (zh-CN), '美国健康保险携带和责任法案' (zh-CN), '医疗保险便携性和责任法案' (zh-CN), '医疗保险便携性与责任法案' (zh-CN), '醫療保險可攜性與責任法' (zh-CN), 'HIPAA 信息附件.急诊' (zh-CN), 'HIPAA 信息附件.急诊科' (zh-CN), 'HIPAA 信息附件.急诊科就医' (zh-CN), 'HIPAA 信息附件.急诊科就诊' (zh-CN), '健康保险便携与责任法案信息附件.急诊' (zh-CN), '健康保险便携与责任法案信息附件.急诊 临床信息附件集' (zh-CN), '临床信息附件集合' (zh-CN), '集' (zh-CN), '集合 信息附件' (zh-CN), '健康保险便携与责任法案信息附件' (zh-CN), '附件 医疗服务对象' (zh-CN), '客户' (zh-CN), '病人' (zh-CN), '病患' (zh-CN), '病号' (zh-CN), '超系统 - 病人 压强 复合属性' (zh-CN), '复杂型属性' (zh-CN), '复杂属性 就医' (zh-CN), '就医过程 急诊科 急诊科（DEEDS）变量' (zh-CN), 'DEEDS 变量' (zh-CN), '急诊' (zh-CN), '急诊科' (zh-CN), 'Emergency Department' (zh-CN), 'ED' (zh-CN), '急诊科（急诊科系统代码之数据元素）变量' (zh-CN), '急诊科（急诊科系统代码之数据元素）指标' (zh-CN), '急诊科（美国CDC急诊科系统代码之数据元素）指标' (zh-CN), '急诊科指标 急诊科（Emergency Department，ED） 急诊部 第一个' (zh-CN), '第一次' (zh-CN), '首个' (zh-CN), '首次 血' (zh-CN), '全血' (zh-CN), 'Allegato Allegato di reparto di emergenza (pronto soccorso) Complesso Emergenza (DEEDS - Data Elements for Emergency Dep Incontro' (it-IT), 'Appuntamento paziente Stabilito' (it-IT), 'Fissato' (it-IT), 'Встреча Комплекс' (ru-RU)] (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "8480-6",
+  "display" : "���k������"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Systolic blood pressure",
+  "code" : "8480-6",
+  "system" : "http://loinc.org",
+  "severity" : "warning",
+  "error" : "The display \"���k������\" is not a valid display for the code {http://loinc.org}8480-6 - should be one of ['Systolic blood pressure', 'BP sys', '', '一般血压' (zh-CN), '血压.原子型' (zh-CN), '血压指标.原子型 压力' (zh-CN), '压强 可用数量表示的' (zh-CN), '定量性' (zh-CN), '数值型' (zh-CN), '数量型' (zh-CN), '连续数值型标尺 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 血管内收缩期' (zh-CN), '血管内心缩期 血管内的' (zh-CN), 'Pressure' (pt-BR), 'Point in time' (pt-BR), 'Random' (pt-BR), 'Art sys' (pt-BR), 'Quantitative' (pt-BR), 'QNT' (pt-BR), 'Quant' (pt-BR), 'Quan' (pt-BR), 'IV' (pt-BR), 'Intravenous' (pt-BR), 'BLOOD PRESSURE MEASUREMENTS.ATOM' (pt-BR), 'BP systolic' (pt-BR), 'Blood pressure systolic' (pt-BR), 'Sys BP' (pt-BR), 'SBP' (pt-BR), 'Pressione Pressione arteriosa - atomica Punto nel tempo (episodio)' (it-IT), 'Давление Количественный Точка во времени' (ru-RU), 'Момент' (ru-RU), 'Blutdruck systolisch' (de-AT)] (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "8462-4",
+  "display" : "�g��������"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Diastolic blood pressure",
+  "code" : "8462-4",
+  "system" : "http://loinc.org",
+  "severity" : "warning",
+  "error" : "The display \"�g��������\" is not a valid display for the code {http://loinc.org}8462-4 - should be one of ['Diastolic blood pressure', 'BP dias', '', '一般血压' (zh-CN), '血压.原子型' (zh-CN), '血压指标.原子型 压力' (zh-CN), '压强 可用数量表示的' (zh-CN), '定量性' (zh-CN), '数值型' (zh-CN), '数量型' (zh-CN), '连续数值型标尺 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 血管内心舒期' (zh-CN), '血管内舒张期 血管内的' (zh-CN), 'Dias' (pt-BR), 'Diast' (pt-BR), 'Pressure' (pt-BR), 'Point in time' (pt-BR), 'Random' (pt-BR), 'Art sys' (pt-BR), 'Quantitative' (pt-BR), 'QNT' (pt-BR), 'Quant' (pt-BR), 'Quan' (pt-BR), 'IV' (pt-BR), 'Intravenous' (pt-BR), 'Diastoli' (pt-BR), 'BLOOD PRESSURE MEASUREMENTS.ATOM' (pt-BR), 'Blood pressure diastolic' (pt-BR), 'BP diastolic' (pt-BR), 'Dias BP' (pt-BR), 'DBP' (pt-BR), 'Pressione Pressione arteriosa - atomica Punto nel tempo (episodio)' (it-IT), 'Внутрисосудистый диастолический Давление Количественный Точка во времени' (ru-RU), 'Момент' (ru-RU), 'Blutdruck diastolisch' (de-AT)] (from http://tx.fhir.org/r4)"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "718-7",
+  "display" : "Hemoglobin [Mass/volume] in Blood"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Hemoglobin [Mass/volume] in Blood",
+  "code" : "718-7",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "38483-4",
+  "display" : "Creat Bld-mCnc"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Creatinine [Mass/volume] in Blood",
+  "code" : "38483-4",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "2093-3",
+  "display" : "Cholesterol [Mass/volume] in Serum or Plasma"
+}, "valueSet" :null, "lang":"null", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "versionFlexible":"false"}####
+v: {
+  "display" : "Cholesterol [Mass/volume] in Serum or Plasma",
+  "code" : "2093-3",
+  "system" : "http://loinc.org"
+}
+-------------------------------------------------------------------------------------

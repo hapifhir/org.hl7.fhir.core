@@ -28,7 +28,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 
   
@@ -87,8 +87,6 @@ public class ResourceFactory extends Factory {
             return new ClinicalImpression();
         if ("ClinicalUseDefinition".equals(name))
             return new ClinicalUseDefinition();
-        if ("ClinicalUseIssue".equals(name))
-            return new ClinicalUseIssue();
         if ("CodeSystem".equals(name))
             return new CodeSystem();
         if ("Communication".equals(name))
@@ -101,8 +99,6 @@ public class ResourceFactory extends Factory {
             return new Composition();
         if ("ConceptMap".equals(name))
             return new ConceptMap();
-        if ("ConceptMap2".equals(name))
-            return new ConceptMap2();
         if ("Condition".equals(name))
             return new Condition();
         if ("ConditionDefinition".equals(name))
@@ -163,6 +159,8 @@ public class ResourceFactory extends Factory {
             return new FamilyMemberHistory();
         if ("Flag".equals(name))
             return new Flag();
+        if ("FormularyItem".equals(name))
+            return new FormularyItem();
         if ("Goal".equals(name))
             return new Goal();
         if ("GraphDefinition".equals(name))
@@ -335,6 +333,8 @@ public class ResourceFactory extends Factory {
             return new TestReport();
         if ("TestScript".equals(name))
             return new TestScript();
+        if ("Transport".equals(name))
+            return new Transport();
         if ("ValueSet".equals(name))
             return new ValueSet();
         if ("VerificationResult".equals(name))
@@ -421,6 +421,8 @@ public class ResourceFactory extends Factory {
             return new ElementDefinition();
         if ("Expression".equals(name))
             return new Expression();
+        if ("ExtendedContactDetail".equals(name))
+            return new ExtendedContactDetail();
         if ("Extension".equals(name))
             return new Extension();
         if ("HumanName".equals(name))
@@ -441,8 +443,6 @@ public class ResourceFactory extends Factory {
             return new Period();
         if ("Population".equals(name))
             return new Population();
-        if ("ProdCharacteristic".equals(name))
-            return new ProdCharacteristic();
         if ("ProductShelfLife".equals(name))
             return new ProductShelfLife();
         if ("Quantity".equals(name))
@@ -517,14 +517,12 @@ public class ResourceFactory extends Factory {
         case 1488475261: return new ClaimResponse();
         case -1268501092: return new ClinicalImpression();
         case 462236103: return new ClinicalUseDefinition();
-        case -590890011: return new ClinicalUseIssue();
         case 1076953756: return new CodeSystem();
         case -236322890: return new Communication();
         case -1874423303: return new CommunicationRequest();
         case 1287805733: return new CompartmentDefinition();
         case 828944778: return new Composition();
         case 57185780: return new ConceptMap();
-        case 1772759230: return new ConceptMap2();
         case 1142656251: return new Condition();
         case 1722998958: return new ConditionDefinition();
         case -1678813190: return new Consent();
@@ -555,6 +553,7 @@ public class ResourceFactory extends Factory {
         case -1001676601: return new ExplanationOfBenefit();
         case 1260711798: return new FamilyMemberHistory();
         case 2192268: return new Flag();
+        case 1238228672: return new FormularyItem();
         case 2224947: return new Goal();
         case -180371167: return new GraphDefinition();
         case 69076575: return new Group();
@@ -641,6 +640,7 @@ public class ResourceFactory extends Factory {
         case -549565975: return new TerminologyCapabilities();
         case -616289146: return new TestReport();
         case -589453283: return new TestScript();
+        case -1238034679: return new Transport();
         case -1345530543: return new ValueSet();
         case 957089336: return new VerificationResult();
         case -555387838: return new VisionPrescription();
@@ -661,6 +661,7 @@ public class ResourceFactory extends Factory {
         case -1927368268: return new Duration();
         case -1605049009: return new ElementDefinition();
         case 198012600: return new Expression();
+        case 1711712184: return new ExtendedContactDetail();
         case 1391410207: return new Extension();
         case 1592332600: return new HumanName();
         case 375032009: return new Identifier();
@@ -671,7 +672,6 @@ public class ResourceFactory extends Factory {
         case 671337916: return new ParameterDefinition();
         case -1907858975: return new Period();
         case -30093459: return new Population();
-        case 458000626: return new ProdCharacteristic();
         case 1209602103: return new ProductShelfLife();
         case -1220360021: return new Quantity();
         case 78727453: return new Range();

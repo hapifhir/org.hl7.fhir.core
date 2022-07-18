@@ -1298,7 +1298,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     synchronized (lock) {
       List<ConceptMap> res = new ArrayList<ConceptMap>();
       for (ConceptMap map : maps.getList()) {
-        if (((Reference) map.getSource()).getReference().equals(url)) { 
+        if (((Reference) map.getSourceScope()).getReference().equals(url)) { 
           res.add(map);
         } 
       } 

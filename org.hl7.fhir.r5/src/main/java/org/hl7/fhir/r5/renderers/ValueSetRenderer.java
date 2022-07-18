@@ -106,10 +106,10 @@ public class ValueSetRenderer extends TerminologyRenderer {
     for (CanonicalResource md : getContext().getWorker().allConformanceResources()) {
       if (md instanceof ConceptMap) {
         ConceptMap cm = (ConceptMap) md;
-        if (isSource(vs, cm.getSource())) {
-          ConceptMapRenderInstructions re = findByTarget(cm.getTarget());
+        if (isSource(vs, cm.getSourceScope())) {
+          ConceptMapRenderInstructions re = findByTarget(cm.getTargetScope());
           if (re != null) {
-            ValueSet vst = cm.hasTarget() ? getContext().getWorker().fetchResource(ValueSet.class, cm.hasTargetCanonicalType() ? cm.getTargetCanonicalType().getValue() : cm.getTargetUriType().asStringValue()) : null;
+            ValueSet vst = cm.hasTargetScope() ? getContext().getWorker().fetchResource(ValueSet.class, cm.hasTargetScopeCanonicalType() ? cm.getTargetScopeCanonicalType().getValue() : cm.getTargetScopeUriType().asStringValue()) : null;
             res.add(new UsedConceptMap(re, vst == null ? cm.getUserString("path") : vst.getUserString("path"), cm));
           }
         }

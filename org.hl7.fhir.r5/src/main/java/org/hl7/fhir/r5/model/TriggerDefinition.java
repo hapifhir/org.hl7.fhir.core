@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -122,6 +122,7 @@ public class TriggerDefinition extends DataType implements ICompositeType {
             case DATAREMOVED: return "data-removed";
             case DATAACCESSED: return "data-accessed";
             case DATAACCESSENDED: return "data-access-ended";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +136,7 @@ public class TriggerDefinition extends DataType implements ICompositeType {
             case DATAREMOVED: return "http://hl7.org/fhir/trigger-type";
             case DATAACCESSED: return "http://hl7.org/fhir/trigger-type";
             case DATAACCESSENDED: return "http://hl7.org/fhir/trigger-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -148,6 +150,7 @@ public class TriggerDefinition extends DataType implements ICompositeType {
             case DATAREMOVED: return "The trigger occurs whenever data of a particular type is removed.";
             case DATAACCESSED: return "The trigger occurs whenever data of a particular type is accessed.";
             case DATAACCESSENDED: return "The trigger occurs whenever access to data of a particular type is completed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -161,6 +164,7 @@ public class TriggerDefinition extends DataType implements ICompositeType {
             case DATAREMOVED: return "Data Removed";
             case DATAACCESSED: return "Data Accessed";
             case DATAACCESSENDED: return "Data Access Ended";
+            case NULL: return null;
             default: return "?";
           }
         }

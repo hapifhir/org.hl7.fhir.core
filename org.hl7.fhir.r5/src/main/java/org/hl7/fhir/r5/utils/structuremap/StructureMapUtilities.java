@@ -44,12 +44,12 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Property;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
+import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupUnmappedMode;
 import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.Enumerations.ConceptMapGroupUnmappedMode;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
@@ -667,7 +667,7 @@ public class StructureMapUtilities {
       lexer.token("=");
       String v = lexer.take();
       if (v.equals("provided")) {
-        g.getUnmapped().setMode(ConceptMapGroupUnmappedMode.PROVIDED);
+        g.getUnmapped().setMode(ConceptMapGroupUnmappedMode.USESOURCECODE);
       } else
         throw lexer.error("Only unmapped mode PROVIDED is supported at this time");
     }
