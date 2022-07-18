@@ -45,7 +45,7 @@ public class Encounter30_50 {
     for (org.hl7.fhir.dstu3.model.Encounter.StatusHistoryComponent t : src.getStatusHistory())
       tgt.addStatusHistory(convertStatusHistoryComponent(t));
     if (src.hasClass_())
-      tgt.setClass_(Coding30_50.convertCoding(src.getClass_()));
+      tgt.setClass_(new org.hl7.fhir.r5.model.CodeableConcept().addCoding(Coding30_50.convertCoding(src.getClass_())));
     for (org.hl7.fhir.dstu3.model.Encounter.ClassHistoryComponent t : src.getClassHistory())
       tgt.addClassHistory(convertClassHistoryComponent(t));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getType())

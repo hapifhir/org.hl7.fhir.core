@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -77,18 +77,18 @@ public class Basic extends DomainResource {
     /**
      * Identifies when the resource was first created.
      */
-    @Child(name = "created", type = {DateType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "created", type = {DateTimeType.class}, order=3, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When created", formalDefinition="Identifies when the resource was first created." )
-    protected DateType created;
+    protected DateTimeType created;
 
     /**
      * Indicates who was responsible for creating the resource instance.
      */
-    @Child(name = "author", type = {Practitioner.class, PractitionerRole.class, Patient.class, RelatedPerson.class, Organization.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "author", type = {Practitioner.class, PractitionerRole.class, Patient.class, RelatedPerson.class, Organization.class, Device.class, CareTeam.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who created", formalDefinition="Indicates who was responsible for creating the resource instance." )
     protected Reference author;
 
-    private static final long serialVersionUID = 1468819397L;
+    private static final long serialVersionUID = -1635508686L;
 
   /**
    * Constructor
@@ -209,12 +209,12 @@ public class Basic extends DomainResource {
     /**
      * @return {@link #created} (Identifies when the resource was first created.). This is the underlying object with id, value and extensions. The accessor "getCreated" gives direct access to the value
      */
-    public DateType getCreatedElement() { 
+    public DateTimeType getCreatedElement() { 
       if (this.created == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Basic.created");
         else if (Configuration.doAutoCreate())
-          this.created = new DateType(); // bb
+          this.created = new DateTimeType(); // bb
       return this.created;
     }
 
@@ -229,7 +229,7 @@ public class Basic extends DomainResource {
     /**
      * @param value {@link #created} (Identifies when the resource was first created.). This is the underlying object with id, value and extensions. The accessor "getCreated" gives direct access to the value
      */
-    public Basic setCreatedElement(DateType value) { 
+    public Basic setCreatedElement(DateTimeType value) { 
       this.created = value;
       return this;
     }
@@ -249,7 +249,7 @@ public class Basic extends DomainResource {
         this.created = null;
       else {
         if (this.created == null)
-          this.created = new DateType();
+          this.created = new DateTimeType();
         this.created.setValue(value);
       }
       return this;
@@ -284,8 +284,8 @@ public class Basic extends DomainResource {
         children.add(new Property("identifier", "Identifier", "Identifier assigned to the resource for business purposes, outside the context of FHIR.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("code", "CodeableConcept", "Identifies the 'type' of resource - equivalent to the resource name for other resources.", 0, 1, code));
         children.add(new Property("subject", "Reference(Any)", "Identifies the patient, practitioner, device or any other resource that is the \"focus\" of this resource.", 0, 1, subject));
-        children.add(new Property("created", "date", "Identifies when the resource was first created.", 0, 1, created));
-        children.add(new Property("author", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson|Organization)", "Indicates who was responsible for creating the resource instance.", 0, 1, author));
+        children.add(new Property("created", "dateTime", "Identifies when the resource was first created.", 0, 1, created));
+        children.add(new Property("author", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson|Organization|Device|CareTeam)", "Indicates who was responsible for creating the resource instance.", 0, 1, author));
       }
 
       @Override
@@ -294,8 +294,8 @@ public class Basic extends DomainResource {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifier assigned to the resource for business purposes, outside the context of FHIR.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Identifies the 'type' of resource - equivalent to the resource name for other resources.", 0, 1, code);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Any)", "Identifies the patient, practitioner, device or any other resource that is the \"focus\" of this resource.", 0, 1, subject);
-        case 1028554472: /*created*/  return new Property("created", "date", "Identifies when the resource was first created.", 0, 1, created);
-        case -1406328437: /*author*/  return new Property("author", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson|Organization)", "Indicates who was responsible for creating the resource instance.", 0, 1, author);
+        case 1028554472: /*created*/  return new Property("created", "dateTime", "Identifies when the resource was first created.", 0, 1, created);
+        case -1406328437: /*author*/  return new Property("author", "Reference(Practitioner|PractitionerRole|Patient|RelatedPerson|Organization|Device|CareTeam)", "Indicates who was responsible for creating the resource instance.", 0, 1, author);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -307,7 +307,7 @@ public class Basic extends DomainResource {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
-        case 1028554472: /*created*/ return this.created == null ? new Base[0] : new Base[] {this.created}; // DateType
+        case 1028554472: /*created*/ return this.created == null ? new Base[0] : new Base[] {this.created}; // DateTimeType
         case -1406328437: /*author*/ return this.author == null ? new Base[0] : new Base[] {this.author}; // Reference
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -327,7 +327,7 @@ public class Basic extends DomainResource {
           this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1028554472: // created
-          this.created = TypeConvertor.castToDate(value); // DateType
+          this.created = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
         case -1406328437: // author
           this.author = TypeConvertor.castToReference(value); // Reference
@@ -346,7 +346,7 @@ public class Basic extends DomainResource {
         } else if (name.equals("subject")) {
           this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("created")) {
-          this.created = TypeConvertor.castToDate(value); // DateType
+          this.created = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("author")) {
           this.author = TypeConvertor.castToReference(value); // Reference
         } else
@@ -373,7 +373,7 @@ public class Basic extends DomainResource {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case 3059181: /*code*/ return new String[] {"CodeableConcept"};
         case -1867885268: /*subject*/ return new String[] {"Reference"};
-        case 1028554472: /*created*/ return new String[] {"date"};
+        case 1028554472: /*created*/ return new String[] {"dateTime"};
         case -1406328437: /*author*/ return new String[] {"Reference"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -462,144 +462,6 @@ public class Basic extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.Basic;
    }
-
- /**
-   * Search parameter: <b>author</b>
-   * <p>
-   * Description: <b>Who created</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Basic.author</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="author", path="Basic.author", description="Who created", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_AUTHOR = "author";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>author</b>
-   * <p>
-   * Description: <b>Who created</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Basic.author</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam AUTHOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_AUTHOR);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Basic:author</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_AUTHOR = new ca.uhn.fhir.model.api.Include("Basic:author").toLocked();
-
- /**
-   * Search parameter: <b>code</b>
-   * <p>
-   * Description: <b>Kind of Resource</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Basic.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="code", path="Basic.code", description="Kind of Resource", type="token" )
-  public static final String SP_CODE = "code";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>code</b>
-   * <p>
-   * Description: <b>Kind of Resource</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Basic.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
-
- /**
-   * Search parameter: <b>created</b>
-   * <p>
-   * Description: <b>When created</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Basic.created</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="created", path="Basic.created", description="When created", type="date" )
-  public static final String SP_CREATED = "created";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>created</b>
-   * <p>
-   * Description: <b>When created</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Basic.created</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam CREATED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_CREATED);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>Business identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Basic.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="Basic.identifier", description="Business identifier", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>Business identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Basic.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>Identifies the focus of this resource</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Basic.subject.where(resolve() is Patient)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="Basic.subject.where(resolve() is Patient)", description="Identifies the focus of this resource", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>Identifies the focus of this resource</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Basic.subject.where(resolve() is Patient)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Basic:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Basic:patient").toLocked();
-
- /**
-   * Search parameter: <b>subject</b>
-   * <p>
-   * Description: <b>Identifies the focus of this resource</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Basic.subject</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="subject", path="Basic.subject", description="Identifies the focus of this resource", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, ConceptMap2.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
-  public static final String SP_SUBJECT = "subject";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
-   * <p>
-   * Description: <b>Identifies the focus of this resource</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Basic.subject</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Basic:subject</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("Basic:subject").toLocked();
 
 
 }

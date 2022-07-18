@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,6 +96,7 @@ public class CoverageEligibilityResponse extends DomainResource {
             case COMPLETE: return "complete";
             case ERROR: return "error";
             case PARTIAL: return "partial";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +106,7 @@ public class CoverageEligibilityResponse extends DomainResource {
             case COMPLETE: return "http://hl7.org/fhir/eligibility-outcome";
             case ERROR: return "http://hl7.org/fhir/eligibility-outcome";
             case PARTIAL: return "http://hl7.org/fhir/eligibility-outcome";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +116,7 @@ public class CoverageEligibilityResponse extends DomainResource {
             case COMPLETE: return "The processing has completed without errors";
             case ERROR: return "One or more errors have been detected in the Claim";
             case PARTIAL: return "No errors have been detected in the Claim and some of the adjudication has been performed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -123,6 +126,7 @@ public class CoverageEligibilityResponse extends DomainResource {
             case COMPLETE: return "Processing Complete";
             case ERROR: return "Error";
             case PARTIAL: return "Partial Processing";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -220,6 +224,7 @@ public class CoverageEligibilityResponse extends DomainResource {
             case BENEFITS: return "benefits";
             case DISCOVERY: return "discovery";
             case VALIDATION: return "validation";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -229,6 +234,7 @@ public class CoverageEligibilityResponse extends DomainResource {
             case BENEFITS: return "http://hl7.org/fhir/eligibilityresponse-purpose";
             case DISCOVERY: return "http://hl7.org/fhir/eligibilityresponse-purpose";
             case VALIDATION: return "http://hl7.org/fhir/eligibilityresponse-purpose";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -238,6 +244,7 @@ public class CoverageEligibilityResponse extends DomainResource {
             case BENEFITS: return "The plan benefits and optionally benefits consumed  for the listed, or discovered if specified, converages are requested.";
             case DISCOVERY: return "The insurer is requested to report on any coverages which they are aware of in addition to any specifed.";
             case VALIDATION: return "A check that the specified coverages are in-force is requested.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -247,6 +254,7 @@ public class CoverageEligibilityResponse extends DomainResource {
             case BENEFITS: return "Coverage benefits";
             case DISCOVERY: return "Coverage Discovery";
             case VALIDATION: return "Coverage Validation";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -3279,210 +3287,6 @@ public class CoverageEligibilityResponse extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.CoverageEligibilityResponse;
    }
-
- /**
-   * Search parameter: <b>created</b>
-   * <p>
-   * Description: <b>The creation date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>CoverageEligibilityResponse.created</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="created", path="CoverageEligibilityResponse.created", description="The creation date", type="date" )
-  public static final String SP_CREATED = "created";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>created</b>
-   * <p>
-   * Description: <b>The creation date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>CoverageEligibilityResponse.created</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam CREATED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_CREATED);
-
- /**
-   * Search parameter: <b>disposition</b>
-   * <p>
-   * Description: <b>The contents of the disposition message</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CoverageEligibilityResponse.disposition</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="disposition", path="CoverageEligibilityResponse.disposition", description="The contents of the disposition message", type="string" )
-  public static final String SP_DISPOSITION = "disposition";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>disposition</b>
-   * <p>
-   * Description: <b>The contents of the disposition message</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>CoverageEligibilityResponse.disposition</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam DISPOSITION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DISPOSITION);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>The business identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CoverageEligibilityResponse.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="CoverageEligibilityResponse.identifier", description="The business identifier", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>The business identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CoverageEligibilityResponse.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>insurer</b>
-   * <p>
-   * Description: <b>The organization which generated this resource</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CoverageEligibilityResponse.insurer</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="insurer", path="CoverageEligibilityResponse.insurer", description="The organization which generated this resource", type="reference", target={Organization.class } )
-  public static final String SP_INSURER = "insurer";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>insurer</b>
-   * <p>
-   * Description: <b>The organization which generated this resource</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CoverageEligibilityResponse.insurer</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INSURER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INSURER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>CoverageEligibilityResponse:insurer</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_INSURER = new ca.uhn.fhir.model.api.Include("CoverageEligibilityResponse:insurer").toLocked();
-
- /**
-   * Search parameter: <b>outcome</b>
-   * <p>
-   * Description: <b>The processing outcome</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CoverageEligibilityResponse.outcome</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="outcome", path="CoverageEligibilityResponse.outcome", description="The processing outcome", type="token" )
-  public static final String SP_OUTCOME = "outcome";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>outcome</b>
-   * <p>
-   * Description: <b>The processing outcome</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CoverageEligibilityResponse.outcome</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam OUTCOME = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_OUTCOME);
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>The reference to the patient</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CoverageEligibilityResponse.patient</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="CoverageEligibilityResponse.patient", description="The reference to the patient", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>The reference to the patient</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CoverageEligibilityResponse.patient</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>CoverageEligibilityResponse:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("CoverageEligibilityResponse:patient").toLocked();
-
- /**
-   * Search parameter: <b>request</b>
-   * <p>
-   * Description: <b>The EligibilityRequest reference</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CoverageEligibilityResponse.request</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="request", path="CoverageEligibilityResponse.request", description="The EligibilityRequest reference", type="reference", target={CoverageEligibilityRequest.class } )
-  public static final String SP_REQUEST = "request";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>request</b>
-   * <p>
-   * Description: <b>The EligibilityRequest reference</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CoverageEligibilityResponse.request</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REQUEST = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REQUEST);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>CoverageEligibilityResponse:request</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_REQUEST = new ca.uhn.fhir.model.api.Include("CoverageEligibilityResponse:request").toLocked();
-
- /**
-   * Search parameter: <b>requestor</b>
-   * <p>
-   * Description: <b>The EligibilityRequest provider</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CoverageEligibilityResponse.requestor</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="requestor", path="CoverageEligibilityResponse.requestor", description="The EligibilityRequest provider", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Organization.class, Practitioner.class, PractitionerRole.class } )
-  public static final String SP_REQUESTOR = "requestor";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>requestor</b>
-   * <p>
-   * Description: <b>The EligibilityRequest provider</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>CoverageEligibilityResponse.requestor</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REQUESTOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REQUESTOR);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>CoverageEligibilityResponse:requestor</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_REQUESTOR = new ca.uhn.fhir.model.api.Include("CoverageEligibilityResponse:requestor").toLocked();
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>The EligibilityRequest status</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CoverageEligibilityResponse.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="CoverageEligibilityResponse.status", description="The EligibilityRequest status", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>The EligibilityRequest status</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CoverageEligibilityResponse.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
 
 }
