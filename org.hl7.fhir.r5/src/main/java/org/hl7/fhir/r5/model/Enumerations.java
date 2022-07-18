@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Mon, Jul 18, 2022 12:45+1000 for FHIR vcurrent
 
 
 import org.hl7.fhir.instance.model.api.*;
@@ -50,11 +50,9 @@ public class Enumerations {
 //   BindingStrength: Indication of the degree of conformance expectations associated with a binding.[ElementDefinition, OperationDefinition]
 //   CapabilityStatementKind: How a capability statement is intended to be used.[CapabilityStatement, CapabilityStatement2, TerminologyCapabilities]
 //   ClaimProcessingCodes: This value set includes Claim Processing Outcome codes.[ClaimResponse, ExplanationOfBenefit]
-//   ClinicalUseIssueType: Overall defining type of this clinical use issue.[ClinicalUseDefinition, ClinicalUseIssue]
 //   CompartmentType: Which type a compartment definition describes.[CompartmentDefinition, GraphDefinition]
 //   CompositionStatus: The workflow/clinical status of the composition.[Composition, DocumentReference]
-//   ConceptMapGroupUnmappedMode: Defines which action to take if there is no match in the group.[ConceptMap, ConceptMap2]
-//   ConceptMapRelationship: The relationship between concepts.[ConceptMap, ConceptMap2]
+//   ConceptMapRelationship: The relationship between concepts.[ConceptMap]
 //   DaysOfWeek: The days of the week.[HealthcareService, Location, PractitionerRole, Timing]
 //   DeviceNameType: The type of name the device is referred by.[Device, DeviceDefinition]
 //   DocumentReferenceStatus: The status of the document reference.[DocumentManifest, DocumentReference]
@@ -72,16 +70,16 @@ public class Enumerations {
 //   ObservationStatus: Codes providing the status of an observation.[DetectedIssue, Observation, RiskAssessment]
 //   OperationParameterUse: Whether an operation parameter is an input or an output parameter.[OperationDefinition, ParameterDefinition]
 //   ParticipationStatus: The Participation status of an appointment.[Appointment, AppointmentResponse]
-//   PublicationStatus: The lifecycle status of an artifact.[ActivityDefinition, AdministrableProductDefinition, CanonicalResource, CapabilityStatement, CapabilityStatement2, ChargeItemDefinition, Citation, CodeSystem, CompartmentDefinition, ConceptMap, ConceptMap2, ConditionDefinition, EventDefinition, Evidence, EvidenceReport, EvidenceVariable, ExampleScenario, GraphDefinition, ImplementationGuide, Ingredient, InsurancePlan, Library, ManufacturedItemDefinition, Measure, MessageDefinition, NamingSystem, ObservationDefinition, OperationDefinition, PlanDefinition, Questionnaire, ResearchStudy, ResearchSubject, SearchParameter, SpecimenDefinition, StructureDefinition, StructureMap, SubscriptionTopic, TerminologyCapabilities, TestScript, ValueSet]
+//   PublicationStatus: The lifecycle status of an artifact.[ActivityDefinition, AdministrableProductDefinition, CanonicalResource, CapabilityStatement, CapabilityStatement2, ChargeItemDefinition, Citation, CodeSystem, CompartmentDefinition, ConceptMap, ConditionDefinition, EventDefinition, Evidence, EvidenceReport, EvidenceVariable, ExampleScenario, GraphDefinition, ImplementationGuide, Ingredient, InsurancePlan, Library, ManufacturedItemDefinition, Measure, MessageDefinition, NamingSystem, ObservationDefinition, OperationDefinition, PlanDefinition, Questionnaire, ResearchStudy, ResearchSubject, SearchParameter, SpecimenDefinition, StructureDefinition, StructureMap, SubscriptionTopic, TerminologyCapabilities, TestScript, ValueSet]
 //   QuantityComparator: How the Quantity should be understood and represented.[Age, Count, Distance, Duration, Quantity]
 //   RequestIntent: Codes indicating the degree of authority/intentionality associated with a request.[ActivityDefinition, CommunicationRequest, DeviceRequest, NutritionOrder, RequestGroup, ServiceRequest]
-//   RequestPriority: Identifies the level of importance to be assigned to actioning the request.[ActivityDefinition, Communication, CommunicationRequest, DeviceRequest, MedicationRequest, PlanDefinition, RequestGroup, ServiceRequest, SupplyRequest, Task]
+//   RequestPriority: Identifies the level of importance to be assigned to actioning the request.[ActivityDefinition, Communication, CommunicationRequest, DeviceRequest, MedicationRequest, PlanDefinition, RequestGroup, ServiceRequest, SupplyRequest, Task, Transport]
 //   RequestStatus: Codes identifying the lifecycle stage of a request.[CarePlan, CommunicationRequest, DeviceRequest, NutritionOrder, RequestGroup, ServiceRequest]
 //   ResourceTypeEnum: One of the resource types defined as part of this version of FHIR.[CapabilityStatement, CapabilityStatement2, CompartmentDefinition, ExampleScenario, GraphDefinition, ImplementationGuide, MessageDefinition, OperationDefinition, Questionnaire, SearchParameter]
 //   RestfulCapabilityMode: The mode of a RESTful capability statement.[CapabilityStatement, CapabilityStatement2]
 //   SearchParamType: Data types allowed to be used for search parameters.[CapabilityStatement, CapabilityStatement2, OperationDefinition, SearchParameter]
 //   SubscriptionSearchModifier: FHIR search modifiers allowed for use in Subscriptions and SubscriptionTopics.[Subscription, SubscriptionTopic]
-//   SubscriptionState: State values for FHIR Subscriptions.[Subscription, SubscriptionStatus]
+//   SubscriptionStatusCodes: State values for FHIR Subscriptions.[Subscription, SubscriptionStatus]
 //   Use: The purpose of the Claim: predetermination, preauthorization, claim.[Claim, ClaimResponse, ExplanationOfBenefit]
 
 
@@ -1665,147 +1663,6 @@ public class Enumerations {
       }
     }
 
-    public enum ClinicalUseIssueType {
-        /**
-         * A reason for giving the medicaton.
-         */
-        INDICATION, 
-        /**
-         * A reason for not giving the medicaition.
-         */
-        CONTRAINDICATION, 
-        /**
-         * Interactions between the medication and other substances.
-         */
-        INTERACTION, 
-        /**
-         * Side effects or adverse effects associated with the medication.
-         */
-        UNDESIRABLEEFFECT, 
-        /**
-         * A general warning or issue that is not specifically one of the other types.
-         */
-        WARNING, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ClinicalUseIssueType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("indication".equals(codeString))
-          return INDICATION;
-        if ("contraindication".equals(codeString))
-          return CONTRAINDICATION;
-        if ("interaction".equals(codeString))
-          return INTERACTION;
-        if ("undesirable-effect".equals(codeString))
-          return UNDESIRABLEEFFECT;
-        if ("warning".equals(codeString))
-          return WARNING;
-        throw new FHIRException("Unknown ClinicalUseIssueType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case INDICATION: return "indication";
-            case CONTRAINDICATION: return "contraindication";
-            case INTERACTION: return "interaction";
-            case UNDESIRABLEEFFECT: return "undesirable-effect";
-            case WARNING: return "warning";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case INDICATION: return "http://hl7.org/fhir/clinical-use-issue-type";
-            case CONTRAINDICATION: return "http://hl7.org/fhir/clinical-use-issue-type";
-            case INTERACTION: return "http://hl7.org/fhir/clinical-use-issue-type";
-            case UNDESIRABLEEFFECT: return "http://hl7.org/fhir/clinical-use-issue-type";
-            case WARNING: return "http://hl7.org/fhir/clinical-use-issue-type";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case INDICATION: return "A reason for giving the medicaton.";
-            case CONTRAINDICATION: return "A reason for not giving the medicaition.";
-            case INTERACTION: return "Interactions between the medication and other substances.";
-            case UNDESIRABLEEFFECT: return "Side effects or adverse effects associated with the medication.";
-            case WARNING: return "A general warning or issue that is not specifically one of the other types.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case INDICATION: return "Indication";
-            case CONTRAINDICATION: return "Contraindication";
-            case INTERACTION: return "Interaction";
-            case UNDESIRABLEEFFECT: return "Undesirable Effect";
-            case WARNING: return "Warning";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ClinicalUseIssueTypeEnumFactory implements EnumFactory<ClinicalUseIssueType> {
-    public ClinicalUseIssueType fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("indication".equals(codeString))
-          return ClinicalUseIssueType.INDICATION;
-        if ("contraindication".equals(codeString))
-          return ClinicalUseIssueType.CONTRAINDICATION;
-        if ("interaction".equals(codeString))
-          return ClinicalUseIssueType.INTERACTION;
-        if ("undesirable-effect".equals(codeString))
-          return ClinicalUseIssueType.UNDESIRABLEEFFECT;
-        if ("warning".equals(codeString))
-          return ClinicalUseIssueType.WARNING;
-        throw new IllegalArgumentException("Unknown ClinicalUseIssueType code '"+codeString+"'");
-        }
-        public Enumeration<ClinicalUseIssueType> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ClinicalUseIssueType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("indication".equals(codeString))
-          return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.INDICATION);
-        if ("contraindication".equals(codeString))
-          return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.CONTRAINDICATION);
-        if ("interaction".equals(codeString))
-          return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.INTERACTION);
-        if ("undesirable-effect".equals(codeString))
-          return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.UNDESIRABLEEFFECT);
-        if ("warning".equals(codeString))
-          return new Enumeration<ClinicalUseIssueType>(this, ClinicalUseIssueType.WARNING);
-        throw new FHIRException("Unknown ClinicalUseIssueType code '"+codeString+"'");
-        }
-    public String toCode(ClinicalUseIssueType code) {
-      if (code == ClinicalUseIssueType.INDICATION)
-        return "indication";
-      if (code == ClinicalUseIssueType.CONTRAINDICATION)
-        return "contraindication";
-      if (code == ClinicalUseIssueType.INTERACTION)
-        return "interaction";
-      if (code == ClinicalUseIssueType.UNDESIRABLEEFFECT)
-        return "undesirable-effect";
-      if (code == ClinicalUseIssueType.WARNING)
-        return "warning";
-      return "?";
-      }
-    public String toSystem(ClinicalUseIssueType code) {
-      return code.getSystem();
-      }
-    }
-
     public enum CompartmentType {
         /**
          * The compartment definition is for the patient compartment.
@@ -2084,115 +1941,6 @@ public class Enumerations {
       return "?";
       }
     public String toSystem(CompositionStatus code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum ConceptMapGroupUnmappedMode {
-        /**
-         * Use the code as provided in the $translate request.
-         */
-        PROVIDED, 
-        /**
-         * Use the code explicitly provided in the group.unmapped.
-         */
-        FIXED, 
-        /**
-         * Use the map identified by the canonical URL in the url element.
-         */
-        OTHERMAP, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ConceptMapGroupUnmappedMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("provided".equals(codeString))
-          return PROVIDED;
-        if ("fixed".equals(codeString))
-          return FIXED;
-        if ("other-map".equals(codeString))
-          return OTHERMAP;
-        throw new FHIRException("Unknown ConceptMapGroupUnmappedMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PROVIDED: return "provided";
-            case FIXED: return "fixed";
-            case OTHERMAP: return "other-map";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case PROVIDED: return "http://hl7.org/fhir/conceptmap-unmapped-mode";
-            case FIXED: return "http://hl7.org/fhir/conceptmap-unmapped-mode";
-            case OTHERMAP: return "http://hl7.org/fhir/conceptmap-unmapped-mode";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PROVIDED: return "Use the code as provided in the $translate request.";
-            case FIXED: return "Use the code explicitly provided in the group.unmapped.";
-            case OTHERMAP: return "Use the map identified by the canonical URL in the url element.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PROVIDED: return "Provided Code";
-            case FIXED: return "Fixed Code";
-            case OTHERMAP: return "Other Map";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ConceptMapGroupUnmappedModeEnumFactory implements EnumFactory<ConceptMapGroupUnmappedMode> {
-    public ConceptMapGroupUnmappedMode fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("provided".equals(codeString))
-          return ConceptMapGroupUnmappedMode.PROVIDED;
-        if ("fixed".equals(codeString))
-          return ConceptMapGroupUnmappedMode.FIXED;
-        if ("other-map".equals(codeString))
-          return ConceptMapGroupUnmappedMode.OTHERMAP;
-        throw new IllegalArgumentException("Unknown ConceptMapGroupUnmappedMode code '"+codeString+"'");
-        }
-        public Enumeration<ConceptMapGroupUnmappedMode> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ConceptMapGroupUnmappedMode>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("provided".equals(codeString))
-          return new Enumeration<ConceptMapGroupUnmappedMode>(this, ConceptMapGroupUnmappedMode.PROVIDED);
-        if ("fixed".equals(codeString))
-          return new Enumeration<ConceptMapGroupUnmappedMode>(this, ConceptMapGroupUnmappedMode.FIXED);
-        if ("other-map".equals(codeString))
-          return new Enumeration<ConceptMapGroupUnmappedMode>(this, ConceptMapGroupUnmappedMode.OTHERMAP);
-        throw new FHIRException("Unknown ConceptMapGroupUnmappedMode code '"+codeString+"'");
-        }
-    public String toCode(ConceptMapGroupUnmappedMode code) {
-      if (code == ConceptMapGroupUnmappedMode.PROVIDED)
-        return "provided";
-      if (code == ConceptMapGroupUnmappedMode.FIXED)
-        return "fixed";
-      if (code == ConceptMapGroupUnmappedMode.OTHERMAP)
-        return "other-map";
-      return "?";
-      }
-    public String toSystem(ConceptMapGroupUnmappedMode code) {
       return code.getSystem();
       }
     }
@@ -3077,7 +2825,7 @@ public class Enumerations {
          */
         CODEABLECONCEPT, 
         /**
-         * A reference to a resource (by instance), or instead, a reference to a cencept defined in a terminology or ontology (by class).
+         * A reference to a resource (by instance), or instead, a reference to a concept defined in a terminology or ontology (by class).
          */
         CODEABLEREFERENCE, 
         /**
@@ -3133,6 +2881,10 @@ public class Enumerations {
          */
         EXPRESSION, 
         /**
+         * Specifies contact information for a specific purpose over a period of time, might be handled/monitored by a specific named person or organization.
+         */
+        EXTENDEDCONTACTDETAIL, 
+        /**
          * Optional Extension Element - found in all resources.
          */
         EXTENSION, 
@@ -3180,10 +2932,6 @@ public class Enumerations {
          * The base type for all re-useable types defined that have a simple property.
          */
         PRIMITIVETYPE, 
-        /**
-         * The marketing status describes the date when a medicinal product is actually put on the market or the date as of which it is no longer available.
-         */
-        PRODCHARACTERISTIC, 
         /**
          * The shelf-life and storage information for a medicinal product item or container can be described using this class.
          */
@@ -3361,6 +3109,10 @@ public class Enumerations {
          */
         APPOINTMENTRESPONSE, 
         /**
+         * This Resource provides one or more comments, classifiers or ratings about a Resource and supports attribution and rights management metadata for the added content.
+         */
+        ARTIFACTASSESSMENT, 
+        /**
          * A record of an event relevant for purposes such as operations, privacy, security, maintenance, and performance analysis.
          */
         AUDITEVENT, 
@@ -3397,14 +3149,6 @@ public class Enumerations {
          */
         COMPARTMENTDEFINITION, 
         /**
-         * A statement of relationships from one set of concepts to one or more other concepts - either concepts in code systems, or data element/data element concepts, or classes in class models.
-         */
-        CONCEPTMAP, 
-        /**
-         * A statement of relationships from one set of concepts to one or more other concepts - either concepts in code systems, or data element/data element concepts, or classes in class models.
-         */
-        CONCEPTMAP2, 
-        /**
          * Example of workflow instance.
          */
         EXAMPLESCENARIO, 
@@ -3429,10 +3173,6 @@ public class Enumerations {
          */
         ACTIVITYDEFINITION, 
         /**
-         * This Resource provides one or more comments, classifiers or ratings about a Resource and supports attribution and rights management metadata for the added content.
-         */
-        ARTIFACTASSESSMENT, 
-        /**
          * The ChargeItemDefinition resource provides the properties that apply to the (billing) codes necessary to calculate costs and prices. The properties may differ largely depending on type and realm, therefore this resource gives only a rough structure and requires profiling for each type of billing code system.
          */
         CHARGEITEMDEFINITION, 
@@ -3440,6 +3180,10 @@ public class Enumerations {
          * The Citation Resource enables reference to any knowledge artifact for purposes of identification and attribution. The Citation Resource supports existing reference structures and developing publication practices such as versioning, expressing complex contributorship roles, and referencing computable resources.
          */
         CITATION, 
+        /**
+         * A statement of relationships from one set of concepts to one or more other concepts - either concepts in code systems, or data element/data element concepts, or classes in class models.
+         */
+        CONCEPTMAP, 
         /**
          * A definition of a condition and information relevant to managing it.
          */
@@ -3469,6 +3213,10 @@ public class Enumerations {
          */
         MEASURE, 
         /**
+         * A curated namespace that issues unique symbols within that namespace for the identification of concepts, people, devices, etc.  Represents a "System" used within the Identifier and Coding data types.
+         */
+        NAMINGSYSTEM, 
+        /**
          * This resource allows for the definition of various types of plans as a sharable, consumable, and executable artifact. The resource is general enough to support the description of a broad range of clinical and non-clinical artifacts such as clinical decision support rules, order sets, protocols, and drug quality specifications.
          */
         PLANDEFINITION, 
@@ -3476,10 +3224,6 @@ public class Enumerations {
          * A structured set of questions intended to guide the collection of answers from end-users. Questionnaires provide detailed control over order, presentation, phraseology and grouping to allow coherent, consistent data collection.
          */
         QUESTIONNAIRE, 
-        /**
-         * A curated namespace that issues unique symbols within that namespace for the identification of concepts, people, devices, etc.  Represents a "System" used within the Identifier and Coding data types.
-         */
-        NAMINGSYSTEM, 
         /**
          * A formal computable definition of an operation (on the RESTful interface) or a named query (using the search interaction).
          */
@@ -3496,6 +3240,10 @@ public class Enumerations {
          * A Map of relationships between 2 structures that can be used to transform data.
          */
         STRUCTUREMAP, 
+        /**
+         * Describes a stream of resource state changes identified by trigger criteria and annotated with labels useful to filter projections from this topic.
+         */
+        SUBSCRIPTIONTOPIC, 
         /**
          * A TerminologyCapabilities resource documents a set of capabilities (behaviors) of a FHIR Terminology Server that may be used as a statement of actual server functionality or a statement of required or desired server implementation.
          */
@@ -3536,10 +3284,6 @@ public class Enumerations {
          * A single issue - either an indication, contraindication, interaction or an undesirable effect for a medicinal product, medication, device or procedure.
          */
         CLINICALUSEDEFINITION, 
-        /**
-         * A single issue - either an indication, contraindication, interaction or an undesirable effect for a medicinal product, medication, device or procedure.
-         */
-        CLINICALUSEISSUE, 
         /**
          * A clinical or business level record of information being transmitted or shared; e.g. an alert that was sent to a responsible provider, a public health agency communication to a provider/reporter in response to a case report for a reportable condition.
          */
@@ -3621,7 +3365,7 @@ public class Enumerations {
          */
         ENCOUNTER, 
         /**
-         * The technical details of an endpoint that can be used for electronic services, such as for web services providing XDS.b or a REST endpoint for another FHIR server. This may include any security context information.
+         * The technical details of an endpoint that can be used for electronic services, such as for web services providing XDS.b, a REST endpoint for another FHIR server, or a s/Mime email address. This may include any security context information.
          */
         ENDPOINT, 
         /**
@@ -3648,6 +3392,10 @@ public class Enumerations {
          * Prospective warnings of potential issues when providing care to the patient.
          */
         FLAG, 
+        /**
+         * This resource describes a product or service that is available through a program and includes the conditions and constraints of availability.  All of the information in this resource is specific to the inclusion of the item in the formulary and is not inherent to the item itself.
+         */
+        FORMULARYITEM, 
         /**
          * Describes the intended objective(s) for a patient, group or organization care, for example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, etc.
          */
@@ -3747,7 +3495,7 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         MEDICATIONUSAGE, 
         /**
-         * Detailed definition of a medicinal product, typically for uses other than direct patient care (e.g. regulatory use, drug catalogs).
+         * Detailed definition of a medicinal product, typically for uses other than direct patient care (e.g. regulatory use, drug catalogs, to support prescribing, adverse events management etc.).
          */
         MEDICINALPRODUCTDEFINITION, 
         /**
@@ -3755,11 +3503,11 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         MESSAGEHEADER, 
         /**
-         * Raw data describing a biological sequence.
+         * Representation of a molecular sequence.
          */
         MOLECULARSEQUENCE, 
         /**
-         * A record of food or fluid that is being consumed by a patient.   A NutritionIntake may indicate that the patient may be consuming the food or fluid now or has consumed the food or fluid in the past.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay or through an app that tracks food or fluids consumed.   The consumption information may come from sources such as the patient's memory, from a nutrition label,  or from a clinician documenting observed intake.
+         * A record of food or fluid that is being consumed by a patient.  A NutritionIntake may indicate that the patient may be consuming the food or fluid now or has consumed the food or fluid in the past.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay or through an app that tracks food or fluids consumed.   The consumption information may come from sources such as the patient's memory, from a nutrition label,  or from a clinician documenting observed intake.
          */
         NUTRITIONINTAKE, 
         /**
@@ -3767,7 +3515,7 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         NUTRITIONORDER, 
         /**
-         * A food or fluid product that is consumed by patients.
+         * A food or supplement that is consumed by patients.
          */
         NUTRITIONPRODUCT, 
         /**
@@ -3839,7 +3587,7 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         REGULATEDAUTHORIZATION, 
         /**
-         * Information about a person that is involved in the care for a patient, but who is not the target of healthcare, nor has a formal responsibility in the care process.
+         * Information about a person that is involved in a patient's health or the care for a patient, but who is not the target of healthcare, nor has a formal responsibility in the care process.
          */
         RELATEDPERSON, 
         /**
@@ -3887,10 +3635,6 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         SUBSCRIPTIONSTATUS, 
         /**
-         * Describes a stream of resource state changes identified by trigger criteria and annotated with labels useful to filter projections from this topic.
-         */
-        SUBSCRIPTIONTOPIC, 
-        /**
          * A homogeneous material with a definite composition.
          */
         SUBSTANCE, 
@@ -3935,6 +3679,10 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         TESTREPORT, 
         /**
+         * Record of transport.
+         */
+        TRANSPORT, 
+        /**
          * Describes validation requirements, source(s), status and dates for one or more elements.
          */
         VERIFICATIONRESULT, 
@@ -3943,7 +3691,7 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         VISIONPRESCRIPTION, 
         /**
-         * This resource is a non-persisted resource used to pass information into and back from an [operation](operations.html). It has no other use, and there is no RESTful endpoint associated with it.
+         * This resource is a non-persisted resource primarily used to pass information into and back from an [operation](operations.html). There is no RESTful endpoint associated with it.
          */
         PARAMETERS, 
         /**
@@ -4005,6 +3753,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return ELEMENTDEFINITION;
         if ("Expression".equals(codeString))
           return EXPRESSION;
+        if ("ExtendedContactDetail".equals(codeString))
+          return EXTENDEDCONTACTDETAIL;
         if ("Extension".equals(codeString))
           return EXTENSION;
         if ("HumanName".equals(codeString))
@@ -4029,8 +3779,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return POPULATION;
         if ("PrimitiveType".equals(codeString))
           return PRIMITIVETYPE;
-        if ("ProdCharacteristic".equals(codeString))
-          return PRODCHARACTERISTIC;
         if ("ProductShelfLife".equals(codeString))
           return PRODUCTSHELFLIFE;
         if ("Quantity".equals(codeString))
@@ -4119,6 +3867,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return APPOINTMENT;
         if ("AppointmentResponse".equals(codeString))
           return APPOINTMENTRESPONSE;
+        if ("ArtifactAssessment".equals(codeString))
+          return ARTIFACTASSESSMENT;
         if ("AuditEvent".equals(codeString))
           return AUDITEVENT;
         if ("Basic".equals(codeString))
@@ -4137,10 +3887,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return CODESYSTEM;
         if ("CompartmentDefinition".equals(codeString))
           return COMPARTMENTDEFINITION;
-        if ("ConceptMap".equals(codeString))
-          return CONCEPTMAP;
-        if ("ConceptMap2".equals(codeString))
-          return CONCEPTMAP2;
         if ("ExampleScenario".equals(codeString))
           return EXAMPLESCENARIO;
         if ("GraphDefinition".equals(codeString))
@@ -4153,12 +3899,12 @@ The primary difference between a medicationusage and a medicationadministration 
           return METADATARESOURCE;
         if ("ActivityDefinition".equals(codeString))
           return ACTIVITYDEFINITION;
-        if ("ArtifactAssessment".equals(codeString))
-          return ARTIFACTASSESSMENT;
         if ("ChargeItemDefinition".equals(codeString))
           return CHARGEITEMDEFINITION;
         if ("Citation".equals(codeString))
           return CITATION;
+        if ("ConceptMap".equals(codeString))
+          return CONCEPTMAP;
         if ("ConditionDefinition".equals(codeString))
           return CONDITIONDEFINITION;
         if ("EventDefinition".equals(codeString))
@@ -4173,12 +3919,12 @@ The primary difference between a medicationusage and a medicationadministration 
           return LIBRARY;
         if ("Measure".equals(codeString))
           return MEASURE;
+        if ("NamingSystem".equals(codeString))
+          return NAMINGSYSTEM;
         if ("PlanDefinition".equals(codeString))
           return PLANDEFINITION;
         if ("Questionnaire".equals(codeString))
           return QUESTIONNAIRE;
-        if ("NamingSystem".equals(codeString))
-          return NAMINGSYSTEM;
         if ("OperationDefinition".equals(codeString))
           return OPERATIONDEFINITION;
         if ("SearchParameter".equals(codeString))
@@ -4187,6 +3933,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return STRUCTUREDEFINITION;
         if ("StructureMap".equals(codeString))
           return STRUCTUREMAP;
+        if ("SubscriptionTopic".equals(codeString))
+          return SUBSCRIPTIONTOPIC;
         if ("TerminologyCapabilities".equals(codeString))
           return TERMINOLOGYCAPABILITIES;
         if ("TestScript".equals(codeString))
@@ -4207,8 +3955,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return CLINICALIMPRESSION;
         if ("ClinicalUseDefinition".equals(codeString))
           return CLINICALUSEDEFINITION;
-        if ("ClinicalUseIssue".equals(codeString))
-          return CLINICALUSEISSUE;
         if ("Communication".equals(codeString))
           return COMMUNICATION;
         if ("CommunicationRequest".equals(codeString))
@@ -4263,6 +4009,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return FAMILYMEMBERHISTORY;
         if ("Flag".equals(codeString))
           return FLAG;
+        if ("FormularyItem".equals(codeString))
+          return FORMULARYITEM;
         if ("Goal".equals(codeString))
           return GOAL;
         if ("Group".equals(codeString))
@@ -4381,8 +4129,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return SUBSCRIPTION;
         if ("SubscriptionStatus".equals(codeString))
           return SUBSCRIPTIONSTATUS;
-        if ("SubscriptionTopic".equals(codeString))
-          return SUBSCRIPTIONTOPIC;
         if ("Substance".equals(codeString))
           return SUBSTANCE;
         if ("SubstanceDefinition".equals(codeString))
@@ -4405,6 +4151,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return TASK;
         if ("TestReport".equals(codeString))
           return TESTREPORT;
+        if ("Transport".equals(codeString))
+          return TRANSPORT;
         if ("VerificationResult".equals(codeString))
           return VERIFICATIONRESULT;
         if ("VisionPrescription".equals(codeString))
@@ -4441,6 +4189,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ELEMENT: return "Element";
             case ELEMENTDEFINITION: return "ElementDefinition";
             case EXPRESSION: return "Expression";
+            case EXTENDEDCONTACTDETAIL: return "ExtendedContactDetail";
             case EXTENSION: return "Extension";
             case HUMANNAME: return "HumanName";
             case IDENTIFIER: return "Identifier";
@@ -4453,7 +4202,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case PERIOD: return "Period";
             case POPULATION: return "Population";
             case PRIMITIVETYPE: return "PrimitiveType";
-            case PRODCHARACTERISTIC: return "ProdCharacteristic";
             case PRODUCTSHELFLIFE: return "ProductShelfLife";
             case QUANTITY: return "Quantity";
             case RANGE: return "Range";
@@ -4498,6 +4246,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ALLERGYINTOLERANCE: return "AllergyIntolerance";
             case APPOINTMENT: return "Appointment";
             case APPOINTMENTRESPONSE: return "AppointmentResponse";
+            case ARTIFACTASSESSMENT: return "ArtifactAssessment";
             case AUDITEVENT: return "AuditEvent";
             case BASIC: return "Basic";
             case BIOLOGICALLYDERIVEDPRODUCT: return "BiologicallyDerivedProduct";
@@ -4507,17 +4256,15 @@ The primary difference between a medicationusage and a medicationadministration 
             case CAPABILITYSTATEMENT2: return "CapabilityStatement2";
             case CODESYSTEM: return "CodeSystem";
             case COMPARTMENTDEFINITION: return "CompartmentDefinition";
-            case CONCEPTMAP: return "ConceptMap";
-            case CONCEPTMAP2: return "ConceptMap2";
             case EXAMPLESCENARIO: return "ExampleScenario";
             case GRAPHDEFINITION: return "GraphDefinition";
             case IMPLEMENTATIONGUIDE: return "ImplementationGuide";
             case MESSAGEDEFINITION: return "MessageDefinition";
             case METADATARESOURCE: return "MetadataResource";
             case ACTIVITYDEFINITION: return "ActivityDefinition";
-            case ARTIFACTASSESSMENT: return "ArtifactAssessment";
             case CHARGEITEMDEFINITION: return "ChargeItemDefinition";
             case CITATION: return "Citation";
+            case CONCEPTMAP: return "ConceptMap";
             case CONDITIONDEFINITION: return "ConditionDefinition";
             case EVENTDEFINITION: return "EventDefinition";
             case EVIDENCE: return "Evidence";
@@ -4525,13 +4272,14 @@ The primary difference between a medicationusage and a medicationadministration 
             case EVIDENCEVARIABLE: return "EvidenceVariable";
             case LIBRARY: return "Library";
             case MEASURE: return "Measure";
+            case NAMINGSYSTEM: return "NamingSystem";
             case PLANDEFINITION: return "PlanDefinition";
             case QUESTIONNAIRE: return "Questionnaire";
-            case NAMINGSYSTEM: return "NamingSystem";
             case OPERATIONDEFINITION: return "OperationDefinition";
             case SEARCHPARAMETER: return "SearchParameter";
             case STRUCTUREDEFINITION: return "StructureDefinition";
             case STRUCTUREMAP: return "StructureMap";
+            case SUBSCRIPTIONTOPIC: return "SubscriptionTopic";
             case TERMINOLOGYCAPABILITIES: return "TerminologyCapabilities";
             case TESTSCRIPT: return "TestScript";
             case VALUESET: return "ValueSet";
@@ -4542,7 +4290,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case CLAIMRESPONSE: return "ClaimResponse";
             case CLINICALIMPRESSION: return "ClinicalImpression";
             case CLINICALUSEDEFINITION: return "ClinicalUseDefinition";
-            case CLINICALUSEISSUE: return "ClinicalUseIssue";
             case COMMUNICATION: return "Communication";
             case COMMUNICATIONREQUEST: return "CommunicationRequest";
             case COMPOSITION: return "Composition";
@@ -4570,6 +4317,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case EXPLANATIONOFBENEFIT: return "ExplanationOfBenefit";
             case FAMILYMEMBERHISTORY: return "FamilyMemberHistory";
             case FLAG: return "Flag";
+            case FORMULARYITEM: return "FormularyItem";
             case GOAL: return "Goal";
             case GROUP: return "Group";
             case GUIDANCERESPONSE: return "GuidanceResponse";
@@ -4629,7 +4377,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case SPECIMENDEFINITION: return "SpecimenDefinition";
             case SUBSCRIPTION: return "Subscription";
             case SUBSCRIPTIONSTATUS: return "SubscriptionStatus";
-            case SUBSCRIPTIONTOPIC: return "SubscriptionTopic";
             case SUBSTANCE: return "Substance";
             case SUBSTANCEDEFINITION: return "SubstanceDefinition";
             case SUBSTANCENUCLEICACID: return "SubstanceNucleicAcid";
@@ -4641,6 +4388,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case SUPPLYREQUEST: return "SupplyRequest";
             case TASK: return "Task";
             case TESTREPORT: return "TestReport";
+            case TRANSPORT: return "Transport";
             case VERIFICATIONRESULT: return "VerificationResult";
             case VISIONPRESCRIPTION: return "VisionPrescription";
             case PARAMETERS: return "Parameters";
@@ -4674,6 +4422,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ELEMENT: return "http://hl7.org/fhir/data-types";
             case ELEMENTDEFINITION: return "http://hl7.org/fhir/data-types";
             case EXPRESSION: return "http://hl7.org/fhir/data-types";
+            case EXTENDEDCONTACTDETAIL: return "http://hl7.org/fhir/data-types";
             case EXTENSION: return "http://hl7.org/fhir/data-types";
             case HUMANNAME: return "http://hl7.org/fhir/data-types";
             case IDENTIFIER: return "http://hl7.org/fhir/data-types";
@@ -4686,7 +4435,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case PERIOD: return "http://hl7.org/fhir/data-types";
             case POPULATION: return "http://hl7.org/fhir/data-types";
             case PRIMITIVETYPE: return "http://hl7.org/fhir/data-types";
-            case PRODCHARACTERISTIC: return "http://hl7.org/fhir/data-types";
             case PRODUCTSHELFLIFE: return "http://hl7.org/fhir/data-types";
             case QUANTITY: return "http://hl7.org/fhir/data-types";
             case RANGE: return "http://hl7.org/fhir/data-types";
@@ -4731,6 +4479,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ALLERGYINTOLERANCE: return "http://hl7.org/fhir/resource-types";
             case APPOINTMENT: return "http://hl7.org/fhir/resource-types";
             case APPOINTMENTRESPONSE: return "http://hl7.org/fhir/resource-types";
+            case ARTIFACTASSESSMENT: return "http://hl7.org/fhir/resource-types";
             case AUDITEVENT: return "http://hl7.org/fhir/resource-types";
             case BASIC: return "http://hl7.org/fhir/resource-types";
             case BIOLOGICALLYDERIVEDPRODUCT: return "http://hl7.org/fhir/resource-types";
@@ -4740,17 +4489,15 @@ The primary difference between a medicationusage and a medicationadministration 
             case CAPABILITYSTATEMENT2: return "http://hl7.org/fhir/resource-types";
             case CODESYSTEM: return "http://hl7.org/fhir/resource-types";
             case COMPARTMENTDEFINITION: return "http://hl7.org/fhir/resource-types";
-            case CONCEPTMAP: return "http://hl7.org/fhir/resource-types";
-            case CONCEPTMAP2: return "http://hl7.org/fhir/resource-types";
             case EXAMPLESCENARIO: return "http://hl7.org/fhir/resource-types";
             case GRAPHDEFINITION: return "http://hl7.org/fhir/resource-types";
             case IMPLEMENTATIONGUIDE: return "http://hl7.org/fhir/resource-types";
             case MESSAGEDEFINITION: return "http://hl7.org/fhir/resource-types";
             case METADATARESOURCE: return "http://hl7.org/fhir/resource-types";
             case ACTIVITYDEFINITION: return "http://hl7.org/fhir/resource-types";
-            case ARTIFACTASSESSMENT: return "http://hl7.org/fhir/resource-types";
             case CHARGEITEMDEFINITION: return "http://hl7.org/fhir/resource-types";
             case CITATION: return "http://hl7.org/fhir/resource-types";
+            case CONCEPTMAP: return "http://hl7.org/fhir/resource-types";
             case CONDITIONDEFINITION: return "http://hl7.org/fhir/resource-types";
             case EVENTDEFINITION: return "http://hl7.org/fhir/resource-types";
             case EVIDENCE: return "http://hl7.org/fhir/resource-types";
@@ -4758,13 +4505,14 @@ The primary difference between a medicationusage and a medicationadministration 
             case EVIDENCEVARIABLE: return "http://hl7.org/fhir/resource-types";
             case LIBRARY: return "http://hl7.org/fhir/resource-types";
             case MEASURE: return "http://hl7.org/fhir/resource-types";
+            case NAMINGSYSTEM: return "http://hl7.org/fhir/resource-types";
             case PLANDEFINITION: return "http://hl7.org/fhir/resource-types";
             case QUESTIONNAIRE: return "http://hl7.org/fhir/resource-types";
-            case NAMINGSYSTEM: return "http://hl7.org/fhir/resource-types";
             case OPERATIONDEFINITION: return "http://hl7.org/fhir/resource-types";
             case SEARCHPARAMETER: return "http://hl7.org/fhir/resource-types";
             case STRUCTUREDEFINITION: return "http://hl7.org/fhir/resource-types";
             case STRUCTUREMAP: return "http://hl7.org/fhir/resource-types";
+            case SUBSCRIPTIONTOPIC: return "http://hl7.org/fhir/resource-types";
             case TERMINOLOGYCAPABILITIES: return "http://hl7.org/fhir/resource-types";
             case TESTSCRIPT: return "http://hl7.org/fhir/resource-types";
             case VALUESET: return "http://hl7.org/fhir/resource-types";
@@ -4775,7 +4523,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case CLAIMRESPONSE: return "http://hl7.org/fhir/resource-types";
             case CLINICALIMPRESSION: return "http://hl7.org/fhir/resource-types";
             case CLINICALUSEDEFINITION: return "http://hl7.org/fhir/resource-types";
-            case CLINICALUSEISSUE: return "http://hl7.org/fhir/resource-types";
             case COMMUNICATION: return "http://hl7.org/fhir/resource-types";
             case COMMUNICATIONREQUEST: return "http://hl7.org/fhir/resource-types";
             case COMPOSITION: return "http://hl7.org/fhir/resource-types";
@@ -4803,6 +4550,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case EXPLANATIONOFBENEFIT: return "http://hl7.org/fhir/resource-types";
             case FAMILYMEMBERHISTORY: return "http://hl7.org/fhir/resource-types";
             case FLAG: return "http://hl7.org/fhir/resource-types";
+            case FORMULARYITEM: return "http://hl7.org/fhir/resource-types";
             case GOAL: return "http://hl7.org/fhir/resource-types";
             case GROUP: return "http://hl7.org/fhir/resource-types";
             case GUIDANCERESPONSE: return "http://hl7.org/fhir/resource-types";
@@ -4862,7 +4610,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case SPECIMENDEFINITION: return "http://hl7.org/fhir/resource-types";
             case SUBSCRIPTION: return "http://hl7.org/fhir/resource-types";
             case SUBSCRIPTIONSTATUS: return "http://hl7.org/fhir/resource-types";
-            case SUBSCRIPTIONTOPIC: return "http://hl7.org/fhir/resource-types";
             case SUBSTANCE: return "http://hl7.org/fhir/resource-types";
             case SUBSTANCEDEFINITION: return "http://hl7.org/fhir/resource-types";
             case SUBSTANCENUCLEICACID: return "http://hl7.org/fhir/resource-types";
@@ -4874,6 +4621,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case SUPPLYREQUEST: return "http://hl7.org/fhir/resource-types";
             case TASK: return "http://hl7.org/fhir/resource-types";
             case TESTREPORT: return "http://hl7.org/fhir/resource-types";
+            case TRANSPORT: return "http://hl7.org/fhir/resource-types";
             case VERIFICATIONRESULT: return "http://hl7.org/fhir/resource-types";
             case VISIONPRESCRIPTION: return "http://hl7.org/fhir/resource-types";
             case PARAMETERS: return "http://hl7.org/fhir/resource-types";
@@ -4893,7 +4641,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case BACKBONETYPE: return "Base definition for the few data types that are allowed to carry modifier extensions.";
             case BASE: return "Base definition for all types defined in FHIR type system.";
             case CODEABLECONCEPT: return "A concept that may be defined by a formal reference to a terminology or ontology or may be provided by text.";
-            case CODEABLEREFERENCE: return "A reference to a resource (by instance), or instead, a reference to a cencept defined in a terminology or ontology (by class).";
+            case CODEABLEREFERENCE: return "A reference to a resource (by instance), or instead, a reference to a concept defined in a terminology or ontology (by class).";
             case CODING: return "A reference to a code defined by a terminology system.";
             case CONTACTDETAIL: return "Specifies contact information for a person or organization.";
             case CONTACTPOINT: return "Details for all kinds of technology mediated contact points for a person or organization, including telephone, email, etc.";
@@ -4907,6 +4655,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ELEMENT: return "Base definition for all elements in a resource.";
             case ELEMENTDEFINITION: return "Captures constraints on each element within the resource, profile, or extension.";
             case EXPRESSION: return "A expression that is evaluated in a specified context and returns a value. The context of use of the expression must specify the context in which the expression is evaluated, and how the result of the expression is used.";
+            case EXTENDEDCONTACTDETAIL: return "Specifies contact information for a specific purpose over a period of time, might be handled/monitored by a specific named person or organization.";
             case EXTENSION: return "Optional Extension Element - found in all resources.";
             case HUMANNAME: return "A human's name with the ability to identify parts and usage.";
             case IDENTIFIER: return "An identifier - identifies some entity uniquely and unambiguously. Typically this is used for business identifiers.";
@@ -4919,7 +4668,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case PERIOD: return "A time period defined by a start and end date and optionally time.";
             case POPULATION: return "A populatioof people with some set of grouping criteria.";
             case PRIMITIVETYPE: return "The base type for all re-useable types defined that have a simple property.";
-            case PRODCHARACTERISTIC: return "The marketing status describes the date when a medicinal product is actually put on the market or the date as of which it is no longer available.";
             case PRODUCTSHELFLIFE: return "The shelf-life and storage information for a medicinal product item or container can be described using this class.";
             case QUANTITY: return "A measured amount (or an amount that can potentially be measured). Note that measured amounts include amounts that are not precisely quantified, including amounts involving arbitrary units and floating currencies.";
             case RANGE: return "A set of ordered Quantities defined by a low and high limit.";
@@ -4964,6 +4712,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ALLERGYINTOLERANCE: return "Risk of harmful or undesirable, physiological response which is unique to an individual and associated with exposure to a substance.";
             case APPOINTMENT: return "A booking of a healthcare event among patient(s), practitioner(s), related person(s) and/or device(s) for a specific date/time. This may result in one or more Encounter(s).";
             case APPOINTMENTRESPONSE: return "A reply to an appointment request for a patient and/or practitioner(s), such as a confirmation or rejection.";
+            case ARTIFACTASSESSMENT: return "This Resource provides one or more comments, classifiers or ratings about a Resource and supports attribution and rights management metadata for the added content.";
             case AUDITEVENT: return "A record of an event relevant for purposes such as operations, privacy, security, maintenance, and performance analysis.";
             case BASIC: return "Basic is used for handling concepts not yet defined in FHIR, narrative-only resources that don't map to an existing resource, and custom resources not appropriate for inclusion in the FHIR specification.";
             case BIOLOGICALLYDERIVEDPRODUCT: return "A biological material originating from a biological entity intended to be transplanted or infused into another (possibly the same) biological entity.";
@@ -4973,17 +4722,15 @@ The primary difference between a medicationusage and a medicationadministration 
             case CAPABILITYSTATEMENT2: return "A Capability Statement documents a set of capabilities (behaviors) of a FHIR Server for a particular version of FHIR that may be used as a statement of actual server functionality or a statement of required or desired server implementation.";
             case CODESYSTEM: return "The CodeSystem resource is used to declare the existence of and describe a code system or code system supplement and its key properties, and optionally define a part or all of its content.";
             case COMPARTMENTDEFINITION: return "A compartment definition that defines how resources are accessed on a server.";
-            case CONCEPTMAP: return "A statement of relationships from one set of concepts to one or more other concepts - either concepts in code systems, or data element/data element concepts, or classes in class models.";
-            case CONCEPTMAP2: return "A statement of relationships from one set of concepts to one or more other concepts - either concepts in code systems, or data element/data element concepts, or classes in class models.";
             case EXAMPLESCENARIO: return "Example of workflow instance.";
             case GRAPHDEFINITION: return "A formal computable definition of a graph of resources - that is, a coherent set of resources that form a graph by following references. The Graph Definition resource defines a set and makes rules about the set.";
             case IMPLEMENTATIONGUIDE: return "A set of rules of how a particular interoperability or standards problem is solved - typically through the use of FHIR resources. This resource is used to gather all the parts of an implementation guide into a logical whole and to publish a computable definition of all the parts.";
             case MESSAGEDEFINITION: return "Defines the characteristics of a message that can be shared between systems, including the type of event that initiates the message, the content to be transmitted and what response(s), if any, are permitted.";
             case METADATARESOURCE: return "--- Abstract Type! ---Common Ancestor declaration for conformance and knowledge artifact resources.";
             case ACTIVITYDEFINITION: return "This resource allows for the definition of some activity to be performed, independent of a particular patient, practitioner, or other performance context.";
-            case ARTIFACTASSESSMENT: return "This Resource provides one or more comments, classifiers or ratings about a Resource and supports attribution and rights management metadata for the added content.";
             case CHARGEITEMDEFINITION: return "The ChargeItemDefinition resource provides the properties that apply to the (billing) codes necessary to calculate costs and prices. The properties may differ largely depending on type and realm, therefore this resource gives only a rough structure and requires profiling for each type of billing code system.";
             case CITATION: return "The Citation Resource enables reference to any knowledge artifact for purposes of identification and attribution. The Citation Resource supports existing reference structures and developing publication practices such as versioning, expressing complex contributorship roles, and referencing computable resources.";
+            case CONCEPTMAP: return "A statement of relationships from one set of concepts to one or more other concepts - either concepts in code systems, or data element/data element concepts, or classes in class models.";
             case CONDITIONDEFINITION: return "A definition of a condition and information relevant to managing it.";
             case EVENTDEFINITION: return "The EventDefinition resource provides a reusable description of when a particular event can occur.";
             case EVIDENCE: return "The Evidence Resource provides a machine-interpretable expression of an evidence concept including the evidence variables (e.g., population, exposures/interventions, comparators, outcomes, measured variables, confounding variables), the statistics, and the certainty of this evidence.";
@@ -4991,13 +4738,14 @@ The primary difference between a medicationusage and a medicationadministration 
             case EVIDENCEVARIABLE: return "The EvidenceVariable resource describes an element that knowledge (Evidence) is about.";
             case LIBRARY: return "The Library resource is a general-purpose container for knowledge asset definitions. It can be used to describe and expose existing knowledge assets such as logic libraries and information model descriptions, as well as to describe a collection of knowledge assets.";
             case MEASURE: return "The Measure resource provides the definition of a quality measure.";
+            case NAMINGSYSTEM: return "A curated namespace that issues unique symbols within that namespace for the identification of concepts, people, devices, etc.  Represents a \"System\" used within the Identifier and Coding data types.";
             case PLANDEFINITION: return "This resource allows for the definition of various types of plans as a sharable, consumable, and executable artifact. The resource is general enough to support the description of a broad range of clinical and non-clinical artifacts such as clinical decision support rules, order sets, protocols, and drug quality specifications.";
             case QUESTIONNAIRE: return "A structured set of questions intended to guide the collection of answers from end-users. Questionnaires provide detailed control over order, presentation, phraseology and grouping to allow coherent, consistent data collection.";
-            case NAMINGSYSTEM: return "A curated namespace that issues unique symbols within that namespace for the identification of concepts, people, devices, etc.  Represents a \"System\" used within the Identifier and Coding data types.";
             case OPERATIONDEFINITION: return "A formal computable definition of an operation (on the RESTful interface) or a named query (using the search interaction).";
             case SEARCHPARAMETER: return "A search parameter that defines a named search item that can be used to search/filter on a resource.";
             case STRUCTUREDEFINITION: return "A definition of a FHIR structure. This resource is used to describe the underlying resources, data types defined in FHIR, and also for describing extensions and constraints on resources and data types.";
             case STRUCTUREMAP: return "A Map of relationships between 2 structures that can be used to transform data.";
+            case SUBSCRIPTIONTOPIC: return "Describes a stream of resource state changes identified by trigger criteria and annotated with labels useful to filter projections from this topic.";
             case TERMINOLOGYCAPABILITIES: return "A TerminologyCapabilities resource documents a set of capabilities (behaviors) of a FHIR Terminology Server that may be used as a statement of actual server functionality or a statement of required or desired server implementation.";
             case TESTSCRIPT: return "A structured set of tests against a FHIR server or client implementation to determine compliance against the FHIR specification.";
             case VALUESET: return "A ValueSet resource instance specifies a set of codes drawn from one or more code systems, intended for use in a particular context. Value sets link between [[[CodeSystem]]] definitions and their use in [coded elements](terminologies.html).";
@@ -5008,7 +4756,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case CLAIMRESPONSE: return "This resource provides the adjudication details from the processing of a Claim resource.";
             case CLINICALIMPRESSION: return "A record of a clinical assessment performed to determine what problem(s) may affect the patient and before planning the treatments or management strategies that are best to manage a patient's condition. Assessments are often 1:1 with a clinical consultation / encounter,  but this varies greatly depending on the clinical workflow. This resource is called \"ClinicalImpression\" rather than \"ClinicalAssessment\" to avoid confusion with the recording of assessment tools such as Apgar score.";
             case CLINICALUSEDEFINITION: return "A single issue - either an indication, contraindication, interaction or an undesirable effect for a medicinal product, medication, device or procedure.";
-            case CLINICALUSEISSUE: return "A single issue - either an indication, contraindication, interaction or an undesirable effect for a medicinal product, medication, device or procedure.";
             case COMMUNICATION: return "A clinical or business level record of information being transmitted or shared; e.g. an alert that was sent to a responsible provider, a public health agency communication to a provider/reporter in response to a case report for a reportable condition.";
             case COMMUNICATIONREQUEST: return "A request to convey information; e.g. the CDS system proposes that an alert be sent to a responsible provider, the CDS system proposes that the public health agency be notified about a reportable condition.";
             case COMPOSITION: return "A set of healthcare-related information that is assembled together into a single logical package that provides a single coherent statement of meaning, establishes its own context and that has clinical attestation with regard to who is making the statement. A Composition defines the structure and narrative content necessary for a document. However, a Composition alone does not constitute a document. Rather, the Composition must be the first entry in a Bundle where Bundle.type=document, and any other resources referenced from Composition must be included as subsequent entries in the Bundle (for example Patient, Practitioner, Encounter, etc.).";
@@ -5029,13 +4776,14 @@ The primary difference between a medicationusage and a medicationadministration 
             case DOCUMENTMANIFEST: return "A collection of documents compiled for a purpose together with metadata that applies to the collection.";
             case DOCUMENTREFERENCE: return "A reference to a document of any kind for any purpose. While the term “document” implies a more narrow focus, for this resource this \"document\" encompasses *any* serialized object with a mime-type, it includes formal patient-centric documents (CDA), clinical notes, scanned paper, non-patient specific documents like policy text, as well as a photo, video, or audio recording acquired or used in healthcare.  The DocumentReference resource provides metadata about the document so that the document can be discovered and managed.  The actual content may be inline base64 encoded data or provided by direct reference.";
             case ENCOUNTER: return "An interaction between a patient and healthcare provider(s) for the purpose of providing healthcare service(s) or assessing the health status of a patient.";
-            case ENDPOINT: return "The technical details of an endpoint that can be used for electronic services, such as for web services providing XDS.b or a REST endpoint for another FHIR server. This may include any security context information.";
+            case ENDPOINT: return "The technical details of an endpoint that can be used for electronic services, such as for web services providing XDS.b, a REST endpoint for another FHIR server, or a s/Mime email address. This may include any security context information.";
             case ENROLLMENTREQUEST: return "This resource provides the insurance enrollment details to the insurer regarding a specified coverage.";
             case ENROLLMENTRESPONSE: return "This resource provides enrollment and plan details from the processing of an EnrollmentRequest resource.";
             case EPISODEOFCARE: return "An association between a patient and an organization / healthcare provider(s) during which time encounters may occur. The managing organization assumes a level of responsibility for the patient during this time.";
             case EXPLANATIONOFBENEFIT: return "This resource provides: the claim details; adjudication details from the processing of a Claim; and optionally account balance information, for informing the subscriber of the benefits provided.";
             case FAMILYMEMBERHISTORY: return "Significant health conditions for a person related to the patient relevant in the context of care for the patient.";
             case FLAG: return "Prospective warnings of potential issues when providing care to the patient.";
+            case FORMULARYITEM: return "This resource describes a product or service that is available through a program and includes the conditions and constraints of availability.  All of the information in this resource is specific to the inclusion of the item in the formulary and is not inherent to the item itself.";
             case GOAL: return "Describes the intended objective(s) for a patient, group or organization care, for example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, etc.";
             case GROUP: return "Represents a defined collection of entities that may be discussed or acted upon collectively but which are not expected to act collectively, and are not formally or legally recognized; i.e. a collection of entities that isn't an Organization.";
             case GUIDANCERESPONSE: return "A guidance response is the formal response to a guidance request, including any output parameters returned by the evaluation, as well as the description of any proposed actions to be taken.";
@@ -5060,12 +4808,12 @@ The primary difference between a medicationusage and a medicationadministration 
             case MEDICATIONKNOWLEDGE: return "Information about a medication that is used to support knowledge.";
             case MEDICATIONREQUEST: return "An order or request for both supply of the medication and the instructions for administration of the medication to a patient. The resource is called \"MedicationRequest\" rather than \"MedicationPrescription\" or \"MedicationOrder\" to generalize the use across inpatient and outpatient settings, including care plans, etc., and to harmonize with workflow patterns.";
             case MEDICATIONUSAGE: return "A record of a medication that is being consumed by a patient.   A MedicationUsage may indicate that the patient may be taking the medication now or has taken the medication in the past or will be taking the medication in the future.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay.   The medication information may come from sources such as the patient's memory, from a prescription bottle,  or from a list of medications the patient, clinician or other party maintains. \n\nThe primary difference between a medicationusage and a medicationadministration is that the medication administration has complete administration information and is based on actual administration information from the person who administered the medication.  A medicationusage is often, if not always, less specific.  There is no required date/time when the medication was administered, in fact we only know that a source has reported the patient is taking this medication, where details such as time, quantity, or rate or even medication product may be incomplete or missing or less precise.  As stated earlier, the Medication Usage information may come from the patient's memory, from a prescription bottle or from a list of medications the patient, clinician or other party maintains.  Medication administration is more formal and is not missing detailed information.";
-            case MEDICINALPRODUCTDEFINITION: return "Detailed definition of a medicinal product, typically for uses other than direct patient care (e.g. regulatory use, drug catalogs).";
+            case MEDICINALPRODUCTDEFINITION: return "Detailed definition of a medicinal product, typically for uses other than direct patient care (e.g. regulatory use, drug catalogs, to support prescribing, adverse events management etc.).";
             case MESSAGEHEADER: return "The header for a message exchange that is either requesting or responding to an action.  The reference(s) that are the subject of the action as well as other information related to the action are typically transmitted in a bundle in which the MessageHeader resource instance is the first resource in the bundle.";
-            case MOLECULARSEQUENCE: return "Raw data describing a biological sequence.";
-            case NUTRITIONINTAKE: return "A record of food or fluid that is being consumed by a patient.   A NutritionIntake may indicate that the patient may be consuming the food or fluid now or has consumed the food or fluid in the past.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay or through an app that tracks food or fluids consumed.   The consumption information may come from sources such as the patient's memory, from a nutrition label,  or from a clinician documenting observed intake.";
+            case MOLECULARSEQUENCE: return "Representation of a molecular sequence.";
+            case NUTRITIONINTAKE: return "A record of food or fluid that is being consumed by a patient.  A NutritionIntake may indicate that the patient may be consuming the food or fluid now or has consumed the food or fluid in the past.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay or through an app that tracks food or fluids consumed.   The consumption information may come from sources such as the patient's memory, from a nutrition label,  or from a clinician documenting observed intake.";
             case NUTRITIONORDER: return "A request to supply a diet, formula feeding (enteral) or oral nutritional supplement to a patient/resident.";
-            case NUTRITIONPRODUCT: return "A food or fluid product that is consumed by patients.";
+            case NUTRITIONPRODUCT: return "A food or supplement that is consumed by patients.";
             case OBSERVATION: return "Measurements and simple assertions made about a patient, device or other subject.";
             case OBSERVATIONDEFINITION: return "Set of definitional characteristics for a kind of observation or measurement produced or consumed by an orderable health care service.";
             case OPERATIONOUTCOME: return "A collection of error, warning, or information messages that result from a system action.";
@@ -5083,7 +4831,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case PROVENANCE: return "Provenance of a resource is a record that describes entities and processes involved in producing and delivering or otherwise influencing that resource. Provenance provides a critical foundation for assessing authenticity, enabling trust, and allowing reproducibility. Provenance assertions are a form of contextual metadata and can themselves become important records with their own provenance. Provenance statement indicates clinical significance in terms of confidence in authenticity, reliability, and trustworthiness, integrity, and stage in lifecycle (e.g. Document Completion - has the artifact been legally authenticated), all of which may impact security, privacy, and trust policies.";
             case QUESTIONNAIRERESPONSE: return "A structured set of questions and their answers. The questions are ordered and grouped into coherent subsets, corresponding to the structure of the grouping of the questionnaire being responded to.";
             case REGULATEDAUTHORIZATION: return "Regulatory approval, clearance or licencing related to a regulated product, treatment, facility or activity that is cited in a guidance, regulation, rule or legislative act. An example is Market Authorization relating to a Medicinal Product.";
-            case RELATEDPERSON: return "Information about a person that is involved in the care for a patient, but who is not the target of healthcare, nor has a formal responsibility in the care process.";
+            case RELATEDPERSON: return "Information about a person that is involved in a patient's health or the care for a patient, but who is not the target of healthcare, nor has a formal responsibility in the care process.";
             case REQUESTGROUP: return "A group of related requests that can be used to capture intended activities that have inter-dependencies such as \"give this medication after that one\".";
             case RESEARCHSTUDY: return "A process where a researcher or organization plans and then executes a series of steps intended to increase the field of healthcare-related knowledge.  This includes studies of safety, efficacy, comparative effectiveness and other information about medications, devices, therapies and other interventional and investigative techniques.  A ResearchStudy involves the gathering of information about human or animal subjects.";
             case RESEARCHSUBJECT: return "A physical entity which is the primary unit of operational and/or administrative interest in a study.";
@@ -5095,7 +4843,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case SPECIMENDEFINITION: return "A kind of specimen with associated set of requirements.";
             case SUBSCRIPTION: return "The subscription resource describes a particular client's request to be notified about a SubscriptionTopic.";
             case SUBSCRIPTIONSTATUS: return "The SubscriptionStatus resource describes the state of a Subscription during notifications.";
-            case SUBSCRIPTIONTOPIC: return "Describes a stream of resource state changes identified by trigger criteria and annotated with labels useful to filter projections from this topic.";
             case SUBSTANCE: return "A homogeneous material with a definite composition.";
             case SUBSTANCEDEFINITION: return "The detailed description of a substance, typically at a level beyond what is used for prescribing.";
             case SUBSTANCENUCLEICACID: return "Nucleic acids are defined by three distinct elements: the base, sugar and linkage. Individual substance/moiety IDs will be created for each of these elements. The nucleotide sequence will be always entered in the 5’-3’ direction.";
@@ -5107,9 +4854,10 @@ The primary difference between a medicationusage and a medicationadministration 
             case SUPPLYREQUEST: return "A record of a non-patient specific request for a medication, substance, device, certain types of biologically derived product, and nutrition product used in the healthcare setting.";
             case TASK: return "A task to be performed.";
             case TESTREPORT: return "A summary of information based on the results of executing a TestScript.";
+            case TRANSPORT: return "Record of transport.";
             case VERIFICATIONRESULT: return "Describes validation requirements, source(s), status and dates for one or more elements.";
             case VISIONPRESCRIPTION: return "An authorization for the provision of glasses and/or contact lenses to a patient.";
-            case PARAMETERS: return "This resource is a non-persisted resource used to pass information into and back from an [operation](operations.html). It has no other use, and there is no RESTful endpoint associated with it.";
+            case PARAMETERS: return "This resource is a non-persisted resource primarily used to pass information into and back from an [operation](operations.html). There is no RESTful endpoint associated with it.";
             case TYPE: return "A place holder that means any kind of data type";
             case ANY: return "A place holder that means any kind of resource";
             case NULL: return null;
@@ -5140,6 +4888,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ELEMENT: return "Element";
             case ELEMENTDEFINITION: return "ElementDefinition";
             case EXPRESSION: return "Expression";
+            case EXTENDEDCONTACTDETAIL: return "ExtendedContactDetail";
             case EXTENSION: return "Extension";
             case HUMANNAME: return "HumanName";
             case IDENTIFIER: return "Identifier";
@@ -5152,7 +4901,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case PERIOD: return "Period";
             case POPULATION: return "Population";
             case PRIMITIVETYPE: return "PrimitiveType";
-            case PRODCHARACTERISTIC: return "ProdCharacteristic";
             case PRODUCTSHELFLIFE: return "ProductShelfLife";
             case QUANTITY: return "Quantity";
             case RANGE: return "Range";
@@ -5197,6 +4945,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ALLERGYINTOLERANCE: return "AllergyIntolerance";
             case APPOINTMENT: return "Appointment";
             case APPOINTMENTRESPONSE: return "AppointmentResponse";
+            case ARTIFACTASSESSMENT: return "ArtifactAssessment";
             case AUDITEVENT: return "AuditEvent";
             case BASIC: return "Basic";
             case BIOLOGICALLYDERIVEDPRODUCT: return "BiologicallyDerivedProduct";
@@ -5206,17 +4955,15 @@ The primary difference between a medicationusage and a medicationadministration 
             case CAPABILITYSTATEMENT2: return "CapabilityStatement2";
             case CODESYSTEM: return "CodeSystem";
             case COMPARTMENTDEFINITION: return "CompartmentDefinition";
-            case CONCEPTMAP: return "ConceptMap";
-            case CONCEPTMAP2: return "ConceptMap2";
             case EXAMPLESCENARIO: return "ExampleScenario";
             case GRAPHDEFINITION: return "GraphDefinition";
             case IMPLEMENTATIONGUIDE: return "ImplementationGuide";
             case MESSAGEDEFINITION: return "MessageDefinition";
             case METADATARESOURCE: return "MetadataResource";
             case ACTIVITYDEFINITION: return "ActivityDefinition";
-            case ARTIFACTASSESSMENT: return "ArtifactAssessment";
             case CHARGEITEMDEFINITION: return "ChargeItemDefinition";
             case CITATION: return "Citation";
+            case CONCEPTMAP: return "ConceptMap";
             case CONDITIONDEFINITION: return "ConditionDefinition";
             case EVENTDEFINITION: return "EventDefinition";
             case EVIDENCE: return "Evidence";
@@ -5224,13 +4971,14 @@ The primary difference between a medicationusage and a medicationadministration 
             case EVIDENCEVARIABLE: return "EvidenceVariable";
             case LIBRARY: return "Library";
             case MEASURE: return "Measure";
+            case NAMINGSYSTEM: return "NamingSystem";
             case PLANDEFINITION: return "PlanDefinition";
             case QUESTIONNAIRE: return "Questionnaire";
-            case NAMINGSYSTEM: return "NamingSystem";
             case OPERATIONDEFINITION: return "OperationDefinition";
             case SEARCHPARAMETER: return "SearchParameter";
             case STRUCTUREDEFINITION: return "StructureDefinition";
             case STRUCTUREMAP: return "StructureMap";
+            case SUBSCRIPTIONTOPIC: return "SubscriptionTopic";
             case TERMINOLOGYCAPABILITIES: return "TerminologyCapabilities";
             case TESTSCRIPT: return "TestScript";
             case VALUESET: return "ValueSet";
@@ -5241,7 +4989,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case CLAIMRESPONSE: return "ClaimResponse";
             case CLINICALIMPRESSION: return "ClinicalImpression";
             case CLINICALUSEDEFINITION: return "ClinicalUseDefinition";
-            case CLINICALUSEISSUE: return "ClinicalUseIssue";
             case COMMUNICATION: return "Communication";
             case COMMUNICATIONREQUEST: return "CommunicationRequest";
             case COMPOSITION: return "Composition";
@@ -5269,6 +5016,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case EXPLANATIONOFBENEFIT: return "ExplanationOfBenefit";
             case FAMILYMEMBERHISTORY: return "FamilyMemberHistory";
             case FLAG: return "Flag";
+            case FORMULARYITEM: return "FormularyItem";
             case GOAL: return "Goal";
             case GROUP: return "Group";
             case GUIDANCERESPONSE: return "GuidanceResponse";
@@ -5328,7 +5076,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case SPECIMENDEFINITION: return "SpecimenDefinition";
             case SUBSCRIPTION: return "Subscription";
             case SUBSCRIPTIONSTATUS: return "SubscriptionStatus";
-            case SUBSCRIPTIONTOPIC: return "SubscriptionTopic";
             case SUBSTANCE: return "Substance";
             case SUBSTANCEDEFINITION: return "SubstanceDefinition";
             case SUBSTANCENUCLEICACID: return "SubstanceNucleicAcid";
@@ -5340,6 +5087,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case SUPPLYREQUEST: return "SupplyRequest";
             case TASK: return "Task";
             case TESTREPORT: return "TestReport";
+            case TRANSPORT: return "Transport";
             case VERIFICATIONRESULT: return "VerificationResult";
             case VISIONPRESCRIPTION: return "VisionPrescription";
             case PARAMETERS: return "Parameters";
@@ -5400,6 +5148,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRAllTypes.ELEMENTDEFINITION;
         if ("Expression".equals(codeString))
           return FHIRAllTypes.EXPRESSION;
+        if ("ExtendedContactDetail".equals(codeString))
+          return FHIRAllTypes.EXTENDEDCONTACTDETAIL;
         if ("Extension".equals(codeString))
           return FHIRAllTypes.EXTENSION;
         if ("HumanName".equals(codeString))
@@ -5424,8 +5174,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRAllTypes.POPULATION;
         if ("PrimitiveType".equals(codeString))
           return FHIRAllTypes.PRIMITIVETYPE;
-        if ("ProdCharacteristic".equals(codeString))
-          return FHIRAllTypes.PRODCHARACTERISTIC;
         if ("ProductShelfLife".equals(codeString))
           return FHIRAllTypes.PRODUCTSHELFLIFE;
         if ("Quantity".equals(codeString))
@@ -5514,6 +5262,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRAllTypes.APPOINTMENT;
         if ("AppointmentResponse".equals(codeString))
           return FHIRAllTypes.APPOINTMENTRESPONSE;
+        if ("ArtifactAssessment".equals(codeString))
+          return FHIRAllTypes.ARTIFACTASSESSMENT;
         if ("AuditEvent".equals(codeString))
           return FHIRAllTypes.AUDITEVENT;
         if ("Basic".equals(codeString))
@@ -5532,10 +5282,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRAllTypes.CODESYSTEM;
         if ("CompartmentDefinition".equals(codeString))
           return FHIRAllTypes.COMPARTMENTDEFINITION;
-        if ("ConceptMap".equals(codeString))
-          return FHIRAllTypes.CONCEPTMAP;
-        if ("ConceptMap2".equals(codeString))
-          return FHIRAllTypes.CONCEPTMAP2;
         if ("ExampleScenario".equals(codeString))
           return FHIRAllTypes.EXAMPLESCENARIO;
         if ("GraphDefinition".equals(codeString))
@@ -5548,12 +5294,12 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRAllTypes.METADATARESOURCE;
         if ("ActivityDefinition".equals(codeString))
           return FHIRAllTypes.ACTIVITYDEFINITION;
-        if ("ArtifactAssessment".equals(codeString))
-          return FHIRAllTypes.ARTIFACTASSESSMENT;
         if ("ChargeItemDefinition".equals(codeString))
           return FHIRAllTypes.CHARGEITEMDEFINITION;
         if ("Citation".equals(codeString))
           return FHIRAllTypes.CITATION;
+        if ("ConceptMap".equals(codeString))
+          return FHIRAllTypes.CONCEPTMAP;
         if ("ConditionDefinition".equals(codeString))
           return FHIRAllTypes.CONDITIONDEFINITION;
         if ("EventDefinition".equals(codeString))
@@ -5568,12 +5314,12 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRAllTypes.LIBRARY;
         if ("Measure".equals(codeString))
           return FHIRAllTypes.MEASURE;
+        if ("NamingSystem".equals(codeString))
+          return FHIRAllTypes.NAMINGSYSTEM;
         if ("PlanDefinition".equals(codeString))
           return FHIRAllTypes.PLANDEFINITION;
         if ("Questionnaire".equals(codeString))
           return FHIRAllTypes.QUESTIONNAIRE;
-        if ("NamingSystem".equals(codeString))
-          return FHIRAllTypes.NAMINGSYSTEM;
         if ("OperationDefinition".equals(codeString))
           return FHIRAllTypes.OPERATIONDEFINITION;
         if ("SearchParameter".equals(codeString))
@@ -5582,6 +5328,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRAllTypes.STRUCTUREDEFINITION;
         if ("StructureMap".equals(codeString))
           return FHIRAllTypes.STRUCTUREMAP;
+        if ("SubscriptionTopic".equals(codeString))
+          return FHIRAllTypes.SUBSCRIPTIONTOPIC;
         if ("TerminologyCapabilities".equals(codeString))
           return FHIRAllTypes.TERMINOLOGYCAPABILITIES;
         if ("TestScript".equals(codeString))
@@ -5602,8 +5350,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRAllTypes.CLINICALIMPRESSION;
         if ("ClinicalUseDefinition".equals(codeString))
           return FHIRAllTypes.CLINICALUSEDEFINITION;
-        if ("ClinicalUseIssue".equals(codeString))
-          return FHIRAllTypes.CLINICALUSEISSUE;
         if ("Communication".equals(codeString))
           return FHIRAllTypes.COMMUNICATION;
         if ("CommunicationRequest".equals(codeString))
@@ -5658,6 +5404,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRAllTypes.FAMILYMEMBERHISTORY;
         if ("Flag".equals(codeString))
           return FHIRAllTypes.FLAG;
+        if ("FormularyItem".equals(codeString))
+          return FHIRAllTypes.FORMULARYITEM;
         if ("Goal".equals(codeString))
           return FHIRAllTypes.GOAL;
         if ("Group".equals(codeString))
@@ -5776,8 +5524,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRAllTypes.SUBSCRIPTION;
         if ("SubscriptionStatus".equals(codeString))
           return FHIRAllTypes.SUBSCRIPTIONSTATUS;
-        if ("SubscriptionTopic".equals(codeString))
-          return FHIRAllTypes.SUBSCRIPTIONTOPIC;
         if ("Substance".equals(codeString))
           return FHIRAllTypes.SUBSTANCE;
         if ("SubstanceDefinition".equals(codeString))
@@ -5800,6 +5546,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRAllTypes.TASK;
         if ("TestReport".equals(codeString))
           return FHIRAllTypes.TESTREPORT;
+        if ("Transport".equals(codeString))
+          return FHIRAllTypes.TRANSPORT;
         if ("VerificationResult".equals(codeString))
           return FHIRAllTypes.VERIFICATIONRESULT;
         if ("VisionPrescription".equals(codeString))
@@ -5864,6 +5612,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ELEMENTDEFINITION);
         if ("Expression".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EXPRESSION);
+        if ("ExtendedContactDetail".equals(codeString))
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EXTENDEDCONTACTDETAIL);
         if ("Extension".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EXTENSION);
         if ("HumanName".equals(codeString))
@@ -5888,8 +5638,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.POPULATION);
         if ("PrimitiveType".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PRIMITIVETYPE);
-        if ("ProdCharacteristic".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PRODCHARACTERISTIC);
         if ("ProductShelfLife".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PRODUCTSHELFLIFE);
         if ("Quantity".equals(codeString))
@@ -5978,6 +5726,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.APPOINTMENT);
         if ("AppointmentResponse".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.APPOINTMENTRESPONSE);
+        if ("ArtifactAssessment".equals(codeString))
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ARTIFACTASSESSMENT);
         if ("AuditEvent".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.AUDITEVENT);
         if ("Basic".equals(codeString))
@@ -5996,10 +5746,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CODESYSTEM);
         if ("CompartmentDefinition".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.COMPARTMENTDEFINITION);
-        if ("ConceptMap".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CONCEPTMAP);
-        if ("ConceptMap2".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CONCEPTMAP2);
         if ("ExampleScenario".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EXAMPLESCENARIO);
         if ("GraphDefinition".equals(codeString))
@@ -6012,12 +5758,12 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.METADATARESOURCE);
         if ("ActivityDefinition".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ACTIVITYDEFINITION);
-        if ("ArtifactAssessment".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.ARTIFACTASSESSMENT);
         if ("ChargeItemDefinition".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CHARGEITEMDEFINITION);
         if ("Citation".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CITATION);
+        if ("ConceptMap".equals(codeString))
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CONCEPTMAP);
         if ("ConditionDefinition".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CONDITIONDEFINITION);
         if ("EventDefinition".equals(codeString))
@@ -6032,12 +5778,12 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.LIBRARY);
         if ("Measure".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.MEASURE);
+        if ("NamingSystem".equals(codeString))
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.NAMINGSYSTEM);
         if ("PlanDefinition".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.PLANDEFINITION);
         if ("Questionnaire".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.QUESTIONNAIRE);
-        if ("NamingSystem".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.NAMINGSYSTEM);
         if ("OperationDefinition".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.OPERATIONDEFINITION);
         if ("SearchParameter".equals(codeString))
@@ -6046,6 +5792,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.STRUCTUREDEFINITION);
         if ("StructureMap".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.STRUCTUREMAP);
+        if ("SubscriptionTopic".equals(codeString))
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SUBSCRIPTIONTOPIC);
         if ("TerminologyCapabilities".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.TERMINOLOGYCAPABILITIES);
         if ("TestScript".equals(codeString))
@@ -6066,8 +5814,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CLINICALIMPRESSION);
         if ("ClinicalUseDefinition".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CLINICALUSEDEFINITION);
-        if ("ClinicalUseIssue".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.CLINICALUSEISSUE);
         if ("Communication".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.COMMUNICATION);
         if ("CommunicationRequest".equals(codeString))
@@ -6122,6 +5868,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.FAMILYMEMBERHISTORY);
         if ("Flag".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.FLAG);
+        if ("FormularyItem".equals(codeString))
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.FORMULARYITEM);
         if ("Goal".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.GOAL);
         if ("Group".equals(codeString))
@@ -6240,8 +5988,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SUBSCRIPTION);
         if ("SubscriptionStatus".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SUBSCRIPTIONSTATUS);
-        if ("SubscriptionTopic".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SUBSCRIPTIONTOPIC);
         if ("Substance".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SUBSTANCE);
         if ("SubstanceDefinition".equals(codeString))
@@ -6264,6 +6010,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.TASK);
         if ("TestReport".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.TESTREPORT);
+        if ("Transport".equals(codeString))
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.TRANSPORT);
         if ("VerificationResult".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.VERIFICATIONRESULT);
         if ("VisionPrescription".equals(codeString))
@@ -6321,6 +6069,8 @@ The primary difference between a medicationusage and a medicationadministration 
         return "ElementDefinition";
       if (code == FHIRAllTypes.EXPRESSION)
         return "Expression";
+      if (code == FHIRAllTypes.EXTENDEDCONTACTDETAIL)
+        return "ExtendedContactDetail";
       if (code == FHIRAllTypes.EXTENSION)
         return "Extension";
       if (code == FHIRAllTypes.HUMANNAME)
@@ -6345,8 +6095,6 @@ The primary difference between a medicationusage and a medicationadministration 
         return "Population";
       if (code == FHIRAllTypes.PRIMITIVETYPE)
         return "PrimitiveType";
-      if (code == FHIRAllTypes.PRODCHARACTERISTIC)
-        return "ProdCharacteristic";
       if (code == FHIRAllTypes.PRODUCTSHELFLIFE)
         return "ProductShelfLife";
       if (code == FHIRAllTypes.QUANTITY)
@@ -6435,6 +6183,8 @@ The primary difference between a medicationusage and a medicationadministration 
         return "Appointment";
       if (code == FHIRAllTypes.APPOINTMENTRESPONSE)
         return "AppointmentResponse";
+      if (code == FHIRAllTypes.ARTIFACTASSESSMENT)
+        return "ArtifactAssessment";
       if (code == FHIRAllTypes.AUDITEVENT)
         return "AuditEvent";
       if (code == FHIRAllTypes.BASIC)
@@ -6453,10 +6203,6 @@ The primary difference between a medicationusage and a medicationadministration 
         return "CodeSystem";
       if (code == FHIRAllTypes.COMPARTMENTDEFINITION)
         return "CompartmentDefinition";
-      if (code == FHIRAllTypes.CONCEPTMAP)
-        return "ConceptMap";
-      if (code == FHIRAllTypes.CONCEPTMAP2)
-        return "ConceptMap2";
       if (code == FHIRAllTypes.EXAMPLESCENARIO)
         return "ExampleScenario";
       if (code == FHIRAllTypes.GRAPHDEFINITION)
@@ -6469,12 +6215,12 @@ The primary difference between a medicationusage and a medicationadministration 
         return "MetadataResource";
       if (code == FHIRAllTypes.ACTIVITYDEFINITION)
         return "ActivityDefinition";
-      if (code == FHIRAllTypes.ARTIFACTASSESSMENT)
-        return "ArtifactAssessment";
       if (code == FHIRAllTypes.CHARGEITEMDEFINITION)
         return "ChargeItemDefinition";
       if (code == FHIRAllTypes.CITATION)
         return "Citation";
+      if (code == FHIRAllTypes.CONCEPTMAP)
+        return "ConceptMap";
       if (code == FHIRAllTypes.CONDITIONDEFINITION)
         return "ConditionDefinition";
       if (code == FHIRAllTypes.EVENTDEFINITION)
@@ -6489,12 +6235,12 @@ The primary difference between a medicationusage and a medicationadministration 
         return "Library";
       if (code == FHIRAllTypes.MEASURE)
         return "Measure";
+      if (code == FHIRAllTypes.NAMINGSYSTEM)
+        return "NamingSystem";
       if (code == FHIRAllTypes.PLANDEFINITION)
         return "PlanDefinition";
       if (code == FHIRAllTypes.QUESTIONNAIRE)
         return "Questionnaire";
-      if (code == FHIRAllTypes.NAMINGSYSTEM)
-        return "NamingSystem";
       if (code == FHIRAllTypes.OPERATIONDEFINITION)
         return "OperationDefinition";
       if (code == FHIRAllTypes.SEARCHPARAMETER)
@@ -6503,6 +6249,8 @@ The primary difference between a medicationusage and a medicationadministration 
         return "StructureDefinition";
       if (code == FHIRAllTypes.STRUCTUREMAP)
         return "StructureMap";
+      if (code == FHIRAllTypes.SUBSCRIPTIONTOPIC)
+        return "SubscriptionTopic";
       if (code == FHIRAllTypes.TERMINOLOGYCAPABILITIES)
         return "TerminologyCapabilities";
       if (code == FHIRAllTypes.TESTSCRIPT)
@@ -6523,8 +6271,6 @@ The primary difference between a medicationusage and a medicationadministration 
         return "ClinicalImpression";
       if (code == FHIRAllTypes.CLINICALUSEDEFINITION)
         return "ClinicalUseDefinition";
-      if (code == FHIRAllTypes.CLINICALUSEISSUE)
-        return "ClinicalUseIssue";
       if (code == FHIRAllTypes.COMMUNICATION)
         return "Communication";
       if (code == FHIRAllTypes.COMMUNICATIONREQUEST)
@@ -6579,6 +6325,8 @@ The primary difference between a medicationusage and a medicationadministration 
         return "FamilyMemberHistory";
       if (code == FHIRAllTypes.FLAG)
         return "Flag";
+      if (code == FHIRAllTypes.FORMULARYITEM)
+        return "FormularyItem";
       if (code == FHIRAllTypes.GOAL)
         return "Goal";
       if (code == FHIRAllTypes.GROUP)
@@ -6697,8 +6445,6 @@ The primary difference between a medicationusage and a medicationadministration 
         return "Subscription";
       if (code == FHIRAllTypes.SUBSCRIPTIONSTATUS)
         return "SubscriptionStatus";
-      if (code == FHIRAllTypes.SUBSCRIPTIONTOPIC)
-        return "SubscriptionTopic";
       if (code == FHIRAllTypes.SUBSTANCE)
         return "Substance";
       if (code == FHIRAllTypes.SUBSTANCEDEFINITION)
@@ -6721,6 +6467,8 @@ The primary difference between a medicationusage and a medicationadministration 
         return "Task";
       if (code == FHIRAllTypes.TESTREPORT)
         return "TestReport";
+      if (code == FHIRAllTypes.TRANSPORT)
+        return "Transport";
       if (code == FHIRAllTypes.VERIFICATIONRESULT)
         return "VerificationResult";
       if (code == FHIRAllTypes.VISIONPRESCRIPTION)
@@ -6756,6 +6504,10 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         _0_11, 
         /**
+         * DSTU 1 version.
+         */
+        _0_0, 
+        /**
          * DSTU 1 Official version.
          */
         _0_0_80, 
@@ -6765,16 +6517,28 @@ The primary difference between a medicationusage and a medicationadministration 
         _0_0_81, 
         /**
          * DSTU 1 Official version Technical Errata #2.
-         */
+        */
         _0_0_82, 
+        /**
+         * January 2015 Ballot.
+         */
+        _0_4, 
         /**
          * Draft For Comment (January 2015 Ballot).
          */
         _0_4_0, 
         /**
+         * May 2015 Ballot.
+         */
+        _0_5, 
+        /**
          * DSTU 2 Ballot version (May 2015 Ballot).
          */
         _0_5_0, 
+        /**
+         * DSTU 2 version.
+         */
+        _1_0, 
         /**
          * DSTU 2 QA Preview + CQIF Ballot (Sep 2015).
          */
@@ -6788,21 +6552,41 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         _1_0_2, 
         /**
+         * GAO Ballot version.
+         */
+        _1_1, 
+        /**
          * GAO Ballot + draft changes to main FHIR standard.
          */
         _1_1_0, 
+        /**
+         * Connectathon 12 (Montreal) version.
+         */
+        _1_4, 
         /**
          * CQF on FHIR Ballot + Connectathon 12 (Montreal).
          */
         _1_4_0, 
         /**
+         * Connectathon 13 (Baltimore) version.
+         */
+        _1_6, 
+        /**
          * FHIR STU3 Ballot + Connectathon 13 (Baltimore).
          */
         _1_6_0, 
         /**
+         * Connectathon 14 (San Antonio) version.
+         */
+        _1_8, 
+        /**
          * FHIR STU3 Candidate + Connectathon 14 (San Antonio).
          */
         _1_8_0, 
+        /**
+         * STU3 version.
+         */
+        _3_0, 
         /**
          * FHIR Release 3 (STU).
          */
@@ -6816,13 +6600,25 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         _3_0_2, 
         /**
-         * R4 Ballot #1.
+         * R4 Ballot #1 version.
+         */
+        _3_3, 
+        /**
+         * R4 Ballot #1 + Connectaton 18 (Cologne).
          */
         _3_3_0, 
         /**
-         * R4 Ballot #2.
+         * R4 Ballot #2 version.
+         */
+        _3_5, 
+        /**
+         * R4 Ballot #2 + Connectathon 19 (Baltimore).
          */
         _3_5_0, 
+        /**
+         * R4 version.
+         */
+        _4_0, 
         /**
          * FHIR Release 4 (Normative + STU).
          */
@@ -6832,45 +6628,77 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         _4_0_1, 
         /**
-         * Interim Version.
+         * R4B Ballot #1 version.
+         */
+        _4_1, 
+        /**
+         * R4B Ballot #1 + Connectathon 27 (Virtual).
          */
         _4_1_0, 
         /**
-         * R5 Preview #1.
+         * R5 Preview #1 version.
+         */
+        _4_2, 
+        /**
+         * R5 Preview #1 + Connectathon 23 (Sydney).
          */
         _4_2_0, 
         /**
-         * R4B Snapshot #1.
+         * R4B version.
          */
-        _4_3_0SNAPSHOT1, 
+        _4_3, 
         /**
-         * R4B Rolling CI-Build.
-         */
-        _4_3_0CIBUILD, 
-        /**
-         * R4B Release
+         * FHIR Release 4B (Normative + STU).
          */
         _4_3_0, 
         /**
-         * R5 Preview #2.
+         * R5 Preview #2 version.
+         */
+        _4_4, 
+        /**
+         * R5 Preview #2 + Connectathon 24 (Virtual).
          */
         _4_4_0, 
         /**
-         * R5 Preview #3.
+         * R5 Preview #3 version.
+         */
+        _4_5, 
+        /**
+         * R5 Preview #3 + Connectathon 25 (Virtual).
          */
         _4_5_0, 
         /**
-         * R5 Draft Ballot.
+         * R5 Draft Ballot version.
+         */
+        _4_6, 
+        /**
+         * R5 Draft Ballot + Connectathon 27 (Virtual).
          */
         _4_6_0, 
         /**
-         * R5 Snapshot #1.
+         * R4B CIBuild
          */
-        _5_0_0SNAPSHOT1, 
+        _4_3_0CIBUILD, 
         /**
-         * R5 Rolling CI-Build.
+         * R4B Snapshot1
+         */
+        _4_3_0SNAPSHOT1, 
+        /**
+         * R5
+         */
+        _5_0, 
+        /**
+         * R5
+         */
+        _5_0_0, 
+        /**
+         * R5 CIBuild
          */
         _5_0_0CIBUILD, 
+        /**
+         * R5 Snapshot1
+         */
+        _5_0_0SNAPSHOT1, 
         /**
          * added to help the parsers
          */
@@ -6878,73 +6706,113 @@ The primary difference between a medicationusage and a medicationadministration 
         public static FHIRVersion fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-            if ("0.01".equals(codeString))
-              return _0_01;
-            if ("0.05".equals(codeString))
-              return _0_05;
-            if ("0.06".equals(codeString))
-              return _0_06;
-            if ("0.11".equals(codeString))
-              return _0_11;
-            if ("0.0.80".equals(codeString))
-              return _0_0_80;
-            if ("0.0.81".equals(codeString))
-              return _0_0_81;
-            if ("0.0.82".equals(codeString))
-              return _0_0_82;
-            if ("0.4.0".equals(codeString))
-              return _0_4_0;
-            if ("0.5.0".equals(codeString))
-              return _0_5_0;
-            if ("1.0.0".equals(codeString))
-              return _1_0_0;
-            if ("1.0.1".equals(codeString))
-              return _1_0_1;
-            if ("1.0.2".equals(codeString))
-              return _1_0_2;
-            if ("1.1.0".equals(codeString))
-              return _1_1_0;
-            if ("1.4.0".equals(codeString))
-              return _1_4_0;
-            if ("1.6.0".equals(codeString))
-              return _1_6_0;
-            if ("1.8.0".equals(codeString))
-              return _1_8_0;
-            if ("3.0.0".equals(codeString))
-              return _3_0_0;
-            if ("3.0.1".equals(codeString))
-              return _3_0_1;
-            if ("3.0.2".equals(codeString))
-              return _3_0_2;
-            if ("3.3.0".equals(codeString))
-              return _3_3_0;
-            if ("3.5.0".equals(codeString))
-              return _3_5_0;
-            if ("4.0.0".equals(codeString))
-              return _4_0_0;
-            if ("4.0.1".equals(codeString))
-              return _4_0_1;
-            if ("4.1.0".equals(codeString))
-              return _4_1_0;
-            if ("4.2.0".equals(codeString))
-              return _4_2_0;
-            if ("4.3.0-snapshot1".equalsIgnoreCase(codeString))
-              return _4_3_0SNAPSHOT1;
-            if ("4.3.0-cibuild".equalsIgnoreCase(codeString))
-              return _4_3_0CIBUILD;
-            if ("4.3.0".equalsIgnoreCase(codeString))
-              return _4_3_0;
-            if ("4.4.0".equals(codeString))
-              return _4_4_0;
-            if ("4.5.0".equals(codeString))
-              return _4_5_0;
-            if ("4.6.0".equals(codeString))
-              return _4_6_0;
-            if ("5.0.0-snapshot1".equalsIgnoreCase(codeString))
-              return _5_0_0SNAPSHOT1;
-            if ("5.0.0-cibuild".equalsIgnoreCase(codeString))
-              return _5_0_0CIBUILD;
-            throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
+        if ("0.01".equals(codeString))
+          return _0_01;
+        if ("0.05".equals(codeString))
+          return _0_05;
+        if ("0.06".equals(codeString))
+          return _0_06;
+        if ("0.11".equals(codeString))
+          return _0_11;
+        if ("0.0".equals(codeString))
+          return _0_0;
+        if ("0.0.80".equals(codeString))
+          return _0_0_80;
+        if ("0.0.81".equals(codeString))
+          return _0_0_81;
+        if ("0.0.82".equals(codeString))
+          return _0_0_82;
+        if ("0.4".equals(codeString))
+          return _0_4;
+        if ("0.4.0".equals(codeString))
+          return _0_4_0;
+        if ("0.5".equals(codeString))
+          return _0_5;
+        if ("0.5.0".equals(codeString))
+          return _0_5_0;
+        if ("1.0".equals(codeString))
+          return _1_0;
+        if ("1.0.0".equals(codeString))
+          return _1_0_0;
+        if ("1.0.1".equals(codeString))
+          return _1_0_1;
+        if ("1.0.2".equals(codeString))
+          return _1_0_2;
+        if ("1.1".equals(codeString))
+          return _1_1;
+        if ("1.1.0".equals(codeString))
+          return _1_1_0;
+        if ("1.4".equals(codeString))
+          return _1_4;
+        if ("1.4.0".equals(codeString))
+          return _1_4_0;
+        if ("1.6".equals(codeString))
+          return _1_6;
+        if ("1.6.0".equals(codeString))
+          return _1_6_0;
+        if ("1.8".equals(codeString))
+          return _1_8;
+        if ("1.8.0".equals(codeString))
+          return _1_8_0;
+        if ("3.0".equals(codeString))
+          return _3_0;
+        if ("3.0.0".equals(codeString))
+          return _3_0_0;
+        if ("3.0.1".equals(codeString))
+          return _3_0_1;
+        if ("3.0.2".equals(codeString))
+          return _3_0_2;
+        if ("3.3".equals(codeString))
+          return _3_3;
+        if ("3.3.0".equals(codeString))
+          return _3_3_0;
+        if ("3.5".equals(codeString))
+          return _3_5;
+        if ("3.5.0".equals(codeString))
+          return _3_5_0;
+        if ("4.0".equals(codeString))
+          return _4_0;
+        if ("4.0.0".equals(codeString))
+          return _4_0_0;
+        if ("4.0.1".equals(codeString))
+          return _4_0_1;
+        if ("4.1".equals(codeString))
+          return _4_1;
+        if ("4.1.0".equals(codeString))
+          return _4_1_0;
+        if ("4.2".equals(codeString))
+          return _4_2;
+        if ("4.2.0".equals(codeString))
+          return _4_2_0;
+        if ("4.3".equals(codeString))
+          return _4_3;
+        if ("4.3.0".equals(codeString))
+          return _4_3_0;
+        if ("4.4".equals(codeString))
+          return _4_4;
+        if ("4.4.0".equals(codeString))
+          return _4_4_0;
+        if ("4.5".equals(codeString))
+          return _4_5;
+        if ("4.5.0".equals(codeString))
+          return _4_5_0;
+        if ("4.6".equals(codeString))
+          return _4_6;
+        if ("4.6.0".equals(codeString))
+          return _4_6_0;
+        if ("4.3.0-cibuild".equals(codeString))
+          return _4_3_0CIBUILD;
+        if ("4.3.0-snapshot1".equals(codeString))
+          return _4_3_0SNAPSHOT1;
+        if ("5.0".equals(codeString))
+          return _5_0;
+        if ("5.0.0".equals(codeString))
+          return _5_0_0;
+        if ("5.0.0-cibuild".equals(codeString))
+          return _5_0_0CIBUILD;
+        if ("5.0.0-snapshot1".equals(codeString))
+          return _5_0_0SNAPSHOT1;
+        throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
@@ -6952,35 +6820,55 @@ The primary difference between a medicationusage and a medicationadministration 
             case _0_05: return "0.05";
             case _0_06: return "0.06";
             case _0_11: return "0.11";
+            case _0_0: return "0.0";
             case _0_0_80: return "0.0.80";
             case _0_0_81: return "0.0.81";
             case _0_0_82: return "0.0.82";
+            case _0_4: return "0.4";
             case _0_4_0: return "0.4.0";
+            case _0_5: return "0.5";
             case _0_5_0: return "0.5.0";
+            case _1_0: return "1.0";
             case _1_0_0: return "1.0.0";
             case _1_0_1: return "1.0.1";
             case _1_0_2: return "1.0.2";
+            case _1_1: return "1.1";
             case _1_1_0: return "1.1.0";
+            case _1_4: return "1.4";
             case _1_4_0: return "1.4.0";
+            case _1_6: return "1.6";
             case _1_6_0: return "1.6.0";
+            case _1_8: return "1.8";
             case _1_8_0: return "1.8.0";
+            case _3_0: return "3.0";
             case _3_0_0: return "3.0.0";
             case _3_0_1: return "3.0.1";
             case _3_0_2: return "3.0.2";
+            case _3_3: return "3.3";
             case _3_3_0: return "3.3.0";
+            case _3_5: return "3.5";
             case _3_5_0: return "3.5.0";
+            case _4_0: return "4.0";
             case _4_0_0: return "4.0.0";
             case _4_0_1: return "4.0.1";
+            case _4_1: return "4.1";
             case _4_1_0: return "4.1.0";
+            case _4_2: return "4.2";
             case _4_2_0: return "4.2.0";
-            case _4_3_0SNAPSHOT1: return "4.3.0-snapshot1";
-            case _4_3_0CIBUILD: return "4.3.0-cibuild";
+            case _4_3: return "4.3";
             case _4_3_0: return "4.3.0";
+            case _4_4: return "4.4";
             case _4_4_0: return "4.4.0";
+            case _4_5: return "4.5";
             case _4_5_0: return "4.5.0";
+            case _4_6: return "4.6";
             case _4_6_0: return "4.6.0";
-            case _5_0_0SNAPSHOT1: return "5.0.0-snapshot1";
+            case _4_3_0CIBUILD: return "4.3.0-cibuild";
+            case _4_3_0SNAPSHOT1: return "4.3.0-snapshot1";
+            case _5_0: return "5.0";
+            case _5_0_0: return "5.0.0";
             case _5_0_0CIBUILD: return "5.0.0-cibuild";
+            case _5_0_0SNAPSHOT1: return "5.0.0-snapshot1";
             case NULL: return null;
             default: return "?";
           }
@@ -6991,35 +6879,55 @@ The primary difference between a medicationusage and a medicationadministration 
             case _0_05: return "http://hl7.org/fhir/FHIR-version";
             case _0_06: return "http://hl7.org/fhir/FHIR-version";
             case _0_11: return "http://hl7.org/fhir/FHIR-version";
+            case _0_0: return "http://hl7.org/fhir/FHIR-version";
             case _0_0_80: return "http://hl7.org/fhir/FHIR-version";
             case _0_0_81: return "http://hl7.org/fhir/FHIR-version";
             case _0_0_82: return "http://hl7.org/fhir/FHIR-version";
+            case _0_4: return "http://hl7.org/fhir/FHIR-version";
             case _0_4_0: return "http://hl7.org/fhir/FHIR-version";
+            case _0_5: return "http://hl7.org/fhir/FHIR-version";
             case _0_5_0: return "http://hl7.org/fhir/FHIR-version";
+            case _1_0: return "http://hl7.org/fhir/FHIR-version";
             case _1_0_0: return "http://hl7.org/fhir/FHIR-version";
             case _1_0_1: return "http://hl7.org/fhir/FHIR-version";
             case _1_0_2: return "http://hl7.org/fhir/FHIR-version";
+            case _1_1: return "http://hl7.org/fhir/FHIR-version";
             case _1_1_0: return "http://hl7.org/fhir/FHIR-version";
+            case _1_4: return "http://hl7.org/fhir/FHIR-version";
             case _1_4_0: return "http://hl7.org/fhir/FHIR-version";
+            case _1_6: return "http://hl7.org/fhir/FHIR-version";
             case _1_6_0: return "http://hl7.org/fhir/FHIR-version";
+            case _1_8: return "http://hl7.org/fhir/FHIR-version";
             case _1_8_0: return "http://hl7.org/fhir/FHIR-version";
+            case _3_0: return "http://hl7.org/fhir/FHIR-version";
             case _3_0_0: return "http://hl7.org/fhir/FHIR-version";
             case _3_0_1: return "http://hl7.org/fhir/FHIR-version";
             case _3_0_2: return "http://hl7.org/fhir/FHIR-version";
+            case _3_3: return "http://hl7.org/fhir/FHIR-version";
             case _3_3_0: return "http://hl7.org/fhir/FHIR-version";
+            case _3_5: return "http://hl7.org/fhir/FHIR-version";
             case _3_5_0: return "http://hl7.org/fhir/FHIR-version";
+            case _4_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_0_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_0_1: return "http://hl7.org/fhir/FHIR-version";
+            case _4_1: return "http://hl7.org/fhir/FHIR-version";
             case _4_1_0: return "http://hl7.org/fhir/FHIR-version";
+            case _4_2: return "http://hl7.org/fhir/FHIR-version";
             case _4_2_0: return "http://hl7.org/fhir/FHIR-version";
-            case _4_3_0SNAPSHOT1: return "http://hl7.org/fhir/FHIR-version";
-            case _4_3_0CIBUILD: return "http://hl7.org/fhir/FHIR-version";
+            case _4_3: return "http://hl7.org/fhir/FHIR-version";
             case _4_3_0: return "http://hl7.org/fhir/FHIR-version";
+            case _4_4: return "http://hl7.org/fhir/FHIR-version";
             case _4_4_0: return "http://hl7.org/fhir/FHIR-version";
+            case _4_5: return "http://hl7.org/fhir/FHIR-version";
             case _4_5_0: return "http://hl7.org/fhir/FHIR-version";
+            case _4_6: return "http://hl7.org/fhir/FHIR-version";
             case _4_6_0: return "http://hl7.org/fhir/FHIR-version";
-            case _5_0_0SNAPSHOT1: return "http://hl7.org/fhir/FHIR-version";
+            case _4_3_0CIBUILD: return "http://hl7.org/fhir/FHIR-version";
+            case _4_3_0SNAPSHOT1: return "http://hl7.org/fhir/FHIR-version";
+            case _5_0: return "http://hl7.org/fhir/FHIR-version";
+            case _5_0_0: return "http://hl7.org/fhir/FHIR-version";
             case _5_0_0CIBUILD: return "http://hl7.org/fhir/FHIR-version";
+            case _5_0_0SNAPSHOT1: return "http://hl7.org/fhir/FHIR-version";
             case NULL: return null;
             default: return "?";
           }
@@ -7030,35 +6938,55 @@ The primary difference between a medicationusage and a medicationadministration 
             case _0_05: return "1st Draft for Comment (Sept 2012 Ballot).";
             case _0_06: return "2nd Draft for Comment (January 2013 Ballot).";
             case _0_11: return "DSTU 1 Ballot version.";
+            case _0_0: return "DSTU 1 version.";
             case _0_0_80: return "DSTU 1 Official version.";
             case _0_0_81: return "DSTU 1 Official version Technical Errata #1.";
             case _0_0_82: return "DSTU 1 Official version Technical Errata #2.";
+            case _0_4: return "January 2015 Ballot.";
             case _0_4_0: return "Draft For Comment (January 2015 Ballot).";
+            case _0_5: return "May 2015 Ballot.";
             case _0_5_0: return "DSTU 2 Ballot version (May 2015 Ballot).";
+            case _1_0: return "DSTU 2 version.";
             case _1_0_0: return "DSTU 2 QA Preview + CQIF Ballot (Sep 2015).";
             case _1_0_1: return "DSTU 2 (Official version).";
             case _1_0_2: return "DSTU 2 (Official version) with 1 technical errata.";
+            case _1_1: return "GAO Ballot version.";
             case _1_1_0: return "GAO Ballot + draft changes to main FHIR standard.";
+            case _1_4: return "Connectathon 12 (Montreal) version.";
             case _1_4_0: return "CQF on FHIR Ballot + Connectathon 12 (Montreal).";
+            case _1_6: return "Connectathon 13 (Baltimore) version.";
             case _1_6_0: return "FHIR STU3 Ballot + Connectathon 13 (Baltimore).";
+            case _1_8: return "Connectathon 14 (San Antonio) version.";
             case _1_8_0: return "FHIR STU3 Candidate + Connectathon 14 (San Antonio).";
+            case _3_0: return "STU3 version.";
             case _3_0_0: return "FHIR Release 3 (STU).";
             case _3_0_1: return "FHIR Release 3 (STU) with 1 technical errata.";
             case _3_0_2: return "FHIR Release 3 (STU) with 2 technical errata.";
-            case _3_3_0: return "R4 Ballot #1.";
-            case _3_5_0: return "R4 Ballot #2.";
+            case _3_3: return "R4 Ballot #1 version.";
+            case _3_3_0: return "R4 Ballot #1 + Connectaton 18 (Cologne).";
+            case _3_5: return "R4 Ballot #2 version.";
+            case _3_5_0: return "R4 Ballot #2 + Connectathon 19 (Baltimore).";
+            case _4_0: return "R4 version.";
             case _4_0_0: return "FHIR Release 4 (Normative + STU).";
             case _4_0_1: return "FHIR Release 4 (Normative + STU) with 1 technical errata.";
-            case _4_1_0: return "Interim Version.";
-            case _4_2_0: return "R5 Preview #1.";
-            case _4_3_0SNAPSHOT1: return "R4B Snapshot #1.";
-            case _4_3_0CIBUILD: return "R4B Rolling CI-Build.";
-            case _4_3_0: return "FHIR Release 4B";
-            case _4_4_0: return "R5 Preview #2.";
-            case _4_5_0: return "R5 Preview #3.";
-            case _4_6_0: return "R5 Draft Ballot.";
-            case _5_0_0SNAPSHOT1: return "R5 Snapshot #1.";
-            case _5_0_0CIBUILD: return "R5 Rolling CI-Build.";
+            case _4_1: return "R4B Ballot #1 version.";
+            case _4_1_0: return "R4B Ballot #1 + Connectathon 27 (Virtual).";
+            case _4_2: return "R5 Preview #1 version.";
+            case _4_2_0: return "R5 Preview #1 + Connectathon 23 (Sydney).";
+            case _4_3: return "R4B version.";
+            case _4_3_0: return "FHIR Release 4B (Normative + STU).";
+            case _4_4: return "R5 Preview #2 version.";
+            case _4_4_0: return "R5 Preview #2 + Connectathon 24 (Virtual).";
+            case _4_5: return "R5 Preview #3 version.";
+            case _4_5_0: return "R5 Preview #3 + Connectathon 25 (Virtual).";
+            case _4_6: return "R5 Draft Ballot version.";
+            case _4_6_0: return "R5 Draft Ballot + Connectathon 27 (Virtual).";
+            case _4_3_0CIBUILD: return "R4B CIBuild";
+            case _4_3_0SNAPSHOT1: return "R4B Snapshot1";
+            case _5_0: return "R5";
+            case _5_0_0: return "R5";
+            case _5_0_0CIBUILD: return "R5 CIBuild";
+            case _5_0_0SNAPSHOT1: return "R5 Snapshot1";
             case NULL: return null;
             default: return "?";
           }
@@ -7069,35 +6997,55 @@ The primary difference between a medicationusage and a medicationadministration 
             case _0_05: return "0.05";
             case _0_06: return "0.06";
             case _0_11: return "0.11";
+            case _0_0: return "0.0";
             case _0_0_80: return "0.0.80";
             case _0_0_81: return "0.0.81";
             case _0_0_82: return "0.0.82";
+            case _0_4: return "0.4";
             case _0_4_0: return "0.4.0";
+            case _0_5: return "0.5";
             case _0_5_0: return "0.5.0";
+            case _1_0: return "1.0";
             case _1_0_0: return "1.0.0";
             case _1_0_1: return "1.0.1";
             case _1_0_2: return "1.0.2";
+            case _1_1: return "1.1";
             case _1_1_0: return "1.1.0";
+            case _1_4: return "1.4";
             case _1_4_0: return "1.4.0";
+            case _1_6: return "1.6";
             case _1_6_0: return "1.6.0";
+            case _1_8: return "1.8";
             case _1_8_0: return "1.8.0";
+            case _3_0: return "3.0";
             case _3_0_0: return "3.0.0";
             case _3_0_1: return "3.0.1";
             case _3_0_2: return "3.0.2";
+            case _3_3: return "3.3";
             case _3_3_0: return "3.3.0";
+            case _3_5: return "3.5";
             case _3_5_0: return "3.5.0";
+            case _4_0: return "4.0";
             case _4_0_0: return "4.0.0";
             case _4_0_1: return "4.0.1";
+            case _4_1: return "4.1";
             case _4_1_0: return "4.1.0";
+            case _4_2: return "4.2";
             case _4_2_0: return "4.2.0";
-            case _4_3_0SNAPSHOT1: return "4.3.0-snapshot1";
-            case _4_3_0CIBUILD: return "4.3.0-cibuild";
+            case _4_3: return "4.3";
             case _4_3_0: return "4.3.0";
+            case _4_4: return "4.4";
             case _4_4_0: return "4.4.0";
+            case _4_5: return "4.5";
             case _4_5_0: return "4.5.0";
+            case _4_6: return "4.6";
             case _4_6_0: return "4.6.0";
-            case _5_0_0SNAPSHOT1: return "5.0.0-snapshot1";
+            case _4_3_0CIBUILD: return "4.3.0-cibuild";
+            case _4_3_0SNAPSHOT1: return "4.3.0-snapshot1";
+            case _5_0: return "5.0";
+            case _5_0_0: return "5.0.0";
             case _5_0_0CIBUILD: return "5.0.0-cibuild";
+            case _5_0_0SNAPSHOT1: return "5.0.0-snapshot1";
             case NULL: return null;
             default: return "?";
           }
@@ -7114,51 +7062,51 @@ public String toCode(int len) {
        public static boolean isValidCode(String codeString) {
           if (codeString == null || "".equals(codeString))
               return false;
-          if ("0.01".equals(codeString))
-            return true;
-          if ("0.05".equals(codeString))
-            return true;
-          if ("0.06".equals(codeString))
-            return true;
-          if ("0.11".equals(codeString))
-            return true;
-          if ("0.0.80".equals(codeString))
-            return true;
-          if ("0.0.81".equals(codeString))
-            return true;
-          if ("0.0.82".equals(codeString))
-            return true;
-          if ("0.4.0".equals(codeString))
-            return true;
-          if ("0.5.0".equals(codeString))
-            return true;
-          if ("1.0.0".equals(codeString))
-            return true;
-          if ("1.0.1".equals(codeString))
-            return true;
-          if ("1.0.2".equals(codeString))
-            return true;
-          if ("1.1.0".equals(codeString))
-            return true;
-          if ("1.4.0".equals(codeString))
-            return true;
-          if ("1.6.0".equals(codeString))
-            return true;
-          if ("1.8.0".equals(codeString))
-            return true;
-          if ("3.0.0".equals(codeString))
-            return true;
-          if ("3.0.1".equals(codeString))
-            return true;
-          if ("3.3.0".equals(codeString))
-            return true;
-          if ("3.5.0".equals(codeString))
-            return true;
-          if ("4.0.0".equals(codeString))
-            return true;
-          if ("4.2.0".equals(codeString))
-            return true;
-          return false;
+      if ("0.01".equals(codeString))
+        return true;
+      if ("0.05".equals(codeString))
+        return true;
+      if ("0.06".equals(codeString))
+        return true;
+      if ("0.11".equals(codeString))
+        return true;
+      if ("0.0.80".equals(codeString))
+        return true;
+      if ("0.0.81".equals(codeString))
+        return true;
+      if ("0.0.82".equals(codeString))
+        return true;
+      if ("0.4.0".equals(codeString))
+        return true;
+      if ("0.5.0".equals(codeString))
+        return true;
+      if ("1.0.0".equals(codeString))
+        return true;
+      if ("1.0.1".equals(codeString))
+        return true;
+      if ("1.0.2".equals(codeString))
+        return true;
+      if ("1.1.0".equals(codeString))
+        return true;
+      if ("1.4.0".equals(codeString))
+        return true;
+      if ("1.6.0".equals(codeString))
+        return true;
+      if ("1.8.0".equals(codeString))
+        return true;
+      if ("3.0.0".equals(codeString))
+        return true;
+      if ("3.0.1".equals(codeString))
+        return true;
+      if ("3.3.0".equals(codeString))
+        return true;
+      if ("3.5.0".equals(codeString))
+        return true;
+      if ("4.0.0".equals(codeString))
+        return true;
+      if ("4.2.0".equals(codeString))
+        return true;
+      return false;
       }
 
         @Override
@@ -7168,7 +7116,7 @@ public String toCode(int len) {
         
         
         public boolean isR4B() {
-          return toCode().startsWith("4.1") || toCode().startsWith("4.3");
+          return toCode().startsWith("4.1");
         }
         
 // end addition
@@ -7179,73 +7127,113 @@ public String toCode(int len) {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
-            if ("0.01".equals(codeString))
-              return FHIRVersion._0_01;
-            if ("0.05".equals(codeString))
-              return FHIRVersion._0_05;
-            if ("0.06".equals(codeString))
-              return FHIRVersion._0_06;
-            if ("0.11".equals(codeString))
-              return FHIRVersion._0_11;
-            if ("0.0.80".equals(codeString))
-              return FHIRVersion._0_0_80;
-            if ("0.0.81".equals(codeString))
-              return FHIRVersion._0_0_81;
-            if ("0.0.82".equals(codeString))
-              return FHIRVersion._0_0_82;
-            if ("0.4.0".equals(codeString))
-              return FHIRVersion._0_4_0;
-            if ("0.5.0".equals(codeString))
-              return FHIRVersion._0_5_0;
-            if ("1.0.0".equals(codeString))
-              return FHIRVersion._1_0_0;
-            if ("1.0.1".equals(codeString))
-              return FHIRVersion._1_0_1;
-            if ("1.0.2".equals(codeString))
-              return FHIRVersion._1_0_2;
-            if ("1.1.0".equals(codeString))
-              return FHIRVersion._1_1_0;
-            if ("1.4.0".equals(codeString))
-              return FHIRVersion._1_4_0;
-            if ("1.6.0".equals(codeString))
-              return FHIRVersion._1_6_0;
-            if ("1.8.0".equals(codeString))
-              return FHIRVersion._1_8_0;
-            if ("3.0.0".equals(codeString))
-              return FHIRVersion._3_0_0;
-            if ("3.0.1".equals(codeString))
-              return FHIRVersion._3_0_1;
-            if ("3.0.2".equals(codeString))
-              return FHIRVersion._3_0_2;
-            if ("3.3.0".equals(codeString))
-              return FHIRVersion._3_3_0;
-            if ("3.5.0".equals(codeString))
-              return FHIRVersion._3_5_0;
-            if ("4.0.0".equals(codeString))
-              return FHIRVersion._4_0_0;
-            if ("4.0.1".equals(codeString))
-              return FHIRVersion._4_0_1;
-            if ("4.1.0".equals(codeString))
-              return FHIRVersion._4_1_0;
-            if ("4.2.0".equals(codeString))
-              return FHIRVersion._4_2_0;
-            if ("4.3.0-snapshot1".equalsIgnoreCase(codeString))
-              return FHIRVersion._4_3_0SNAPSHOT1;
-            if ("4.3.0-cibuild".equalsIgnoreCase(codeString))
-              return FHIRVersion._4_3_0CIBUILD;
-            if ("4.3.0".equalsIgnoreCase(codeString))
-              return FHIRVersion._4_3_0;
-            if ("4.4.0".equals(codeString))
-              return FHIRVersion._4_4_0;
-            if ("4.5.0".equals(codeString))
-              return FHIRVersion._4_5_0;
-            if ("4.6.0".equals(codeString))
-              return FHIRVersion._4_6_0;
-            if ("5.0.0-snapshot1".equalsIgnoreCase(codeString))
-              return FHIRVersion._5_0_0SNAPSHOT1;
-            if ("5.0.0-cibuild".equalsIgnoreCase(codeString))
-              return FHIRVersion._5_0_0CIBUILD;
-            throw new IllegalArgumentException("Unknown FHIRVersion code '"+codeString+"'");
+        if ("0.01".equals(codeString))
+          return FHIRVersion._0_01;
+        if ("0.05".equals(codeString))
+          return FHIRVersion._0_05;
+        if ("0.06".equals(codeString))
+          return FHIRVersion._0_06;
+        if ("0.11".equals(codeString))
+          return FHIRVersion._0_11;
+        if ("0.0".equals(codeString))
+          return FHIRVersion._0_0;
+        if ("0.0.80".equals(codeString))
+          return FHIRVersion._0_0_80;
+        if ("0.0.81".equals(codeString))
+          return FHIRVersion._0_0_81;
+        if ("0.0.82".equals(codeString))
+          return FHIRVersion._0_0_82;
+        if ("0.4".equals(codeString))
+          return FHIRVersion._0_4;
+        if ("0.4.0".equals(codeString))
+          return FHIRVersion._0_4_0;
+        if ("0.5".equals(codeString))
+          return FHIRVersion._0_5;
+        if ("0.5.0".equals(codeString))
+          return FHIRVersion._0_5_0;
+        if ("1.0".equals(codeString))
+          return FHIRVersion._1_0;
+        if ("1.0.0".equals(codeString))
+          return FHIRVersion._1_0_0;
+        if ("1.0.1".equals(codeString))
+          return FHIRVersion._1_0_1;
+        if ("1.0.2".equals(codeString))
+          return FHIRVersion._1_0_2;
+        if ("1.1".equals(codeString))
+          return FHIRVersion._1_1;
+        if ("1.1.0".equals(codeString))
+          return FHIRVersion._1_1_0;
+        if ("1.4".equals(codeString))
+          return FHIRVersion._1_4;
+        if ("1.4.0".equals(codeString))
+          return FHIRVersion._1_4_0;
+        if ("1.6".equals(codeString))
+          return FHIRVersion._1_6;
+        if ("1.6.0".equals(codeString))
+          return FHIRVersion._1_6_0;
+        if ("1.8".equals(codeString))
+          return FHIRVersion._1_8;
+        if ("1.8.0".equals(codeString))
+          return FHIRVersion._1_8_0;
+        if ("3.0".equals(codeString))
+          return FHIRVersion._3_0;
+        if ("3.0.0".equals(codeString))
+          return FHIRVersion._3_0_0;
+        if ("3.0.1".equals(codeString))
+          return FHIRVersion._3_0_1;
+        if ("3.0.2".equals(codeString))
+          return FHIRVersion._3_0_2;
+        if ("3.3".equals(codeString))
+          return FHIRVersion._3_3;
+        if ("3.3.0".equals(codeString))
+          return FHIRVersion._3_3_0;
+        if ("3.5".equals(codeString))
+          return FHIRVersion._3_5;
+        if ("3.5.0".equals(codeString))
+          return FHIRVersion._3_5_0;
+        if ("4.0".equals(codeString))
+          return FHIRVersion._4_0;
+        if ("4.0.0".equals(codeString))
+          return FHIRVersion._4_0_0;
+        if ("4.0.1".equals(codeString))
+          return FHIRVersion._4_0_1;
+        if ("4.1".equals(codeString))
+          return FHIRVersion._4_1;
+        if ("4.1.0".equals(codeString))
+          return FHIRVersion._4_1_0;
+        if ("4.2".equals(codeString))
+          return FHIRVersion._4_2;
+        if ("4.2.0".equals(codeString))
+          return FHIRVersion._4_2_0;
+        if ("4.3".equals(codeString))
+          return FHIRVersion._4_3;
+        if ("4.3.0".equals(codeString))
+          return FHIRVersion._4_3_0;
+        if ("4.4".equals(codeString))
+          return FHIRVersion._4_4;
+        if ("4.4.0".equals(codeString))
+          return FHIRVersion._4_4_0;
+        if ("4.5".equals(codeString))
+          return FHIRVersion._4_5;
+        if ("4.5.0".equals(codeString))
+          return FHIRVersion._4_5_0;
+        if ("4.6".equals(codeString))
+          return FHIRVersion._4_6;
+        if ("4.6.0".equals(codeString))
+          return FHIRVersion._4_6_0;
+        if ("4.3.0-cibuild".equals(codeString))
+          return FHIRVersion._4_3_0CIBUILD;
+        if ("4.3.0-snapshot1".equals(codeString))
+          return FHIRVersion._4_3_0SNAPSHOT1;
+        if ("5.0".equals(codeString))
+          return FHIRVersion._5_0;
+        if ("5.0.0".equals(codeString))
+          return FHIRVersion._5_0_0;
+        if ("5.0.0-cibuild".equals(codeString))
+          return FHIRVersion._5_0_0CIBUILD;
+        if ("5.0.0-snapshot1".equals(codeString))
+          return FHIRVersion._5_0_0SNAPSHOT1;
+        throw new IllegalArgumentException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public Enumeration<FHIRVersion> fromType(Base code) throws FHIRException {
           if (code == null)
@@ -7255,73 +7243,113 @@ public String toCode(int len) {
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
-            if ("0.01".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._0_01);
-            if ("0.05".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._0_05);
-            if ("0.06".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._0_06);
-            if ("0.11".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._0_11);
-            if ("0.0.80".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_80);
-            if ("0.0.81".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_81);
-            if ("0.0.82".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_82);
-            if ("0.4.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._0_4_0);
-            if ("0.5.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._0_5_0);
-            if ("1.0.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_0);
-            if ("1.0.1".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_1);
-            if ("1.0.2".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_2);
-            if ("1.1.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._1_1_0);
-            if ("1.4.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._1_4_0);
-            if ("1.6.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._1_6_0);
-            if ("1.8.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._1_8_0);
-            if ("3.0.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_0);
-            if ("3.0.1".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_1);
-            if ("3.0.2".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_2);
-            if ("3.3.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._3_3_0);
-            if ("3.5.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._3_5_0);
-            if ("4.0.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0_0);
-            if ("4.0.1".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0_1);
-            if ("4.1.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._4_1_0);
-            if ("4.2.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._4_2_0);
-            if ("4.3.0-snapshot1".equalsIgnoreCase(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0SNAPSHOT1);
-            if ("4.3.0-cibuild".equalsIgnoreCase(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0CIBUILD);
-            if ("4.3.0".equalsIgnoreCase(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0);
-            if ("4.4.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._4_4_0);
-            if ("4.5.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._4_5_0);
-            if ("4.6.0".equals(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._4_6_0);
-            if ("5.0.0-snapshot1".equalsIgnoreCase(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0SNAPSHOT1);
-            if ("5.0.0-cibuild".equalsIgnoreCase(codeString))
-              return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0CIBUILD);
-            throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
+        if ("0.01".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_01);
+        if ("0.05".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_05);
+        if ("0.06".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_06);
+        if ("0.11".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_11);
+        if ("0.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0);
+        if ("0.0.80".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_80);
+        if ("0.0.81".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_81);
+        if ("0.0.82".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_82);
+        if ("0.4".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_4);
+        if ("0.4.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_4_0);
+        if ("0.5".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_5);
+        if ("0.5.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_5_0);
+        if ("1.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0);
+        if ("1.0.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_0);
+        if ("1.0.1".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_1);
+        if ("1.0.2".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_2);
+        if ("1.1".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_1);
+        if ("1.1.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_1_0);
+        if ("1.4".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_4);
+        if ("1.4.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_4_0);
+        if ("1.6".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_6);
+        if ("1.6.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_6_0);
+        if ("1.8".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_8);
+        if ("1.8.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_8_0);
+        if ("3.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0);
+        if ("3.0.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_0);
+        if ("3.0.1".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_1);
+        if ("3.0.2".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0_2);
+        if ("3.3".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_3);
+        if ("3.3.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_3_0);
+        if ("3.5".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_5);
+        if ("3.5.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._3_5_0);
+        if ("4.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0);
+        if ("4.0.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0_0);
+        if ("4.0.1".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_0_1);
+        if ("4.1".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_1);
+        if ("4.1.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_1_0);
+        if ("4.2".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_2);
+        if ("4.2.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_2_0);
+        if ("4.3".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3);
+        if ("4.3.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0);
+        if ("4.4".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_4);
+        if ("4.4.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_4_0);
+        if ("4.5".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_5);
+        if ("4.5.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_5_0);
+        if ("4.6".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_6);
+        if ("4.6.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_6_0);
+        if ("4.3.0-cibuild".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0CIBUILD);
+        if ("4.3.0-snapshot1".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_3_0SNAPSHOT1);
+        if ("5.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0);
+        if ("5.0.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0);
+        if ("5.0.0-cibuild".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0CIBUILD);
+        if ("5.0.0-snapshot1".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0SNAPSHOT1);
+        throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
     public String toCode(FHIRVersion code) {
       if (code == FHIRVersion._0_01)
@@ -7332,64 +7360,104 @@ public String toCode(int len) {
         return "0.06";
       if (code == FHIRVersion._0_11)
         return "0.11";
+      if (code == FHIRVersion._0_0)
+        return "0.0";
       if (code == FHIRVersion._0_0_80)
         return "0.0.80";
       if (code == FHIRVersion._0_0_81)
         return "0.0.81";
       if (code == FHIRVersion._0_0_82)
         return "0.0.82";
+      if (code == FHIRVersion._0_4)
+        return "0.4";
       if (code == FHIRVersion._0_4_0)
         return "0.4.0";
+      if (code == FHIRVersion._0_5)
+        return "0.5";
       if (code == FHIRVersion._0_5_0)
         return "0.5.0";
+      if (code == FHIRVersion._1_0)
+        return "1.0";
       if (code == FHIRVersion._1_0_0)
         return "1.0.0";
       if (code == FHIRVersion._1_0_1)
         return "1.0.1";
       if (code == FHIRVersion._1_0_2)
         return "1.0.2";
+      if (code == FHIRVersion._1_1)
+        return "1.1";
       if (code == FHIRVersion._1_1_0)
         return "1.1.0";
+      if (code == FHIRVersion._1_4)
+        return "1.4";
       if (code == FHIRVersion._1_4_0)
         return "1.4.0";
+      if (code == FHIRVersion._1_6)
+        return "1.6";
       if (code == FHIRVersion._1_6_0)
         return "1.6.0";
+      if (code == FHIRVersion._1_8)
+        return "1.8";
       if (code == FHIRVersion._1_8_0)
         return "1.8.0";
+      if (code == FHIRVersion._3_0)
+        return "3.0";
       if (code == FHIRVersion._3_0_0)
         return "3.0.0";
       if (code == FHIRVersion._3_0_1)
         return "3.0.1";
       if (code == FHIRVersion._3_0_2)
         return "3.0.2";
+      if (code == FHIRVersion._3_3)
+        return "3.3";
       if (code == FHIRVersion._3_3_0)
         return "3.3.0";
+      if (code == FHIRVersion._3_5)
+        return "3.5";
       if (code == FHIRVersion._3_5_0)
         return "3.5.0";
+      if (code == FHIRVersion._4_0)
+        return "4.0";
       if (code == FHIRVersion._4_0_0)
         return "4.0.0";
       if (code == FHIRVersion._4_0_1)
         return "4.0.1";
+      if (code == FHIRVersion._4_1)
+        return "4.1";
       if (code == FHIRVersion._4_1_0)
         return "4.1.0";
+      if (code == FHIRVersion._4_2)
+        return "4.2";
       if (code == FHIRVersion._4_2_0)
         return "4.2.0";
-      if (code == FHIRVersion._4_3_0SNAPSHOT1)
-        return "4.3.0-snapshot1";
-      if (code == FHIRVersion._4_3_0CIBUILD)
-        return "4.3.0-cibuild";
+      if (code == FHIRVersion._4_3)
+        return "4.3";
       if (code == FHIRVersion._4_3_0)
         return "4.3.0";
+      if (code == FHIRVersion._4_4)
+        return "4.4";
       if (code == FHIRVersion._4_4_0)
         return "4.4.0";
+      if (code == FHIRVersion._4_5)
+        return "4.5";
       if (code == FHIRVersion._4_5_0)
         return "4.5.0";
+      if (code == FHIRVersion._4_6)
+        return "4.6";
       if (code == FHIRVersion._4_6_0)
         return "4.6.0";
-      if (code == FHIRVersion._5_0_0SNAPSHOT1)
-        return "5.0.0-snapshot1";
+      if (code == FHIRVersion._4_3_0CIBUILD)
+        return "4.3.0-cibuild";
+      if (code == FHIRVersion._4_3_0SNAPSHOT1)
+        return "4.3.0-snapshot1";
+      if (code == FHIRVersion._5_0)
+        return "5.0";
+      if (code == FHIRVersion._5_0_0)
+        return "5.0.0";
       if (code == FHIRVersion._5_0_0CIBUILD)
         return "5.0.0-cibuild";
+      if (code == FHIRVersion._5_0_0SNAPSHOT1)
+        return "5.0.0-snapshot1";
       return "?";
       }
     public String toSystem(FHIRVersion code) {
@@ -9506,6 +9574,10 @@ public String toCode(int len) {
          */
         APPOINTMENTRESPONSE, 
         /**
+         * This Resource provides one or more comments, classifiers or ratings about a Resource and supports attribution and rights management metadata for the added content.
+         */
+        ARTIFACTASSESSMENT, 
+        /**
          * A record of an event relevant for purposes such as operations, privacy, security, maintenance, and performance analysis.
          */
         AUDITEVENT, 
@@ -9542,14 +9614,6 @@ public String toCode(int len) {
          */
         COMPARTMENTDEFINITION, 
         /**
-         * A statement of relationships from one set of concepts to one or more other concepts - either concepts in code systems, or data element/data element concepts, or classes in class models.
-         */
-        CONCEPTMAP, 
-        /**
-         * A statement of relationships from one set of concepts to one or more other concepts - either concepts in code systems, or data element/data element concepts, or classes in class models.
-         */
-        CONCEPTMAP2, 
-        /**
          * Example of workflow instance.
          */
         EXAMPLESCENARIO, 
@@ -9574,10 +9638,6 @@ public String toCode(int len) {
          */
         ACTIVITYDEFINITION, 
         /**
-         * This Resource provides one or more comments, classifiers or ratings about a Resource and supports attribution and rights management metadata for the added content.
-         */
-        ARTIFACTASSESSMENT, 
-        /**
          * The ChargeItemDefinition resource provides the properties that apply to the (billing) codes necessary to calculate costs and prices. The properties may differ largely depending on type and realm, therefore this resource gives only a rough structure and requires profiling for each type of billing code system.
          */
         CHARGEITEMDEFINITION, 
@@ -9585,6 +9645,10 @@ public String toCode(int len) {
          * The Citation Resource enables reference to any knowledge artifact for purposes of identification and attribution. The Citation Resource supports existing reference structures and developing publication practices such as versioning, expressing complex contributorship roles, and referencing computable resources.
          */
         CITATION, 
+        /**
+         * A statement of relationships from one set of concepts to one or more other concepts - either concepts in code systems, or data element/data element concepts, or classes in class models.
+         */
+        CONCEPTMAP, 
         /**
          * A definition of a condition and information relevant to managing it.
          */
@@ -9614,6 +9678,10 @@ public String toCode(int len) {
          */
         MEASURE, 
         /**
+         * A curated namespace that issues unique symbols within that namespace for the identification of concepts, people, devices, etc.  Represents a "System" used within the Identifier and Coding data types.
+         */
+        NAMINGSYSTEM, 
+        /**
          * This resource allows for the definition of various types of plans as a sharable, consumable, and executable artifact. The resource is general enough to support the description of a broad range of clinical and non-clinical artifacts such as clinical decision support rules, order sets, protocols, and drug quality specifications.
          */
         PLANDEFINITION, 
@@ -9621,10 +9689,6 @@ public String toCode(int len) {
          * A structured set of questions intended to guide the collection of answers from end-users. Questionnaires provide detailed control over order, presentation, phraseology and grouping to allow coherent, consistent data collection.
          */
         QUESTIONNAIRE, 
-        /**
-         * A curated namespace that issues unique symbols within that namespace for the identification of concepts, people, devices, etc.  Represents a "System" used within the Identifier and Coding data types.
-         */
-        NAMINGSYSTEM, 
         /**
          * A formal computable definition of an operation (on the RESTful interface) or a named query (using the search interaction).
          */
@@ -9641,6 +9705,10 @@ public String toCode(int len) {
          * A Map of relationships between 2 structures that can be used to transform data.
          */
         STRUCTUREMAP, 
+        /**
+         * Describes a stream of resource state changes identified by trigger criteria and annotated with labels useful to filter projections from this topic.
+         */
+        SUBSCRIPTIONTOPIC, 
         /**
          * A TerminologyCapabilities resource documents a set of capabilities (behaviors) of a FHIR Terminology Server that may be used as a statement of actual server functionality or a statement of required or desired server implementation.
          */
@@ -9681,10 +9749,6 @@ public String toCode(int len) {
          * A single issue - either an indication, contraindication, interaction or an undesirable effect for a medicinal product, medication, device or procedure.
          */
         CLINICALUSEDEFINITION, 
-        /**
-         * A single issue - either an indication, contraindication, interaction or an undesirable effect for a medicinal product, medication, device or procedure.
-         */
-        CLINICALUSEISSUE, 
         /**
          * A clinical or business level record of information being transmitted or shared; e.g. an alert that was sent to a responsible provider, a public health agency communication to a provider/reporter in response to a case report for a reportable condition.
          */
@@ -9766,7 +9830,7 @@ public String toCode(int len) {
          */
         ENCOUNTER, 
         /**
-         * The technical details of an endpoint that can be used for electronic services, such as for web services providing XDS.b or a REST endpoint for another FHIR server. This may include any security context information.
+         * The technical details of an endpoint that can be used for electronic services, such as for web services providing XDS.b, a REST endpoint for another FHIR server, or a s/Mime email address. This may include any security context information.
          */
         ENDPOINT, 
         /**
@@ -9793,6 +9857,10 @@ public String toCode(int len) {
          * Prospective warnings of potential issues when providing care to the patient.
          */
         FLAG, 
+        /**
+         * This resource describes a product or service that is available through a program and includes the conditions and constraints of availability.  All of the information in this resource is specific to the inclusion of the item in the formulary and is not inherent to the item itself.
+         */
+        FORMULARYITEM, 
         /**
          * Describes the intended objective(s) for a patient, group or organization care, for example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, etc.
          */
@@ -9892,7 +9960,7 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         MEDICATIONUSAGE, 
         /**
-         * Detailed definition of a medicinal product, typically for uses other than direct patient care (e.g. regulatory use, drug catalogs).
+         * Detailed definition of a medicinal product, typically for uses other than direct patient care (e.g. regulatory use, drug catalogs, to support prescribing, adverse events management etc.).
          */
         MEDICINALPRODUCTDEFINITION, 
         /**
@@ -9900,11 +9968,11 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         MESSAGEHEADER, 
         /**
-         * Raw data describing a biological sequence.
+         * Representation of a molecular sequence.
          */
         MOLECULARSEQUENCE, 
         /**
-         * A record of food or fluid that is being consumed by a patient.   A NutritionIntake may indicate that the patient may be consuming the food or fluid now or has consumed the food or fluid in the past.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay or through an app that tracks food or fluids consumed.   The consumption information may come from sources such as the patient's memory, from a nutrition label,  or from a clinician documenting observed intake.
+         * A record of food or fluid that is being consumed by a patient.  A NutritionIntake may indicate that the patient may be consuming the food or fluid now or has consumed the food or fluid in the past.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay or through an app that tracks food or fluids consumed.   The consumption information may come from sources such as the patient's memory, from a nutrition label,  or from a clinician documenting observed intake.
          */
         NUTRITIONINTAKE, 
         /**
@@ -9912,7 +9980,7 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         NUTRITIONORDER, 
         /**
-         * A food or fluid product that is consumed by patients.
+         * A food or supplement that is consumed by patients.
          */
         NUTRITIONPRODUCT, 
         /**
@@ -9984,7 +10052,7 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         REGULATEDAUTHORIZATION, 
         /**
-         * Information about a person that is involved in the care for a patient, but who is not the target of healthcare, nor has a formal responsibility in the care process.
+         * Information about a person that is involved in a patient's health or the care for a patient, but who is not the target of healthcare, nor has a formal responsibility in the care process.
          */
         RELATEDPERSON, 
         /**
@@ -10032,10 +10100,6 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         SUBSCRIPTIONSTATUS, 
         /**
-         * Describes a stream of resource state changes identified by trigger criteria and annotated with labels useful to filter projections from this topic.
-         */
-        SUBSCRIPTIONTOPIC, 
-        /**
          * A homogeneous material with a definite composition.
          */
         SUBSTANCE, 
@@ -10080,6 +10144,10 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         TESTREPORT, 
         /**
+         * Record of transport.
+         */
+        TRANSPORT, 
+        /**
          * Describes validation requirements, source(s), status and dates for one or more elements.
          */
         VERIFICATIONRESULT, 
@@ -10088,7 +10156,7 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         VISIONPRESCRIPTION, 
         /**
-         * This resource is a non-persisted resource used to pass information into and back from an [operation](operations.html). It has no other use, and there is no RESTful endpoint associated with it.
+         * This resource is a non-persisted resource primarily used to pass information into and back from an [operation](operations.html). There is no RESTful endpoint associated with it.
          */
         PARAMETERS, 
         /**
@@ -10118,6 +10186,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return APPOINTMENT;
         if ("AppointmentResponse".equals(codeString))
           return APPOINTMENTRESPONSE;
+        if ("ArtifactAssessment".equals(codeString))
+          return ARTIFACTASSESSMENT;
         if ("AuditEvent".equals(codeString))
           return AUDITEVENT;
         if ("Basic".equals(codeString))
@@ -10136,10 +10206,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return CODESYSTEM;
         if ("CompartmentDefinition".equals(codeString))
           return COMPARTMENTDEFINITION;
-        if ("ConceptMap".equals(codeString))
-          return CONCEPTMAP;
-        if ("ConceptMap2".equals(codeString))
-          return CONCEPTMAP2;
         if ("ExampleScenario".equals(codeString))
           return EXAMPLESCENARIO;
         if ("GraphDefinition".equals(codeString))
@@ -10152,12 +10218,12 @@ The primary difference between a medicationusage and a medicationadministration 
           return METADATARESOURCE;
         if ("ActivityDefinition".equals(codeString))
           return ACTIVITYDEFINITION;
-        if ("ArtifactAssessment".equals(codeString))
-          return ARTIFACTASSESSMENT;
         if ("ChargeItemDefinition".equals(codeString))
           return CHARGEITEMDEFINITION;
         if ("Citation".equals(codeString))
           return CITATION;
+        if ("ConceptMap".equals(codeString))
+          return CONCEPTMAP;
         if ("ConditionDefinition".equals(codeString))
           return CONDITIONDEFINITION;
         if ("EventDefinition".equals(codeString))
@@ -10172,12 +10238,12 @@ The primary difference between a medicationusage and a medicationadministration 
           return LIBRARY;
         if ("Measure".equals(codeString))
           return MEASURE;
+        if ("NamingSystem".equals(codeString))
+          return NAMINGSYSTEM;
         if ("PlanDefinition".equals(codeString))
           return PLANDEFINITION;
         if ("Questionnaire".equals(codeString))
           return QUESTIONNAIRE;
-        if ("NamingSystem".equals(codeString))
-          return NAMINGSYSTEM;
         if ("OperationDefinition".equals(codeString))
           return OPERATIONDEFINITION;
         if ("SearchParameter".equals(codeString))
@@ -10186,6 +10252,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return STRUCTUREDEFINITION;
         if ("StructureMap".equals(codeString))
           return STRUCTUREMAP;
+        if ("SubscriptionTopic".equals(codeString))
+          return SUBSCRIPTIONTOPIC;
         if ("TerminologyCapabilities".equals(codeString))
           return TERMINOLOGYCAPABILITIES;
         if ("TestScript".equals(codeString))
@@ -10206,8 +10274,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return CLINICALIMPRESSION;
         if ("ClinicalUseDefinition".equals(codeString))
           return CLINICALUSEDEFINITION;
-        if ("ClinicalUseIssue".equals(codeString))
-          return CLINICALUSEISSUE;
         if ("Communication".equals(codeString))
           return COMMUNICATION;
         if ("CommunicationRequest".equals(codeString))
@@ -10262,6 +10328,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return FAMILYMEMBERHISTORY;
         if ("Flag".equals(codeString))
           return FLAG;
+        if ("FormularyItem".equals(codeString))
+          return FORMULARYITEM;
         if ("Goal".equals(codeString))
           return GOAL;
         if ("Group".equals(codeString))
@@ -10380,8 +10448,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return SUBSCRIPTION;
         if ("SubscriptionStatus".equals(codeString))
           return SUBSCRIPTIONSTATUS;
-        if ("SubscriptionTopic".equals(codeString))
-          return SUBSCRIPTIONTOPIC;
         if ("Substance".equals(codeString))
           return SUBSTANCE;
         if ("SubstanceDefinition".equals(codeString))
@@ -10404,6 +10470,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return TASK;
         if ("TestReport".equals(codeString))
           return TESTREPORT;
+        if ("Transport".equals(codeString))
+          return TRANSPORT;
         if ("VerificationResult".equals(codeString))
           return VERIFICATIONRESULT;
         if ("VisionPrescription".equals(codeString))
@@ -10424,6 +10492,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ALLERGYINTOLERANCE: return "AllergyIntolerance";
             case APPOINTMENT: return "Appointment";
             case APPOINTMENTRESPONSE: return "AppointmentResponse";
+            case ARTIFACTASSESSMENT: return "ArtifactAssessment";
             case AUDITEVENT: return "AuditEvent";
             case BASIC: return "Basic";
             case BIOLOGICALLYDERIVEDPRODUCT: return "BiologicallyDerivedProduct";
@@ -10433,17 +10502,15 @@ The primary difference between a medicationusage and a medicationadministration 
             case CAPABILITYSTATEMENT2: return "CapabilityStatement2";
             case CODESYSTEM: return "CodeSystem";
             case COMPARTMENTDEFINITION: return "CompartmentDefinition";
-            case CONCEPTMAP: return "ConceptMap";
-            case CONCEPTMAP2: return "ConceptMap2";
             case EXAMPLESCENARIO: return "ExampleScenario";
             case GRAPHDEFINITION: return "GraphDefinition";
             case IMPLEMENTATIONGUIDE: return "ImplementationGuide";
             case MESSAGEDEFINITION: return "MessageDefinition";
             case METADATARESOURCE: return "MetadataResource";
             case ACTIVITYDEFINITION: return "ActivityDefinition";
-            case ARTIFACTASSESSMENT: return "ArtifactAssessment";
             case CHARGEITEMDEFINITION: return "ChargeItemDefinition";
             case CITATION: return "Citation";
+            case CONCEPTMAP: return "ConceptMap";
             case CONDITIONDEFINITION: return "ConditionDefinition";
             case EVENTDEFINITION: return "EventDefinition";
             case EVIDENCE: return "Evidence";
@@ -10451,13 +10518,14 @@ The primary difference between a medicationusage and a medicationadministration 
             case EVIDENCEVARIABLE: return "EvidenceVariable";
             case LIBRARY: return "Library";
             case MEASURE: return "Measure";
+            case NAMINGSYSTEM: return "NamingSystem";
             case PLANDEFINITION: return "PlanDefinition";
             case QUESTIONNAIRE: return "Questionnaire";
-            case NAMINGSYSTEM: return "NamingSystem";
             case OPERATIONDEFINITION: return "OperationDefinition";
             case SEARCHPARAMETER: return "SearchParameter";
             case STRUCTUREDEFINITION: return "StructureDefinition";
             case STRUCTUREMAP: return "StructureMap";
+            case SUBSCRIPTIONTOPIC: return "SubscriptionTopic";
             case TERMINOLOGYCAPABILITIES: return "TerminologyCapabilities";
             case TESTSCRIPT: return "TestScript";
             case VALUESET: return "ValueSet";
@@ -10468,7 +10536,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case CLAIMRESPONSE: return "ClaimResponse";
             case CLINICALIMPRESSION: return "ClinicalImpression";
             case CLINICALUSEDEFINITION: return "ClinicalUseDefinition";
-            case CLINICALUSEISSUE: return "ClinicalUseIssue";
             case COMMUNICATION: return "Communication";
             case COMMUNICATIONREQUEST: return "CommunicationRequest";
             case COMPOSITION: return "Composition";
@@ -10496,6 +10563,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case EXPLANATIONOFBENEFIT: return "ExplanationOfBenefit";
             case FAMILYMEMBERHISTORY: return "FamilyMemberHistory";
             case FLAG: return "Flag";
+            case FORMULARYITEM: return "FormularyItem";
             case GOAL: return "Goal";
             case GROUP: return "Group";
             case GUIDANCERESPONSE: return "GuidanceResponse";
@@ -10555,7 +10623,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case SPECIMENDEFINITION: return "SpecimenDefinition";
             case SUBSCRIPTION: return "Subscription";
             case SUBSCRIPTIONSTATUS: return "SubscriptionStatus";
-            case SUBSCRIPTIONTOPIC: return "SubscriptionTopic";
             case SUBSTANCE: return "Substance";
             case SUBSTANCEDEFINITION: return "SubstanceDefinition";
             case SUBSTANCENUCLEICACID: return "SubstanceNucleicAcid";
@@ -10567,6 +10634,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case SUPPLYREQUEST: return "SupplyRequest";
             case TASK: return "Task";
             case TESTREPORT: return "TestReport";
+            case TRANSPORT: return "Transport";
             case VERIFICATIONRESULT: return "VerificationResult";
             case VISIONPRESCRIPTION: return "VisionPrescription";
             case PARAMETERS: return "Parameters";
@@ -10586,6 +10654,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ALLERGYINTOLERANCE: return "http://hl7.org/fhir/resource-types";
             case APPOINTMENT: return "http://hl7.org/fhir/resource-types";
             case APPOINTMENTRESPONSE: return "http://hl7.org/fhir/resource-types";
+            case ARTIFACTASSESSMENT: return "http://hl7.org/fhir/resource-types";
             case AUDITEVENT: return "http://hl7.org/fhir/resource-types";
             case BASIC: return "http://hl7.org/fhir/resource-types";
             case BIOLOGICALLYDERIVEDPRODUCT: return "http://hl7.org/fhir/resource-types";
@@ -10595,17 +10664,15 @@ The primary difference between a medicationusage and a medicationadministration 
             case CAPABILITYSTATEMENT2: return "http://hl7.org/fhir/resource-types";
             case CODESYSTEM: return "http://hl7.org/fhir/resource-types";
             case COMPARTMENTDEFINITION: return "http://hl7.org/fhir/resource-types";
-            case CONCEPTMAP: return "http://hl7.org/fhir/resource-types";
-            case CONCEPTMAP2: return "http://hl7.org/fhir/resource-types";
             case EXAMPLESCENARIO: return "http://hl7.org/fhir/resource-types";
             case GRAPHDEFINITION: return "http://hl7.org/fhir/resource-types";
             case IMPLEMENTATIONGUIDE: return "http://hl7.org/fhir/resource-types";
             case MESSAGEDEFINITION: return "http://hl7.org/fhir/resource-types";
             case METADATARESOURCE: return "http://hl7.org/fhir/resource-types";
             case ACTIVITYDEFINITION: return "http://hl7.org/fhir/resource-types";
-            case ARTIFACTASSESSMENT: return "http://hl7.org/fhir/resource-types";
             case CHARGEITEMDEFINITION: return "http://hl7.org/fhir/resource-types";
             case CITATION: return "http://hl7.org/fhir/resource-types";
+            case CONCEPTMAP: return "http://hl7.org/fhir/resource-types";
             case CONDITIONDEFINITION: return "http://hl7.org/fhir/resource-types";
             case EVENTDEFINITION: return "http://hl7.org/fhir/resource-types";
             case EVIDENCE: return "http://hl7.org/fhir/resource-types";
@@ -10613,13 +10680,14 @@ The primary difference between a medicationusage and a medicationadministration 
             case EVIDENCEVARIABLE: return "http://hl7.org/fhir/resource-types";
             case LIBRARY: return "http://hl7.org/fhir/resource-types";
             case MEASURE: return "http://hl7.org/fhir/resource-types";
+            case NAMINGSYSTEM: return "http://hl7.org/fhir/resource-types";
             case PLANDEFINITION: return "http://hl7.org/fhir/resource-types";
             case QUESTIONNAIRE: return "http://hl7.org/fhir/resource-types";
-            case NAMINGSYSTEM: return "http://hl7.org/fhir/resource-types";
             case OPERATIONDEFINITION: return "http://hl7.org/fhir/resource-types";
             case SEARCHPARAMETER: return "http://hl7.org/fhir/resource-types";
             case STRUCTUREDEFINITION: return "http://hl7.org/fhir/resource-types";
             case STRUCTUREMAP: return "http://hl7.org/fhir/resource-types";
+            case SUBSCRIPTIONTOPIC: return "http://hl7.org/fhir/resource-types";
             case TERMINOLOGYCAPABILITIES: return "http://hl7.org/fhir/resource-types";
             case TESTSCRIPT: return "http://hl7.org/fhir/resource-types";
             case VALUESET: return "http://hl7.org/fhir/resource-types";
@@ -10630,7 +10698,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case CLAIMRESPONSE: return "http://hl7.org/fhir/resource-types";
             case CLINICALIMPRESSION: return "http://hl7.org/fhir/resource-types";
             case CLINICALUSEDEFINITION: return "http://hl7.org/fhir/resource-types";
-            case CLINICALUSEISSUE: return "http://hl7.org/fhir/resource-types";
             case COMMUNICATION: return "http://hl7.org/fhir/resource-types";
             case COMMUNICATIONREQUEST: return "http://hl7.org/fhir/resource-types";
             case COMPOSITION: return "http://hl7.org/fhir/resource-types";
@@ -10658,6 +10725,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case EXPLANATIONOFBENEFIT: return "http://hl7.org/fhir/resource-types";
             case FAMILYMEMBERHISTORY: return "http://hl7.org/fhir/resource-types";
             case FLAG: return "http://hl7.org/fhir/resource-types";
+            case FORMULARYITEM: return "http://hl7.org/fhir/resource-types";
             case GOAL: return "http://hl7.org/fhir/resource-types";
             case GROUP: return "http://hl7.org/fhir/resource-types";
             case GUIDANCERESPONSE: return "http://hl7.org/fhir/resource-types";
@@ -10717,7 +10785,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case SPECIMENDEFINITION: return "http://hl7.org/fhir/resource-types";
             case SUBSCRIPTION: return "http://hl7.org/fhir/resource-types";
             case SUBSCRIPTIONSTATUS: return "http://hl7.org/fhir/resource-types";
-            case SUBSCRIPTIONTOPIC: return "http://hl7.org/fhir/resource-types";
             case SUBSTANCE: return "http://hl7.org/fhir/resource-types";
             case SUBSTANCEDEFINITION: return "http://hl7.org/fhir/resource-types";
             case SUBSTANCENUCLEICACID: return "http://hl7.org/fhir/resource-types";
@@ -10729,6 +10796,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case SUPPLYREQUEST: return "http://hl7.org/fhir/resource-types";
             case TASK: return "http://hl7.org/fhir/resource-types";
             case TESTREPORT: return "http://hl7.org/fhir/resource-types";
+            case TRANSPORT: return "http://hl7.org/fhir/resource-types";
             case VERIFICATIONRESULT: return "http://hl7.org/fhir/resource-types";
             case VISIONPRESCRIPTION: return "http://hl7.org/fhir/resource-types";
             case PARAMETERS: return "http://hl7.org/fhir/resource-types";
@@ -10748,6 +10816,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ALLERGYINTOLERANCE: return "Risk of harmful or undesirable, physiological response which is unique to an individual and associated with exposure to a substance.";
             case APPOINTMENT: return "A booking of a healthcare event among patient(s), practitioner(s), related person(s) and/or device(s) for a specific date/time. This may result in one or more Encounter(s).";
             case APPOINTMENTRESPONSE: return "A reply to an appointment request for a patient and/or practitioner(s), such as a confirmation or rejection.";
+            case ARTIFACTASSESSMENT: return "This Resource provides one or more comments, classifiers or ratings about a Resource and supports attribution and rights management metadata for the added content.";
             case AUDITEVENT: return "A record of an event relevant for purposes such as operations, privacy, security, maintenance, and performance analysis.";
             case BASIC: return "Basic is used for handling concepts not yet defined in FHIR, narrative-only resources that don't map to an existing resource, and custom resources not appropriate for inclusion in the FHIR specification.";
             case BIOLOGICALLYDERIVEDPRODUCT: return "A biological material originating from a biological entity intended to be transplanted or infused into another (possibly the same) biological entity.";
@@ -10757,17 +10826,15 @@ The primary difference between a medicationusage and a medicationadministration 
             case CAPABILITYSTATEMENT2: return "A Capability Statement documents a set of capabilities (behaviors) of a FHIR Server for a particular version of FHIR that may be used as a statement of actual server functionality or a statement of required or desired server implementation.";
             case CODESYSTEM: return "The CodeSystem resource is used to declare the existence of and describe a code system or code system supplement and its key properties, and optionally define a part or all of its content.";
             case COMPARTMENTDEFINITION: return "A compartment definition that defines how resources are accessed on a server.";
-            case CONCEPTMAP: return "A statement of relationships from one set of concepts to one or more other concepts - either concepts in code systems, or data element/data element concepts, or classes in class models.";
-            case CONCEPTMAP2: return "A statement of relationships from one set of concepts to one or more other concepts - either concepts in code systems, or data element/data element concepts, or classes in class models.";
             case EXAMPLESCENARIO: return "Example of workflow instance.";
             case GRAPHDEFINITION: return "A formal computable definition of a graph of resources - that is, a coherent set of resources that form a graph by following references. The Graph Definition resource defines a set and makes rules about the set.";
             case IMPLEMENTATIONGUIDE: return "A set of rules of how a particular interoperability or standards problem is solved - typically through the use of FHIR resources. This resource is used to gather all the parts of an implementation guide into a logical whole and to publish a computable definition of all the parts.";
             case MESSAGEDEFINITION: return "Defines the characteristics of a message that can be shared between systems, including the type of event that initiates the message, the content to be transmitted and what response(s), if any, are permitted.";
             case METADATARESOURCE: return "--- Abstract Type! ---Common Ancestor declaration for conformance and knowledge artifact resources.";
             case ACTIVITYDEFINITION: return "This resource allows for the definition of some activity to be performed, independent of a particular patient, practitioner, or other performance context.";
-            case ARTIFACTASSESSMENT: return "This Resource provides one or more comments, classifiers or ratings about a Resource and supports attribution and rights management metadata for the added content.";
             case CHARGEITEMDEFINITION: return "The ChargeItemDefinition resource provides the properties that apply to the (billing) codes necessary to calculate costs and prices. The properties may differ largely depending on type and realm, therefore this resource gives only a rough structure and requires profiling for each type of billing code system.";
             case CITATION: return "The Citation Resource enables reference to any knowledge artifact for purposes of identification and attribution. The Citation Resource supports existing reference structures and developing publication practices such as versioning, expressing complex contributorship roles, and referencing computable resources.";
+            case CONCEPTMAP: return "A statement of relationships from one set of concepts to one or more other concepts - either concepts in code systems, or data element/data element concepts, or classes in class models.";
             case CONDITIONDEFINITION: return "A definition of a condition and information relevant to managing it.";
             case EVENTDEFINITION: return "The EventDefinition resource provides a reusable description of when a particular event can occur.";
             case EVIDENCE: return "The Evidence Resource provides a machine-interpretable expression of an evidence concept including the evidence variables (e.g., population, exposures/interventions, comparators, outcomes, measured variables, confounding variables), the statistics, and the certainty of this evidence.";
@@ -10775,13 +10842,14 @@ The primary difference between a medicationusage and a medicationadministration 
             case EVIDENCEVARIABLE: return "The EvidenceVariable resource describes an element that knowledge (Evidence) is about.";
             case LIBRARY: return "The Library resource is a general-purpose container for knowledge asset definitions. It can be used to describe and expose existing knowledge assets such as logic libraries and information model descriptions, as well as to describe a collection of knowledge assets.";
             case MEASURE: return "The Measure resource provides the definition of a quality measure.";
+            case NAMINGSYSTEM: return "A curated namespace that issues unique symbols within that namespace for the identification of concepts, people, devices, etc.  Represents a \"System\" used within the Identifier and Coding data types.";
             case PLANDEFINITION: return "This resource allows for the definition of various types of plans as a sharable, consumable, and executable artifact. The resource is general enough to support the description of a broad range of clinical and non-clinical artifacts such as clinical decision support rules, order sets, protocols, and drug quality specifications.";
             case QUESTIONNAIRE: return "A structured set of questions intended to guide the collection of answers from end-users. Questionnaires provide detailed control over order, presentation, phraseology and grouping to allow coherent, consistent data collection.";
-            case NAMINGSYSTEM: return "A curated namespace that issues unique symbols within that namespace for the identification of concepts, people, devices, etc.  Represents a \"System\" used within the Identifier and Coding data types.";
             case OPERATIONDEFINITION: return "A formal computable definition of an operation (on the RESTful interface) or a named query (using the search interaction).";
             case SEARCHPARAMETER: return "A search parameter that defines a named search item that can be used to search/filter on a resource.";
             case STRUCTUREDEFINITION: return "A definition of a FHIR structure. This resource is used to describe the underlying resources, data types defined in FHIR, and also for describing extensions and constraints on resources and data types.";
             case STRUCTUREMAP: return "A Map of relationships between 2 structures that can be used to transform data.";
+            case SUBSCRIPTIONTOPIC: return "Describes a stream of resource state changes identified by trigger criteria and annotated with labels useful to filter projections from this topic.";
             case TERMINOLOGYCAPABILITIES: return "A TerminologyCapabilities resource documents a set of capabilities (behaviors) of a FHIR Terminology Server that may be used as a statement of actual server functionality or a statement of required or desired server implementation.";
             case TESTSCRIPT: return "A structured set of tests against a FHIR server or client implementation to determine compliance against the FHIR specification.";
             case VALUESET: return "A ValueSet resource instance specifies a set of codes drawn from one or more code systems, intended for use in a particular context. Value sets link between [[[CodeSystem]]] definitions and their use in [coded elements](terminologies.html).";
@@ -10792,7 +10860,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case CLAIMRESPONSE: return "This resource provides the adjudication details from the processing of a Claim resource.";
             case CLINICALIMPRESSION: return "A record of a clinical assessment performed to determine what problem(s) may affect the patient and before planning the treatments or management strategies that are best to manage a patient's condition. Assessments are often 1:1 with a clinical consultation / encounter,  but this varies greatly depending on the clinical workflow. This resource is called \"ClinicalImpression\" rather than \"ClinicalAssessment\" to avoid confusion with the recording of assessment tools such as Apgar score.";
             case CLINICALUSEDEFINITION: return "A single issue - either an indication, contraindication, interaction or an undesirable effect for a medicinal product, medication, device or procedure.";
-            case CLINICALUSEISSUE: return "A single issue - either an indication, contraindication, interaction or an undesirable effect for a medicinal product, medication, device or procedure.";
             case COMMUNICATION: return "A clinical or business level record of information being transmitted or shared; e.g. an alert that was sent to a responsible provider, a public health agency communication to a provider/reporter in response to a case report for a reportable condition.";
             case COMMUNICATIONREQUEST: return "A request to convey information; e.g. the CDS system proposes that an alert be sent to a responsible provider, the CDS system proposes that the public health agency be notified about a reportable condition.";
             case COMPOSITION: return "A set of healthcare-related information that is assembled together into a single logical package that provides a single coherent statement of meaning, establishes its own context and that has clinical attestation with regard to who is making the statement. A Composition defines the structure and narrative content necessary for a document. However, a Composition alone does not constitute a document. Rather, the Composition must be the first entry in a Bundle where Bundle.type=document, and any other resources referenced from Composition must be included as subsequent entries in the Bundle (for example Patient, Practitioner, Encounter, etc.).";
@@ -10813,13 +10880,14 @@ The primary difference between a medicationusage and a medicationadministration 
             case DOCUMENTMANIFEST: return "A collection of documents compiled for a purpose together with metadata that applies to the collection.";
             case DOCUMENTREFERENCE: return "A reference to a document of any kind for any purpose. While the term “document” implies a more narrow focus, for this resource this \"document\" encompasses *any* serialized object with a mime-type, it includes formal patient-centric documents (CDA), clinical notes, scanned paper, non-patient specific documents like policy text, as well as a photo, video, or audio recording acquired or used in healthcare.  The DocumentReference resource provides metadata about the document so that the document can be discovered and managed.  The actual content may be inline base64 encoded data or provided by direct reference.";
             case ENCOUNTER: return "An interaction between a patient and healthcare provider(s) for the purpose of providing healthcare service(s) or assessing the health status of a patient.";
-            case ENDPOINT: return "The technical details of an endpoint that can be used for electronic services, such as for web services providing XDS.b or a REST endpoint for another FHIR server. This may include any security context information.";
+            case ENDPOINT: return "The technical details of an endpoint that can be used for electronic services, such as for web services providing XDS.b, a REST endpoint for another FHIR server, or a s/Mime email address. This may include any security context information.";
             case ENROLLMENTREQUEST: return "This resource provides the insurance enrollment details to the insurer regarding a specified coverage.";
             case ENROLLMENTRESPONSE: return "This resource provides enrollment and plan details from the processing of an EnrollmentRequest resource.";
             case EPISODEOFCARE: return "An association between a patient and an organization / healthcare provider(s) during which time encounters may occur. The managing organization assumes a level of responsibility for the patient during this time.";
             case EXPLANATIONOFBENEFIT: return "This resource provides: the claim details; adjudication details from the processing of a Claim; and optionally account balance information, for informing the subscriber of the benefits provided.";
             case FAMILYMEMBERHISTORY: return "Significant health conditions for a person related to the patient relevant in the context of care for the patient.";
             case FLAG: return "Prospective warnings of potential issues when providing care to the patient.";
+            case FORMULARYITEM: return "This resource describes a product or service that is available through a program and includes the conditions and constraints of availability.  All of the information in this resource is specific to the inclusion of the item in the formulary and is not inherent to the item itself.";
             case GOAL: return "Describes the intended objective(s) for a patient, group or organization care, for example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, etc.";
             case GROUP: return "Represents a defined collection of entities that may be discussed or acted upon collectively but which are not expected to act collectively, and are not formally or legally recognized; i.e. a collection of entities that isn't an Organization.";
             case GUIDANCERESPONSE: return "A guidance response is the formal response to a guidance request, including any output parameters returned by the evaluation, as well as the description of any proposed actions to be taken.";
@@ -10844,12 +10912,12 @@ The primary difference between a medicationusage and a medicationadministration 
             case MEDICATIONKNOWLEDGE: return "Information about a medication that is used to support knowledge.";
             case MEDICATIONREQUEST: return "An order or request for both supply of the medication and the instructions for administration of the medication to a patient. The resource is called \"MedicationRequest\" rather than \"MedicationPrescription\" or \"MedicationOrder\" to generalize the use across inpatient and outpatient settings, including care plans, etc., and to harmonize with workflow patterns.";
             case MEDICATIONUSAGE: return "A record of a medication that is being consumed by a patient.   A MedicationUsage may indicate that the patient may be taking the medication now or has taken the medication in the past or will be taking the medication in the future.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay.   The medication information may come from sources such as the patient's memory, from a prescription bottle,  or from a list of medications the patient, clinician or other party maintains. \n\nThe primary difference between a medicationusage and a medicationadministration is that the medication administration has complete administration information and is based on actual administration information from the person who administered the medication.  A medicationusage is often, if not always, less specific.  There is no required date/time when the medication was administered, in fact we only know that a source has reported the patient is taking this medication, where details such as time, quantity, or rate or even medication product may be incomplete or missing or less precise.  As stated earlier, the Medication Usage information may come from the patient's memory, from a prescription bottle or from a list of medications the patient, clinician or other party maintains.  Medication administration is more formal and is not missing detailed information.";
-            case MEDICINALPRODUCTDEFINITION: return "Detailed definition of a medicinal product, typically for uses other than direct patient care (e.g. regulatory use, drug catalogs).";
+            case MEDICINALPRODUCTDEFINITION: return "Detailed definition of a medicinal product, typically for uses other than direct patient care (e.g. regulatory use, drug catalogs, to support prescribing, adverse events management etc.).";
             case MESSAGEHEADER: return "The header for a message exchange that is either requesting or responding to an action.  The reference(s) that are the subject of the action as well as other information related to the action are typically transmitted in a bundle in which the MessageHeader resource instance is the first resource in the bundle.";
-            case MOLECULARSEQUENCE: return "Raw data describing a biological sequence.";
-            case NUTRITIONINTAKE: return "A record of food or fluid that is being consumed by a patient.   A NutritionIntake may indicate that the patient may be consuming the food or fluid now or has consumed the food or fluid in the past.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay or through an app that tracks food or fluids consumed.   The consumption information may come from sources such as the patient's memory, from a nutrition label,  or from a clinician documenting observed intake.";
+            case MOLECULARSEQUENCE: return "Representation of a molecular sequence.";
+            case NUTRITIONINTAKE: return "A record of food or fluid that is being consumed by a patient.  A NutritionIntake may indicate that the patient may be consuming the food or fluid now or has consumed the food or fluid in the past.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay or through an app that tracks food or fluids consumed.   The consumption information may come from sources such as the patient's memory, from a nutrition label,  or from a clinician documenting observed intake.";
             case NUTRITIONORDER: return "A request to supply a diet, formula feeding (enteral) or oral nutritional supplement to a patient/resident.";
-            case NUTRITIONPRODUCT: return "A food or fluid product that is consumed by patients.";
+            case NUTRITIONPRODUCT: return "A food or supplement that is consumed by patients.";
             case OBSERVATION: return "Measurements and simple assertions made about a patient, device or other subject.";
             case OBSERVATIONDEFINITION: return "Set of definitional characteristics for a kind of observation or measurement produced or consumed by an orderable health care service.";
             case OPERATIONOUTCOME: return "A collection of error, warning, or information messages that result from a system action.";
@@ -10867,7 +10935,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case PROVENANCE: return "Provenance of a resource is a record that describes entities and processes involved in producing and delivering or otherwise influencing that resource. Provenance provides a critical foundation for assessing authenticity, enabling trust, and allowing reproducibility. Provenance assertions are a form of contextual metadata and can themselves become important records with their own provenance. Provenance statement indicates clinical significance in terms of confidence in authenticity, reliability, and trustworthiness, integrity, and stage in lifecycle (e.g. Document Completion - has the artifact been legally authenticated), all of which may impact security, privacy, and trust policies.";
             case QUESTIONNAIRERESPONSE: return "A structured set of questions and their answers. The questions are ordered and grouped into coherent subsets, corresponding to the structure of the grouping of the questionnaire being responded to.";
             case REGULATEDAUTHORIZATION: return "Regulatory approval, clearance or licencing related to a regulated product, treatment, facility or activity that is cited in a guidance, regulation, rule or legislative act. An example is Market Authorization relating to a Medicinal Product.";
-            case RELATEDPERSON: return "Information about a person that is involved in the care for a patient, but who is not the target of healthcare, nor has a formal responsibility in the care process.";
+            case RELATEDPERSON: return "Information about a person that is involved in a patient's health or the care for a patient, but who is not the target of healthcare, nor has a formal responsibility in the care process.";
             case REQUESTGROUP: return "A group of related requests that can be used to capture intended activities that have inter-dependencies such as \"give this medication after that one\".";
             case RESEARCHSTUDY: return "A process where a researcher or organization plans and then executes a series of steps intended to increase the field of healthcare-related knowledge.  This includes studies of safety, efficacy, comparative effectiveness and other information about medications, devices, therapies and other interventional and investigative techniques.  A ResearchStudy involves the gathering of information about human or animal subjects.";
             case RESEARCHSUBJECT: return "A physical entity which is the primary unit of operational and/or administrative interest in a study.";
@@ -10879,7 +10947,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case SPECIMENDEFINITION: return "A kind of specimen with associated set of requirements.";
             case SUBSCRIPTION: return "The subscription resource describes a particular client's request to be notified about a SubscriptionTopic.";
             case SUBSCRIPTIONSTATUS: return "The SubscriptionStatus resource describes the state of a Subscription during notifications.";
-            case SUBSCRIPTIONTOPIC: return "Describes a stream of resource state changes identified by trigger criteria and annotated with labels useful to filter projections from this topic.";
             case SUBSTANCE: return "A homogeneous material with a definite composition.";
             case SUBSTANCEDEFINITION: return "The detailed description of a substance, typically at a level beyond what is used for prescribing.";
             case SUBSTANCENUCLEICACID: return "Nucleic acids are defined by three distinct elements: the base, sugar and linkage. Individual substance/moiety IDs will be created for each of these elements. The nucleotide sequence will be always entered in the 5’-3’ direction.";
@@ -10891,9 +10958,10 @@ The primary difference between a medicationusage and a medicationadministration 
             case SUPPLYREQUEST: return "A record of a non-patient specific request for a medication, substance, device, certain types of biologically derived product, and nutrition product used in the healthcare setting.";
             case TASK: return "A task to be performed.";
             case TESTREPORT: return "A summary of information based on the results of executing a TestScript.";
+            case TRANSPORT: return "Record of transport.";
             case VERIFICATIONRESULT: return "Describes validation requirements, source(s), status and dates for one or more elements.";
             case VISIONPRESCRIPTION: return "An authorization for the provision of glasses and/or contact lenses to a patient.";
-            case PARAMETERS: return "This resource is a non-persisted resource used to pass information into and back from an [operation](operations.html). It has no other use, and there is no RESTful endpoint associated with it.";
+            case PARAMETERS: return "This resource is a non-persisted resource primarily used to pass information into and back from an [operation](operations.html). There is no RESTful endpoint associated with it.";
             case NULL: return null;
             default: return "?";
           }
@@ -10910,6 +10978,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ALLERGYINTOLERANCE: return "AllergyIntolerance";
             case APPOINTMENT: return "Appointment";
             case APPOINTMENTRESPONSE: return "AppointmentResponse";
+            case ARTIFACTASSESSMENT: return "ArtifactAssessment";
             case AUDITEVENT: return "AuditEvent";
             case BASIC: return "Basic";
             case BIOLOGICALLYDERIVEDPRODUCT: return "BiologicallyDerivedProduct";
@@ -10919,17 +10988,15 @@ The primary difference between a medicationusage and a medicationadministration 
             case CAPABILITYSTATEMENT2: return "CapabilityStatement2";
             case CODESYSTEM: return "CodeSystem";
             case COMPARTMENTDEFINITION: return "CompartmentDefinition";
-            case CONCEPTMAP: return "ConceptMap";
-            case CONCEPTMAP2: return "ConceptMap2";
             case EXAMPLESCENARIO: return "ExampleScenario";
             case GRAPHDEFINITION: return "GraphDefinition";
             case IMPLEMENTATIONGUIDE: return "ImplementationGuide";
             case MESSAGEDEFINITION: return "MessageDefinition";
             case METADATARESOURCE: return "MetadataResource";
             case ACTIVITYDEFINITION: return "ActivityDefinition";
-            case ARTIFACTASSESSMENT: return "ArtifactAssessment";
             case CHARGEITEMDEFINITION: return "ChargeItemDefinition";
             case CITATION: return "Citation";
+            case CONCEPTMAP: return "ConceptMap";
             case CONDITIONDEFINITION: return "ConditionDefinition";
             case EVENTDEFINITION: return "EventDefinition";
             case EVIDENCE: return "Evidence";
@@ -10937,13 +11004,14 @@ The primary difference between a medicationusage and a medicationadministration 
             case EVIDENCEVARIABLE: return "EvidenceVariable";
             case LIBRARY: return "Library";
             case MEASURE: return "Measure";
+            case NAMINGSYSTEM: return "NamingSystem";
             case PLANDEFINITION: return "PlanDefinition";
             case QUESTIONNAIRE: return "Questionnaire";
-            case NAMINGSYSTEM: return "NamingSystem";
             case OPERATIONDEFINITION: return "OperationDefinition";
             case SEARCHPARAMETER: return "SearchParameter";
             case STRUCTUREDEFINITION: return "StructureDefinition";
             case STRUCTUREMAP: return "StructureMap";
+            case SUBSCRIPTIONTOPIC: return "SubscriptionTopic";
             case TERMINOLOGYCAPABILITIES: return "TerminologyCapabilities";
             case TESTSCRIPT: return "TestScript";
             case VALUESET: return "ValueSet";
@@ -10954,7 +11022,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case CLAIMRESPONSE: return "ClaimResponse";
             case CLINICALIMPRESSION: return "ClinicalImpression";
             case CLINICALUSEDEFINITION: return "ClinicalUseDefinition";
-            case CLINICALUSEISSUE: return "ClinicalUseIssue";
             case COMMUNICATION: return "Communication";
             case COMMUNICATIONREQUEST: return "CommunicationRequest";
             case COMPOSITION: return "Composition";
@@ -10982,6 +11049,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case EXPLANATIONOFBENEFIT: return "ExplanationOfBenefit";
             case FAMILYMEMBERHISTORY: return "FamilyMemberHistory";
             case FLAG: return "Flag";
+            case FORMULARYITEM: return "FormularyItem";
             case GOAL: return "Goal";
             case GROUP: return "Group";
             case GUIDANCERESPONSE: return "GuidanceResponse";
@@ -11041,7 +11109,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case SPECIMENDEFINITION: return "SpecimenDefinition";
             case SUBSCRIPTION: return "Subscription";
             case SUBSCRIPTIONSTATUS: return "SubscriptionStatus";
-            case SUBSCRIPTIONTOPIC: return "SubscriptionTopic";
             case SUBSTANCE: return "Substance";
             case SUBSTANCEDEFINITION: return "SubstanceDefinition";
             case SUBSTANCENUCLEICACID: return "SubstanceNucleicAcid";
@@ -11053,6 +11120,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case SUPPLYREQUEST: return "SupplyRequest";
             case TASK: return "Task";
             case TESTREPORT: return "TestReport";
+            case TRANSPORT: return "Transport";
             case VERIFICATIONRESULT: return "VerificationResult";
             case VISIONPRESCRIPTION: return "VisionPrescription";
             case PARAMETERS: return "Parameters";
@@ -11087,6 +11155,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return ResourceTypeEnum.APPOINTMENT;
         if ("AppointmentResponse".equals(codeString))
           return ResourceTypeEnum.APPOINTMENTRESPONSE;
+        if ("ArtifactAssessment".equals(codeString))
+          return ResourceTypeEnum.ARTIFACTASSESSMENT;
         if ("AuditEvent".equals(codeString))
           return ResourceTypeEnum.AUDITEVENT;
         if ("Basic".equals(codeString))
@@ -11105,10 +11175,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return ResourceTypeEnum.CODESYSTEM;
         if ("CompartmentDefinition".equals(codeString))
           return ResourceTypeEnum.COMPARTMENTDEFINITION;
-        if ("ConceptMap".equals(codeString))
-          return ResourceTypeEnum.CONCEPTMAP;
-        if ("ConceptMap2".equals(codeString))
-          return ResourceTypeEnum.CONCEPTMAP2;
         if ("ExampleScenario".equals(codeString))
           return ResourceTypeEnum.EXAMPLESCENARIO;
         if ("GraphDefinition".equals(codeString))
@@ -11121,12 +11187,12 @@ The primary difference between a medicationusage and a medicationadministration 
           return ResourceTypeEnum.METADATARESOURCE;
         if ("ActivityDefinition".equals(codeString))
           return ResourceTypeEnum.ACTIVITYDEFINITION;
-        if ("ArtifactAssessment".equals(codeString))
-          return ResourceTypeEnum.ARTIFACTASSESSMENT;
         if ("ChargeItemDefinition".equals(codeString))
           return ResourceTypeEnum.CHARGEITEMDEFINITION;
         if ("Citation".equals(codeString))
           return ResourceTypeEnum.CITATION;
+        if ("ConceptMap".equals(codeString))
+          return ResourceTypeEnum.CONCEPTMAP;
         if ("ConditionDefinition".equals(codeString))
           return ResourceTypeEnum.CONDITIONDEFINITION;
         if ("EventDefinition".equals(codeString))
@@ -11141,12 +11207,12 @@ The primary difference between a medicationusage and a medicationadministration 
           return ResourceTypeEnum.LIBRARY;
         if ("Measure".equals(codeString))
           return ResourceTypeEnum.MEASURE;
+        if ("NamingSystem".equals(codeString))
+          return ResourceTypeEnum.NAMINGSYSTEM;
         if ("PlanDefinition".equals(codeString))
           return ResourceTypeEnum.PLANDEFINITION;
         if ("Questionnaire".equals(codeString))
           return ResourceTypeEnum.QUESTIONNAIRE;
-        if ("NamingSystem".equals(codeString))
-          return ResourceTypeEnum.NAMINGSYSTEM;
         if ("OperationDefinition".equals(codeString))
           return ResourceTypeEnum.OPERATIONDEFINITION;
         if ("SearchParameter".equals(codeString))
@@ -11155,6 +11221,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return ResourceTypeEnum.STRUCTUREDEFINITION;
         if ("StructureMap".equals(codeString))
           return ResourceTypeEnum.STRUCTUREMAP;
+        if ("SubscriptionTopic".equals(codeString))
+          return ResourceTypeEnum.SUBSCRIPTIONTOPIC;
         if ("TerminologyCapabilities".equals(codeString))
           return ResourceTypeEnum.TERMINOLOGYCAPABILITIES;
         if ("TestScript".equals(codeString))
@@ -11175,8 +11243,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return ResourceTypeEnum.CLINICALIMPRESSION;
         if ("ClinicalUseDefinition".equals(codeString))
           return ResourceTypeEnum.CLINICALUSEDEFINITION;
-        if ("ClinicalUseIssue".equals(codeString))
-          return ResourceTypeEnum.CLINICALUSEISSUE;
         if ("Communication".equals(codeString))
           return ResourceTypeEnum.COMMUNICATION;
         if ("CommunicationRequest".equals(codeString))
@@ -11231,6 +11297,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return ResourceTypeEnum.FAMILYMEMBERHISTORY;
         if ("Flag".equals(codeString))
           return ResourceTypeEnum.FLAG;
+        if ("FormularyItem".equals(codeString))
+          return ResourceTypeEnum.FORMULARYITEM;
         if ("Goal".equals(codeString))
           return ResourceTypeEnum.GOAL;
         if ("Group".equals(codeString))
@@ -11349,8 +11417,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return ResourceTypeEnum.SUBSCRIPTION;
         if ("SubscriptionStatus".equals(codeString))
           return ResourceTypeEnum.SUBSCRIPTIONSTATUS;
-        if ("SubscriptionTopic".equals(codeString))
-          return ResourceTypeEnum.SUBSCRIPTIONTOPIC;
         if ("Substance".equals(codeString))
           return ResourceTypeEnum.SUBSTANCE;
         if ("SubstanceDefinition".equals(codeString))
@@ -11373,6 +11439,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return ResourceTypeEnum.TASK;
         if ("TestReport".equals(codeString))
           return ResourceTypeEnum.TESTREPORT;
+        if ("Transport".equals(codeString))
+          return ResourceTypeEnum.TRANSPORT;
         if ("VerificationResult".equals(codeString))
           return ResourceTypeEnum.VERIFICATIONRESULT;
         if ("VisionPrescription".equals(codeString))
@@ -11409,6 +11477,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.APPOINTMENT);
         if ("AppointmentResponse".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.APPOINTMENTRESPONSE);
+        if ("ArtifactAssessment".equals(codeString))
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ARTIFACTASSESSMENT);
         if ("AuditEvent".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.AUDITEVENT);
         if ("Basic".equals(codeString))
@@ -11427,10 +11497,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CODESYSTEM);
         if ("CompartmentDefinition".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COMPARTMENTDEFINITION);
-        if ("ConceptMap".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CONCEPTMAP);
-        if ("ConceptMap2".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CONCEPTMAP2);
         if ("ExampleScenario".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EXAMPLESCENARIO);
         if ("GraphDefinition".equals(codeString))
@@ -11443,12 +11509,12 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.METADATARESOURCE);
         if ("ActivityDefinition".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ACTIVITYDEFINITION);
-        if ("ArtifactAssessment".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.ARTIFACTASSESSMENT);
         if ("ChargeItemDefinition".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CHARGEITEMDEFINITION);
         if ("Citation".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CITATION);
+        if ("ConceptMap".equals(codeString))
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CONCEPTMAP);
         if ("ConditionDefinition".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CONDITIONDEFINITION);
         if ("EventDefinition".equals(codeString))
@@ -11463,12 +11529,12 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.LIBRARY);
         if ("Measure".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.MEASURE);
+        if ("NamingSystem".equals(codeString))
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.NAMINGSYSTEM);
         if ("PlanDefinition".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.PLANDEFINITION);
         if ("Questionnaire".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.QUESTIONNAIRE);
-        if ("NamingSystem".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.NAMINGSYSTEM);
         if ("OperationDefinition".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.OPERATIONDEFINITION);
         if ("SearchParameter".equals(codeString))
@@ -11477,6 +11543,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.STRUCTUREDEFINITION);
         if ("StructureMap".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.STRUCTUREMAP);
+        if ("SubscriptionTopic".equals(codeString))
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSCRIPTIONTOPIC);
         if ("TerminologyCapabilities".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.TERMINOLOGYCAPABILITIES);
         if ("TestScript".equals(codeString))
@@ -11497,8 +11565,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CLINICALIMPRESSION);
         if ("ClinicalUseDefinition".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CLINICALUSEDEFINITION);
-        if ("ClinicalUseIssue".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.CLINICALUSEISSUE);
         if ("Communication".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.COMMUNICATION);
         if ("CommunicationRequest".equals(codeString))
@@ -11553,6 +11619,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.FAMILYMEMBERHISTORY);
         if ("Flag".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.FLAG);
+        if ("FormularyItem".equals(codeString))
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.FORMULARYITEM);
         if ("Goal".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.GOAL);
         if ("Group".equals(codeString))
@@ -11671,8 +11739,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSCRIPTION);
         if ("SubscriptionStatus".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSCRIPTIONSTATUS);
-        if ("SubscriptionTopic".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSCRIPTIONTOPIC);
         if ("Substance".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.SUBSTANCE);
         if ("SubstanceDefinition".equals(codeString))
@@ -11695,6 +11761,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.TASK);
         if ("TestReport".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.TESTREPORT);
+        if ("Transport".equals(codeString))
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.TRANSPORT);
         if ("VerificationResult".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.VERIFICATIONRESULT);
         if ("VisionPrescription".equals(codeString))
@@ -11724,6 +11792,8 @@ The primary difference between a medicationusage and a medicationadministration 
         return "Appointment";
       if (code == ResourceTypeEnum.APPOINTMENTRESPONSE)
         return "AppointmentResponse";
+      if (code == ResourceTypeEnum.ARTIFACTASSESSMENT)
+        return "ArtifactAssessment";
       if (code == ResourceTypeEnum.AUDITEVENT)
         return "AuditEvent";
       if (code == ResourceTypeEnum.BASIC)
@@ -11742,10 +11812,6 @@ The primary difference between a medicationusage and a medicationadministration 
         return "CodeSystem";
       if (code == ResourceTypeEnum.COMPARTMENTDEFINITION)
         return "CompartmentDefinition";
-      if (code == ResourceTypeEnum.CONCEPTMAP)
-        return "ConceptMap";
-      if (code == ResourceTypeEnum.CONCEPTMAP2)
-        return "ConceptMap2";
       if (code == ResourceTypeEnum.EXAMPLESCENARIO)
         return "ExampleScenario";
       if (code == ResourceTypeEnum.GRAPHDEFINITION)
@@ -11758,12 +11824,12 @@ The primary difference between a medicationusage and a medicationadministration 
         return "MetadataResource";
       if (code == ResourceTypeEnum.ACTIVITYDEFINITION)
         return "ActivityDefinition";
-      if (code == ResourceTypeEnum.ARTIFACTASSESSMENT)
-        return "ArtifactAssessment";
       if (code == ResourceTypeEnum.CHARGEITEMDEFINITION)
         return "ChargeItemDefinition";
       if (code == ResourceTypeEnum.CITATION)
         return "Citation";
+      if (code == ResourceTypeEnum.CONCEPTMAP)
+        return "ConceptMap";
       if (code == ResourceTypeEnum.CONDITIONDEFINITION)
         return "ConditionDefinition";
       if (code == ResourceTypeEnum.EVENTDEFINITION)
@@ -11778,12 +11844,12 @@ The primary difference between a medicationusage and a medicationadministration 
         return "Library";
       if (code == ResourceTypeEnum.MEASURE)
         return "Measure";
+      if (code == ResourceTypeEnum.NAMINGSYSTEM)
+        return "NamingSystem";
       if (code == ResourceTypeEnum.PLANDEFINITION)
         return "PlanDefinition";
       if (code == ResourceTypeEnum.QUESTIONNAIRE)
         return "Questionnaire";
-      if (code == ResourceTypeEnum.NAMINGSYSTEM)
-        return "NamingSystem";
       if (code == ResourceTypeEnum.OPERATIONDEFINITION)
         return "OperationDefinition";
       if (code == ResourceTypeEnum.SEARCHPARAMETER)
@@ -11792,6 +11858,8 @@ The primary difference between a medicationusage and a medicationadministration 
         return "StructureDefinition";
       if (code == ResourceTypeEnum.STRUCTUREMAP)
         return "StructureMap";
+      if (code == ResourceTypeEnum.SUBSCRIPTIONTOPIC)
+        return "SubscriptionTopic";
       if (code == ResourceTypeEnum.TERMINOLOGYCAPABILITIES)
         return "TerminologyCapabilities";
       if (code == ResourceTypeEnum.TESTSCRIPT)
@@ -11812,8 +11880,6 @@ The primary difference between a medicationusage and a medicationadministration 
         return "ClinicalImpression";
       if (code == ResourceTypeEnum.CLINICALUSEDEFINITION)
         return "ClinicalUseDefinition";
-      if (code == ResourceTypeEnum.CLINICALUSEISSUE)
-        return "ClinicalUseIssue";
       if (code == ResourceTypeEnum.COMMUNICATION)
         return "Communication";
       if (code == ResourceTypeEnum.COMMUNICATIONREQUEST)
@@ -11868,6 +11934,8 @@ The primary difference between a medicationusage and a medicationadministration 
         return "FamilyMemberHistory";
       if (code == ResourceTypeEnum.FLAG)
         return "Flag";
+      if (code == ResourceTypeEnum.FORMULARYITEM)
+        return "FormularyItem";
       if (code == ResourceTypeEnum.GOAL)
         return "Goal";
       if (code == ResourceTypeEnum.GROUP)
@@ -11986,8 +12054,6 @@ The primary difference between a medicationusage and a medicationadministration 
         return "Subscription";
       if (code == ResourceTypeEnum.SUBSCRIPTIONSTATUS)
         return "SubscriptionStatus";
-      if (code == ResourceTypeEnum.SUBSCRIPTIONTOPIC)
-        return "SubscriptionTopic";
       if (code == ResourceTypeEnum.SUBSTANCE)
         return "Substance";
       if (code == ResourceTypeEnum.SUBSTANCEDEFINITION)
@@ -12010,6 +12076,8 @@ The primary difference between a medicationusage and a medicationadministration 
         return "Task";
       if (code == ResourceTypeEnum.TESTREPORT)
         return "TestReport";
+      if (code == ResourceTypeEnum.TRANSPORT)
+        return "Transport";
       if (code == ResourceTypeEnum.VERIFICATIONRESULT)
         return "VerificationResult";
       if (code == ResourceTypeEnum.VISIONPRESCRIPTION)
@@ -12622,7 +12690,7 @@ The primary difference between a medicationusage and a medicationadministration 
       }
     }
 
-    public enum SubscriptionState {
+    public enum SubscriptionStatusCodes {
         /**
          * The client has requested the subscription, and the server has not yet set it up.
          */
@@ -12647,7 +12715,7 @@ The primary difference between a medicationusage and a medicationadministration 
          * added to help the parsers
          */
         NULL;
-        public static SubscriptionState fromCode(String codeString) throws FHIRException {
+        public static SubscriptionStatusCodes fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("requested".equals(codeString))
@@ -12660,7 +12728,7 @@ The primary difference between a medicationusage and a medicationadministration 
           return OFF;
         if ("entered-in-error".equals(codeString))
           return ENTEREDINERROR;
-        throw new FHIRException("Unknown SubscriptionState code '"+codeString+"'");
+        throw new FHIRException("Unknown SubscriptionStatusCodes code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
@@ -12675,11 +12743,11 @@ The primary difference between a medicationusage and a medicationadministration 
         }
         public String getSystem() {
           switch (this) {
-            case REQUESTED: return "http://terminology.hl7.org/CodeSystem/subscription-state";
-            case ACTIVE: return "http://terminology.hl7.org/CodeSystem/subscription-state";
-            case ERROR: return "http://terminology.hl7.org/CodeSystem/subscription-state";
-            case OFF: return "http://terminology.hl7.org/CodeSystem/subscription-state";
-            case ENTEREDINERROR: return "http://terminology.hl7.org/CodeSystem/subscription-state";
+            case REQUESTED: return "http://terminology.hl7.org/CodeSystem/subscription-status";
+            case ACTIVE: return "http://terminology.hl7.org/CodeSystem/subscription-status";
+            case ERROR: return "http://terminology.hl7.org/CodeSystem/subscription-status";
+            case OFF: return "http://terminology.hl7.org/CodeSystem/subscription-status";
+            case ENTEREDINERROR: return "http://terminology.hl7.org/CodeSystem/subscription-status";
             case NULL: return null;
             default: return "?";
           }
@@ -12708,57 +12776,57 @@ The primary difference between a medicationusage and a medicationadministration 
         }
     }
 
-  public static class SubscriptionStateEnumFactory implements EnumFactory<SubscriptionState> {
-    public SubscriptionState fromCode(String codeString) throws IllegalArgumentException {
+  public static class SubscriptionStatusCodesEnumFactory implements EnumFactory<SubscriptionStatusCodes> {
+    public SubscriptionStatusCodes fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
         if ("requested".equals(codeString))
-          return SubscriptionState.REQUESTED;
+          return SubscriptionStatusCodes.REQUESTED;
         if ("active".equals(codeString))
-          return SubscriptionState.ACTIVE;
+          return SubscriptionStatusCodes.ACTIVE;
         if ("error".equals(codeString))
-          return SubscriptionState.ERROR;
+          return SubscriptionStatusCodes.ERROR;
         if ("off".equals(codeString))
-          return SubscriptionState.OFF;
+          return SubscriptionStatusCodes.OFF;
         if ("entered-in-error".equals(codeString))
-          return SubscriptionState.ENTEREDINERROR;
-        throw new IllegalArgumentException("Unknown SubscriptionState code '"+codeString+"'");
+          return SubscriptionStatusCodes.ENTEREDINERROR;
+        throw new IllegalArgumentException("Unknown SubscriptionStatusCodes code '"+codeString+"'");
         }
-        public Enumeration<SubscriptionState> fromType(Base code) throws FHIRException {
+        public Enumeration<SubscriptionStatusCodes> fromType(Base code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
-            return new Enumeration<SubscriptionState>(this);
+            return new Enumeration<SubscriptionStatusCodes>(this);
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
         if ("requested".equals(codeString))
-          return new Enumeration<SubscriptionState>(this, SubscriptionState.REQUESTED);
+          return new Enumeration<SubscriptionStatusCodes>(this, SubscriptionStatusCodes.REQUESTED);
         if ("active".equals(codeString))
-          return new Enumeration<SubscriptionState>(this, SubscriptionState.ACTIVE);
+          return new Enumeration<SubscriptionStatusCodes>(this, SubscriptionStatusCodes.ACTIVE);
         if ("error".equals(codeString))
-          return new Enumeration<SubscriptionState>(this, SubscriptionState.ERROR);
+          return new Enumeration<SubscriptionStatusCodes>(this, SubscriptionStatusCodes.ERROR);
         if ("off".equals(codeString))
-          return new Enumeration<SubscriptionState>(this, SubscriptionState.OFF);
+          return new Enumeration<SubscriptionStatusCodes>(this, SubscriptionStatusCodes.OFF);
         if ("entered-in-error".equals(codeString))
-          return new Enumeration<SubscriptionState>(this, SubscriptionState.ENTEREDINERROR);
-        throw new FHIRException("Unknown SubscriptionState code '"+codeString+"'");
+          return new Enumeration<SubscriptionStatusCodes>(this, SubscriptionStatusCodes.ENTEREDINERROR);
+        throw new FHIRException("Unknown SubscriptionStatusCodes code '"+codeString+"'");
         }
-    public String toCode(SubscriptionState code) {
-      if (code == SubscriptionState.REQUESTED)
+    public String toCode(SubscriptionStatusCodes code) {
+      if (code == SubscriptionStatusCodes.REQUESTED)
         return "requested";
-      if (code == SubscriptionState.ACTIVE)
+      if (code == SubscriptionStatusCodes.ACTIVE)
         return "active";
-      if (code == SubscriptionState.ERROR)
+      if (code == SubscriptionStatusCodes.ERROR)
         return "error";
-      if (code == SubscriptionState.OFF)
+      if (code == SubscriptionStatusCodes.OFF)
         return "off";
-      if (code == SubscriptionState.ENTEREDINERROR)
+      if (code == SubscriptionStatusCodes.ENTEREDINERROR)
         return "entered-in-error";
       return "?";
       }
-    public String toSystem(SubscriptionState code) {
+    public String toSystem(SubscriptionStatusCodes code) {
       return code.getSystem();
       }
     }

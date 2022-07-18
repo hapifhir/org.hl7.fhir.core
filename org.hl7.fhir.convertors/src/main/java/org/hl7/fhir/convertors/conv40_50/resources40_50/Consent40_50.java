@@ -62,10 +62,10 @@ public class Consent40_50 {
       tgt.addSourceAttachment(Attachment40_50.convertAttachment(src.getSourceAttachment()));
     if (src.hasSourceReference())
       tgt.addSourceReference(Reference40_50.convertReference(src.getSourceReference()));
-    for (org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent t : src.getPolicy())
-      tgt.addPolicy(convertConsentPolicyComponent(t));
-    if (src.hasPolicyRule())
-      tgt.setPolicyRule(CodeableConcept40_50.convertCodeableConcept(src.getPolicyRule()));
+//    for (org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent t : src.getPolicy())
+//      tgt.addPolicy(convertConsentPolicyComponent(t));
+//    if (src.hasPolicyRule())
+//      tgt.setPolicyRule(CodeableConcept40_50.convertCodeableConcept(src.getPolicyRule()));
     for (org.hl7.fhir.r4.model.Consent.ConsentVerificationComponent t : src.getVerification())
       tgt.addVerification(convertConsentVerificationComponent(t));
     if (src.hasProvision())
@@ -98,10 +98,10 @@ public class Consent40_50 {
       tgt.setSource(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getSourceAttachmentFirstRep()));
     if (src.hasSourceReference())
       tgt.setSource(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getSourceReferenceFirstRep()));
-    for (org.hl7.fhir.r5.model.Consent.ConsentPolicyComponent t : src.getPolicy())
-      tgt.addPolicy(convertConsentPolicyComponent(t));
-    if (src.hasPolicyRule())
-      tgt.setPolicyRule(CodeableConcept40_50.convertCodeableConcept(src.getPolicyRule()));
+//    for (org.hl7.fhir.r5.model.Consent.ConsentPolicyComponent t : src.getPolicy())
+//      tgt.addPolicy(convertConsentPolicyComponent(t));
+//    if (src.hasPolicyRule())
+//      tgt.setPolicyRule(CodeableConcept40_50.convertCodeableConcept(src.getPolicyRule()));
     for (org.hl7.fhir.r5.model.Consent.ConsentVerificationComponent t : src.getVerification())
       tgt.addVerification(convertConsentVerificationComponent(t));
     if (src.hasProvision())
@@ -165,29 +165,29 @@ public class Consent40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Consent.ConsentPolicyComponent convertConsentPolicyComponent(org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.Consent.ConsentPolicyComponent tgt = new org.hl7.fhir.r5.model.Consent.ConsentPolicyComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    if (src.hasAuthority())
-      tgt.setAuthorityElement(Uri40_50.convertUri(src.getAuthorityElement()));
-    if (src.hasUri())
-      tgt.setUriElement(Uri40_50.convertUri(src.getUriElement()));
-    return tgt;
-  }
-
-  public static org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent convertConsentPolicyComponent(org.hl7.fhir.r5.model.Consent.ConsentPolicyComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent tgt = new org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    if (src.hasAuthority())
-      tgt.setAuthorityElement(Uri40_50.convertUri(src.getAuthorityElement()));
-    if (src.hasUri())
-      tgt.setUriElement(Uri40_50.convertUri(src.getUriElement()));
-    return tgt;
-  }
+//  public static org.hl7.fhir.r5.model.Consent.ConsentPolicyComponent convertConsentPolicyComponent(org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r5.model.Consent.ConsentPolicyComponent tgt = new org.hl7.fhir.r5.model.Consent.ConsentPolicyComponent();
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+//    if (src.hasAuthority())
+//      tgt.setAuthorityElement(Uri40_50.convertUri(src.getAuthorityElement()));
+//    if (src.hasUri())
+//      tgt.setUriElement(Uri40_50.convertUri(src.getUriElement()));
+//    return tgt;
+//  }
+//
+//  public static org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent convertConsentPolicyComponent(org.hl7.fhir.r5.model.Consent.ConsentPolicyComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent tgt = new org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent();
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+//    if (src.hasAuthority())
+//      tgt.setAuthorityElement(Uri40_50.convertUri(src.getAuthorityElement()));
+//    if (src.hasUri())
+//      tgt.setUriElement(Uri40_50.convertUri(src.getUriElement()));
+//    return tgt;
+//  }
 
   public static org.hl7.fhir.r5.model.Consent.ConsentVerificationComponent convertConsentVerificationComponent(org.hl7.fhir.r4.model.Consent.ConsentVerificationComponent src) throws FHIRException {
     if (src == null)

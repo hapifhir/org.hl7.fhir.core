@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -104,6 +104,7 @@ public class TestReport extends DomainResource {
             case FAIL: return "fail";
             case WARNING: return "warning";
             case ERROR: return "error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public class TestReport extends DomainResource {
             case FAIL: return "http://hl7.org/fhir/report-action-result-codes";
             case WARNING: return "http://hl7.org/fhir/report-action-result-codes";
             case ERROR: return "http://hl7.org/fhir/report-action-result-codes";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -124,6 +126,7 @@ public class TestReport extends DomainResource {
             case FAIL: return "The action failed.";
             case WARNING: return "The action passed but with warnings.";
             case ERROR: return "The action encountered a fatal error and the engine was unable to process.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -134,6 +137,7 @@ public class TestReport extends DomainResource {
             case FAIL: return "Fail";
             case WARNING: return "Warning";
             case ERROR: return "Error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -230,6 +234,7 @@ public class TestReport extends DomainResource {
             case TESTENGINE: return "test-engine";
             case CLIENT: return "client";
             case SERVER: return "server";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -238,6 +243,7 @@ public class TestReport extends DomainResource {
             case TESTENGINE: return "http://hl7.org/fhir/report-participant-type";
             case CLIENT: return "http://hl7.org/fhir/report-participant-type";
             case SERVER: return "http://hl7.org/fhir/report-participant-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -246,6 +252,7 @@ public class TestReport extends DomainResource {
             case TESTENGINE: return "The test execution engine.";
             case CLIENT: return "A FHIR Client.";
             case SERVER: return "A FHIR Server.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -254,6 +261,7 @@ public class TestReport extends DomainResource {
             case TESTENGINE: return "Test Engine";
             case CLIENT: return "Client";
             case SERVER: return "Server";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -338,6 +346,7 @@ public class TestReport extends DomainResource {
             case PASS: return "pass";
             case FAIL: return "fail";
             case PENDING: return "pending";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -346,6 +355,7 @@ public class TestReport extends DomainResource {
             case PASS: return "http://hl7.org/fhir/report-result-codes";
             case FAIL: return "http://hl7.org/fhir/report-result-codes";
             case PENDING: return "http://hl7.org/fhir/report-result-codes";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -354,6 +364,7 @@ public class TestReport extends DomainResource {
             case PASS: return "All test operations successfully passed all asserts.";
             case FAIL: return "One or more test operations failed one or more asserts.";
             case PENDING: return "One or more test operations is pending execution completion.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -362,6 +373,7 @@ public class TestReport extends DomainResource {
             case PASS: return "Pass";
             case FAIL: return "Fail";
             case PENDING: return "Pending";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -460,6 +472,7 @@ public class TestReport extends DomainResource {
             case WAITING: return "waiting";
             case STOPPED: return "stopped";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -470,6 +483,7 @@ public class TestReport extends DomainResource {
             case WAITING: return "http://hl7.org/fhir/report-status-codes";
             case STOPPED: return "http://hl7.org/fhir/report-status-codes";
             case ENTEREDINERROR: return "http://hl7.org/fhir/report-status-codes";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -480,6 +494,7 @@ public class TestReport extends DomainResource {
             case WAITING: return "A test operation is waiting for an external client request.";
             case STOPPED: return "The test script execution was manually stopped.";
             case ENTEREDINERROR: return "This test report was entered or created in error.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -490,6 +505,7 @@ public class TestReport extends DomainResource {
             case WAITING: return "Waiting";
             case STOPPED: return "Stopped";
             case ENTEREDINERROR: return "Entered In Error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2826,17 +2842,17 @@ public class TestReport extends DomainResource {
   }
 
     /**
-     * Identifier for the TestScript assigned for external purposes outside the context of FHIR.
+     * Identifier for the TestReport assigned for external purposes outside the context of FHIR.
      */
     @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="External identifier", formalDefinition="Identifier for the TestScript assigned for external purposes outside the context of FHIR." )
+    @Description(shortDefinition="External identifier", formalDefinition="Identifier for the TestReport assigned for external purposes outside the context of FHIR." )
     protected Identifier identifier;
 
     /**
-     * A free text natural language name identifying the executed TestScript.
+     * A free text natural language name identifying the executed TestReport.
      */
     @Child(name = "name", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Informal name of the executed TestScript", formalDefinition="A free text natural language name identifying the executed TestScript." )
+    @Description(shortDefinition="Informal name of the executed TestReport", formalDefinition="A free text natural language name identifying the executed TestReport." )
     protected StringType name;
 
     /**
@@ -2850,9 +2866,9 @@ public class TestReport extends DomainResource {
     /**
      * Ideally this is an absolute URL that is used to identify the version-specific TestScript that was executed, matching the `TestScript.url`.
      */
-    @Child(name = "testScript", type = {TestScript.class}, order=3, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Reference to the  version-specific TestScript that was executed to produce this TestReport", formalDefinition="Ideally this is an absolute URL that is used to identify the version-specific TestScript that was executed, matching the `TestScript.url`." )
-    protected Reference testScript;
+    @Child(name = "testScript", type = {CanonicalType.class}, order=3, min=1, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Canonical URL to the  version-specific TestScript that was executed to produce this TestReport", formalDefinition="Ideally this is an absolute URL that is used to identify the version-specific TestScript that was executed, matching the `TestScript.url`." )
+    protected CanonicalType testScript;
 
     /**
      * The overall result from the execution of the TestScript.
@@ -2911,7 +2927,7 @@ public class TestReport extends DomainResource {
     @Description(shortDefinition="The results of running the series of required clean up steps", formalDefinition="The results of the series of operations required to clean up after all the tests were executed (successfully or otherwise)." )
     protected TestReportTeardownComponent teardown;
 
-    private static final long serialVersionUID = 1713142733L;
+    private static final long serialVersionUID = -1863229334L;
 
   /**
    * Constructor
@@ -2923,7 +2939,7 @@ public class TestReport extends DomainResource {
   /**
    * Constructor
    */
-    public TestReport(TestReportStatus status, Reference testScript, TestReportResult result) {
+    public TestReport(TestReportStatus status, String testScript, TestReportResult result) {
       super();
       this.setStatus(status);
       this.setTestScript(testScript);
@@ -2931,7 +2947,7 @@ public class TestReport extends DomainResource {
     }
 
     /**
-     * @return {@link #identifier} (Identifier for the TestScript assigned for external purposes outside the context of FHIR.)
+     * @return {@link #identifier} (Identifier for the TestReport assigned for external purposes outside the context of FHIR.)
      */
     public Identifier getIdentifier() { 
       if (this.identifier == null)
@@ -2947,7 +2963,7 @@ public class TestReport extends DomainResource {
     }
 
     /**
-     * @param value {@link #identifier} (Identifier for the TestScript assigned for external purposes outside the context of FHIR.)
+     * @param value {@link #identifier} (Identifier for the TestReport assigned for external purposes outside the context of FHIR.)
      */
     public TestReport setIdentifier(Identifier value) { 
       this.identifier = value;
@@ -2955,7 +2971,7 @@ public class TestReport extends DomainResource {
     }
 
     /**
-     * @return {@link #name} (A free text natural language name identifying the executed TestScript.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     * @return {@link #name} (A free text natural language name identifying the executed TestReport.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
      */
     public StringType getNameElement() { 
       if (this.name == null)
@@ -2975,7 +2991,7 @@ public class TestReport extends DomainResource {
     }
 
     /**
-     * @param value {@link #name} (A free text natural language name identifying the executed TestScript.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     * @param value {@link #name} (A free text natural language name identifying the executed TestReport.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
      */
     public TestReport setNameElement(StringType value) { 
       this.name = value;
@@ -2983,14 +2999,14 @@ public class TestReport extends DomainResource {
     }
 
     /**
-     * @return A free text natural language name identifying the executed TestScript.
+     * @return A free text natural language name identifying the executed TestReport.
      */
     public String getName() { 
       return this.name == null ? null : this.name.getValue();
     }
 
     /**
-     * @param value A free text natural language name identifying the executed TestScript.
+     * @param value A free text natural language name identifying the executed TestReport.
      */
     public TestReport setName(String value) { 
       if (Utilities.noString(value))
@@ -3049,15 +3065,19 @@ public class TestReport extends DomainResource {
     }
 
     /**
-     * @return {@link #testScript} (Ideally this is an absolute URL that is used to identify the version-specific TestScript that was executed, matching the `TestScript.url`.)
+     * @return {@link #testScript} (Ideally this is an absolute URL that is used to identify the version-specific TestScript that was executed, matching the `TestScript.url`.). This is the underlying object with id, value and extensions. The accessor "getTestScript" gives direct access to the value
      */
-    public Reference getTestScript() { 
+    public CanonicalType getTestScriptElement() { 
       if (this.testScript == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create TestReport.testScript");
         else if (Configuration.doAutoCreate())
-          this.testScript = new Reference(); // cc
+          this.testScript = new CanonicalType(); // bb
       return this.testScript;
+    }
+
+    public boolean hasTestScriptElement() { 
+      return this.testScript != null && !this.testScript.isEmpty();
     }
 
     public boolean hasTestScript() { 
@@ -3065,10 +3085,27 @@ public class TestReport extends DomainResource {
     }
 
     /**
-     * @param value {@link #testScript} (Ideally this is an absolute URL that is used to identify the version-specific TestScript that was executed, matching the `TestScript.url`.)
+     * @param value {@link #testScript} (Ideally this is an absolute URL that is used to identify the version-specific TestScript that was executed, matching the `TestScript.url`.). This is the underlying object with id, value and extensions. The accessor "getTestScript" gives direct access to the value
      */
-    public TestReport setTestScript(Reference value) { 
+    public TestReport setTestScriptElement(CanonicalType value) { 
       this.testScript = value;
+      return this;
+    }
+
+    /**
+     * @return Ideally this is an absolute URL that is used to identify the version-specific TestScript that was executed, matching the `TestScript.url`.
+     */
+    public String getTestScript() { 
+      return this.testScript == null ? null : this.testScript.getValue();
+    }
+
+    /**
+     * @param value Ideally this is an absolute URL that is used to identify the version-specific TestScript that was executed, matching the `TestScript.url`.
+     */
+    public TestReport setTestScript(String value) { 
+        if (this.testScript == null)
+          this.testScript = new CanonicalType();
+        this.testScript.setValue(value);
       return this;
     }
 
@@ -3438,10 +3475,10 @@ public class TestReport extends DomainResource {
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("identifier", "Identifier", "Identifier for the TestScript assigned for external purposes outside the context of FHIR.", 0, 1, identifier));
-        children.add(new Property("name", "string", "A free text natural language name identifying the executed TestScript.", 0, 1, name));
+        children.add(new Property("identifier", "Identifier", "Identifier for the TestReport assigned for external purposes outside the context of FHIR.", 0, 1, identifier));
+        children.add(new Property("name", "string", "A free text natural language name identifying the executed TestReport.", 0, 1, name));
         children.add(new Property("status", "code", "The current state of this test report.", 0, 1, status));
-        children.add(new Property("testScript", "Reference(TestScript)", "Ideally this is an absolute URL that is used to identify the version-specific TestScript that was executed, matching the `TestScript.url`.", 0, 1, testScript));
+        children.add(new Property("testScript", "canonical(TestScript)", "Ideally this is an absolute URL that is used to identify the version-specific TestScript that was executed, matching the `TestScript.url`.", 0, 1, testScript));
         children.add(new Property("result", "code", "The overall result from the execution of the TestScript.", 0, 1, result));
         children.add(new Property("score", "decimal", "The final score (percentage of tests passed) resulting from the execution of the TestScript.", 0, 1, score));
         children.add(new Property("tester", "string", "Name of the tester producing this report (Organization or individual).", 0, 1, tester));
@@ -3455,10 +3492,10 @@ public class TestReport extends DomainResource {
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifier for the TestScript assigned for external purposes outside the context of FHIR.", 0, 1, identifier);
-        case 3373707: /*name*/  return new Property("name", "string", "A free text natural language name identifying the executed TestScript.", 0, 1, name);
+        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifier for the TestReport assigned for external purposes outside the context of FHIR.", 0, 1, identifier);
+        case 3373707: /*name*/  return new Property("name", "string", "A free text natural language name identifying the executed TestReport.", 0, 1, name);
         case -892481550: /*status*/  return new Property("status", "code", "The current state of this test report.", 0, 1, status);
-        case 1712049149: /*testScript*/  return new Property("testScript", "Reference(TestScript)", "Ideally this is an absolute URL that is used to identify the version-specific TestScript that was executed, matching the `TestScript.url`.", 0, 1, testScript);
+        case 1712049149: /*testScript*/  return new Property("testScript", "canonical(TestScript)", "Ideally this is an absolute URL that is used to identify the version-specific TestScript that was executed, matching the `TestScript.url`.", 0, 1, testScript);
         case -934426595: /*result*/  return new Property("result", "code", "The overall result from the execution of the TestScript.", 0, 1, result);
         case 109264530: /*score*/  return new Property("score", "decimal", "The final score (percentage of tests passed) resulting from the execution of the TestScript.", 0, 1, score);
         case -877169473: /*tester*/  return new Property("tester", "string", "Name of the tester producing this report (Organization or individual).", 0, 1, tester);
@@ -3478,7 +3515,7 @@ public class TestReport extends DomainResource {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : new Base[] {this.identifier}; // Identifier
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<TestReportStatus>
-        case 1712049149: /*testScript*/ return this.testScript == null ? new Base[0] : new Base[] {this.testScript}; // Reference
+        case 1712049149: /*testScript*/ return this.testScript == null ? new Base[0] : new Base[] {this.testScript}; // CanonicalType
         case -934426595: /*result*/ return this.result == null ? new Base[0] : new Base[] {this.result}; // Enumeration<TestReportResult>
         case 109264530: /*score*/ return this.score == null ? new Base[0] : new Base[] {this.score}; // DecimalType
         case -877169473: /*tester*/ return this.tester == null ? new Base[0] : new Base[] {this.tester}; // StringType
@@ -3506,7 +3543,7 @@ public class TestReport extends DomainResource {
           this.status = (Enumeration) value; // Enumeration<TestReportStatus>
           return value;
         case 1712049149: // testScript
-          this.testScript = TypeConvertor.castToReference(value); // Reference
+          this.testScript = TypeConvertor.castToCanonical(value); // CanonicalType
           return value;
         case -934426595: // result
           value = new TestReportResultEnumFactory().fromType(TypeConvertor.castToCode(value));
@@ -3548,7 +3585,7 @@ public class TestReport extends DomainResource {
           value = new TestReportStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<TestReportStatus>
         } else if (name.equals("testScript")) {
-          this.testScript = TypeConvertor.castToReference(value); // Reference
+          this.testScript = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("result")) {
           value = new TestReportResultEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.result = (Enumeration) value; // Enumeration<TestReportResult>
@@ -3577,7 +3614,7 @@ public class TestReport extends DomainResource {
         case -1618432855:  return getIdentifier();
         case 3373707:  return getNameElement();
         case -892481550:  return getStatusElement();
-        case 1712049149:  return getTestScript();
+        case 1712049149:  return getTestScriptElement();
         case -934426595:  return getResultElement();
         case 109264530:  return getScoreElement();
         case -877169473:  return getTesterElement();
@@ -3597,7 +3634,7 @@ public class TestReport extends DomainResource {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case 3373707: /*name*/ return new String[] {"string"};
         case -892481550: /*status*/ return new String[] {"code"};
-        case 1712049149: /*testScript*/ return new String[] {"Reference"};
+        case 1712049149: /*testScript*/ return new String[] {"canonical"};
         case -934426595: /*result*/ return new String[] {"code"};
         case 109264530: /*score*/ return new String[] {"decimal"};
         case -877169473: /*tester*/ return new String[] {"string"};
@@ -3624,8 +3661,7 @@ public class TestReport extends DomainResource {
           throw new FHIRException("Cannot call addChild on a primitive type TestReport.status");
         }
         else if (name.equals("testScript")) {
-          this.testScript = new Reference();
-          return this.testScript;
+          throw new FHIRException("Cannot call addChild on a primitive type TestReport.testScript");
         }
         else if (name.equals("result")) {
           throw new FHIRException("Cannot call addChild on a primitive type TestReport.result");
@@ -3717,9 +3753,9 @@ public class TestReport extends DomainResource {
         if (!(other_ instanceof TestReport))
           return false;
         TestReport o = (TestReport) other_;
-        return compareValues(name, o.name, true) && compareValues(status, o.status, true) && compareValues(result, o.result, true)
-           && compareValues(score, o.score, true) && compareValues(tester, o.tester, true) && compareValues(issued, o.issued, true)
-          ;
+        return compareValues(name, o.name, true) && compareValues(status, o.status, true) && compareValues(testScript, o.testScript, true)
+           && compareValues(result, o.result, true) && compareValues(score, o.score, true) && compareValues(tester, o.tester, true)
+           && compareValues(issued, o.issued, true);
       }
 
       public boolean isEmpty() {
@@ -3732,132 +3768,6 @@ public class TestReport extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.TestReport;
    }
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>An external identifier for the test report</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestReport.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="TestReport.identifier", description="An external identifier for the test report", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>An external identifier for the test report</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestReport.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>issued</b>
-   * <p>
-   * Description: <b>The test report generation date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>TestReport.issued</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="issued", path="TestReport.issued", description="The test report generation date", type="date" )
-  public static final String SP_ISSUED = "issued";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>issued</b>
-   * <p>
-   * Description: <b>The test report generation date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>TestReport.issued</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam ISSUED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_ISSUED);
-
- /**
-   * Search parameter: <b>participant</b>
-   * <p>
-   * Description: <b>The reference to a participant in the test execution</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>TestReport.participant.uri</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="participant", path="TestReport.participant.uri", description="The reference to a participant in the test execution", type="uri" )
-  public static final String SP_PARTICIPANT = "participant";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>participant</b>
-   * <p>
-   * Description: <b>The reference to a participant in the test execution</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>TestReport.participant.uri</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam PARTICIPANT = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_PARTICIPANT);
-
- /**
-   * Search parameter: <b>result</b>
-   * <p>
-   * Description: <b>The result disposition of the test execution</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestReport.result</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="result", path="TestReport.result", description="The result disposition of the test execution", type="token" )
-  public static final String SP_RESULT = "result";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>result</b>
-   * <p>
-   * Description: <b>The result disposition of the test execution</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestReport.result</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam RESULT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_RESULT);
-
- /**
-   * Search parameter: <b>tester</b>
-   * <p>
-   * Description: <b>The name of the testing organization</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestReport.tester</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="tester", path="TestReport.tester", description="The name of the testing organization", type="string" )
-  public static final String SP_TESTER = "tester";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>tester</b>
-   * <p>
-   * Description: <b>The name of the testing organization</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestReport.tester</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TESTER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TESTER);
-
- /**
-   * Search parameter: <b>testscript</b>
-   * <p>
-   * Description: <b>The test script executed to produce this report</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>TestReport.testScript</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="testscript", path="TestReport.testScript", description="The test script executed to produce this report", type="reference", target={TestScript.class } )
-  public static final String SP_TESTSCRIPT = "testscript";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>testscript</b>
-   * <p>
-   * Description: <b>The test script executed to produce this report</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>TestReport.testScript</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam TESTSCRIPT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_TESTSCRIPT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>TestReport:testscript</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_TESTSCRIPT = new ca.uhn.fhir.model.api.Include("TestReport:testscript").toLocked();
 
 
 }

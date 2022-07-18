@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * A food or fluid product that is consumed by patients.
+ * A food or supplement that is consumed by patients.
  */
 @ResourceDef(name="NutritionProduct", profile="http://hl7.org/fhir/StructureDefinition/NutritionProduct")
 public class NutritionProduct extends DomainResource {
@@ -89,6 +89,7 @@ public class NutritionProduct extends DomainResource {
             case ACTIVE: return "active";
             case INACTIVE: return "inactive";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +98,7 @@ public class NutritionProduct extends DomainResource {
             case ACTIVE: return "http://hl7.org/fhir/nutritionproduct-status";
             case INACTIVE: return "http://hl7.org/fhir/nutritionproduct-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/nutritionproduct-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +107,7 @@ public class NutritionProduct extends DomainResource {
             case ACTIVE: return "The product can be used.";
             case INACTIVE: return "The product is not expected or allowed to be used.";
             case ENTEREDINERROR: return "This electronic record should never have existed, though it is possible that real-world decisions were based on it.  (If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +116,7 @@ public class NutritionProduct extends DomainResource {
             case ACTIVE: return "Active";
             case INACTIVE: return "Inactive";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -637,7 +641,7 @@ public class NutritionProduct extends DomainResource {
   }
 
     @Block()
-    public static class NutritionProductProductCharacteristicComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class NutritionProductCharacteristicComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * A code specifying which characteristic of the product is being described (for example, colour, shape).
          */
@@ -658,14 +662,14 @@ public class NutritionProduct extends DomainResource {
     /**
      * Constructor
      */
-      public NutritionProductProductCharacteristicComponent() {
+      public NutritionProductCharacteristicComponent() {
         super();
       }
 
     /**
      * Constructor
      */
-      public NutritionProductProductCharacteristicComponent(CodeableConcept type, DataType value) {
+      public NutritionProductCharacteristicComponent(CodeableConcept type, DataType value) {
         super();
         this.setType(type);
         this.setValue(value);
@@ -677,7 +681,7 @@ public class NutritionProduct extends DomainResource {
         public CodeableConcept getType() { 
           if (this.type == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create NutritionProductProductCharacteristicComponent.type");
+              throw new Error("Attempt to auto-create NutritionProductCharacteristicComponent.type");
             else if (Configuration.doAutoCreate())
               this.type = new CodeableConcept(); // cc
           return this.type;
@@ -690,7 +694,7 @@ public class NutritionProduct extends DomainResource {
         /**
          * @param value {@link #type} (A code specifying which characteristic of the product is being described (for example, colour, shape).)
          */
-        public NutritionProductProductCharacteristicComponent setType(CodeableConcept value) { 
+        public NutritionProductCharacteristicComponent setType(CodeableConcept value) { 
           this.type = value;
           return this;
         }
@@ -799,9 +803,9 @@ public class NutritionProduct extends DomainResource {
         /**
          * @param value {@link #value} (The actual characteristic value corresponding to the type.)
          */
-        public NutritionProductProductCharacteristicComponent setValue(DataType value) { 
+        public NutritionProductCharacteristicComponent setValue(DataType value) { 
           if (value != null && !(value instanceof CodeableConcept || value instanceof StringType || value instanceof Quantity || value instanceof Base64BinaryType || value instanceof Attachment || value instanceof BooleanType))
-            throw new Error("Not the right type for NutritionProduct.productCharacteristic.value[x]: "+value.fhirType());
+            throw new Error("Not the right type for NutritionProduct.characteristic.value[x]: "+value.fhirType());
           this.value = value;
           return this;
         }
@@ -919,13 +923,13 @@ public class NutritionProduct extends DomainResource {
           return super.addChild(name);
       }
 
-      public NutritionProductProductCharacteristicComponent copy() {
-        NutritionProductProductCharacteristicComponent dst = new NutritionProductProductCharacteristicComponent();
+      public NutritionProductCharacteristicComponent copy() {
+        NutritionProductCharacteristicComponent dst = new NutritionProductCharacteristicComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(NutritionProductProductCharacteristicComponent dst) {
+      public void copyValues(NutritionProductCharacteristicComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.value = value == null ? null : value.copy();
@@ -935,9 +939,9 @@ public class NutritionProduct extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof NutritionProductProductCharacteristicComponent))
+        if (!(other_ instanceof NutritionProductCharacteristicComponent))
           return false;
-        NutritionProductProductCharacteristicComponent o = (NutritionProductProductCharacteristicComponent) other_;
+        NutritionProductCharacteristicComponent o = (NutritionProductCharacteristicComponent) other_;
         return compareDeep(type, o.type, true) && compareDeep(value, o.value, true);
       }
 
@@ -945,9 +949,9 @@ public class NutritionProduct extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof NutritionProductProductCharacteristicComponent))
+        if (!(other_ instanceof NutritionProductCharacteristicComponent))
           return false;
-        NutritionProductProductCharacteristicComponent o = (NutritionProductProductCharacteristicComponent) other_;
+        NutritionProductCharacteristicComponent o = (NutritionProductCharacteristicComponent) other_;
         return true;
       }
 
@@ -956,7 +960,7 @@ public class NutritionProduct extends DomainResource {
       }
 
   public String fhirType() {
-    return "NutritionProduct.productCharacteristic";
+    return "NutritionProduct.characteristic";
 
   }
 
@@ -972,41 +976,48 @@ public class NutritionProduct extends DomainResource {
         protected Quantity quantity;
 
         /**
-         * The identifier for the physical instance, typically a serial number.
+         * The identifier for the physical instance, typically a serial number or manufacturer number.
          */
         @Child(name = "identifier", type = {Identifier.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="The identifier for the physical instance, typically a serial number", formalDefinition="The identifier for the physical instance, typically a serial number." )
+        @Description(shortDefinition="The identifier for the physical instance, typically a serial number or manufacturer number", formalDefinition="The identifier for the physical instance, typically a serial number or manufacturer number." )
         protected List<Identifier> identifier;
+
+        /**
+         * The name for the specific product.
+         */
+        @Child(name = "name", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The name for the specific product", formalDefinition="The name for the specific product." )
+        protected StringType name;
 
         /**
          * The identification of the batch or lot of the product.
          */
-        @Child(name = "lotNumber", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "lotNumber", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The identification of the batch or lot of the product", formalDefinition="The identification of the batch or lot of the product." )
         protected StringType lotNumber;
 
         /**
          * The time after which the product is no longer expected to be in proper condition, or its use is not advised or not allowed.
          */
-        @Child(name = "expiry", type = {DateTimeType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "expiry", type = {DateTimeType.class}, order=5, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The expiry date or date and time for the product", formalDefinition="The time after which the product is no longer expected to be in proper condition, or its use is not advised or not allowed." )
         protected DateTimeType expiry;
 
         /**
          * The time after which the product is no longer expected to be in proper condition, or its use is not advised or not allowed.
          */
-        @Child(name = "useBy", type = {DateTimeType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "useBy", type = {DateTimeType.class}, order=6, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The date until which the product is expected to be good for consumption", formalDefinition="The time after which the product is no longer expected to be in proper condition, or its use is not advised or not allowed." )
         protected DateTimeType useBy;
 
         /**
-         * An identifier that supports traceability to the biological entity that is the source of biological material in the product.
+         * An identifier that supports traceability to the event during which material in this product from one or more biological entities was obtained or pooled.
          */
-        @Child(name = "biologicalSource", type = {Identifier.class}, order=6, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="An identifier that supports traceability to the biological entity that is the source of biological material in the product", formalDefinition="An identifier that supports traceability to the biological entity that is the source of biological material in the product." )
-        protected Identifier biologicalSource;
+        @Child(name = "biologicalSourceEvent", type = {Identifier.class}, order=7, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="An identifier that supports traceability to the event during which material in this product from one or more biological entities was obtained or pooled", formalDefinition="An identifier that supports traceability to the event during which material in this product from one or more biological entities was obtained or pooled." )
+        protected Identifier biologicalSourceEvent;
 
-        private static final long serialVersionUID = 1203492607L;
+        private static final long serialVersionUID = -954985011L;
 
     /**
      * Constructor
@@ -1040,7 +1051,7 @@ public class NutritionProduct extends DomainResource {
         }
 
         /**
-         * @return {@link #identifier} (The identifier for the physical instance, typically a serial number.)
+         * @return {@link #identifier} (The identifier for the physical instance, typically a serial number or manufacturer number.)
          */
         public List<Identifier> getIdentifier() { 
           if (this.identifier == null)
@@ -1090,6 +1101,55 @@ public class NutritionProduct extends DomainResource {
             addIdentifier();
           }
           return getIdentifier().get(0);
+        }
+
+        /**
+         * @return {@link #name} (The name for the specific product.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+         */
+        public StringType getNameElement() { 
+          if (this.name == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create NutritionProductInstanceComponent.name");
+            else if (Configuration.doAutoCreate())
+              this.name = new StringType(); // bb
+          return this.name;
+        }
+
+        public boolean hasNameElement() { 
+          return this.name != null && !this.name.isEmpty();
+        }
+
+        public boolean hasName() { 
+          return this.name != null && !this.name.isEmpty();
+        }
+
+        /**
+         * @param value {@link #name} (The name for the specific product.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+         */
+        public NutritionProductInstanceComponent setNameElement(StringType value) { 
+          this.name = value;
+          return this;
+        }
+
+        /**
+         * @return The name for the specific product.
+         */
+        public String getName() { 
+          return this.name == null ? null : this.name.getValue();
+        }
+
+        /**
+         * @param value The name for the specific product.
+         */
+        public NutritionProductInstanceComponent setName(String value) { 
+          if (Utilities.noString(value))
+            this.name = null;
+          else {
+            if (this.name == null)
+              this.name = new StringType();
+            this.name.setValue(value);
+          }
+          return this;
         }
 
         /**
@@ -1240,48 +1300,50 @@ public class NutritionProduct extends DomainResource {
         }
 
         /**
-         * @return {@link #biologicalSource} (An identifier that supports traceability to the biological entity that is the source of biological material in the product.)
+         * @return {@link #biologicalSourceEvent} (An identifier that supports traceability to the event during which material in this product from one or more biological entities was obtained or pooled.)
          */
-        public Identifier getBiologicalSource() { 
-          if (this.biologicalSource == null)
+        public Identifier getBiologicalSourceEvent() { 
+          if (this.biologicalSourceEvent == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create NutritionProductInstanceComponent.biologicalSource");
+              throw new Error("Attempt to auto-create NutritionProductInstanceComponent.biologicalSourceEvent");
             else if (Configuration.doAutoCreate())
-              this.biologicalSource = new Identifier(); // cc
-          return this.biologicalSource;
+              this.biologicalSourceEvent = new Identifier(); // cc
+          return this.biologicalSourceEvent;
         }
 
-        public boolean hasBiologicalSource() { 
-          return this.biologicalSource != null && !this.biologicalSource.isEmpty();
+        public boolean hasBiologicalSourceEvent() { 
+          return this.biologicalSourceEvent != null && !this.biologicalSourceEvent.isEmpty();
         }
 
         /**
-         * @param value {@link #biologicalSource} (An identifier that supports traceability to the biological entity that is the source of biological material in the product.)
+         * @param value {@link #biologicalSourceEvent} (An identifier that supports traceability to the event during which material in this product from one or more biological entities was obtained or pooled.)
          */
-        public NutritionProductInstanceComponent setBiologicalSource(Identifier value) { 
-          this.biologicalSource = value;
+        public NutritionProductInstanceComponent setBiologicalSourceEvent(Identifier value) { 
+          this.biologicalSourceEvent = value;
           return this;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("quantity", "Quantity", "The amount of items or instances that the resource considers, for instance when referring to 2 identical units together.", 0, 1, quantity));
-          children.add(new Property("identifier", "Identifier", "The identifier for the physical instance, typically a serial number.", 0, java.lang.Integer.MAX_VALUE, identifier));
+          children.add(new Property("identifier", "Identifier", "The identifier for the physical instance, typically a serial number or manufacturer number.", 0, java.lang.Integer.MAX_VALUE, identifier));
+          children.add(new Property("name", "string", "The name for the specific product.", 0, 1, name));
           children.add(new Property("lotNumber", "string", "The identification of the batch or lot of the product.", 0, 1, lotNumber));
           children.add(new Property("expiry", "dateTime", "The time after which the product is no longer expected to be in proper condition, or its use is not advised or not allowed.", 0, 1, expiry));
           children.add(new Property("useBy", "dateTime", "The time after which the product is no longer expected to be in proper condition, or its use is not advised or not allowed.", 0, 1, useBy));
-          children.add(new Property("biologicalSource", "Identifier", "An identifier that supports traceability to the biological entity that is the source of biological material in the product.", 0, 1, biologicalSource));
+          children.add(new Property("biologicalSourceEvent", "Identifier", "An identifier that supports traceability to the event during which material in this product from one or more biological entities was obtained or pooled.", 0, 1, biologicalSourceEvent));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "The amount of items or instances that the resource considers, for instance when referring to 2 identical units together.", 0, 1, quantity);
-          case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "The identifier for the physical instance, typically a serial number.", 0, java.lang.Integer.MAX_VALUE, identifier);
+          case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "The identifier for the physical instance, typically a serial number or manufacturer number.", 0, java.lang.Integer.MAX_VALUE, identifier);
+          case 3373707: /*name*/  return new Property("name", "string", "The name for the specific product.", 0, 1, name);
           case 462547450: /*lotNumber*/  return new Property("lotNumber", "string", "The identification of the batch or lot of the product.", 0, 1, lotNumber);
           case -1289159373: /*expiry*/  return new Property("expiry", "dateTime", "The time after which the product is no longer expected to be in proper condition, or its use is not advised or not allowed.", 0, 1, expiry);
           case 111577150: /*useBy*/  return new Property("useBy", "dateTime", "The time after which the product is no longer expected to be in proper condition, or its use is not advised or not allowed.", 0, 1, useBy);
-          case -883952260: /*biologicalSource*/  return new Property("biologicalSource", "Identifier", "An identifier that supports traceability to the biological entity that is the source of biological material in the product.", 0, 1, biologicalSource);
+          case -654468482: /*biologicalSourceEvent*/  return new Property("biologicalSourceEvent", "Identifier", "An identifier that supports traceability to the event during which material in this product from one or more biological entities was obtained or pooled.", 0, 1, biologicalSourceEvent);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1292,10 +1354,11 @@ public class NutritionProduct extends DomainResource {
         switch (hash) {
         case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
+        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case 462547450: /*lotNumber*/ return this.lotNumber == null ? new Base[0] : new Base[] {this.lotNumber}; // StringType
         case -1289159373: /*expiry*/ return this.expiry == null ? new Base[0] : new Base[] {this.expiry}; // DateTimeType
         case 111577150: /*useBy*/ return this.useBy == null ? new Base[0] : new Base[] {this.useBy}; // DateTimeType
-        case -883952260: /*biologicalSource*/ return this.biologicalSource == null ? new Base[0] : new Base[] {this.biologicalSource}; // Identifier
+        case -654468482: /*biologicalSourceEvent*/ return this.biologicalSourceEvent == null ? new Base[0] : new Base[] {this.biologicalSourceEvent}; // Identifier
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1310,6 +1373,9 @@ public class NutritionProduct extends DomainResource {
         case -1618432855: // identifier
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
+        case 3373707: // name
+          this.name = TypeConvertor.castToString(value); // StringType
+          return value;
         case 462547450: // lotNumber
           this.lotNumber = TypeConvertor.castToString(value); // StringType
           return value;
@@ -1319,8 +1385,8 @@ public class NutritionProduct extends DomainResource {
         case 111577150: // useBy
           this.useBy = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
-        case -883952260: // biologicalSource
-          this.biologicalSource = TypeConvertor.castToIdentifier(value); // Identifier
+        case -654468482: // biologicalSourceEvent
+          this.biologicalSourceEvent = TypeConvertor.castToIdentifier(value); // Identifier
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1333,14 +1399,16 @@ public class NutritionProduct extends DomainResource {
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("identifier")) {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
+        } else if (name.equals("name")) {
+          this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("lotNumber")) {
           this.lotNumber = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("expiry")) {
           this.expiry = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("useBy")) {
           this.useBy = TypeConvertor.castToDateTime(value); // DateTimeType
-        } else if (name.equals("biologicalSource")) {
-          this.biologicalSource = TypeConvertor.castToIdentifier(value); // Identifier
+        } else if (name.equals("biologicalSourceEvent")) {
+          this.biologicalSourceEvent = TypeConvertor.castToIdentifier(value); // Identifier
         } else
           return super.setProperty(name, value);
         return value;
@@ -1351,10 +1419,11 @@ public class NutritionProduct extends DomainResource {
         switch (hash) {
         case -1285004149:  return getQuantity();
         case -1618432855:  return addIdentifier(); 
+        case 3373707:  return getNameElement();
         case 462547450:  return getLotNumberElement();
         case -1289159373:  return getExpiryElement();
         case 111577150:  return getUseByElement();
-        case -883952260:  return getBiologicalSource();
+        case -654468482:  return getBiologicalSourceEvent();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1365,10 +1434,11 @@ public class NutritionProduct extends DomainResource {
         switch (hash) {
         case -1285004149: /*quantity*/ return new String[] {"Quantity"};
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
+        case 3373707: /*name*/ return new String[] {"string"};
         case 462547450: /*lotNumber*/ return new String[] {"string"};
         case -1289159373: /*expiry*/ return new String[] {"dateTime"};
         case 111577150: /*useBy*/ return new String[] {"dateTime"};
-        case -883952260: /*biologicalSource*/ return new String[] {"Identifier"};
+        case -654468482: /*biologicalSourceEvent*/ return new String[] {"Identifier"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1383,6 +1453,9 @@ public class NutritionProduct extends DomainResource {
         else if (name.equals("identifier")) {
           return addIdentifier();
         }
+        else if (name.equals("name")) {
+          throw new FHIRException("Cannot call addChild on a primitive type NutritionProduct.instance.name");
+        }
         else if (name.equals("lotNumber")) {
           throw new FHIRException("Cannot call addChild on a primitive type NutritionProduct.instance.lotNumber");
         }
@@ -1392,9 +1465,9 @@ public class NutritionProduct extends DomainResource {
         else if (name.equals("useBy")) {
           throw new FHIRException("Cannot call addChild on a primitive type NutritionProduct.instance.useBy");
         }
-        else if (name.equals("biologicalSource")) {
-          this.biologicalSource = new Identifier();
-          return this.biologicalSource;
+        else if (name.equals("biologicalSourceEvent")) {
+          this.biologicalSourceEvent = new Identifier();
+          return this.biologicalSourceEvent;
         }
         else
           return super.addChild(name);
@@ -1414,10 +1487,11 @@ public class NutritionProduct extends DomainResource {
           for (Identifier i : identifier)
             dst.identifier.add(i.copy());
         };
+        dst.name = name == null ? null : name.copy();
         dst.lotNumber = lotNumber == null ? null : lotNumber.copy();
         dst.expiry = expiry == null ? null : expiry.copy();
         dst.useBy = useBy == null ? null : useBy.copy();
-        dst.biologicalSource = biologicalSource == null ? null : biologicalSource.copy();
+        dst.biologicalSourceEvent = biologicalSourceEvent == null ? null : biologicalSourceEvent.copy();
       }
 
       @Override
@@ -1427,9 +1501,9 @@ public class NutritionProduct extends DomainResource {
         if (!(other_ instanceof NutritionProductInstanceComponent))
           return false;
         NutritionProductInstanceComponent o = (NutritionProductInstanceComponent) other_;
-        return compareDeep(quantity, o.quantity, true) && compareDeep(identifier, o.identifier, true) && compareDeep(lotNumber, o.lotNumber, true)
-           && compareDeep(expiry, o.expiry, true) && compareDeep(useBy, o.useBy, true) && compareDeep(biologicalSource, o.biologicalSource, true)
-          ;
+        return compareDeep(quantity, o.quantity, true) && compareDeep(identifier, o.identifier, true) && compareDeep(name, o.name, true)
+           && compareDeep(lotNumber, o.lotNumber, true) && compareDeep(expiry, o.expiry, true) && compareDeep(useBy, o.useBy, true)
+           && compareDeep(biologicalSourceEvent, o.biologicalSourceEvent, true);
       }
 
       @Override
@@ -1439,13 +1513,13 @@ public class NutritionProduct extends DomainResource {
         if (!(other_ instanceof NutritionProductInstanceComponent))
           return false;
         NutritionProductInstanceComponent o = (NutritionProductInstanceComponent) other_;
-        return compareValues(lotNumber, o.lotNumber, true) && compareValues(expiry, o.expiry, true) && compareValues(useBy, o.useBy, true)
-          ;
+        return compareValues(name, o.name, true) && compareValues(lotNumber, o.lotNumber, true) && compareValues(expiry, o.expiry, true)
+           && compareValues(useBy, o.useBy, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(quantity, identifier, lotNumber
-          , expiry, useBy, biologicalSource);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(quantity, identifier, name
+          , lotNumber, expiry, useBy, biologicalSourceEvent);
       }
 
   public String fhirType() {
@@ -1456,9 +1530,17 @@ public class NutritionProduct extends DomainResource {
   }
 
     /**
+     * The code assigned to the product, for example a USDA NDB number, a USDA FDC ID number, or a Langual code.
+     */
+    @Child(name = "code", type = {CodeableConcept.class}, order=0, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="A code that can identify the detailed nutrients and ingredients in a specific food product", formalDefinition="The code assigned to the product, for example a USDA NDB number, a USDA FDC ID number, or a Langual code." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/edible-substance-type")
+    protected CodeableConcept code;
+
+    /**
      * The current state of the product.
      */
-    @Child(name = "status", type = {CodeType.class}, order=0, min=1, max=1, modifier=true, summary=true)
+    @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="active | inactive | entered-in-error", formalDefinition="The current state of the product." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/nutritionproduct-status")
     protected Enumeration<NutritionProductStatus> status;
@@ -1466,18 +1548,10 @@ public class NutritionProduct extends DomainResource {
     /**
      * Nutrition products can have different classifications - according to its nutritional properties, preparation methods, etc.
      */
-    @Child(name = "category", type = {CodeableConcept.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="A category or class of the nutrition product (halal, kosher, gluten free, vegan, etc)", formalDefinition="Nutrition products can have different classifications - according to its nutritional properties, preparation methods, etc." )
+    @Child(name = "category", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Broad product groups or categories used to classify the product, such as Legume and Legume Products, Beverages, or Beef Products", formalDefinition="Nutrition products can have different classifications - according to its nutritional properties, preparation methods, etc." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/nutrition-product-category")
     protected List<CodeableConcept> category;
-
-    /**
-     * The code assigned to the product, for example a manufacturer number or other terminology.
-     */
-    @Child(name = "code", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="A code designating a specific type of nutritional product", formalDefinition="The code assigned to the product, for example a manufacturer number or other terminology." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/edible-substance-type")
-    protected CodeableConcept code;
 
     /**
      * The organisation (manufacturer, representative or legal authorisation holder) that is responsible for the device.
@@ -1511,16 +1585,16 @@ public class NutritionProduct extends DomainResource {
     /**
      * Specifies descriptive properties of the nutrition product.
      */
-    @Child(name = "productCharacteristic", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "characteristic", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Specifies descriptive properties of the nutrition product", formalDefinition="Specifies descriptive properties of the nutrition product." )
-    protected List<NutritionProductProductCharacteristicComponent> productCharacteristic;
+    protected List<NutritionProductCharacteristicComponent> characteristic;
 
     /**
      * Conveys instance-level information about this product item. One or several physical, countable instances or occurrences of the product.
      */
-    @Child(name = "instance", type = {}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "instance", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="One or several physical instances or occurrences of the nutrition product", formalDefinition="Conveys instance-level information about this product item. One or several physical, countable instances or occurrences of the product." )
-    protected NutritionProductInstanceComponent instance;
+    protected List<NutritionProductInstanceComponent> instance;
 
     /**
      * Comments made about the product.
@@ -1529,7 +1603,7 @@ public class NutritionProduct extends DomainResource {
     @Description(shortDefinition="Comments made about the product", formalDefinition="Comments made about the product." )
     protected List<Annotation> note;
 
-    private static final long serialVersionUID = -565022355L;
+    private static final long serialVersionUID = 182320595L;
 
   /**
    * Constructor
@@ -1544,6 +1618,30 @@ public class NutritionProduct extends DomainResource {
     public NutritionProduct(NutritionProductStatus status) {
       super();
       this.setStatus(status);
+    }
+
+    /**
+     * @return {@link #code} (The code assigned to the product, for example a USDA NDB number, a USDA FDC ID number, or a Langual code.)
+     */
+    public CodeableConcept getCode() { 
+      if (this.code == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create NutritionProduct.code");
+        else if (Configuration.doAutoCreate())
+          this.code = new CodeableConcept(); // cc
+      return this.code;
+    }
+
+    public boolean hasCode() { 
+      return this.code != null && !this.code.isEmpty();
+    }
+
+    /**
+     * @param value {@link #code} (The code assigned to the product, for example a USDA NDB number, a USDA FDC ID number, or a Langual code.)
+     */
+    public NutritionProduct setCode(CodeableConcept value) { 
+      this.code = value;
+      return this;
     }
 
     /**
@@ -1642,30 +1740,6 @@ public class NutritionProduct extends DomainResource {
         addCategory();
       }
       return getCategory().get(0);
-    }
-
-    /**
-     * @return {@link #code} (The code assigned to the product, for example a manufacturer number or other terminology.)
-     */
-    public CodeableConcept getCode() { 
-      if (this.code == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create NutritionProduct.code");
-        else if (Configuration.doAutoCreate())
-          this.code = new CodeableConcept(); // cc
-      return this.code;
-    }
-
-    public boolean hasCode() { 
-      return this.code != null && !this.code.isEmpty();
-    }
-
-    /**
-     * @param value {@link #code} (The code assigned to the product, for example a manufacturer number or other terminology.)
-     */
-    public NutritionProduct setCode(CodeableConcept value) { 
-      this.code = value;
-      return this;
     }
 
     /**
@@ -1881,80 +1955,109 @@ public class NutritionProduct extends DomainResource {
     }
 
     /**
-     * @return {@link #productCharacteristic} (Specifies descriptive properties of the nutrition product.)
+     * @return {@link #characteristic} (Specifies descriptive properties of the nutrition product.)
      */
-    public List<NutritionProductProductCharacteristicComponent> getProductCharacteristic() { 
-      if (this.productCharacteristic == null)
-        this.productCharacteristic = new ArrayList<NutritionProductProductCharacteristicComponent>();
-      return this.productCharacteristic;
+    public List<NutritionProductCharacteristicComponent> getCharacteristic() { 
+      if (this.characteristic == null)
+        this.characteristic = new ArrayList<NutritionProductCharacteristicComponent>();
+      return this.characteristic;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public NutritionProduct setProductCharacteristic(List<NutritionProductProductCharacteristicComponent> theProductCharacteristic) { 
-      this.productCharacteristic = theProductCharacteristic;
+    public NutritionProduct setCharacteristic(List<NutritionProductCharacteristicComponent> theCharacteristic) { 
+      this.characteristic = theCharacteristic;
       return this;
     }
 
-    public boolean hasProductCharacteristic() { 
-      if (this.productCharacteristic == null)
+    public boolean hasCharacteristic() { 
+      if (this.characteristic == null)
         return false;
-      for (NutritionProductProductCharacteristicComponent item : this.productCharacteristic)
+      for (NutritionProductCharacteristicComponent item : this.characteristic)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public NutritionProductProductCharacteristicComponent addProductCharacteristic() { //3
-      NutritionProductProductCharacteristicComponent t = new NutritionProductProductCharacteristicComponent();
-      if (this.productCharacteristic == null)
-        this.productCharacteristic = new ArrayList<NutritionProductProductCharacteristicComponent>();
-      this.productCharacteristic.add(t);
+    public NutritionProductCharacteristicComponent addCharacteristic() { //3
+      NutritionProductCharacteristicComponent t = new NutritionProductCharacteristicComponent();
+      if (this.characteristic == null)
+        this.characteristic = new ArrayList<NutritionProductCharacteristicComponent>();
+      this.characteristic.add(t);
       return t;
     }
 
-    public NutritionProduct addProductCharacteristic(NutritionProductProductCharacteristicComponent t) { //3
+    public NutritionProduct addCharacteristic(NutritionProductCharacteristicComponent t) { //3
       if (t == null)
         return this;
-      if (this.productCharacteristic == null)
-        this.productCharacteristic = new ArrayList<NutritionProductProductCharacteristicComponent>();
-      this.productCharacteristic.add(t);
+      if (this.characteristic == null)
+        this.characteristic = new ArrayList<NutritionProductCharacteristicComponent>();
+      this.characteristic.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #productCharacteristic}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #characteristic}, creating it if it does not already exist {3}
      */
-    public NutritionProductProductCharacteristicComponent getProductCharacteristicFirstRep() { 
-      if (getProductCharacteristic().isEmpty()) {
-        addProductCharacteristic();
+    public NutritionProductCharacteristicComponent getCharacteristicFirstRep() { 
+      if (getCharacteristic().isEmpty()) {
+        addCharacteristic();
       }
-      return getProductCharacteristic().get(0);
+      return getCharacteristic().get(0);
     }
 
     /**
      * @return {@link #instance} (Conveys instance-level information about this product item. One or several physical, countable instances or occurrences of the product.)
      */
-    public NutritionProductInstanceComponent getInstance() { 
+    public List<NutritionProductInstanceComponent> getInstance() { 
       if (this.instance == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create NutritionProduct.instance");
-        else if (Configuration.doAutoCreate())
-          this.instance = new NutritionProductInstanceComponent(); // cc
+        this.instance = new ArrayList<NutritionProductInstanceComponent>();
       return this.instance;
     }
 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public NutritionProduct setInstance(List<NutritionProductInstanceComponent> theInstance) { 
+      this.instance = theInstance;
+      return this;
+    }
+
     public boolean hasInstance() { 
-      return this.instance != null && !this.instance.isEmpty();
+      if (this.instance == null)
+        return false;
+      for (NutritionProductInstanceComponent item : this.instance)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public NutritionProductInstanceComponent addInstance() { //3
+      NutritionProductInstanceComponent t = new NutritionProductInstanceComponent();
+      if (this.instance == null)
+        this.instance = new ArrayList<NutritionProductInstanceComponent>();
+      this.instance.add(t);
+      return t;
+    }
+
+    public NutritionProduct addInstance(NutritionProductInstanceComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.instance == null)
+        this.instance = new ArrayList<NutritionProductInstanceComponent>();
+      this.instance.add(t);
+      return this;
     }
 
     /**
-     * @param value {@link #instance} (Conveys instance-level information about this product item. One or several physical, countable instances or occurrences of the product.)
+     * @return The first repetition of repeating field {@link #instance}, creating it if it does not already exist {3}
      */
-    public NutritionProduct setInstance(NutritionProductInstanceComponent value) { 
-      this.instance = value;
-      return this;
+    public NutritionProductInstanceComponent getInstanceFirstRep() { 
+      if (getInstance().isEmpty()) {
+        addInstance();
+      }
+      return getInstance().get(0);
     }
 
     /**
@@ -2012,30 +2115,30 @@ public class NutritionProduct extends DomainResource {
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
+        children.add(new Property("code", "CodeableConcept", "The code assigned to the product, for example a USDA NDB number, a USDA FDC ID number, or a Langual code.", 0, 1, code));
         children.add(new Property("status", "code", "The current state of the product.", 0, 1, status));
         children.add(new Property("category", "CodeableConcept", "Nutrition products can have different classifications - according to its nutritional properties, preparation methods, etc.", 0, java.lang.Integer.MAX_VALUE, category));
-        children.add(new Property("code", "CodeableConcept", "The code assigned to the product, for example a manufacturer number or other terminology.", 0, 1, code));
         children.add(new Property("manufacturer", "Reference(Organization)", "The organisation (manufacturer, representative or legal authorisation holder) that is responsible for the device.", 0, java.lang.Integer.MAX_VALUE, manufacturer));
         children.add(new Property("nutrient", "", "The product's nutritional information expressed by the nutrients.", 0, java.lang.Integer.MAX_VALUE, nutrient));
         children.add(new Property("ingredient", "", "Ingredients contained in this product.", 0, java.lang.Integer.MAX_VALUE, ingredient));
         children.add(new Property("knownAllergen", "CodeableReference(Substance)", "Allergens that are known or suspected to be a part of this nutrition product.", 0, java.lang.Integer.MAX_VALUE, knownAllergen));
-        children.add(new Property("productCharacteristic", "", "Specifies descriptive properties of the nutrition product.", 0, java.lang.Integer.MAX_VALUE, productCharacteristic));
-        children.add(new Property("instance", "", "Conveys instance-level information about this product item. One or several physical, countable instances or occurrences of the product.", 0, 1, instance));
+        children.add(new Property("characteristic", "", "Specifies descriptive properties of the nutrition product.", 0, java.lang.Integer.MAX_VALUE, characteristic));
+        children.add(new Property("instance", "", "Conveys instance-level information about this product item. One or several physical, countable instances or occurrences of the product.", 0, java.lang.Integer.MAX_VALUE, instance));
         children.add(new Property("note", "Annotation", "Comments made about the product.", 0, java.lang.Integer.MAX_VALUE, note));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
+        case 3059181: /*code*/  return new Property("code", "CodeableConcept", "The code assigned to the product, for example a USDA NDB number, a USDA FDC ID number, or a Langual code.", 0, 1, code);
         case -892481550: /*status*/  return new Property("status", "code", "The current state of the product.", 0, 1, status);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "Nutrition products can have different classifications - according to its nutritional properties, preparation methods, etc.", 0, java.lang.Integer.MAX_VALUE, category);
-        case 3059181: /*code*/  return new Property("code", "CodeableConcept", "The code assigned to the product, for example a manufacturer number or other terminology.", 0, 1, code);
         case -1969347631: /*manufacturer*/  return new Property("manufacturer", "Reference(Organization)", "The organisation (manufacturer, representative or legal authorisation holder) that is responsible for the device.", 0, java.lang.Integer.MAX_VALUE, manufacturer);
         case -1671151641: /*nutrient*/  return new Property("nutrient", "", "The product's nutritional information expressed by the nutrients.", 0, java.lang.Integer.MAX_VALUE, nutrient);
         case -206409263: /*ingredient*/  return new Property("ingredient", "", "Ingredients contained in this product.", 0, java.lang.Integer.MAX_VALUE, ingredient);
         case 1093336805: /*knownAllergen*/  return new Property("knownAllergen", "CodeableReference(Substance)", "Allergens that are known or suspected to be a part of this nutrition product.", 0, java.lang.Integer.MAX_VALUE, knownAllergen);
-        case 1231899754: /*productCharacteristic*/  return new Property("productCharacteristic", "", "Specifies descriptive properties of the nutrition product.", 0, java.lang.Integer.MAX_VALUE, productCharacteristic);
-        case 555127957: /*instance*/  return new Property("instance", "", "Conveys instance-level information about this product item. One or several physical, countable instances or occurrences of the product.", 0, 1, instance);
+        case 366313883: /*characteristic*/  return new Property("characteristic", "", "Specifies descriptive properties of the nutrition product.", 0, java.lang.Integer.MAX_VALUE, characteristic);
+        case 555127957: /*instance*/  return new Property("instance", "", "Conveys instance-level information about this product item. One or several physical, countable instances or occurrences of the product.", 0, java.lang.Integer.MAX_VALUE, instance);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Comments made about the product.", 0, java.lang.Integer.MAX_VALUE, note);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -2045,15 +2148,15 @@ public class NutritionProduct extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<NutritionProductStatus>
         case 50511102: /*category*/ return this.category == null ? new Base[0] : this.category.toArray(new Base[this.category.size()]); // CodeableConcept
-        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case -1969347631: /*manufacturer*/ return this.manufacturer == null ? new Base[0] : this.manufacturer.toArray(new Base[this.manufacturer.size()]); // Reference
         case -1671151641: /*nutrient*/ return this.nutrient == null ? new Base[0] : this.nutrient.toArray(new Base[this.nutrient.size()]); // NutritionProductNutrientComponent
         case -206409263: /*ingredient*/ return this.ingredient == null ? new Base[0] : this.ingredient.toArray(new Base[this.ingredient.size()]); // NutritionProductIngredientComponent
         case 1093336805: /*knownAllergen*/ return this.knownAllergen == null ? new Base[0] : this.knownAllergen.toArray(new Base[this.knownAllergen.size()]); // CodeableReference
-        case 1231899754: /*productCharacteristic*/ return this.productCharacteristic == null ? new Base[0] : this.productCharacteristic.toArray(new Base[this.productCharacteristic.size()]); // NutritionProductProductCharacteristicComponent
-        case 555127957: /*instance*/ return this.instance == null ? new Base[0] : new Base[] {this.instance}; // NutritionProductInstanceComponent
+        case 366313883: /*characteristic*/ return this.characteristic == null ? new Base[0] : this.characteristic.toArray(new Base[this.characteristic.size()]); // NutritionProductCharacteristicComponent
+        case 555127957: /*instance*/ return this.instance == null ? new Base[0] : this.instance.toArray(new Base[this.instance.size()]); // NutritionProductInstanceComponent
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -2063,15 +2166,15 @@ public class NutritionProduct extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
+        case 3059181: // code
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         case -892481550: // status
           value = new NutritionProductStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<NutritionProductStatus>
           return value;
         case 50511102: // category
           this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        case 3059181: // code
-          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1969347631: // manufacturer
           this.getManufacturer().add(TypeConvertor.castToReference(value)); // Reference
@@ -2085,11 +2188,11 @@ public class NutritionProduct extends DomainResource {
         case 1093336805: // knownAllergen
           this.getKnownAllergen().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
-        case 1231899754: // productCharacteristic
-          this.getProductCharacteristic().add((NutritionProductProductCharacteristicComponent) value); // NutritionProductProductCharacteristicComponent
+        case 366313883: // characteristic
+          this.getCharacteristic().add((NutritionProductCharacteristicComponent) value); // NutritionProductCharacteristicComponent
           return value;
         case 555127957: // instance
-          this.instance = (NutritionProductInstanceComponent) value; // NutritionProductInstanceComponent
+          this.getInstance().add((NutritionProductInstanceComponent) value); // NutritionProductInstanceComponent
           return value;
         case 3387378: // note
           this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
@@ -2101,13 +2204,13 @@ public class NutritionProduct extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("status")) {
+        if (name.equals("code")) {
+          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("status")) {
           value = new NutritionProductStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<NutritionProductStatus>
         } else if (name.equals("category")) {
           this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("code")) {
-          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("manufacturer")) {
           this.getManufacturer().add(TypeConvertor.castToReference(value));
         } else if (name.equals("nutrient")) {
@@ -2116,10 +2219,10 @@ public class NutritionProduct extends DomainResource {
           this.getIngredient().add((NutritionProductIngredientComponent) value);
         } else if (name.equals("knownAllergen")) {
           this.getKnownAllergen().add(TypeConvertor.castToCodeableReference(value));
-        } else if (name.equals("productCharacteristic")) {
-          this.getProductCharacteristic().add((NutritionProductProductCharacteristicComponent) value);
+        } else if (name.equals("characteristic")) {
+          this.getCharacteristic().add((NutritionProductCharacteristicComponent) value);
         } else if (name.equals("instance")) {
-          this.instance = (NutritionProductInstanceComponent) value; // NutritionProductInstanceComponent
+          this.getInstance().add((NutritionProductInstanceComponent) value);
         } else if (name.equals("note")) {
           this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else
@@ -2130,15 +2233,15 @@ public class NutritionProduct extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
+        case 3059181:  return getCode();
         case -892481550:  return getStatusElement();
         case 50511102:  return addCategory(); 
-        case 3059181:  return getCode();
         case -1969347631:  return addManufacturer(); 
         case -1671151641:  return addNutrient(); 
         case -206409263:  return addIngredient(); 
         case 1093336805:  return addKnownAllergen(); 
-        case 1231899754:  return addProductCharacteristic(); 
-        case 555127957:  return getInstance();
+        case 366313883:  return addCharacteristic(); 
+        case 555127957:  return addInstance(); 
         case 3387378:  return addNote(); 
         default: return super.makeProperty(hash, name);
         }
@@ -2148,14 +2251,14 @@ public class NutritionProduct extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
+        case 3059181: /*code*/ return new String[] {"CodeableConcept"};
         case -892481550: /*status*/ return new String[] {"code"};
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
-        case 3059181: /*code*/ return new String[] {"CodeableConcept"};
         case -1969347631: /*manufacturer*/ return new String[] {"Reference"};
         case -1671151641: /*nutrient*/ return new String[] {};
         case -206409263: /*ingredient*/ return new String[] {};
         case 1093336805: /*knownAllergen*/ return new String[] {"CodeableReference"};
-        case 1231899754: /*productCharacteristic*/ return new String[] {};
+        case 366313883: /*characteristic*/ return new String[] {};
         case 555127957: /*instance*/ return new String[] {};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         default: return super.getTypesForProperty(hash, name);
@@ -2165,15 +2268,15 @@ public class NutritionProduct extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("status")) {
+        if (name.equals("code")) {
+          this.code = new CodeableConcept();
+          return this.code;
+        }
+        else if (name.equals("status")) {
           throw new FHIRException("Cannot call addChild on a primitive type NutritionProduct.status");
         }
         else if (name.equals("category")) {
           return addCategory();
-        }
-        else if (name.equals("code")) {
-          this.code = new CodeableConcept();
-          return this.code;
         }
         else if (name.equals("manufacturer")) {
           return addManufacturer();
@@ -2187,12 +2290,11 @@ public class NutritionProduct extends DomainResource {
         else if (name.equals("knownAllergen")) {
           return addKnownAllergen();
         }
-        else if (name.equals("productCharacteristic")) {
-          return addProductCharacteristic();
+        else if (name.equals("characteristic")) {
+          return addCharacteristic();
         }
         else if (name.equals("instance")) {
-          this.instance = new NutritionProductInstanceComponent();
-          return this.instance;
+          return addInstance();
         }
         else if (name.equals("note")) {
           return addNote();
@@ -2214,13 +2316,13 @@ public class NutritionProduct extends DomainResource {
 
       public void copyValues(NutritionProduct dst) {
         super.copyValues(dst);
+        dst.code = code == null ? null : code.copy();
         dst.status = status == null ? null : status.copy();
         if (category != null) {
           dst.category = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : category)
             dst.category.add(i.copy());
         };
-        dst.code = code == null ? null : code.copy();
         if (manufacturer != null) {
           dst.manufacturer = new ArrayList<Reference>();
           for (Reference i : manufacturer)
@@ -2241,12 +2343,16 @@ public class NutritionProduct extends DomainResource {
           for (CodeableReference i : knownAllergen)
             dst.knownAllergen.add(i.copy());
         };
-        if (productCharacteristic != null) {
-          dst.productCharacteristic = new ArrayList<NutritionProductProductCharacteristicComponent>();
-          for (NutritionProductProductCharacteristicComponent i : productCharacteristic)
-            dst.productCharacteristic.add(i.copy());
+        if (characteristic != null) {
+          dst.characteristic = new ArrayList<NutritionProductCharacteristicComponent>();
+          for (NutritionProductCharacteristicComponent i : characteristic)
+            dst.characteristic.add(i.copy());
         };
-        dst.instance = instance == null ? null : instance.copy();
+        if (instance != null) {
+          dst.instance = new ArrayList<NutritionProductInstanceComponent>();
+          for (NutritionProductInstanceComponent i : instance)
+            dst.instance.add(i.copy());
+        };
         if (note != null) {
           dst.note = new ArrayList<Annotation>();
           for (Annotation i : note)
@@ -2265,9 +2371,9 @@ public class NutritionProduct extends DomainResource {
         if (!(other_ instanceof NutritionProduct))
           return false;
         NutritionProduct o = (NutritionProduct) other_;
-        return compareDeep(status, o.status, true) && compareDeep(category, o.category, true) && compareDeep(code, o.code, true)
+        return compareDeep(code, o.code, true) && compareDeep(status, o.status, true) && compareDeep(category, o.category, true)
            && compareDeep(manufacturer, o.manufacturer, true) && compareDeep(nutrient, o.nutrient, true) && compareDeep(ingredient, o.ingredient, true)
-           && compareDeep(knownAllergen, o.knownAllergen, true) && compareDeep(productCharacteristic, o.productCharacteristic, true)
+           && compareDeep(knownAllergen, o.knownAllergen, true) && compareDeep(characteristic, o.characteristic, true)
            && compareDeep(instance, o.instance, true) && compareDeep(note, o.note, true);
       }
 
@@ -2282,74 +2388,14 @@ public class NutritionProduct extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(status, category, code, manufacturer
-          , nutrient, ingredient, knownAllergen, productCharacteristic, instance, note);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, status, category, manufacturer
+          , nutrient, ingredient, knownAllergen, characteristic, instance, note);
       }
 
   @Override
   public ResourceType getResourceType() {
     return ResourceType.NutritionProduct;
    }
-
- /**
-   * Search parameter: <b>biological-source</b>
-   * <p>
-   * Description: <b>The biological source for the nutrition product</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>NutritionProduct.instance.biologicalSource</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="biological-source", path="NutritionProduct.instance.biologicalSource", description="The biological source for the nutrition product", type="token" )
-  public static final String SP_BIOLOGICAL_SOURCE = "biological-source";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>biological-source</b>
-   * <p>
-   * Description: <b>The biological source for the nutrition product</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>NutritionProduct.instance.biologicalSource</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam BIOLOGICAL_SOURCE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_BIOLOGICAL_SOURCE);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>The identifier for the physical instance, typically a serial number</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>NutritionProduct.instance.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="NutritionProduct.instance.identifier", description="The identifier for the physical instance, typically a serial number", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>The identifier for the physical instance, typically a serial number</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>NutritionProduct.instance.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>active | inactive | entered-in-error</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>NutritionProduct.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="NutritionProduct.status", description="active | inactive | entered-in-error", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>active | inactive | entered-in-error</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>NutritionProduct.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
 
 }

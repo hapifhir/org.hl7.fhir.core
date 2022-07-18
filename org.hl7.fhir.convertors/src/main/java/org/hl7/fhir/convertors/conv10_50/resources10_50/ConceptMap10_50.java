@@ -8,9 +8,11 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Codeab
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.ContactPoint10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Identifier10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.*;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.String14_50;
 import org.hl7.fhir.dstu2.model.Enumerations.ConceptMapEquivalence;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.r5.model.Enumeration;
@@ -58,9 +60,9 @@ public class ConceptMap10_50 {
     if (src.hasCopyright())
       tgt.setCopyright(src.getCopyright());
     org.hl7.fhir.r5.model.DataType r = ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getSource());
-    tgt.setSource(r instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) r).getReference()) : r);
+    tgt.setSourceScope(r instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) r).getReference()) : r);
     r = ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getTarget());
-    tgt.setTarget(r instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) r).getReference()) : r);
+    tgt.setTargetScope(r instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) r).getReference()) : r);
     for (org.hl7.fhir.dstu2.model.ConceptMap.SourceElementComponent t : src.getElement()) {
       List<SourceElementComponentWrapper<ConceptMap.SourceElementComponent>> ws = convertSourceElementComponent(t);
       for (SourceElementComponentWrapper<ConceptMap.SourceElementComponent> w : ws)
@@ -104,10 +106,10 @@ public class ConceptMap10_50 {
       tgt.setRequirements(src.getPurpose());
     if (src.hasCopyright())
       tgt.setCopyright(src.getCopyright());
-    if (src.hasSource())
-      tgt.setSource(ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getSource()));
-    if (src.hasTarget())
-      tgt.setTarget(ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getTarget()));
+    if (src.hasSourceScope())
+      tgt.setSource(ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getSourceScope()));
+    if (src.hasTargetScope())
+      tgt.setTarget(ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getTargetScope()));
     for (org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent g : src.getGroup())
       for (org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent t : g.getElement())
         tgt.addElement(convertSourceElementComponent(t, g));
@@ -215,10 +217,11 @@ public class ConceptMap10_50 {
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
     if (src.hasPropertyElement())
       tgt.setElementElement(Uri10_50.convertUri(src.getPropertyElement()));
-    if (src.hasSystem())
-      tgt.setCodeSystem(src.getSystem());
-    if (src.hasValueElement())
-      tgt.setCodeElement(String10_50.convertString(src.getValueElement()));
+    if (src.hasValueCoding()) {
+      tgt.setCode(src.getValueCoding().getCode());
+    } else if (src.hasValue()) {
+      tgt.setCode(src.getValue().primitiveValue());
+    }
     return tgt;
   }
 
@@ -229,10 +232,7 @@ public class ConceptMap10_50 {
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
     if (src.hasElementElement())
       tgt.setPropertyElement(Uri10_50.convertUri(src.getElementElement()));
-    if (src.hasCodeSystem())
-      tgt.setSystem(src.getCodeSystem());
-    if (src.hasCodeElement())
-      tgt.setValueElement(String10_50.convertString(src.getCodeElement()));
+    tgt.setValue(String10_50.convertString(src.getCodeElement()));
     return tgt;
   }
 

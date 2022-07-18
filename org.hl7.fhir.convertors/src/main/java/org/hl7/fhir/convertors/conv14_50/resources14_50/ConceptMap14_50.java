@@ -11,6 +11,7 @@ import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.*;
 import org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.r5.model.Enumeration;
@@ -58,9 +59,9 @@ public class ConceptMap14_50 {
     if (src.hasCopyright())
       tgt.setCopyright(src.getCopyright());
     org.hl7.fhir.r5.model.DataType tt = ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().convertType(src.getSource());
-    tgt.setSource(tt instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) tt).getReference()) : tt);
+    tgt.setSourceScope(tt instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) tt).getReference()) : tt);
     tt = ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().convertType(src.getTarget());
-    tgt.setTarget(tt instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) tt).getReference()) : tt);
+    tgt.setTargetScope(tt instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) tt).getReference()) : tt);
     for (org.hl7.fhir.dstu2016may.model.ConceptMap.SourceElementComponent t : src.getElement()) {
       List<SourceElementComponentWrapper<ConceptMap.SourceElementComponent>> ws = convertSourceElementComponent(t);
       for (SourceElementComponentWrapper<ConceptMap.SourceElementComponent> w : ws)
@@ -104,18 +105,18 @@ public class ConceptMap14_50 {
       tgt.setRequirements(src.getPurpose());
     if (src.hasCopyright())
       tgt.setCopyright(src.getCopyright());
-    if (src.getSource() instanceof CanonicalType)
-      tgt.setSource(Reference14_50.convertCanonicalToReference((CanonicalType) src.getSource()));
-    else if (src.hasSource())
-      tgt.setSource(ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().convertType(src.getSource()));
-    if (src.getTarget() instanceof CanonicalType)
-      tgt.setTarget(Reference14_50.convertCanonicalToReference((CanonicalType) src.getTarget()));
-    else if (src.hasTarget())
-      tgt.setTarget(ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().convertType(src.getTarget()));
-    if (src.hasSource())
-      tgt.setSource(ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().convertType(src.getSource()));
-    if (src.hasTarget())
-      tgt.setTarget(ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().convertType(src.getTarget()));
+    if (src.getSourceScope() instanceof CanonicalType)
+      tgt.setSource(Reference14_50.convertCanonicalToReference((CanonicalType) src.getSourceScope()));
+    else if (src.hasSourceScope())
+      tgt.setSource(ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().convertType(src.getSourceScope()));
+    if (src.getTargetScope() instanceof CanonicalType)
+      tgt.setTarget(Reference14_50.convertCanonicalToReference((CanonicalType) src.getTargetScope()));
+    else if (src.hasTargetScope())
+      tgt.setTarget(ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().convertType(src.getTargetScope()));
+    if (src.hasSourceScope())
+      tgt.setSource(ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().convertType(src.getSourceScope()));
+    if (src.hasTargetScope())
+      tgt.setTarget(ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().convertType(src.getTargetScope()));
     for (org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent g : src.getGroup())
       for (org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent t : g.getElement())
         tgt.addElement(convertSourceElementComponent(t, g));
@@ -223,10 +224,12 @@ public class ConceptMap14_50 {
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     if (src.hasPropertyElement())
       tgt.setElementElement(Uri14_50.convertUri(src.getPropertyElement()));
-    if (src.hasSystem())
-      tgt.setSystem(src.getSystem());
-    if (src.hasValueElement())
-      tgt.setCodeElement(String14_50.convertString(src.getValueElement()));
+    if (src.hasValueCoding()) {
+      tgt.setSystem(src.getValueCoding().getSystem());
+      tgt.setCode(src.getValueCoding().getCode());
+    } else if (src.hasValue()) {
+        tgt.setCode(src.getValue().primitiveValue());
+    }
     return tgt;
   }
 
@@ -237,10 +240,11 @@ public class ConceptMap14_50 {
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     if (src.hasElementElement())
       tgt.setPropertyElement(Uri14_50.convertUri(src.getElementElement()));
-    if (src.hasSystem())
-      tgt.setSystem(src.getSystem());
-    if (src.hasCodeElement())
-      tgt.setValueElement(String14_50.convertString(src.getCodeElement()));
+    if (src.hasSystem()) {
+      tgt.setValue(new Coding().setSystem(src.getSystem()).setCode(src.getCode()));
+    } else if (src.hasCodeElement()) {
+      tgt.setValue(String14_50.convertString(src.getCodeElement()));
+    }
     return tgt;
   }
 

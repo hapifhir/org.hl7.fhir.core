@@ -28,7 +28,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 
 
@@ -60,14 +60,12 @@ Account,
     ClaimResponse,
     ClinicalImpression,
     ClinicalUseDefinition,
-    ClinicalUseIssue,
     CodeSystem,
     Communication,
     CommunicationRequest,
     CompartmentDefinition,
     Composition,
     ConceptMap,
-    ConceptMap2,
     Condition,
     ConditionDefinition,
     Consent,
@@ -98,6 +96,7 @@ Account,
     ExplanationOfBenefit,
     FamilyMemberHistory,
     Flag,
+    FormularyItem,
     Goal,
     GraphDefinition,
     Group,
@@ -184,6 +183,7 @@ Account,
     TerminologyCapabilities,
     TestReport,
     TestScript,
+    Transport,
     ValueSet,
     VerificationResult,
     VisionPrescription;
@@ -241,8 +241,6 @@ Account,
       return "clinicalimpression";
     case ClinicalUseDefinition:
       return "clinicalusedefinition";
-    case ClinicalUseIssue:
-      return "clinicaluseissue";
     case CodeSystem:
       return "codesystem";
     case Communication:
@@ -255,8 +253,6 @@ Account,
       return "composition";
     case ConceptMap:
       return "conceptmap";
-    case ConceptMap2:
-      return "conceptmap2";
     case Condition:
       return "condition";
     case ConditionDefinition:
@@ -317,6 +313,8 @@ Account,
       return "familymemberhistory";
     case Flag:
       return "flag";
+    case FormularyItem:
+      return "formularyitem";
     case Goal:
       return "goal";
     case GraphDefinition:
@@ -489,6 +487,8 @@ Account,
       return "testreport";
     case TestScript:
       return "testscript";
+    case Transport:
+      return "transport";
     case ValueSet:
       return "valueset";
     case VerificationResult:
@@ -552,8 +552,6 @@ Account,
       return ClinicalImpression;
     if ("ClinicalUseDefinition".equals(code))
       return ClinicalUseDefinition;
-    if ("ClinicalUseIssue".equals(code))
-      return ClinicalUseIssue;
     if ("CodeSystem".equals(code))
       return CodeSystem;
     if ("Communication".equals(code))
@@ -566,8 +564,6 @@ Account,
       return Composition;
     if ("ConceptMap".equals(code))
       return ConceptMap;
-    if ("ConceptMap2".equals(code))
-      return ConceptMap2;
     if ("Condition".equals(code))
       return Condition;
     if ("ConditionDefinition".equals(code))
@@ -628,6 +624,8 @@ Account,
       return FamilyMemberHistory;
     if ("Flag".equals(code))
       return Flag;
+    if ("FormularyItem".equals(code))
+      return FormularyItem;
     if ("Goal".equals(code))
       return Goal;
     if ("GraphDefinition".equals(code))
@@ -800,6 +798,8 @@ Account,
       return TestReport;
     if ("TestScript".equals(code))
       return TestScript;
+    if ("Transport".equals(code))
+      return Transport;
     if ("ValueSet".equals(code))
       return ValueSet;
     if ("VerificationResult".equals(code))

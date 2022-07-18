@@ -32,11 +32,11 @@ public class ConceptMapSpreadsheetGenerator extends CanonicalSpreadsheetGenerato
   }
 
   private void addConceptMapMetadata(Sheet sheet, ConceptMap cm) {
-    if (cm.hasSource()) {
-      addMetadataRow(sheet, "Source", cm.getSource().primitiveValue());
+    if (cm.hasSourceScope()) {
+      addMetadataRow(sheet, "Source", cm.getSourceScope().primitiveValue());
     }
-    if (cm.hasTarget()) {
-      addMetadataRow(sheet, "Target", cm.getTarget().primitiveValue());
+    if (cm.hasTargetScope()) {
+      addMetadataRow(sheet, "Target", cm.getTargetScope().primitiveValue());
     }    
   }
 

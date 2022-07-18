@@ -39,7 +39,7 @@ public class ParsingTests {
     List<Arguments> objects = new ArrayList<>();
     List<String> names = npm.list("package");
     for (String n : names) {
-      if (!n.contains("manifest.json") && !n.contains("xver-") && !n.contains("uml.json")  && !n.contains("package-min-ver.json")) {
+      if (!n.contains("manifest.json") && !n.contains("xver-") && !n.contains("uml.json")  && !n.contains("package-min-ver.json") && !n.startsWith(".")) {
         objects.add(Arguments.of(n));
       }
     }

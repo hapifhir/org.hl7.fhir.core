@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,6 +96,7 @@ public class Permission extends DomainResource {
             case ENTEREDINERROR: return "entered-in-error";
             case DRAFT: return "draft";
             case REJECTED: return "rejected";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +106,7 @@ public class Permission extends DomainResource {
             case ENTEREDINERROR: return "http://hl7.org/fhir/permission-status";
             case DRAFT: return "http://hl7.org/fhir/permission-status";
             case REJECTED: return "http://hl7.org/fhir/permission-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +116,7 @@ public class Permission extends DomainResource {
             case ENTEREDINERROR: return "Permission was entered in error and is not active.";
             case DRAFT: return "Permission is being defined.";
             case REJECTED: return "Permission not granted.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -123,6 +126,7 @@ public class Permission extends DomainResource {
             case ENTEREDINERROR: return "Entered in Error";
             case DRAFT: return "Draft";
             case REJECTED: return "Rejected";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -807,7 +811,7 @@ public class Permission extends DomainResource {
     /**
      * The person or entity that asserts the permission.
      */
-    @Child(name = "asserter", type = {Person.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "asserter", type = {Practitioner.class, PractitionerRole.class, Organization.class, CareTeam.class, Patient.class, Device.class, RelatedPerson.class}, order=2, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The person or entity that asserts the permission", formalDefinition="The person or entity that asserts the permission." )
     protected Reference asserter;
 
@@ -1295,7 +1299,7 @@ public class Permission extends DomainResource {
         super.listChildren(children);
         children.add(new Property("status", "code", "Status.", 0, 1, status));
         children.add(new Property("intent", "CodeableConcept", "grant|refuse.", 0, 1, intent));
-        children.add(new Property("asserter", "Reference(Person)", "The person or entity that asserts the permission.", 0, 1, asserter));
+        children.add(new Property("asserter", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|Patient|Device|RelatedPerson)", "The person or entity that asserts the permission.", 0, 1, asserter));
         children.add(new Property("assertionDate", "dateTime", "The date that permission was asserted.", 0, java.lang.Integer.MAX_VALUE, assertionDate));
         children.add(new Property("validity", "Period", "The period in which the permission is active.", 0, 1, validity));
         children.add(new Property("purpose", "CodeableConcept", "The purpose for which the permission is given.", 0, java.lang.Integer.MAX_VALUE, purpose));
@@ -1310,7 +1314,7 @@ public class Permission extends DomainResource {
         switch (_hash) {
         case -892481550: /*status*/  return new Property("status", "code", "Status.", 0, 1, status);
         case -1183762788: /*intent*/  return new Property("intent", "CodeableConcept", "grant|refuse.", 0, 1, intent);
-        case -373242253: /*asserter*/  return new Property("asserter", "Reference(Person)", "The person or entity that asserts the permission.", 0, 1, asserter);
+        case -373242253: /*asserter*/  return new Property("asserter", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|Patient|Device|RelatedPerson)", "The person or entity that asserts the permission.", 0, 1, asserter);
         case -1498338864: /*assertionDate*/  return new Property("assertionDate", "dateTime", "The date that permission was asserted.", 0, java.lang.Integer.MAX_VALUE, assertionDate);
         case -1421265102: /*validity*/  return new Property("validity", "Period", "The period in which the permission is active.", 0, 1, validity);
         case -220463842: /*purpose*/  return new Property("purpose", "CodeableConcept", "The purpose for which the permission is given.", 0, java.lang.Integer.MAX_VALUE, purpose);
@@ -1568,26 +1572,6 @@ public class Permission extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.Permission;
    }
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>active | entered-in-error | draft | rejected</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Permission.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="Permission.status", description="active | entered-in-error | draft | rejected", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>active | entered-in-error | draft | rejected</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Permission.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
 
 }

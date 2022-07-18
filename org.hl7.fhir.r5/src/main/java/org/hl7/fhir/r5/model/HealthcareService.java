@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -289,10 +289,10 @@ public class HealthcareService extends DomainResource {
         protected List<Enumeration<DaysOfWeek>> daysOfWeek;
 
         /**
-         * Is this always available? (hence times are irrelevant) e.g. 24 hour service.
+         * Is this always available? (hence times are irrelevant) i.e. 24 hour service.
          */
         @Child(name = "allDay", type = {BooleanType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Always available? e.g. 24 hour service", formalDefinition="Is this always available? (hence times are irrelevant) e.g. 24 hour service." )
+        @Description(shortDefinition="Always available? i.e. 24 hour service", formalDefinition="Is this always available? (hence times are irrelevant) i.e. 24 hour service." )
         protected BooleanType allDay;
 
         /**
@@ -380,7 +380,7 @@ public class HealthcareService extends DomainResource {
         }
 
         /**
-         * @return {@link #allDay} (Is this always available? (hence times are irrelevant) e.g. 24 hour service.). This is the underlying object with id, value and extensions. The accessor "getAllDay" gives direct access to the value
+         * @return {@link #allDay} (Is this always available? (hence times are irrelevant) i.e. 24 hour service.). This is the underlying object with id, value and extensions. The accessor "getAllDay" gives direct access to the value
          */
         public BooleanType getAllDayElement() { 
           if (this.allDay == null)
@@ -400,7 +400,7 @@ public class HealthcareService extends DomainResource {
         }
 
         /**
-         * @param value {@link #allDay} (Is this always available? (hence times are irrelevant) e.g. 24 hour service.). This is the underlying object with id, value and extensions. The accessor "getAllDay" gives direct access to the value
+         * @param value {@link #allDay} (Is this always available? (hence times are irrelevant) i.e. 24 hour service.). This is the underlying object with id, value and extensions. The accessor "getAllDay" gives direct access to the value
          */
         public HealthcareServiceAvailableTimeComponent setAllDayElement(BooleanType value) { 
           this.allDay = value;
@@ -408,14 +408,14 @@ public class HealthcareService extends DomainResource {
         }
 
         /**
-         * @return Is this always available? (hence times are irrelevant) e.g. 24 hour service.
+         * @return Is this always available? (hence times are irrelevant) i.e. 24 hour service.
          */
         public boolean getAllDay() { 
           return this.allDay == null || this.allDay.isEmpty() ? false : this.allDay.getValue();
         }
 
         /**
-         * @param value Is this always available? (hence times are irrelevant) e.g. 24 hour service.
+         * @param value Is this always available? (hence times are irrelevant) i.e. 24 hour service.
          */
         public HealthcareServiceAvailableTimeComponent setAllDay(boolean value) { 
             if (this.allDay == null)
@@ -525,7 +525,7 @@ public class HealthcareService extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("daysOfWeek", "code", "Indicates which days of the week are available between the start and end Times.", 0, java.lang.Integer.MAX_VALUE, daysOfWeek));
-          children.add(new Property("allDay", "boolean", "Is this always available? (hence times are irrelevant) e.g. 24 hour service.", 0, 1, allDay));
+          children.add(new Property("allDay", "boolean", "Is this always available? (hence times are irrelevant) i.e. 24 hour service.", 0, 1, allDay));
           children.add(new Property("availableStartTime", "time", "The opening time of day. Note: If the AllDay flag is set, then this time is ignored.", 0, 1, availableStartTime));
           children.add(new Property("availableEndTime", "time", "The closing time of day. Note: If the AllDay flag is set, then this time is ignored.", 0, 1, availableEndTime));
         }
@@ -534,7 +534,7 @@ public class HealthcareService extends DomainResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 68050338: /*daysOfWeek*/  return new Property("daysOfWeek", "code", "Indicates which days of the week are available between the start and end Times.", 0, java.lang.Integer.MAX_VALUE, daysOfWeek);
-          case -1414913477: /*allDay*/  return new Property("allDay", "boolean", "Is this always available? (hence times are irrelevant) e.g. 24 hour service.", 0, 1, allDay);
+          case -1414913477: /*allDay*/  return new Property("allDay", "boolean", "Is this always available? (hence times are irrelevant) i.e. 24 hour service.", 0, 1, allDay);
           case -1039453818: /*availableStartTime*/  return new Property("availableStartTime", "time", "The opening time of day. Note: If the AllDay flag is set, then this time is ignored.", 0, 1, availableStartTime);
           case 101151551: /*availableEndTime*/  return new Property("availableEndTime", "time", "The closing time of day. Note: If the AllDay flag is set, then this time is ignored.", 0, 1, availableEndTime);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -995,23 +995,30 @@ public class HealthcareService extends DomainResource {
     protected Attachment photo;
 
     /**
+     * The contact details of communication devices available relevant to the specific HealthcareService. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.
+     */
+    @Child(name = "contact", type = {ExtendedContactDetail.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Official contact details for the HealthcareService", formalDefinition="The contact details of communication devices available relevant to the specific HealthcareService. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites." )
+    protected List<ExtendedContactDetail> contact;
+
+    /**
      * List of contacts related to this specific healthcare service.
      */
-    @Child(name = "telecom", type = {ContactPoint.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Contacts related to the healthcare service", formalDefinition="List of contacts related to this specific healthcare service." )
+    @Child(name = "telecom", type = {ContactPoint.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Deprecated - use contact.telecom", formalDefinition="List of contacts related to this specific healthcare service." )
     protected List<ContactPoint> telecom;
 
     /**
      * The location(s) that this service is available to (not where the service is provided).
      */
-    @Child(name = "coverageArea", type = {Location.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "coverageArea", type = {Location.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Location(s) service is intended for/available to", formalDefinition="The location(s) that this service is available to (not where the service is provided)." )
     protected List<Reference> coverageArea;
 
     /**
      * The code(s) that detail the conditions under which the healthcare service is available/offered.
      */
-    @Child(name = "serviceProvisionCode", type = {CodeableConcept.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "serviceProvisionCode", type = {CodeableConcept.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Conditions under which service is available/offered", formalDefinition="The code(s) that detail the conditions under which the healthcare service is available/offered." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-provision-conditions")
     protected List<CodeableConcept> serviceProvisionCode;
@@ -1019,14 +1026,14 @@ public class HealthcareService extends DomainResource {
     /**
      * Does this service have specific eligibility requirements that need to be met in order to use the service?
      */
-    @Child(name = "eligibility", type = {}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "eligibility", type = {}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Specific eligibility requirements required to use the service", formalDefinition="Does this service have specific eligibility requirements that need to be met in order to use the service?" )
     protected List<HealthcareServiceEligibilityComponent> eligibility;
 
     /**
      * Programs that this service is applicable to.
      */
-    @Child(name = "program", type = {CodeableConcept.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "program", type = {CodeableConcept.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Programs that this service is applicable to", formalDefinition="Programs that this service is applicable to." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/program")
     protected List<CodeableConcept> program;
@@ -1034,14 +1041,14 @@ public class HealthcareService extends DomainResource {
     /**
      * Collection of characteristics (attributes).
      */
-    @Child(name = "characteristic", type = {CodeableConcept.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "characteristic", type = {CodeableConcept.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Collection of characteristics (attributes)", formalDefinition="Collection of characteristics (attributes)." )
     protected List<CodeableConcept> characteristic;
 
     /**
      * Some services are specifically made available in multiple languages, this property permits a directory to declare the languages this is offered in. Typically this is only provided where a service operates in communities with mixed languages used.
      */
-    @Child(name = "communication", type = {CodeableConcept.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "communication", type = {CodeableConcept.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The language that this service is offered in", formalDefinition="Some services are specifically made available in multiple languages, this property permits a directory to declare the languages this is offered in. Typically this is only provided where a service operates in communities with mixed languages used." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/languages")
     protected List<CodeableConcept> communication;
@@ -1049,7 +1056,7 @@ public class HealthcareService extends DomainResource {
     /**
      * Ways that the service accepts referrals, if this is not provided then it is implied that no referral is required.
      */
-    @Child(name = "referralMethod", type = {CodeableConcept.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "referralMethod", type = {CodeableConcept.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Ways that the service accepts referrals", formalDefinition="Ways that the service accepts referrals, if this is not provided then it is implied that no referral is required." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-referral-method")
     protected List<CodeableConcept> referralMethod;
@@ -1057,39 +1064,39 @@ public class HealthcareService extends DomainResource {
     /**
      * Indicates whether or not a prospective consumer will require an appointment for a particular service at a site to be provided by the Organization. Indicates if an appointment is required for access to this service.
      */
-    @Child(name = "appointmentRequired", type = {BooleanType.class}, order=19, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "appointmentRequired", type = {BooleanType.class}, order=20, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="If an appointment is required for access to this service", formalDefinition="Indicates whether or not a prospective consumer will require an appointment for a particular service at a site to be provided by the Organization. Indicates if an appointment is required for access to this service." )
     protected BooleanType appointmentRequired;
 
     /**
      * A collection of times that the Service Site is available.
      */
-    @Child(name = "availableTime", type = {}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "availableTime", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Times the Service Site is available", formalDefinition="A collection of times that the Service Site is available." )
     protected List<HealthcareServiceAvailableTimeComponent> availableTime;
 
     /**
      * The HealthcareService is not available during this period of time due to the provided reason.
      */
-    @Child(name = "notAvailable", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "notAvailable", type = {}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Not available during this time due to provided reason", formalDefinition="The HealthcareService is not available during this period of time due to the provided reason." )
     protected List<HealthcareServiceNotAvailableComponent> notAvailable;
 
     /**
      * A description of site availability exceptions, e.g. public holiday availability. Succinctly describing all possible exceptions to normal site availability as details in the available Times and not available Times.
      */
-    @Child(name = "availabilityExceptions", type = {StringType.class}, order=22, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "availabilityExceptions", type = {StringType.class}, order=23, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Description of availability exceptions", formalDefinition="A description of site availability exceptions, e.g. public holiday availability. Succinctly describing all possible exceptions to normal site availability as details in the available Times and not available Times." )
     protected StringType availabilityExceptions;
 
     /**
      * Technical endpoints providing access to services operated for the specific healthcare services defined at this resource.
      */
-    @Child(name = "endpoint", type = {Endpoint.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "endpoint", type = {Endpoint.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Technical endpoints providing access to electronic services operated for the healthcare service", formalDefinition="Technical endpoints providing access to services operated for the specific healthcare services defined at this resource." )
     protected List<Reference> endpoint;
 
-    private static final long serialVersionUID = 25501899L;
+    private static final long serialVersionUID = 1153384657L;
 
   /**
    * Constructor
@@ -1601,6 +1608,59 @@ public class HealthcareService extends DomainResource {
     public HealthcareService setPhoto(Attachment value) { 
       this.photo = value;
       return this;
+    }
+
+    /**
+     * @return {@link #contact} (The contact details of communication devices available relevant to the specific HealthcareService. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.)
+     */
+    public List<ExtendedContactDetail> getContact() { 
+      if (this.contact == null)
+        this.contact = new ArrayList<ExtendedContactDetail>();
+      return this.contact;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public HealthcareService setContact(List<ExtendedContactDetail> theContact) { 
+      this.contact = theContact;
+      return this;
+    }
+
+    public boolean hasContact() { 
+      if (this.contact == null)
+        return false;
+      for (ExtendedContactDetail item : this.contact)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public ExtendedContactDetail addContact() { //3
+      ExtendedContactDetail t = new ExtendedContactDetail();
+      if (this.contact == null)
+        this.contact = new ArrayList<ExtendedContactDetail>();
+      this.contact.add(t);
+      return t;
+    }
+
+    public HealthcareService addContact(ExtendedContactDetail t) { //3
+      if (t == null)
+        return this;
+      if (this.contact == null)
+        this.contact = new ArrayList<ExtendedContactDetail>();
+      this.contact.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {3}
+     */
+    public ExtendedContactDetail getContactFirstRep() { 
+      if (getContact().isEmpty()) {
+        addContact();
+      }
+      return getContact().get(0);
     }
 
     /**
@@ -2293,6 +2353,7 @@ public class HealthcareService extends DomainResource {
         children.add(new Property("comment", "string", "Any additional description of the service and/or any specific issues not covered by the other attributes, which can be displayed as further detail under the serviceName.", 0, 1, comment));
         children.add(new Property("extraDetails", "markdown", "Extra details about the service that can't be placed in the other fields.", 0, 1, extraDetails));
         children.add(new Property("photo", "Attachment", "If there is a photo/symbol associated with this HealthcareService, it may be included here to facilitate quick identification of the service in a list.", 0, 1, photo));
+        children.add(new Property("contact", "ExtendedContactDetail", "The contact details of communication devices available relevant to the specific HealthcareService. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("telecom", "ContactPoint", "List of contacts related to this specific healthcare service.", 0, java.lang.Integer.MAX_VALUE, telecom));
         children.add(new Property("coverageArea", "Reference(Location)", "The location(s) that this service is available to (not where the service is provided).", 0, java.lang.Integer.MAX_VALUE, coverageArea));
         children.add(new Property("serviceProvisionCode", "CodeableConcept", "The code(s) that detail the conditions under which the healthcare service is available/offered.", 0, java.lang.Integer.MAX_VALUE, serviceProvisionCode));
@@ -2322,6 +2383,7 @@ public class HealthcareService extends DomainResource {
         case 950398559: /*comment*/  return new Property("comment", "string", "Any additional description of the service and/or any specific issues not covered by the other attributes, which can be displayed as further detail under the serviceName.", 0, 1, comment);
         case -1469168622: /*extraDetails*/  return new Property("extraDetails", "markdown", "Extra details about the service that can't be placed in the other fields.", 0, 1, extraDetails);
         case 106642994: /*photo*/  return new Property("photo", "Attachment", "If there is a photo/symbol associated with this HealthcareService, it may be included here to facilitate quick identification of the service in a list.", 0, 1, photo);
+        case 951526432: /*contact*/  return new Property("contact", "ExtendedContactDetail", "The contact details of communication devices available relevant to the specific HealthcareService. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.", 0, java.lang.Integer.MAX_VALUE, contact);
         case -1429363305: /*telecom*/  return new Property("telecom", "ContactPoint", "List of contacts related to this specific healthcare service.", 0, java.lang.Integer.MAX_VALUE, telecom);
         case -1532328299: /*coverageArea*/  return new Property("coverageArea", "Reference(Location)", "The location(s) that this service is available to (not where the service is provided).", 0, java.lang.Integer.MAX_VALUE, coverageArea);
         case 1504575405: /*serviceProvisionCode*/  return new Property("serviceProvisionCode", "CodeableConcept", "The code(s) that detail the conditions under which the healthcare service is available/offered.", 0, java.lang.Integer.MAX_VALUE, serviceProvisionCode);
@@ -2354,6 +2416,7 @@ public class HealthcareService extends DomainResource {
         case 950398559: /*comment*/ return this.comment == null ? new Base[0] : new Base[] {this.comment}; // StringType
         case -1469168622: /*extraDetails*/ return this.extraDetails == null ? new Base[0] : new Base[] {this.extraDetails}; // MarkdownType
         case 106642994: /*photo*/ return this.photo == null ? new Base[0] : new Base[] {this.photo}; // Attachment
+        case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ExtendedContactDetail
         case -1429363305: /*telecom*/ return this.telecom == null ? new Base[0] : this.telecom.toArray(new Base[this.telecom.size()]); // ContactPoint
         case -1532328299: /*coverageArea*/ return this.coverageArea == null ? new Base[0] : this.coverageArea.toArray(new Base[this.coverageArea.size()]); // Reference
         case 1504575405: /*serviceProvisionCode*/ return this.serviceProvisionCode == null ? new Base[0] : this.serviceProvisionCode.toArray(new Base[this.serviceProvisionCode.size()]); // CodeableConcept
@@ -2407,6 +2470,9 @@ public class HealthcareService extends DomainResource {
           return value;
         case 106642994: // photo
           this.photo = TypeConvertor.castToAttachment(value); // Attachment
+          return value;
+        case 951526432: // contact
+          this.getContact().add(TypeConvertor.castToExtendedContactDetail(value)); // ExtendedContactDetail
           return value;
         case -1429363305: // telecom
           this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
@@ -2476,6 +2542,8 @@ public class HealthcareService extends DomainResource {
           this.extraDetails = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("photo")) {
           this.photo = TypeConvertor.castToAttachment(value); // Attachment
+        } else if (name.equals("contact")) {
+          this.getContact().add(TypeConvertor.castToExtendedContactDetail(value));
         } else if (name.equals("telecom")) {
           this.getTelecom().add(TypeConvertor.castToContactPoint(value));
         } else if (name.equals("coverageArea")) {
@@ -2521,6 +2589,7 @@ public class HealthcareService extends DomainResource {
         case 950398559:  return getCommentElement();
         case -1469168622:  return getExtraDetailsElement();
         case 106642994:  return getPhoto();
+        case 951526432:  return addContact(); 
         case -1429363305:  return addTelecom(); 
         case -1532328299:  return addCoverageArea(); 
         case 1504575405:  return addServiceProvisionCode(); 
@@ -2553,6 +2622,7 @@ public class HealthcareService extends DomainResource {
         case 950398559: /*comment*/ return new String[] {"string"};
         case -1469168622: /*extraDetails*/ return new String[] {"markdown"};
         case 106642994: /*photo*/ return new String[] {"Attachment"};
+        case 951526432: /*contact*/ return new String[] {"ExtendedContactDetail"};
         case -1429363305: /*telecom*/ return new String[] {"ContactPoint"};
         case -1532328299: /*coverageArea*/ return new String[] {"Reference"};
         case 1504575405: /*serviceProvisionCode*/ return new String[] {"CodeableConcept"};
@@ -2607,6 +2677,9 @@ public class HealthcareService extends DomainResource {
         else if (name.equals("photo")) {
           this.photo = new Attachment();
           return this.photo;
+        }
+        else if (name.equals("contact")) {
+          return addContact();
         }
         else if (name.equals("telecom")) {
           return addTelecom();
@@ -2695,6 +2768,11 @@ public class HealthcareService extends DomainResource {
         dst.comment = comment == null ? null : comment.copy();
         dst.extraDetails = extraDetails == null ? null : extraDetails.copy();
         dst.photo = photo == null ? null : photo.copy();
+        if (contact != null) {
+          dst.contact = new ArrayList<ExtendedContactDetail>();
+          for (ExtendedContactDetail i : contact)
+            dst.contact.add(i.copy());
+        };
         if (telecom != null) {
           dst.telecom = new ArrayList<ContactPoint>();
           for (ContactPoint i : telecom)
@@ -2768,8 +2846,8 @@ public class HealthcareService extends DomainResource {
         return compareDeep(identifier, o.identifier, true) && compareDeep(active, o.active, true) && compareDeep(providedBy, o.providedBy, true)
            && compareDeep(category, o.category, true) && compareDeep(type, o.type, true) && compareDeep(specialty, o.specialty, true)
            && compareDeep(location, o.location, true) && compareDeep(name, o.name, true) && compareDeep(comment, o.comment, true)
-           && compareDeep(extraDetails, o.extraDetails, true) && compareDeep(photo, o.photo, true) && compareDeep(telecom, o.telecom, true)
-           && compareDeep(coverageArea, o.coverageArea, true) && compareDeep(serviceProvisionCode, o.serviceProvisionCode, true)
+           && compareDeep(extraDetails, o.extraDetails, true) && compareDeep(photo, o.photo, true) && compareDeep(contact, o.contact, true)
+           && compareDeep(telecom, o.telecom, true) && compareDeep(coverageArea, o.coverageArea, true) && compareDeep(serviceProvisionCode, o.serviceProvisionCode, true)
            && compareDeep(eligibility, o.eligibility, true) && compareDeep(program, o.program, true) && compareDeep(characteristic, o.characteristic, true)
            && compareDeep(communication, o.communication, true) && compareDeep(referralMethod, o.referralMethod, true)
            && compareDeep(appointmentRequired, o.appointmentRequired, true) && compareDeep(availableTime, o.availableTime, true)
@@ -2791,280 +2869,16 @@ public class HealthcareService extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, active, providedBy
-          , category, type, specialty, location, name, comment, extraDetails, photo, telecom
-          , coverageArea, serviceProvisionCode, eligibility, program, characteristic, communication
-          , referralMethod, appointmentRequired, availableTime, notAvailable, availabilityExceptions
-          , endpoint);
+          , category, type, specialty, location, name, comment, extraDetails, photo, contact
+          , telecom, coverageArea, serviceProvisionCode, eligibility, program, characteristic
+          , communication, referralMethod, appointmentRequired, availableTime, notAvailable
+          , availabilityExceptions, endpoint);
       }
 
   @Override
   public ResourceType getResourceType() {
     return ResourceType.HealthcareService;
    }
-
- /**
-   * Search parameter: <b>active</b>
-   * <p>
-   * Description: <b>The Healthcare Service is currently marked as active</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.active</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="active", path="HealthcareService.active", description="The Healthcare Service is currently marked as active", type="token" )
-  public static final String SP_ACTIVE = "active";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>active</b>
-   * <p>
-   * Description: <b>The Healthcare Service is currently marked as active</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.active</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ACTIVE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ACTIVE);
-
- /**
-   * Search parameter: <b>characteristic</b>
-   * <p>
-   * Description: <b>One of the HealthcareService's characteristics</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.characteristic</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="characteristic", path="HealthcareService.characteristic", description="One of the HealthcareService's characteristics", type="token" )
-  public static final String SP_CHARACTERISTIC = "characteristic";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>characteristic</b>
-   * <p>
-   * Description: <b>One of the HealthcareService's characteristics</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.characteristic</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CHARACTERISTIC = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CHARACTERISTIC);
-
- /**
-   * Search parameter: <b>coverage-area</b>
-   * <p>
-   * Description: <b>Location(s) service is intended for/available to</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>HealthcareService.coverageArea</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="coverage-area", path="HealthcareService.coverageArea", description="Location(s) service is intended for/available to", type="reference", target={Location.class } )
-  public static final String SP_COVERAGE_AREA = "coverage-area";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>coverage-area</b>
-   * <p>
-   * Description: <b>Location(s) service is intended for/available to</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>HealthcareService.coverageArea</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam COVERAGE_AREA = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_COVERAGE_AREA);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>HealthcareService:coverage-area</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_COVERAGE_AREA = new ca.uhn.fhir.model.api.Include("HealthcareService:coverage-area").toLocked();
-
- /**
-   * Search parameter: <b>endpoint</b>
-   * <p>
-   * Description: <b>Technical endpoints providing access to electronic services operated for the healthcare service</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>HealthcareService.endpoint</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="endpoint", path="HealthcareService.endpoint", description="Technical endpoints providing access to electronic services operated for the healthcare service", type="reference", target={Endpoint.class } )
-  public static final String SP_ENDPOINT = "endpoint";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>endpoint</b>
-   * <p>
-   * Description: <b>Technical endpoints providing access to electronic services operated for the healthcare service</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>HealthcareService.endpoint</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENDPOINT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENDPOINT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>HealthcareService:endpoint</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENDPOINT = new ca.uhn.fhir.model.api.Include("HealthcareService:endpoint").toLocked();
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>External identifiers for this item</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="HealthcareService.identifier", description="External identifiers for this item", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>External identifiers for this item</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>location</b>
-   * <p>
-   * Description: <b>The location of the Healthcare Service</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>HealthcareService.location</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="location", path="HealthcareService.location", description="The location of the Healthcare Service", type="reference", target={Location.class } )
-  public static final String SP_LOCATION = "location";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>location</b>
-   * <p>
-   * Description: <b>The location of the Healthcare Service</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>HealthcareService.location</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam LOCATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_LOCATION);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>HealthcareService:location</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_LOCATION = new ca.uhn.fhir.model.api.Include("HealthcareService:location").toLocked();
-
- /**
-   * Search parameter: <b>name</b>
-   * <p>
-   * Description: <b>A portion of the Healthcare service name</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>HealthcareService.name</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="name", path="HealthcareService.name", description="A portion of the Healthcare service name", type="string" )
-  public static final String SP_NAME = "name";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>name</b>
-   * <p>
-   * Description: <b>A portion of the Healthcare service name</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>HealthcareService.name</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
-
- /**
-   * Search parameter: <b>organization</b>
-   * <p>
-   * Description: <b>The organization that provides this Healthcare Service</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>HealthcareService.providedBy</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="organization", path="HealthcareService.providedBy", description="The organization that provides this Healthcare Service", type="reference", target={Organization.class } )
-  public static final String SP_ORGANIZATION = "organization";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>organization</b>
-   * <p>
-   * Description: <b>The organization that provides this Healthcare Service</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>HealthcareService.providedBy</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ORGANIZATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ORGANIZATION);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>HealthcareService:organization</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ORGANIZATION = new ca.uhn.fhir.model.api.Include("HealthcareService:organization").toLocked();
-
- /**
-   * Search parameter: <b>program</b>
-   * <p>
-   * Description: <b>One of the Programs supported by this HealthcareService</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.program</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="program", path="HealthcareService.program", description="One of the Programs supported by this HealthcareService", type="token" )
-  public static final String SP_PROGRAM = "program";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>program</b>
-   * <p>
-   * Description: <b>One of the Programs supported by this HealthcareService</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.program</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PROGRAM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PROGRAM);
-
- /**
-   * Search parameter: <b>service-category</b>
-   * <p>
-   * Description: <b>Service Category of the Healthcare Service</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.category</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="service-category", path="HealthcareService.category", description="Service Category of the Healthcare Service", type="token" )
-  public static final String SP_SERVICE_CATEGORY = "service-category";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>service-category</b>
-   * <p>
-   * Description: <b>Service Category of the Healthcare Service</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.category</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SERVICE_CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SERVICE_CATEGORY);
-
- /**
-   * Search parameter: <b>service-type</b>
-   * <p>
-   * Description: <b>The type of service provided by this healthcare service</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.type</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="service-type", path="HealthcareService.type", description="The type of service provided by this healthcare service", type="token" )
-  public static final String SP_SERVICE_TYPE = "service-type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>service-type</b>
-   * <p>
-   * Description: <b>The type of service provided by this healthcare service</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.type</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SERVICE_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SERVICE_TYPE);
-
- /**
-   * Search parameter: <b>specialty</b>
-   * <p>
-   * Description: <b>The specialty of the service provided by this healthcare service</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.specialty</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="specialty", path="HealthcareService.specialty", description="The specialty of the service provided by this healthcare service", type="token" )
-  public static final String SP_SPECIALTY = "specialty";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>specialty</b>
-   * <p>
-   * Description: <b>The specialty of the service provided by this healthcare service</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>HealthcareService.specialty</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SPECIALTY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SPECIALTY);
 
 
 }

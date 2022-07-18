@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -83,6 +83,7 @@ public class Location extends DomainResource {
           switch (this) {
             case INSTANCE: return "instance";
             case KIND: return "kind";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public class Location extends DomainResource {
           switch (this) {
             case INSTANCE: return "http://hl7.org/fhir/location-mode";
             case KIND: return "http://hl7.org/fhir/location-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +99,7 @@ public class Location extends DomainResource {
           switch (this) {
             case INSTANCE: return "The Location resource represents a specific instance of a location (e.g. Operating Theatre 1A).";
             case KIND: return "The Location represents a class of locations (e.g. Any Operating Theatre) although this class of locations could be constrained within a specific boundary (such as organization, or parent location, address etc.).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -104,6 +107,7 @@ public class Location extends DomainResource {
           switch (this) {
             case INSTANCE: return "Instance";
             case KIND: return "Kind";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -182,6 +186,7 @@ public class Location extends DomainResource {
             case ACTIVE: return "active";
             case SUSPENDED: return "suspended";
             case INACTIVE: return "inactive";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -190,6 +195,7 @@ public class Location extends DomainResource {
             case ACTIVE: return "http://hl7.org/fhir/location-status";
             case SUSPENDED: return "http://hl7.org/fhir/location-status";
             case INACTIVE: return "http://hl7.org/fhir/location-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -198,6 +204,7 @@ public class Location extends DomainResource {
             case ACTIVE: return "The location is operational.";
             case SUSPENDED: return "The location is temporarily closed.";
             case INACTIVE: return "The location is no longer used.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -206,6 +213,7 @@ public class Location extends DomainResource {
             case ACTIVE: return "Active";
             case SUSPENDED: return "Suspended";
             case INACTIVE: return "Inactive";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -257,24 +265,24 @@ public class Location extends DomainResource {
     @Block()
     public static class LocationPositionComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Longitude. The value domain and the interpretation are the same as for the text of the longitude element in KML (see notes below).
+         * Longitude. The value domain and the interpretation are the same as for the text of the longitude element in KML (see notes on Location main page).
          */
         @Child(name = "longitude", type = {DecimalType.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Longitude with WGS84 datum", formalDefinition="Longitude. The value domain and the interpretation are the same as for the text of the longitude element in KML (see notes below)." )
+        @Description(shortDefinition="Longitude with WGS84 datum", formalDefinition="Longitude. The value domain and the interpretation are the same as for the text of the longitude element in KML (see notes on Location main page)." )
         protected DecimalType longitude;
 
         /**
-         * Latitude. The value domain and the interpretation are the same as for the text of the latitude element in KML (see notes below).
+         * Latitude. The value domain and the interpretation are the same as for the text of the latitude element in KML (see notes on Location main page).
          */
         @Child(name = "latitude", type = {DecimalType.class}, order=2, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Latitude with WGS84 datum", formalDefinition="Latitude. The value domain and the interpretation are the same as for the text of the latitude element in KML (see notes below)." )
+        @Description(shortDefinition="Latitude with WGS84 datum", formalDefinition="Latitude. The value domain and the interpretation are the same as for the text of the latitude element in KML (see notes on Location main page)." )
         protected DecimalType latitude;
 
         /**
-         * Altitude. The value domain and the interpretation are the same as for the text of the altitude element in KML (see notes below).
+         * Altitude. The value domain and the interpretation are the same as for the text of the altitude element in KML (see notes on Location main page).
          */
         @Child(name = "altitude", type = {DecimalType.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Altitude with WGS84 datum", formalDefinition="Altitude. The value domain and the interpretation are the same as for the text of the altitude element in KML (see notes below)." )
+        @Description(shortDefinition="Altitude with WGS84 datum", formalDefinition="Altitude. The value domain and the interpretation are the same as for the text of the altitude element in KML (see notes on Location main page)." )
         protected DecimalType altitude;
 
         private static final long serialVersionUID = -74276134L;
@@ -296,7 +304,7 @@ public class Location extends DomainResource {
       }
 
         /**
-         * @return {@link #longitude} (Longitude. The value domain and the interpretation are the same as for the text of the longitude element in KML (see notes below).). This is the underlying object with id, value and extensions. The accessor "getLongitude" gives direct access to the value
+         * @return {@link #longitude} (Longitude. The value domain and the interpretation are the same as for the text of the longitude element in KML (see notes on Location main page).). This is the underlying object with id, value and extensions. The accessor "getLongitude" gives direct access to the value
          */
         public DecimalType getLongitudeElement() { 
           if (this.longitude == null)
@@ -316,7 +324,7 @@ public class Location extends DomainResource {
         }
 
         /**
-         * @param value {@link #longitude} (Longitude. The value domain and the interpretation are the same as for the text of the longitude element in KML (see notes below).). This is the underlying object with id, value and extensions. The accessor "getLongitude" gives direct access to the value
+         * @param value {@link #longitude} (Longitude. The value domain and the interpretation are the same as for the text of the longitude element in KML (see notes on Location main page).). This is the underlying object with id, value and extensions. The accessor "getLongitude" gives direct access to the value
          */
         public LocationPositionComponent setLongitudeElement(DecimalType value) { 
           this.longitude = value;
@@ -324,14 +332,14 @@ public class Location extends DomainResource {
         }
 
         /**
-         * @return Longitude. The value domain and the interpretation are the same as for the text of the longitude element in KML (see notes below).
+         * @return Longitude. The value domain and the interpretation are the same as for the text of the longitude element in KML (see notes on Location main page).
          */
         public BigDecimal getLongitude() { 
           return this.longitude == null ? null : this.longitude.getValue();
         }
 
         /**
-         * @param value Longitude. The value domain and the interpretation are the same as for the text of the longitude element in KML (see notes below).
+         * @param value Longitude. The value domain and the interpretation are the same as for the text of the longitude element in KML (see notes on Location main page).
          */
         public LocationPositionComponent setLongitude(BigDecimal value) { 
             if (this.longitude == null)
@@ -341,7 +349,7 @@ public class Location extends DomainResource {
         }
 
         /**
-         * @param value Longitude. The value domain and the interpretation are the same as for the text of the longitude element in KML (see notes below).
+         * @param value Longitude. The value domain and the interpretation are the same as for the text of the longitude element in KML (see notes on Location main page).
          */
         public LocationPositionComponent setLongitude(long value) { 
               this.longitude = new DecimalType();
@@ -350,7 +358,7 @@ public class Location extends DomainResource {
         }
 
         /**
-         * @param value Longitude. The value domain and the interpretation are the same as for the text of the longitude element in KML (see notes below).
+         * @param value Longitude. The value domain and the interpretation are the same as for the text of the longitude element in KML (see notes on Location main page).
          */
         public LocationPositionComponent setLongitude(double value) { 
               this.longitude = new DecimalType();
@@ -359,7 +367,7 @@ public class Location extends DomainResource {
         }
 
         /**
-         * @return {@link #latitude} (Latitude. The value domain and the interpretation are the same as for the text of the latitude element in KML (see notes below).). This is the underlying object with id, value and extensions. The accessor "getLatitude" gives direct access to the value
+         * @return {@link #latitude} (Latitude. The value domain and the interpretation are the same as for the text of the latitude element in KML (see notes on Location main page).). This is the underlying object with id, value and extensions. The accessor "getLatitude" gives direct access to the value
          */
         public DecimalType getLatitudeElement() { 
           if (this.latitude == null)
@@ -379,7 +387,7 @@ public class Location extends DomainResource {
         }
 
         /**
-         * @param value {@link #latitude} (Latitude. The value domain and the interpretation are the same as for the text of the latitude element in KML (see notes below).). This is the underlying object with id, value and extensions. The accessor "getLatitude" gives direct access to the value
+         * @param value {@link #latitude} (Latitude. The value domain and the interpretation are the same as for the text of the latitude element in KML (see notes on Location main page).). This is the underlying object with id, value and extensions. The accessor "getLatitude" gives direct access to the value
          */
         public LocationPositionComponent setLatitudeElement(DecimalType value) { 
           this.latitude = value;
@@ -387,14 +395,14 @@ public class Location extends DomainResource {
         }
 
         /**
-         * @return Latitude. The value domain and the interpretation are the same as for the text of the latitude element in KML (see notes below).
+         * @return Latitude. The value domain and the interpretation are the same as for the text of the latitude element in KML (see notes on Location main page).
          */
         public BigDecimal getLatitude() { 
           return this.latitude == null ? null : this.latitude.getValue();
         }
 
         /**
-         * @param value Latitude. The value domain and the interpretation are the same as for the text of the latitude element in KML (see notes below).
+         * @param value Latitude. The value domain and the interpretation are the same as for the text of the latitude element in KML (see notes on Location main page).
          */
         public LocationPositionComponent setLatitude(BigDecimal value) { 
             if (this.latitude == null)
@@ -404,7 +412,7 @@ public class Location extends DomainResource {
         }
 
         /**
-         * @param value Latitude. The value domain and the interpretation are the same as for the text of the latitude element in KML (see notes below).
+         * @param value Latitude. The value domain and the interpretation are the same as for the text of the latitude element in KML (see notes on Location main page).
          */
         public LocationPositionComponent setLatitude(long value) { 
               this.latitude = new DecimalType();
@@ -413,7 +421,7 @@ public class Location extends DomainResource {
         }
 
         /**
-         * @param value Latitude. The value domain and the interpretation are the same as for the text of the latitude element in KML (see notes below).
+         * @param value Latitude. The value domain and the interpretation are the same as for the text of the latitude element in KML (see notes on Location main page).
          */
         public LocationPositionComponent setLatitude(double value) { 
               this.latitude = new DecimalType();
@@ -422,7 +430,7 @@ public class Location extends DomainResource {
         }
 
         /**
-         * @return {@link #altitude} (Altitude. The value domain and the interpretation are the same as for the text of the altitude element in KML (see notes below).). This is the underlying object with id, value and extensions. The accessor "getAltitude" gives direct access to the value
+         * @return {@link #altitude} (Altitude. The value domain and the interpretation are the same as for the text of the altitude element in KML (see notes on Location main page).). This is the underlying object with id, value and extensions. The accessor "getAltitude" gives direct access to the value
          */
         public DecimalType getAltitudeElement() { 
           if (this.altitude == null)
@@ -442,7 +450,7 @@ public class Location extends DomainResource {
         }
 
         /**
-         * @param value {@link #altitude} (Altitude. The value domain and the interpretation are the same as for the text of the altitude element in KML (see notes below).). This is the underlying object with id, value and extensions. The accessor "getAltitude" gives direct access to the value
+         * @param value {@link #altitude} (Altitude. The value domain and the interpretation are the same as for the text of the altitude element in KML (see notes on Location main page).). This is the underlying object with id, value and extensions. The accessor "getAltitude" gives direct access to the value
          */
         public LocationPositionComponent setAltitudeElement(DecimalType value) { 
           this.altitude = value;
@@ -450,14 +458,14 @@ public class Location extends DomainResource {
         }
 
         /**
-         * @return Altitude. The value domain and the interpretation are the same as for the text of the altitude element in KML (see notes below).
+         * @return Altitude. The value domain and the interpretation are the same as for the text of the altitude element in KML (see notes on Location main page).
          */
         public BigDecimal getAltitude() { 
           return this.altitude == null ? null : this.altitude.getValue();
         }
 
         /**
-         * @param value Altitude. The value domain and the interpretation are the same as for the text of the altitude element in KML (see notes below).
+         * @param value Altitude. The value domain and the interpretation are the same as for the text of the altitude element in KML (see notes on Location main page).
          */
         public LocationPositionComponent setAltitude(BigDecimal value) { 
           if (value == null)
@@ -471,7 +479,7 @@ public class Location extends DomainResource {
         }
 
         /**
-         * @param value Altitude. The value domain and the interpretation are the same as for the text of the altitude element in KML (see notes below).
+         * @param value Altitude. The value domain and the interpretation are the same as for the text of the altitude element in KML (see notes on Location main page).
          */
         public LocationPositionComponent setAltitude(long value) { 
               this.altitude = new DecimalType();
@@ -480,7 +488,7 @@ public class Location extends DomainResource {
         }
 
         /**
-         * @param value Altitude. The value domain and the interpretation are the same as for the text of the altitude element in KML (see notes below).
+         * @param value Altitude. The value domain and the interpretation are the same as for the text of the altitude element in KML (see notes on Location main page).
          */
         public LocationPositionComponent setAltitude(double value) { 
               this.altitude = new DecimalType();
@@ -490,17 +498,17 @@ public class Location extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("longitude", "decimal", "Longitude. The value domain and the interpretation are the same as for the text of the longitude element in KML (see notes below).", 0, 1, longitude));
-          children.add(new Property("latitude", "decimal", "Latitude. The value domain and the interpretation are the same as for the text of the latitude element in KML (see notes below).", 0, 1, latitude));
-          children.add(new Property("altitude", "decimal", "Altitude. The value domain and the interpretation are the same as for the text of the altitude element in KML (see notes below).", 0, 1, altitude));
+          children.add(new Property("longitude", "decimal", "Longitude. The value domain and the interpretation are the same as for the text of the longitude element in KML (see notes on Location main page).", 0, 1, longitude));
+          children.add(new Property("latitude", "decimal", "Latitude. The value domain and the interpretation are the same as for the text of the latitude element in KML (see notes on Location main page).", 0, 1, latitude));
+          children.add(new Property("altitude", "decimal", "Altitude. The value domain and the interpretation are the same as for the text of the altitude element in KML (see notes on Location main page).", 0, 1, altitude));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 137365935: /*longitude*/  return new Property("longitude", "decimal", "Longitude. The value domain and the interpretation are the same as for the text of the longitude element in KML (see notes below).", 0, 1, longitude);
-          case -1439978388: /*latitude*/  return new Property("latitude", "decimal", "Latitude. The value domain and the interpretation are the same as for the text of the latitude element in KML (see notes below).", 0, 1, latitude);
-          case 2036550306: /*altitude*/  return new Property("altitude", "decimal", "Altitude. The value domain and the interpretation are the same as for the text of the altitude element in KML (see notes below).", 0, 1, altitude);
+          case 137365935: /*longitude*/  return new Property("longitude", "decimal", "Longitude. The value domain and the interpretation are the same as for the text of the longitude element in KML (see notes on Location main page).", 0, 1, longitude);
+          case -1439978388: /*latitude*/  return new Property("latitude", "decimal", "Latitude. The value domain and the interpretation are the same as for the text of the latitude element in KML (see notes on Location main page).", 0, 1, latitude);
+          case 2036550306: /*altitude*/  return new Property("altitude", "decimal", "Altitude. The value domain and the interpretation are the same as for the text of the altitude element in KML (see notes on Location main page).", 0, 1, altitude);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -642,10 +650,10 @@ public class Location extends DomainResource {
         protected List<Enumeration<DaysOfWeek>> daysOfWeek;
 
         /**
-         * The Location is open all day.
+         * Is this always available? (hence times are irrelevant) i.e. 24 hour service.
          */
         @Child(name = "allDay", type = {BooleanType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The Location is open all day", formalDefinition="The Location is open all day." )
+        @Description(shortDefinition="Always available? i.e. 24 hour service", formalDefinition="Is this always available? (hence times are irrelevant) i.e. 24 hour service." )
         protected BooleanType allDay;
 
         /**
@@ -733,7 +741,7 @@ public class Location extends DomainResource {
         }
 
         /**
-         * @return {@link #allDay} (The Location is open all day.). This is the underlying object with id, value and extensions. The accessor "getAllDay" gives direct access to the value
+         * @return {@link #allDay} (Is this always available? (hence times are irrelevant) i.e. 24 hour service.). This is the underlying object with id, value and extensions. The accessor "getAllDay" gives direct access to the value
          */
         public BooleanType getAllDayElement() { 
           if (this.allDay == null)
@@ -753,7 +761,7 @@ public class Location extends DomainResource {
         }
 
         /**
-         * @param value {@link #allDay} (The Location is open all day.). This is the underlying object with id, value and extensions. The accessor "getAllDay" gives direct access to the value
+         * @param value {@link #allDay} (Is this always available? (hence times are irrelevant) i.e. 24 hour service.). This is the underlying object with id, value and extensions. The accessor "getAllDay" gives direct access to the value
          */
         public LocationHoursOfOperationComponent setAllDayElement(BooleanType value) { 
           this.allDay = value;
@@ -761,14 +769,14 @@ public class Location extends DomainResource {
         }
 
         /**
-         * @return The Location is open all day.
+         * @return Is this always available? (hence times are irrelevant) i.e. 24 hour service.
          */
         public boolean getAllDay() { 
           return this.allDay == null || this.allDay.isEmpty() ? false : this.allDay.getValue();
         }
 
         /**
-         * @param value The Location is open all day.
+         * @param value Is this always available? (hence times are irrelevant) i.e. 24 hour service.
          */
         public LocationHoursOfOperationComponent setAllDay(boolean value) { 
             if (this.allDay == null)
@@ -878,7 +886,7 @@ public class Location extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("daysOfWeek", "code", "Indicates which days of the week are available between the start and end Times.", 0, java.lang.Integer.MAX_VALUE, daysOfWeek));
-          children.add(new Property("allDay", "boolean", "The Location is open all day.", 0, 1, allDay));
+          children.add(new Property("allDay", "boolean", "Is this always available? (hence times are irrelevant) i.e. 24 hour service.", 0, 1, allDay));
           children.add(new Property("openingTime", "time", "Time that the Location opens.", 0, 1, openingTime));
           children.add(new Property("closingTime", "time", "Time that the Location closes.", 0, 1, closingTime));
         }
@@ -887,7 +895,7 @@ public class Location extends DomainResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 68050338: /*daysOfWeek*/  return new Property("daysOfWeek", "code", "Indicates which days of the week are available between the start and end Times.", 0, java.lang.Integer.MAX_VALUE, daysOfWeek);
-          case -1414913477: /*allDay*/  return new Property("allDay", "boolean", "The Location is open all day.", 0, 1, allDay);
+          case -1414913477: /*allDay*/  return new Property("allDay", "boolean", "Is this always available? (hence times are irrelevant) i.e. 24 hour service.", 0, 1, allDay);
           case 84062277: /*openingTime*/  return new Property("openingTime", "time", "Time that the Location opens.", 0, 1, openingTime);
           case 188137762: /*closingTime*/  return new Property("closingTime", "time", "Time that the Location closes.", 0, 1, closingTime);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -1099,23 +1107,30 @@ public class Location extends DomainResource {
     protected List<CodeableConcept> type;
 
     /**
-     * The contact details of communication devices available at the location. This can include phone numbers, fax numbers, mobile numbers, email addresses and web sites.
+     * The contact details of communication devices available at the location. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.
      */
-    @Child(name = "telecom", type = {ContactPoint.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Contact details of the location", formalDefinition="The contact details of communication devices available at the location. This can include phone numbers, fax numbers, mobile numbers, email addresses and web sites." )
+    @Child(name = "contact", type = {ExtendedContactDetail.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Official contact details for the location", formalDefinition="The contact details of communication devices available at the location. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites." )
+    protected List<ExtendedContactDetail> contact;
+
+    /**
+     * Deprecated - use contact.telecom.
+     */
+    @Child(name = "telecom", type = {ContactPoint.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Deprecated - use contact.telecom", formalDefinition="Deprecated - use contact.telecom." )
     protected List<ContactPoint> telecom;
 
     /**
      * Physical location.
      */
-    @Child(name = "address", type = {Address.class}, order=9, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "address", type = {Address.class}, order=10, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Physical location", formalDefinition="Physical location." )
     protected Address address;
 
     /**
      * Physical form of the location, e.g. building, room, vehicle, road.
      */
-    @Child(name = "physicalType", type = {CodeableConcept.class}, order=10, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "physicalType", type = {CodeableConcept.class}, order=11, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Physical form of the location", formalDefinition="Physical form of the location, e.g. building, room, vehicle, road." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/location-physical-type")
     protected CodeableConcept physicalType;
@@ -1123,46 +1138,46 @@ public class Location extends DomainResource {
     /**
      * The absolute geographic location of the Location, expressed using the WGS84 datum (This is the same co-ordinate system used in KML).
      */
-    @Child(name = "position", type = {}, order=11, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "position", type = {}, order=12, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The absolute geographic location", formalDefinition="The absolute geographic location of the Location, expressed using the WGS84 datum (This is the same co-ordinate system used in KML)." )
     protected LocationPositionComponent position;
 
     /**
      * The organization responsible for the provisioning and upkeep of the location.
      */
-    @Child(name = "managingOrganization", type = {Organization.class}, order=12, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "managingOrganization", type = {Organization.class}, order=13, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Organization responsible for provisioning and upkeep", formalDefinition="The organization responsible for the provisioning and upkeep of the location." )
     protected Reference managingOrganization;
 
     /**
      * Another Location of which this Location is physically a part of.
      */
-    @Child(name = "partOf", type = {Location.class}, order=13, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "partOf", type = {Location.class}, order=14, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Another Location this one is physically a part of", formalDefinition="Another Location of which this Location is physically a part of." )
     protected Reference partOf;
 
     /**
      * What days/times during a week is this location usually open.
      */
-    @Child(name = "hoursOfOperation", type = {}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "hoursOfOperation", type = {}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="What days/times during a week is this location usually open", formalDefinition="What days/times during a week is this location usually open." )
     protected List<LocationHoursOfOperationComponent> hoursOfOperation;
 
     /**
      * A description of when the locations opening ours are different to normal, e.g. public holiday availability. Succinctly describing all possible exceptions to normal site availability as detailed in the opening hours Times.
      */
-    @Child(name = "availabilityExceptions", type = {StringType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "availabilityExceptions", type = {StringType.class}, order=16, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Description of availability exceptions", formalDefinition="A description of when the locations opening ours are different to normal, e.g. public holiday availability. Succinctly describing all possible exceptions to normal site availability as detailed in the opening hours Times." )
     protected StringType availabilityExceptions;
 
     /**
      * Technical endpoints providing access to services operated for the location.
      */
-    @Child(name = "endpoint", type = {Endpoint.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "endpoint", type = {Endpoint.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Technical endpoints providing access to services operated for the location", formalDefinition="Technical endpoints providing access to services operated for the location." )
     protected List<Reference> endpoint;
 
-    private static final long serialVersionUID = -1479198769L;
+    private static final long serialVersionUID = 270794377L;
 
   /**
    * Constructor
@@ -1559,7 +1574,60 @@ public class Location extends DomainResource {
     }
 
     /**
-     * @return {@link #telecom} (The contact details of communication devices available at the location. This can include phone numbers, fax numbers, mobile numbers, email addresses and web sites.)
+     * @return {@link #contact} (The contact details of communication devices available at the location. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.)
+     */
+    public List<ExtendedContactDetail> getContact() { 
+      if (this.contact == null)
+        this.contact = new ArrayList<ExtendedContactDetail>();
+      return this.contact;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Location setContact(List<ExtendedContactDetail> theContact) { 
+      this.contact = theContact;
+      return this;
+    }
+
+    public boolean hasContact() { 
+      if (this.contact == null)
+        return false;
+      for (ExtendedContactDetail item : this.contact)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public ExtendedContactDetail addContact() { //3
+      ExtendedContactDetail t = new ExtendedContactDetail();
+      if (this.contact == null)
+        this.contact = new ArrayList<ExtendedContactDetail>();
+      this.contact.add(t);
+      return t;
+    }
+
+    public Location addContact(ExtendedContactDetail t) { //3
+      if (t == null)
+        return this;
+      if (this.contact == null)
+        this.contact = new ArrayList<ExtendedContactDetail>();
+      this.contact.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {3}
+     */
+    public ExtendedContactDetail getContactFirstRep() { 
+      if (getContact().isEmpty()) {
+        addContact();
+      }
+      return getContact().get(0);
+    }
+
+    /**
+     * @return {@link #telecom} (Deprecated - use contact.telecom.)
      */
     public List<ContactPoint> getTelecom() { 
       if (this.telecom == null)
@@ -1896,7 +1964,8 @@ public class Location extends DomainResource {
         children.add(new Property("description", "string", "Description of the Location, which helps in finding or referencing the place.", 0, 1, description));
         children.add(new Property("mode", "code", "Indicates whether a resource instance represents a specific location or a class of locations.", 0, 1, mode));
         children.add(new Property("type", "CodeableConcept", "Indicates the type of function performed at the location.", 0, java.lang.Integer.MAX_VALUE, type));
-        children.add(new Property("telecom", "ContactPoint", "The contact details of communication devices available at the location. This can include phone numbers, fax numbers, mobile numbers, email addresses and web sites.", 0, java.lang.Integer.MAX_VALUE, telecom));
+        children.add(new Property("contact", "ExtendedContactDetail", "The contact details of communication devices available at the location. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.", 0, java.lang.Integer.MAX_VALUE, contact));
+        children.add(new Property("telecom", "ContactPoint", "Deprecated - use contact.telecom.", 0, java.lang.Integer.MAX_VALUE, telecom));
         children.add(new Property("address", "Address", "Physical location.", 0, 1, address));
         children.add(new Property("physicalType", "CodeableConcept", "Physical form of the location, e.g. building, room, vehicle, road.", 0, 1, physicalType));
         children.add(new Property("position", "", "The absolute geographic location of the Location, expressed using the WGS84 datum (This is the same co-ordinate system used in KML).", 0, 1, position));
@@ -1918,7 +1987,8 @@ public class Location extends DomainResource {
         case -1724546052: /*description*/  return new Property("description", "string", "Description of the Location, which helps in finding or referencing the place.", 0, 1, description);
         case 3357091: /*mode*/  return new Property("mode", "code", "Indicates whether a resource instance represents a specific location or a class of locations.", 0, 1, mode);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Indicates the type of function performed at the location.", 0, java.lang.Integer.MAX_VALUE, type);
-        case -1429363305: /*telecom*/  return new Property("telecom", "ContactPoint", "The contact details of communication devices available at the location. This can include phone numbers, fax numbers, mobile numbers, email addresses and web sites.", 0, java.lang.Integer.MAX_VALUE, telecom);
+        case 951526432: /*contact*/  return new Property("contact", "ExtendedContactDetail", "The contact details of communication devices available at the location. This can include addresses, phone numbers, fax numbers, mobile numbers, email addresses and web sites.", 0, java.lang.Integer.MAX_VALUE, contact);
+        case -1429363305: /*telecom*/  return new Property("telecom", "ContactPoint", "Deprecated - use contact.telecom.", 0, java.lang.Integer.MAX_VALUE, telecom);
         case -1147692044: /*address*/  return new Property("address", "Address", "Physical location.", 0, 1, address);
         case -1474715471: /*physicalType*/  return new Property("physicalType", "CodeableConcept", "Physical form of the location, e.g. building, room, vehicle, road.", 0, 1, physicalType);
         case 747804969: /*position*/  return new Property("position", "", "The absolute geographic location of the Location, expressed using the WGS84 datum (This is the same co-ordinate system used in KML).", 0, 1, position);
@@ -1943,6 +2013,7 @@ public class Location extends DomainResource {
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case 3357091: /*mode*/ return this.mode == null ? new Base[0] : new Base[] {this.mode}; // Enumeration<LocationMode>
         case 3575610: /*type*/ return this.type == null ? new Base[0] : this.type.toArray(new Base[this.type.size()]); // CodeableConcept
+        case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ExtendedContactDetail
         case -1429363305: /*telecom*/ return this.telecom == null ? new Base[0] : this.telecom.toArray(new Base[this.telecom.size()]); // ContactPoint
         case -1147692044: /*address*/ return this.address == null ? new Base[0] : new Base[] {this.address}; // Address
         case -1474715471: /*physicalType*/ return this.physicalType == null ? new Base[0] : new Base[] {this.physicalType}; // CodeableConcept
@@ -1985,6 +2056,9 @@ public class Location extends DomainResource {
           return value;
         case 3575610: // type
           this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        case 951526432: // contact
+          this.getContact().add(TypeConvertor.castToExtendedContactDetail(value)); // ExtendedContactDetail
           return value;
         case -1429363305: // telecom
           this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
@@ -2038,6 +2112,8 @@ public class Location extends DomainResource {
           this.mode = (Enumeration) value; // Enumeration<LocationMode>
         } else if (name.equals("type")) {
           this.getType().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("contact")) {
+          this.getContact().add(TypeConvertor.castToExtendedContactDetail(value));
         } else if (name.equals("telecom")) {
           this.getTelecom().add(TypeConvertor.castToContactPoint(value));
         } else if (name.equals("address")) {
@@ -2072,6 +2148,7 @@ public class Location extends DomainResource {
         case -1724546052:  return getDescriptionElement();
         case 3357091:  return getModeElement();
         case 3575610:  return addType(); 
+        case 951526432:  return addContact(); 
         case -1429363305:  return addTelecom(); 
         case -1147692044:  return getAddress();
         case -1474715471:  return getPhysicalType();
@@ -2097,6 +2174,7 @@ public class Location extends DomainResource {
         case -1724546052: /*description*/ return new String[] {"string"};
         case 3357091: /*mode*/ return new String[] {"code"};
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case 951526432: /*contact*/ return new String[] {"ExtendedContactDetail"};
         case -1429363305: /*telecom*/ return new String[] {"ContactPoint"};
         case -1147692044: /*address*/ return new String[] {"Address"};
         case -1474715471: /*physicalType*/ return new String[] {"CodeableConcept"};
@@ -2137,6 +2215,9 @@ public class Location extends DomainResource {
         }
         else if (name.equals("type")) {
           return addType();
+        }
+        else if (name.equals("contact")) {
+          return addContact();
         }
         else if (name.equals("telecom")) {
           return addTelecom();
@@ -2207,6 +2288,11 @@ public class Location extends DomainResource {
           for (CodeableConcept i : type)
             dst.type.add(i.copy());
         };
+        if (contact != null) {
+          dst.contact = new ArrayList<ExtendedContactDetail>();
+          for (ExtendedContactDetail i : contact)
+            dst.contact.add(i.copy());
+        };
         if (telecom != null) {
           dst.telecom = new ArrayList<ContactPoint>();
           for (ContactPoint i : telecom)
@@ -2243,11 +2329,12 @@ public class Location extends DomainResource {
         Location o = (Location) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(operationalStatus, o.operationalStatus, true)
            && compareDeep(name, o.name, true) && compareDeep(alias, o.alias, true) && compareDeep(description, o.description, true)
-           && compareDeep(mode, o.mode, true) && compareDeep(type, o.type, true) && compareDeep(telecom, o.telecom, true)
-           && compareDeep(address, o.address, true) && compareDeep(physicalType, o.physicalType, true) && compareDeep(position, o.position, true)
-           && compareDeep(managingOrganization, o.managingOrganization, true) && compareDeep(partOf, o.partOf, true)
-           && compareDeep(hoursOfOperation, o.hoursOfOperation, true) && compareDeep(availabilityExceptions, o.availabilityExceptions, true)
-           && compareDeep(endpoint, o.endpoint, true);
+           && compareDeep(mode, o.mode, true) && compareDeep(type, o.type, true) && compareDeep(contact, o.contact, true)
+           && compareDeep(telecom, o.telecom, true) && compareDeep(address, o.address, true) && compareDeep(physicalType, o.physicalType, true)
+           && compareDeep(position, o.position, true) && compareDeep(managingOrganization, o.managingOrganization, true)
+           && compareDeep(partOf, o.partOf, true) && compareDeep(hoursOfOperation, o.hoursOfOperation, true)
+           && compareDeep(availabilityExceptions, o.availabilityExceptions, true) && compareDeep(endpoint, o.endpoint, true)
+          ;
       }
 
       @Override
@@ -2264,339 +2351,15 @@ public class Location extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, operationalStatus
-          , name, alias, description, mode, type, telecom, address, physicalType, position
-          , managingOrganization, partOf, hoursOfOperation, availabilityExceptions, endpoint
-          );
+          , name, alias, description, mode, type, contact, telecom, address, physicalType
+          , position, managingOrganization, partOf, hoursOfOperation, availabilityExceptions
+          , endpoint);
       }
 
   @Override
   public ResourceType getResourceType() {
     return ResourceType.Location;
    }
-
- /**
-   * Search parameter: <b>address-city</b>
-   * <p>
-   * Description: <b>A city specified in an address</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Location.address.city</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address-city", path="Location.address.city", description="A city specified in an address", type="string" )
-  public static final String SP_ADDRESS_CITY = "address-city";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-city</b>
-   * <p>
-   * Description: <b>A city specified in an address</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Location.address.city</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_CITY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_CITY);
-
- /**
-   * Search parameter: <b>address-country</b>
-   * <p>
-   * Description: <b>A country specified in an address</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Location.address.country</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address-country", path="Location.address.country", description="A country specified in an address", type="string" )
-  public static final String SP_ADDRESS_COUNTRY = "address-country";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-country</b>
-   * <p>
-   * Description: <b>A country specified in an address</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Location.address.country</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_COUNTRY = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_COUNTRY);
-
- /**
-   * Search parameter: <b>address-postalcode</b>
-   * <p>
-   * Description: <b>A postal code specified in an address</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Location.address.postalCode</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address-postalcode", path="Location.address.postalCode", description="A postal code specified in an address", type="string" )
-  public static final String SP_ADDRESS_POSTALCODE = "address-postalcode";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-postalcode</b>
-   * <p>
-   * Description: <b>A postal code specified in an address</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Location.address.postalCode</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_POSTALCODE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_POSTALCODE);
-
- /**
-   * Search parameter: <b>address-state</b>
-   * <p>
-   * Description: <b>A state specified in an address</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Location.address.state</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address-state", path="Location.address.state", description="A state specified in an address", type="string" )
-  public static final String SP_ADDRESS_STATE = "address-state";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-state</b>
-   * <p>
-   * Description: <b>A state specified in an address</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Location.address.state</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS_STATE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS_STATE);
-
- /**
-   * Search parameter: <b>address-use</b>
-   * <p>
-   * Description: <b>A use code specified in an address</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Location.address.use</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address-use", path="Location.address.use", description="A use code specified in an address", type="token" )
-  public static final String SP_ADDRESS_USE = "address-use";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address-use</b>
-   * <p>
-   * Description: <b>A use code specified in an address</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Location.address.use</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ADDRESS_USE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ADDRESS_USE);
-
- /**
-   * Search parameter: <b>address</b>
-   * <p>
-   * Description: <b>A (part of the) address of the location</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Location.address</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address", path="Location.address", description="A (part of the) address of the location", type="string" )
-  public static final String SP_ADDRESS = "address";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address</b>
-   * <p>
-   * Description: <b>A (part of the) address of the location</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Location.address</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS);
-
- /**
-   * Search parameter: <b>endpoint</b>
-   * <p>
-   * Description: <b>Technical endpoints providing access to services operated for the location</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Location.endpoint</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="endpoint", path="Location.endpoint", description="Technical endpoints providing access to services operated for the location", type="reference", target={Endpoint.class } )
-  public static final String SP_ENDPOINT = "endpoint";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>endpoint</b>
-   * <p>
-   * Description: <b>Technical endpoints providing access to services operated for the location</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Location.endpoint</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENDPOINT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENDPOINT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Location:endpoint</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENDPOINT = new ca.uhn.fhir.model.api.Include("Location:endpoint").toLocked();
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>An identifier for the location</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Location.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="Location.identifier", description="An identifier for the location", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>An identifier for the location</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Location.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>name</b>
-   * <p>
-   * Description: <b>A portion of the location's name or alias</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Location.name | Location.alias</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="name", path="Location.name | Location.alias", description="A portion of the location's name or alias", type="string" )
-  public static final String SP_NAME = "name";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>name</b>
-   * <p>
-   * Description: <b>A portion of the location's name or alias</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Location.name | Location.alias</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
-
- /**
-   * Search parameter: <b>near</b>
-   * <p>
-   * Description: <b>Search for locations where the location.position is near to, or within a specified distance of, the provided coordinates expressed as [latitude]|[longitude]|[distance]|[units] (using the WGS84 datum, see notes).
-If the units are omitted, then kms should be assumed. If the distance is omitted, then the server can use its own discretion as to what distances should be considered near (and units are irrelevant)
-
-Servers may search using various techniques that might have differing accuracies, depending on implementation efficiency.</b><br>
-   * Type: <b>special</b><br>
-   * Path: <b>Location.position</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="near", path="Location.position", description="Search for locations where the location.position is near to, or within a specified distance of, the provided coordinates expressed as [latitude]|[longitude]|[distance]|[units] (using the WGS84 datum, see notes).\nIf the units are omitted, then kms should be assumed. If the distance is omitted, then the server can use its own discretion as to what distances should be considered near (and units are irrelevant)\n\nServers may search using various techniques that might have differing accuracies, depending on implementation efficiency.", type="special" )
-  public static final String SP_NEAR = "near";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>near</b>
-   * <p>
-   * Description: <b>Search for locations where the location.position is near to, or within a specified distance of, the provided coordinates expressed as [latitude]|[longitude]|[distance]|[units] (using the WGS84 datum, see notes).
-If the units are omitted, then kms should be assumed. If the distance is omitted, then the server can use its own discretion as to what distances should be considered near (and units are irrelevant)
-
-Servers may search using various techniques that might have differing accuracies, depending on implementation efficiency.</b><br>
-   * Type: <b>special</b><br>
-   * Path: <b>Location.position</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.SpecialClientParam NEAR = new ca.uhn.fhir.rest.gclient.SpecialClientParam(SP_NEAR);
-
- /**
-   * Search parameter: <b>operational-status</b>
-   * <p>
-   * Description: <b>Searches for locations (typically bed/room) that have an operational status (e.g. contaminated, housekeeping)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Location.operationalStatus</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="operational-status", path="Location.operationalStatus", description="Searches for locations (typically bed/room) that have an operational status (e.g. contaminated, housekeeping)", type="token" )
-  public static final String SP_OPERATIONAL_STATUS = "operational-status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>operational-status</b>
-   * <p>
-   * Description: <b>Searches for locations (typically bed/room) that have an operational status (e.g. contaminated, housekeeping)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Location.operationalStatus</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam OPERATIONAL_STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_OPERATIONAL_STATUS);
-
- /**
-   * Search parameter: <b>organization</b>
-   * <p>
-   * Description: <b>Searches for locations that are managed by the provided organization</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Location.managingOrganization</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="organization", path="Location.managingOrganization", description="Searches for locations that are managed by the provided organization", type="reference", target={Organization.class } )
-  public static final String SP_ORGANIZATION = "organization";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>organization</b>
-   * <p>
-   * Description: <b>Searches for locations that are managed by the provided organization</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Location.managingOrganization</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ORGANIZATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ORGANIZATION);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Location:organization</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ORGANIZATION = new ca.uhn.fhir.model.api.Include("Location:organization").toLocked();
-
- /**
-   * Search parameter: <b>partof</b>
-   * <p>
-   * Description: <b>A location of which this location is a part</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Location.partOf</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="partof", path="Location.partOf", description="A location of which this location is a part", type="reference", target={Location.class } )
-  public static final String SP_PARTOF = "partof";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>partof</b>
-   * <p>
-   * Description: <b>A location of which this location is a part</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Location.partOf</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PARTOF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PARTOF);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Location:partof</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PARTOF = new ca.uhn.fhir.model.api.Include("Location:partof").toLocked();
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>Searches for locations with a specific kind of status</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Location.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="Location.status", description="Searches for locations with a specific kind of status", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>Searches for locations with a specific kind of status</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Location.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
-
- /**
-   * Search parameter: <b>type</b>
-   * <p>
-   * Description: <b>A code for the type of location</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Location.type</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="type", path="Location.type", description="A code for the type of location", type="token" )
-  public static final String SP_TYPE = "type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>type</b>
-   * <p>
-   * Description: <b>A code for the type of location</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Location.type</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
 
 }

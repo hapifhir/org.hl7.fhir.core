@@ -8,6 +8,7 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeableReference;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -52,7 +53,7 @@ public class Schedule40_50 {
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceCategory())
       tgt.addServiceCategory(CodeableConcept40_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceType())
-      tgt.addServiceType(CodeableConcept40_50.convertCodeableConcept(t));
+      tgt.addServiceType(new CodeableReference().setConcept(CodeableConcept40_50.convertCodeableConcept(t)));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSpecialty())
       tgt.addSpecialty(CodeableConcept40_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getActor()) tgt.addActor(Reference40_50.convertReference(t));
@@ -74,8 +75,9 @@ public class Schedule40_50 {
       tgt.setActiveElement(Boolean40_50.convertBoolean(src.getActiveElement()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceCategory())
       tgt.addServiceCategory(CodeableConcept40_50.convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceType())
-      tgt.addServiceType(CodeableConcept40_50.convertCodeableConcept(t));
+    for (CodeableReference t : src.getServiceType())
+      if (t.hasConcept())
+        tgt.addServiceType(CodeableConcept40_50.convertCodeableConcept(t.getConcept()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSpecialty())
       tgt.addSpecialty(CodeableConcept40_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getActor()) tgt.addActor(Reference40_50.convertReference(t));

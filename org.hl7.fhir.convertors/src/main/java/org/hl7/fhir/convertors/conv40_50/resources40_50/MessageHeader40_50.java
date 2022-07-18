@@ -173,7 +173,7 @@ public class MessageHeader40_50 {
     org.hl7.fhir.r5.model.MessageHeader.MessageHeaderResponseComponent tgt = new org.hl7.fhir.r5.model.MessageHeader.MessageHeaderResponseComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasIdentifier())
-      tgt.setIdentifierElement(Id40_50.convertId(src.getIdentifierElement()));
+      tgt.setIdentifier(new org.hl7.fhir.r5.model.Identifier().setValue(src.getIdentifier()));
     if (src.hasCode())
       tgt.setCodeElement(convertResponseType(src.getCodeElement()));
     if (src.hasDetails())
@@ -187,7 +187,7 @@ public class MessageHeader40_50 {
     org.hl7.fhir.r4.model.MessageHeader.MessageHeaderResponseComponent tgt = new org.hl7.fhir.r4.model.MessageHeader.MessageHeaderResponseComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasIdentifier())
-      tgt.setIdentifierElement(Id40_50.convertId(src.getIdentifierElement()));
+      tgt.setIdentifierElement(new org.hl7.fhir.r4.model.IdType(src.getIdentifier().getValue()));
     if (src.hasCode())
       tgt.setCodeElement(convertResponseType(src.getCodeElement()));
     if (src.hasDetails())

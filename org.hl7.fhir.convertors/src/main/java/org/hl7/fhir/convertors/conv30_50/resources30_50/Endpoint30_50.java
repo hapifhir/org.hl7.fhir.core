@@ -18,7 +18,7 @@ public class Endpoint30_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertEndpointStatus(src.getStatusElement()));
     if (src.hasConnectionType())
-      tgt.setConnectionType(Coding30_50.convertCoding(src.getConnectionType()));
+      tgt.setConnectionType(Coding30_50.convertCoding(src.getConnectionTypeFirstRep()));
     if (src.hasName())
       tgt.setNameElement(String30_50.convertString(src.getNameElement()));
     if (src.hasManagingOrganization())
@@ -46,7 +46,7 @@ public class Endpoint30_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertEndpointStatus(src.getStatusElement()));
     if (src.hasConnectionType())
-      tgt.setConnectionType(Coding30_50.convertCoding(src.getConnectionType()));
+      tgt.addConnectionType(Coding30_50.convertCoding(src.getConnectionType()));
     if (src.hasName())
       tgt.setNameElement(String30_50.convertString(src.getNameElement()));
     if (src.hasManagingOrganization())

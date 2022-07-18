@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,8 +59,8 @@ public class ResearchStudy extends DomainResource {
          * Kind of name.
          */
         @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="short | public | scientific", formalDefinition="Kind of name." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/research-study-title-type")
+        @Description(shortDefinition="primary | official | scientific | plain-language | subtitle | short-title | acronym | earlier-title | language | auto-translated | human-use | machine-use | duplicate-uid", formalDefinition="Kind of name." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/title-type")
         protected CodeableConcept type;
 
         /**
@@ -600,7 +600,7 @@ public class ResearchStudy extends DomainResource {
          */
         @Child(name = "classifier", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="n-a | early-phase-1 | phase-1 | phase-1-phase-2 | phase-2 | phase-2-phase-3 | phase-3 | phase-4", formalDefinition="Value of classifier." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/research-study-classification-classifier")
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/research-study-classifiers")
         protected List<CodeableConcept> classifier;
 
         private static final long serialVersionUID = -283121869L;
@@ -833,14 +833,21 @@ public class ResearchStudy extends DomainResource {
          * Type of association.
          */
         @Child(name = "role", type = {CodeableConcept.class}, order=2, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="sponsor | sponsor-investigator | primary-investigator | collaborator | funding-source | recruitment-contact | sub-investigator | study-director | study-chair", formalDefinition="Type of association." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/research-study-party-type")
+        @Description(shortDefinition="sponsor | lead-sponsor | sponsor-investigator | primary-investigator | collaborator | funding-source | recruitment-contact | sub-investigator | study-director | study-chair", formalDefinition="Type of association." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/research-study-party-role")
         protected CodeableConcept role;
+
+        /**
+         * Identifies the start date and the end date of the associated party in the role.
+         */
+        @Child(name = "period", type = {Period.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="When active in the role", formalDefinition="Identifies the start date and the end date of the associated party in the role." )
+        protected List<Period> period;
 
         /**
          * Organisational type of association.
          */
-        @Child(name = "classifier", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "classifier", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="nih | fda", formalDefinition="Organisational type of association." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/research-study-party-org-type")
         protected List<CodeableConcept> classifier;
@@ -848,11 +855,11 @@ public class ResearchStudy extends DomainResource {
         /**
          * Individual or organization associated with study (use practitionerRole to specify their organisation).
          */
-        @Child(name = "party", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "party", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=5, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Individual or organization associated with study (use practitionerRole to specify their organisation)", formalDefinition="Individual or organization associated with study (use practitionerRole to specify their organisation)." )
         protected Reference party;
 
-        private static final long serialVersionUID = 2116155954L;
+        private static final long serialVersionUID = -1418550998L;
 
     /**
      * Constructor
@@ -943,6 +950,59 @@ public class ResearchStudy extends DomainResource {
         }
 
         /**
+         * @return {@link #period} (Identifies the start date and the end date of the associated party in the role.)
+         */
+        public List<Period> getPeriod() { 
+          if (this.period == null)
+            this.period = new ArrayList<Period>();
+          return this.period;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public ResearchStudyAssociatedPartyComponent setPeriod(List<Period> thePeriod) { 
+          this.period = thePeriod;
+          return this;
+        }
+
+        public boolean hasPeriod() { 
+          if (this.period == null)
+            return false;
+          for (Period item : this.period)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Period addPeriod() { //3
+          Period t = new Period();
+          if (this.period == null)
+            this.period = new ArrayList<Period>();
+          this.period.add(t);
+          return t;
+        }
+
+        public ResearchStudyAssociatedPartyComponent addPeriod(Period t) { //3
+          if (t == null)
+            return this;
+          if (this.period == null)
+            this.period = new ArrayList<Period>();
+          this.period.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #period}, creating it if it does not already exist {3}
+         */
+        public Period getPeriodFirstRep() { 
+          if (getPeriod().isEmpty()) {
+            addPeriod();
+          }
+          return getPeriod().get(0);
+        }
+
+        /**
          * @return {@link #classifier} (Organisational type of association.)
          */
         public List<CodeableConcept> getClassifier() { 
@@ -1023,6 +1083,7 @@ public class ResearchStudy extends DomainResource {
           super.listChildren(children);
           children.add(new Property("name", "string", "Name of associated party.", 0, 1, name));
           children.add(new Property("role", "CodeableConcept", "Type of association.", 0, 1, role));
+          children.add(new Property("period", "Period", "Identifies the start date and the end date of the associated party in the role.", 0, java.lang.Integer.MAX_VALUE, period));
           children.add(new Property("classifier", "CodeableConcept", "Organisational type of association.", 0, java.lang.Integer.MAX_VALUE, classifier));
           children.add(new Property("party", "Reference(Practitioner|PractitionerRole|Organization)", "Individual or organization associated with study (use practitionerRole to specify their organisation).", 0, 1, party));
         }
@@ -1032,6 +1093,7 @@ public class ResearchStudy extends DomainResource {
           switch (_hash) {
           case 3373707: /*name*/  return new Property("name", "string", "Name of associated party.", 0, 1, name);
           case 3506294: /*role*/  return new Property("role", "CodeableConcept", "Type of association.", 0, 1, role);
+          case -991726143: /*period*/  return new Property("period", "Period", "Identifies the start date and the end date of the associated party in the role.", 0, java.lang.Integer.MAX_VALUE, period);
           case -281470431: /*classifier*/  return new Property("classifier", "CodeableConcept", "Organisational type of association.", 0, java.lang.Integer.MAX_VALUE, classifier);
           case 106437350: /*party*/  return new Property("party", "Reference(Practitioner|PractitionerRole|Organization)", "Individual or organization associated with study (use practitionerRole to specify their organisation).", 0, 1, party);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -1044,6 +1106,7 @@ public class ResearchStudy extends DomainResource {
         switch (hash) {
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case 3506294: /*role*/ return this.role == null ? new Base[0] : new Base[] {this.role}; // CodeableConcept
+        case -991726143: /*period*/ return this.period == null ? new Base[0] : this.period.toArray(new Base[this.period.size()]); // Period
         case -281470431: /*classifier*/ return this.classifier == null ? new Base[0] : this.classifier.toArray(new Base[this.classifier.size()]); // CodeableConcept
         case 106437350: /*party*/ return this.party == null ? new Base[0] : new Base[] {this.party}; // Reference
         default: return super.getProperty(hash, name, checkValid);
@@ -1059,6 +1122,9 @@ public class ResearchStudy extends DomainResource {
           return value;
         case 3506294: // role
           this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -991726143: // period
+          this.getPeriod().add(TypeConvertor.castToPeriod(value)); // Period
           return value;
         case -281470431: // classifier
           this.getClassifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -1077,6 +1143,8 @@ public class ResearchStudy extends DomainResource {
           this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("role")) {
           this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("period")) {
+          this.getPeriod().add(TypeConvertor.castToPeriod(value));
         } else if (name.equals("classifier")) {
           this.getClassifier().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("party")) {
@@ -1091,6 +1159,7 @@ public class ResearchStudy extends DomainResource {
         switch (hash) {
         case 3373707:  return getNameElement();
         case 3506294:  return getRole();
+        case -991726143:  return addPeriod(); 
         case -281470431:  return addClassifier(); 
         case 106437350:  return getParty();
         default: return super.makeProperty(hash, name);
@@ -1103,6 +1172,7 @@ public class ResearchStudy extends DomainResource {
         switch (hash) {
         case 3373707: /*name*/ return new String[] {"string"};
         case 3506294: /*role*/ return new String[] {"CodeableConcept"};
+        case -991726143: /*period*/ return new String[] {"Period"};
         case -281470431: /*classifier*/ return new String[] {"CodeableConcept"};
         case 106437350: /*party*/ return new String[] {"Reference"};
         default: return super.getTypesForProperty(hash, name);
@@ -1118,6 +1188,9 @@ public class ResearchStudy extends DomainResource {
         else if (name.equals("role")) {
           this.role = new CodeableConcept();
           return this.role;
+        }
+        else if (name.equals("period")) {
+          return addPeriod();
         }
         else if (name.equals("classifier")) {
           return addClassifier();
@@ -1140,6 +1213,11 @@ public class ResearchStudy extends DomainResource {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.role = role == null ? null : role.copy();
+        if (period != null) {
+          dst.period = new ArrayList<Period>();
+          for (Period i : period)
+            dst.period.add(i.copy());
+        };
         if (classifier != null) {
           dst.classifier = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : classifier)
@@ -1155,8 +1233,8 @@ public class ResearchStudy extends DomainResource {
         if (!(other_ instanceof ResearchStudyAssociatedPartyComponent))
           return false;
         ResearchStudyAssociatedPartyComponent o = (ResearchStudyAssociatedPartyComponent) other_;
-        return compareDeep(name, o.name, true) && compareDeep(role, o.role, true) && compareDeep(classifier, o.classifier, true)
-           && compareDeep(party, o.party, true);
+        return compareDeep(name, o.name, true) && compareDeep(role, o.role, true) && compareDeep(period, o.period, true)
+           && compareDeep(classifier, o.classifier, true) && compareDeep(party, o.party, true);
       }
 
       @Override
@@ -1170,8 +1248,8 @@ public class ResearchStudy extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, role, classifier, party
-          );
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, role, period, classifier
+          , party);
       }
 
   public String fhirType() {
@@ -1479,7 +1557,7 @@ public class ResearchStudy extends DomainResource {
         /**
          * Inclusion and exclusion criteria.
          */
-        @Child(name = "eligibility", type = {Group.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "eligibility", type = {Group.class, EvidenceVariable.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Inclusion and exclusion criteria", formalDefinition="Inclusion and exclusion criteria." )
         protected Reference eligibility;
 
@@ -1641,7 +1719,7 @@ public class ResearchStudy extends DomainResource {
           super.listChildren(children);
           children.add(new Property("targetNumber", "unsignedInt", "Estimated total number of participants to be enrolled.", 0, 1, targetNumber));
           children.add(new Property("actualNumber", "unsignedInt", "Actual total number of participants enrolled in study.", 0, 1, actualNumber));
-          children.add(new Property("eligibility", "Reference(Group)", "Inclusion and exclusion criteria.", 0, 1, eligibility));
+          children.add(new Property("eligibility", "Reference(Group|EvidenceVariable)", "Inclusion and exclusion criteria.", 0, 1, eligibility));
           children.add(new Property("actualGroup", "Reference(Group)", "Group of participants who were enrolled in study.", 0, 1, actualGroup));
         }
 
@@ -1650,7 +1728,7 @@ public class ResearchStudy extends DomainResource {
           switch (_hash) {
           case -682948550: /*targetNumber*/  return new Property("targetNumber", "unsignedInt", "Estimated total number of participants to be enrolled.", 0, 1, targetNumber);
           case 746557047: /*actualNumber*/  return new Property("actualNumber", "unsignedInt", "Actual total number of participants enrolled in study.", 0, 1, actualNumber);
-          case -930847859: /*eligibility*/  return new Property("eligibility", "Reference(Group)", "Inclusion and exclusion criteria.", 0, 1, eligibility);
+          case -930847859: /*eligibility*/  return new Property("eligibility", "Reference(Group|EvidenceVariable)", "Inclusion and exclusion criteria.", 0, 1, eligibility);
           case 1403004305: /*actualGroup*/  return new Property("actualGroup", "Reference(Group)", "Group of participants who were enrolled in study.", 0, 1, actualGroup);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -2984,10 +3062,10 @@ public class ResearchStudy extends DomainResource {
         /**
          * Describes the nature of the location being specified.
          */
-        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "classifier", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="registry-page|recruitment-page|contact-page", formalDefinition="Describes the nature of the location being specified." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/research-study-url-type")
-        protected CodeableConcept type;
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/artifact-url-classifier")
+        protected CodeableConcept classifier;
 
         /**
          * The location address.
@@ -2996,7 +3074,7 @@ public class ResearchStudy extends DomainResource {
         @Description(shortDefinition="The location address", formalDefinition="The location address." )
         protected UriType url;
 
-        private static final long serialVersionUID = 397204034L;
+        private static final long serialVersionUID = -1718812997L;
 
     /**
      * Constructor
@@ -3014,26 +3092,26 @@ public class ResearchStudy extends DomainResource {
       }
 
         /**
-         * @return {@link #type} (Describes the nature of the location being specified.)
+         * @return {@link #classifier} (Describes the nature of the location being specified.)
          */
-        public CodeableConcept getType() { 
-          if (this.type == null)
+        public CodeableConcept getClassifier() { 
+          if (this.classifier == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ResearchStudyWebLocationComponent.type");
+              throw new Error("Attempt to auto-create ResearchStudyWebLocationComponent.classifier");
             else if (Configuration.doAutoCreate())
-              this.type = new CodeableConcept(); // cc
-          return this.type;
+              this.classifier = new CodeableConcept(); // cc
+          return this.classifier;
         }
 
-        public boolean hasType() { 
-          return this.type != null && !this.type.isEmpty();
+        public boolean hasClassifier() { 
+          return this.classifier != null && !this.classifier.isEmpty();
         }
 
         /**
-         * @param value {@link #type} (Describes the nature of the location being specified.)
+         * @param value {@link #classifier} (Describes the nature of the location being specified.)
          */
-        public ResearchStudyWebLocationComponent setType(CodeableConcept value) { 
-          this.type = value;
+        public ResearchStudyWebLocationComponent setClassifier(CodeableConcept value) { 
+          this.classifier = value;
           return this;
         }
 
@@ -3084,14 +3162,14 @@ public class ResearchStudy extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("type", "CodeableConcept", "Describes the nature of the location being specified.", 0, 1, type));
+          children.add(new Property("classifier", "CodeableConcept", "Describes the nature of the location being specified.", 0, 1, classifier));
           children.add(new Property("url", "uri", "The location address.", 0, 1, url));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Describes the nature of the location being specified.", 0, 1, type);
+          case -281470431: /*classifier*/  return new Property("classifier", "CodeableConcept", "Describes the nature of the location being specified.", 0, 1, classifier);
           case 116079: /*url*/  return new Property("url", "uri", "The location address.", 0, 1, url);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -3101,7 +3179,7 @@ public class ResearchStudy extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case -281470431: /*classifier*/ return this.classifier == null ? new Base[0] : new Base[] {this.classifier}; // CodeableConcept
         case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -3111,8 +3189,8 @@ public class ResearchStudy extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case 3575610: // type
-          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        case -281470431: // classifier
+          this.classifier = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 116079: // url
           this.url = TypeConvertor.castToUri(value); // UriType
@@ -3124,8 +3202,8 @@ public class ResearchStudy extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("type")) {
-          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        if (name.equals("classifier")) {
+          this.classifier = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("url")) {
           this.url = TypeConvertor.castToUri(value); // UriType
         } else
@@ -3136,7 +3214,7 @@ public class ResearchStudy extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610:  return getType();
+        case -281470431:  return getClassifier();
         case 116079:  return getUrlElement();
         default: return super.makeProperty(hash, name);
         }
@@ -3146,7 +3224,7 @@ public class ResearchStudy extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case -281470431: /*classifier*/ return new String[] {"CodeableConcept"};
         case 116079: /*url*/ return new String[] {"uri"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -3155,9 +3233,9 @@ public class ResearchStudy extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("type")) {
-          this.type = new CodeableConcept();
-          return this.type;
+        if (name.equals("classifier")) {
+          this.classifier = new CodeableConcept();
+          return this.classifier;
         }
         else if (name.equals("url")) {
           throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.webLocation.url");
@@ -3174,7 +3252,7 @@ public class ResearchStudy extends DomainResource {
 
       public void copyValues(ResearchStudyWebLocationComponent dst) {
         super.copyValues(dst);
-        dst.type = type == null ? null : type.copy();
+        dst.classifier = classifier == null ? null : classifier.copy();
         dst.url = url == null ? null : url.copy();
       }
 
@@ -3185,7 +3263,7 @@ public class ResearchStudy extends DomainResource {
         if (!(other_ instanceof ResearchStudyWebLocationComponent))
           return false;
         ResearchStudyWebLocationComponent o = (ResearchStudyWebLocationComponent) other_;
-        return compareDeep(type, o.type, true) && compareDeep(url, o.url, true);
+        return compareDeep(classifier, o.classifier, true) && compareDeep(url, o.url, true);
       }
 
       @Override
@@ -3199,7 +3277,7 @@ public class ResearchStudy extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, url);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(classifier, url);
       }
 
   public String fhirType() {
@@ -3238,10 +3316,10 @@ public class ResearchStudy extends DomainResource {
     protected StringType name;
 
     /**
-     * A short, descriptive label for the study particularly for compouter use.
+     * The human readable name of the research study.
      */
     @Child(name = "title", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name for this study (for computers)", formalDefinition="A short, descriptive label for the study particularly for compouter use." )
+    @Description(shortDefinition="Human readable name of the study", formalDefinition="The human readable name of the research study." )
     protected StringType title;
 
     /**
@@ -3273,10 +3351,10 @@ public class ResearchStudy extends DomainResource {
     protected List<RelatedArtifact> relatedArtifact;
 
     /**
-     * Date the resource last changed.
+     * The date (and optionally time) when the ResearchStudy Resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes.
      */
     @Child(name = "date", type = {DateTimeType.class}, order=9, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Date the resource last changed", formalDefinition="Date the resource last changed." )
+    @Description(shortDefinition="Date the resource last changed", formalDefinition="The date (and optionally time) when the ResearchStudy Resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes." )
     protected DateTimeType date;
 
     /**
@@ -3414,7 +3492,7 @@ public class ResearchStudy extends DomainResource {
      * Current status of the study.
      */
     @Child(name = "currentState", type = {CodeableConcept.class}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="active | administratively-completed | approved | closed-to-accrual | closed-to-accrual-and-intervention | completed | disapproved | in-review | temporarily-closed-to-accrual | temporarily-closed-to-accrual-and-intervention | withdrawn", formalDefinition="Current status of the study." )
+    @Description(shortDefinition="active | active-but-not-recruiting | administratively-completed | approved | closed-to-accrual | closed-to-accrual-and-intervention | completed | disapproved | enrolling-by-invitation | in-review | not-yet-recruiting | recruiting | temporarily-closed-to-accrual | temporarily-closed-to-accrual-and-intervention | terminated | withdrawn", formalDefinition="Current status of the study." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/research-study-status")
     protected List<CodeableConcept> currentState;
 
@@ -3693,7 +3771,7 @@ public class ResearchStudy extends DomainResource {
     }
 
     /**
-     * @return {@link #title} (A short, descriptive label for the study particularly for compouter use.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
+     * @return {@link #title} (The human readable name of the research study.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
      */
     public StringType getTitleElement() { 
       if (this.title == null)
@@ -3713,7 +3791,7 @@ public class ResearchStudy extends DomainResource {
     }
 
     /**
-     * @param value {@link #title} (A short, descriptive label for the study particularly for compouter use.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
+     * @param value {@link #title} (The human readable name of the research study.). This is the underlying object with id, value and extensions. The accessor "getTitle" gives direct access to the value
      */
     public ResearchStudy setTitleElement(StringType value) { 
       this.title = value;
@@ -3721,14 +3799,14 @@ public class ResearchStudy extends DomainResource {
     }
 
     /**
-     * @return A short, descriptive label for the study particularly for compouter use.
+     * @return The human readable name of the research study.
      */
     public String getTitle() { 
       return this.title == null ? null : this.title.getValue();
     }
 
     /**
-     * @param value A short, descriptive label for the study particularly for compouter use.
+     * @param value The human readable name of the research study.
      */
     public ResearchStudy setTitle(String value) { 
       if (Utilities.noString(value))
@@ -3954,7 +4032,7 @@ public class ResearchStudy extends DomainResource {
     }
 
     /**
-     * @return {@link #date} (Date the resource last changed.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
+     * @return {@link #date} (The date (and optionally time) when the ResearchStudy Resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
      */
     public DateTimeType getDateElement() { 
       if (this.date == null)
@@ -3974,7 +4052,7 @@ public class ResearchStudy extends DomainResource {
     }
 
     /**
-     * @param value {@link #date} (Date the resource last changed.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
+     * @param value {@link #date} (The date (and optionally time) when the ResearchStudy Resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
      */
     public ResearchStudy setDateElement(DateTimeType value) { 
       this.date = value;
@@ -3982,14 +4060,14 @@ public class ResearchStudy extends DomainResource {
     }
 
     /**
-     * @return Date the resource last changed.
+     * @return The date (and optionally time) when the ResearchStudy Resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes.
      */
     public Date getDate() { 
       return this.date == null ? null : this.date.getValue();
     }
 
     /**
-     * @param value Date the resource last changed.
+     * @param value The date (and optionally time) when the ResearchStudy Resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes.
      */
     public ResearchStudy setDate(Date value) { 
       if (value == null)
@@ -5220,12 +5298,12 @@ public class ResearchStudy extends DomainResource {
         children.add(new Property("identifier", "Identifier", "Identifiers assigned to this research study by the sponsor or other systems.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("version", "string", "Business identifier for the study record.", 0, 1, version));
         children.add(new Property("name", "string", "Name for this study (computer friendly).", 0, 1, name));
-        children.add(new Property("title", "string", "A short, descriptive label for the study particularly for compouter use.", 0, 1, title));
+        children.add(new Property("title", "string", "The human readable name of the research study.", 0, 1, title));
         children.add(new Property("label", "", "Additional names for the study.", 0, java.lang.Integer.MAX_VALUE, label));
         children.add(new Property("protocol", "Reference(PlanDefinition)", "The set of steps expected to be performed as part of the execution of the study.", 0, java.lang.Integer.MAX_VALUE, protocol));
         children.add(new Property("partOf", "Reference(ResearchStudy)", "A larger research study of which this particular study is a component or step.", 0, java.lang.Integer.MAX_VALUE, partOf));
         children.add(new Property("relatedArtifact", "RelatedArtifact", "Citations, references and other related documents.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact));
-        children.add(new Property("date", "dateTime", "Date the resource last changed.", 0, 1, date));
+        children.add(new Property("date", "dateTime", "The date (and optionally time) when the ResearchStudy Resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes.", 0, 1, date));
         children.add(new Property("status", "code", "The publication state of the resource (not of the study).", 0, 1, status));
         children.add(new Property("primaryPurposeType", "CodeableConcept", "The type of study based upon the intent of the study activities. A classification of the intent of the study.", 0, 1, primaryPurposeType));
         children.add(new Property("phase", "CodeableConcept", "The stage in the progression of a therapy from initial experimental use in humans in clinical trials to post-market evaluation.", 0, 1, phase));
@@ -5262,12 +5340,12 @@ public class ResearchStudy extends DomainResource {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifiers assigned to this research study by the sponsor or other systems.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 351608024: /*version*/  return new Property("version", "string", "Business identifier for the study record.", 0, 1, version);
         case 3373707: /*name*/  return new Property("name", "string", "Name for this study (computer friendly).", 0, 1, name);
-        case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive label for the study particularly for compouter use.", 0, 1, title);
+        case 110371416: /*title*/  return new Property("title", "string", "The human readable name of the research study.", 0, 1, title);
         case 102727412: /*label*/  return new Property("label", "", "Additional names for the study.", 0, java.lang.Integer.MAX_VALUE, label);
         case -989163880: /*protocol*/  return new Property("protocol", "Reference(PlanDefinition)", "The set of steps expected to be performed as part of the execution of the study.", 0, java.lang.Integer.MAX_VALUE, protocol);
         case -995410646: /*partOf*/  return new Property("partOf", "Reference(ResearchStudy)", "A larger research study of which this particular study is a component or step.", 0, java.lang.Integer.MAX_VALUE, partOf);
         case 666807069: /*relatedArtifact*/  return new Property("relatedArtifact", "RelatedArtifact", "Citations, references and other related documents.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact);
-        case 3076014: /*date*/  return new Property("date", "dateTime", "Date the resource last changed.", 0, 1, date);
+        case 3076014: /*date*/  return new Property("date", "dateTime", "The date (and optionally time) when the ResearchStudy Resource was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the ResearchStudy Resource changes.", 0, 1, date);
         case -892481550: /*status*/  return new Property("status", "code", "The publication state of the resource (not of the study).", 0, 1, status);
         case -2132842986: /*primaryPurposeType*/  return new Property("primaryPurposeType", "CodeableConcept", "The type of study based upon the intent of the study activities. A classification of the intent of the study.", 0, 1, primaryPurposeType);
         case 106629499: /*phase*/  return new Property("phase", "CodeableConcept", "The stage in the progression of a therapy from initial experimental use in humans in clinical trials to post-market evaluation.", 0, 1, phase);
@@ -5955,356 +6033,6 @@ public class ResearchStudy extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.ResearchStudy;
    }
-
- /**
-   * Search parameter: <b>category</b>
-   * <p>
-   * Description: <b>Classifications for the study</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.category</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="category", path="ResearchStudy.category", description="Classifications for the study", type="token" )
-  public static final String SP_CATEGORY = "category";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>category</b>
-   * <p>
-   * Description: <b>Classifications for the study</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.category</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CATEGORY);
-
- /**
-   * Search parameter: <b>condition</b>
-   * <p>
-   * Description: <b>Condition being studied</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.condition</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="condition", path="ResearchStudy.condition", description="Condition being studied", type="token" )
-  public static final String SP_CONDITION = "condition";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>condition</b>
-   * <p>
-   * Description: <b>Condition being studied</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.condition</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONDITION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONDITION);
-
- /**
-   * Search parameter: <b>date</b>
-   * <p>
-   * Description: <b>When the study began and ended</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ResearchStudy.period</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="date", path="ResearchStudy.period", description="When the study began and ended", type="date" )
-  public static final String SP_DATE = "date";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>date</b>
-   * <p>
-   * Description: <b>When the study began and ended</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ResearchStudy.period</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
-
- /**
-   * Search parameter: <b>focus</b>
-   * <p>
-   * Description: <b>Drugs, devices, etc. under study</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.focus</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="focus", path="ResearchStudy.focus", description="Drugs, devices, etc. under study", type="token" )
-  public static final String SP_FOCUS = "focus";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>focus</b>
-   * <p>
-   * Description: <b>Drugs, devices, etc. under study</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.focus</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam FOCUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FOCUS);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>Business Identifier for study</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="ResearchStudy.identifier", description="Business Identifier for study", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>Business Identifier for study</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>keyword</b>
-   * <p>
-   * Description: <b>Used to search for the study</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.keyword</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="keyword", path="ResearchStudy.keyword", description="Used to search for the study", type="token" )
-  public static final String SP_KEYWORD = "keyword";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>keyword</b>
-   * <p>
-   * Description: <b>Used to search for the study</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.keyword</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam KEYWORD = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_KEYWORD);
-
- /**
-   * Search parameter: <b>location</b>
-   * <p>
-   * Description: <b>Geographic region(s) for study</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.location</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="location", path="ResearchStudy.location", description="Geographic region(s) for study", type="token" )
-  public static final String SP_LOCATION = "location";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>location</b>
-   * <p>
-   * Description: <b>Geographic region(s) for study</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.location</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam LOCATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_LOCATION);
-
- /**
-   * Search parameter: <b>partof</b>
-   * <p>
-   * Description: <b>Part of larger study</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ResearchStudy.partOf</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="partof", path="ResearchStudy.partOf", description="Part of larger study", type="reference", target={ResearchStudy.class } )
-  public static final String SP_PARTOF = "partof";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>partof</b>
-   * <p>
-   * Description: <b>Part of larger study</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ResearchStudy.partOf</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PARTOF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PARTOF);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ResearchStudy:partof</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PARTOF = new ca.uhn.fhir.model.api.Include("ResearchStudy:partof").toLocked();
-
- /**
-   * Search parameter: <b>principalinvestigator</b>
-   * <p>
-   * Description: <b>Researcher who oversees multiple aspects of the study</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ResearchStudy.principalInvestigator</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="principalinvestigator", path="ResearchStudy.principalInvestigator", description="Researcher who oversees multiple aspects of the study", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Practitioner.class, PractitionerRole.class } )
-  public static final String SP_PRINCIPALINVESTIGATOR = "principalinvestigator";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>principalinvestigator</b>
-   * <p>
-   * Description: <b>Researcher who oversees multiple aspects of the study</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ResearchStudy.principalInvestigator</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PRINCIPALINVESTIGATOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PRINCIPALINVESTIGATOR);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ResearchStudy:principalinvestigator</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PRINCIPALINVESTIGATOR = new ca.uhn.fhir.model.api.Include("ResearchStudy:principalinvestigator").toLocked();
-
- /**
-   * Search parameter: <b>protocol</b>
-   * <p>
-   * Description: <b>Steps followed in executing study</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ResearchStudy.protocol</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="protocol", path="ResearchStudy.protocol", description="Steps followed in executing study", type="reference", target={PlanDefinition.class } )
-  public static final String SP_PROTOCOL = "protocol";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>protocol</b>
-   * <p>
-   * Description: <b>Steps followed in executing study</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ResearchStudy.protocol</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PROTOCOL = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PROTOCOL);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ResearchStudy:protocol</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PROTOCOL = new ca.uhn.fhir.model.api.Include("ResearchStudy:protocol").toLocked();
-
- /**
-   * Search parameter: <b>recruitment_actual</b>
-   * <p>
-   * Description: <b>Actual number of participants enrolled in study across all groups</b><br>
-   * Type: <b>number</b><br>
-   * Path: <b>ResearchStudy.recruitment.actualNumber</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="recruitment_actual", path="ResearchStudy.recruitment.actualNumber", description="Actual number of participants enrolled in study across all groups", type="number" )
-  public static final String SP_RECRUITMENTACTUAL = "recruitment_actual";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>recruitment_actual</b>
-   * <p>
-   * Description: <b>Actual number of participants enrolled in study across all groups</b><br>
-   * Type: <b>number</b><br>
-   * Path: <b>ResearchStudy.recruitment.actualNumber</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.NumberClientParam RECRUITMENTACTUAL = new ca.uhn.fhir.rest.gclient.NumberClientParam(SP_RECRUITMENTACTUAL);
-
- /**
-   * Search parameter: <b>recruitment_target</b>
-   * <p>
-   * Description: <b>Target number of participants enrolled in study across all groups</b><br>
-   * Type: <b>number</b><br>
-   * Path: <b>ResearchStudy.recruitment.targetNumber</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="recruitment_target", path="ResearchStudy.recruitment.targetNumber", description="Target number of participants enrolled in study across all groups", type="number" )
-  public static final String SP_RECRUITMENTTARGET = "recruitment_target";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>recruitment_target</b>
-   * <p>
-   * Description: <b>Target number of participants enrolled in study across all groups</b><br>
-   * Type: <b>number</b><br>
-   * Path: <b>ResearchStudy.recruitment.targetNumber</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.NumberClientParam RECRUITMENTTARGET = new ca.uhn.fhir.rest.gclient.NumberClientParam(SP_RECRUITMENTTARGET);
-
- /**
-   * Search parameter: <b>site</b>
-   * <p>
-   * Description: <b>Facility where study activities are conducted</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ResearchStudy.site</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="site", path="ResearchStudy.site", description="Facility where study activities are conducted", type="reference", target={Location.class, Organization.class, ResearchStudy.class } )
-  public static final String SP_SITE = "site";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>site</b>
-   * <p>
-   * Description: <b>Facility where study activities are conducted</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ResearchStudy.site</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SITE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SITE);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ResearchStudy:site</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SITE = new ca.uhn.fhir.model.api.Include("ResearchStudy:site").toLocked();
-
- /**
-   * Search parameter: <b>sponsor</b>
-   * <p>
-   * Description: <b>Organization that initiates and is legally responsible for the study</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ResearchStudy.sponsor</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="sponsor", path="ResearchStudy.sponsor", description="Organization that initiates and is legally responsible for the study", type="reference", target={Organization.class } )
-  public static final String SP_SPONSOR = "sponsor";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>sponsor</b>
-   * <p>
-   * Description: <b>Organization that initiates and is legally responsible for the study</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ResearchStudy.sponsor</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SPONSOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SPONSOR);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ResearchStudy:sponsor</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SPONSOR = new ca.uhn.fhir.model.api.Include("ResearchStudy:sponsor").toLocked();
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>active | administratively-completed | approved | closed-to-accrual | closed-to-accrual-and-intervention | completed | disapproved | in-review | temporarily-closed-to-accrual | temporarily-closed-to-accrual-and-intervention | withdrawn</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="ResearchStudy.status", description="active | administratively-completed | approved | closed-to-accrual | closed-to-accrual-and-intervention | completed | disapproved | in-review | temporarily-closed-to-accrual | temporarily-closed-to-accrual-and-intervention | withdrawn", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>active | administratively-completed | approved | closed-to-accrual | closed-to-accrual-and-intervention | completed | disapproved | in-review | temporarily-closed-to-accrual | temporarily-closed-to-accrual-and-intervention | withdrawn</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchStudy.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
-
- /**
-   * Search parameter: <b>title</b>
-   * <p>
-   * Description: <b>Name for this study</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ResearchStudy.title</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="title", path="ResearchStudy.title", description="Name for this study", type="string" )
-  public static final String SP_TITLE = "title";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>title</b>
-   * <p>
-   * Description: <b>Name for this study</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ResearchStudy.title</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
 
 
 }
