@@ -55,6 +55,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
+import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -444,8 +445,7 @@ public class TestingUtilities {
   }
   
   public static String resourceNameToFile(String name) throws IOException {
-    //return Utilities.path(System.getProperty("user.dir"), "src", "test", "resources", name);
-   return resourceNameToFile(null, name);
+    return resourceNameToFile(null, name);
   }
 
   private static boolean fileForPathExists(String path) {
@@ -454,7 +454,7 @@ public class TestingUtilities {
 
   public static String generateResourcePath(String subFolder, String name) throws IOException {
     String path = Utilities.path(System.getProperty("user.dir"), "src", "test", "resources", subFolder, name);
-    createParentDirectoryPathIfNotExists(Paths.get(path));
+    BaseTestingUtilities.createParentDirIfNotExists(Paths.get(path));
     return path;
   }
   public static String resourceNameToFile(String subFolder, String name) throws IOException {
@@ -472,15 +472,10 @@ public class TestingUtilities {
   }
 
   private static void copyResourceToNewFile(String resourcePath, Path newFilePath) throws IOException {
-    createParentDirectoryPathIfNotExists(newFilePath);
+    BaseTestingUtilities.createParentDirIfNotExists(newFilePath);
     ResourceLoaderTests.copyResourceToFile(TestingUtilities.class, newFilePath, resourcePath);
   }
 
-  private static void createParentDirectoryPathIfNotExists(Path newFilePath) {
-    Path parent = newFilePath.getParent();
-    if (!parent.toFile().exists()) {
-      parent.toFile().mkdirs();
-    }
-  }
+
 
 }

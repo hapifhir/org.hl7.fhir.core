@@ -1,6 +1,5 @@
 package org.hl7.fhir.utilities.tests;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -23,7 +22,7 @@ public interface ResourceLoaderTests {
 
   public static void copyResourceToFile(Class<?> clazz, Path target, String ... resourcePath) throws IOException {
     InputStream initialStream = getResourceAsInputStream(clazz, resourcePath);
-
+    BaseTestingUtilities.createParentDirIfNotExists(target);
     java.nio.file.Files.copy(
       initialStream,
       target,
@@ -31,4 +30,5 @@ public interface ResourceLoaderTests {
 
     initialStream.close();
   }
+
 }
