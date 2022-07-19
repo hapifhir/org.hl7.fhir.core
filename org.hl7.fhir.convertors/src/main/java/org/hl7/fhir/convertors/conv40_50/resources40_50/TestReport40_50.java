@@ -5,6 +5,7 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.Reference;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,7 +50,7 @@ public class TestReport40_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertTestReportStatus(src.getStatusElement()));
     if (src.hasTestScript())
-      tgt.setTestScript(Reference40_50.convertReference(src.getTestScript()));
+      tgt.setTestScript(src.getTestScript().getReference());
     if (src.hasResult())
       tgt.setResultElement(convertTestReportResult(src.getResultElement()));
     if (src.hasScore())
@@ -81,7 +82,7 @@ public class TestReport40_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertTestReportStatus(src.getStatusElement()));
     if (src.hasTestScript())
-      tgt.setTestScript(Reference40_50.convertReference(src.getTestScript()));
+      tgt.setTestScript(new Reference().setReference(src.getTestScript()));
     if (src.hasResult())
       tgt.setResultElement(convertTestReportResult(src.getResultElement()));
     if (src.hasScore())

@@ -60,7 +60,7 @@ public class MedicationRequest40_50 {
     if (src.hasReportedBooleanType())
       tgt.setReportedElement(Boolean40_50.convertBoolean(src.getReportedBooleanType()));
     if (src.hasReportedReference())
-      tgt.setInformationSource(Reference40_50.convertReference(src.getReportedReference()));
+      tgt.addInformationSource(Reference40_50.convertReference(src.getReportedReference()));
     if (src.hasMedicationCodeableConcept())
       tgt.getMedication().setConcept(CodeableConcept40_50.convertCodeableConcept(src.getMedicationCodeableConcept()));
     if (src.hasMedicationReference())
@@ -76,7 +76,7 @@ public class MedicationRequest40_50 {
     if (src.hasRequester())
       tgt.setRequester(Reference40_50.convertReference(src.getRequester()));
     if (src.hasPerformer())
-      tgt.setPerformer(Reference40_50.convertReference(src.getPerformer()));
+      tgt.addPerformer(Reference40_50.convertReference(src.getPerformer()));
     if (src.hasPerformerType())
       tgt.setPerformerType(CodeableConcept40_50.convertCodeableConcept(src.getPerformerType()));
     if (src.hasRecorder())
@@ -105,8 +105,8 @@ public class MedicationRequest40_50 {
     if (src.hasPriorPrescription())
       tgt.setPriorPrescription(Reference40_50.convertReference(src.getPriorPrescription()));
     for (org.hl7.fhir.r4.model.Reference t : src.getDetectedIssue())
-      tgt.addDetectedIssue(Reference40_50.convertReference(t));
-    for (org.hl7.fhir.r4.model.Reference t : src.getEventHistory())
+//      tgt.addDetectedIssue(Reference40_50.convertReference(t));
+//    for (org.hl7.fhir.r4.model.Reference t : src.getEventHistory())
       tgt.addEventHistory(Reference40_50.convertReference(t));
     return tgt;
   }
@@ -133,7 +133,7 @@ public class MedicationRequest40_50 {
     if (src.hasReported())
       tgt.setReported(Boolean40_50.convertBoolean(src.getReportedElement()));
     if (src.hasInformationSource())
-      tgt.setReported(Reference40_50.convertReference(src.getInformationSource()));
+      tgt.setReported(Reference40_50.convertReference(src.getInformationSourceFirstRep()));
     if (src.getMedication().hasReference())
       tgt.setMedication(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getMedication().getReference()));
     if (src.getMedication().hasConcept())
@@ -149,7 +149,7 @@ public class MedicationRequest40_50 {
     if (src.hasRequester())
       tgt.setRequester(Reference40_50.convertReference(src.getRequester()));
     if (src.hasPerformer())
-      tgt.setPerformer(Reference40_50.convertReference(src.getPerformer()));
+      tgt.setPerformer(Reference40_50.convertReference(src.getPerformerFirstRep()));
     if (src.hasPerformerType())
       tgt.setPerformerType(CodeableConcept40_50.convertCodeableConcept(src.getPerformerType()));
     if (src.hasRecorder())
@@ -179,8 +179,8 @@ public class MedicationRequest40_50 {
       tgt.setSubstitution(convertMedicationRequestSubstitutionComponent(src.getSubstitution()));
     if (src.hasPriorPrescription())
       tgt.setPriorPrescription(Reference40_50.convertReference(src.getPriorPrescription()));
-    for (org.hl7.fhir.r5.model.Reference t : src.getDetectedIssue())
-      tgt.addDetectedIssue(Reference40_50.convertReference(t));
+//    for (org.hl7.fhir.r5.model.Reference t : src.getDetectedIssue())
+//      tgt.addDetectedIssue(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getEventHistory())
       tgt.addEventHistory(Reference40_50.convertReference(t));
     return tgt;

@@ -209,7 +209,7 @@ public class ImplementationGuide14_50 {
     if (src.hasName())
       tgt.setNameElement(String14_50.convertString(src.getNameElement()));
     if (src.hasDescription())
-      tgt.setDescriptionElement(String14_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String14_50.convertStringToMarkdown(src.getDescriptionElement()));
     for (org.hl7.fhir.dstu2016may.model.ImplementationGuide.ImplementationGuidePackageResourceComponent t : src.getResource()) {
       org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionResourceComponent tn = convertImplementationGuidePackageResourceComponent(t);
       tn.setGroupingId(tgt.getId());
@@ -253,7 +253,7 @@ public class ImplementationGuide14_50 {
     if (src.hasName())
       tgt.setNameElement(String14_50.convertString(src.getNameElement()));
     if (src.hasDescription())
-      tgt.setDescriptionElement(String14_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String14_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasSourceReference())
       tgt.setReference(Reference14_50.convertReference(src.getSourceReference()));
     else if (src.hasSourceUriType())

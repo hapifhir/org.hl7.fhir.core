@@ -53,13 +53,13 @@ public class Organization30_50 {
     for (org.hl7.fhir.r5.model.Address t : src.getAddress()) tgt.addAddress(Address30_50.convertAddress(t));
     if (src.hasPartOf())
       tgt.setPartOf(Reference30_50.convertReference(src.getPartOf()));
-    for (org.hl7.fhir.r5.model.Organization.OrganizationContactComponent t : src.getContact())
+    for (org.hl7.fhir.r5.model.ExtendedContactDetail t : src.getContact())
       tgt.addContact(convertOrganizationContactComponent(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference30_50.convertReference(t));
     return tgt;
   }
 
-  public static org.hl7.fhir.dstu3.model.Organization.OrganizationContactComponent convertOrganizationContactComponent(org.hl7.fhir.r5.model.Organization.OrganizationContactComponent src) throws FHIRException {
+  public static org.hl7.fhir.dstu3.model.Organization.OrganizationContactComponent convertOrganizationContactComponent(org.hl7.fhir.r5.model.ExtendedContactDetail src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Organization.OrganizationContactComponent tgt = new org.hl7.fhir.dstu3.model.Organization.OrganizationContactComponent();
@@ -75,10 +75,10 @@ public class Organization30_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Organization.OrganizationContactComponent convertOrganizationContactComponent(org.hl7.fhir.dstu3.model.Organization.OrganizationContactComponent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.ExtendedContactDetail convertOrganizationContactComponent(org.hl7.fhir.dstu3.model.Organization.OrganizationContactComponent src) throws FHIRException {
     if (src == null)
       return null;
-    org.hl7.fhir.r5.model.Organization.OrganizationContactComponent tgt = new org.hl7.fhir.r5.model.Organization.OrganizationContactComponent();
+    org.hl7.fhir.r5.model.ExtendedContactDetail tgt = new org.hl7.fhir.r5.model.ExtendedContactDetail();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasPurpose())
       tgt.setPurpose(CodeableConcept30_50.convertCodeableConcept(src.getPurpose()));

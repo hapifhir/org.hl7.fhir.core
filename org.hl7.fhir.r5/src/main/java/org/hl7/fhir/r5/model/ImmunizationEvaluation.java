@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,6 +82,7 @@ public class ImmunizationEvaluation extends DomainResource {
           switch (this) {
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -89,6 +90,7 @@ public class ImmunizationEvaluation extends DomainResource {
           switch (this) {
             case COMPLETED: return "http://hl7.org/fhir/CodeSystem/medication-admin-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/CodeSystem/medication-admin-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -96,6 +98,7 @@ public class ImmunizationEvaluation extends DomainResource {
           switch (this) {
             case COMPLETED: return "All actions that are implied by the administration have occurred.";
             case ENTEREDINERROR: return "The administration was entered in error and therefore nullified.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -103,6 +106,7 @@ public class ImmunizationEvaluation extends DomainResource {
           switch (this) {
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -185,8 +189,8 @@ public class ImmunizationEvaluation extends DomainResource {
      * The vaccine preventable disease the dose is being evaluated against.
      */
     @Child(name = "targetDisease", type = {CodeableConcept.class}, order=5, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Evaluation target disease", formalDefinition="The vaccine preventable disease the dose is being evaluated against." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/immunization-evaluation-target-disease")
+    @Description(shortDefinition="The vaccine preventable disease schedule being evaluated", formalDefinition="The vaccine preventable disease the dose is being evaluated against." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/immunization-target-disease")
     protected CodeableConcept targetDisease;
 
     /**
@@ -208,7 +212,7 @@ public class ImmunizationEvaluation extends DomainResource {
      * Provides an explanation as to why the vaccine administration event is valid or not relative to the published recommendations.
      */
     @Child(name = "doseStatusReason", type = {CodeableConcept.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Reason for the dose status", formalDefinition="Provides an explanation as to why the vaccine administration event is valid or not relative to the published recommendations." )
+    @Description(shortDefinition="Reason why the doese is considered valid, invalid or some other status", formalDefinition="Provides an explanation as to why the vaccine administration event is valid or not relative to the published recommendations." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/immunization-evaluation-dose-status-reason")
     protected List<CodeableConcept> doseStatusReason;
 
@@ -1087,158 +1091,6 @@ public class ImmunizationEvaluation extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.ImmunizationEvaluation;
    }
-
- /**
-   * Search parameter: <b>date</b>
-   * <p>
-   * Description: <b>Date the evaluation was generated</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ImmunizationEvaluation.date</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="date", path="ImmunizationEvaluation.date", description="Date the evaluation was generated", type="date" )
-  public static final String SP_DATE = "date";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>date</b>
-   * <p>
-   * Description: <b>Date the evaluation was generated</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ImmunizationEvaluation.date</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
-
- /**
-   * Search parameter: <b>dose-status</b>
-   * <p>
-   * Description: <b>The status of the dose relative to published recommendations</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ImmunizationEvaluation.doseStatus</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="dose-status", path="ImmunizationEvaluation.doseStatus", description="The status of the dose relative to published recommendations", type="token" )
-  public static final String SP_DOSE_STATUS = "dose-status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>dose-status</b>
-   * <p>
-   * Description: <b>The status of the dose relative to published recommendations</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ImmunizationEvaluation.doseStatus</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam DOSE_STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_DOSE_STATUS);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>ID of the evaluation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ImmunizationEvaluation.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="ImmunizationEvaluation.identifier", description="ID of the evaluation", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>ID of the evaluation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ImmunizationEvaluation.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>immunization-event</b>
-   * <p>
-   * Description: <b>The vaccine administration event being evaluated</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ImmunizationEvaluation.immunizationEvent</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="immunization-event", path="ImmunizationEvaluation.immunizationEvent", description="The vaccine administration event being evaluated", type="reference", target={Immunization.class } )
-  public static final String SP_IMMUNIZATION_EVENT = "immunization-event";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>immunization-event</b>
-   * <p>
-   * Description: <b>The vaccine administration event being evaluated</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ImmunizationEvaluation.immunizationEvent</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam IMMUNIZATION_EVENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_IMMUNIZATION_EVENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ImmunizationEvaluation:immunization-event</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_IMMUNIZATION_EVENT = new ca.uhn.fhir.model.api.Include("ImmunizationEvaluation:immunization-event").toLocked();
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>The patient being evaluated</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ImmunizationEvaluation.patient</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="ImmunizationEvaluation.patient", description="The patient being evaluated", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>The patient being evaluated</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ImmunizationEvaluation.patient</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ImmunizationEvaluation:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("ImmunizationEvaluation:patient").toLocked();
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>Immunization evaluation status</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ImmunizationEvaluation.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="ImmunizationEvaluation.status", description="Immunization evaluation status", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>Immunization evaluation status</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ImmunizationEvaluation.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
-
- /**
-   * Search parameter: <b>target-disease</b>
-   * <p>
-   * Description: <b>The vaccine preventable disease being evaluated against</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ImmunizationEvaluation.targetDisease</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="target-disease", path="ImmunizationEvaluation.targetDisease", description="The vaccine preventable disease being evaluated against", type="token" )
-  public static final String SP_TARGET_DISEASE = "target-disease";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>target-disease</b>
-   * <p>
-   * Description: <b>The vaccine preventable disease being evaluated against</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ImmunizationEvaluation.targetDisease</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TARGET_DISEASE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TARGET_DISEASE);
 
 
 }

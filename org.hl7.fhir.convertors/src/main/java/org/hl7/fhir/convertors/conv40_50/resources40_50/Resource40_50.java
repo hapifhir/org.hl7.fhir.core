@@ -180,8 +180,6 @@ public class Resource40_50 {
       return MessageDefinition40_50.convertMessageDefinition((org.hl7.fhir.r4.model.MessageDefinition) src);
     if (src instanceof org.hl7.fhir.r4.model.MessageHeader)
       return MessageHeader40_50.convertMessageHeader((org.hl7.fhir.r4.model.MessageHeader) src);
-    if (src instanceof org.hl7.fhir.r4.model.MolecularSequence)
-      return MolecularSequence40_50.convertMolecularSequence((org.hl7.fhir.r4.model.MolecularSequence) src);
     if (src instanceof org.hl7.fhir.r4.model.NamingSystem)
       return NamingSystem40_50.convertNamingSystem((org.hl7.fhir.r4.model.NamingSystem) src);
     if (src instanceof org.hl7.fhir.r4.model.NutritionOrder)
@@ -422,8 +420,6 @@ public class Resource40_50 {
       return MessageDefinition40_50.convertMessageDefinition((org.hl7.fhir.r5.model.MessageDefinition) src);
     if (src instanceof org.hl7.fhir.r5.model.MessageHeader)
       return MessageHeader40_50.convertMessageHeader((org.hl7.fhir.r5.model.MessageHeader) src);
-    if (src instanceof org.hl7.fhir.r5.model.MolecularSequence)
-      return MolecularSequence40_50.convertMolecularSequence((org.hl7.fhir.r5.model.MolecularSequence) src);
     if (src instanceof org.hl7.fhir.r5.model.NamingSystem)
       return NamingSystem40_50.convertNamingSystem((org.hl7.fhir.r5.model.NamingSystem) src);
     if (src instanceof org.hl7.fhir.r5.model.NutritionOrder)

@@ -2356,7 +2356,7 @@ public class ImplementationGuide40_50 {
     if (src.hasName())
       tgt.setNameElement(String40_50.convertString(src.getNameElement()));
     if (src.hasDescription())
-      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String40_50.convertStringToMarkdown(src.getDescriptionElement()));
     return tgt;
   }
 
@@ -2385,7 +2385,7 @@ public class ImplementationGuide40_50 {
     if (src.hasName())
       tgt.setNameElement(String40_50.convertString(src.getNameElement()));
     if (src.hasDescription())
-      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+      tgt.setDescriptionElement(String40_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasExample())
       tgt.setExample(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getExample()));
     if (src.hasGroupingId())

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1157,7 +1157,7 @@ public class ChargeItemDefinition extends MetadataResource {
     /**
      * The defined billing details in this resource pertain to the given product instance(s).
      */
-    @Child(name = "instance", type = {Medication.class, Substance.class, Device.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "instance", type = {Medication.class, Substance.class, Device.class, DeviceDefinition.class, ActivityDefinition.class, PlanDefinition.class, HealthcareService.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Instances this definition applies to", formalDefinition="The defined billing details in this resource pertain to the given product instance(s)." )
     protected List<Reference> instance;
 
@@ -2402,7 +2402,7 @@ public class ChargeItemDefinition extends MetadataResource {
       return 0;
     }
     /**
-     * @return {@link #topic} (Descriptive topics related to the content of the library. Topics provide a high-level categorization of the library that can be useful for filtering and searching.)
+     * @return {@link #topic} (Descriptive topics related to the content of the charge item definition. Topics provide a high-level categorization of the charge item definition that can be useful for filtering and searching.)
      */
     public List<CodeableConcept> getTopic() { 
       return new ArrayList<>();
@@ -2626,7 +2626,7 @@ public class ChargeItemDefinition extends MetadataResource {
         children.add(new Property("lastReviewDate", "date", "The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.", 0, 1, lastReviewDate));
         children.add(new Property("effectivePeriod", "Period", "The period during which the charge item definition content was or is planned to be in active use.", 0, 1, effectivePeriod));
         children.add(new Property("code", "CodeableConcept", "The defined billing details in this resource pertain to the given billing code.", 0, 1, code));
-        children.add(new Property("instance", "Reference(Medication|Substance|Device)", "The defined billing details in this resource pertain to the given product instance(s).", 0, java.lang.Integer.MAX_VALUE, instance));
+        children.add(new Property("instance", "Reference(Medication|Substance|Device|DeviceDefinition|ActivityDefinition|PlanDefinition|HealthcareService)", "The defined billing details in this resource pertain to the given product instance(s).", 0, java.lang.Integer.MAX_VALUE, instance));
         children.add(new Property("applicability", "", "Expressions that describe applicability criteria for the billing code.", 0, java.lang.Integer.MAX_VALUE, applicability));
         children.add(new Property("propertyGroup", "", "Group of properties which are applicable under the same conditions. If no applicability rules are established for the group, then all properties always apply.", 0, java.lang.Integer.MAX_VALUE, propertyGroup));
       }
@@ -2654,7 +2654,7 @@ public class ChargeItemDefinition extends MetadataResource {
         case -1687512484: /*lastReviewDate*/  return new Property("lastReviewDate", "date", "The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.", 0, 1, lastReviewDate);
         case -403934648: /*effectivePeriod*/  return new Property("effectivePeriod", "Period", "The period during which the charge item definition content was or is planned to be in active use.", 0, 1, effectivePeriod);
         case 3059181: /*code*/  return new Property("code", "CodeableConcept", "The defined billing details in this resource pertain to the given billing code.", 0, 1, code);
-        case 555127957: /*instance*/  return new Property("instance", "Reference(Medication|Substance|Device)", "The defined billing details in this resource pertain to the given product instance(s).", 0, java.lang.Integer.MAX_VALUE, instance);
+        case 555127957: /*instance*/  return new Property("instance", "Reference(Medication|Substance|Device|DeviceDefinition|ActivityDefinition|PlanDefinition|HealthcareService)", "The defined billing details in this resource pertain to the given product instance(s).", 0, java.lang.Integer.MAX_VALUE, instance);
         case -1526770491: /*applicability*/  return new Property("applicability", "", "Expressions that describe applicability criteria for the billing code.", 0, java.lang.Integer.MAX_VALUE, applicability);
         case -1041594966: /*propertyGroup*/  return new Property("propertyGroup", "", "Group of properties which are applicable under the same conditions. If no applicability rules are established for the group, then all properties always apply.", 0, java.lang.Integer.MAX_VALUE, propertyGroup);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -3091,306 +3091,6 @@ public class ChargeItemDefinition extends MetadataResource {
   public ResourceType getResourceType() {
     return ResourceType.ChargeItemDefinition;
    }
-
- /**
-   * Search parameter: <b>context-quantity</b>
-   * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the charge item definition</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>(ChargeItemDefinition.useContext.value as Quantity) | (ChargeItemDefinition.useContext.value as Range)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-quantity", path="(ChargeItemDefinition.useContext.value as Quantity) | (ChargeItemDefinition.useContext.value as Range)", description="A quantity- or range-valued use context assigned to the charge item definition", type="quantity" )
-  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
-   * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the charge item definition</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>(ChargeItemDefinition.useContext.value as Quantity) | (ChargeItemDefinition.useContext.value as Range)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
-
- /**
-   * Search parameter: <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the charge item definition</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>ChargeItemDefinition.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-quantity", path="ChargeItemDefinition.useContext", description="A use context type and quantity- or range-based value assigned to the charge item definition", type="composite", compositeOf={"context-type", "context-quantity"} )
-  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the charge item definition</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>ChargeItemDefinition.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
-
- /**
-   * Search parameter: <b>context-type-value</b>
-   * <p>
-   * Description: <b>A use context type and value assigned to the charge item definition</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>ChargeItemDefinition.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-value", path="ChargeItemDefinition.useContext", description="A use context type and value assigned to the charge item definition", type="composite", compositeOf={"context-type", "context"} )
-  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
-   * <p>
-   * Description: <b>A use context type and value assigned to the charge item definition</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>ChargeItemDefinition.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
-
- /**
-   * Search parameter: <b>context-type</b>
-   * <p>
-   * Description: <b>A type of use context assigned to the charge item definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItemDefinition.useContext.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type", path="ChargeItemDefinition.useContext.code", description="A type of use context assigned to the charge item definition", type="token" )
-  public static final String SP_CONTEXT_TYPE = "context-type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type</b>
-   * <p>
-   * Description: <b>A type of use context assigned to the charge item definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItemDefinition.useContext.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
-
- /**
-   * Search parameter: <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the charge item definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(ChargeItemDefinition.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context", path="(ChargeItemDefinition.useContext.value as CodeableConcept)", description="A use context assigned to the charge item definition", type="token" )
-  public static final String SP_CONTEXT = "context";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the charge item definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(ChargeItemDefinition.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
-
- /**
-   * Search parameter: <b>date</b>
-   * <p>
-   * Description: <b>The charge item definition publication date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ChargeItemDefinition.date</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="date", path="ChargeItemDefinition.date", description="The charge item definition publication date", type="date" )
-  public static final String SP_DATE = "date";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>date</b>
-   * <p>
-   * Description: <b>The charge item definition publication date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ChargeItemDefinition.date</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
-
- /**
-   * Search parameter: <b>description</b>
-   * <p>
-   * Description: <b>The description of the charge item definition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ChargeItemDefinition.description</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="description", path="ChargeItemDefinition.description", description="The description of the charge item definition", type="string" )
-  public static final String SP_DESCRIPTION = "description";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>description</b>
-   * <p>
-   * Description: <b>The description of the charge item definition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ChargeItemDefinition.description</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
-
- /**
-   * Search parameter: <b>effective</b>
-   * <p>
-   * Description: <b>The time during which the charge item definition is intended to be in use</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ChargeItemDefinition.effectivePeriod</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="effective", path="ChargeItemDefinition.effectivePeriod", description="The time during which the charge item definition is intended to be in use", type="date" )
-  public static final String SP_EFFECTIVE = "effective";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>effective</b>
-   * <p>
-   * Description: <b>The time during which the charge item definition is intended to be in use</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>ChargeItemDefinition.effectivePeriod</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam EFFECTIVE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_EFFECTIVE);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>External identifier for the charge item definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItemDefinition.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="ChargeItemDefinition.identifier", description="External identifier for the charge item definition", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>External identifier for the charge item definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItemDefinition.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the charge item definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItemDefinition.jurisdiction</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="jurisdiction", path="ChargeItemDefinition.jurisdiction", description="Intended jurisdiction for the charge item definition", type="token" )
-  public static final String SP_JURISDICTION = "jurisdiction";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the charge item definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItemDefinition.jurisdiction</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
-
- /**
-   * Search parameter: <b>publisher</b>
-   * <p>
-   * Description: <b>Name of the publisher of the charge item definition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ChargeItemDefinition.publisher</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="publisher", path="ChargeItemDefinition.publisher", description="Name of the publisher of the charge item definition", type="string" )
-  public static final String SP_PUBLISHER = "publisher";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>publisher</b>
-   * <p>
-   * Description: <b>Name of the publisher of the charge item definition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ChargeItemDefinition.publisher</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam PUBLISHER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PUBLISHER);
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>The current status of the charge item definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItemDefinition.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="ChargeItemDefinition.status", description="The current status of the charge item definition", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>The current status of the charge item definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItemDefinition.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
-
- /**
-   * Search parameter: <b>title</b>
-   * <p>
-   * Description: <b>The human-friendly name of the charge item definition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ChargeItemDefinition.title</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="title", path="ChargeItemDefinition.title", description="The human-friendly name of the charge item definition", type="string" )
-  public static final String SP_TITLE = "title";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>title</b>
-   * <p>
-   * Description: <b>The human-friendly name of the charge item definition</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>ChargeItemDefinition.title</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
-
- /**
-   * Search parameter: <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the charge item definition</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>ChargeItemDefinition.url</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="url", path="ChargeItemDefinition.url", description="The uri that identifies the charge item definition", type="uri" )
-  public static final String SP_URL = "url";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the charge item definition</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>ChargeItemDefinition.url</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
-
- /**
-   * Search parameter: <b>version</b>
-   * <p>
-   * Description: <b>The business version of the charge item definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItemDefinition.version</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="version", path="ChargeItemDefinition.version", description="The business version of the charge item definition", type="token" )
-  public static final String SP_VERSION = "version";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>version</b>
-   * <p>
-   * Description: <b>The business version of the charge item definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ChargeItemDefinition.version</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
 
 }

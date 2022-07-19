@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -103,6 +103,7 @@ public class SubscriptionStatus extends DomainResource {
             case EVENTNOTIFICATION: return "event-notification";
             case QUERYSTATUS: return "query-status";
             case QUERYEVENT: return "query-event";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +114,7 @@ public class SubscriptionStatus extends DomainResource {
             case EVENTNOTIFICATION: return "http://hl7.org/fhir/subscription-notification-type";
             case QUERYSTATUS: return "http://hl7.org/fhir/subscription-notification-type";
             case QUERYEVENT: return "http://hl7.org/fhir/subscription-notification-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -123,6 +125,7 @@ public class SubscriptionStatus extends DomainResource {
             case EVENTNOTIFICATION: return "The status was generated for an event to the subscriber.";
             case QUERYSTATUS: return "The status was generated in response to a status query/request.";
             case QUERYEVENT: return "The status was generated in response to an event query/request.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -133,6 +136,7 @@ public class SubscriptionStatus extends DomainResource {
             case EVENTNOTIFICATION: return "Event Notification";
             case QUERYSTATUS: return "Query Status";
             case QUERYEVENT: return "Query Event";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -578,8 +582,8 @@ public class SubscriptionStatus extends DomainResource {
      */
     @Child(name = "status", type = {CodeType.class}, order=0, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="requested | active | error | off | entered-in-error", formalDefinition="The status of the subscription, which marks the server state for managing the subscription." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subscription-state")
-    protected Enumeration<SubscriptionState> status;
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subscription-status")
+    protected Enumeration<SubscriptionStatusCodes> status;
 
     /**
      * The type of event being conveyed with this notificaiton.
@@ -597,42 +601,35 @@ public class SubscriptionStatus extends DomainResource {
     protected Integer64Type eventsSinceSubscriptionStart;
 
     /**
-     * The total number of actual events represented within this notification.  For handshake and heartbeat notifications, this will be zero or not present.  For event-notifications, this number may be one or more, depending on server batching.
-     */
-    @Child(name = "eventsInNotification", type = {IntegerType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The number of actual notifications represented by this bundle", formalDefinition="The total number of actual events represented within this notification.  For handshake and heartbeat notifications, this will be zero or not present.  For event-notifications, this number may be one or more, depending on server batching." )
-    protected IntegerType eventsInNotification;
-
-    /**
      * Detailed information about events relevant to this subscription notification.
      */
-    @Child(name = "notificationEvent", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "notificationEvent", type = {}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Detailed information about any events relevant to this notification", formalDefinition="Detailed information about events relevant to this subscription notification." )
     protected List<SubscriptionStatusNotificationEventComponent> notificationEvent;
 
     /**
      * The reference to the Subscription which generated this notification.
      */
-    @Child(name = "subscription", type = {Subscription.class}, order=5, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "subscription", type = {Subscription.class}, order=4, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Reference to the Subscription responsible for this notification", formalDefinition="The reference to the Subscription which generated this notification." )
     protected Reference subscription;
 
     /**
      * The reference to the SubscriptionTopic for the Subscription which generated this notification.
      */
-    @Child(name = "topic", type = {CanonicalType.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "topic", type = {CanonicalType.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Reference to the SubscriptionTopic this notification relates to", formalDefinition="The reference to the SubscriptionTopic for the Subscription which generated this notification." )
     protected CanonicalType topic;
 
     /**
      * A record of errors that occurred when the server processed a notification.
      */
-    @Child(name = "error", type = {CodeableConcept.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "error", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="List of errors on the subscription", formalDefinition="A record of errors that occurred when the server processed a notification." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subscription-error")
     protected List<CodeableConcept> error;
 
-    private static final long serialVersionUID = -525473971L;
+    private static final long serialVersionUID = -285503955L;
 
   /**
    * Constructor
@@ -653,12 +650,12 @@ public class SubscriptionStatus extends DomainResource {
     /**
      * @return {@link #status} (The status of the subscription, which marks the server state for managing the subscription.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Enumeration<SubscriptionState> getStatusElement() { 
+    public Enumeration<SubscriptionStatusCodes> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create SubscriptionStatus.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<SubscriptionState>(new SubscriptionStateEnumFactory()); // bb
+          this.status = new Enumeration<SubscriptionStatusCodes>(new SubscriptionStatusCodesEnumFactory()); // bb
       return this.status;
     }
 
@@ -673,7 +670,7 @@ public class SubscriptionStatus extends DomainResource {
     /**
      * @param value {@link #status} (The status of the subscription, which marks the server state for managing the subscription.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public SubscriptionStatus setStatusElement(Enumeration<SubscriptionState> value) { 
+    public SubscriptionStatus setStatusElement(Enumeration<SubscriptionStatusCodes> value) { 
       this.status = value;
       return this;
     }
@@ -681,19 +678,19 @@ public class SubscriptionStatus extends DomainResource {
     /**
      * @return The status of the subscription, which marks the server state for managing the subscription.
      */
-    public SubscriptionState getStatus() { 
+    public SubscriptionStatusCodes getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
      * @param value The status of the subscription, which marks the server state for managing the subscription.
      */
-    public SubscriptionStatus setStatus(SubscriptionState value) { 
+    public SubscriptionStatus setStatus(SubscriptionStatusCodes value) { 
       if (value == null)
         this.status = null;
       else {
         if (this.status == null)
-          this.status = new Enumeration<SubscriptionState>(new SubscriptionStateEnumFactory());
+          this.status = new Enumeration<SubscriptionStatusCodes>(new SubscriptionStatusCodesEnumFactory());
         this.status.setValue(value);
       }
       return this;
@@ -785,51 +782,6 @@ public class SubscriptionStatus extends DomainResource {
     public SubscriptionStatus setEventsSinceSubscriptionStart(long value) { 
           this.eventsSinceSubscriptionStart = new Integer64Type();
         this.eventsSinceSubscriptionStart.setValue(value);
-      return this;
-    }
-
-    /**
-     * @return {@link #eventsInNotification} (The total number of actual events represented within this notification.  For handshake and heartbeat notifications, this will be zero or not present.  For event-notifications, this number may be one or more, depending on server batching.). This is the underlying object with id, value and extensions. The accessor "getEventsInNotification" gives direct access to the value
-     */
-    public IntegerType getEventsInNotificationElement() { 
-      if (this.eventsInNotification == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create SubscriptionStatus.eventsInNotification");
-        else if (Configuration.doAutoCreate())
-          this.eventsInNotification = new IntegerType(); // bb
-      return this.eventsInNotification;
-    }
-
-    public boolean hasEventsInNotificationElement() { 
-      return this.eventsInNotification != null && !this.eventsInNotification.isEmpty();
-    }
-
-    public boolean hasEventsInNotification() { 
-      return this.eventsInNotification != null && !this.eventsInNotification.isEmpty();
-    }
-
-    /**
-     * @param value {@link #eventsInNotification} (The total number of actual events represented within this notification.  For handshake and heartbeat notifications, this will be zero or not present.  For event-notifications, this number may be one or more, depending on server batching.). This is the underlying object with id, value and extensions. The accessor "getEventsInNotification" gives direct access to the value
-     */
-    public SubscriptionStatus setEventsInNotificationElement(IntegerType value) { 
-      this.eventsInNotification = value;
-      return this;
-    }
-
-    /**
-     * @return The total number of actual events represented within this notification.  For handshake and heartbeat notifications, this will be zero or not present.  For event-notifications, this number may be one or more, depending on server batching.
-     */
-    public int getEventsInNotification() { 
-      return this.eventsInNotification == null || this.eventsInNotification.isEmpty() ? 0 : this.eventsInNotification.getValue();
-    }
-
-    /**
-     * @param value The total number of actual events represented within this notification.  For handshake and heartbeat notifications, this will be zero or not present.  For event-notifications, this number may be one or more, depending on server batching.
-     */
-    public SubscriptionStatus setEventsInNotification(int value) { 
-        if (this.eventsInNotification == null)
-          this.eventsInNotification = new IntegerType();
-        this.eventsInNotification.setValue(value);
       return this;
     }
 
@@ -1017,7 +969,6 @@ public class SubscriptionStatus extends DomainResource {
         children.add(new Property("status", "code", "The status of the subscription, which marks the server state for managing the subscription.", 0, 1, status));
         children.add(new Property("type", "code", "The type of event being conveyed with this notificaiton.", 0, 1, type));
         children.add(new Property("eventsSinceSubscriptionStart", "integer64", "The total number of actual events which have been generated since the Subscription was created (inclusive of this notification) - regardless of how many have been successfully communicated.  This number is NOT incremented for handshake and heartbeat notifications.", 0, 1, eventsSinceSubscriptionStart));
-        children.add(new Property("eventsInNotification", "integer", "The total number of actual events represented within this notification.  For handshake and heartbeat notifications, this will be zero or not present.  For event-notifications, this number may be one or more, depending on server batching.", 0, 1, eventsInNotification));
         children.add(new Property("notificationEvent", "", "Detailed information about events relevant to this subscription notification.", 0, java.lang.Integer.MAX_VALUE, notificationEvent));
         children.add(new Property("subscription", "Reference(Subscription)", "The reference to the Subscription which generated this notification.", 0, 1, subscription));
         children.add(new Property("topic", "canonical(SubscriptionTopic)", "The reference to the SubscriptionTopic for the Subscription which generated this notification.", 0, 1, topic));
@@ -1030,7 +981,6 @@ public class SubscriptionStatus extends DomainResource {
         case -892481550: /*status*/  return new Property("status", "code", "The status of the subscription, which marks the server state for managing the subscription.", 0, 1, status);
         case 3575610: /*type*/  return new Property("type", "code", "The type of event being conveyed with this notificaiton.", 0, 1, type);
         case 304566692: /*eventsSinceSubscriptionStart*/  return new Property("eventsSinceSubscriptionStart", "integer64", "The total number of actual events which have been generated since the Subscription was created (inclusive of this notification) - regardless of how many have been successfully communicated.  This number is NOT incremented for handshake and heartbeat notifications.", 0, 1, eventsSinceSubscriptionStart);
-        case 191408169: /*eventsInNotification*/  return new Property("eventsInNotification", "integer", "The total number of actual events represented within this notification.  For handshake and heartbeat notifications, this will be zero or not present.  For event-notifications, this number may be one or more, depending on server batching.", 0, 1, eventsInNotification);
         case -1595878289: /*notificationEvent*/  return new Property("notificationEvent", "", "Detailed information about events relevant to this subscription notification.", 0, java.lang.Integer.MAX_VALUE, notificationEvent);
         case 341203229: /*subscription*/  return new Property("subscription", "Reference(Subscription)", "The reference to the Subscription which generated this notification.", 0, 1, subscription);
         case 110546223: /*topic*/  return new Property("topic", "canonical(SubscriptionTopic)", "The reference to the SubscriptionTopic for the Subscription which generated this notification.", 0, 1, topic);
@@ -1043,10 +993,9 @@ public class SubscriptionStatus extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<SubscriptionState>
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<SubscriptionStatusCodes>
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<SubscriptionNotificationType>
         case 304566692: /*eventsSinceSubscriptionStart*/ return this.eventsSinceSubscriptionStart == null ? new Base[0] : new Base[] {this.eventsSinceSubscriptionStart}; // Integer64Type
-        case 191408169: /*eventsInNotification*/ return this.eventsInNotification == null ? new Base[0] : new Base[] {this.eventsInNotification}; // IntegerType
         case -1595878289: /*notificationEvent*/ return this.notificationEvent == null ? new Base[0] : this.notificationEvent.toArray(new Base[this.notificationEvent.size()]); // SubscriptionStatusNotificationEventComponent
         case 341203229: /*subscription*/ return this.subscription == null ? new Base[0] : new Base[] {this.subscription}; // Reference
         case 110546223: /*topic*/ return this.topic == null ? new Base[0] : new Base[] {this.topic}; // CanonicalType
@@ -1060,8 +1009,8 @@ public class SubscriptionStatus extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -892481550: // status
-          value = new SubscriptionStateEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<SubscriptionState>
+          value = new SubscriptionStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<SubscriptionStatusCodes>
           return value;
         case 3575610: // type
           value = new SubscriptionNotificationTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
@@ -1069,9 +1018,6 @@ public class SubscriptionStatus extends DomainResource {
           return value;
         case 304566692: // eventsSinceSubscriptionStart
           this.eventsSinceSubscriptionStart = TypeConvertor.castToInteger64(value); // Integer64Type
-          return value;
-        case 191408169: // eventsInNotification
-          this.eventsInNotification = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case -1595878289: // notificationEvent
           this.getNotificationEvent().add((SubscriptionStatusNotificationEventComponent) value); // SubscriptionStatusNotificationEventComponent
@@ -1093,15 +1039,13 @@ public class SubscriptionStatus extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("status")) {
-          value = new SubscriptionStateEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<SubscriptionState>
+          value = new SubscriptionStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<SubscriptionStatusCodes>
         } else if (name.equals("type")) {
           value = new SubscriptionNotificationTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<SubscriptionNotificationType>
         } else if (name.equals("eventsSinceSubscriptionStart")) {
           this.eventsSinceSubscriptionStart = TypeConvertor.castToInteger64(value); // Integer64Type
-        } else if (name.equals("eventsInNotification")) {
-          this.eventsInNotification = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("notificationEvent")) {
           this.getNotificationEvent().add((SubscriptionStatusNotificationEventComponent) value);
         } else if (name.equals("subscription")) {
@@ -1121,7 +1065,6 @@ public class SubscriptionStatus extends DomainResource {
         case -892481550:  return getStatusElement();
         case 3575610:  return getTypeElement();
         case 304566692:  return getEventsSinceSubscriptionStartElement();
-        case 191408169:  return getEventsInNotificationElement();
         case -1595878289:  return addNotificationEvent(); 
         case 341203229:  return getSubscription();
         case 110546223:  return getTopicElement();
@@ -1137,7 +1080,6 @@ public class SubscriptionStatus extends DomainResource {
         case -892481550: /*status*/ return new String[] {"code"};
         case 3575610: /*type*/ return new String[] {"code"};
         case 304566692: /*eventsSinceSubscriptionStart*/ return new String[] {"integer64"};
-        case 191408169: /*eventsInNotification*/ return new String[] {"integer"};
         case -1595878289: /*notificationEvent*/ return new String[] {};
         case 341203229: /*subscription*/ return new String[] {"Reference"};
         case 110546223: /*topic*/ return new String[] {"canonical"};
@@ -1157,9 +1099,6 @@ public class SubscriptionStatus extends DomainResource {
         }
         else if (name.equals("eventsSinceSubscriptionStart")) {
           throw new FHIRException("Cannot call addChild on a primitive type SubscriptionStatus.eventsSinceSubscriptionStart");
-        }
-        else if (name.equals("eventsInNotification")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionStatus.eventsInNotification");
         }
         else if (name.equals("notificationEvent")) {
           return addNotificationEvent();
@@ -1194,7 +1133,6 @@ public class SubscriptionStatus extends DomainResource {
         dst.status = status == null ? null : status.copy();
         dst.type = type == null ? null : type.copy();
         dst.eventsSinceSubscriptionStart = eventsSinceSubscriptionStart == null ? null : eventsSinceSubscriptionStart.copy();
-        dst.eventsInNotification = eventsInNotification == null ? null : eventsInNotification.copy();
         if (notificationEvent != null) {
           dst.notificationEvent = new ArrayList<SubscriptionStatusNotificationEventComponent>();
           for (SubscriptionStatusNotificationEventComponent i : notificationEvent)
@@ -1221,9 +1159,8 @@ public class SubscriptionStatus extends DomainResource {
           return false;
         SubscriptionStatus o = (SubscriptionStatus) other_;
         return compareDeep(status, o.status, true) && compareDeep(type, o.type, true) && compareDeep(eventsSinceSubscriptionStart, o.eventsSinceSubscriptionStart, true)
-           && compareDeep(eventsInNotification, o.eventsInNotification, true) && compareDeep(notificationEvent, o.notificationEvent, true)
-           && compareDeep(subscription, o.subscription, true) && compareDeep(topic, o.topic, true) && compareDeep(error, o.error, true)
-          ;
+           && compareDeep(notificationEvent, o.notificationEvent, true) && compareDeep(subscription, o.subscription, true)
+           && compareDeep(topic, o.topic, true) && compareDeep(error, o.error, true);
       }
 
       @Override
@@ -1234,13 +1171,12 @@ public class SubscriptionStatus extends DomainResource {
           return false;
         SubscriptionStatus o = (SubscriptionStatus) other_;
         return compareValues(status, o.status, true) && compareValues(type, o.type, true) && compareValues(eventsSinceSubscriptionStart, o.eventsSinceSubscriptionStart, true)
-           && compareValues(eventsInNotification, o.eventsInNotification, true) && compareValues(topic, o.topic, true)
-          ;
+           && compareValues(topic, o.topic, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(status, type, eventsSinceSubscriptionStart
-          , eventsInNotification, notificationEvent, subscription, topic, error);
+          , notificationEvent, subscription, topic, error);
       }
 
   @Override

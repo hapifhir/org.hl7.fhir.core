@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -135,7 +135,7 @@ public abstract class MetadataResource extends CanonicalResource {
       return Integer.MAX_VALUE;
     }
     /**
-     * @return {@link #topic} (Descriptive topics related to the content of the library. Topics provide a high-level categorization of the library that can be useful for filtering and searching.)
+     * @return {@link #topic} (Descriptive topics related to the content of the metadata resource. Topics provide a high-level categorization of the metadata resource that can be useful for filtering and searching.)
      */
     public abstract List<CodeableConcept> getTopic(); 
     /**

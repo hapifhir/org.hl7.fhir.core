@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 28, 2021 07:16+1100 for FHIR v5.0.0-snapshot1
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -78,10 +78,10 @@ public class Schedule extends DomainResource {
     /**
      * The specific service that is to be performed during this appointment.
      */
-    @Child(name = "serviceType", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "serviceType", type = {CodeableReference.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Specific service", formalDefinition="The specific service that is to be performed during this appointment." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/service-type")
-    protected List<CodeableConcept> serviceType;
+    protected List<CodeableReference> serviceType;
 
     /**
      * The specialty of a practitioner that would be required to perform the service requested in this appointment.
@@ -112,7 +112,7 @@ public class Schedule extends DomainResource {
     @Description(shortDefinition="Comments on availability", formalDefinition="Comments on the availability to describe any extended information. Such as custom constraints on the slots that may be associated." )
     protected StringType comment;
 
-    private static final long serialVersionUID = -1624500976L;
+    private static final long serialVersionUID = 929720115L;
 
   /**
    * Constructor
@@ -283,16 +283,16 @@ public class Schedule extends DomainResource {
     /**
      * @return {@link #serviceType} (The specific service that is to be performed during this appointment.)
      */
-    public List<CodeableConcept> getServiceType() { 
+    public List<CodeableReference> getServiceType() { 
       if (this.serviceType == null)
-        this.serviceType = new ArrayList<CodeableConcept>();
+        this.serviceType = new ArrayList<CodeableReference>();
       return this.serviceType;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Schedule setServiceType(List<CodeableConcept> theServiceType) { 
+    public Schedule setServiceType(List<CodeableReference> theServiceType) { 
       this.serviceType = theServiceType;
       return this;
     }
@@ -300,25 +300,25 @@ public class Schedule extends DomainResource {
     public boolean hasServiceType() { 
       if (this.serviceType == null)
         return false;
-      for (CodeableConcept item : this.serviceType)
+      for (CodeableReference item : this.serviceType)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public CodeableConcept addServiceType() { //3
-      CodeableConcept t = new CodeableConcept();
+    public CodeableReference addServiceType() { //3
+      CodeableReference t = new CodeableReference();
       if (this.serviceType == null)
-        this.serviceType = new ArrayList<CodeableConcept>();
+        this.serviceType = new ArrayList<CodeableReference>();
       this.serviceType.add(t);
       return t;
     }
 
-    public Schedule addServiceType(CodeableConcept t) { //3
+    public Schedule addServiceType(CodeableReference t) { //3
       if (t == null)
         return this;
       if (this.serviceType == null)
-        this.serviceType = new ArrayList<CodeableConcept>();
+        this.serviceType = new ArrayList<CodeableReference>();
       this.serviceType.add(t);
       return this;
     }
@@ -326,7 +326,7 @@ public class Schedule extends DomainResource {
     /**
      * @return The first repetition of repeating field {@link #serviceType}, creating it if it does not already exist {3}
      */
-    public CodeableConcept getServiceTypeFirstRep() { 
+    public CodeableReference getServiceTypeFirstRep() { 
       if (getServiceType().isEmpty()) {
         addServiceType();
       }
@@ -517,7 +517,7 @@ public class Schedule extends DomainResource {
         children.add(new Property("identifier", "Identifier", "External Ids for this item.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("active", "boolean", "Whether this schedule record is in active use or should not be used (such as was entered in error).", 0, 1, active));
         children.add(new Property("serviceCategory", "CodeableConcept", "A broad categorization of the service that is to be performed during this appointment.", 0, java.lang.Integer.MAX_VALUE, serviceCategory));
-        children.add(new Property("serviceType", "CodeableConcept", "The specific service that is to be performed during this appointment.", 0, java.lang.Integer.MAX_VALUE, serviceType));
+        children.add(new Property("serviceType", "CodeableReference(HealthcareService)", "The specific service that is to be performed during this appointment.", 0, java.lang.Integer.MAX_VALUE, serviceType));
         children.add(new Property("specialty", "CodeableConcept", "The specialty of a practitioner that would be required to perform the service requested in this appointment.", 0, java.lang.Integer.MAX_VALUE, specialty));
         children.add(new Property("actor", "Reference(Patient|Practitioner|PractitionerRole|CareTeam|RelatedPerson|Device|HealthcareService|Location)", "Slots that reference this schedule resource provide the availability details to these referenced resource(s).", 0, java.lang.Integer.MAX_VALUE, actor));
         children.add(new Property("planningHorizon", "Period", "The period of time that the slots that reference this Schedule resource cover (even if none exist). These  cover the amount of time that an organization's planning horizon; the interval for which they are currently accepting appointments. This does not define a \"template\" for planning outside these dates.", 0, 1, planningHorizon));
@@ -530,7 +530,7 @@ public class Schedule extends DomainResource {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "External Ids for this item.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case -1422950650: /*active*/  return new Property("active", "boolean", "Whether this schedule record is in active use or should not be used (such as was entered in error).", 0, 1, active);
         case 1281188563: /*serviceCategory*/  return new Property("serviceCategory", "CodeableConcept", "A broad categorization of the service that is to be performed during this appointment.", 0, java.lang.Integer.MAX_VALUE, serviceCategory);
-        case -1928370289: /*serviceType*/  return new Property("serviceType", "CodeableConcept", "The specific service that is to be performed during this appointment.", 0, java.lang.Integer.MAX_VALUE, serviceType);
+        case -1928370289: /*serviceType*/  return new Property("serviceType", "CodeableReference(HealthcareService)", "The specific service that is to be performed during this appointment.", 0, java.lang.Integer.MAX_VALUE, serviceType);
         case -1694759682: /*specialty*/  return new Property("specialty", "CodeableConcept", "The specialty of a practitioner that would be required to perform the service requested in this appointment.", 0, java.lang.Integer.MAX_VALUE, specialty);
         case 92645877: /*actor*/  return new Property("actor", "Reference(Patient|Practitioner|PractitionerRole|CareTeam|RelatedPerson|Device|HealthcareService|Location)", "Slots that reference this schedule resource provide the availability details to these referenced resource(s).", 0, java.lang.Integer.MAX_VALUE, actor);
         case -1718507650: /*planningHorizon*/  return new Property("planningHorizon", "Period", "The period of time that the slots that reference this Schedule resource cover (even if none exist). These  cover the amount of time that an organization's planning horizon; the interval for which they are currently accepting appointments. This does not define a \"template\" for planning outside these dates.", 0, 1, planningHorizon);
@@ -546,7 +546,7 @@ public class Schedule extends DomainResource {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case -1422950650: /*active*/ return this.active == null ? new Base[0] : new Base[] {this.active}; // BooleanType
         case 1281188563: /*serviceCategory*/ return this.serviceCategory == null ? new Base[0] : this.serviceCategory.toArray(new Base[this.serviceCategory.size()]); // CodeableConcept
-        case -1928370289: /*serviceType*/ return this.serviceType == null ? new Base[0] : this.serviceType.toArray(new Base[this.serviceType.size()]); // CodeableConcept
+        case -1928370289: /*serviceType*/ return this.serviceType == null ? new Base[0] : this.serviceType.toArray(new Base[this.serviceType.size()]); // CodeableReference
         case -1694759682: /*specialty*/ return this.specialty == null ? new Base[0] : this.specialty.toArray(new Base[this.specialty.size()]); // CodeableConcept
         case 92645877: /*actor*/ return this.actor == null ? new Base[0] : this.actor.toArray(new Base[this.actor.size()]); // Reference
         case -1718507650: /*planningHorizon*/ return this.planningHorizon == null ? new Base[0] : new Base[] {this.planningHorizon}; // Period
@@ -569,7 +569,7 @@ public class Schedule extends DomainResource {
           this.getServiceCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1928370289: // serviceType
-          this.getServiceType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          this.getServiceType().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case -1694759682: // specialty
           this.getSpecialty().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
@@ -597,7 +597,7 @@ public class Schedule extends DomainResource {
         } else if (name.equals("serviceCategory")) {
           this.getServiceCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("serviceType")) {
-          this.getServiceType().add(TypeConvertor.castToCodeableConcept(value));
+          this.getServiceType().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("specialty")) {
           this.getSpecialty().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("actor")) {
@@ -633,7 +633,7 @@ public class Schedule extends DomainResource {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case -1422950650: /*active*/ return new String[] {"boolean"};
         case 1281188563: /*serviceCategory*/ return new String[] {"CodeableConcept"};
-        case -1928370289: /*serviceType*/ return new String[] {"CodeableConcept"};
+        case -1928370289: /*serviceType*/ return new String[] {"CodeableReference"};
         case -1694759682: /*specialty*/ return new String[] {"CodeableConcept"};
         case 92645877: /*actor*/ return new String[] {"Reference"};
         case -1718507650: /*planningHorizon*/ return new String[] {"Period"};
@@ -699,8 +699,8 @@ public class Schedule extends DomainResource {
             dst.serviceCategory.add(i.copy());
         };
         if (serviceType != null) {
-          dst.serviceType = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : serviceType)
+          dst.serviceType = new ArrayList<CodeableReference>();
+          for (CodeableReference i : serviceType)
             dst.serviceType.add(i.copy());
         };
         if (specialty != null) {
@@ -753,152 +753,6 @@ public class Schedule extends DomainResource {
   public ResourceType getResourceType() {
     return ResourceType.Schedule;
    }
-
- /**
-   * Search parameter: <b>active</b>
-   * <p>
-   * Description: <b>Is the schedule in active use</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Schedule.active</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="active", path="Schedule.active", description="Is the schedule in active use", type="token" )
-  public static final String SP_ACTIVE = "active";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>active</b>
-   * <p>
-   * Description: <b>Is the schedule in active use</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Schedule.active</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ACTIVE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ACTIVE);
-
- /**
-   * Search parameter: <b>actor</b>
-   * <p>
-   * Description: <b>The individual(HealthcareService, Practitioner, Location, ...) to find a Schedule for</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Schedule.actor</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="actor", path="Schedule.actor", description="The individual(HealthcareService, Practitioner, Location, ...) to find a Schedule for", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={CareTeam.class, Device.class, HealthcareService.class, Location.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_ACTOR = "actor";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>actor</b>
-   * <p>
-   * Description: <b>The individual(HealthcareService, Practitioner, Location, ...) to find a Schedule for</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>Schedule.actor</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ACTOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ACTOR);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Schedule:actor</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ACTOR = new ca.uhn.fhir.model.api.Include("Schedule:actor").toLocked();
-
- /**
-   * Search parameter: <b>date</b>
-   * <p>
-   * Description: <b>Search for Schedule resources that have a period that contains this date specified</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Schedule.planningHorizon</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="date", path="Schedule.planningHorizon", description="Search for Schedule resources that have a period that contains this date specified", type="date" )
-  public static final String SP_DATE = "date";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>date</b>
-   * <p>
-   * Description: <b>Search for Schedule resources that have a period that contains this date specified</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>Schedule.planningHorizon</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>A Schedule Identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Schedule.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="Schedule.identifier", description="A Schedule Identifier", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>A Schedule Identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Schedule.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>service-category</b>
-   * <p>
-   * Description: <b>High-level category</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Schedule.serviceCategory</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="service-category", path="Schedule.serviceCategory", description="High-level category", type="token" )
-  public static final String SP_SERVICE_CATEGORY = "service-category";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>service-category</b>
-   * <p>
-   * Description: <b>High-level category</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Schedule.serviceCategory</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SERVICE_CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SERVICE_CATEGORY);
-
- /**
-   * Search parameter: <b>service-type</b>
-   * <p>
-   * Description: <b>The type of appointments that can be booked into associated slot(s)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Schedule.serviceType</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="service-type", path="Schedule.serviceType", description="The type of appointments that can be booked into associated slot(s)", type="token" )
-  public static final String SP_SERVICE_TYPE = "service-type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>service-type</b>
-   * <p>
-   * Description: <b>The type of appointments that can be booked into associated slot(s)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Schedule.serviceType</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SERVICE_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SERVICE_TYPE);
-
- /**
-   * Search parameter: <b>specialty</b>
-   * <p>
-   * Description: <b>Type of specialty needed</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Schedule.specialty</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="specialty", path="Schedule.specialty", description="Type of specialty needed", type="token" )
-  public static final String SP_SPECIALTY = "specialty";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>specialty</b>
-   * <p>
-   * Description: <b>Type of specialty needed</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Schedule.specialty</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SPECIALTY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SPECIALTY);
 
 
 }
