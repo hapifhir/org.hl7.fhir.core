@@ -7,6 +7,7 @@ import org.hl7.fhir.utilities.ToolGlobalSettings;
 import org.hl7.fhir.utilities.Utilities;
 
 import java.io.*;
+import java.nio.file.Path;
 
 public class BaseTestingUtilities {
 
@@ -114,4 +115,11 @@ public class BaseTestingUtilities {
 
     public static void setFhirTestCasesDirectory(String s) {
     }
+
+  public static void createParentDirIfNotExists(Path target) {
+    Path parent = target.getParent();
+    if (!parent.toFile().exists()) {
+      parent.toFile().mkdirs();
+    }
+  }
 }
