@@ -45,6 +45,7 @@ public class R5ExtensionsLoader {
     JsonParser json = new JsonParser();
     for (PackageResourceInformation pri : pck.listIndexedResources(types)) {
       CanonicalResource r = (CanonicalResource) json.parse(pck.load(pri));
+      r.setUserData("path", Utilities.pathURL(pck.getWebLocation(), r.fhirType().toLowerCase()+ "-"+r.getId().toLowerCase()+".html"));
       if (r instanceof CodeSystem) {
         codeSystems.put(r.getUrl(), (CodeSystem) r);
       } else if (r instanceof ValueSet) {
@@ -75,7 +76,7 @@ public class R5ExtensionsLoader {
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
       if (ed.hasBinding() && ed.getBinding().hasValueSet()) {
         String vs = ed.getBinding().getValueSet();
-        if (!context.hasResource(StructureDefinition.class, vs)) {
+        if (!context.hasResource(ValueSet.class, vs)) {
           loadValueSet(vs, context, valueSets, codeSystems, pd);
         }
       }
@@ -85,7 +86,7 @@ public class R5ExtensionsLoader {
 
   private void loadValueSet(String url, IWorkerContext context, Map<String, ValueSet> valueSets, Map<String, CodeSystem> codeSystems, PackageVersion pd) {
     if (valueSets.containsKey(url)) {
-      ValueSet vs = valueSets.get(url);
+      ValueSet vs = valueSets.get(url);      
       context.cacheResourceFromPackage(vs, pd);
       for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
         for (CanonicalType t : inc.getValueSet()) {
