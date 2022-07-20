@@ -2402,7 +2402,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 r = loadContainedResource(errors, path, hostContext.getRootResource(), url.substring(1), Resource.class);
               }
               if (r == null) {
-                fetcher.fetchCanonicalResource(this, url);
+               r = fetcher.fetchCanonicalResource(this, url);
               }
               if (r == null) {
                 r = this.context.fetchResource(Resource.class, url);
@@ -5660,7 +5660,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       msg = fpe.forLog();
     } catch (Exception ex) {
       ok = false;
-      msg = ex.getMessage();
+      msg = ex.getClass().getName()+": "+ex.getMessage();
+      ex.printStackTrace();
     }
     if (!ok) {
       if (!Utilities.noString(msg)) {
