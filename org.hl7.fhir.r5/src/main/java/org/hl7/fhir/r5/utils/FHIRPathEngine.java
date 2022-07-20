@@ -5094,6 +5094,9 @@ public class FHIRPathEngine {
     int i2 = -1;
     if (exp.parameterCount() == 2) {
       List<Base> n2 = execute(context, focus, exp.getParameters().get(1), true);
+      if (n2.isEmpty()|| !n2.get(0).isPrimitive() || !Utilities.isInteger(n2.get(0).primitiveValue())) {
+        return new ArrayList<Base>();
+      }
       i2 = Integer.parseInt(n2.get(0).primitiveValue());
     }
 
@@ -5104,6 +5107,9 @@ public class FHIRPathEngine {
         return new ArrayList<Base>();
       }
       if (exp.parameterCount() == 2) {
+        if (i1+i2 >= sw.length()) {
+          return new ArrayList<Base>();
+        }
         s = sw.substring(i1, Math.min(sw.length(), i1+i2));
       } else {
         s = sw.substring(i1);
