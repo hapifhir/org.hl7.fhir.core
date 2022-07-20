@@ -360,9 +360,12 @@ public class Element extends Base {
     if (childMap == null) {
       childMap = new HashMap<>();
       for (Element child : children) {
-        String n = child.getName();
-        if (n.endsWith("[x]")) {
+        String n;
+        if (child.getProperty().getName().endsWith("[x]")) {
+          n = child.getProperty().getName();
           n = n.substring(0, n.length()-3);
+        } else {
+          n = child.getName();
         }
         List<Element> l = childMap.get(n);
         if (l == null) {
