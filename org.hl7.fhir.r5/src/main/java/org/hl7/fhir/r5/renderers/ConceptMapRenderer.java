@@ -159,9 +159,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           else {
             if (ccm.getRelationshipElement().hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
               String code = ToolingExtensions.readStringExtension(ccm.getRelationshipElement(), ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-              tr.td().ah(eqpath+"#"+code).tx(presentEquivalenceCode(code));                
+              tr.td().ah(eqpath+"#"+code, code).tx(presentEquivalenceCode(code));                
             } else {
-              tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
+              tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode(), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
             }
           }
           td = tr.td();
@@ -192,7 +192,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         if (hasRelationships) {
           tr.td().b().tx("Relationship");
         }
-        tr.td().colspan(Integer.toString(1+targets.size())).b().tx("Destination Concept Details");
+        tr.td().colspan(Integer.toString(1+targets.size())).b().tx("Target Concept Details");
         if (comment) {
           tr.td().b().tx("Comment");
         }
@@ -299,9 +299,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
                 else {
                   if (ccm.getRelationshipElement().hasExtension(ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
                     String code = ToolingExtensions.readStringExtension(ccm.getRelationshipElement(), ToolingExtensions.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-                    tr.td().ah(eqpath+"#"+code).tx(presentEquivalenceCode(code));                
+                    tr.td().ah(eqpath+"#"+code, code).tx(presentEquivalenceCode(code));                
                   } else {
-                    tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
+                    tr.td().ah(eqpath+"#"+ccm.getRelationship().toCode(), ccm.getRelationship().toCode()).tx(presentRelationshipCode(ccm.getRelationship().toCode()));
                   }
                 }
               }
