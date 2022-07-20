@@ -835,12 +835,11 @@ public interface IWorkerContext {
   public String getLinkForUrl(String corePath, String s);
 
   /**
-   * Returns a map of available binaries if the implementation uses an internal
-   * map. This can be null if the implementation does not use a map internally.
+   * Returns a set of keys that can be used to get binaries from this context.
    *
-   * @return a map of binaries or null
+   * @return a set of binaries or null
    */
-  public Map<String, byte[]> getBinaries();
+  public Set<String> getBinaryKeysAsSet();
 
   /**
    * Returns true if this worker context contains a binary for this key.

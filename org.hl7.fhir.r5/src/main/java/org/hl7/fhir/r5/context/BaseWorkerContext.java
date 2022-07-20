@@ -2161,9 +2161,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
-  public Map<String, byte[]> getBinaries() {
-    return binaries;
-  }
+  public Set<String> getBinaryKeysAsSet() { return binaries.keySet(); }
 
   @Override
   public boolean hasBinaryKey(String binaryKey) {
