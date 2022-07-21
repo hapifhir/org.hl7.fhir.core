@@ -210,7 +210,7 @@ public class DiagnosticReport40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.DiagnosticReport.DiagnosticReportMediaComponent tgt = new org.hl7.fhir.r5.model.DiagnosticReport.DiagnosticReportMediaComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasComment())
       tgt.setCommentElement(String40_50.convertString(src.getCommentElement()));
     if (src.hasLink())
@@ -222,7 +222,7 @@ public class DiagnosticReport40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.DiagnosticReport.DiagnosticReportMediaComponent tgt = new org.hl7.fhir.r4.model.DiagnosticReport.DiagnosticReportMediaComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasComment())
       tgt.setCommentElement(String40_50.convertString(src.getCommentElement()));
     if (src.hasLink())

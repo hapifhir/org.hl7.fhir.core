@@ -145,7 +145,7 @@ public class VisionPrescription40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent tgt = new org.hl7.fhir.r5.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasProduct())
       tgt.setProduct(CodeableConcept40_50.convertCodeableConcept(src.getProduct()));
     if (src.hasEye())
@@ -180,7 +180,7 @@ public class VisionPrescription40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent tgt = new org.hl7.fhir.r4.model.VisionPrescription.VisionPrescriptionLensSpecificationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasProduct())
       tgt.setProduct(CodeableConcept40_50.convertCodeableConcept(src.getProduct()));
     if (src.hasEye())
@@ -253,7 +253,7 @@ public class VisionPrescription40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.VisionPrescription.PrismComponent tgt = new org.hl7.fhir.r5.model.VisionPrescription.PrismComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasAmount())
       tgt.setAmountElement(Decimal40_50.convertDecimal(src.getAmountElement()));
     if (src.hasBase())
@@ -265,7 +265,7 @@ public class VisionPrescription40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.VisionPrescription.PrismComponent tgt = new org.hl7.fhir.r4.model.VisionPrescription.PrismComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasAmount())
       tgt.setAmountElement(Decimal40_50.convertDecimal(src.getAmountElement()));
     if (src.hasBase())
