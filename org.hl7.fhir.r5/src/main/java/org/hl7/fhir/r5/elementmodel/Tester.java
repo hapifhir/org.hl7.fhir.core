@@ -34,13 +34,11 @@ package org.hl7.fhir.r5.elementmodel;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.List;
 import java.util.Map.Entry;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
