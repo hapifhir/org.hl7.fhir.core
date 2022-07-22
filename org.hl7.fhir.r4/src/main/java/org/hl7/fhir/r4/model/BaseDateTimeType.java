@@ -43,7 +43,6 @@ import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.DateUtils;
-import org.apache.commons.lang3.time.FastDateFormat;
 
 import ca.uhn.fhir.parser.DataFormatException;
 import org.hl7.fhir.utilities.DateTimeUtil;
@@ -54,9 +53,6 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
 	static final long NANOS_PER_SECOND = 1000000000L;
   private static final Map<String, TimeZone> timezoneCache = new ConcurrentHashMap<>();
-	private static final FastDateFormat ourHumanDateFormat = FastDateFormat.getDateInstance(FastDateFormat.MEDIUM);
-
-	private static final FastDateFormat ourHumanDateTimeFormat = FastDateFormat.getDateTimeInstance(FastDateFormat.MEDIUM, FastDateFormat.MEDIUM);
 	private static final long serialVersionUID = 1L;
 
 	private String myFractionalSeconds;
@@ -79,9 +75,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 	 */
 	public BaseDateTimeType(Date theDate, TemporalPrecisionEnum thePrecision) {
 		setValue(theDate, thePrecision);
-		if (isPrecisionAllowed(thePrecision) == false) {
-			throw new IllegalArgumentException("Invalid date/time string (datatype " + getClass().getSimpleName() + " does not support " + thePrecision + " precision): " + theDate);
-		}
+    validatePrecisionAndThrowIllegalArgumentException();
 	}
 
 	/**
@@ -90,6 +84,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 	public BaseDateTimeType(Date theDate, TemporalPrecisionEnum thePrecision, TimeZone theTimeZone) {
 		this(theDate, thePrecision);
 		setTimeZone(theTimeZone);
+    validatePrecisionAndThrowIllegalArgumentException();
 	}
 
 	/**
@@ -100,9 +95,16 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 	 */
 	public BaseDateTimeType(String theString) {
 		setValueAsString(theString);
+    validatePrecisionAndThrowIllegalArgumentException();
 	}
 
-	/**
+  private void validatePrecisionAndThrowIllegalArgumentException() {
+    if (!isPrecisionAllowed(getPrecision())) {
+      throw new IllegalArgumentException("Invalid date/time string (datatype " + getClass().getSimpleName() + " does not support " + getPrecision() + " precision): " + getValueAsString());
+    }
+  }
+
+  /**
 	 * Adds the given amount to the field specified by theField
 	 *
 	 * @param theField
@@ -709,9 +711,6 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 	public void setValueAsString(String theString) throws DataFormatException {
 		clearTimeZone();
 		super.setValueAsString(theString);
-    if (isPrecisionAllowed(getPrecision()) == false) {
-      throw new IllegalArgumentException("Invalid date/time string (datatype " + getClass().getSimpleName() + " does not support " + getPrecision() + " precision): " + theString);
-    }
 	}
 
 	protected void setValueAsV3String(String theV3String) {
