@@ -132,12 +132,12 @@ public class VersionConvertor_40_50 {
   public void copyBackboneElement(@Nonnull org.hl7.fhir.r5.model.BackboneElement src,
                                   @Nonnull org.hl7.fhir.r4.model.BackboneElement tgt,
                                   String... var) throws FHIRException {
-    BackboneElement40_50.copyBackboneElement(src, tgt, var);
+    backboneElementConvertor.copyBackboneElement(src, tgt, var);
   }
 
   public void copyBackboneElement(@Nonnull org.hl7.fhir.r4.model.BackboneElement src,
                                   @Nonnull org.hl7.fhir.r5.model.BackboneElement tgt,
                           String... var) throws FHIRException {
-    BackboneElement40_50.copyBackboneElement(src, tgt, var);
+    backboneElementConvertor.copyBackboneElement(src, tgt, var);
   }
 }

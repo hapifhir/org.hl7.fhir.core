@@ -67,14 +67,14 @@ public class VersionConvertor_30_50 {
   private final BaseAdvisor_30_50 advisor;
   private final Element30_50 elementConvertor;
 
-  private final BackboneElement30_50 backboneElementConverter;
+  private final BackboneElement30_50 backboneElementConvertor;
   private final Resource30_50 resourceConvertor;
   private final Type30_50 typeConvertor;
 
   public VersionConvertor_30_50(@Nonnull BaseAdvisor_30_50 advisor) {
     this.advisor = advisor;
     this.elementConvertor = new Element30_50(advisor);
-    this.backboneElementConverter = new BackboneElement30_50();
+    this.backboneElementConvertor = new BackboneElement30_50();
     this.resourceConvertor = new Resource30_50(advisor);
     this.typeConvertor = new Type30_50(advisor);
   }
@@ -154,12 +154,12 @@ public class VersionConvertor_30_50 {
   public void copyBackboneElement(@Nonnull org.hl7.fhir.r5.model.BackboneElement src,
                                   @Nonnull org.hl7.fhir.dstu3.model.BackboneElement tgt,
                                   String... var) throws FHIRException {
-    backboneElementConverter.copyBackboneElement(src, tgt, var);
+    backboneElementConvertor.copyBackboneElement(src, tgt, var);
   }
 
   public void copyBackboneElement(@Nonnull org.hl7.fhir.dstu3.model.BackboneElement src,
                                   @Nonnull org.hl7.fhir.r5.model.BackboneElement tgt,
                                   String... var) throws FHIRException {
-    backboneElementConverter.copyBackboneElement(src, tgt, var);
+    backboneElementConvertor.copyBackboneElement(src, tgt, var);
   }
 }
