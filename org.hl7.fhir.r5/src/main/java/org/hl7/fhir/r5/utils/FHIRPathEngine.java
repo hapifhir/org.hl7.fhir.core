@@ -5107,9 +5107,6 @@ public class FHIRPathEngine {
         return new ArrayList<Base>();
       }
       if (exp.parameterCount() == 2) {
-        if (i1+i2 >= sw.length()) {
-          return new ArrayList<Base>();
-        }
         s = sw.substring(i1, Math.min(sw.length(), i1+i2));
       } else {
         s = sw.substring(i1);

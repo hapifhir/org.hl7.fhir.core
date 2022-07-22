@@ -4229,14 +4229,16 @@ public class ProfileUtilities extends TranslatingUtilities {
         Row currRow = row;
         List<ElementChoiceGroup> groups = readChoices(element, children);
         boolean isExtension = Utilities.existsInList(tail(element.getPath()), "extension", "modifierExtension");
-        for (ElementDefinition child : children) {
-          if (!child.hasSliceName()) {
-            currRow = row; 
-          }
-          Row childRow = chooseChildRowByGroup(gen, currRow, groups, child, element, isConstraintMode);
-          
-          if (logicalModel || !child.getPath().endsWith(".id") || (child.getPath().endsWith(".id") && (profile != null) && (profile.getDerivation() == TypeDerivationRule.CONSTRAINT))) {  
-            currRow = genElement(defPath, gen, childRow.getSubRows(), child, all, profiles, showMissing, profileBaseFileName, isExtension, snapshot, corePath, imagePath, false, logicalModel, isConstraintMode, allInvariants, currRow, mustSupport, rc);
+        if (!element.prohibited()) {
+          for (ElementDefinition child : children) {
+            if (!child.hasSliceName()) {
+              currRow = row; 
+            }
+            Row childRow = chooseChildRowByGroup(gen, currRow, groups, child, element, isConstraintMode);
+
+            if (logicalModel || !child.getPath().endsWith(".id") || (child.getPath().endsWith(".id") && (profile != null) && (profile.getDerivation() == TypeDerivationRule.CONSTRAINT))) {  
+              currRow = genElement(defPath, gen, childRow.getSubRows(), child, all, profiles, showMissing, profileBaseFileName, isExtension, snapshot, corePath, imagePath, false, logicalModel, isConstraintMode, allInvariants, currRow, mustSupport, rc);
+            }
           }
         }
 //        if (!snapshot && (extensions == null || !extensions))
