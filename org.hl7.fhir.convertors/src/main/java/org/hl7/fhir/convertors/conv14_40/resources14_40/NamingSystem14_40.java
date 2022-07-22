@@ -204,7 +204,7 @@ public class NamingSystem14_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2016may.model.NamingSystem.NamingSystemUniqueIdComponent tgt = new org.hl7.fhir.dstu2016may.model.NamingSystem.NamingSystemUniqueIdComponent();
-    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
+    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyBackboneElement(src,tgt);
     if (src.hasType())
       tgt.setTypeElement(convertNamingSystemIdentifierType(src.getTypeElement()));
     if (src.hasValueElement())
@@ -220,7 +220,7 @@ public class NamingSystem14_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.NamingSystem.NamingSystemUniqueIdComponent tgt = new org.hl7.fhir.r4.model.NamingSystem.NamingSystemUniqueIdComponent();
-    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
+    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyBackboneElement(src,tgt);
     if (src.hasType())
       tgt.setTypeElement(convertNamingSystemIdentifierType(src.getTypeElement()));
     if (src.hasValueElement())
