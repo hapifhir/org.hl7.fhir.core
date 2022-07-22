@@ -67,11 +67,11 @@ public class ComparisonService {
     System.out.println("Generating output to " + dest + "...");
     Utilities.createDirectory(dest);
     ComparisonRenderer cr = new ComparisonRenderer(validator.getContext(), validator.getContext(), dest, session);
-    cr.getTemplates().put("CodeSystem", new String(validator.getContext().getBinaries().get("template-comparison-CodeSystem.html")));
-    cr.getTemplates().put("ValueSet", new String(validator.getContext().getBinaries().get("template-comparison-ValueSet.html")));
-    cr.getTemplates().put("Profile", new String(validator.getContext().getBinaries().get("template-comparison-Profile.html")));
-    cr.getTemplates().put("Index", new String(validator.getContext().getBinaries().get("template-comparison-index.html")));
-    cr.getTemplates().put("CapabilityStatement", new String(validator.getContext().getBinaries().get("template-comparison-CapabilityStatement.html")));
+    cr.getTemplates().put("CodeSystem", new String(validator.getContext().getBinaryForKey("template-comparison-CodeSystem.html")));
+    cr.getTemplates().put("ValueSet", new String(validator.getContext().getBinaryForKey("template-comparison-ValueSet.html")));
+    cr.getTemplates().put("Profile", new String(validator.getContext().getBinaryForKey("template-comparison-Profile.html")));
+    cr.getTemplates().put("Index", new String(validator.getContext().getBinaryForKey("template-comparison-index.html")));
+    cr.getTemplates().put("CapabilityStatement", new String(validator.getContext().getBinaryForKey("template-comparison-CapabilityStatement.html")));
     File htmlFile = cr.render(left, right);
     Desktop.getDesktop().browse(htmlFile.toURI());
     System.out.println("Done");
