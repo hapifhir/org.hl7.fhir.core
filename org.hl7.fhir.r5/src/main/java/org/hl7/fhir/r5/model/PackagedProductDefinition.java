@@ -2788,6 +2788,274 @@ public class PackagedProductDefinition extends DomainResource {
     return ResourceType.PackagedProductDefinition;
    }
 
+ /**
+   * Search parameter: <b>biological</b>
+   * <p>
+   * Description: <b>A biologically derived product within this packaged product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PackagedProductDefinition.packaging.containedItem.item.reference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="biological", path="PackagedProductDefinition.packaging.containedItem.item.reference", description="A biologically derived product within this packaged product", type="reference" )
+  public static final String SP_BIOLOGICAL = "biological";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>biological</b>
+   * <p>
+   * Description: <b>A biologically derived product within this packaged product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PackagedProductDefinition.packaging.containedItem.item.reference</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam BIOLOGICAL = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_BIOLOGICAL);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>PackagedProductDefinition:biological</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_BIOLOGICAL = new ca.uhn.fhir.model.api.Include("PackagedProductDefinition:biological").toLocked();
+
+ /**
+   * Search parameter: <b>contained-item</b>
+   * <p>
+   * Description: <b>Any of the contained items within this packaged product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PackagedProductDefinition.packaging.containedItem.item.reference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="contained-item", path="PackagedProductDefinition.packaging.containedItem.item.reference", description="Any of the contained items within this packaged product", type="reference" )
+  public static final String SP_CONTAINED_ITEM = "contained-item";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>contained-item</b>
+   * <p>
+   * Description: <b>Any of the contained items within this packaged product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PackagedProductDefinition.packaging.containedItem.item.reference</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam CONTAINED_ITEM = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_CONTAINED_ITEM);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>PackagedProductDefinition:contained-item</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_CONTAINED_ITEM = new ca.uhn.fhir.model.api.Include("PackagedProductDefinition:contained-item").toLocked();
+
+ /**
+   * Search parameter: <b>device</b>
+   * <p>
+   * Description: <b>A device within this packaged product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PackagedProductDefinition.packaging.containedItem.item.reference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="device", path="PackagedProductDefinition.packaging.containedItem.item.reference", description="A device within this packaged product", type="reference" )
+  public static final String SP_DEVICE = "device";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>device</b>
+   * <p>
+   * Description: <b>A device within this packaged product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PackagedProductDefinition.packaging.containedItem.item.reference</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DEVICE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DEVICE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>PackagedProductDefinition:device</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_DEVICE = new ca.uhn.fhir.model.api.Include("PackagedProductDefinition:device").toLocked();
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Unique identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PackagedProductDefinition.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="PackagedProductDefinition.identifier", description="Unique identifier", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Unique identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PackagedProductDefinition.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>manufactured-item</b>
+   * <p>
+   * Description: <b>A manufactured item of medication within this packaged product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PackagedProductDefinition.packaging.containedItem.item.reference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="manufactured-item", path="PackagedProductDefinition.packaging.containedItem.item.reference", description="A manufactured item of medication within this packaged product", type="reference" )
+  public static final String SP_MANUFACTURED_ITEM = "manufactured-item";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>manufactured-item</b>
+   * <p>
+   * Description: <b>A manufactured item of medication within this packaged product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PackagedProductDefinition.packaging.containedItem.item.reference</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MANUFACTURED_ITEM = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MANUFACTURED_ITEM);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>PackagedProductDefinition:manufactured-item</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_MANUFACTURED_ITEM = new ca.uhn.fhir.model.api.Include("PackagedProductDefinition:manufactured-item").toLocked();
+
+ /**
+   * Search parameter: <b>medication</b>
+   * <p>
+   * Description: <b>A manufactured item of medication within this packaged product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PackagedProductDefinition.packaging.containedItem.item.reference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="medication", path="PackagedProductDefinition.packaging.containedItem.item.reference", description="A manufactured item of medication within this packaged product", type="reference" )
+  public static final String SP_MEDICATION = "medication";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>medication</b>
+   * <p>
+   * Description: <b>A manufactured item of medication within this packaged product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PackagedProductDefinition.packaging.containedItem.item.reference</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MEDICATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MEDICATION);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>PackagedProductDefinition:medication</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_MEDICATION = new ca.uhn.fhir.model.api.Include("PackagedProductDefinition:medication").toLocked();
+
+ /**
+   * Search parameter: <b>name</b>
+   * <p>
+   * Description: <b>A name for this package. Typically what it would be listed as in a drug formulary or catalogue, inventory etc</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PackagedProductDefinition.name</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="name", path="PackagedProductDefinition.name", description="A name for this package. Typically what it would be listed as in a drug formulary or catalogue, inventory etc", type="token" )
+  public static final String SP_NAME = "name";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>name</b>
+   * <p>
+   * Description: <b>A name for this package. Typically what it would be listed as in a drug formulary or catalogue, inventory etc</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PackagedProductDefinition.name</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam NAME = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_NAME);
+
+ /**
+   * Search parameter: <b>nutrition</b>
+   * <p>
+   * Description: <b>A nutrition product within this packaged product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PackagedProductDefinition.packaging.containedItem.item.reference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="nutrition", path="PackagedProductDefinition.packaging.containedItem.item.reference", description="A nutrition product within this packaged product", type="reference" )
+  public static final String SP_NUTRITION = "nutrition";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>nutrition</b>
+   * <p>
+   * Description: <b>A nutrition product within this packaged product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PackagedProductDefinition.packaging.containedItem.item.reference</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam NUTRITION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_NUTRITION);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>PackagedProductDefinition:nutrition</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_NUTRITION = new ca.uhn.fhir.model.api.Include("PackagedProductDefinition:nutrition").toLocked();
+
+ /**
+   * Search parameter: <b>package-for</b>
+   * <p>
+   * Description: <b>The product that this is a pack for</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PackagedProductDefinition.packageFor</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="package-for", path="PackagedProductDefinition.packageFor", description="The product that this is a pack for", type="reference", target={MedicinalProductDefinition.class } )
+  public static final String SP_PACKAGE_FOR = "package-for";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>package-for</b>
+   * <p>
+   * Description: <b>The product that this is a pack for</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PackagedProductDefinition.packageFor</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PACKAGE_FOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PACKAGE_FOR);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>PackagedProductDefinition:package-for</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PACKAGE_FOR = new ca.uhn.fhir.model.api.Include("PackagedProductDefinition:package-for").toLocked();
+
+ /**
+   * Search parameter: <b>package</b>
+   * <p>
+   * Description: <b>A complete packaged product within this packaged product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PackagedProductDefinition.packaging.containedItem.item.reference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="package", path="PackagedProductDefinition.packaging.containedItem.item.reference", description="A complete packaged product within this packaged product", type="reference" )
+  public static final String SP_PACKAGE = "package";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>package</b>
+   * <p>
+   * Description: <b>A complete packaged product within this packaged product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>PackagedProductDefinition.packaging.containedItem.item.reference</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PACKAGE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PACKAGE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>PackagedProductDefinition:package</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PACKAGE = new ca.uhn.fhir.model.api.Include("PackagedProductDefinition:package").toLocked();
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>The status within the lifecycle of this item. A high level status, this is not intended to duplicate details carried elsewhere such as legal status, or authorization or marketing status</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PackagedProductDefinition.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="PackagedProductDefinition.status", description="The status within the lifecycle of this item. A high level status, this is not intended to duplicate details carried elsewhere such as legal status, or authorization or marketing status", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>The status within the lifecycle of this item. A high level status, this is not intended to duplicate details carried elsewhere such as legal status, or authorization or marketing status</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>PackagedProductDefinition.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
 
 }
 

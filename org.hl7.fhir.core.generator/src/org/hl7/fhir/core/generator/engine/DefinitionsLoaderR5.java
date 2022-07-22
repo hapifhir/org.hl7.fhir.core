@@ -48,29 +48,6 @@ public class DefinitionsLoaderR5 {
     for (String t : npm.listResources("CompartmentDefinition")) {
       res.getCompartments().see((CompartmentDefinition) load(npm, t), null);
     }
-//    Bundle bnd = (Bundle) load(npm, "Bundle-searchParams.json");
-//    if (bnd != null) {
-//      for (BundleEntryComponent be : bnd.getEntry()) {
-//        Resource r = be.getResource();
-//        if (r instanceof CodeSystem) {
-//          res.getCodeSystems().see((CodeSystem) r, null);
-//        } else if (r instanceof ValueSet) {
-//          res.getValuesets().see((ValueSet) r, null);
-//        } else if (r instanceof ConceptMap) {
-//          res.getConceptMaps().see((ConceptMap) r, null);
-//        } else if (r instanceof CapabilityStatement) {
-//          res.getStatements().see((CapabilityStatement) r, null);
-//        } else if (r instanceof StructureDefinition) {
-//          res.getStructures().see((StructureDefinition) r, null);
-//        } else if (r instanceof OperationDefinition) {
-//          res.getOperations().see((OperationDefinition) r, null);
-//        } else if (r instanceof SearchParameter) {
-//          res.getSearchParams().see((SearchParameter) r, null);
-//        } else if (r instanceof CompartmentDefinition) {
-//          res.getCompartments().see((CompartmentDefinition) r, null);
-//        }          
-//      }
-//    }
     return res;
   }
 
