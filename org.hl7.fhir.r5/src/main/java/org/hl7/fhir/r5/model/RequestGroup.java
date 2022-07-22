@@ -4118,6 +4118,322 @@ public class RequestGroup extends DomainResource {
     return ResourceType.RequestGroup;
    }
 
+ /**
+   * Search parameter: <b>author</b>
+   * <p>
+   * Description: <b>The author of the request group</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RequestGroup.author</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="author", path="RequestGroup.author", description="The author of the request group", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Device.class, Practitioner.class, PractitionerRole.class } )
+  public static final String SP_AUTHOR = "author";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>author</b>
+   * <p>
+   * Description: <b>The author of the request group</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RequestGroup.author</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam AUTHOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_AUTHOR);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>RequestGroup:author</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_AUTHOR = new ca.uhn.fhir.model.api.Include("RequestGroup:author").toLocked();
+
+ /**
+   * Search parameter: <b>authored</b>
+   * <p>
+   * Description: <b>The date the request group was authored</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>RequestGroup.authoredOn</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="authored", path="RequestGroup.authoredOn", description="The date the request group was authored", type="date" )
+  public static final String SP_AUTHORED = "authored";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>authored</b>
+   * <p>
+   * Description: <b>The date the request group was authored</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>RequestGroup.authoredOn</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam AUTHORED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_AUTHORED);
+
+ /**
+   * Search parameter: <b>code</b>
+   * <p>
+   * Description: <b>The code of the request group</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RequestGroup.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="code", path="RequestGroup.code", description="The code of the request group", type="token" )
+  public static final String SP_CODE = "code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>code</b>
+   * <p>
+   * Description: <b>The code of the request group</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RequestGroup.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
+
+ /**
+   * Search parameter: <b>encounter</b>
+   * <p>
+   * Description: <b>The encounter the request group applies to</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RequestGroup.encounter</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="encounter", path="RequestGroup.encounter", description="The encounter the request group applies to", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Encounter") }, target={Encounter.class } )
+  public static final String SP_ENCOUNTER = "encounter";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
+   * <p>
+   * Description: <b>The encounter the request group applies to</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RequestGroup.encounter</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>RequestGroup:encounter</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("RequestGroup:encounter").toLocked();
+
+ /**
+   * Search parameter: <b>group-identifier</b>
+   * <p>
+   * Description: <b>The group identifier for the request group</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RequestGroup.groupIdentifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="group-identifier", path="RequestGroup.groupIdentifier", description="The group identifier for the request group", type="token" )
+  public static final String SP_GROUP_IDENTIFIER = "group-identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>group-identifier</b>
+   * <p>
+   * Description: <b>The group identifier for the request group</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RequestGroup.groupIdentifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam GROUP_IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_GROUP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>External identifiers for the request group</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RequestGroup.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="RequestGroup.identifier", description="External identifiers for the request group", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>External identifiers for the request group</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RequestGroup.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>instantiates-canonical</b>
+   * <p>
+   * Description: <b>The FHIR-based definition from which the request group is realized</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RequestGroup.instantiatesCanonical</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="instantiates-canonical", path="RequestGroup.instantiatesCanonical", description="The FHIR-based definition from which the request group is realized", type="reference" )
+  public static final String SP_INSTANTIATES_CANONICAL = "instantiates-canonical";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>instantiates-canonical</b>
+   * <p>
+   * Description: <b>The FHIR-based definition from which the request group is realized</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RequestGroup.instantiatesCanonical</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INSTANTIATES_CANONICAL = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INSTANTIATES_CANONICAL);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>RequestGroup:instantiates-canonical</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_INSTANTIATES_CANONICAL = new ca.uhn.fhir.model.api.Include("RequestGroup:instantiates-canonical").toLocked();
+
+ /**
+   * Search parameter: <b>instantiates-uri</b>
+   * <p>
+   * Description: <b>The external definition from which the request group is realized</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>RequestGroup.instantiatesUri</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="instantiates-uri", path="RequestGroup.instantiatesUri", description="The external definition from which the request group is realized", type="uri" )
+  public static final String SP_INSTANTIATES_URI = "instantiates-uri";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>instantiates-uri</b>
+   * <p>
+   * Description: <b>The external definition from which the request group is realized</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>RequestGroup.instantiatesUri</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam INSTANTIATES_URI = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_INSTANTIATES_URI);
+
+ /**
+   * Search parameter: <b>intent</b>
+   * <p>
+   * Description: <b>The intent of the request group</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RequestGroup.intent</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="intent", path="RequestGroup.intent", description="The intent of the request group", type="token" )
+  public static final String SP_INTENT = "intent";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>intent</b>
+   * <p>
+   * Description: <b>The intent of the request group</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RequestGroup.intent</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam INTENT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INTENT);
+
+ /**
+   * Search parameter: <b>participant</b>
+   * <p>
+   * Description: <b>The participant in the requests in the group</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RequestGroup.action.participant.actor</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="participant", path="RequestGroup.action.participant.actor", description="The participant in the requests in the group", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={CareTeam.class, Device.class, Group.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_PARTICIPANT = "participant";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>participant</b>
+   * <p>
+   * Description: <b>The participant in the requests in the group</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RequestGroup.action.participant.actor</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PARTICIPANT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PARTICIPANT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>RequestGroup:participant</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PARTICIPANT = new ca.uhn.fhir.model.api.Include("RequestGroup:participant").toLocked();
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>The identity of a patient to search for request groups</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RequestGroup.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="RequestGroup.subject.where(resolve() is Patient)", description="The identity of a patient to search for request groups", type="reference", target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>The identity of a patient to search for request groups</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RequestGroup.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>RequestGroup:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("RequestGroup:patient").toLocked();
+
+ /**
+   * Search parameter: <b>priority</b>
+   * <p>
+   * Description: <b>The priority of the request group</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RequestGroup.priority</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="priority", path="RequestGroup.priority", description="The priority of the request group", type="token" )
+  public static final String SP_PRIORITY = "priority";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>priority</b>
+   * <p>
+   * Description: <b>The priority of the request group</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RequestGroup.priority</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PRIORITY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PRIORITY);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>The status of the request group</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RequestGroup.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="RequestGroup.status", description="The status of the request group", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>The status of the request group</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RequestGroup.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>The subject that the request group is about</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RequestGroup.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="RequestGroup.subject", description="The subject that the request group is about", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Group.class, Patient.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>The subject that the request group is about</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RequestGroup.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>RequestGroup:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("RequestGroup:subject").toLocked();
+
 
 }
 

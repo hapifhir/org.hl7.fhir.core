@@ -479,6 +479,46 @@ public class FormularyItem extends DomainResource {
     return ResourceType.FormularyItem;
    }
 
+ /**
+   * Search parameter: <b>code</b>
+   * <p>
+   * Description: <b>Returns formulary items for a specific code</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>FormularyItem.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="code", path="FormularyItem.code", description="Returns formulary items for a specific code", type="token" )
+  public static final String SP_CODE = "code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>code</b>
+   * <p>
+   * Description: <b>Returns formulary items for a specific code</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>FormularyItem.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Returns formulary items with this external identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>FormularyItem.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="FormularyItem.identifier", description="Returns formulary items with this external identifier", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Returns formulary items with this external identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>FormularyItem.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
 
 }
 

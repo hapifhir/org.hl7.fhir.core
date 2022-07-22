@@ -1573,6 +1573,26 @@ public class Permission extends DomainResource {
     return ResourceType.Permission;
    }
 
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>active | entered-in-error | draft | rejected</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Permission.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="Permission.status", description="active | entered-in-error | draft | rejected", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>active | entered-in-error | draft | rejected</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Permission.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
 
 }
 
