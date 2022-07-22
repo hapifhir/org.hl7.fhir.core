@@ -43,7 +43,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
-import org.hl7.fhir.r5.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -395,6 +394,10 @@ public class TurtleParser extends ParserBase {
 //            (element.getProperty().getDefinition().getIsModifier()? "modifierExtension" : "extension") ; 
     String en = getFormalName(element);
 
+    if (!wantCompose(parent == null ? "" : parent.getPath(), element)) {
+      return;
+    }
+    
 	  Complex t;
 	  if (element.getSpecial() == SpecialElement.BUNDLE_ENTRY && parent != null && parent.getNamedChildValue("fullUrl") != null) {
 	    String url = "<"+parent.getNamedChildValue("fullUrl")+">";

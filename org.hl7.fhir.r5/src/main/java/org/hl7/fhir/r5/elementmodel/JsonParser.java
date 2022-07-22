@@ -54,8 +54,8 @@ import org.hl7.fhir.r5.formats.JsonCreator;
 import org.hl7.fhir.r5.formats.JsonCreatorCanonical;
 import org.hl7.fhir.r5.formats.JsonCreatorGson;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -477,15 +477,18 @@ public class JsonParser extends ParserBase {
   }
 
   private void compose(String path, Element e, Set<String> done, Element child) throws IOException {
-    boolean isList = child.hasElementProperty() ? child.getElementProperty().isList() : child.getProperty().isList();
-    if (!isList) {// for specials, ignore the cardinality of the stated type
-      compose(path, child);
-    } else if (!done.contains(child.getName())) {
-      done.add(child.getName());
-      List<Element> list = e.getChildrenByName(child.getName());
-      composeList(path, list);
+    if (wantCompose(path, child)) {
+      boolean isList = child.hasElementProperty() ? child.getElementProperty().isList() : child.getProperty().isList();
+      if (!isList) {// for specials, ignore the cardinality of the stated type
+        compose(path, child);
+      } else if (!done.contains(child.getName())) {
+        done.add(child.getName());
+        List<Element> list = e.getChildrenByName(child.getName());
+        composeList(path, list);
+      }
     }
   }
+
 
   private void composeList(String path, List<Element> list) throws IOException {
     // there will be at least one element
