@@ -9,7 +9,7 @@
 
 * Fix NPE rendering bundles
 * R5 Changes to ConceptMap
-* Fix bug accessing polymorphic fields when rendering
 * Fix bug rendering extensions
+* Fix bug accessing polymorphic fields when rendering
 * Fix bug around lazy loading packages when validating references
 * Add ability to suppress serialising ids when serialising element models
