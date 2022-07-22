@@ -31,7 +31,7 @@ package org.hl7.fhir.r4b.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR v4.3.0
 
 import java.util.ArrayList;
 import java.util.Date;

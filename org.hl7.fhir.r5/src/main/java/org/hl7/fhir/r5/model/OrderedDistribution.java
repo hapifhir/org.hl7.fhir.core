@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v5.0.0-snapshot2
 
 import java.util.ArrayList;
 import java.util.Date;
