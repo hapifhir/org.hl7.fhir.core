@@ -240,7 +240,7 @@ public class MedicationKnowledge40_50 {
 //    if (src == null)
 //      return null;
 //    org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeIngredientComponent tgt = new org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeIngredientComponent();
-//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
 //    if (src.hasItemCodeableConcept())
 //      tgt.getItem().setConcept(CodeableConcept40_50.convertCodeableConcept(src.getItemCodeableConcept()));
 //    if (src.hasItemReference())
@@ -256,7 +256,7 @@ public class MedicationKnowledge40_50 {
 //    if (src == null)
 //      return null;
 //    org.hl7.fhir.r4.model.MedicationKnowledge.MedicationKnowledgeIngredientComponent tgt = new org.hl7.fhir.r4.model.MedicationKnowledge.MedicationKnowledgeIngredientComponent();
-//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
 //    if (src.getItem().hasConcept())
 //      tgt.setItem(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getItem().getConcept()));
 //    if (src.getItem().hasReference())
@@ -447,7 +447,7 @@ public class MedicationKnowledge40_50 {
 //    if (src == null)
 //      return null;
 //    org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeDrugCharacteristicComponent tgt = new org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeDrugCharacteristicComponent();
-//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
 //    if (src.hasType())
 //      tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
 //    if (src.hasValue())
@@ -459,7 +459,7 @@ public class MedicationKnowledge40_50 {
 //    if (src == null)
 //      return null;
 //    org.hl7.fhir.r4.model.MedicationKnowledge.MedicationKnowledgeDrugCharacteristicComponent tgt = new org.hl7.fhir.r4.model.MedicationKnowledge.MedicationKnowledgeDrugCharacteristicComponent();
-//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
 //    if (src.hasType())
 //      tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
 //    if (src.hasValue())

@@ -218,7 +218,7 @@ public class AuditEvent40_50 {
 //    if (src == null)
 //      return null;
 //    org.hl7.fhir.r5.model.AuditEvent.AuditEventAgentNetworkComponent tgt = new org.hl7.fhir.r5.model.AuditEvent.AuditEventAgentNetworkComponent();
-//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
 //    if (src.hasAddress())
 //      tgt.setAddressElement(String40_50.convertString(src.getAddressElement()));
 //    if (src.hasType())
@@ -230,7 +230,7 @@ public class AuditEvent40_50 {
 //    if (src == null)
 //      return null;
 //    org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkComponent tgt = new org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkComponent();
-//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
 //    if (src.hasAddress())
 //      tgt.setAddressElement(String40_50.convertString(src.getAddressElement()));
 //    if (src.hasType())

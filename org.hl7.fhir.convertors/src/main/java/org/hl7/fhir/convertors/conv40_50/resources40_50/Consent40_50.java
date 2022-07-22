@@ -168,7 +168,7 @@ public class Consent40_50 {
 //    if (src == null)
 //      return null;
 //    org.hl7.fhir.r5.model.Consent.ConsentPolicyComponent tgt = new org.hl7.fhir.r5.model.Consent.ConsentPolicyComponent();
-//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
 //    if (src.hasAuthority())
 //      tgt.setAuthorityElement(Uri40_50.convertUri(src.getAuthorityElement()));
 //    if (src.hasUri())
@@ -180,7 +180,7 @@ public class Consent40_50 {
 //    if (src == null)
 //      return null;
 //    org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent tgt = new org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent();
-//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
 //    if (src.hasAuthority())
 //      tgt.setAuthorityElement(Uri40_50.convertUri(src.getAuthorityElement()));
 //    if (src.hasUri())

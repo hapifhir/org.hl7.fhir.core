@@ -238,7 +238,7 @@ public class DeviceDefinition40_50 {
 //    if (src == null)
 //      return null;
 //    org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionSpecializationComponent tgt = new org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionSpecializationComponent();
-//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
 //    if (src.hasSystemType())
 //      tgt.setSystemTypeElement(String40_50.convertString(src.getSystemTypeElement()));
 //    if (src.hasVersion())
@@ -250,7 +250,7 @@ public class DeviceDefinition40_50 {
 //    if (src == null)
 //      return null;
 //    org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionSpecializationComponent tgt = new org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionSpecializationComponent();
-//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
 //    if (src.hasSystemType())
 //      tgt.setSystemTypeElement(String40_50.convertString(src.getSystemTypeElement()));
 //    if (src.hasVersion())
@@ -262,7 +262,7 @@ public class DeviceDefinition40_50 {
 //    if (src == null)
 //      return null;
 //    org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionCapabilityComponent tgt = new org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionCapabilityComponent();
-//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
 //    if (src.hasType())
 //      tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
 //    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getDescription())
@@ -274,7 +274,7 @@ public class DeviceDefinition40_50 {
 //    if (src == null)
 //      return null;
 //    org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionCapabilityComponent tgt = new org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionCapabilityComponent();
-//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
 //    if (src.hasType())
 //      tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
 //    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getDescription())

@@ -385,7 +385,7 @@ public class Device40_50 {
 //    if (src == null)
 //      return null;
 //    org.hl7.fhir.r5.model.Device.DeviceSpecializationComponent tgt = new org.hl7.fhir.r5.model.Device.DeviceSpecializationComponent();
-//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
 //    if (src.hasSystemType())
 //      tgt.setSystemType(CodeableConcept40_50.convertCodeableConcept(src.getSystemType()));
 //    if (src.hasVersion())
@@ -397,7 +397,7 @@ public class Device40_50 {
 //    if (src == null)
 //      return null;
 //    org.hl7.fhir.r4.model.Device.DeviceSpecializationComponent tgt = new org.hl7.fhir.r4.model.Device.DeviceSpecializationComponent();
-//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
 //    if (src.hasSystemType())
 //      tgt.setSystemType(CodeableConcept40_50.convertCodeableConcept(src.getSystemType()));
 //    if (src.hasVersion())
