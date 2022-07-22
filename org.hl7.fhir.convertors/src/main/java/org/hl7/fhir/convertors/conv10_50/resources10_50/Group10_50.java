@@ -64,7 +64,7 @@ public class Group10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Group.GroupCharacteristicComponent tgt = new org.hl7.fhir.dstu2.model.Group.GroupCharacteristicComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept10_50.convertCodeableConcept(src.getCode()));
     if (src.hasValue())
@@ -80,7 +80,7 @@ public class Group10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Group.GroupCharacteristicComponent tgt = new org.hl7.fhir.r5.model.Group.GroupCharacteristicComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept10_50.convertCodeableConcept(src.getCode()));
     if (src.hasValue())
@@ -96,7 +96,7 @@ public class Group10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Group.GroupMemberComponent tgt = new org.hl7.fhir.r5.model.Group.GroupMemberComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasEntity())
       tgt.setEntity(Reference10_50.convertReference(src.getEntity()));
     if (src.hasPeriod())
@@ -110,7 +110,7 @@ public class Group10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Group.GroupMemberComponent tgt = new org.hl7.fhir.dstu2.model.Group.GroupMemberComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasEntity())
       tgt.setEntity(Reference10_50.convertReference(src.getEntity()));
     if (src.hasPeriod())
