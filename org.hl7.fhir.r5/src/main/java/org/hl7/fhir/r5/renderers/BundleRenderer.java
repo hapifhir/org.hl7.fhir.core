@@ -167,6 +167,9 @@ public class BundleRenderer extends ResourceRenderer {
   }
 
   private ResourceWrapper resolveReference(List<BaseWrapper> entries, Base base) throws UnsupportedEncodingException, FHIRException, IOException {
+    if (base == null) {
+      return null;
+    }
     Property prop = base.getChildByName("reference");
     if (prop.hasValues()) {
       String ref = prop.getValues().get(0).primitiveValue();
@@ -195,7 +198,7 @@ public class BundleRenderer extends ResourceRenderer {
     Resource subject = resolveReference(b, comp.getSubject());
     if (subject != null) {
       XhtmlNode nx = (subject instanceof DomainResource) ? ((DomainResource) subject).getText().getDiv() : null;
-      if (nx != null) {
+      if (nx != null && !nx.isEmpty()) {
         x.addChildren(nx);        
       } else {
         RendererFactory.factory(subject, context).render(x, subject);

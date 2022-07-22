@@ -5094,6 +5094,9 @@ public class FHIRPathEngine {
     int i2 = -1;
     if (exp.parameterCount() == 2) {
       List<Base> n2 = execute(context, focus, exp.getParameters().get(1), true);
+      if (n2.isEmpty()|| !n2.get(0).isPrimitive() || !Utilities.isInteger(n2.get(0).primitiveValue())) {
+        return new ArrayList<Base>();
+      }
       i2 = Integer.parseInt(n2.get(0).primitiveValue());
     }
 
