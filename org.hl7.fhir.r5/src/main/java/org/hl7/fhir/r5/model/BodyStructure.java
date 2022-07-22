@@ -1305,6 +1305,92 @@ public class BodyStructure extends DomainResource {
     return ResourceType.BodyStructure;
    }
 
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Bodystructure identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BodyStructure.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="BodyStructure.identifier", description="Bodystructure identifier", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Bodystructure identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BodyStructure.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>morphology</b>
+   * <p>
+   * Description: <b>Kind of Structure</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BodyStructure.morphology</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="morphology", path="BodyStructure.morphology", description="Kind of Structure", type="token" )
+  public static final String SP_MORPHOLOGY = "morphology";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>morphology</b>
+   * <p>
+   * Description: <b>Kind of Structure</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BodyStructure.morphology</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam MORPHOLOGY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_MORPHOLOGY);
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>Who this is about</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>BodyStructure.patient</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="BodyStructure.patient", description="Who this is about", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>Who this is about</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>BodyStructure.patient</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>BodyStructure:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("BodyStructure:patient").toLocked();
+
+ /**
+   * Search parameter: <b>structure</b>
+   * <p>
+   * Description: <b>Body site excludedStructure structure</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BodyStructure.excludedStructure.structure</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="structure", path="BodyStructure.excludedStructure.structure", description="Body site excludedStructure structure", type="token" )
+  public static final String SP_STRUCTURE = "structure";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>structure</b>
+   * <p>
+   * Description: <b>Body site excludedStructure structure</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BodyStructure.excludedStructure.structure</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STRUCTURE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STRUCTURE);
+
 
 }
 

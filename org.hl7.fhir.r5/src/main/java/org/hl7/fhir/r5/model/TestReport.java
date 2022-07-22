@@ -3769,6 +3769,132 @@ public class TestReport extends DomainResource {
     return ResourceType.TestReport;
    }
 
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>An external identifier for the test report</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestReport.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="TestReport.identifier", description="An external identifier for the test report", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>An external identifier for the test report</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestReport.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>issued</b>
+   * <p>
+   * Description: <b>The test report generation date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>TestReport.issued</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="issued", path="TestReport.issued", description="The test report generation date", type="date" )
+  public static final String SP_ISSUED = "issued";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>issued</b>
+   * <p>
+   * Description: <b>The test report generation date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>TestReport.issued</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam ISSUED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_ISSUED);
+
+ /**
+   * Search parameter: <b>participant</b>
+   * <p>
+   * Description: <b>The reference to a participant in the test execution</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>TestReport.participant.uri</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="participant", path="TestReport.participant.uri", description="The reference to a participant in the test execution", type="uri" )
+  public static final String SP_PARTICIPANT = "participant";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>participant</b>
+   * <p>
+   * Description: <b>The reference to a participant in the test execution</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>TestReport.participant.uri</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam PARTICIPANT = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_PARTICIPANT);
+
+ /**
+   * Search parameter: <b>result</b>
+   * <p>
+   * Description: <b>The result disposition of the test execution</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestReport.result</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="result", path="TestReport.result", description="The result disposition of the test execution", type="token" )
+  public static final String SP_RESULT = "result";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>result</b>
+   * <p>
+   * Description: <b>The result disposition of the test execution</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestReport.result</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam RESULT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_RESULT);
+
+ /**
+   * Search parameter: <b>tester</b>
+   * <p>
+   * Description: <b>The name of the testing organization</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>TestReport.tester</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="tester", path="TestReport.tester", description="The name of the testing organization", type="string" )
+  public static final String SP_TESTER = "tester";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>tester</b>
+   * <p>
+   * Description: <b>The name of the testing organization</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>TestReport.tester</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam TESTER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TESTER);
+
+ /**
+   * Search parameter: <b>testscript</b>
+   * <p>
+   * Description: <b>The test script executed to produce this report</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>TestReport.testScript</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="testscript", path="TestReport.testScript", description="The test script executed to produce this report", type="reference", target={TestScript.class } )
+  public static final String SP_TESTSCRIPT = "testscript";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>testscript</b>
+   * <p>
+   * Description: <b>The test script executed to produce this report</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>TestReport.testScript</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam TESTSCRIPT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_TESTSCRIPT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>TestReport:testscript</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_TESTSCRIPT = new ca.uhn.fhir.model.api.Include("TestReport:testscript").toLocked();
+
 
 }
 

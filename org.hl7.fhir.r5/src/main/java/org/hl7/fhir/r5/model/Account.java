@@ -1590,6 +1590,210 @@ A coverage may only be responsible for specific types of charges, and the sequen
     return ResourceType.Account;
    }
 
+ /**
+   * Search parameter: <b>guarantor</b>
+   * <p>
+   * Description: <b>The parties ultimately responsible for balancing the Account</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Account.guarantor.party</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="guarantor", path="Account.guarantor.party", description="The parties ultimately responsible for balancing the Account", type="reference", target={Organization.class, Patient.class, RelatedPerson.class } )
+  public static final String SP_GUARANTOR = "guarantor";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>guarantor</b>
+   * <p>
+   * Description: <b>The parties ultimately responsible for balancing the Account</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Account.guarantor.party</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam GUARANTOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_GUARANTOR);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Account:guarantor</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_GUARANTOR = new ca.uhn.fhir.model.api.Include("Account:guarantor").toLocked();
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Account number</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Account.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="Account.identifier", description="Account number", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Account number</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Account.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>name</b>
+   * <p>
+   * Description: <b>Human-readable label</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Account.name</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="name", path="Account.name", description="Human-readable label", type="string" )
+  public static final String SP_NAME = "name";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>name</b>
+   * <p>
+   * Description: <b>Human-readable label</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Account.name</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
+
+ /**
+   * Search parameter: <b>owner</b>
+   * <p>
+   * Description: <b>Entity managing the Account</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Account.owner</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="owner", path="Account.owner", description="Entity managing the Account", type="reference", target={Organization.class } )
+  public static final String SP_OWNER = "owner";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>owner</b>
+   * <p>
+   * Description: <b>Entity managing the Account</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Account.owner</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam OWNER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_OWNER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Account:owner</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_OWNER = new ca.uhn.fhir.model.api.Include("Account:owner").toLocked();
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>The entity that caused the expenses</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Account.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="Account.subject.where(resolve() is Patient)", description="The entity that caused the expenses", type="reference", target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>The entity that caused the expenses</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Account.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Account:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("Account:patient").toLocked();
+
+ /**
+   * Search parameter: <b>period</b>
+   * <p>
+   * Description: <b>Transaction window</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>Account.servicePeriod</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="period", path="Account.servicePeriod", description="Transaction window", type="date" )
+  public static final String SP_PERIOD = "period";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>period</b>
+   * <p>
+   * Description: <b>Transaction window</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>Account.servicePeriod</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam PERIOD = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_PERIOD);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>active | inactive | entered-in-error | on-hold | unknown</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Account.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="Account.status", description="active | inactive | entered-in-error | on-hold | unknown", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>active | inactive | entered-in-error | on-hold | unknown</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Account.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>The entity that caused the expenses</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Account.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="Account.subject", description="The entity that caused the expenses", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Device.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>The entity that caused the expenses</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Account.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Account:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("Account:subject").toLocked();
+
+ /**
+   * Search parameter: <b>type</b>
+   * <p>
+   * Description: <b>E.g. patient, expense, depreciation</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Account.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="type", path="Account.type", description="E.g. patient, expense, depreciation", type="token" )
+  public static final String SP_TYPE = "type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>type</b>
+   * <p>
+   * Description: <b>E.g. patient, expense, depreciation</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Account.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
+
 
 }
 

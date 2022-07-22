@@ -6351,6 +6351,106 @@ public class SubstanceDefinition extends DomainResource {
     return ResourceType.SubstanceDefinition;
    }
 
+ /**
+   * Search parameter: <b>classification</b>
+   * <p>
+   * Description: <b>High or low level categorization, e.g. polymer vs. nucleic acid or linear vs. branch chain</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SubstanceDefinition.classification</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="classification", path="SubstanceDefinition.classification", description="High or low level categorization, e.g. polymer vs. nucleic acid or linear vs. branch chain", type="token" )
+  public static final String SP_CLASSIFICATION = "classification";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>classification</b>
+   * <p>
+   * Description: <b>High or low level categorization, e.g. polymer vs. nucleic acid or linear vs. branch chain</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SubstanceDefinition.classification</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CLASSIFICATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CLASSIFICATION);
+
+ /**
+   * Search parameter: <b>code</b>
+   * <p>
+   * Description: <b>The specific code</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SubstanceDefinition.code.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="code", path="SubstanceDefinition.code.code", description="The specific code", type="token" )
+  public static final String SP_CODE = "code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>code</b>
+   * <p>
+   * Description: <b>The specific code</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SubstanceDefinition.code.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
+
+ /**
+   * Search parameter: <b>domain</b>
+   * <p>
+   * Description: <b>If the substance applies to only human or veterinary use</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SubstanceDefinition.domain</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="domain", path="SubstanceDefinition.domain", description="If the substance applies to only human or veterinary use", type="token" )
+  public static final String SP_DOMAIN = "domain";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>domain</b>
+   * <p>
+   * Description: <b>If the substance applies to only human or veterinary use</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SubstanceDefinition.domain</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam DOMAIN = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_DOMAIN);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Identifier by which this substance is known</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SubstanceDefinition.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="SubstanceDefinition.identifier", description="Identifier by which this substance is known", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Identifier by which this substance is known</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SubstanceDefinition.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>name</b>
+   * <p>
+   * Description: <b>The actual name</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>SubstanceDefinition.name.name</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="name", path="SubstanceDefinition.name.name", description="The actual name", type="string" )
+  public static final String SP_NAME = "name";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>name</b>
+   * <p>
+   * Description: <b>The actual name</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>SubstanceDefinition.name.name</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
+
 
 }
 

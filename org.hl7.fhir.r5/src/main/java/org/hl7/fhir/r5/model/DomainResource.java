@@ -406,6 +406,26 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
           , modifierExtension);
       }
 
+ /**
+   * Search parameter: <b>_text</b>
+   * <p>
+   * Description: <b>Search on the narrative of the resource</b><br>
+   * Type: <b>special</b><br>
+   * Path: <b>null</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="_text", path="", description="Search on the narrative of the resource", type="special" )
+  public static final String SP_TEXT = "_text";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>_text</b>
+   * <p>
+   * Description: <b>Search on the narrative of the resource</b><br>
+   * Type: <b>special</b><br>
+   * Path: <b>null</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.SpecialClientParam TEXT = new ca.uhn.fhir.rest.gclient.SpecialClientParam(SP_TEXT);
+
 // Manual code (from Configuration.txt):
 public void checkNoModifiers(String noun, String verb) throws FHIRException {
         if (hasModifierExtension()) {

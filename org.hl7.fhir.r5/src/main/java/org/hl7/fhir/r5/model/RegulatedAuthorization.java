@@ -1488,6 +1488,158 @@ public class RegulatedAuthorization extends DomainResource {
     return ResourceType.RegulatedAuthorization;
    }
 
+ /**
+   * Search parameter: <b>case-type</b>
+   * <p>
+   * Description: <b>The defining type of case</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RegulatedAuthorization.case.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="case-type", path="RegulatedAuthorization.case.type", description="The defining type of case", type="token" )
+  public static final String SP_CASE_TYPE = "case-type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>case-type</b>
+   * <p>
+   * Description: <b>The defining type of case</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RegulatedAuthorization.case.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CASE_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CASE_TYPE);
+
+ /**
+   * Search parameter: <b>case</b>
+   * <p>
+   * Description: <b>The case or procedure number</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RegulatedAuthorization.case.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="case", path="RegulatedAuthorization.case.identifier", description="The case or procedure number", type="token" )
+  public static final String SP_CASE = "case";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>case</b>
+   * <p>
+   * Description: <b>The case or procedure number</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RegulatedAuthorization.case.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CASE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CASE);
+
+ /**
+   * Search parameter: <b>holder</b>
+   * <p>
+   * Description: <b>The organization that holds the granted authorization</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RegulatedAuthorization.holder</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="holder", path="RegulatedAuthorization.holder", description="The organization that holds the granted authorization", type="reference", target={Organization.class } )
+  public static final String SP_HOLDER = "holder";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>holder</b>
+   * <p>
+   * Description: <b>The organization that holds the granted authorization</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RegulatedAuthorization.holder</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam HOLDER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_HOLDER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>RegulatedAuthorization:holder</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_HOLDER = new ca.uhn.fhir.model.api.Include("RegulatedAuthorization:holder").toLocked();
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Business identifier for the authorization, typically assigned by the authorizing body</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RegulatedAuthorization.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="RegulatedAuthorization.identifier", description="Business identifier for the authorization, typically assigned by the authorizing body", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Business identifier for the authorization, typically assigned by the authorizing body</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RegulatedAuthorization.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>region</b>
+   * <p>
+   * Description: <b>The territory (e.g., country, jurisdiction etc.) in which the authorization has been granted</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RegulatedAuthorization.region</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="region", path="RegulatedAuthorization.region", description="The territory (e.g., country, jurisdiction etc.) in which the authorization has been granted", type="token" )
+  public static final String SP_REGION = "region";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>region</b>
+   * <p>
+   * Description: <b>The territory (e.g., country, jurisdiction etc.) in which the authorization has been granted</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RegulatedAuthorization.region</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam REGION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_REGION);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>The status that is authorised e.g. approved. Intermediate states can be tracked with cases and applications</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RegulatedAuthorization.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="RegulatedAuthorization.status", description="The status that is authorised e.g. approved. Intermediate states can be tracked with cases and applications", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>The status that is authorised e.g. approved. Intermediate states can be tracked with cases and applications</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>RegulatedAuthorization.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>The type of regulated product, treatment, facility or activity that is being authorized</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RegulatedAuthorization.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="RegulatedAuthorization.subject", description="The type of regulated product, treatment, facility or activity that is being authorized", type="reference", target={ActivityDefinition.class, BiologicallyDerivedProduct.class, DeviceDefinition.class, Ingredient.class, Location.class, MedicinalProductDefinition.class, NutritionProduct.class, ObservationDefinition.class, Organization.class, PackagedProductDefinition.class, PlanDefinition.class, Practitioner.class, ResearchStudy.class, SubstanceDefinition.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>The type of regulated product, treatment, facility or activity that is being authorized</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>RegulatedAuthorization.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>RegulatedAuthorization:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("RegulatedAuthorization:subject").toLocked();
+
 
 }
 
