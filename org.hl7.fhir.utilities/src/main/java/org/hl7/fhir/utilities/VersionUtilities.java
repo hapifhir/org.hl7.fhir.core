@@ -554,5 +554,9 @@ public class VersionUtilities {
     }
   }
 
+  public static boolean isR4Plus(String version) {
+    return version != null && (version.startsWith("4.") || version.startsWith("5.") || "current".equals(version));
+  }
+
 
 }
