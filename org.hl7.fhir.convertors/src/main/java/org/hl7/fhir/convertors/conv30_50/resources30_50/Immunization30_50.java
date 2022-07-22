@@ -107,7 +107,7 @@ public class Immunization30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Immunization.ImmunizationPractitionerComponent tgt = new org.hl7.fhir.dstu3.model.Immunization.ImmunizationPractitionerComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasFunction())
       tgt.setRole(CodeableConcept30_50.convertCodeableConcept(src.getFunction()));
     if (src.hasActor())
@@ -119,7 +119,7 @@ public class Immunization30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Immunization.ImmunizationPerformerComponent tgt = new org.hl7.fhir.r5.model.Immunization.ImmunizationPerformerComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasRole())
       tgt.setFunction(CodeableConcept30_50.convertCodeableConcept(src.getRole()));
     if (src.hasActor())

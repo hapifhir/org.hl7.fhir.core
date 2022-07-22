@@ -89,7 +89,7 @@ public class ClinicalImpression30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionFindingComponent tgt = new org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionFindingComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasItem() && src.getItem().hasConcept())
       tgt.setItem(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getItem().getConcept()));
     else if (src.hasItem() && src.getItem().hasReference())
@@ -103,7 +103,7 @@ public class ClinicalImpression30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionFindingComponent tgt = new org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionFindingComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasItemCodeableConcept())
       tgt.setItem(Reference30_50.convertCodeableConceptToCodableReference(src.getItemCodeableConcept()));
     if (src.hasItemReference())

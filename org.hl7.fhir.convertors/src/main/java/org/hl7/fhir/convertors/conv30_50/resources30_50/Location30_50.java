@@ -123,7 +123,7 @@ public class Location30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Location.LocationPositionComponent tgt = new org.hl7.fhir.dstu3.model.Location.LocationPositionComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasLongitude())
       tgt.setLongitudeElement(Decimal30_50.convertDecimal(src.getLongitudeElement()));
     if (src.hasLatitude())
@@ -137,7 +137,7 @@ public class Location30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Location.LocationPositionComponent tgt = new org.hl7.fhir.r5.model.Location.LocationPositionComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasLongitude())
       tgt.setLongitudeElement(Decimal30_50.convertDecimal(src.getLongitudeElement()));
     if (src.hasLatitude())
