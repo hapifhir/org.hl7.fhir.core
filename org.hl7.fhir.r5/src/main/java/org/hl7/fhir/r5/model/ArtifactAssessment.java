@@ -2196,6 +2196,26 @@ public class ArtifactAssessment extends DomainResource {
     return ResourceType.ArtifactAssessment;
    }
 
+ /**
+   * Search parameter: <b>date</b>
+   * <p>
+   * Description: <b>The artifact assessment publication date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>ArtifactAssessment.date</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="date", path="ArtifactAssessment.date", description="The artifact assessment publication date", type="date" )
+  public static final String SP_DATE = "date";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>date</b>
+   * <p>
+   * Description: <b>The artifact assessment publication date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>ArtifactAssessment.date</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+
 
 }
 

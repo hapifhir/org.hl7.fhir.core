@@ -5428,6 +5428,46 @@ public class Transport extends DomainResource {
     return ResourceType.Transport;
    }
 
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>External identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Transport.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="Transport.identifier", description="External identifier", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>External identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Transport.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>in-progress | completed | entered-in-error</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Transport.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="Transport.status", description="in-progress | completed | entered-in-error", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>in-progress | completed | entered-in-error</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Transport.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
 
 }
 

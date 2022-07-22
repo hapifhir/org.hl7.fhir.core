@@ -37,7 +37,7 @@ public class Analyser {
   public Analysis analyse(StructureDefinition sd) throws Exception {
     Analysis res = new Analysis(definitions, sd);
 
-    if (VersionUtilities.isR4BVer(version)) {
+          if (VersionUtilities.isR4BVer(version)) {
       res.setAncestor(definitions.getStructures().get(getR4bAncestor(sd)));
     } else {
       res.setAncestor(definitions.getStructures().get(sd.getBaseDefinition()));

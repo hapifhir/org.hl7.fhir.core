@@ -6034,6 +6034,356 @@ public class ResearchStudy extends DomainResource {
     return ResourceType.ResearchStudy;
    }
 
+ /**
+   * Search parameter: <b>category</b>
+   * <p>
+   * Description: <b>Classifications for the study</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.category</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="category", path="ResearchStudy.category", description="Classifications for the study", type="token" )
+  public static final String SP_CATEGORY = "category";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>category</b>
+   * <p>
+   * Description: <b>Classifications for the study</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.category</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CATEGORY);
+
+ /**
+   * Search parameter: <b>condition</b>
+   * <p>
+   * Description: <b>Condition being studied</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.condition</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="condition", path="ResearchStudy.condition", description="Condition being studied", type="token" )
+  public static final String SP_CONDITION = "condition";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>condition</b>
+   * <p>
+   * Description: <b>Condition being studied</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.condition</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONDITION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONDITION);
+
+ /**
+   * Search parameter: <b>date</b>
+   * <p>
+   * Description: <b>When the study began and ended</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>ResearchStudy.period</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="date", path="ResearchStudy.period", description="When the study began and ended", type="date" )
+  public static final String SP_DATE = "date";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>date</b>
+   * <p>
+   * Description: <b>When the study began and ended</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>ResearchStudy.period</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+
+ /**
+   * Search parameter: <b>focus</b>
+   * <p>
+   * Description: <b>Drugs, devices, etc. under study</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.focus</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="focus", path="ResearchStudy.focus", description="Drugs, devices, etc. under study", type="token" )
+  public static final String SP_FOCUS = "focus";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>focus</b>
+   * <p>
+   * Description: <b>Drugs, devices, etc. under study</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.focus</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam FOCUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FOCUS);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Business Identifier for study</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="ResearchStudy.identifier", description="Business Identifier for study", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Business Identifier for study</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>keyword</b>
+   * <p>
+   * Description: <b>Used to search for the study</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.keyword</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="keyword", path="ResearchStudy.keyword", description="Used to search for the study", type="token" )
+  public static final String SP_KEYWORD = "keyword";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>keyword</b>
+   * <p>
+   * Description: <b>Used to search for the study</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.keyword</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam KEYWORD = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_KEYWORD);
+
+ /**
+   * Search parameter: <b>location</b>
+   * <p>
+   * Description: <b>Geographic region(s) for study</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.location</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="location", path="ResearchStudy.location", description="Geographic region(s) for study", type="token" )
+  public static final String SP_LOCATION = "location";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>location</b>
+   * <p>
+   * Description: <b>Geographic region(s) for study</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.location</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam LOCATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_LOCATION);
+
+ /**
+   * Search parameter: <b>partof</b>
+   * <p>
+   * Description: <b>Part of larger study</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ResearchStudy.partOf</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="partof", path="ResearchStudy.partOf", description="Part of larger study", type="reference", target={ResearchStudy.class } )
+  public static final String SP_PARTOF = "partof";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>partof</b>
+   * <p>
+   * Description: <b>Part of larger study</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ResearchStudy.partOf</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PARTOF = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PARTOF);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ResearchStudy:partof</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PARTOF = new ca.uhn.fhir.model.api.Include("ResearchStudy:partof").toLocked();
+
+ /**
+   * Search parameter: <b>principalinvestigator</b>
+   * <p>
+   * Description: <b>Researcher who oversees multiple aspects of the study</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ResearchStudy.principalInvestigator</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="principalinvestigator", path="ResearchStudy.principalInvestigator", description="Researcher who oversees multiple aspects of the study", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Practitioner.class, PractitionerRole.class } )
+  public static final String SP_PRINCIPALINVESTIGATOR = "principalinvestigator";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>principalinvestigator</b>
+   * <p>
+   * Description: <b>Researcher who oversees multiple aspects of the study</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ResearchStudy.principalInvestigator</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PRINCIPALINVESTIGATOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PRINCIPALINVESTIGATOR);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ResearchStudy:principalinvestigator</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PRINCIPALINVESTIGATOR = new ca.uhn.fhir.model.api.Include("ResearchStudy:principalinvestigator").toLocked();
+
+ /**
+   * Search parameter: <b>protocol</b>
+   * <p>
+   * Description: <b>Steps followed in executing study</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ResearchStudy.protocol</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="protocol", path="ResearchStudy.protocol", description="Steps followed in executing study", type="reference", target={PlanDefinition.class } )
+  public static final String SP_PROTOCOL = "protocol";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>protocol</b>
+   * <p>
+   * Description: <b>Steps followed in executing study</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ResearchStudy.protocol</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PROTOCOL = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PROTOCOL);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ResearchStudy:protocol</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PROTOCOL = new ca.uhn.fhir.model.api.Include("ResearchStudy:protocol").toLocked();
+
+ /**
+   * Search parameter: <b>recruitment_actual</b>
+   * <p>
+   * Description: <b>Actual number of participants enrolled in study across all groups</b><br>
+   * Type: <b>number</b><br>
+   * Path: <b>ResearchStudy.recruitment.actualNumber</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="recruitment_actual", path="ResearchStudy.recruitment.actualNumber", description="Actual number of participants enrolled in study across all groups", type="number" )
+  public static final String SP_RECRUITMENTACTUAL = "recruitment_actual";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>recruitment_actual</b>
+   * <p>
+   * Description: <b>Actual number of participants enrolled in study across all groups</b><br>
+   * Type: <b>number</b><br>
+   * Path: <b>ResearchStudy.recruitment.actualNumber</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.NumberClientParam RECRUITMENTACTUAL = new ca.uhn.fhir.rest.gclient.NumberClientParam(SP_RECRUITMENTACTUAL);
+
+ /**
+   * Search parameter: <b>recruitment_target</b>
+   * <p>
+   * Description: <b>Target number of participants enrolled in study across all groups</b><br>
+   * Type: <b>number</b><br>
+   * Path: <b>ResearchStudy.recruitment.targetNumber</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="recruitment_target", path="ResearchStudy.recruitment.targetNumber", description="Target number of participants enrolled in study across all groups", type="number" )
+  public static final String SP_RECRUITMENTTARGET = "recruitment_target";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>recruitment_target</b>
+   * <p>
+   * Description: <b>Target number of participants enrolled in study across all groups</b><br>
+   * Type: <b>number</b><br>
+   * Path: <b>ResearchStudy.recruitment.targetNumber</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.NumberClientParam RECRUITMENTTARGET = new ca.uhn.fhir.rest.gclient.NumberClientParam(SP_RECRUITMENTTARGET);
+
+ /**
+   * Search parameter: <b>site</b>
+   * <p>
+   * Description: <b>Facility where study activities are conducted</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ResearchStudy.site</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="site", path="ResearchStudy.site", description="Facility where study activities are conducted", type="reference", target={Location.class, Organization.class, ResearchStudy.class } )
+  public static final String SP_SITE = "site";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>site</b>
+   * <p>
+   * Description: <b>Facility where study activities are conducted</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ResearchStudy.site</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SITE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SITE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ResearchStudy:site</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SITE = new ca.uhn.fhir.model.api.Include("ResearchStudy:site").toLocked();
+
+ /**
+   * Search parameter: <b>sponsor</b>
+   * <p>
+   * Description: <b>Organization that initiates and is legally responsible for the study</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ResearchStudy.sponsor</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="sponsor", path="ResearchStudy.sponsor", description="Organization that initiates and is legally responsible for the study", type="reference", target={Organization.class } )
+  public static final String SP_SPONSOR = "sponsor";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>sponsor</b>
+   * <p>
+   * Description: <b>Organization that initiates and is legally responsible for the study</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ResearchStudy.sponsor</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SPONSOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SPONSOR);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ResearchStudy:sponsor</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SPONSOR = new ca.uhn.fhir.model.api.Include("ResearchStudy:sponsor").toLocked();
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>active | active-but-not-recruiting | administratively-completed | approved | closed-to-accrual | closed-to-accrual-and-intervention | completed | disapproved | enrolling-by-invitation | in-review | not-yet-recruiting | recruiting | temporarily-closed-to-accrual | temporarily-closed-to-accrual-and-intervention | terminated | withdrawn</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="ResearchStudy.status", description="active | active-but-not-recruiting | administratively-completed | approved | closed-to-accrual | closed-to-accrual-and-intervention | completed | disapproved | enrolling-by-invitation | in-review | not-yet-recruiting | recruiting | temporarily-closed-to-accrual | temporarily-closed-to-accrual-and-intervention | terminated | withdrawn", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>active | active-but-not-recruiting | administratively-completed | approved | closed-to-accrual | closed-to-accrual-and-intervention | completed | disapproved | enrolling-by-invitation | in-review | not-yet-recruiting | recruiting | temporarily-closed-to-accrual | temporarily-closed-to-accrual-and-intervention | terminated | withdrawn</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchStudy.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>title</b>
+   * <p>
+   * Description: <b>Name for this study</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ResearchStudy.title</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="title", path="ResearchStudy.title", description="Name for this study", type="string" )
+  public static final String SP_TITLE = "title";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>title</b>
+   * <p>
+   * Description: <b>Name for this study</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>ResearchStudy.title</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
+
 
 }
 

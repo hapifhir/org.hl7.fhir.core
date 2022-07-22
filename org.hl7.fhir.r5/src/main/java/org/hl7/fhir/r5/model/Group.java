@@ -1773,6 +1773,218 @@ public class Group extends DomainResource {
     return ResourceType.Group;
    }
 
+ /**
+   * Search parameter: <b>actual</b>
+   * <p>
+   * Description: <b>Descriptive or actual</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Group.actual</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="actual", path="Group.actual", description="Descriptive or actual", type="token" )
+  public static final String SP_ACTUAL = "actual";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>actual</b>
+   * <p>
+   * Description: <b>Descriptive or actual</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Group.actual</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ACTUAL = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ACTUAL);
+
+ /**
+   * Search parameter: <b>characteristic-value</b>
+   * <p>
+   * Description: <b>A composite of both characteristic and value</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>Group.characteristic</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="characteristic-value", path="Group.characteristic", description="A composite of both characteristic and value", type="composite", compositeOf={"characteristic", "value"} )
+  public static final String SP_CHARACTERISTIC_VALUE = "characteristic-value";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>characteristic-value</b>
+   * <p>
+   * Description: <b>A composite of both characteristic and value</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>Group.characteristic</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CHARACTERISTIC_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CHARACTERISTIC_VALUE);
+
+ /**
+   * Search parameter: <b>characteristic</b>
+   * <p>
+   * Description: <b>Kind of characteristic</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Group.characteristic.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="characteristic", path="Group.characteristic.code", description="Kind of characteristic", type="token" )
+  public static final String SP_CHARACTERISTIC = "characteristic";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>characteristic</b>
+   * <p>
+   * Description: <b>Kind of characteristic</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Group.characteristic.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CHARACTERISTIC = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CHARACTERISTIC);
+
+ /**
+   * Search parameter: <b>code</b>
+   * <p>
+   * Description: <b>The kind of resources contained</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Group.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="code", path="Group.code", description="The kind of resources contained", type="token" )
+  public static final String SP_CODE = "code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>code</b>
+   * <p>
+   * Description: <b>The kind of resources contained</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Group.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
+
+ /**
+   * Search parameter: <b>exclude</b>
+   * <p>
+   * Description: <b>Group includes or excludes</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Group.characteristic.exclude</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="exclude", path="Group.characteristic.exclude", description="Group includes or excludes", type="token" )
+  public static final String SP_EXCLUDE = "exclude";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>exclude</b>
+   * <p>
+   * Description: <b>Group includes or excludes</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Group.characteristic.exclude</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EXCLUDE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EXCLUDE);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Unique id</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Group.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="Group.identifier", description="Unique id", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Unique id</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Group.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>managing-entity</b>
+   * <p>
+   * Description: <b>Entity that is the custodian of the Group's definition</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Group.managingEntity</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="managing-entity", path="Group.managingEntity", description="Entity that is the custodian of the Group's definition", type="reference", target={Organization.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_MANAGING_ENTITY = "managing-entity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>managing-entity</b>
+   * <p>
+   * Description: <b>Entity that is the custodian of the Group's definition</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Group.managingEntity</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MANAGING_ENTITY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MANAGING_ENTITY);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Group:managing-entity</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_MANAGING_ENTITY = new ca.uhn.fhir.model.api.Include("Group:managing-entity").toLocked();
+
+ /**
+   * Search parameter: <b>member</b>
+   * <p>
+   * Description: <b>Reference to the group member</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Group.member.entity</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="member", path="Group.member.entity", description="Reference to the group member", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Device.class, Group.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, Specimen.class } )
+  public static final String SP_MEMBER = "member";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>member</b>
+   * <p>
+   * Description: <b>Reference to the group member</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Group.member.entity</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MEMBER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MEMBER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Group:member</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_MEMBER = new ca.uhn.fhir.model.api.Include("Group:member").toLocked();
+
+ /**
+   * Search parameter: <b>type</b>
+   * <p>
+   * Description: <b>The type of resources the group contains</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Group.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="type", path="Group.type", description="The type of resources the group contains", type="token" )
+  public static final String SP_TYPE = "type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>type</b>
+   * <p>
+   * Description: <b>The type of resources the group contains</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Group.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
+
+ /**
+   * Search parameter: <b>value</b>
+   * <p>
+   * Description: <b>Value held by characteristic</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(Group.characteristic.value as CodeableConcept) | (Group.characteristic.value as boolean)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="value", path="(Group.characteristic.value as CodeableConcept) | (Group.characteristic.value as boolean)", description="Value held by characteristic", type="token" )
+  public static final String SP_VALUE = "value";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>value</b>
+   * <p>
+   * Description: <b>Value held by characteristic</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(Group.characteristic.value as CodeableConcept) | (Group.characteristic.value as boolean)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VALUE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VALUE);
+
 
 }
 
