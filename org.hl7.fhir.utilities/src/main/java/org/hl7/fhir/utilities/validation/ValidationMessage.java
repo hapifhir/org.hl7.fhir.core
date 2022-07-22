@@ -526,7 +526,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   }
 
   public ValidationMessage(Source source, IssueType type, String path, String message, IssueSeverity level) {
-    super();
+    this();
     this.line = -1;
     this.col = -1;
     this.location = path;
@@ -544,7 +544,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   }
 
   public ValidationMessage(Source source, IssueType type, int line, int col, String path, String message, IssueSeverity level) {
-    super();
+    this();
     this.line = line;
     this.col = col;
     this.location = path;
@@ -560,7 +560,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   }
 
   public ValidationMessage(Source source, IssueType type, String path, String message, String html, IssueSeverity level) {
-    super();
+    this();
     this.line = -1;
     this.col = -1;
     this.location = path;
@@ -578,7 +578,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   }
 
   public ValidationMessage(Source source, IssueType type, int line, int col, String path, String message, String html, IssueSeverity level) {
-    super();
+    this();
     this.line = line;
     this.col = col;
     this.location = path;

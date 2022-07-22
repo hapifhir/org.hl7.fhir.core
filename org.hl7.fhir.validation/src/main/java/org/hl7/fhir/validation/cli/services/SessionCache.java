@@ -60,6 +60,19 @@ public class SessionCache {
   }
 
   /**
+   * When called, this actively checks the cache for expired entries and removes
+   * them.
+   */
+  public void removeExpiredSessions() {
+    /*
+    The PassiveExpiringMap will remove entries when accessing the mapped value
+    for a key, OR when invoking methods that involve accessing the entire map
+    contents. So, we call keySet below to force removal of all expired entries.
+    * */
+    cachedSessions.keySet();
+  }
+
+  /**
    * Checks if the passed in {@link String} id exists in the set of stored session id.
    * @param sessionId The {@link String} id to search for.
    * @return {@link Boolean#TRUE} if such id exists.

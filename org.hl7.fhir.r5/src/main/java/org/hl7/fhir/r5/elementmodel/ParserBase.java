@@ -40,7 +40,6 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -54,6 +53,18 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
 public abstract class ParserBase {
+
+  public enum IdRenderingPolicy {
+    All, None, RootOnly, NotRoot;
+
+    boolean forRoot() {
+      return this == All || this == RootOnly;
+    }
+
+    boolean forInner() {
+      return this == All || this == NotRoot;
+    }
+  }
 
   public class NamedElement {
     private String name;
@@ -92,6 +103,7 @@ public abstract class ParserBase {
   protected List<ValidationMessage> errors;
   protected ILinkResolver linkResolver;
   protected boolean showDecorations;
+  protected IdRenderingPolicy idPolicy = IdRenderingPolicy.All;
   
 	public ParserBase(IWorkerContext context) {
 		super();
@@ -193,5 +205,24 @@ public abstract class ParserBase {
     return null;
   }
 
+
+  public IdRenderingPolicy getIdPolicy() {
+    return idPolicy;
+  }
+
+  public void setIdPolicy(IdRenderingPolicy idPolicy) {
+    this.idPolicy = idPolicy;
+  }
+
+  protected boolean wantCompose(String path, Element e) {
+    if (!"id".equals(e.getName())) {
+      return true;
+    }
+    if (path.contains(".")) {
+      return idPolicy.forInner();
+    } else {
+      return idPolicy.forRoot();
+    }
+  }
 
 }

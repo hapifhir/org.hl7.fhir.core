@@ -1348,7 +1348,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (shortCut) {
             // this is the short cut method, we've just dived in and specified a type slice.
             // in R3 (and unpatched R4, as a workaround right now...
-            if (!FHIRVersion.isR4Plus(context.getVersion()) || !newSlicingProcessing) { // newSlicingProcessing is a work around for editorial loop dependency
+            if (!VersionUtilities.isR4Plus(context.getVersion()) || !newSlicingProcessing) { // newSlicingProcessing is a work around for editorial loop dependency
               // we insert a cloned element with the right types at the start of the diffMatches
               ElementDefinition ed = new ElementDefinition();
               ed.setPath(determineTypeSlicePath(diffMatches.get(0).getPath(), cpath));
@@ -1646,7 +1646,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (shortCut) {
             // this is the short cut method, we've just dived in and specified a type slice.
             // in R3 (and unpatched R4, as a workaround right now...
-            if (!FHIRVersion.isR4Plus(context.getVersion()) || !newSlicingProcessing) { // newSlicingProcessing is a work around for editorial loop dependency
+            if (!VersionUtilities.isR4Plus(context.getVersion()) || !newSlicingProcessing) { // newSlicingProcessing is a work around for editorial loop dependency
               // we insert a cloned element with the right types at the start of the diffMatches
               ElementDefinition ed = new ElementDefinition();
               ed.setPath(determineTypeSlicePath(diffMatches.get(0).getPath(), cpath));
@@ -4229,14 +4229,16 @@ public class ProfileUtilities extends TranslatingUtilities {
         Row currRow = row;
         List<ElementChoiceGroup> groups = readChoices(element, children);
         boolean isExtension = Utilities.existsInList(tail(element.getPath()), "extension", "modifierExtension");
-        for (ElementDefinition child : children) {
-          if (!child.hasSliceName()) {
-            currRow = row; 
-          }
-          Row childRow = chooseChildRowByGroup(gen, currRow, groups, child, element, isConstraintMode);
-          
-          if (logicalModel || !child.getPath().endsWith(".id") || (child.getPath().endsWith(".id") && (profile != null) && (profile.getDerivation() == TypeDerivationRule.CONSTRAINT))) {  
-            currRow = genElement(defPath, gen, childRow.getSubRows(), child, all, profiles, showMissing, profileBaseFileName, isExtension, snapshot, corePath, imagePath, false, logicalModel, isConstraintMode, allInvariants, currRow, mustSupport, rc);
+        if (!element.prohibited()) {
+          for (ElementDefinition child : children) {
+            if (!child.hasSliceName()) {
+              currRow = row; 
+            }
+            Row childRow = chooseChildRowByGroup(gen, currRow, groups, child, element, isConstraintMode);
+
+            if (logicalModel || !child.getPath().endsWith(".id") || (child.getPath().endsWith(".id") && (profile != null) && (profile.getDerivation() == TypeDerivationRule.CONSTRAINT))) {  
+              currRow = genElement(defPath, gen, childRow.getSubRows(), child, all, profiles, showMissing, profileBaseFileName, isExtension, snapshot, corePath, imagePath, false, logicalModel, isConstraintMode, allInvariants, currRow, mustSupport, rc);
+            }
           }
         }
 //        if (!snapshot && (extensions == null || !extensions))
@@ -4349,7 +4351,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           res.add(addCell(row, gen.new Cell(null, null, "?gen-e1? "+element.getType().get(0).getProfile(), null, null)));
           res.add(generateDescription(gen, row, element, (ElementDefinition) element.getUserData(DERIVATION_POINTER), used.used, profile == null ? "" : profile.getUrl(), eurl, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot, mustSupport, allowSubRows, rc));
         } else {
-          String name = urltail(eurl);
+          String name = element.hasSliceName() ? element.getSliceName() : urltail(eurl);
           nameCell.getPieces().get(0).setText(name);
           // left.getPieces().get(0).setReference((String) extDefn.getExtensionStructure().getTag("filename"));
           nameCell.getPieces().get(0).setHint(translate("sd.table", "Extension URL")+" = "+extDefn.getUrl());

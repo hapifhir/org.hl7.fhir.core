@@ -28,7 +28,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR vcurrent
+// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
 
 
   
