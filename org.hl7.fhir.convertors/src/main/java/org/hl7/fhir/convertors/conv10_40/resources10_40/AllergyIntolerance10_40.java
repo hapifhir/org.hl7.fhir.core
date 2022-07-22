@@ -67,8 +67,8 @@ public class AllergyIntolerance10_40 {
       return null;
     org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceReactionComponent tgt = new org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceReactionComponent();
     ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
-    for (org.hl7.fhir.dstu2.model.Extension extension : src.getModifierExtension())
-      tgt.addExtension(Extension10_40.convertExtension(extension));
+    //for (org.hl7.fhir.dstu2.model.Extension extension : src.getModifierExtension())
+    //  tgt.addExtension(Extension10_40.convertExtension(extension));
     if (src.hasSubstance())
       tgt.setSubstance(CodeableConcept10_40.convertCodeableConcept(src.getSubstance()));
     if (src.hasCertainty())
