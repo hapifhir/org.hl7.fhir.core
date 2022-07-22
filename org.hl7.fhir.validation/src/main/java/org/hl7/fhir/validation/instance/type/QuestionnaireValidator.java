@@ -45,6 +45,7 @@ import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationConte
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -150,7 +151,7 @@ public class QuestionnaireValidator extends BaseValidator {
 
   private void validateQuestionnaireElement(List<ValidationMessage> errors, NodeStack ns, Element questionnaire, Element item, List<Element> parents) {
     // R4+
-    if ((FHIRVersion.isR4Plus(context.getVersion())) && (item.hasChildren("enableWhen"))) {
+    if ((VersionUtilities.isR4Plus(context.getVersion())) && (item.hasChildren("enableWhen"))) {
       List<Element> ewl = item.getChildren("enableWhen");
       for (Element ew : ewl) {
         String ql = ew.getNamedChildValue("question");
