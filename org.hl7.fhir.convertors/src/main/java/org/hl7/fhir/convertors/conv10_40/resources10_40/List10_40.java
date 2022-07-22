@@ -194,14 +194,14 @@ public class List10_40 {
   }
 
   public static void copyBackboneElement(org.hl7.fhir.r4.model.BackboneElement src, org.hl7.fhir.dstu2.model.BackboneElement tgt) throws FHIRException {
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.r4.model.Extension e : src.getModifierExtension()) {
       tgt.addModifierExtension(Extension10_40.convertExtension(e));
     }
   }
 
   public static void copyBackboneElement(org.hl7.fhir.dstu2.model.BackboneElement src, org.hl7.fhir.r4.model.BackboneElement tgt) throws FHIRException {
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu2.model.Extension e : src.getModifierExtension()) {
       tgt.addModifierExtension(Extension10_40.convertExtension(e));
     }

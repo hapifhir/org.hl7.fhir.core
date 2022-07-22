@@ -70,7 +70,7 @@ public class DeviceMetric10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricCalibrationComponent tgt = new org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricCalibrationComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasType())
       tgt.setTypeElement(convertDeviceMetricCalibrationType(src.getTypeElement()));
     if (src.hasState())
@@ -84,7 +84,7 @@ public class DeviceMetric10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCalibrationComponent tgt = new org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCalibrationComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasType())
       tgt.setTypeElement(convertDeviceMetricCalibrationType(src.getTypeElement()));
     if (src.hasState())

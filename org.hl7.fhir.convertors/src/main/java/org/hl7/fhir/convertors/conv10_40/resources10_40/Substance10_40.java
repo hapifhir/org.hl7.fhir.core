@@ -56,7 +56,7 @@ public class Substance10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Substance.SubstanceIngredientComponent tgt = new org.hl7.fhir.dstu2.model.Substance.SubstanceIngredientComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasQuantity())
       tgt.setQuantity(Ratio10_40.convertRatio(src.getQuantity()));
     return tgt;
@@ -66,7 +66,7 @@ public class Substance10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Substance.SubstanceIngredientComponent tgt = new org.hl7.fhir.r4.model.Substance.SubstanceIngredientComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasQuantity())
       tgt.setQuantity(Ratio10_40.convertRatio(src.getQuantity()));
     if (src.hasSubstance())
@@ -78,7 +78,7 @@ public class Substance10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Substance.SubstanceInstanceComponent tgt = new org.hl7.fhir.r4.model.Substance.SubstanceInstanceComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasIdentifier())
       tgt.setIdentifier(Identifier10_40.convertIdentifier(src.getIdentifier()));
     if (src.hasExpiryElement())
@@ -92,7 +92,7 @@ public class Substance10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Substance.SubstanceInstanceComponent tgt = new org.hl7.fhir.dstu2.model.Substance.SubstanceInstanceComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasIdentifier())
       tgt.setIdentifier(Identifier10_40.convertIdentifier(src.getIdentifier()));
     if (src.hasExpiryElement())

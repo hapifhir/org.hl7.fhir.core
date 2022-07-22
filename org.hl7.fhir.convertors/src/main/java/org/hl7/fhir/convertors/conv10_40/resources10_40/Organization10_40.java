@@ -59,7 +59,7 @@ public class Organization10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Organization.OrganizationContactComponent tgt = new org.hl7.fhir.dstu2.model.Organization.OrganizationContactComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasPurpose())
       tgt.setPurpose(CodeableConcept10_40.convertCodeableConcept(src.getPurpose()));
     if (src.hasName())
@@ -75,7 +75,7 @@ public class Organization10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Organization.OrganizationContactComponent tgt = new org.hl7.fhir.r4.model.Organization.OrganizationContactComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasPurpose())
       tgt.setPurpose(CodeableConcept10_40.convertCodeableConcept(src.getPurpose()));
     if (src.hasName())

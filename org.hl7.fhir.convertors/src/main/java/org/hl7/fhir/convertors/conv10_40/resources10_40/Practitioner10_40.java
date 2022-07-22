@@ -64,7 +64,7 @@ public class Practitioner10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Practitioner.PractitionerQualificationComponent tgt = new org.hl7.fhir.dstu2.model.Practitioner.PractitionerQualificationComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_40.convertIdentifier(t));
     if (src.hasCode())
@@ -80,7 +80,7 @@ public class Practitioner10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Practitioner.PractitionerQualificationComponent tgt = new org.hl7.fhir.r4.model.Practitioner.PractitionerQualificationComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_40.convertIdentifier(t));
     if (src.hasCode())
