@@ -2,9 +2,11 @@ package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_30;
 import org.hl7.fhir.convertors.context.ConversionContext10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.BackboneElement10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Element10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Type10_30;
 import org.hl7.fhir.convertors.conv10_30.resources10_30.Resource10_30;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.BackboneElement10_40;
 import org.hl7.fhir.dstu2.model.CodeableConcept;
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -42,12 +44,15 @@ public class VersionConvertor_10_30 {
 
   private final BaseAdvisor_10_30 advisor;
   private final Element10_30 elementConvertor;
+
+  private final BackboneElement10_30 backboneElementConvertor;
   private final Resource10_30 resourceConvertor;
   private final Type10_30 typeConvertor;
 
   public VersionConvertor_10_30(@Nonnull BaseAdvisor_10_30 advisor) {
     this.advisor = advisor;
     this.elementConvertor = new Element10_30(advisor);
+    this.backboneElementConvertor = new BackboneElement10_30();
     this.resourceConvertor = new Resource10_30(advisor);
     this.typeConvertor = new Type10_30(advisor);
   }
@@ -136,4 +141,15 @@ public class VersionConvertor_10_30 {
     elementConvertor.copyElement(src, tgt, ConversionContext10_30.INSTANCE.path(), var);
   }
 
+  public void copyBackboneElement(@Nonnull org.hl7.fhir.dstu3.model.BackboneElement src,
+                                  @Nonnull org.hl7.fhir.dstu2.model.BackboneElement tgt,
+                                  String... var) throws FHIRException {
+    backboneElementConvertor.copyBackboneElement(src, tgt, var);
+  }
+
+  public void copyBackboneElement(@Nonnull org.hl7.fhir.dstu2.model.BackboneElement src,
+                                  @Nonnull org.hl7.fhir.dstu3.model.BackboneElement tgt,
+                                  String... var) throws FHIRException {
+    backboneElementConvertor.copyBackboneElement(src, tgt, var);
+  }
 }
