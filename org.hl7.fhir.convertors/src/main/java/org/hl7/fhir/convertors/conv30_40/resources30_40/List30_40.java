@@ -82,7 +82,7 @@ public class List30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ListResource.ListEntryComponent tgt = new org.hl7.fhir.dstu3.model.ListResource.ListEntryComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasFlag())
       tgt.setFlag(CodeableConcept30_40.convertCodeableConcept(src.getFlag()));
     if (src.hasDeleted())
@@ -98,7 +98,7 @@ public class List30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ListResource.ListEntryComponent tgt = new org.hl7.fhir.r4.model.ListResource.ListEntryComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasFlag())
       tgt.setFlag(CodeableConcept30_40.convertCodeableConcept(src.getFlag()));
     if (src.hasDeleted())

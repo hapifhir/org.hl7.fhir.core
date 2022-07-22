@@ -127,7 +127,7 @@ public class AuditEvent30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentComponent tgt = new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getRole())
       tgt.addRole(CodeableConcept30_40.convertCodeableConcept(t));
     if (src.hasWho()) {
@@ -158,7 +158,7 @@ public class AuditEvent30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentComponent tgt = new org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getRole())
       tgt.addRole(CodeableConcept30_40.convertCodeableConcept(t));
     if (src.hasReference())
@@ -187,7 +187,7 @@ public class AuditEvent30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkComponent tgt = new org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentNetworkComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasAddress())
       tgt.setAddressElement(String30_40.convertString(src.getAddressElement()));
     if (src.hasType())
@@ -199,7 +199,7 @@ public class AuditEvent30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkComponent tgt = new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasAddress())
       tgt.setAddressElement(String30_40.convertString(src.getAddressElement()));
     if (src.hasType())
@@ -267,7 +267,7 @@ public class AuditEvent30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.AuditEvent.AuditEventEntityComponent tgt = new org.hl7.fhir.r4.model.AuditEvent.AuditEventEntityComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasIdentifier())
       tgt.getWhat().setIdentifier(Identifier30_40.convertIdentifier(src.getIdentifier()));
     if (src.hasReference())
@@ -294,7 +294,7 @@ public class AuditEvent30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.AuditEvent.AuditEventEntityComponent tgt = new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventEntityComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasWhat()) {
       if (src.getWhat().hasIdentifier())
         tgt.setIdentifier(Identifier30_40.convertIdentifier(src.getWhat().getIdentifier()));
@@ -323,7 +323,7 @@ public class AuditEvent30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.AuditEvent.AuditEventEntityDetailComponent tgt = new org.hl7.fhir.r4.model.AuditEvent.AuditEventEntityDetailComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasType())
       tgt.setTypeElement(String30_40.convertString(src.getTypeElement()));
     if (src.hasValue())
@@ -335,7 +335,7 @@ public class AuditEvent30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.AuditEvent.AuditEventEntityDetailComponent tgt = new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventEntityDetailComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasType())
       tgt.setTypeElement(String30_40.convertString(src.getTypeElement()));
     if (src.hasValueStringType())
@@ -399,7 +399,7 @@ public class AuditEvent30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.AuditEvent.AuditEventSourceComponent tgt = new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventSourceComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasSite())
       tgt.setSiteElement(String30_40.convertString(src.getSiteElement()));
     if (src.hasObserver())
@@ -412,7 +412,7 @@ public class AuditEvent30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.AuditEvent.AuditEventSourceComponent tgt = new org.hl7.fhir.r4.model.AuditEvent.AuditEventSourceComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasSite())
       tgt.setSiteElement(String30_40.convertString(src.getSiteElement()));
     if (src.hasIdentifier())

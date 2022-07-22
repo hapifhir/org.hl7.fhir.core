@@ -154,7 +154,7 @@ public class Account30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Account.CoverageComponent tgt = new org.hl7.fhir.r4.model.Account.CoverageComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasCoverage())
       tgt.setCoverage(Reference30_40.convertReference(src.getCoverage()));
     if (src.hasPriority())
@@ -166,7 +166,7 @@ public class Account30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Account.CoverageComponent tgt = new org.hl7.fhir.dstu3.model.Account.CoverageComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasCoverage())
       tgt.setCoverage(Reference30_40.convertReference(src.getCoverage()));
     if (src.hasPriority())
@@ -178,7 +178,7 @@ public class Account30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Account.GuarantorComponent tgt = new org.hl7.fhir.r4.model.Account.GuarantorComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasParty())
       tgt.setParty(Reference30_40.convertReference(src.getParty()));
     if (src.hasOnHold())
@@ -192,7 +192,7 @@ public class Account30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Account.GuarantorComponent tgt = new org.hl7.fhir.dstu3.model.Account.GuarantorComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasParty())
       tgt.setParty(Reference30_40.convertReference(src.getParty()));
     if (src.hasOnHold())

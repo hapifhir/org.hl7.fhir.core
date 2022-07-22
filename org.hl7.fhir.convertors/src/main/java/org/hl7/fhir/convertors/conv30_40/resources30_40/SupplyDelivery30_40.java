@@ -117,7 +117,7 @@ public class SupplyDelivery30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent tgt = new org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity30_40.convertSimpleQuantity(src.getQuantity()));
     if (src.hasItem())
@@ -129,7 +129,7 @@ public class SupplyDelivery30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent tgt = new org.hl7.fhir.dstu3.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity30_40.convertSimpleQuantity(src.getQuantity()));
     if (src.hasItem())
