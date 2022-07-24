@@ -2516,6 +2516,210 @@ public class NutritionIntake extends DomainResource {
     return ResourceType.NutritionIntake;
    }
 
+ /**
+   * Search parameter: <b>code</b>
+   * <p>
+   * Description: <b>Returns statements of this code of NutritionIntake</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>NutritionIntake.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="code", path="NutritionIntake.code", description="Returns statements of this code of NutritionIntake", type="token" )
+  public static final String SP_CODE = "code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>code</b>
+   * <p>
+   * Description: <b>Returns statements of this code of NutritionIntake</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>NutritionIntake.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
+
+ /**
+   * Search parameter: <b>date</b>
+   * <p>
+   * Description: <b>Date when patient was taking (or not taking) the medication</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>NutritionIntake.occurrence</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="date", path="NutritionIntake.occurrence", description="Date when patient was taking (or not taking) the medication", type="date" )
+  public static final String SP_DATE = "date";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>date</b>
+   * <p>
+   * Description: <b>Date when patient was taking (or not taking) the medication</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>NutritionIntake.occurrence</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+
+ /**
+   * Search parameter: <b>encounter</b>
+   * <p>
+   * Description: <b>Returns statements for a specific encounter</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>NutritionIntake.encounter</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="encounter", path="NutritionIntake.encounter", description="Returns statements for a specific encounter", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Encounter") }, target={Encounter.class } )
+  public static final String SP_ENCOUNTER = "encounter";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
+   * <p>
+   * Description: <b>Returns statements for a specific encounter</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>NutritionIntake.encounter</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>NutritionIntake:encounter</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("NutritionIntake:encounter").toLocked();
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Return statements with this external identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>NutritionIntake.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="NutritionIntake.identifier", description="Return statements with this external identifier", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Return statements with this external identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>NutritionIntake.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>nutrition</b>
+   * <p>
+   * Description: <b>Return intakes for a specific consumed item</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>NutritionIntake.consumedItem.nutritionProduct.concept</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="nutrition", path="NutritionIntake.consumedItem.nutritionProduct.concept", description="Return intakes for a specific consumed item", type="token" )
+  public static final String SP_NUTRITION = "nutrition";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>nutrition</b>
+   * <p>
+   * Description: <b>Return intakes for a specific consumed item</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>NutritionIntake.consumedItem.nutritionProduct.concept</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam NUTRITION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_NUTRITION);
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>Returns statements for a specific patient.</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>NutritionIntake.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="NutritionIntake.subject.where(resolve() is Patient)", description="Returns statements for a specific patient.", type="reference", target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>Returns statements for a specific patient.</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>NutritionIntake.subject.where(resolve() is Patient)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>NutritionIntake:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("NutritionIntake:patient").toLocked();
+
+ /**
+   * Search parameter: <b>source</b>
+   * <p>
+   * Description: <b>Who or where the information in the statement came from</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>(NutritionIntake.reported as Reference)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="source", path="(NutritionIntake.reported as Reference)", description="Who or where the information in the statement came from", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_SOURCE = "source";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>source</b>
+   * <p>
+   * Description: <b>Who or where the information in the statement came from</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>(NutritionIntake.reported as Reference)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SOURCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SOURCE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>NutritionIntake:source</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SOURCE = new ca.uhn.fhir.model.api.Include("NutritionIntake:source").toLocked();
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>Return statements that match the given status</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>NutritionIntake.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="NutritionIntake.status", description="Return statements that match the given status", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>Return statements that match the given status</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>NutritionIntake.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>The identity of a patient, animal or group to list statements for</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>NutritionIntake.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="NutritionIntake.subject", description="The identity of a patient, animal or group to list statements for", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Group.class, Patient.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>The identity of a patient, animal or group to list statements for</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>NutritionIntake.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>NutritionIntake:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("NutritionIntake:subject").toLocked();
+
 
 }
 

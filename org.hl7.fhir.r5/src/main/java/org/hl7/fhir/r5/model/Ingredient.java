@@ -2514,6 +2514,190 @@ public class Ingredient extends DomainResource {
     return ResourceType.Ingredient;
    }
 
+ /**
+   * Search parameter: <b>for</b>
+   * <p>
+   * Description: <b>The product which this ingredient is a constituent part of</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Ingredient.for</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="for", path="Ingredient.for", description="The product which this ingredient is a constituent part of", type="reference", target={AdministrableProductDefinition.class, ManufacturedItemDefinition.class, MedicinalProductDefinition.class } )
+  public static final String SP_FOR = "for";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>for</b>
+   * <p>
+   * Description: <b>The product which this ingredient is a constituent part of</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Ingredient.for</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam FOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_FOR);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Ingredient:for</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_FOR = new ca.uhn.fhir.model.api.Include("Ingredient:for").toLocked();
+
+ /**
+   * Search parameter: <b>function</b>
+   * <p>
+   * Description: <b>A classification of the ingredient identifying its precise purpose(s) in the drug product. This extends the Ingredient.role to add more detail. Example: Antioxidant, Alkalizing Agent</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Ingredient.function</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="function", path="Ingredient.function", description="A classification of the ingredient identifying its precise purpose(s) in the drug product. This extends the Ingredient.role to add more detail. Example: Antioxidant, Alkalizing Agent", type="token" )
+  public static final String SP_FUNCTION = "function";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>function</b>
+   * <p>
+   * Description: <b>A classification of the ingredient identifying its precise purpose(s) in the drug product. This extends the Ingredient.role to add more detail. Example: Antioxidant, Alkalizing Agent</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Ingredient.function</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam FUNCTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_FUNCTION);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>An identifier or code by which the ingredient can be referenced</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Ingredient.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="Ingredient.identifier", description="An identifier or code by which the ingredient can be referenced", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>An identifier or code by which the ingredient can be referenced</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Ingredient.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>manufacturer</b>
+   * <p>
+   * Description: <b>The organization that manufactures this ingredient</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Ingredient.manufacturer</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="manufacturer", path="Ingredient.manufacturer", description="The organization that manufactures this ingredient", type="reference" )
+  public static final String SP_MANUFACTURER = "manufacturer";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>manufacturer</b>
+   * <p>
+   * Description: <b>The organization that manufactures this ingredient</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Ingredient.manufacturer</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MANUFACTURER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MANUFACTURER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Ingredient:manufacturer</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_MANUFACTURER = new ca.uhn.fhir.model.api.Include("Ingredient:manufacturer").toLocked();
+
+ /**
+   * Search parameter: <b>role</b>
+   * <p>
+   * Description: <b>A classification of the ingredient identifying its purpose within the product, e.g. active, inactive</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Ingredient.role</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="role", path="Ingredient.role", description="A classification of the ingredient identifying its purpose within the product, e.g. active, inactive", type="token" )
+  public static final String SP_ROLE = "role";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>role</b>
+   * <p>
+   * Description: <b>A classification of the ingredient identifying its purpose within the product, e.g. active, inactive</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Ingredient.role</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ROLE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ROLE);
+
+ /**
+   * Search parameter: <b>substance-code</b>
+   * <p>
+   * Description: <b>Reference to a concept (by class)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Ingredient.substance.code.concept</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="substance-code", path="Ingredient.substance.code.concept", description="Reference to a concept (by class)", type="token" )
+  public static final String SP_SUBSTANCE_CODE = "substance-code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>substance-code</b>
+   * <p>
+   * Description: <b>Reference to a concept (by class)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Ingredient.substance.code.concept</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SUBSTANCE_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SUBSTANCE_CODE);
+
+ /**
+   * Search parameter: <b>substance-definition</b>
+   * <p>
+   * Description: <b>Reference to a resource (by instance)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Ingredient.substance.code.reference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="substance-definition", path="Ingredient.substance.code.reference", description="Reference to a resource (by instance)", type="reference" )
+  public static final String SP_SUBSTANCE_DEFINITION = "substance-definition";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>substance-definition</b>
+   * <p>
+   * Description: <b>Reference to a resource (by instance)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Ingredient.substance.code.reference</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBSTANCE_DEFINITION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBSTANCE_DEFINITION);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Ingredient:substance-definition</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBSTANCE_DEFINITION = new ca.uhn.fhir.model.api.Include("Ingredient:substance-definition").toLocked();
+
+ /**
+   * Search parameter: <b>substance</b>
+   * <p>
+   * Description: <b>Reference to a resource (by instance)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Ingredient.substance.code.reference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="substance", path="Ingredient.substance.code.reference", description="Reference to a resource (by instance)", type="reference" )
+  public static final String SP_SUBSTANCE = "substance";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>substance</b>
+   * <p>
+   * Description: <b>Reference to a resource (by instance)</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Ingredient.substance.code.reference</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBSTANCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBSTANCE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Ingredient:substance</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBSTANCE = new ca.uhn.fhir.model.api.Include("Ingredient:substance").toLocked();
+
 
 }
 

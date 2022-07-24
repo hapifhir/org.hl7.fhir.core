@@ -2297,6 +2297,72 @@ public class MolecularSequence extends DomainResource {
     return ResourceType.MolecularSequence;
    }
 
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>The unique identity for a particular sequence</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MolecularSequence.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="MolecularSequence.identifier", description="The unique identity for a particular sequence", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>The unique identity for a particular sequence</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MolecularSequence.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>The subject that the sequence is about</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MolecularSequence.patient</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="MolecularSequence.patient", description="The subject that the sequence is about", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>The subject that the sequence is about</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MolecularSequence.patient</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>MolecularSequence:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("MolecularSequence:patient").toLocked();
+
+ /**
+   * Search parameter: <b>type</b>
+   * <p>
+   * Description: <b>Amino Acid Sequence/ DNA Sequence / RNA Sequence</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MolecularSequence.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="type", path="MolecularSequence.type", description="Amino Acid Sequence/ DNA Sequence / RNA Sequence", type="token" )
+  public static final String SP_TYPE = "type";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>type</b>
+   * <p>
+   * Description: <b>Amino Acid Sequence/ DNA Sequence / RNA Sequence</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MolecularSequence.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
+
 
 }
 

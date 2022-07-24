@@ -1655,6 +1655,158 @@ public class BiologicallyDerivedProduct extends DomainResource {
     return ResourceType.BiologicallyDerivedProduct;
    }
 
+ /**
+   * Search parameter: <b>biological-source-event</b>
+   * <p>
+   * Description: <b>The biological source for the biologically derived product</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.biologicalSourceEvent</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="biological-source-event", path="BiologicallyDerivedProduct.biologicalSourceEvent", description="The biological source for the biologically derived product", type="token" )
+  public static final String SP_BIOLOGICAL_SOURCE_EVENT = "biological-source-event";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>biological-source-event</b>
+   * <p>
+   * Description: <b>The biological source for the biologically derived product</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.biologicalSourceEvent</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam BIOLOGICAL_SOURCE_EVENT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_BIOLOGICAL_SOURCE_EVENT);
+
+ /**
+   * Search parameter: <b>collector</b>
+   * <p>
+   * Description: <b>Procedure request to obtain this biologically derived product.</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>BiologicallyDerivedProduct.collection.collector</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="collector", path="BiologicallyDerivedProduct.collection.collector", description="Procedure request to obtain this biologically derived product.", type="reference", target={Practitioner.class, PractitionerRole.class } )
+  public static final String SP_COLLECTOR = "collector";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>collector</b>
+   * <p>
+   * Description: <b>Procedure request to obtain this biologically derived product.</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>BiologicallyDerivedProduct.collection.collector</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam COLLECTOR = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_COLLECTOR);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>BiologicallyDerivedProduct:collector</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_COLLECTOR = new ca.uhn.fhir.model.api.Include("BiologicallyDerivedProduct:collector").toLocked();
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="BiologicallyDerivedProduct.identifier", description="Identifier", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>product-category</b>
+   * <p>
+   * Description: <b>Broad category of this product.</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.productCategory</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="product-category", path="BiologicallyDerivedProduct.productCategory", description="Broad category of this product.", type="token" )
+  public static final String SP_PRODUCT_CATEGORY = "product-category";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>product-category</b>
+   * <p>
+   * Description: <b>Broad category of this product.</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.productCategory</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PRODUCT_CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PRODUCT_CATEGORY);
+
+ /**
+   * Search parameter: <b>product-code</b>
+   * <p>
+   * Description: <b>A code that identifies the kind of this biologically derived product (SNOMED CT code).</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.productCode</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="product-code", path="BiologicallyDerivedProduct.productCode", description="A code that identifies the kind of this biologically derived product (SNOMED CT code).", type="token" )
+  public static final String SP_PRODUCT_CODE = "product-code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>product-code</b>
+   * <p>
+   * Description: <b>A code that identifies the kind of this biologically derived product (SNOMED CT code).</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.productCode</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PRODUCT_CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PRODUCT_CODE);
+
+ /**
+   * Search parameter: <b>product-status</b>
+   * <p>
+   * Description: <b>Whether the product is currently available.</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.productStatus</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="product-status", path="BiologicallyDerivedProduct.productStatus", description="Whether the product is currently available.", type="token" )
+  public static final String SP_PRODUCT_STATUS = "product-status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>product-status</b>
+   * <p>
+   * Description: <b>Whether the product is currently available.</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>BiologicallyDerivedProduct.productStatus</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PRODUCT_STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PRODUCT_STATUS);
+
+ /**
+   * Search parameter: <b>request</b>
+   * <p>
+   * Description: <b>Procedure request to obtain this biologically derived product.</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>BiologicallyDerivedProduct.request</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="request", path="BiologicallyDerivedProduct.request", description="Procedure request to obtain this biologically derived product.", type="reference", target={ServiceRequest.class } )
+  public static final String SP_REQUEST = "request";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>request</b>
+   * <p>
+   * Description: <b>Procedure request to obtain this biologically derived product.</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>BiologicallyDerivedProduct.request</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam REQUEST = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_REQUEST);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>BiologicallyDerivedProduct:request</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_REQUEST = new ca.uhn.fhir.model.api.Include("BiologicallyDerivedProduct:request").toLocked();
+
 
 }
 
