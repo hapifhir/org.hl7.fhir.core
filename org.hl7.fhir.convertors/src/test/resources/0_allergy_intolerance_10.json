@@ -36,11 +36,7 @@
         {
           "text" : "Hives"
         }
-      ],
-      "modifierExtension" :[{
-        "url" : "http://hl7.org/fhir/StructureDefinition/iso-21090-EN-use",
-        "valueCode" : "I"
-      }]
+      ]
     }
   ]
 }
