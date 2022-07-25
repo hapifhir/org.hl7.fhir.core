@@ -30,7 +30,12 @@ package org.hl7.fhir.dstu2016may.model;
  */
 
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import ca.uhn.fhir.parser.DataFormatException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.time.DateUtils;
+import org.hl7.fhir.utilities.DateTimeUtil;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -39,25 +44,14 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
-import org.apache.commons.lang3.time.DateUtils;
-import org.apache.commons.lang3.time.FastDateFormat;
-
-import ca.uhn.fhir.parser.DataFormatException;
-import org.hl7.fhir.utilities.DateTimeUtil;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
-  private static final long serialVersionUID = 1L;
-
   static final long NANOS_PER_MILLIS = 1000000L;
   static final long NANOS_PER_SECOND = 1000000000L;
+  private static final long serialVersionUID = 1L;
   private static final Map<String, TimeZone> timezoneCache = new ConcurrentHashMap<>();
-
-  private static final FastDateFormat ourHumanDateFormat = FastDateFormat.getDateInstance(FastDateFormat.MEDIUM);
-  private static final FastDateFormat ourHumanDateTimeFormat = FastDateFormat.getDateTimeInstance(FastDateFormat.MEDIUM, FastDateFormat.MEDIUM);
 
   private String myFractionalSeconds;
   private TemporalPrecisionEnum myPrecision = null;
@@ -74,14 +68,11 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   /**
    * Constructor
    *
-   * @throws DataFormatException
-   *            If the specified precision is not allowed for this type
+   * @throws DataFormatException If the specified precision is not allowed for this type
    */
   public BaseDateTimeType(Date theDate, TemporalPrecisionEnum thePrecision) {
     setValue(theDate, thePrecision);
-    if (isPrecisionAllowed(thePrecision) == false) {
-      throw new DataFormatException("Invalid date/time string (datatype " + getClass().getSimpleName() + " does not support " + thePrecision + " precision): " + theDate);
-    }
+    validatePrecisionAndThrowIllegalArgumentException();
   }
 
   /**
@@ -90,16 +81,23 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   public BaseDateTimeType(Date theDate, TemporalPrecisionEnum thePrecision, TimeZone theTimeZone) {
     this(theDate, thePrecision);
     setTimeZone(theTimeZone);
+    validatePrecisionAndThrowIllegalArgumentException();
   }
 
   /**
    * Constructor
    *
-   * @throws DataFormatException
-   *            If the specified precision is not allowed for this type
+   * @throws DataFormatException If the specified precision is not allowed for this type
    */
   public BaseDateTimeType(String theString) {
     setValueAsString(theString);
+    validatePrecisionAndThrowIllegalArgumentException();
+  }
+
+  private void validatePrecisionAndThrowIllegalArgumentException() {
+    if (!isPrecisionAllowed(getPrecision())) {
+      throw new IllegalArgumentException("Invalid date/time string (datatype " + getClass().getSimpleName() + " does not support " + getPrecision() + " precision): " + getValueAsString());
+    }
   }
 
   private void clearTimeZone() {
@@ -204,6 +202,19 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   }
 
   /**
+   * Sets the precision for this datatype
+   *
+   * @throws DataFormatException
+   */
+  public void setPrecision(TemporalPrecisionEnum thePrecision) throws DataFormatException {
+    if (thePrecision == null) {
+      throw new NullPointerException("Precision may not be null");
+    }
+    myPrecision = thePrecision;
+    updateStringValue();
+  }
+
+  /**
    * Returns the TimeZone associated with this dateTime's value. May return <code>null</code> if no timezone was
    * supplied.
    */
@@ -212,6 +223,13 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
       return getTimeZone("GMT");
     }
     return myTimeZone;
+  }
+
+  public BaseDateTimeType setTimeZone(TimeZone theTimeZone) {
+    myTimeZone = theTimeZone;
+    myTimeZoneZulu = false;
+    updateStringValue();
+    return this;
   }
 
   /**
@@ -243,11 +261,17 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
     return myTimeZoneZulu;
   }
 
+  public BaseDateTimeType setTimeZoneZulu(boolean theTimeZoneZulu) {
+    myTimeZoneZulu = theTimeZoneZulu;
+    myTimeZone = null;
+    updateStringValue();
+    return this;
+  }
+
   /**
    * Returns <code>true</code> if this object represents a date that is today's date
    *
-   * @throws NullPointerException
-   *            if {@link #getValue()} returns <code>null</code>
+   * @throws NullPointerException if {@link #getValue()} returns <code>null</code>
    */
   public boolean isToday() {
     Validate.notNull(getValue(), getClass().getSimpleName() + " contains null value");
@@ -366,7 +390,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
       myFractionalSeconds = "";
     }
 
-    myPrecision  = precision;
+    myPrecision = precision;
     return cal.getTime();
 
   }
@@ -384,19 +408,6 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
     }
 
     return retVal;
-  }
-
-  /**
-   * Sets the precision for this datatype
-   *
-   * @throws DataFormatException
-   */
-  public void setPrecision(TemporalPrecisionEnum thePrecision) throws DataFormatException {
-    if (thePrecision == null) {
-      throw new NullPointerException("Precision may not be null");
-    }
-    myPrecision = thePrecision;
-    updateStringValue();
   }
 
   private BaseDateTimeType setTimeZone(String theWholeValue, String theValue) {
@@ -420,20 +431,6 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
     return this;
   }
 
-  public BaseDateTimeType setTimeZone(TimeZone theTimeZone) {
-    myTimeZone = theTimeZone;
-    myTimeZoneZulu = false;
-    updateStringValue();
-    return this;
-  }
-
-  public BaseDateTimeType setTimeZoneZulu(boolean theTimeZoneZulu) {
-    myTimeZoneZulu = theTimeZoneZulu;
-    myTimeZone = null;
-    updateStringValue();
-    return this;
-  }
-
   /**
    * Sets the value for this type using the given Java Date object as the time, and using the default precision for
    * this datatype (unless the precision is already set), as well as the local timezone as determined by the local operating
@@ -450,10 +447,8 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
    * well as the local timezone as determined by the local operating system. Both of
    * these properties may be modified in subsequent calls if neccesary.
    *
-   * @param theValue
-   *           The date value
-   * @param thePrecision
-   *           The precision
+   * @param theValue     The date value
+   * @param thePrecision The precision
    * @throws DataFormatException
    */
   public void setValue(Date theValue, TemporalPrecisionEnum thePrecision) throws DataFormatException {
@@ -478,9 +473,6 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   public void setValueAsString(String theString) throws DataFormatException {
     clearTimeZone();
     super.setValueAsString(theString);
-    if (isPrecisionAllowed(getPrecision()) == false) {
-      throw new DataFormatException("Invalid date/time string (datatype " + getClass().getSimpleName() + " does not support " + getPrecision() + " precision): " + theString);
-    }
   }
 
   private void throwBadDateFormat(String theValue) {
@@ -535,10 +527,26 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   }
 
   /**
+   * Sets the year, e.g. 2015
+   */
+  public BaseDateTimeType setYear(int theYear) {
+    setFieldValue(Calendar.YEAR, theYear, null, 0, 9999);
+    return this;
+  }
+
+  /**
    * Returns the month with 0-index, e.g. 0=January
    */
   public Integer getMonth() {
     return getFieldValue(Calendar.MONTH);
+  }
+
+  /**
+   * Sets the month with 0-index, e.g. 0=January
+   */
+  public BaseDateTimeType setMonth(int theMonth) {
+    setFieldValue(Calendar.MONTH, theMonth, null, 0, 11);
+    return this;
   }
 
   /**
@@ -549,10 +557,26 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   }
 
   /**
+   * Sets the month with 1-index, e.g. 1=the first day of the month
+   */
+  public BaseDateTimeType setDay(int theDay) {
+    setFieldValue(Calendar.DAY_OF_MONTH, theDay, null, 0, 31);
+    return this;
+  }
+
+  /**
    * Returns the hour of the day in a 24h clock, e.g. 13=1pm
    */
   public Integer getHour() {
     return getFieldValue(Calendar.HOUR_OF_DAY);
+  }
+
+  /**
+   * Sets the hour of the day in a 24h clock, e.g. 13=1pm
+   */
+  public BaseDateTimeType setHour(int theHour) {
+    setFieldValue(Calendar.HOUR_OF_DAY, theHour, null, 0, 23);
+    return this;
   }
 
   /**
@@ -563,10 +587,26 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   }
 
   /**
+   * Sets the minute of the hour in the range 0-59
+   */
+  public BaseDateTimeType setMinute(int theMinute) {
+    setFieldValue(Calendar.MINUTE, theMinute, null, 0, 59);
+    return this;
+  }
+
+  /**
    * Returns the second of the minute in the range 0-59
    */
   public Integer getSecond() {
     return getFieldValue(Calendar.SECOND);
+  }
+
+  /**
+   * Sets the second of the minute in the range 0-59
+   */
+  public BaseDateTimeType setSecond(int theSecond) {
+    setFieldValue(Calendar.SECOND, theSecond, null, 0, 59);
+    return this;
   }
 
   /**
@@ -578,6 +618,18 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
    */
   public Integer getMillis() {
     return getFieldValue(Calendar.MILLISECOND);
+  }
+
+  /**
+   * Sets the milliseconds within the current second.
+   * <p>
+   * Note that this method sets the
+   * same value as {@link #setNanos(long)} but with less precision.
+   * </p>
+   */
+  public BaseDateTimeType setMillis(int theMillis) {
+    setFieldValue(Calendar.MILLISECOND, theMillis, null, 0, 999);
+    return this;
   }
 
   /**
@@ -597,66 +649,6 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   }
 
   /**
-   * Sets the year, e.g. 2015
-   */
-  public BaseDateTimeType setYear(int theYear) {
-    setFieldValue(Calendar.YEAR, theYear, null, 0, 9999);
-    return this;
-  }
-
-  /**
-   * Sets the month with 0-index, e.g. 0=January
-   */
-  public BaseDateTimeType setMonth(int theMonth) {
-    setFieldValue(Calendar.MONTH, theMonth, null, 0, 11);
-    return this;
-  }
-
-  /**
-   * Sets the month with 1-index, e.g. 1=the first day of the month
-   */
-  public BaseDateTimeType setDay(int theDay) {
-    setFieldValue(Calendar.DAY_OF_MONTH, theDay, null, 0, 31);
-    return this;
-  }
-
-  /**
-   * Sets the hour of the day in a 24h clock, e.g. 13=1pm
-   */
-  public BaseDateTimeType setHour(int theHour) {
-    setFieldValue(Calendar.HOUR_OF_DAY, theHour, null, 0, 23);
-    return this;
-  }
-
-  /**
-   * Sets the minute of the hour in the range 0-59
-   */
-  public BaseDateTimeType setMinute(int theMinute) {
-    setFieldValue(Calendar.MINUTE, theMinute, null, 0, 59);
-    return this;
-  }
-
-  /**
-   * Sets the second of the minute in the range 0-59
-   */
-  public BaseDateTimeType setSecond(int theSecond) {
-    setFieldValue(Calendar.SECOND, theSecond, null, 0, 59);
-    return this;
-  }
-
-  /**
-   * Sets the milliseconds within the current second.
-   * <p>
-   * Note that this method sets the
-   * same value as {@link #setNanos(long)} but with less precision.
-   * </p>
-   */
-  public BaseDateTimeType setMillis(int theMillis) {
-    setFieldValue(Calendar.MILLISECOND, theMillis, null, 0, 999);
-    return this;
-  }
-
-  /**
    * Sets the nanoseconds within the current second
    * <p>
    * Note that this method sets the
@@ -664,17 +656,17 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
    * </p>
    */
   public BaseDateTimeType setNanos(long theNanos) {
-    validateValueInRange(theNanos, 0, NANOS_PER_SECOND-1);
+    validateValueInRange(theNanos, 0, NANOS_PER_SECOND - 1);
     String fractionalSeconds = StringUtils.leftPad(Long.toString(theNanos), 9, '0');
 
     // Strip trailing 0s
     for (int i = fractionalSeconds.length(); i > 0; i--) {
-      if (fractionalSeconds.charAt(i-1) != '0') {
+      if (fractionalSeconds.charAt(i - 1) != '0') {
         fractionalSeconds = fractionalSeconds.substring(0, i);
         break;
       }
     }
-    int millis = (int)(theNanos / NANOS_PER_MILLIS);
+    int millis = (int) (theNanos / NANOS_PER_MILLIS);
     setFieldValue(Calendar.MILLISECOND, millis, fractionalSeconds, 0, 999);
     return this;
   }
@@ -740,11 +732,11 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
       if (b.length() == 16)
         b.append(":00"); // schema rule, must have seconds
       if (timeZone != null && b.length() > 10) {
-        if (timeZone.length() ==5) {
+        if (timeZone.length() == 5) {
           b.append(timeZone.substring(0, 3));
           b.append(':');
           b.append(timeZone.substring(3));
-        }else {
+        } else {
           b.append(timeZone);
         }
       }
