@@ -171,7 +171,7 @@ public class EpisodeOfCare40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent tgt = new org.hl7.fhir.r5.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasStatus())
       tgt.setStatusElement(convertEpisodeOfCareStatus(src.getStatusElement()));
     if (src.hasPeriod())
@@ -183,7 +183,7 @@ public class EpisodeOfCare40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent tgt = new org.hl7.fhir.r4.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasStatus())
       tgt.setStatusElement(convertEpisodeOfCareStatus(src.getStatusElement()));
     if (src.hasPeriod())
@@ -195,7 +195,7 @@ public class EpisodeOfCare40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.EpisodeOfCare.DiagnosisComponent tgt = new org.hl7.fhir.r5.model.EpisodeOfCare.DiagnosisComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCondition())
       tgt.setCondition(Reference40_50.convertReference(src.getCondition()));
     if (src.hasRole())
@@ -209,7 +209,7 @@ public class EpisodeOfCare40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.EpisodeOfCare.DiagnosisComponent tgt = new org.hl7.fhir.r4.model.EpisodeOfCare.DiagnosisComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCondition())
       tgt.setCondition(Reference40_50.convertReference(src.getCondition()));
     if (src.hasRole())

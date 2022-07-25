@@ -257,7 +257,7 @@ public class CarePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getOutcomeCodeableConcept())
       tgt.addPerformedActivity(CodeableConcept40_50.convertCodeableConceptToCodeableReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getOutcomeReference())
@@ -274,7 +274,7 @@ public class CarePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.r4.model.CarePlan.CarePlanActivityComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (CodeableReference t : src.getPerformedActivity())
       if (t.hasConcept())
         tgt.addOutcomeCodeableConcept(CodeableConcept40_50.convertCodeableConcept(t.getConcept()));
@@ -293,7 +293,7 @@ public class CarePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.CarePlan.CarePlanActivityPlannedActivityDetailComponent tgt = new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityPlannedActivityDetailComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasKind())
       tgt.setKindElement(convertCarePlanActivityKind(src.getKindElement()));
     for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical())
@@ -333,7 +333,7 @@ public class CarePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.CarePlan.CarePlanActivityDetailComponent tgt = new org.hl7.fhir.r4.model.CarePlan.CarePlanActivityDetailComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasKind())
       tgt.setKindElement(convertCarePlanActivityKind(src.getKindElement()));
     for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical())

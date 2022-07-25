@@ -106,7 +106,7 @@ public class StructureMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.StructureMap.StructureMapGroupComponent tgt = new org.hl7.fhir.r5.model.StructureMap.StructureMapGroupComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasName())
       tgt.setNameElement(Id30_50.convertId(src.getNameElement()));
     if (src.hasExtends())
@@ -126,7 +126,7 @@ public class StructureMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupComponent tgt = new org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasName())
       tgt.setNameElement(Id30_50.convertId(src.getNameElement()));
     if (src.hasExtends())
@@ -146,7 +146,7 @@ public class StructureMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupInputComponent tgt = new org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupInputComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasName())
       tgt.setNameElement(Id30_50.convertId(src.getNameElement()));
     if (src.hasType())
@@ -162,7 +162,7 @@ public class StructureMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.StructureMap.StructureMapGroupInputComponent tgt = new org.hl7.fhir.r5.model.StructureMap.StructureMapGroupInputComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasName())
       tgt.setNameElement(Id30_50.convertId(src.getNameElement()));
     if (src.hasType())
@@ -178,7 +178,7 @@ public class StructureMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleComponent tgt = new org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasName())
       tgt.setNameElement(Id30_50.convertId(src.getNameElement()));
     for (org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleSourceComponent t : src.getSource())
@@ -198,7 +198,7 @@ public class StructureMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleComponent tgt = new org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasName())
       tgt.setNameElement(Id30_50.convertId(src.getNameElement()));
     for (org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleSourceComponent t : src.getSource())
@@ -218,7 +218,7 @@ public class StructureMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleDependentComponent tgt = new org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleDependentComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasName())
       tgt.setNameElement(Id30_50.convertId(src.getNameElement()));
     for (org.hl7.fhir.dstu3.model.StringType t : src.getVariable()) tgt.addParameter().setValue(String30_50.convertString(t));
@@ -229,7 +229,7 @@ public class StructureMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleDependentComponent tgt = new org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleDependentComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasName())
       tgt.setNameElement(Id30_50.convertId(src.getNameElement()));
     for (StructureMapGroupRuleTargetParameterComponent t : src.getParameter()) tgt.addVariable(t.getValue().primitiveValue());
@@ -240,7 +240,7 @@ public class StructureMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleSourceComponent tgt = new org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleSourceComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasContext())
       tgt.setContextElement(Id30_50.convertId(src.getContextElement()));
     if (src.hasMin())
@@ -268,7 +268,7 @@ public class StructureMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleSourceComponent tgt = new org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleSourceComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasContext())
       tgt.setContextElement(Id30_50.convertId(src.getContextElement()));
     if (src.hasMin())
@@ -296,7 +296,7 @@ public class StructureMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetComponent tgt = new org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasContext())
       tgt.setContextElement(Id30_50.convertId(src.getContextElement()));
     if (src.hasContextType() && src.getContextType() != org.hl7.fhir.dstu3.model.StructureMap.StructureMapContextType.VARIABLE)
@@ -321,7 +321,7 @@ public class StructureMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleTargetComponent tgt = new org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleTargetComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasContext())
       tgt.setContextElement(Id30_50.convertId(src.getContextElement()));
     tgt.setContextType(org.hl7.fhir.dstu3.model.StructureMap.StructureMapContextType.VARIABLE);
@@ -345,7 +345,7 @@ public class StructureMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleTargetParameterComponent tgt = new org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleTargetParameterComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasValue())
       tgt.setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValue()));
     return tgt;
@@ -355,7 +355,7 @@ public class StructureMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent tgt = new org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasValue())
       tgt.setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValue()));
     return tgt;
@@ -551,7 +551,7 @@ public class StructureMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.StructureMap.StructureMapStructureComponent tgt = new org.hl7.fhir.dstu3.model.StructureMap.StructureMapStructureComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasUrl())
       tgt.setUrl(src.getUrl());
     if (src.hasMode())
@@ -567,7 +567,7 @@ public class StructureMap30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent tgt = new org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasUrl())
       tgt.setUrl(src.getUrl());
     if (src.hasMode())

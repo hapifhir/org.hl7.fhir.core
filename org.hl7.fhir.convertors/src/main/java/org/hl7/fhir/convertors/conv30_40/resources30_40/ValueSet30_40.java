@@ -16,7 +16,7 @@ public class ValueSet30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ValueSet.ConceptReferenceComponent tgt = new org.hl7.fhir.dstu3.model.ValueSet.ConceptReferenceComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCodeElement(Code30_40.convertCode(src.getCodeElement()));
     if (src.hasDisplay())
@@ -30,7 +30,7 @@ public class ValueSet30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ValueSet.ConceptReferenceComponent tgt = new org.hl7.fhir.r4.model.ValueSet.ConceptReferenceComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCodeElement(Code30_40.convertCode(src.getCodeElement()));
     if (src.hasDisplay())
@@ -44,7 +44,7 @@ public class ValueSet30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ValueSet.ConceptReferenceDesignationComponent tgt = new org.hl7.fhir.dstu3.model.ValueSet.ConceptReferenceDesignationComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasLanguage())
       tgt.setLanguageElement(Code30_40.convertCode(src.getLanguageElement()));
     if (src.hasUse())
@@ -58,7 +58,7 @@ public class ValueSet30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ValueSet.ConceptReferenceDesignationComponent tgt = new org.hl7.fhir.r4.model.ValueSet.ConceptReferenceDesignationComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasLanguage())
       tgt.setLanguageElement(Code30_40.convertCode(src.getLanguageElement()));
     if (src.hasUse())
@@ -72,7 +72,7 @@ public class ValueSet30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ValueSet.ConceptSetComponent tgt = new org.hl7.fhir.dstu3.model.ValueSet.ConceptSetComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasSystem())
       tgt.setSystemElement(Uri30_40.convertUri(src.getSystemElement()));
     if (src.hasVersion())
@@ -89,7 +89,7 @@ public class ValueSet30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ValueSet.ConceptSetComponent tgt = new org.hl7.fhir.r4.model.ValueSet.ConceptSetComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasSystem())
       tgt.setSystemElement(Uri30_40.convertUri(src.getSystemElement()));
     if (src.hasVersion())
@@ -106,7 +106,7 @@ public class ValueSet30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ValueSet.ConceptSetFilterComponent tgt = new org.hl7.fhir.r4.model.ValueSet.ConceptSetFilterComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasProperty())
       tgt.setPropertyElement(Code30_40.convertCode(src.getPropertyElement()));
     if (src.hasOp())
@@ -120,7 +120,7 @@ public class ValueSet30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ValueSet.ConceptSetFilterComponent tgt = new org.hl7.fhir.dstu3.model.ValueSet.ConceptSetFilterComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasProperty())
       tgt.setPropertyElement(Code30_40.convertCode(src.getPropertyElement()));
     if (src.hasOp())
@@ -226,7 +226,7 @@ public class ValueSet30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ValueSet.ValueSetComposeComponent tgt = new org.hl7.fhir.dstu3.model.ValueSet.ValueSetComposeComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasLockedDate())
       tgt.setLockedDateElement(Date30_40.convertDate(src.getLockedDateElement()));
     if (src.hasInactive())
@@ -242,7 +242,7 @@ public class ValueSet30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ValueSet.ValueSetComposeComponent tgt = new org.hl7.fhir.r4.model.ValueSet.ValueSetComposeComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasLockedDate())
       tgt.setLockedDateElement(Date30_40.convertDate(src.getLockedDateElement()));
     if (src.hasInactive())
@@ -258,7 +258,7 @@ public class ValueSet30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ValueSet.ValueSetExpansionComponent tgt = new org.hl7.fhir.dstu3.model.ValueSet.ValueSetExpansionComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasIdentifier())
       tgt.setIdentifierElement(Uri30_40.convertUri(src.getIdentifierElement()));
     if (src.hasTimestamp())
@@ -278,7 +278,7 @@ public class ValueSet30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionComponent tgt = new org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasIdentifier())
       tgt.setIdentifierElement(Uri30_40.convertUri(src.getIdentifierElement()));
     if (src.hasTimestamp())
@@ -298,7 +298,7 @@ public class ValueSet30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ValueSet.ValueSetExpansionContainsComponent tgt = new org.hl7.fhir.dstu3.model.ValueSet.ValueSetExpansionContainsComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasSystem())
       tgt.setSystemElement(Uri30_40.convertUri(src.getSystemElement()));
     if (src.hasAbstract())
@@ -322,7 +322,7 @@ public class ValueSet30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionContainsComponent tgt = new org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionContainsComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasSystem())
       tgt.setSystemElement(Uri30_40.convertUri(src.getSystemElement()));
     if (src.hasAbstract())
@@ -346,7 +346,7 @@ public class ValueSet30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionParameterComponent tgt = new org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionParameterComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasName())
       tgt.setNameElement(String30_40.convertString(src.getNameElement()));
     if (src.hasValue())
@@ -358,7 +358,7 @@ public class ValueSet30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ValueSet.ValueSetExpansionParameterComponent tgt = new org.hl7.fhir.dstu3.model.ValueSet.ValueSetExpansionParameterComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasName())
       tgt.setNameElement(String30_40.convertString(src.getNameElement()));
     if (src.hasValue())

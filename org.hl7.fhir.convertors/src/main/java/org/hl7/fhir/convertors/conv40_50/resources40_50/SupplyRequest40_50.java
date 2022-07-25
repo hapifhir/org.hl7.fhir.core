@@ -248,7 +248,7 @@ public class SupplyRequest40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestParameterComponent tgt = new org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestParameterComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasValue())
@@ -260,7 +260,7 @@ public class SupplyRequest40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestParameterComponent tgt = new org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestParameterComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasValue())

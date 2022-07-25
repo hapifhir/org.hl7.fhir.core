@@ -45,7 +45,7 @@ public class Medication10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Medication.MedicationPackageComponent tgt = new org.hl7.fhir.dstu2.model.Medication.MedicationPackageComponent();
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyBackboneElement(src,tgt);
     if (src.hasContainer())
       tgt.setContainer(CodeableConcept10_30.convertCodeableConcept(src.getContainer()));
     for (org.hl7.fhir.dstu3.model.Medication.MedicationPackageContentComponent t : src.getContent())
@@ -57,7 +57,7 @@ public class Medication10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Medication.MedicationPackageComponent tgt = new org.hl7.fhir.dstu3.model.Medication.MedicationPackageComponent();
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyBackboneElement(src,tgt);
     if (src.hasContainer())
       tgt.setContainer(CodeableConcept10_30.convertCodeableConcept(src.getContainer()));
     for (org.hl7.fhir.dstu2.model.Medication.MedicationPackageContentComponent t : src.getContent())
@@ -69,7 +69,7 @@ public class Medication10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Medication.MedicationPackageContentComponent tgt = new org.hl7.fhir.dstu2.model.Medication.MedicationPackageContentComponent();
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyBackboneElement(src,tgt);
     if (src.hasItemReference())
       tgt.setItem((org.hl7.fhir.dstu2.model.Reference) ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertType(src.getItem()));
     if (src.hasAmount())
@@ -81,7 +81,7 @@ public class Medication10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Medication.MedicationPackageContentComponent tgt = new org.hl7.fhir.dstu3.model.Medication.MedicationPackageContentComponent();
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyBackboneElement(src,tgt);
     if (src.hasItem())
       tgt.setItem(ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertType(src.getItem()));
     if (src.hasAmount())

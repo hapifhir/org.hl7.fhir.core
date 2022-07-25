@@ -224,7 +224,7 @@ public class AllergyIntolerance30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceReactionComponent tgt = new org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceReactionComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasSubstance())
       tgt.setSubstance(CodeableConcept30_50.convertCodeableConcept(src.getSubstance()));
     for (CodeableReference t : src.getManifestation())
@@ -245,7 +245,7 @@ public class AllergyIntolerance30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.AllergyIntolerance.AllergyIntoleranceReactionComponent tgt = new org.hl7.fhir.r5.model.AllergyIntolerance.AllergyIntoleranceReactionComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasSubstance())
       tgt.setSubstance(CodeableConcept30_50.convertCodeableConcept(src.getSubstance()));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getManifestation())

@@ -177,7 +177,7 @@ public class VerificationResult40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.VerificationResult.VerificationResultPrimarySourceComponent tgt = new org.hl7.fhir.r5.model.VerificationResult.VerificationResultPrimarySourceComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasWho())
       tgt.setWho(Reference40_50.convertReference(src.getWho()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType())
@@ -199,7 +199,7 @@ public class VerificationResult40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.VerificationResult.VerificationResultPrimarySourceComponent tgt = new org.hl7.fhir.r4.model.VerificationResult.VerificationResultPrimarySourceComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasWho())
       tgt.setWho(Reference40_50.convertReference(src.getWho()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType())
@@ -221,7 +221,7 @@ public class VerificationResult40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.VerificationResult.VerificationResultAttestationComponent tgt = new org.hl7.fhir.r5.model.VerificationResult.VerificationResultAttestationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasWho())
       tgt.setWho(Reference40_50.convertReference(src.getWho()));
     if (src.hasOnBehalfOf())
@@ -245,7 +245,7 @@ public class VerificationResult40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.VerificationResult.VerificationResultAttestationComponent tgt = new org.hl7.fhir.r4.model.VerificationResult.VerificationResultAttestationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasWho())
       tgt.setWho(Reference40_50.convertReference(src.getWho()));
     if (src.hasOnBehalfOf())
@@ -269,7 +269,7 @@ public class VerificationResult40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.VerificationResult.VerificationResultValidatorComponent tgt = new org.hl7.fhir.r5.model.VerificationResult.VerificationResultValidatorComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasOrganization())
       tgt.setOrganization(Reference40_50.convertReference(src.getOrganization()));
     if (src.hasIdentityCertificate())
@@ -283,7 +283,7 @@ public class VerificationResult40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.VerificationResult.VerificationResultValidatorComponent tgt = new org.hl7.fhir.r4.model.VerificationResult.VerificationResultValidatorComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasOrganization())
       tgt.setOrganization(Reference40_50.convertReference(src.getOrganization()));
     if (src.hasIdentityCertificate())

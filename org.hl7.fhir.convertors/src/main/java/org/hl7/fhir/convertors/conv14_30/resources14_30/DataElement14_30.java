@@ -117,7 +117,7 @@ public class DataElement14_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.DataElement.DataElementMappingComponent tgt = new org.hl7.fhir.dstu3.model.DataElement.DataElementMappingComponent();
-    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
+    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyBackboneElement(src,tgt);
     if (src.hasIdentityElement())
       tgt.setIdentityElement(Id14_30.convertId(src.getIdentityElement()));
     if (src.hasUri())
@@ -133,7 +133,7 @@ public class DataElement14_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2016may.model.DataElement.DataElementMappingComponent tgt = new org.hl7.fhir.dstu2016may.model.DataElement.DataElementMappingComponent();
-    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
+    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyBackboneElement(src,tgt);
     if (src.hasIdentityElement())
       tgt.setIdentityElement(Id14_30.convertId(src.getIdentityElement()));
     if (src.hasUri())

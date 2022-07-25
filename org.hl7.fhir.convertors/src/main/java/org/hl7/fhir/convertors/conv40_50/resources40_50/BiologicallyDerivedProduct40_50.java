@@ -195,7 +195,7 @@ public class BiologicallyDerivedProduct40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCollectionComponent tgt = new org.hl7.fhir.r5.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCollectionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCollector())
       tgt.setCollector(Reference40_50.convertReference(src.getCollector()));
     if (src.hasSource())
@@ -209,7 +209,7 @@ public class BiologicallyDerivedProduct40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCollectionComponent tgt = new org.hl7.fhir.r4.model.BiologicallyDerivedProduct.BiologicallyDerivedProductCollectionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCollector())
       tgt.setCollector(Reference40_50.convertReference(src.getCollector()));
     if (src.hasSource())

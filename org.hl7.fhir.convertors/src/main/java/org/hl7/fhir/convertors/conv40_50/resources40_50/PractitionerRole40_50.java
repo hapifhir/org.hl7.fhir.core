@@ -116,7 +116,7 @@ public class PractitionerRole40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleAvailableTimeComponent tgt = new org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleAvailableTimeComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     tgt.setDaysOfWeek(src.getDaysOfWeek().stream()
       .map(PractitionerRole40_50::convertDaysOfWeek)
       .collect(Collectors.toList()));
@@ -133,7 +133,7 @@ public class PractitionerRole40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.PractitionerRole.PractitionerRoleAvailableTimeComponent tgt = new org.hl7.fhir.r4.model.PractitionerRole.PractitionerRoleAvailableTimeComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     tgt.setDaysOfWeek(src.getDaysOfWeek().stream()
       .map(PractitionerRole40_50::convertDaysOfWeek)
       .collect(Collectors.toList()));
@@ -218,7 +218,7 @@ public class PractitionerRole40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleNotAvailableComponent tgt = new org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleNotAvailableComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
     if (src.hasDuring())
@@ -230,7 +230,7 @@ public class PractitionerRole40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.PractitionerRole.PractitionerRoleNotAvailableComponent tgt = new org.hl7.fhir.r4.model.PractitionerRole.PractitionerRoleNotAvailableComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
     if (src.hasDuring())

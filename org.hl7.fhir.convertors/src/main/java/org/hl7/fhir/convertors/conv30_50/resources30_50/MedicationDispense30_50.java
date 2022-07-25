@@ -119,7 +119,7 @@ public class MedicationDispense30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MedicationDispense.MedicationDispensePerformerComponent tgt = new org.hl7.fhir.r5.model.MedicationDispense.MedicationDispensePerformerComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasActor())
       tgt.setActor(Reference30_50.convertReference(src.getActor()));
     return tgt;
@@ -129,7 +129,7 @@ public class MedicationDispense30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispensePerformerComponent tgt = new org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispensePerformerComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasActor())
       tgt.setActor(Reference30_50.convertReference(src.getActor()));
     return tgt;
@@ -204,7 +204,7 @@ public class MedicationDispense30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseSubstitutionComponent tgt = new org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseSubstitutionComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasWasSubstituted())
       tgt.setWasSubstitutedElement(Boolean30_50.convertBoolean(src.getWasSubstitutedElement()));
     if (src.hasType())
@@ -220,7 +220,7 @@ public class MedicationDispense30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseSubstitutionComponent tgt = new org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseSubstitutionComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasWasSubstituted())
       tgt.setWasSubstitutedElement(Boolean30_50.convertBoolean(src.getWasSubstitutedElement()));
     if (src.hasType())

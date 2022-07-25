@@ -198,7 +198,7 @@ public class Procedure30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Procedure.ProcedureFocalDeviceComponent tgt = new org.hl7.fhir.dstu3.model.Procedure.ProcedureFocalDeviceComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasAction()) {
       if (src.hasAction())
         tgt.setAction(CodeableConcept30_40.convertCodeableConcept(src.getAction()));
@@ -214,7 +214,7 @@ public class Procedure30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Procedure.ProcedureFocalDeviceComponent tgt = new org.hl7.fhir.r4.model.Procedure.ProcedureFocalDeviceComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasAction()) {
       if (src.hasAction())
         tgt.setAction(CodeableConcept30_40.convertCodeableConcept(src.getAction()));
@@ -230,7 +230,7 @@ public class Procedure30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Procedure.ProcedurePerformerComponent tgt = new org.hl7.fhir.r4.model.Procedure.ProcedurePerformerComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasRole()) {
       if (src.hasRole())
         tgt.setFunction(CodeableConcept30_40.convertCodeableConcept(src.getRole()));
@@ -250,7 +250,7 @@ public class Procedure30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Procedure.ProcedurePerformerComponent tgt = new org.hl7.fhir.dstu3.model.Procedure.ProcedurePerformerComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasFunction()) {
       if (src.hasFunction())
         tgt.setRole(CodeableConcept30_40.convertCodeableConcept(src.getFunction()));

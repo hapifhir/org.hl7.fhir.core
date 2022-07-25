@@ -119,7 +119,7 @@ public class MedicationRequest30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestDispenseRequestComponent tgt = new org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestDispenseRequestComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasValidityPeriod())
       tgt.setValidityPeriod(Period30_50.convertPeriod(src.getValidityPeriod()));
     if (src.hasNumberOfRepeatsAllowed())
@@ -137,7 +137,7 @@ public class MedicationRequest30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.MedicationRequest.MedicationRequestDispenseRequestComponent tgt = new org.hl7.fhir.dstu3.model.MedicationRequest.MedicationRequestDispenseRequestComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasValidityPeriod())
       tgt.setValidityPeriod(Period30_50.convertPeriod(src.getValidityPeriod()));
     if (src.hasNumberOfRepeatsAllowed())
@@ -329,7 +329,7 @@ public class MedicationRequest30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestSubstitutionComponent tgt = new org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestSubstitutionComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasAllowed())
       tgt.setAllowed(Boolean30_50.convertBoolean(src.getAllowedElement()));
     if (src.hasReason())
@@ -341,7 +341,7 @@ public class MedicationRequest30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.MedicationRequest.MedicationRequestSubstitutionComponent tgt = new org.hl7.fhir.dstu3.model.MedicationRequest.MedicationRequestSubstitutionComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasAllowedBooleanType())
       tgt.setAllowedElement(Boolean30_50.convertBoolean(src.getAllowedBooleanType()));
     if (src.hasReason())

@@ -39,7 +39,7 @@ public class Linkage30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Linkage.LinkageItemComponent tgt = new org.hl7.fhir.dstu3.model.Linkage.LinkageItemComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasType())
       tgt.setTypeElement(convertLinkageType(src.getTypeElement()));
     if (src.hasResource())
@@ -51,7 +51,7 @@ public class Linkage30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Linkage.LinkageItemComponent tgt = new org.hl7.fhir.r4.model.Linkage.LinkageItemComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasType())
       tgt.setTypeElement(convertLinkageType(src.getTypeElement()));
     if (src.hasResource())

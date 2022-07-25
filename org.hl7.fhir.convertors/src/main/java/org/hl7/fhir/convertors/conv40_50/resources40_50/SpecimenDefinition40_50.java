@@ -81,7 +81,7 @@ public class SpecimenDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenDefinitionTypeTestedComponent tgt = new org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenDefinitionTypeTestedComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasIsDerived())
       tgt.setIsDerivedElement(Boolean40_50.convertBoolean(src.getIsDerivedElement()));
     if (src.hasType())
@@ -105,7 +105,7 @@ public class SpecimenDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedComponent tgt = new org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasIsDerived())
       tgt.setIsDerivedElement(Boolean40_50.convertBoolean(src.getIsDerivedElement()));
     if (src.hasType())
@@ -167,7 +167,7 @@ public class SpecimenDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerComponent tgt = new org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasMaterial())
       tgt.setMaterial(CodeableConcept40_50.convertCodeableConcept(src.getMaterial()));
     if (src.hasType())
@@ -191,7 +191,7 @@ public class SpecimenDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerComponent tgt = new org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasMaterial())
       tgt.setMaterial(CodeableConcept40_50.convertCodeableConcept(src.getMaterial()));
     if (src.hasType())
@@ -215,7 +215,7 @@ public class SpecimenDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerAdditiveComponent tgt = new org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerAdditiveComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasAdditive())
       tgt.setAdditive(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAdditive()));
     return tgt;
@@ -225,7 +225,7 @@ public class SpecimenDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerAdditiveComponent tgt = new org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerAdditiveComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasAdditive())
       tgt.setAdditive(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAdditive()));
     return tgt;
@@ -235,7 +235,7 @@ public class SpecimenDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenDefinitionTypeTestedHandlingComponent tgt = new org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenDefinitionTypeTestedHandlingComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasTemperatureQualifier())
       tgt.setTemperatureQualifier(CodeableConcept40_50.convertCodeableConcept(src.getTemperatureQualifier()));
     if (src.hasTemperatureRange())
@@ -251,7 +251,7 @@ public class SpecimenDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedHandlingComponent tgt = new org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedHandlingComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasTemperatureQualifier())
       tgt.setTemperatureQualifier(CodeableConcept40_50.convertCodeableConcept(src.getTemperatureQualifier()));
     if (src.hasTemperatureRange())

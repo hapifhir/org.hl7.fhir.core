@@ -100,7 +100,7 @@ public class RelatedPerson40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.RelatedPerson.RelatedPersonCommunicationComponent tgt = new org.hl7.fhir.r5.model.RelatedPerson.RelatedPersonCommunicationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasLanguage())
       tgt.setLanguage(CodeableConcept40_50.convertCodeableConcept(src.getLanguage()));
     if (src.hasPreferred())
@@ -112,7 +112,7 @@ public class RelatedPerson40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.RelatedPerson.RelatedPersonCommunicationComponent tgt = new org.hl7.fhir.r4.model.RelatedPerson.RelatedPersonCommunicationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasLanguage())
       tgt.setLanguage(CodeableConcept40_50.convertCodeableConcept(src.getLanguage()));
     if (src.hasPreferred())

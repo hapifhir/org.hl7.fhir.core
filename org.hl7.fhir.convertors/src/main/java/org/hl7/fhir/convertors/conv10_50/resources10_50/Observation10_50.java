@@ -116,7 +116,7 @@ public class Observation10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Observation.ObservationComponentComponent tgt = new org.hl7.fhir.r5.model.Observation.ObservationComponentComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept10_50.convertCodeableConcept(src.getCode()));
     if (src.hasValue())
@@ -132,7 +132,7 @@ public class Observation10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Observation.ObservationComponentComponent tgt = new org.hl7.fhir.dstu2.model.Observation.ObservationComponentComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept10_50.convertCodeableConcept(src.getCode()));
     if (src.hasValue())
@@ -148,7 +148,7 @@ public class Observation10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Observation.ObservationReferenceRangeComponent tgt = new org.hl7.fhir.r5.model.Observation.ObservationReferenceRangeComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasLow())
       tgt.setLow(SimpleQuantity10_50.convertSimpleQuantity(src.getLow()));
     if (src.hasHigh())
@@ -166,7 +166,7 @@ public class Observation10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Observation.ObservationReferenceRangeComponent tgt = new org.hl7.fhir.dstu2.model.Observation.ObservationReferenceRangeComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasLow())
       tgt.setLow(SimpleQuantity10_50.convertSimpleQuantity(src.getLow()));
     if (src.hasHigh())

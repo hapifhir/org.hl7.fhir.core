@@ -148,7 +148,7 @@ public class Condition10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Condition.ConditionStageComponent tgt = new org.hl7.fhir.dstu2.model.Condition.ConditionStageComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasSummary())
       tgt.setSummary(CodeableConcept10_50.convertCodeableConcept(src.getSummary()));
     for (org.hl7.fhir.r5.model.Reference t : src.getAssessment()) tgt.addAssessment(Reference10_50.convertReference(t));
@@ -159,7 +159,7 @@ public class Condition10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Condition.ConditionStageComponent tgt = new org.hl7.fhir.r5.model.Condition.ConditionStageComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasSummary())
       tgt.setSummary(CodeableConcept10_50.convertCodeableConcept(src.getSummary()));
     for (org.hl7.fhir.dstu2.model.Reference t : src.getAssessment())

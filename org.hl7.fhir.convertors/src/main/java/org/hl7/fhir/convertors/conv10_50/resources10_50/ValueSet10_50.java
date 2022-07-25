@@ -24,7 +24,7 @@ public class ValueSet10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent tgt = new org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasCodeElement())
       tgt.setCodeElement(Code10_50.convertCode(src.getCodeElement()));
     if (src.hasDisplayElement())
@@ -38,7 +38,7 @@ public class ValueSet10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.ValueSet.ConceptReferenceComponent tgt = new org.hl7.fhir.dstu2.model.ValueSet.ConceptReferenceComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasCodeElement())
       tgt.setCodeElement(Code10_50.convertCode(src.getCodeElement()));
     if (src.hasDisplayElement())
@@ -52,7 +52,7 @@ public class ValueSet10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent tgt = new org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasLanguageElement())
       tgt.setLanguageElement(Code10_50.convertCode(src.getLanguageElement()));
     if (src.hasUse())
@@ -66,7 +66,7 @@ public class ValueSet10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.ValueSet.ConceptDefinitionDesignationComponent tgt = new org.hl7.fhir.dstu2.model.ValueSet.ConceptDefinitionDesignationComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasLanguageElement())
       tgt.setLanguageElement(Code10_50.convertCode(src.getLanguageElement()));
     if (src.hasUse())
@@ -80,7 +80,7 @@ public class ValueSet10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent tgt = new org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasSystemElement())
       tgt.setSystemElement(Uri10_50.convertUri(src.getSystemElement()));
     if (src.hasVersionElement())
@@ -96,7 +96,7 @@ public class ValueSet10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.ValueSet.ConceptSetComponent tgt = new org.hl7.fhir.dstu2.model.ValueSet.ConceptSetComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasSystemElement())
       tgt.setSystemElement(Uri10_50.convertUri(src.getSystemElement()));
     if (src.hasVersionElement())
@@ -112,7 +112,7 @@ public class ValueSet10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.ValueSet.ConceptSetFilterComponent tgt = new org.hl7.fhir.dstu2.model.ValueSet.ConceptSetFilterComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasPropertyElement())
       tgt.setPropertyElement(Code10_50.convertCode(src.getPropertyElement()));
     if (src.hasOp())
@@ -126,7 +126,7 @@ public class ValueSet10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent tgt = new org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasPropertyElement())
       tgt.setPropertyElement(Code10_50.convertCode(src.getPropertyElement()));
     if (src.hasOp())
@@ -344,7 +344,7 @@ public class ValueSet10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent tgt = new org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu2.model.UriType t : src.getImport()) tgt.addInclude().addValueSet(t.getValue());
     for (org.hl7.fhir.dstu2.model.ValueSet.ConceptSetComponent t : src.getInclude())
       tgt.addInclude(convertConceptSetComponent(t));
@@ -357,7 +357,7 @@ public class ValueSet10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.ValueSet.ValueSetComposeComponent tgt = new org.hl7.fhir.dstu2.model.ValueSet.ValueSetComposeComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent t : src.getInclude()) {
       for (org.hl7.fhir.r5.model.UriType ti : t.getValueSet()) tgt.addImport(ti.getValue());
       if (noSystem == null || !t.getSystem().equals(noSystem))
@@ -396,7 +396,7 @@ public class ValueSet10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent tgt = new org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasIdentifierElement())
       tgt.setIdentifierElement(Uri10_50.convertUri(src.getIdentifierElement()));
     if (src.hasTimestampElement())
@@ -416,7 +416,7 @@ public class ValueSet10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.ValueSet.ValueSetExpansionComponent tgt = new org.hl7.fhir.dstu2.model.ValueSet.ValueSetExpansionComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasIdentifierElement())
       tgt.setIdentifierElement(Uri10_50.convertUri(src.getIdentifierElement()));
     if (src.hasTimestampElement())
@@ -436,7 +436,7 @@ public class ValueSet10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.ValueSet.ValueSetExpansionContainsComponent tgt = new org.hl7.fhir.dstu2.model.ValueSet.ValueSetExpansionContainsComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasSystemElement())
       tgt.setSystemElement(Uri10_50.convertUri(src.getSystemElement()));
     if (src.hasAbstractElement())
@@ -456,7 +456,7 @@ public class ValueSet10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent tgt = new org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasSystemElement())
       tgt.setSystemElement(Uri10_50.convertUri(src.getSystemElement()));
     if (src.hasAbstractElement())
@@ -476,7 +476,7 @@ public class ValueSet10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.ValueSet.ValueSetExpansionParameterComponent tgt = new org.hl7.fhir.dstu2.model.ValueSet.ValueSetExpansionParameterComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasNameElement())
       tgt.setNameElement(String10_50.convertString(src.getNameElement()));
     if (src.hasValue())
@@ -488,7 +488,7 @@ public class ValueSet10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent tgt = new org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasNameElement())
       tgt.setNameElement(String10_50.convertString(src.getNameElement()));
     if (src.hasValue())
@@ -546,7 +546,7 @@ public class ValueSet10_50 {
   public static ValueSet.ConceptDefinitionComponent convertCodeSystemConcept(CodeSystem cs, ConceptDefinitionComponent src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     ValueSet.ConceptDefinitionComponent tgt = new ValueSet.ConceptDefinitionComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     tgt.setAbstract(CodeSystemUtilities.isNotSelectable(cs, src));
     if (src.hasCode()) tgt.setCode(src.getCode());
     if (src.hasDefinition()) tgt.setDefinition(src.getDefinition());
@@ -560,7 +560,7 @@ public class ValueSet10_50 {
   public static ValueSet.ConceptDefinitionDesignationComponent convertCodeSystemDesignation(CodeSystem.ConceptDefinitionDesignationComponent src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     ValueSet.ConceptDefinitionDesignationComponent tgt = new ValueSet.ConceptDefinitionDesignationComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasUse()) tgt.setUse(Coding10_50.convertCoding(src.getUse()));
     if (src.hasLanguage()) tgt.setLanguage(src.getLanguage());
     if (src.hasValue()) tgt.setValue(src.getValue());

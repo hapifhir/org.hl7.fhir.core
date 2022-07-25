@@ -206,7 +206,7 @@ public class ObservationDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ObservationDefinition.ObservationDefinitionQuantitativeDetailsComponent tgt = new org.hl7.fhir.r5.model.ObservationDefinition.ObservationDefinitionQuantitativeDetailsComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCustomaryUnit())
       tgt.setCustomaryUnit(CodeableConcept40_50.convertCodeableConcept(src.getCustomaryUnit()));
     if (src.hasUnit())
@@ -222,7 +222,7 @@ public class ObservationDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQuantitativeDetailsComponent tgt = new org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQuantitativeDetailsComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCustomaryUnit())
       tgt.setCustomaryUnit(CodeableConcept40_50.convertCodeableConcept(src.getCustomaryUnit()));
     if (src.hasUnit())

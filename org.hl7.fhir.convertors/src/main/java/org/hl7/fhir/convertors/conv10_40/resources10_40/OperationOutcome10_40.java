@@ -281,7 +281,7 @@ public class OperationOutcome10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent tgt = new org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasSeverity())
       tgt.setSeverityElement(convertIssueSeverity(src.getSeverityElement()));
     if (src.hasCode())
@@ -298,7 +298,7 @@ public class OperationOutcome10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.OperationOutcome.OperationOutcomeIssueComponent tgt = new org.hl7.fhir.dstu2.model.OperationOutcome.OperationOutcomeIssueComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasSeverity())
       tgt.setSeverityElement(convertIssueSeverity(src.getSeverityElement()));
     if (src.hasCode())

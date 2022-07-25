@@ -13,7 +13,7 @@ public class Encounter30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Encounter.ClassHistoryComponent tgt = new org.hl7.fhir.dstu3.model.Encounter.ClassHistoryComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasClass_())
       tgt.setClass_(Coding30_50.convertCoding(src.getClass_()));
     if (src.hasPeriod())
@@ -25,7 +25,7 @@ public class Encounter30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Encounter.ClassHistoryComponent tgt = new org.hl7.fhir.r5.model.Encounter.ClassHistoryComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasClass_())
       tgt.setClass_(Coding30_50.convertCoding(src.getClass_()));
     if (src.hasPeriod())
@@ -136,7 +136,7 @@ public class Encounter30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Encounter.EncounterHospitalizationComponent tgt = new org.hl7.fhir.dstu3.model.Encounter.EncounterHospitalizationComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasPreAdmissionIdentifier())
       tgt.setPreAdmissionIdentifier(Identifier30_50.convertIdentifier(src.getPreAdmissionIdentifier()));
     if (src.hasOrigin())
@@ -162,7 +162,7 @@ public class Encounter30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Encounter.EncounterHospitalizationComponent tgt = new org.hl7.fhir.r5.model.Encounter.EncounterHospitalizationComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasPreAdmissionIdentifier())
       tgt.setPreAdmissionIdentifier(Identifier30_50.convertIdentifier(src.getPreAdmissionIdentifier()));
     if (src.hasOrigin())
@@ -188,7 +188,7 @@ public class Encounter30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Encounter.EncounterLocationComponent tgt = new org.hl7.fhir.dstu3.model.Encounter.EncounterLocationComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasLocation())
       tgt.setLocation(Reference30_50.convertReference(src.getLocation()));
     if (src.hasStatus())
@@ -202,7 +202,7 @@ public class Encounter30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Encounter.EncounterLocationComponent tgt = new org.hl7.fhir.r5.model.Encounter.EncounterLocationComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasLocation())
       tgt.setLocation(Reference30_50.convertReference(src.getLocation()));
     if (src.hasStatus())
@@ -266,7 +266,7 @@ public class Encounter30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Encounter.EncounterParticipantComponent tgt = new org.hl7.fhir.dstu3.model.Encounter.EncounterParticipantComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType())
       tgt.addType(CodeableConcept30_50.convertCodeableConcept(t));
     if (src.hasPeriod())
@@ -280,7 +280,7 @@ public class Encounter30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Encounter.EncounterParticipantComponent tgt = new org.hl7.fhir.r5.model.Encounter.EncounterParticipantComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getType())
       tgt.addType(CodeableConcept30_50.convertCodeableConcept(t));
     if (src.hasPeriod())
@@ -365,7 +365,7 @@ public class Encounter30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Encounter.StatusHistoryComponent tgt = new org.hl7.fhir.r5.model.Encounter.StatusHistoryComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasStatus())
       tgt.setStatusElement(convertEncounterStatus(src.getStatusElement()));
     if (src.hasPeriod())
@@ -377,7 +377,7 @@ public class Encounter30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Encounter.StatusHistoryComponent tgt = new org.hl7.fhir.dstu3.model.Encounter.StatusHistoryComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasStatus())
       tgt.setStatusElement(convertEncounterStatus(src.getStatusElement()));
     if (src.hasPeriod())
@@ -388,7 +388,7 @@ public class Encounter30_50 {
   public static org.hl7.fhir.r5.model.Encounter.DiagnosisComponent convertDiagnosisComponent(org.hl7.fhir.dstu3.model.Encounter.DiagnosisComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.Encounter.DiagnosisComponent tgt = new org.hl7.fhir.r5.model.Encounter.DiagnosisComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasCondition()) tgt.setCondition(Reference30_50.convertReference(src.getCondition()));
     if (src.hasRole()) tgt.setUse(CodeableConcept30_50.convertCodeableConcept(src.getRole()));
     if (src.hasRank()) tgt.setRankElement(PositiveInt30_50.convertPositiveInt(src.getRankElement()));
@@ -398,7 +398,7 @@ public class Encounter30_50 {
   public static org.hl7.fhir.dstu3.model.Encounter.DiagnosisComponent convertDiagnosisComponent(org.hl7.fhir.r5.model.Encounter.DiagnosisComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.dstu3.model.Encounter.DiagnosisComponent tgt = new org.hl7.fhir.dstu3.model.Encounter.DiagnosisComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasCondition()) tgt.setCondition(Reference30_50.convertReference(src.getCondition()));
     if (src.hasUse()) tgt.setRole(CodeableConcept30_50.convertCodeableConcept(src.getUse()));
     if (src.hasRank()) tgt.setRankElement(PositiveInt30_50.convertPositiveInt(src.getRankElement()));

@@ -122,7 +122,7 @@ public class MedicationRequest30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestDispenseRequestComponent tgt = new org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestDispenseRequestComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasValidityPeriod())
       tgt.setValidityPeriod(Period30_40.convertPeriod(src.getValidityPeriod()));
     if (src.hasNumberOfRepeatsAllowed())
@@ -140,7 +140,7 @@ public class MedicationRequest30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.MedicationRequest.MedicationRequestDispenseRequestComponent tgt = new org.hl7.fhir.dstu3.model.MedicationRequest.MedicationRequestDispenseRequestComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasValidityPeriod())
       tgt.setValidityPeriod(Period30_40.convertPeriod(src.getValidityPeriod()));
     if (src.hasNumberOfRepeatsAllowed())
@@ -332,7 +332,7 @@ public class MedicationRequest30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.MedicationRequest.MedicationRequestSubstitutionComponent tgt = new org.hl7.fhir.dstu3.model.MedicationRequest.MedicationRequestSubstitutionComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasAllowedBooleanType())
       tgt.setAllowedElement(Boolean30_40.convertBoolean(src.getAllowedBooleanType()));
     if (src.hasReason())
@@ -344,7 +344,7 @@ public class MedicationRequest30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestSubstitutionComponent tgt = new org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestSubstitutionComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasAllowed())
       tgt.setAllowed(Boolean30_40.convertBoolean(src.getAllowedElement()));
     if (src.hasReason())

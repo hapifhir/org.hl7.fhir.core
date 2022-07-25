@@ -180,7 +180,7 @@ public class Goal30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Goal.GoalTargetComponent tgt = new org.hl7.fhir.r4.model.Goal.GoalTargetComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasMeasure())
       tgt.setMeasure(CodeableConcept30_40.convertCodeableConcept(src.getMeasure()));
     if (src.hasDetail())
@@ -194,7 +194,7 @@ public class Goal30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Goal.GoalTargetComponent tgt = new org.hl7.fhir.dstu3.model.Goal.GoalTargetComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasMeasure())
       tgt.setMeasure(CodeableConcept30_40.convertCodeableConcept(src.getMeasure()));
     if (src.hasDetail())

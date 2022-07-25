@@ -75,7 +75,7 @@ public class SubstanceProtein40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.SubstanceProtein.SubstanceProteinSubunitComponent tgt = new org.hl7.fhir.r5.model.SubstanceProtein.SubstanceProteinSubunitComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSubunit())
       tgt.setSubunitElement(Integer40_50.convertInteger(src.getSubunitElement()));
     if (src.hasSequence())
@@ -99,7 +99,7 @@ public class SubstanceProtein40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.SubstanceProtein.SubstanceProteinSubunitComponent tgt = new org.hl7.fhir.r4.model.SubstanceProtein.SubstanceProteinSubunitComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSubunit())
       tgt.setSubunitElement(Integer40_50.convertInteger(src.getSubunitElement()));
     if (src.hasSequence())

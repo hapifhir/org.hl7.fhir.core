@@ -292,7 +292,7 @@ public class SearchParameter30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.SearchParameter.SearchParameterComponentComponent tgt = new org.hl7.fhir.r5.model.SearchParameter.SearchParameterComponentComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasDefinition())
       tgt.setDefinitionElement(Reference30_50.convertReferenceToCanonical(src.getDefinition()));
     if (src.hasExpression())
@@ -304,7 +304,7 @@ public class SearchParameter30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.SearchParameter.SearchParameterComponentComponent tgt = new org.hl7.fhir.dstu3.model.SearchParameter.SearchParameterComponentComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasDefinition())
       tgt.setDefinition(Reference30_50.convertCanonicalToReference(src.getDefinitionElement()));
     if (src.hasExpression())

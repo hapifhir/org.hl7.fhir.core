@@ -272,7 +272,7 @@ public class Communication40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Communication.CommunicationPayloadComponent tgt = new org.hl7.fhir.r5.model.Communication.CommunicationPayloadComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasContent()) {
       if (src.getContent() instanceof StringType) {
         CodeableConcept tgtc = new CodeableConcept();
@@ -291,7 +291,7 @@ public class Communication40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Communication.CommunicationPayloadComponent tgt = new org.hl7.fhir.r4.model.Communication.CommunicationPayloadComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasContent()) {
       if (src.hasContentCodeableConcept()) {
         StringType tgts = new StringType();

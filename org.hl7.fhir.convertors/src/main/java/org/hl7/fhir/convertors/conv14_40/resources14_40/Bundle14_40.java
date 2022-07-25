@@ -46,7 +46,7 @@ public class Bundle14_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Bundle.BundleEntryComponent tgt = new org.hl7.fhir.r4.model.Bundle.BundleEntryComponent();
-    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
+    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu2016may.model.Bundle.BundleLinkComponent t : src.getLink())
       tgt.addLink(convertBundleLinkComponent(t));
     if (src.hasFullUrl())
@@ -66,7 +66,7 @@ public class Bundle14_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2016may.model.Bundle.BundleEntryComponent tgt = new org.hl7.fhir.dstu2016may.model.Bundle.BundleEntryComponent();
-    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
+    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.r4.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
     if (src.hasFullUrl())
       tgt.setFullUrlElement(Uri14_40.convertUri(src.getFullUrlElement()));
@@ -85,7 +85,7 @@ public class Bundle14_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Bundle.BundleEntryRequestComponent tgt = new org.hl7.fhir.r4.model.Bundle.BundleEntryRequestComponent();
-    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
+    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyBackboneElement(src,tgt);
     if (src.hasMethod())
       tgt.setMethodElement(convertHTTPVerb(src.getMethodElement()));
     if (src.hasUrlElement())
@@ -105,7 +105,7 @@ public class Bundle14_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2016may.model.Bundle.BundleEntryRequestComponent tgt = new org.hl7.fhir.dstu2016may.model.Bundle.BundleEntryRequestComponent();
-    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
+    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyBackboneElement(src,tgt);
     if (src.hasMethod())
       tgt.setMethodElement(convertHTTPVerb(src.getMethodElement()));
     if (src.hasUrlElement())
@@ -125,7 +125,7 @@ public class Bundle14_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Bundle.BundleEntryResponseComponent tgt = new org.hl7.fhir.r4.model.Bundle.BundleEntryResponseComponent();
-    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
+    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyBackboneElement(src,tgt);
     if (src.hasStatusElement())
       tgt.setStatusElement(String14_40.convertString(src.getStatusElement()));
     if (src.hasLocation())
@@ -141,7 +141,7 @@ public class Bundle14_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2016may.model.Bundle.BundleEntryResponseComponent tgt = new org.hl7.fhir.dstu2016may.model.Bundle.BundleEntryResponseComponent();
-    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
+    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyBackboneElement(src,tgt);
     if (src.hasStatusElement())
       tgt.setStatusElement(String14_40.convertString(src.getStatusElement()));
     if (src.hasLocation())
@@ -157,7 +157,7 @@ public class Bundle14_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2016may.model.Bundle.BundleEntrySearchComponent tgt = new org.hl7.fhir.dstu2016may.model.Bundle.BundleEntrySearchComponent();
-    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
+    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyBackboneElement(src,tgt);
     if (src.hasMode())
       tgt.setModeElement(convertSearchEntryMode(src.getModeElement()));
     if (src.hasScore())
@@ -169,7 +169,7 @@ public class Bundle14_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Bundle.BundleEntrySearchComponent tgt = new org.hl7.fhir.r4.model.Bundle.BundleEntrySearchComponent();
-    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
+    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyBackboneElement(src,tgt);
     if (src.hasMode())
       tgt.setModeElement(convertSearchEntryMode(src.getModeElement()));
     if (src.hasScore())
@@ -181,7 +181,7 @@ public class Bundle14_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2016may.model.Bundle.BundleLinkComponent tgt = new org.hl7.fhir.dstu2016may.model.Bundle.BundleLinkComponent();
-    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
+    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyBackboneElement(src,tgt);
     if (src.hasRelationElement())
       tgt.setRelationElement(String14_40.convertString(src.getRelationElement()));
     if (src.hasUrlElement())
@@ -193,7 +193,7 @@ public class Bundle14_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Bundle.BundleLinkComponent tgt = new org.hl7.fhir.r4.model.Bundle.BundleLinkComponent();
-    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
+    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyBackboneElement(src,tgt);
     if (src.hasRelationElement())
       tgt.setRelationElement(String14_40.convertString(src.getRelationElement()));
     if (src.hasUrlElement())
