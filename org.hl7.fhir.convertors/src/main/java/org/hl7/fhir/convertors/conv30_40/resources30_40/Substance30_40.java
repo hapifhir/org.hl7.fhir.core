@@ -103,7 +103,7 @@ public class Substance30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Substance.SubstanceIngredientComponent tgt = new org.hl7.fhir.dstu3.model.Substance.SubstanceIngredientComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasQuantity())
       tgt.setQuantity(Ratio30_40.convertRatio(src.getQuantity()));
     if (src.hasSubstance())
@@ -115,7 +115,7 @@ public class Substance30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Substance.SubstanceIngredientComponent tgt = new org.hl7.fhir.r4.model.Substance.SubstanceIngredientComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasQuantity())
       tgt.setQuantity(Ratio30_40.convertRatio(src.getQuantity()));
     if (src.hasSubstance())
@@ -127,7 +127,7 @@ public class Substance30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Substance.SubstanceInstanceComponent tgt = new org.hl7.fhir.dstu3.model.Substance.SubstanceInstanceComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasIdentifier())
       tgt.setIdentifier(Identifier30_40.convertIdentifier(src.getIdentifier()));
     if (src.hasExpiry())
@@ -141,7 +141,7 @@ public class Substance30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Substance.SubstanceInstanceComponent tgt = new org.hl7.fhir.r4.model.Substance.SubstanceInstanceComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasIdentifier())
       tgt.setIdentifier(Identifier30_40.convertIdentifier(src.getIdentifier()));
     if (src.hasExpiry())

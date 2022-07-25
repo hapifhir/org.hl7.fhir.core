@@ -69,7 +69,7 @@ public class CarePlan10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityComponent();
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu3.model.Annotation t : src.getProgress())
       tgt.addProgress(Annotation10_30.convertAnnotation(t));
     if (src.hasReference())
@@ -83,7 +83,7 @@ public class CarePlan10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityComponent();
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu2.model.Annotation t : src.getProgress())
       tgt.addProgress(Annotation10_30.convertAnnotation(t));
     if (src.hasReference())
@@ -97,7 +97,7 @@ public class CarePlan10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityDetailComponent tgt = new org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityDetailComponent();
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyBackboneElement(src,tgt);
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept10_30.convertCodeableConcept(src.getCategory()));
     if (src.hasCode())
@@ -132,7 +132,7 @@ public class CarePlan10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityDetailComponent tgt = new org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityDetailComponent();
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyBackboneElement(src,tgt);
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept10_30.convertCodeableConcept(src.getCategory()));
     if (src.hasCode())

@@ -178,7 +178,7 @@ public class Invoice40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Invoice.InvoiceParticipantComponent tgt = new org.hl7.fhir.r5.model.Invoice.InvoiceParticipantComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasRole())
       tgt.setRole(CodeableConcept40_50.convertCodeableConcept(src.getRole()));
     if (src.hasActor())
@@ -190,7 +190,7 @@ public class Invoice40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Invoice.InvoiceParticipantComponent tgt = new org.hl7.fhir.r4.model.Invoice.InvoiceParticipantComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasRole())
       tgt.setRole(CodeableConcept40_50.convertCodeableConcept(src.getRole()));
     if (src.hasActor())
@@ -202,7 +202,7 @@ public class Invoice40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Invoice.InvoiceLineItemComponent tgt = new org.hl7.fhir.r5.model.Invoice.InvoiceLineItemComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSequenceElement()));
     if (src.hasChargeItem())
@@ -216,7 +216,7 @@ public class Invoice40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Invoice.InvoiceLineItemComponent tgt = new org.hl7.fhir.r4.model.Invoice.InvoiceLineItemComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSequenceElement()));
     if (src.hasChargeItem())
@@ -230,7 +230,7 @@ public class Invoice40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Invoice.InvoiceLineItemPriceComponentComponent tgt = new org.hl7.fhir.r5.model.Invoice.InvoiceLineItemPriceComponentComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setTypeElement(convertInvoicePriceComponentType(src.getTypeElement()));
     if (src.hasCode())
@@ -246,7 +246,7 @@ public class Invoice40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Invoice.InvoiceLineItemPriceComponentComponent tgt = new org.hl7.fhir.r4.model.Invoice.InvoiceLineItemPriceComponentComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setTypeElement(convertInvoicePriceComponentType(src.getTypeElement()));
     if (src.hasCode())

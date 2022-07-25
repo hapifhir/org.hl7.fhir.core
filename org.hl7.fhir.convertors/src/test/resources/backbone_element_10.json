@@ -1,0 +1,15 @@
+{
+  "resourceType": "Bundle",
+  "id": "bundle-example",
+  "type": "searchset",
+  "link": [
+    {
+      "relation": "self",
+      "url": "https://example.com/base/MedicationRequest?patient=347&_include=MedicationRequest.medication&_count=2",
+      "modifierExtension" :[{
+        "url" : "http://hl7.org/fhir/StructureDefinition/iso-21090-EN-use",
+        "valueCode" : "I"
+      }]
+    }
+  ]
+}

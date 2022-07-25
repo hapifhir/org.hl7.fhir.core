@@ -198,7 +198,7 @@ public class ActivityDefinition30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionDynamicValueComponent tgt = new org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionDynamicValueComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasDescription())
       tgt.getExpression().setDescription(src.getDescription());
     if (src.hasPath())
@@ -214,7 +214,7 @@ public class ActivityDefinition30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionDynamicValueComponent tgt = new org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionDynamicValueComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasPath())
       tgt.setPathElement(String30_50.convertString(src.getPathElement()));
     if (src.getExpression().hasDescription())
@@ -349,7 +349,7 @@ public class ActivityDefinition30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionParticipantComponent tgt = new org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionParticipantComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasType())
       tgt.setTypeElement(convertActivityParticipantType(src.getTypeElement()));
     if (src.hasRole())
@@ -361,7 +361,7 @@ public class ActivityDefinition30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionParticipantComponent tgt = new org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionParticipantComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasType())
       tgt.setTypeElement(convertActivityParticipantType(src.getTypeElement()));
     if (src.hasRole())

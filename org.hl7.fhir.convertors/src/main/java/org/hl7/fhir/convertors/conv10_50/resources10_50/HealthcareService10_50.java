@@ -179,7 +179,7 @@ public class HealthcareService10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceAvailableTimeComponent tgt = new org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceAvailableTimeComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     tgt.setDaysOfWeek(src.getDaysOfWeek().stream()
       .map(HealthcareService10_50::convertDaysOfWeek)
       .collect(Collectors.toList()));
@@ -196,7 +196,7 @@ public class HealthcareService10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.HealthcareService.HealthcareServiceAvailableTimeComponent tgt = new org.hl7.fhir.r5.model.HealthcareService.HealthcareServiceAvailableTimeComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     tgt.setDaysOfWeek(src.getDaysOfWeek().stream()
       .map(HealthcareService10_50::convertDaysOfWeek)
       .collect(Collectors.toList()));
@@ -213,7 +213,7 @@ public class HealthcareService10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.HealthcareService.HealthcareServiceNotAvailableComponent tgt = new org.hl7.fhir.r5.model.HealthcareService.HealthcareServiceNotAvailableComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasDescriptionElement())
       tgt.setDescriptionElement(String10_50.convertString(src.getDescriptionElement()));
     if (src.hasDuring())
@@ -225,7 +225,7 @@ public class HealthcareService10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceNotAvailableComponent tgt = new org.hl7.fhir.dstu2.model.HealthcareService.HealthcareServiceNotAvailableComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasDescriptionElement())
       tgt.setDescriptionElement(String10_50.convertString(src.getDescriptionElement()));
     if (src.hasDuring())

@@ -118,7 +118,7 @@ public class GraphDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkComponent tgt = new org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasPath())
       tgt.setPathElement(String40_50.convertString(src.getPathElement()));
     if (src.hasSliceName())
@@ -138,7 +138,7 @@ public class GraphDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkComponent tgt = new org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasPath())
       tgt.setPathElement(String40_50.convertString(src.getPathElement()));
     if (src.hasSliceName())
@@ -158,7 +158,7 @@ public class GraphDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetComponent tgt = new org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setTypeElement(Code40_50.convertResourceEnum(src.getTypeElement()));
     if (src.hasParams())
@@ -176,7 +176,7 @@ public class GraphDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkTargetComponent tgt = new org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkTargetComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setTypeElement(Code40_50.convertResourceEnum(src.getTypeElement()));
     if (src.hasParams())
@@ -194,7 +194,7 @@ public class GraphDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent tgt = new org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasUse())
       tgt.setUseElement(convertGraphCompartmentUse(src.getUseElement()));
     if (src.hasCode())
@@ -212,7 +212,7 @@ public class GraphDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent tgt = new org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasUse())
       tgt.setUseElement(convertGraphCompartmentUse(src.getUseElement()));
     if (src.hasCode())

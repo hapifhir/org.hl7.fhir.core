@@ -144,7 +144,7 @@ public class Composition30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Composition.CompositionAttesterComponent tgt = new org.hl7.fhir.dstu3.model.Composition.CompositionAttesterComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasMode())
       tgt.setMode(Collections.singletonList(convertCompositionAttestationMode(src.getModeElement())));
     if (src.hasTime())
@@ -158,7 +158,7 @@ public class Composition30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Composition.CompositionAttesterComponent tgt = new org.hl7.fhir.r4.model.Composition.CompositionAttesterComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasMode())
       tgt.setModeElement(convertCompositionAttestationMode(src.getMode().get(0)));
     if (src.hasTime())
@@ -172,7 +172,7 @@ public class Composition30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Composition.CompositionEventComponent tgt = new org.hl7.fhir.r4.model.Composition.CompositionEventComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCode())
       tgt.addCode(CodeableConcept30_40.convertCodeableConcept(t));
     if (src.hasPeriod())
@@ -186,7 +186,7 @@ public class Composition30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Composition.CompositionEventComponent tgt = new org.hl7.fhir.dstu3.model.Composition.CompositionEventComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode())
       tgt.addCode(CodeableConcept30_40.convertCodeableConcept(t));
     if (src.hasPeriod())
@@ -200,7 +200,7 @@ public class Composition30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Composition.CompositionRelatesToComponent tgt = new org.hl7.fhir.r4.model.Composition.CompositionRelatesToComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCodeElement(convertDocumentRelationshipType(src.getCodeElement()));
     if (src.hasTarget())
@@ -212,7 +212,7 @@ public class Composition30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Composition.CompositionRelatesToComponent tgt = new org.hl7.fhir.dstu3.model.Composition.CompositionRelatesToComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCodeElement(convertDocumentRelationshipType(src.getCodeElement()));
     if (src.hasTarget())
@@ -336,7 +336,7 @@ public class Composition30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Composition.SectionComponent tgt = new org.hl7.fhir.dstu3.model.Composition.SectionComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasTitle())
       tgt.setTitleElement(String30_40.convertString(src.getTitleElement()));
     if (src.hasCode())
@@ -360,7 +360,7 @@ public class Composition30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Composition.SectionComponent tgt = new org.hl7.fhir.r4.model.Composition.SectionComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasTitle())
       tgt.setTitleElement(String30_40.convertString(src.getTitleElement()));
     if (src.hasCode())

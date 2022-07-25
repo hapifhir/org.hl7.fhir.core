@@ -58,7 +58,7 @@ public class Substance10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Substance.SubstanceIngredientComponent tgt = new org.hl7.fhir.dstu2.model.Substance.SubstanceIngredientComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasQuantity())
       tgt.setQuantity(Ratio10_50.convertRatio(src.getQuantity()));
     return tgt;
@@ -68,7 +68,7 @@ public class Substance10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Substance.SubstanceIngredientComponent tgt = new org.hl7.fhir.r5.model.Substance.SubstanceIngredientComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasQuantity())
       tgt.setQuantity(Ratio10_50.convertRatio(src.getQuantity()));
     if (src.hasSubstance())

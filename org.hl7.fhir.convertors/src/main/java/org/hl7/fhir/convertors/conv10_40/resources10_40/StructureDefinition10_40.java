@@ -247,7 +247,7 @@ public class StructureDefinition10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionDifferentialComponent tgt = new org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionDifferentialComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     List<String> slicePaths = new ArrayList<String>();
     for (org.hl7.fhir.dstu2.model.ElementDefinition t : src.getElement()) {
       if (t.hasSlicing())
@@ -261,7 +261,7 @@ public class StructureDefinition10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.StructureDefinition.StructureDefinitionDifferentialComponent tgt = new org.hl7.fhir.dstu2.model.StructureDefinition.StructureDefinitionDifferentialComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.r4.model.ElementDefinition t : src.getElement())
       tgt.addElement(ElementDefinition10_40.convertElementDefinition(t));
     return tgt;
@@ -320,7 +320,7 @@ public class StructureDefinition10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.StructureDefinition.StructureDefinitionMappingComponent tgt = new org.hl7.fhir.dstu2.model.StructureDefinition.StructureDefinitionMappingComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasIdentityElement())
       tgt.setIdentityElement(Id10_40.convertId(src.getIdentityElement()));
     if (src.hasUriElement())
@@ -336,7 +336,7 @@ public class StructureDefinition10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionMappingComponent tgt = new org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionMappingComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasIdentityElement())
       tgt.setIdentityElement(Id10_40.convertId(src.getIdentityElement()));
     if (src.hasUriElement())
@@ -352,7 +352,7 @@ public class StructureDefinition10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionSnapshotComponent tgt = new org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionSnapshotComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     List<String> slicePaths = new ArrayList<String>();
     for (org.hl7.fhir.dstu2.model.ElementDefinition t : src.getElement()) {
       if (t.hasSlicing())
@@ -366,7 +366,7 @@ public class StructureDefinition10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.StructureDefinition.StructureDefinitionSnapshotComponent tgt = new org.hl7.fhir.dstu2.model.StructureDefinition.StructureDefinitionSnapshotComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.r4.model.ElementDefinition t : src.getElement())
       tgt.addElement(ElementDefinition10_40.convertElementDefinition(t));
     return tgt;

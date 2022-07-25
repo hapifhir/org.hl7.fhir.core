@@ -100,7 +100,7 @@ public class Provenance10_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Provenance.ProvenanceAgentComponent tgt = new org.hl7.fhir.r5.model.Provenance.ProvenanceAgentComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
 //        if (src.hasType())
 //            tgt.setType(convertCodeableConcept(src.getType()));
     if (src.hasRole())
@@ -114,7 +114,7 @@ public class Provenance10_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu2.model.Provenance.ProvenanceAgentComponent tgt = new org.hl7.fhir.dstu2.model.Provenance.ProvenanceAgentComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
 //        if (src.hasType())
 //            tgt.setType(convertCodeableConcept(src.getType()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getRole())
@@ -129,7 +129,7 @@ public class Provenance10_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Provenance.ProvenanceEntityComponent tgt = new org.hl7.fhir.r5.model.Provenance.ProvenanceEntityComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasRole())
       tgt.setRoleElement(convertProvenanceEntityRole(src.getRoleElement()));
     if (src.hasReference())
@@ -142,7 +142,7 @@ public class Provenance10_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu2.model.Provenance.ProvenanceEntityComponent tgt = new org.hl7.fhir.dstu2.model.Provenance.ProvenanceEntityComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasRole())
       tgt.setRoleElement(convertProvenanceEntityRole(src.getRoleElement()));
     if (Utilities.isAbsoluteUrl(src.getWhat().getReference()))

@@ -236,7 +236,7 @@ public class TerminologyCapabilities40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesSoftwareComponent tgt = new org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesSoftwareComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasName())
       tgt.setNameElement(String40_50.convertString(src.getNameElement()));
     if (src.hasVersion())
@@ -248,7 +248,7 @@ public class TerminologyCapabilities40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesSoftwareComponent tgt = new org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesSoftwareComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasName())
       tgt.setNameElement(String40_50.convertString(src.getNameElement()));
     if (src.hasVersion())
@@ -260,7 +260,7 @@ public class TerminologyCapabilities40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesImplementationComponent tgt = new org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesImplementationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
     if (src.hasUrl())
@@ -272,7 +272,7 @@ public class TerminologyCapabilities40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesImplementationComponent tgt = new org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesImplementationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
     if (src.hasUrl())
@@ -284,7 +284,7 @@ public class TerminologyCapabilities40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent tgt = new org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasUri())
       tgt.setUriElement(Canonical40_50.convertCanonical(src.getUriElement()));
     for (org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent t : src.getVersion())
@@ -298,7 +298,7 @@ public class TerminologyCapabilities40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent tgt = new org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasUri())
       tgt.setUriElement(Canonical40_50.convertCanonical(src.getUriElement()));
     for (org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent t : src.getVersion())
@@ -312,7 +312,7 @@ public class TerminologyCapabilities40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent tgt = new org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCodeElement(String40_50.convertString(src.getCodeElement()));
     if (src.hasIsDefault())
@@ -330,7 +330,7 @@ public class TerminologyCapabilities40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent tgt = new org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCodeElement(String40_50.convertString(src.getCodeElement()));
     if (src.hasIsDefault())
@@ -348,7 +348,7 @@ public class TerminologyCapabilities40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionFilterComponent tgt = new org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionFilterComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCodeElement(Code40_50.convertCode(src.getCodeElement()));
     for (org.hl7.fhir.r4.model.CodeType t : src.getOp()) tgt.getOp().add(Code40_50.convertCode(t));
@@ -359,7 +359,7 @@ public class TerminologyCapabilities40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionFilterComponent tgt = new org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionFilterComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCodeElement(Code40_50.convertCode(src.getCodeElement()));
     for (org.hl7.fhir.r5.model.CodeType t : src.getOp()) tgt.getOp().add(Code40_50.convertCode(t));
@@ -370,7 +370,7 @@ public class TerminologyCapabilities40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionComponent tgt = new org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasHierarchical())
       tgt.setHierarchicalElement(Boolean40_50.convertBoolean(src.getHierarchicalElement()));
     if (src.hasPaging())
@@ -388,7 +388,7 @@ public class TerminologyCapabilities40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionComponent tgt = new org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasHierarchical())
       tgt.setHierarchicalElement(Boolean40_50.convertBoolean(src.getHierarchicalElement()));
     if (src.hasPaging())
@@ -406,7 +406,7 @@ public class TerminologyCapabilities40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionParameterComponent tgt = new org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionParameterComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasName())
       tgt.setNameElement(Code40_50.convertCode(src.getNameElement()));
     if (src.hasDocumentation())
@@ -418,7 +418,7 @@ public class TerminologyCapabilities40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionParameterComponent tgt = new org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionParameterComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasName())
       tgt.setNameElement(Code40_50.convertCode(src.getNameElement()));
     if (src.hasDocumentation())
@@ -430,7 +430,7 @@ public class TerminologyCapabilities40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesValidateCodeComponent tgt = new org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesValidateCodeComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasTranslations())
       tgt.setTranslationsElement(Boolean40_50.convertBoolean(src.getTranslationsElement()));
     return tgt;
@@ -440,7 +440,7 @@ public class TerminologyCapabilities40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesValidateCodeComponent tgt = new org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesValidateCodeComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasTranslations())
       tgt.setTranslationsElement(Boolean40_50.convertBoolean(src.getTranslationsElement()));
     return tgt;
@@ -450,7 +450,7 @@ public class TerminologyCapabilities40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesTranslationComponent tgt = new org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesTranslationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasNeedsMap())
       tgt.setNeedsMapElement(Boolean40_50.convertBoolean(src.getNeedsMapElement()));
     return tgt;
@@ -460,7 +460,7 @@ public class TerminologyCapabilities40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesTranslationComponent tgt = new org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesTranslationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasNeedsMap())
       tgt.setNeedsMapElement(Boolean40_50.convertBoolean(src.getNeedsMapElement()));
     return tgt;
@@ -470,7 +470,7 @@ public class TerminologyCapabilities40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesClosureComponent tgt = new org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesClosureComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasTranslation())
       tgt.setTranslationElement(Boolean40_50.convertBoolean(src.getTranslationElement()));
     return tgt;
@@ -480,7 +480,7 @@ public class TerminologyCapabilities40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesClosureComponent tgt = new org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesClosureComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasTranslation())
       tgt.setTranslationElement(Boolean40_50.convertBoolean(src.getTranslationElement()));
     return tgt;

@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_40;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
 import org.hl7.fhir.convertors.context.ConversionContext10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.BackboneElement10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Element10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Type10_40;
 import org.hl7.fhir.convertors.conv10_40.resources10_40.Resource10_40;
@@ -65,12 +66,15 @@ public class VersionConvertor_10_40 {
 
   private final BaseAdvisor_10_40 advisor;
   private final Element10_40 elementConvertor;
+
+  private final BackboneElement10_40 backboneElementConvertor;
   private final Resource10_40 resourceConvertor;
   private final Type10_40 typeConvertor;
 
   public VersionConvertor_10_40(@Nonnull BaseAdvisor_10_40 advisor) {
     this.advisor = advisor;
     this.elementConvertor = new Element10_40(advisor);
+    this.backboneElementConvertor = new BackboneElement10_40();
     this.resourceConvertor = new Resource10_40(advisor);
     this.typeConvertor = new Type10_40(advisor);
   }
@@ -166,4 +170,15 @@ public class VersionConvertor_10_40 {
     elementConvertor.copyElement(src, tgt, ConversionContext10_40.INSTANCE.path(), var);
   }
 
+  public void copyBackboneElement(@Nonnull org.hl7.fhir.r4.model.BackboneElement src,
+                                  @Nonnull org.hl7.fhir.dstu2.model.BackboneElement tgt,
+                                  String... var) throws FHIRException {
+    backboneElementConvertor.copyBackboneElement(src, tgt, var);
+  }
+
+  public void copyBackboneElement(@Nonnull org.hl7.fhir.dstu2.model.BackboneElement src,
+                                  @Nonnull org.hl7.fhir.r4.model.BackboneElement tgt,
+                                  String... var) throws FHIRException {
+    backboneElementConvertor.copyBackboneElement(src, tgt, var);
+  }
 }

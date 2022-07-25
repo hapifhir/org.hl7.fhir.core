@@ -200,7 +200,7 @@ public class MeasureReport40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MeasureReport.MeasureReportGroupComponent tgt = new org.hl7.fhir.r5.model.MeasureReport.MeasureReportGroupComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupPopulationComponent t : src.getPopulation())
@@ -216,7 +216,7 @@ public class MeasureReport40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupComponent tgt = new org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.r5.model.MeasureReport.MeasureReportGroupPopulationComponent t : src.getPopulation())
@@ -232,7 +232,7 @@ public class MeasureReport40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MeasureReport.MeasureReportGroupPopulationComponent tgt = new org.hl7.fhir.r5.model.MeasureReport.MeasureReportGroupPopulationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasCount())
@@ -246,7 +246,7 @@ public class MeasureReport40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupPopulationComponent tgt = new org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupPopulationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasCount())
@@ -260,7 +260,7 @@ public class MeasureReport40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MeasureReport.MeasureReportGroupStratifierComponent tgt = new org.hl7.fhir.r5.model.MeasureReport.MeasureReportGroupStratifierComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode())
       tgt.addCode(CodeableConcept40_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.MeasureReport.StratifierGroupComponent t : src.getStratum())
@@ -272,7 +272,7 @@ public class MeasureReport40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupStratifierComponent tgt = new org.hl7.fhir.r4.model.MeasureReport.MeasureReportGroupStratifierComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode())
       tgt.addCode(CodeableConcept40_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r5.model.MeasureReport.StratifierGroupComponent t : src.getStratum())
@@ -284,7 +284,7 @@ public class MeasureReport40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MeasureReport.StratifierGroupComponent tgt = new org.hl7.fhir.r5.model.MeasureReport.StratifierGroupComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasValue())
       tgt.setValue(CodeableConcept40_50.convertCodeableConcept(src.getValue()));
     for (org.hl7.fhir.r4.model.MeasureReport.StratifierGroupComponentComponent t : src.getComponent())
@@ -300,7 +300,7 @@ public class MeasureReport40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MeasureReport.StratifierGroupComponent tgt = new org.hl7.fhir.r4.model.MeasureReport.StratifierGroupComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasValueCodeableConcept())
       tgt.setValue(CodeableConcept40_50.convertCodeableConcept(src.getValueCodeableConcept()));
     for (org.hl7.fhir.r5.model.MeasureReport.StratifierGroupComponentComponent t : src.getComponent())
@@ -316,7 +316,7 @@ public class MeasureReport40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MeasureReport.StratifierGroupComponentComponent tgt = new org.hl7.fhir.r5.model.MeasureReport.StratifierGroupComponentComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasValue())
@@ -328,7 +328,7 @@ public class MeasureReport40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MeasureReport.StratifierGroupComponentComponent tgt = new org.hl7.fhir.r4.model.MeasureReport.StratifierGroupComponentComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasValueCodeableConcept())
@@ -340,7 +340,7 @@ public class MeasureReport40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MeasureReport.StratifierGroupPopulationComponent tgt = new org.hl7.fhir.r5.model.MeasureReport.StratifierGroupPopulationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasCount())
@@ -354,7 +354,7 @@ public class MeasureReport40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MeasureReport.StratifierGroupPopulationComponent tgt = new org.hl7.fhir.r4.model.MeasureReport.StratifierGroupPopulationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasCount())

@@ -214,7 +214,7 @@ public class ConceptMap10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent tgt = new org.hl7.fhir.r4.model.ConceptMap.OtherElementComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasElementElement())
       tgt.setPropertyElement(Uri10_40.convertUri(src.getElementElement()));
     if (src.hasCodeSystem())
@@ -228,7 +228,7 @@ public class ConceptMap10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.ConceptMap.OtherElementComponent tgt = new org.hl7.fhir.dstu2.model.ConceptMap.OtherElementComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasPropertyElement())
       tgt.setElementElement(Uri10_40.convertUri(src.getPropertyElement()));
     if (src.hasSystem())
@@ -244,7 +244,7 @@ public class ConceptMap10_40 {
       return res;
     for (org.hl7.fhir.dstu2.model.ConceptMap.TargetElementComponent t : src.getTarget()) {
       org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent tgt = new org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent();
-      ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+      ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
       tgt.setCode(src.getCode());
       tgt.addTarget(convertTargetElementComponent(t));
       res.add(new SourceElementComponentWrapper<>(tgt, src.getCodeSystem(), t.getCodeSystem()));
@@ -256,7 +256,7 @@ public class ConceptMap10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.ConceptMap.SourceElementComponent tgt = new org.hl7.fhir.dstu2.model.ConceptMap.SourceElementComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     tgt.setCodeSystem(g.getSource());
     if (src.hasCodeElement())
       tgt.setCodeElement(Code10_40.convertCode(src.getCodeElement()));
@@ -269,7 +269,7 @@ public class ConceptMap10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.ConceptMap.TargetElementComponent tgt = new org.hl7.fhir.dstu2.model.ConceptMap.TargetElementComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     tgt.setCodeSystem(g.getTarget());
     if (src.hasCodeElement())
       tgt.setCodeElement(Code10_40.convertCode(src.getCodeElement()));
@@ -288,7 +288,7 @@ public class ConceptMap10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent tgt = new org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasCodeElement())
       tgt.setCodeElement(Code10_40.convertCode(src.getCodeElement()));
     if (src.hasEquivalence())

@@ -76,7 +76,7 @@ public class CareTeam30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.CareTeam.CareTeamParticipantComponent tgt = new org.hl7.fhir.dstu3.model.CareTeam.CareTeamParticipantComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasRole())
       tgt.setRole(CodeableConcept30_50.convertCodeableConcept(src.getRole()));
     if (src.hasMember())
@@ -92,7 +92,7 @@ public class CareTeam30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.CareTeam.CareTeamParticipantComponent tgt = new org.hl7.fhir.r5.model.CareTeam.CareTeamParticipantComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasRole())
       tgt.setRole(CodeableConcept30_50.convertCodeableConcept(src.getRole()));
     if (src.hasMember())

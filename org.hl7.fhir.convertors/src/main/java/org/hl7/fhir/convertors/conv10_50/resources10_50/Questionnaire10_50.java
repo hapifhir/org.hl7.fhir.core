@@ -89,7 +89,7 @@ public class Questionnaire10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Questionnaire.GroupComponent tgt = new org.hl7.fhir.dstu2.model.Questionnaire.GroupComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasLinkIdElement())
       tgt.setLinkIdElement(String10_50.convertString(src.getLinkIdElement()));
     for (org.hl7.fhir.r5.model.Coding t : src.getCode()) tgt.addConcept(Coding10_50.convertCoding(t));
@@ -111,7 +111,7 @@ public class Questionnaire10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent tgt = new org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasLinkIdElement())
       tgt.setLinkIdElement(String10_50.convertString(src.getLinkIdElement()));
     for (org.hl7.fhir.dstu2.model.Coding t : src.getConcept()) tgt.addCode(Coding10_50.convertCoding(t));
@@ -192,7 +192,7 @@ public class Questionnaire10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Questionnaire.QuestionComponent tgt = new org.hl7.fhir.dstu2.model.Questionnaire.QuestionComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasLinkIdElement())
       tgt.setLinkIdElement(String10_50.convertString(src.getLinkIdElement()));
     for (org.hl7.fhir.r5.model.Coding t : src.getCode()) tgt.addConcept(Coding10_50.convertCoding(t));
@@ -222,7 +222,7 @@ public class Questionnaire10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent tgt = new org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasLinkIdElement())
       tgt.setLinkIdElement(String10_50.convertString(src.getLinkIdElement()));
     for (org.hl7.fhir.dstu2.model.Coding t : src.getConcept()) tgt.addCode(Coding10_50.convertCoding(t));

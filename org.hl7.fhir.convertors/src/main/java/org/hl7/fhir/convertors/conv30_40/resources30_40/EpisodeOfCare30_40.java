@@ -142,7 +142,7 @@ public class EpisodeOfCare30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent tgt = new org.hl7.fhir.r4.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasStatus())
       tgt.setStatusElement(convertEpisodeOfCareStatus(src.getStatusElement()));
     if (src.hasPeriod())
@@ -154,7 +154,7 @@ public class EpisodeOfCare30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent tgt = new org.hl7.fhir.dstu3.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasStatus())
       tgt.setStatusElement(convertEpisodeOfCareStatus(src.getStatusElement()));
     if (src.hasPeriod())
@@ -165,7 +165,7 @@ public class EpisodeOfCare30_40 {
   public static org.hl7.fhir.r4.model.EpisodeOfCare.DiagnosisComponent convertDiagnosisComponent(org.hl7.fhir.dstu3.model.EpisodeOfCare.DiagnosisComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r4.model.EpisodeOfCare.DiagnosisComponent tgt = new org.hl7.fhir.r4.model.EpisodeOfCare.DiagnosisComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasCondition()) tgt.setCondition(Reference30_40.convertReference(src.getCondition()));
     if (src.hasRole()) tgt.setRole(CodeableConcept30_40.convertCodeableConcept(src.getRole()));
     if (src.hasRank()) tgt.setRankElement(PositiveInt30_40.convertPositiveInt(src.getRankElement()));
@@ -175,7 +175,7 @@ public class EpisodeOfCare30_40 {
   public static org.hl7.fhir.dstu3.model.EpisodeOfCare.DiagnosisComponent convertDiagnosisComponent(org.hl7.fhir.r4.model.EpisodeOfCare.DiagnosisComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.dstu3.model.EpisodeOfCare.DiagnosisComponent tgt = new org.hl7.fhir.dstu3.model.EpisodeOfCare.DiagnosisComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasCondition()) tgt.setCondition(Reference30_40.convertReference(src.getCondition()));
     if (src.hasRole()) tgt.setRole(CodeableConcept30_40.convertCodeableConcept(src.getRole()));
     if (src.hasRank()) tgt.setRankElement(PositiveInt30_40.convertPositiveInt(src.getRankElement()));

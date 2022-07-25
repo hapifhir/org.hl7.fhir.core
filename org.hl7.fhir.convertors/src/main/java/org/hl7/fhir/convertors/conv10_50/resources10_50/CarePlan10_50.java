@@ -80,7 +80,7 @@ public class CarePlan10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.r5.model.Annotation t : src.getProgress()) tgt.addProgress(Annotation10_50.convertAnnotation(t));
     if (src.hasPlannedActivityReference())
       tgt.setReference(Reference10_50.convertReference(src.getPlannedActivityReference()));
@@ -93,7 +93,7 @@ public class CarePlan10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu2.model.Annotation t : src.getProgress())
       tgt.addProgress(Annotation10_50.convertAnnotation(t));
     if (src.hasReference())
@@ -107,7 +107,7 @@ public class CarePlan10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.CarePlan.CarePlanActivityPlannedActivityDetailComponent tgt = new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityPlannedActivityDetailComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept10_50.convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getReasonCode())
@@ -140,7 +140,7 @@ public class CarePlan10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityDetailComponent tgt = new org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityDetailComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept10_50.convertCodeableConcept(src.getCode()));
     for (CodeableReference t : src.getReason())
