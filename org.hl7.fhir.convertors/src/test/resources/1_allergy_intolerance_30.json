@@ -42,7 +42,11 @@
           "text" : "Anaphylaxis"
         }
       ],
-      "onset" : "2014-03-07T00:00:00Z"
+      "onset" : "2014-03-07T00:00:00Z",
+      "modifierExtension" :[{
+        "url" : "http://hl7.org/fhir/StructureDefinition/iso-21090-EN-use",
+        "valueCode" : "I"
+      }]
     }
   ]
 }
