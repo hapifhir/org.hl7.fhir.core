@@ -17,12 +17,15 @@ import org.hl7.fhir.r5.model.Bundle.BundleEntrySearchComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
 import org.hl7.fhir.r5.model.Composition;
 import org.hl7.fhir.r5.model.Composition.SectionComponent;
+import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Provenance;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
+import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
@@ -205,6 +208,10 @@ public class BundleRenderer extends ResourceRenderer {
       }
     }
     x.hr();
+    if (!comp.getText().hasDiv()) {
+      ResourceRenderer rr = RendererFactory.factory(comp, getContext());
+      rr.render(comp);
+    }
     if (comp.getText().hasDiv()) {
       x.addChildren(comp.getText().getDiv());
       x.hr();    
