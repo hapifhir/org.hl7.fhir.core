@@ -676,23 +676,29 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
   }
 
   private Boolean inComponent(ConceptSetComponent vsi, int vsiIndex, String system, String code, boolean only, List<String> warnings) throws FHIRException {
-    if (isValueSetUnionImports()) {
-      for (UriType uri : vsi.getValueSet()) {
-        if (inImport(uri.getValue(), system, code)) {
-          return true;
+    boolean ok = true;
+    
+    if (vsi.hasValueSet()) {
+      if (isValueSetUnionImports()) {
+        ok = false;
+        for (UriType uri : vsi.getValueSet()) {
+          if (inImport(uri.getValue(), system, code)) {
+            return true;
+          }
         }
-      }
-    } else {
-      for (UriType uri : vsi.getValueSet()) {
-        if (!inImport(uri.getValue(), system, code)) {
-          return false;
+      } else {
+        ok = inImport(vsi.getValueSet().get(0).getValue(), system, code);
+        for (int i = 1; i < vsi.getValueSet().size(); i++) {
+          UriType uri = vsi.getValueSet().get(i);
+          ok = ok && inImport(uri.getValue(), system, code); 
         }
       }
     }
 
-    if (!vsi.hasSystem()) {
-      return false;
+    if (!vsi.hasSystem() || !ok) {
+      return ok;
     }
+    
     if (only && system == null) {
       // whether we know the system or not, we'll accept the stated codes at face value
       for (ConceptReferenceComponent cc : vsi.getConcept()) {
@@ -726,18 +732,16 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       return res.isOk();
     } else {
       if (vsi.hasFilter()) {
-        boolean ok = true;
+        ok = true;
         for (ConceptSetFilterComponent f : vsi.getFilter()) {
           if (!codeInFilter(cs, system, f, code)) {
-            ok = false;
-            break;
+            return false;
           }
         }
-        return ok;
       }
 
       List<ConceptDefinitionComponent> list = cs.getConcept();
-      boolean ok = validateCodeInConceptList(code, cs, list);
+      ok = validateCodeInConceptList(code, cs, list);
       if (ok && vsi.hasConcept()) {
         for (ConceptReferenceComponent cc : vsi.getConcept()) {
           if (cc.getCode().equals(code)) { 
