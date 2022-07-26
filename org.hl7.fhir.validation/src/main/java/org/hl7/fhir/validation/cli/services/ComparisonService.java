@@ -7,11 +7,12 @@ import java.io.IOException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.comparison.ComparisonRenderer;
 import org.hl7.fhir.r5.comparison.ComparisonSession;
-import org.hl7.fhir.r5.comparison.ProfileComparer;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
+import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.validation.ValidationEngine;
@@ -20,6 +21,7 @@ import org.hl7.fhir.validation.cli.utils.Params;
 public class ComparisonService {
 
   public static void doLeftRightComparison(String[] args, String dest, ValidationEngine validator) throws IOException, FHIRException, EOperationOutcome {
+    
     // ok now set up the comparison
     String left = Params.getParam(args, Params.LEFT);
     String right = Params.getParam(args, Params.RIGHT);
@@ -34,10 +36,14 @@ public class ComparisonService {
     }
 
     if (resLeft != null && resRight != null) {
-      if (resLeft instanceof StructureDefinition && resRight instanceof StructureDefinition) {
+      if (resLeft instanceof ValueSet && resRight instanceof ValueSet) {
+        ComparisonService.compareValueSets(dest, validator, left, right, (ValueSet) resLeft, (ValueSet) resRight);
+      } else if (resLeft instanceof StructureDefinition && resRight instanceof StructureDefinition) {
         ComparisonService.compareStructureDefinitions(dest, validator, left, right, (StructureDefinition) resLeft, (StructureDefinition) resRight);
       } else if (resLeft instanceof CapabilityStatement && resRight instanceof CapabilityStatement) {
         ComparisonService.compareCapabilityStatements(args, dest, validator, left, right, (CanonicalResource) resLeft, (CanonicalResource) resRight);
+      } else if (resLeft instanceof CodeSystem && resRight instanceof CodeSystem) {
+        ComparisonService.compareCodeSystems(dest, validator, left, right, (CodeSystem) resLeft, (CodeSystem) resRight);
       } else
         System.out.println("Unable to compare left resource " + left + " (" + resLeft.fhirType() + ") with right resource " + right + " (" + resRight.fhirType() + ")");
     }
@@ -72,6 +78,42 @@ public class ComparisonService {
     cr.getTemplates().put("Profile", new String(validator.getContext().getBinaryForKey("template-comparison-Profile.html")));
     cr.getTemplates().put("Index", new String(validator.getContext().getBinaryForKey("template-comparison-index.html")));
     cr.getTemplates().put("CapabilityStatement", new String(validator.getContext().getBinaryForKey("template-comparison-CapabilityStatement.html")));
+    File htmlFile = cr.render(left, right);
+    Desktop.getDesktop().browse(htmlFile.toURI());
+    System.out.println("Done");
+  }
+
+  public static void compareValueSets(String dest, ValidationEngine validator, String left, String right, ValueSet resLeft, ValueSet resRight) throws IOException, FHIRException, EOperationOutcome {
+    System.out.println("Comparing ValueSets " + left + " to " + right);
+    ComparisonSession session = new ComparisonSession(validator.getContext(), validator.getContext(), "Comparing ValueSets", null, null);
+    session.compare(resLeft, resRight);
+    
+    System.out.println("Generating output to " + dest + "...");
+    Utilities.createDirectory(dest);
+    ComparisonRenderer cr = new ComparisonRenderer(validator.getContext(), validator.getContext(), dest, session);
+    cr.getTemplates().put("CodeSystem", new String(validator.getContext().getBinaries().get("template-comparison-CodeSystem.html")));
+    cr.getTemplates().put("ValueSet", new String(validator.getContext().getBinaries().get("template-comparison-ValueSet.html")));
+    cr.getTemplates().put("Profile", new String(validator.getContext().getBinaries().get("template-comparison-Profile.html")));
+    cr.getTemplates().put("Index", new String(validator.getContext().getBinaries().get("template-comparison-index.html")));
+    cr.getTemplates().put("CapabilityStatement", new String(validator.getContext().getBinaries().get("template-comparison-CapabilityStatement.html")));
+    File htmlFile = cr.render(left, right);
+    Desktop.getDesktop().browse(htmlFile.toURI());
+    System.out.println("Done");
+  }
+
+  public static void compareCodeSystems(String dest, ValidationEngine validator, String left, String right, CodeSystem resLeft, CodeSystem resRight) throws IOException, FHIRException, EOperationOutcome {
+    System.out.println("Comparing CodeSystems " + left + " to " + right);
+    ComparisonSession session = new ComparisonSession(validator.getContext(), validator.getContext(), "Comparing CodeSystems", null, null);
+    session.compare(resLeft, resRight);
+    
+    System.out.println("Generating output to " + dest + "...");
+    Utilities.createDirectory(dest);
+    ComparisonRenderer cr = new ComparisonRenderer(validator.getContext(), validator.getContext(), dest, session);
+    cr.getTemplates().put("CodeSystem", new String(validator.getContext().getBinaries().get("template-comparison-CodeSystem.html")));
+    cr.getTemplates().put("ValueSet", new String(validator.getContext().getBinaries().get("template-comparison-ValueSet.html")));
+    cr.getTemplates().put("Profile", new String(validator.getContext().getBinaries().get("template-comparison-Profile.html")));
+    cr.getTemplates().put("Index", new String(validator.getContext().getBinaries().get("template-comparison-index.html")));
+    cr.getTemplates().put("CapabilityStatement", new String(validator.getContext().getBinaries().get("template-comparison-CapabilityStatement.html")));
     File htmlFile = cr.render(left, right);
     Desktop.getDesktop().browse(htmlFile.toURI());
     System.out.println("Done");
