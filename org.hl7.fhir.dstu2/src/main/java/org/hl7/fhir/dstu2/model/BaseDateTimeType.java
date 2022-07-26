@@ -110,33 +110,33 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             If the specified precision is not allowed for this type
 	 */
 	public BaseDateTimeType(Date theDate, TemporalPrecisionEnum thePrecision) {
 		setValue(theDate, thePrecision);
-		if (isPrecisionAllowed(thePrecision) == false) {
-			throw new IllegalArgumentException("Invalid date/time string (datatype " + getClass().getSimpleName() + " does not support " + thePrecision + " precision): " + theDate);
-		}
+    validatePrecisionAndThrowIllegalArgumentException();
 	}
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             If the specified precision is not allowed for this type
 	 */
 	public BaseDateTimeType(String theString) {
 		setValueAsString(theString);
+    validatePrecisionAndThrowIllegalArgumentException();
 	}
 
 	/**
 	 * Constructor
 	 */
 	public BaseDateTimeType(Date theDate, TemporalPrecisionEnum thePrecision, TimeZone theTimeZone) {
-		this(theDate, thePrecision);
-		setTimeZone(theTimeZone);
+    this(theDate, thePrecision);
+    setTimeZone(theTimeZone);
+    validatePrecisionAndThrowIllegalArgumentException();
 	}
 
 	private void clearTimeZone() {
@@ -144,7 +144,13 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 		myTimeZoneZulu = false;
 	}
 
-	@Override
+  private void validatePrecisionAndThrowIllegalArgumentException() {
+    if (!isPrecisionAllowed(getPrecision())) {
+      throw new IllegalArgumentException("Invalid date/time string (datatype " + getClass().getSimpleName() + " does not support " + getPrecision() + " precision): " + getValueAsString());
+    }
+  }
+
+  @Override
 	protected String encode(Date theValue) {
 		if (theValue == null) {
 			return null;
@@ -204,7 +210,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
 	/**
 	 * Gets the precision for this datatype (using the default for the given type if not set)
-	 * 
+	 *
 	 * @see #setPrecision(TemporalPrecisionEnum)
 	 */
 	public TemporalPrecisionEnum getPrecision() {
@@ -251,7 +257,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
 	/**
 	 * Returns <code>true</code> if this object represents a date that is today's date
-	 * 
+	 *
 	 * @throws NullPointerException
 	 *             if {@link #getValue()} returns <code>null</code>
 	 */
@@ -264,46 +270,26 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 	protected Date parse(String theValue) throws IllegalArgumentException {
 		try {
 			if (theValue.length() == 4 && ourYearPattern.matcher(theValue).matches()) {
-				if (!isPrecisionAllowed(YEAR)) {
-					// ourLog.debug("Invalid date/time string (datatype " + getClass().getSimpleName() +
-					// " does not support YEAR precision): " + theValue);
-				}
 				setPrecision(YEAR);
 				clearTimeZone();
 				return ((ourYearFormat).parse(theValue));
 			} else if (theValue.length() == 6 && ourYearMonthPattern.matcher(theValue).matches()) {
 				// Eg. 198401 (allow this just to be lenient)
-				if (!isPrecisionAllowed(MONTH)) {
-					// ourLog.debug("Invalid date/time string (datatype " + getClass().getSimpleName() +
-					// " does not support DAY precision): " + theValue);
-				}
 				setPrecision(MONTH);
 				clearTimeZone();
 				return ((ourYearMonthNoDashesFormat).parse(theValue));
 			} else if (theValue.length() == 7 && ourYearDashMonthPattern.matcher(theValue).matches()) {
 				// E.g. 1984-01 (this is valid according to the spec)
-				if (!isPrecisionAllowed(MONTH)) {
-					// ourLog.debug("Invalid date/time string (datatype " + getClass().getSimpleName() +
-					// " does not support MONTH precision): " + theValue);
-				}
 				setPrecision(MONTH);
 				clearTimeZone();
 				return ((ourYearMonthFormat).parse(theValue));
 			} else if (theValue.length() == 8 && ourYearMonthDayPattern.matcher(theValue).matches()) {
 				// Eg. 19840101 (allow this just to be lenient)
-				if (!isPrecisionAllowed(DAY)) {
-					// ourLog.debug("Invalid date/time string (datatype " + getClass().getSimpleName() +
-					// " does not support DAY precision): " + theValue);
-				}
 				setPrecision(DAY);
 				clearTimeZone();
 				return ((ourYearMonthDayNoDashesFormat).parse(theValue));
 			} else if (theValue.length() == 10 && ourYearDashMonthDashDayPattern.matcher(theValue).matches()) {
 				// E.g. 1984-01-01 (this is valid according to the spec)
-				if (!isPrecisionAllowed(DAY)) {
-					// ourLog.debug("Invalid date/time string (datatype " + getClass().getSimpleName() +
-					// " does not support DAY precision): " + theValue);
-				}
 				setPrecision(DAY);
 				clearTimeZone();
 				return ((ourYearMonthDayFormat).parse(theValue));
@@ -312,19 +298,11 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 				if (firstColonIndex == -1) {
 					throw new IllegalArgumentException("Invalid date/time string: " + theValue);
 				}
-				
-				boolean hasSeconds = theValue.length() > firstColonIndex+3 ? theValue.charAt(firstColonIndex+3) == ':' : false; 
-				
+
+				boolean hasSeconds = theValue.length() > firstColonIndex+3 ? theValue.charAt(firstColonIndex+3) == ':' : false;
+
 				int dotIndex = theValue.length() >= 18 ? theValue.indexOf('.', 18): -1;
 				boolean hasMillis = dotIndex > -1;
-
-//				if (!hasMillis && !isPrecisionAllowed(SECOND)) {
-					// ourLog.debug("Invalid date/time string (data type does not support SECONDS precision): " +
-					// theValue);
-//				} else if (hasMillis && !isPrecisionAllowed(MILLI)) {
-					// ourLog.debug("Invalid date/time string (data type " + getClass().getSimpleName() +
-					// " does not support MILLIS precision):" + theValue);
-//				}
 
 				Date retVal;
 				if (hasMillis) {
@@ -390,7 +368,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 	 * <li>{@link Calendar#MONTH}
 	 * <li>{@link Calendar#YEAR}
 	 * </ul>
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 */
 	public void setPrecision(TemporalPrecisionEnum thePrecision) throws IllegalArgumentException {
@@ -429,7 +407,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 	 * Sets the value of this date/time using the default level of precision
 	 * for this datatype
 	 * using the system local time zone
-	 * 
+	 *
 	 * @param theValue
 	 *            The date value
 	 */
@@ -446,7 +424,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 	/**
 	 * Sets the value of this date/time using the specified level of precision
 	 * using the system local time zone
-	 * 
+	 *
 	 * @param theValue
 	 *            The date value
 	 * @param thePrecision
@@ -465,9 +443,6 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 	public void setValueAsString(String theString) throws IllegalArgumentException {
 		clearTimeZone();
 		super.setValueAsString(theString);
-    if (isPrecisionAllowed(getPrecision()) == false) {
-      throw new IllegalArgumentException("Invalid date/time string (datatype " + getClass().getSimpleName() + " does not support " + getPrecision() + " precision): " + theString);
-    }
 	}
 
 	/**
@@ -545,7 +520,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
 	/**
 	 * Adds the given amount to the field specified by theField
-	 * 
+	 *
 	 * @param theField
 	 *            The field, uses constants from {@link Calendar} such as {@link Calendar#YEAR}
 	 * @param theValue
@@ -591,7 +566,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 					timeZone = (theV3String.substring(i));
 					break;
 				}
-				
+
 				// assertEquals("2013-02-02T20:13:03-05:00", DateAndTime.parseV3("20130202201303-0500").toString());
 				if (i == 4 || i == 6) {
 					b.append('-');
@@ -600,7 +575,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 				} else if (i == 10 || i == 12) {
 					b.append(':');
 				}
-				
+
 				b.append(nextChar);
 			}
 
@@ -615,7 +590,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 					b.append(timeZone);
 				}
 			}
-			
+
 			setValueAsString(b.toString());
 		}
 	}

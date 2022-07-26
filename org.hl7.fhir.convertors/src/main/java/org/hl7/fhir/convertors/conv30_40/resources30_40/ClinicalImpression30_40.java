@@ -97,7 +97,7 @@ public class ClinicalImpression30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionFindingComponent tgt = new org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionFindingComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasItemCodeableConcept())
       tgt.setItemCodeableConcept(CodeableConcept30_40.convertCodeableConcept(src.getItemCodeableConcept()));
     if (src.hasItemReference())
@@ -111,7 +111,7 @@ public class ClinicalImpression30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionFindingComponent tgt = new org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionFindingComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasItemCodeableConcept())
       tgt.setItem(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getItemCodeableConcept()));
     else if (src.hasItemReference())
@@ -125,7 +125,7 @@ public class ClinicalImpression30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionInvestigationComponent tgt = new org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionInvestigationComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept30_40.convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getItem()) tgt.addItem(Reference30_40.convertReference(t));
@@ -136,7 +136,7 @@ public class ClinicalImpression30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionInvestigationComponent tgt = new org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionInvestigationComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept30_40.convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.r4.model.Reference t : src.getItem()) tgt.addItem(Reference30_40.convertReference(t));

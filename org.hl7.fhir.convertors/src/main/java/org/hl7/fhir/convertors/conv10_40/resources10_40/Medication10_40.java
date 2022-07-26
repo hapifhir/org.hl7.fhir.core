@@ -52,7 +52,7 @@ public class Medication10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Medication.MedicationBatchComponent tgt = new org.hl7.fhir.r4.model.Medication.MedicationBatchComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasLotNumber())
       tgt.setLotNumber(src.getLotNumber());
     if (src.hasExpirationDate())
@@ -82,7 +82,7 @@ public class Medication10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Medication.MedicationIngredientComponent tgt = new org.hl7.fhir.r4.model.Medication.MedicationIngredientComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasItem())
       tgt.setItem(Reference10_40.convertReference(src.getItem()));
     if (src.hasAmount())

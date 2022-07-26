@@ -124,7 +124,7 @@ public class MessageDefinition30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.MessageDefinition.MessageDefinitionAllowedResponseComponent tgt = new org.hl7.fhir.dstu3.model.MessageDefinition.MessageDefinitionAllowedResponseComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasMessage())
       tgt.setMessage(Reference30_40.convertCanonicalToReference(src.getMessageElement()));
     if (src.hasSituation())
@@ -136,7 +136,7 @@ public class MessageDefinition30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionAllowedResponseComponent tgt = new org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionAllowedResponseComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasMessage())
       tgt.setMessageElement(Reference30_40.convertReferenceToCanonical(src.getMessage()));
     if (src.hasSituation())
@@ -148,7 +148,7 @@ public class MessageDefinition30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionFocusComponent tgt = new org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionFocusComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCodeElement(Code30_40.convertCode(src.getCodeElement()));
     if (src.hasProfile())
@@ -164,7 +164,7 @@ public class MessageDefinition30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.MessageDefinition.MessageDefinitionFocusComponent tgt = new org.hl7.fhir.dstu3.model.MessageDefinition.MessageDefinitionFocusComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCodeElement(Code30_40.convertCode(src.getCodeElement()));
     if (src.hasProfile())

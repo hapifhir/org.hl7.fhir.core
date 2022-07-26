@@ -248,7 +248,7 @@ public class MessageDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionFocusComponent tgt = new org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionFocusComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCodeElement(Code40_50.convertResourceEnum(src.getCodeElement()));
     if (src.hasProfile())
@@ -264,7 +264,7 @@ public class MessageDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionFocusComponent tgt = new org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionFocusComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
       tgt.setCodeElement(Code40_50.convertResourceEnum(src.getCodeElement()));
     if (src.hasProfile())
@@ -280,7 +280,7 @@ public class MessageDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionAllowedResponseComponent tgt = new org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionAllowedResponseComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasMessage())
       tgt.setMessageElement(Canonical40_50.convertCanonical(src.getMessageElement()));
     if (src.hasSituation())
@@ -292,7 +292,7 @@ public class MessageDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionAllowedResponseComponent tgt = new org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionAllowedResponseComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasMessage())
       tgt.setMessageElement(Canonical40_50.convertCanonical(src.getMessageElement()));
     if (src.hasSituation())

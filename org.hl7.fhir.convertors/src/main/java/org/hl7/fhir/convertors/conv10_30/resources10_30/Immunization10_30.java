@@ -116,7 +116,7 @@ public class Immunization10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Immunization.ImmunizationExplanationComponent tgt = new org.hl7.fhir.dstu2.model.Immunization.ImmunizationExplanationComponent();
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReason())
       tgt.addReason(CodeableConcept10_30.convertCodeableConcept(t));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonNotGiven())
@@ -128,7 +128,7 @@ public class Immunization10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Immunization.ImmunizationExplanationComponent tgt = new org.hl7.fhir.dstu3.model.Immunization.ImmunizationExplanationComponent();
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getReason())
       tgt.addReason(CodeableConcept10_30.convertCodeableConcept(t));
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getReasonNotGiven())
@@ -140,7 +140,7 @@ public class Immunization10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Immunization.ImmunizationReactionComponent tgt = new org.hl7.fhir.dstu3.model.Immunization.ImmunizationReactionComponent();
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyBackboneElement(src,tgt);
     if (src.hasDate())
       tgt.setDateElement(DateTime10_30.convertDateTime(src.getDateElement()));
     if (src.hasDetail())
@@ -154,7 +154,7 @@ public class Immunization10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Immunization.ImmunizationReactionComponent tgt = new org.hl7.fhir.dstu2.model.Immunization.ImmunizationReactionComponent();
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyBackboneElement(src,tgt);
     if (src.hasDate())
       tgt.setDateElement(DateTime10_30.convertDateTime(src.getDateElement()));
     if (src.hasDetail())
@@ -168,7 +168,7 @@ public class Immunization10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Immunization.ImmunizationVaccinationProtocolComponent tgt = new org.hl7.fhir.dstu2.model.Immunization.ImmunizationVaccinationProtocolComponent();
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyBackboneElement(src,tgt);
     if (src.hasDoseSequenceElement())
       tgt.setDoseSequenceElement(PositiveInt10_30.convertPositiveInt(src.getDoseSequenceElement()));
     if (src.hasDescriptionElement())
@@ -192,7 +192,7 @@ public class Immunization10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Immunization.ImmunizationVaccinationProtocolComponent tgt = new org.hl7.fhir.dstu3.model.Immunization.ImmunizationVaccinationProtocolComponent();
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyBackboneElement(src,tgt);
     if (src.hasDoseSequenceElement())
       tgt.setDoseSequenceElement(PositiveInt10_30.convertPositiveInt(src.getDoseSequenceElement()));
     if (src.hasDescriptionElement())

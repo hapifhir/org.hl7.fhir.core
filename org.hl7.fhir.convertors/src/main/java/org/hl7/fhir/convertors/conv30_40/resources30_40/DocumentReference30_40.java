@@ -94,7 +94,7 @@ public class DocumentReference30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.DocumentReference.DocumentReferenceContentComponent tgt = new org.hl7.fhir.dstu3.model.DocumentReference.DocumentReferenceContentComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasAttachment())
       tgt.setAttachment(Attachment30_40.convertAttachment(src.getAttachment()));
     if (src.hasFormat())
@@ -106,7 +106,7 @@ public class DocumentReference30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.DocumentReference.DocumentReferenceContentComponent tgt = new org.hl7.fhir.r4.model.DocumentReference.DocumentReferenceContentComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasAttachment())
       tgt.setAttachment(Attachment30_40.convertAttachment(src.getAttachment()));
     if (src.hasFormat())
@@ -118,7 +118,7 @@ public class DocumentReference30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.DocumentReference.DocumentReferenceContextComponent tgt = new org.hl7.fhir.dstu3.model.DocumentReference.DocumentReferenceContextComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasEncounter())
       tgt.setEncounter(Reference30_40.convertReference(src.getEncounterFirstRep()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getEvent())
@@ -140,7 +140,7 @@ public class DocumentReference30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.DocumentReference.DocumentReferenceContextComponent tgt = new org.hl7.fhir.r4.model.DocumentReference.DocumentReferenceContextComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasEncounter())
       tgt.addEncounter(Reference30_40.convertReference(src.getEncounter()));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getEvent())
@@ -183,7 +183,7 @@ public class DocumentReference30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.DocumentReference.DocumentReferenceRelatesToComponent tgt = new org.hl7.fhir.r4.model.DocumentReference.DocumentReferenceRelatesToComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCodeElement(convertDocumentRelationshipType(src.getCodeElement()));
     if (src.hasTarget())
@@ -195,7 +195,7 @@ public class DocumentReference30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.DocumentReference.DocumentReferenceRelatesToComponent tgt = new org.hl7.fhir.dstu3.model.DocumentReference.DocumentReferenceRelatesToComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCodeElement(convertDocumentRelationshipType(src.getCodeElement()));
     if (src.hasTarget())

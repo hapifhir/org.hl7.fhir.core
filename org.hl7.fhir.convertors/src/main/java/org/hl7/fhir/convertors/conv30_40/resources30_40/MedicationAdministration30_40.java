@@ -93,7 +93,7 @@ public class MedicationAdministration30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationDosageComponent tgt = new org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationDosageComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasText())
       tgt.setTextElement(String30_40.convertString(src.getTextElement()));
     if (src.hasSite())
@@ -113,7 +113,7 @@ public class MedicationAdministration30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.MedicationAdministration.MedicationAdministrationDosageComponent tgt = new org.hl7.fhir.dstu3.model.MedicationAdministration.MedicationAdministrationDosageComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasText())
       tgt.setTextElement(String30_40.convertString(src.getTextElement()));
     if (src.hasSite())
@@ -139,7 +139,7 @@ public class MedicationAdministration30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationPerformerComponent tgt = new org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationPerformerComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasActor())
       tgt.setActor(Reference30_40.convertReference(src.getActor()));
     return tgt;
@@ -149,7 +149,7 @@ public class MedicationAdministration30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.MedicationAdministration.MedicationAdministrationPerformerComponent tgt = new org.hl7.fhir.dstu3.model.MedicationAdministration.MedicationAdministrationPerformerComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasActor())
       tgt.setActor(Reference30_40.convertReference(src.getActor()));
     return tgt;

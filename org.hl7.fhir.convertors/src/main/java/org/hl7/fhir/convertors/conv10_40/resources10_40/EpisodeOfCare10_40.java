@@ -127,7 +127,7 @@ public class EpisodeOfCare10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent tgt = new org.hl7.fhir.r4.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasStatus())
       tgt.setStatusElement(convertEpisodeOfCareStatus(src.getStatusElement()));
     if (src.hasPeriod())
@@ -139,7 +139,7 @@ public class EpisodeOfCare10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent tgt = new org.hl7.fhir.dstu2.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasStatus())
       tgt.setStatusElement(convertEpisodeOfCareStatus(src.getStatusElement()));
     if (src.hasPeriod())

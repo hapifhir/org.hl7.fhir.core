@@ -90,7 +90,7 @@ public class DataElement10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent tgt = new org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasIdentityElement())
       tgt.setIdentityElement(Id10_50.convertId(src.getIdentityElement()));
     if (src.hasUriElement())

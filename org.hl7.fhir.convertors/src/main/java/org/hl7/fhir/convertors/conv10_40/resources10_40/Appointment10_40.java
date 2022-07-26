@@ -74,7 +74,7 @@ public class Appointment10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Appointment.AppointmentParticipantComponent tgt = new org.hl7.fhir.r4.model.Appointment.AppointmentParticipantComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getType())
       tgt.addType(CodeableConcept10_40.convertCodeableConcept(t));
     if (src.hasActor())
@@ -90,7 +90,7 @@ public class Appointment10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Appointment.AppointmentParticipantComponent tgt = new org.hl7.fhir.dstu2.model.Appointment.AppointmentParticipantComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType())
       tgt.addType(CodeableConcept10_40.convertCodeableConcept(t));
     if (src.hasActor())

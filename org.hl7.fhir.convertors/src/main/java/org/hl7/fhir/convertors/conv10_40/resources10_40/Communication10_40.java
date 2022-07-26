@@ -76,7 +76,7 @@ public class Communication10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Communication.CommunicationPayloadComponent tgt = new org.hl7.fhir.dstu2.model.Communication.CommunicationPayloadComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasContent())
       tgt.setContent(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getContent()));
     return tgt;
@@ -86,7 +86,7 @@ public class Communication10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Communication.CommunicationPayloadComponent tgt = new org.hl7.fhir.r4.model.Communication.CommunicationPayloadComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasContent())
       tgt.setContent(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getContent()));
     return tgt;

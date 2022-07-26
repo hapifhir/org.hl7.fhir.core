@@ -74,7 +74,7 @@ public class Specimen30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Specimen.SpecimenCollectionComponent tgt = new org.hl7.fhir.dstu3.model.Specimen.SpecimenCollectionComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasCollector())
       tgt.setCollector(Reference30_40.convertReference(src.getCollector()));
     if (src.hasCollected())
@@ -92,7 +92,7 @@ public class Specimen30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Specimen.SpecimenCollectionComponent tgt = new org.hl7.fhir.r4.model.Specimen.SpecimenCollectionComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasCollector())
       tgt.setCollector(Reference30_40.convertReference(src.getCollector()));
     if (src.hasCollected())
@@ -110,7 +110,7 @@ public class Specimen30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Specimen.SpecimenContainerComponent tgt = new org.hl7.fhir.dstu3.model.Specimen.SpecimenContainerComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
     if (src.hasDescription())
@@ -130,7 +130,7 @@ public class Specimen30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Specimen.SpecimenContainerComponent tgt = new org.hl7.fhir.r4.model.Specimen.SpecimenContainerComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
     if (src.hasDescription())
@@ -150,7 +150,7 @@ public class Specimen30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Specimen.SpecimenProcessingComponent tgt = new org.hl7.fhir.r4.model.Specimen.SpecimenProcessingComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasDescription())
       tgt.setDescriptionElement(String30_40.convertString(src.getDescriptionElement()));
     if (src.hasProcedure())
@@ -165,7 +165,7 @@ public class Specimen30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Specimen.SpecimenProcessingComponent tgt = new org.hl7.fhir.dstu3.model.Specimen.SpecimenProcessingComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasDescription())
       tgt.setDescriptionElement(String30_40.convertString(src.getDescriptionElement()));
     if (src.hasProcedure())

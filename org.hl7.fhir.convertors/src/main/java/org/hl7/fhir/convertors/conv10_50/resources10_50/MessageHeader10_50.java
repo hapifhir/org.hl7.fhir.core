@@ -15,7 +15,7 @@ public class MessageHeader10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.MessageHeader.MessageDestinationComponent tgt = new org.hl7.fhir.dstu2.model.MessageHeader.MessageDestinationComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasNameElement())
       tgt.setNameElement(String10_50.convertString(src.getNameElement()));
     if (src.hasTarget())
@@ -29,7 +29,7 @@ public class MessageHeader10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.MessageHeader.MessageDestinationComponent tgt = new org.hl7.fhir.r5.model.MessageHeader.MessageDestinationComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasNameElement())
       tgt.setNameElement(String10_50.convertString(src.getNameElement()));
     if (src.hasTarget())
@@ -93,7 +93,7 @@ public class MessageHeader10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.MessageHeader.MessageHeaderResponseComponent tgt = new org.hl7.fhir.dstu2.model.MessageHeader.MessageHeaderResponseComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasIdentifier())
       tgt.setIdentifierElement(new org.hl7.fhir.dstu2.model.IdType(src.getIdentifier().getValue()));
     if (src.hasCode())
@@ -107,7 +107,7 @@ public class MessageHeader10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.MessageHeader.MessageHeaderResponseComponent tgt = new org.hl7.fhir.r5.model.MessageHeader.MessageHeaderResponseComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasIdentifierElement())
       tgt.setIdentifier(new org.hl7.fhir.r5.model.Identifier().setValue(src.getIdentifier()));
     if (src.hasCode())
@@ -121,7 +121,7 @@ public class MessageHeader10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.MessageHeader.MessageSourceComponent tgt = new org.hl7.fhir.dstu2.model.MessageHeader.MessageSourceComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasNameElement())
       tgt.setNameElement(String10_50.convertString(src.getNameElement()));
     if (src.hasSoftwareElement())
@@ -139,7 +139,7 @@ public class MessageHeader10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.MessageHeader.MessageSourceComponent tgt = new org.hl7.fhir.r5.model.MessageHeader.MessageSourceComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasNameElement())
       tgt.setNameElement(String10_50.convertString(src.getNameElement()));
     if (src.hasSoftwareElement())

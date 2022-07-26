@@ -143,7 +143,7 @@ public class FamilyMemberHistory30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent tgt = new org.hl7.fhir.dstu3.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept30_40.convertCodeableConcept(src.getCode()));
     if (src.hasOutcome())
@@ -158,7 +158,7 @@ public class FamilyMemberHistory30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent tgt = new org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept30_40.convertCodeableConcept(src.getCode()));
     if (src.hasOutcome())

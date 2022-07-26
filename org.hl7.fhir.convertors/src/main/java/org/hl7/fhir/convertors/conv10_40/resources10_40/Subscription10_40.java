@@ -56,7 +56,7 @@ public class Subscription10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Subscription.SubscriptionChannelComponent tgt = new org.hl7.fhir.r4.model.Subscription.SubscriptionChannelComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasType())
       tgt.setTypeElement(convertSubscriptionChannelType(src.getTypeElement()));
     if (src.hasEndpoint())
@@ -71,7 +71,7 @@ public class Subscription10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelComponent tgt = new org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelComponent();
-    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyBackboneElement(src,tgt);
     if (src.hasType())
       tgt.setTypeElement(convertSubscriptionChannelType(src.getTypeElement()));
     if (src.hasEndpoint())

@@ -92,7 +92,7 @@ public class Person40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Person.PersonLinkComponent tgt = new org.hl7.fhir.r5.model.Person.PersonLinkComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasTarget())
       tgt.setTarget(Reference40_50.convertReference(src.getTarget()));
     if (src.hasAssurance())
@@ -104,7 +104,7 @@ public class Person40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Person.PersonLinkComponent tgt = new org.hl7.fhir.r4.model.Person.PersonLinkComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasTarget())
       tgt.setTarget(Reference40_50.convertReference(src.getTarget()));
     if (src.hasAssurance())

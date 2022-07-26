@@ -142,7 +142,7 @@ public class OperationDefinition14_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.OperationDefinition.OperationDefinitionParameterBindingComponent tgt = new org.hl7.fhir.dstu3.model.OperationDefinition.OperationDefinitionParameterBindingComponent();
-    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
+    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyBackboneElement(src,tgt);
     if (src.hasStrength())
       tgt.setStrengthElement(Enumerations14_30.convertBindingStrength(src.getStrengthElement()));
     if (src.hasValueSet())
@@ -154,7 +154,7 @@ public class OperationDefinition14_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2016may.model.OperationDefinition.OperationDefinitionParameterBindingComponent tgt = new org.hl7.fhir.dstu2016may.model.OperationDefinition.OperationDefinitionParameterBindingComponent();
-    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
+    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyBackboneElement(src,tgt);
     if (src.hasStrength())
       tgt.setStrengthElement(Enumerations14_30.convertBindingStrength(src.getStrengthElement()));
     if (src.hasValueSet())
@@ -166,7 +166,7 @@ public class OperationDefinition14_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2016may.model.OperationDefinition.OperationDefinitionParameterComponent tgt = new org.hl7.fhir.dstu2016may.model.OperationDefinition.OperationDefinitionParameterComponent();
-    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
+    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyBackboneElement(src,tgt);
     if (src.hasNameElement())
       tgt.setNameElement(Code14_30.convertCode(src.getNameElement()));
     if (src.hasUse())
@@ -194,7 +194,7 @@ public class OperationDefinition14_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.OperationDefinition.OperationDefinitionParameterComponent tgt = new org.hl7.fhir.dstu3.model.OperationDefinition.OperationDefinitionParameterComponent();
-    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
+    ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyBackboneElement(src,tgt);
     if (src.hasNameElement())
       tgt.setNameElement(Code14_30.convertCode(src.getNameElement()));
     if (src.hasUse())

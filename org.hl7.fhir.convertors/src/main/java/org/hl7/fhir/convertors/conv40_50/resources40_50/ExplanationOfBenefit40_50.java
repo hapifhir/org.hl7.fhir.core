@@ -373,7 +373,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ExplanationOfBenefit.RelatedClaimComponent tgt = new org.hl7.fhir.r5.model.ExplanationOfBenefit.RelatedClaimComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasClaim())
       tgt.setClaim(Reference40_50.convertReference(src.getClaim()));
     if (src.hasRelationship())
@@ -387,7 +387,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ExplanationOfBenefit.RelatedClaimComponent tgt = new org.hl7.fhir.r4.model.ExplanationOfBenefit.RelatedClaimComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasClaim())
       tgt.setClaim(Reference40_50.convertReference(src.getClaim()));
     if (src.hasRelationship())
@@ -401,7 +401,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ExplanationOfBenefit.PayeeComponent tgt = new org.hl7.fhir.r5.model.ExplanationOfBenefit.PayeeComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasParty())
@@ -413,7 +413,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ExplanationOfBenefit.PayeeComponent tgt = new org.hl7.fhir.r4.model.ExplanationOfBenefit.PayeeComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasParty())
@@ -425,7 +425,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ExplanationOfBenefit.CareTeamComponent tgt = new org.hl7.fhir.r5.model.ExplanationOfBenefit.CareTeamComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSequenceElement()));
     if (src.hasProvider())
@@ -443,7 +443,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ExplanationOfBenefit.CareTeamComponent tgt = new org.hl7.fhir.r4.model.ExplanationOfBenefit.CareTeamComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSequenceElement()));
     if (src.hasProvider())
@@ -461,7 +461,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ExplanationOfBenefit.SupportingInformationComponent tgt = new org.hl7.fhir.r5.model.ExplanationOfBenefit.SupportingInformationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSequenceElement()));
     if (src.hasCategory())
@@ -481,7 +481,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ExplanationOfBenefit.SupportingInformationComponent tgt = new org.hl7.fhir.r4.model.ExplanationOfBenefit.SupportingInformationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSequenceElement()));
     if (src.hasCategory())
@@ -501,7 +501,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ExplanationOfBenefit.DiagnosisComponent tgt = new org.hl7.fhir.r5.model.ExplanationOfBenefit.DiagnosisComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSequenceElement()));
     if (src.hasDiagnosis())
@@ -519,7 +519,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ExplanationOfBenefit.DiagnosisComponent tgt = new org.hl7.fhir.r4.model.ExplanationOfBenefit.DiagnosisComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSequenceElement()));
     if (src.hasDiagnosis())
@@ -537,7 +537,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ExplanationOfBenefit.ProcedureComponent tgt = new org.hl7.fhir.r5.model.ExplanationOfBenefit.ProcedureComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSequenceElement()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType())
@@ -554,7 +554,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ExplanationOfBenefit.ProcedureComponent tgt = new org.hl7.fhir.r4.model.ExplanationOfBenefit.ProcedureComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSequenceElement()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType())
@@ -571,7 +571,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ExplanationOfBenefit.InsuranceComponent tgt = new org.hl7.fhir.r5.model.ExplanationOfBenefit.InsuranceComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasFocal())
       tgt.setFocalElement(Boolean40_50.convertBoolean(src.getFocalElement()));
     if (src.hasCoverage())
@@ -585,7 +585,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ExplanationOfBenefit.InsuranceComponent tgt = new org.hl7.fhir.r4.model.ExplanationOfBenefit.InsuranceComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasFocal())
       tgt.setFocalElement(Boolean40_50.convertBoolean(src.getFocalElement()));
     if (src.hasCoverage())
@@ -599,7 +599,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ExplanationOfBenefit.AccidentComponent tgt = new org.hl7.fhir.r5.model.ExplanationOfBenefit.AccidentComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasDate())
       tgt.setDateElement(Date40_50.convertDate(src.getDateElement()));
     if (src.hasType())
@@ -613,7 +613,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ExplanationOfBenefit.AccidentComponent tgt = new org.hl7.fhir.r4.model.ExplanationOfBenefit.AccidentComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasDate())
       tgt.setDateElement(Date40_50.convertDate(src.getDateElement()));
     if (src.hasType())
@@ -627,7 +627,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ExplanationOfBenefit.ItemComponent tgt = new org.hl7.fhir.r5.model.ExplanationOfBenefit.ItemComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSequenceElement()));
     for (org.hl7.fhir.r4.model.PositiveIntType t : src.getCareTeamSequence())
@@ -679,7 +679,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ExplanationOfBenefit.ItemComponent tgt = new org.hl7.fhir.r4.model.ExplanationOfBenefit.ItemComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSequenceElement()));
     for (org.hl7.fhir.r5.model.PositiveIntType t : src.getCareTeamSequence())
@@ -731,7 +731,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ExplanationOfBenefit.AdjudicationComponent tgt = new org.hl7.fhir.r5.model.ExplanationOfBenefit.AdjudicationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept40_50.convertCodeableConcept(src.getCategory()));
     if (src.hasReason())
@@ -747,7 +747,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ExplanationOfBenefit.AdjudicationComponent tgt = new org.hl7.fhir.r4.model.ExplanationOfBenefit.AdjudicationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept40_50.convertCodeableConcept(src.getCategory()));
     if (src.hasReason())
@@ -763,7 +763,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ExplanationOfBenefit.DetailComponent tgt = new org.hl7.fhir.r5.model.ExplanationOfBenefit.DetailComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSequenceElement()));
     if (src.hasRevenue())
@@ -798,7 +798,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ExplanationOfBenefit.DetailComponent tgt = new org.hl7.fhir.r4.model.ExplanationOfBenefit.DetailComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSequenceElement()));
     if (src.hasRevenue())
@@ -833,7 +833,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ExplanationOfBenefit.SubDetailComponent tgt = new org.hl7.fhir.r5.model.ExplanationOfBenefit.SubDetailComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSequenceElement()));
     if (src.hasRevenue())
@@ -866,7 +866,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ExplanationOfBenefit.SubDetailComponent tgt = new org.hl7.fhir.r4.model.ExplanationOfBenefit.SubDetailComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSequenceElement()));
     if (src.hasRevenue())
@@ -899,7 +899,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ExplanationOfBenefit.AddedItemComponent tgt = new org.hl7.fhir.r5.model.ExplanationOfBenefit.AddedItemComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4.model.PositiveIntType t : src.getItemSequence())
       tgt.getItemSequence().add(PositiveInt40_50.convertPositiveInt(t));
     for (org.hl7.fhir.r4.model.PositiveIntType t : src.getDetailSequence())
@@ -942,7 +942,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ExplanationOfBenefit.AddedItemComponent tgt = new org.hl7.fhir.r4.model.ExplanationOfBenefit.AddedItemComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r5.model.PositiveIntType t : src.getItemSequence())
       tgt.getItemSequence().add(PositiveInt40_50.convertPositiveInt(t));
     for (org.hl7.fhir.r5.model.PositiveIntType t : src.getDetailSequence())
@@ -985,7 +985,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ExplanationOfBenefit.AddedItemDetailComponent tgt = new org.hl7.fhir.r5.model.ExplanationOfBenefit.AddedItemDetailComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasProductOrService())
       tgt.setProductOrService(CodeableConcept40_50.convertCodeableConcept(src.getProductOrService()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier())
@@ -1011,7 +1011,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ExplanationOfBenefit.AddedItemDetailComponent tgt = new org.hl7.fhir.r4.model.ExplanationOfBenefit.AddedItemDetailComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasProductOrService())
       tgt.setProductOrService(CodeableConcept40_50.convertCodeableConcept(src.getProductOrService()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier())
@@ -1037,7 +1037,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ExplanationOfBenefit.AddedItemDetailSubDetailComponent tgt = new org.hl7.fhir.r5.model.ExplanationOfBenefit.AddedItemDetailSubDetailComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasProductOrService())
       tgt.setProductOrService(CodeableConcept40_50.convertCodeableConcept(src.getProductOrService()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier())
@@ -1061,7 +1061,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ExplanationOfBenefit.AddedItemDetailSubDetailComponent tgt = new org.hl7.fhir.r4.model.ExplanationOfBenefit.AddedItemDetailSubDetailComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasProductOrService())
       tgt.setProductOrService(CodeableConcept40_50.convertCodeableConcept(src.getProductOrService()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier())
@@ -1085,7 +1085,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ExplanationOfBenefit.TotalComponent tgt = new org.hl7.fhir.r5.model.ExplanationOfBenefit.TotalComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept40_50.convertCodeableConcept(src.getCategory()));
     if (src.hasAmount())
@@ -1097,7 +1097,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ExplanationOfBenefit.TotalComponent tgt = new org.hl7.fhir.r4.model.ExplanationOfBenefit.TotalComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept40_50.convertCodeableConcept(src.getCategory()));
     if (src.hasAmount())
@@ -1109,7 +1109,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ExplanationOfBenefit.PaymentComponent tgt = new org.hl7.fhir.r5.model.ExplanationOfBenefit.PaymentComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasAdjustment())
@@ -1129,7 +1129,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ExplanationOfBenefit.PaymentComponent tgt = new org.hl7.fhir.r4.model.ExplanationOfBenefit.PaymentComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasAdjustment())
@@ -1149,7 +1149,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ExplanationOfBenefit.NoteComponent tgt = new org.hl7.fhir.r5.model.ExplanationOfBenefit.NoteComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasNumber())
       tgt.setNumberElement(PositiveInt40_50.convertPositiveInt(src.getNumberElement()));
     if (src.hasType())
@@ -1165,7 +1165,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ExplanationOfBenefit.NoteComponent tgt = new org.hl7.fhir.r4.model.ExplanationOfBenefit.NoteComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasNumber())
       tgt.setNumberElement(PositiveInt40_50.convertPositiveInt(src.getNumberElement()));
     if (src.hasType())
@@ -1181,7 +1181,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ExplanationOfBenefit.BenefitBalanceComponent tgt = new org.hl7.fhir.r5.model.ExplanationOfBenefit.BenefitBalanceComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept40_50.convertCodeableConcept(src.getCategory()));
     if (src.hasExcluded())
@@ -1205,7 +1205,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ExplanationOfBenefit.BenefitBalanceComponent tgt = new org.hl7.fhir.r4.model.ExplanationOfBenefit.BenefitBalanceComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept40_50.convertCodeableConcept(src.getCategory()));
     if (src.hasExcluded())
@@ -1229,7 +1229,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ExplanationOfBenefit.BenefitComponent tgt = new org.hl7.fhir.r5.model.ExplanationOfBenefit.BenefitComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasAllowed())
@@ -1243,7 +1243,7 @@ public class ExplanationOfBenefit40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ExplanationOfBenefit.BenefitComponent tgt = new org.hl7.fhir.r4.model.ExplanationOfBenefit.BenefitComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasAllowed())

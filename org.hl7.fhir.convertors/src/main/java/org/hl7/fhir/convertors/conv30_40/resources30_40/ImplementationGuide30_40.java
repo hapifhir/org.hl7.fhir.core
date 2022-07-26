@@ -108,7 +108,7 @@ public class ImplementationGuide30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ImplementationGuide.ImplementationGuideDependencyComponent tgt = new org.hl7.fhir.dstu3.model.ImplementationGuide.ImplementationGuideDependencyComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     tgt.setType(org.hl7.fhir.dstu3.model.ImplementationGuide.GuideDependencyType.REFERENCE);
     if (src.hasUri())
       tgt.setUri(src.getUri());
@@ -119,7 +119,7 @@ public class ImplementationGuide30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDependsOnComponent tgt = new org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDependsOnComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasUri())
       tgt.setUri(src.getUri());
     return tgt;
@@ -129,7 +129,7 @@ public class ImplementationGuide30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ImplementationGuide.ImplementationGuideGlobalComponent tgt = new org.hl7.fhir.dstu3.model.ImplementationGuide.ImplementationGuideGlobalComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasType())
       tgt.setTypeElement(Code30_40.convertCode(src.getTypeElement()));
     if (src.hasProfile())
@@ -141,7 +141,7 @@ public class ImplementationGuide30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideGlobalComponent tgt = new org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideGlobalComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasType())
       tgt.setTypeElement(Code30_40.convertCode(src.getTypeElement()));
     if (src.hasProfile())
@@ -153,7 +153,7 @@ public class ImplementationGuide30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ImplementationGuide.ImplementationGuidePackageComponent tgt = new org.hl7.fhir.dstu3.model.ImplementationGuide.ImplementationGuidePackageComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     tgt.setId(src.getId());
     if (src.hasName())
       tgt.setNameElement(String30_40.convertString(src.getNameElement()));
@@ -167,7 +167,7 @@ public class ImplementationGuide30_40 {
       return null;
     org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionGroupingComponent tgt = new org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionGroupingComponent();
     tgt.setId("p" + (context.getGrouping().size() + 1));
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasName())
       tgt.setNameElement(String30_40.convertString(src.getNameElement()));
     if (src.hasDescription())
@@ -184,7 +184,7 @@ public class ImplementationGuide30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionResourceComponent tgt = new org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionResourceComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasExampleFor()) {
       org.hl7.fhir.r4.model.Type t = ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getExampleFor());
       tgt.setExample(t instanceof org.hl7.fhir.r4.model.Reference ? new org.hl7.fhir.r4.model.CanonicalType(((org.hl7.fhir.r4.model.Reference) t).getReference()) : t);
@@ -205,7 +205,7 @@ public class ImplementationGuide30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ImplementationGuide.ImplementationGuidePackageResourceComponent tgt = new org.hl7.fhir.dstu3.model.ImplementationGuide.ImplementationGuidePackageResourceComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasExampleCanonicalType()) {
       if (src.hasExampleCanonicalType())
         tgt.setExampleFor(Reference30_40.convertCanonicalToReference(src.getExampleCanonicalType()));
@@ -227,7 +227,7 @@ public class ImplementationGuide30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.ImplementationGuide.ImplementationGuidePageComponent tgt = new org.hl7.fhir.dstu3.model.ImplementationGuide.ImplementationGuidePageComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasNameUrlType())
       tgt.setSource(src.getNameUrlType().getValue());
     if (src.hasTitle())
@@ -243,7 +243,7 @@ public class ImplementationGuide30_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionPageComponent tgt = new org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionPageComponent();
-    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
+    ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyBackboneElement(src,tgt);
     if (src.hasSource())
       tgt.setName(convertUriToUrl(src.getSourceElement()));
     if (src.hasTitle())

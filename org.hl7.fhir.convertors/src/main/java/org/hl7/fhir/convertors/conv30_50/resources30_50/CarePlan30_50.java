@@ -166,7 +166,7 @@ public class CarePlan30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     for (CodeableReference t : src.getPerformedActivity()) {
       if (t.hasConcept())
         tgt.addOutcomeCodeableConcept(CodeableConcept30_50.convertCodeableConcept(t.getConcept()));
@@ -193,7 +193,7 @@ public class CarePlan30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getOutcomeCodeableConcept()) {
       tgt.addPerformedActivity(Reference30_50.convertCodeableConceptToCodableReference(t));
     }
@@ -218,7 +218,7 @@ public class CarePlan30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityDetailComponent tgt = new org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityDetailComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasExtension()) {
       org.hl7.fhir.r5.model.Extension extension = src.getExtensionByUrl(CarePlanActivityDetailComponentExtension);
       if (extension != null) {
@@ -291,7 +291,7 @@ public class CarePlan30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.CarePlan.CarePlanActivityPlannedActivityDetailComponent tgt = new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityPlannedActivityDetailComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasCategory()) {
       org.hl7.fhir.r5.model.Extension t = new org.hl7.fhir.r5.model.Extension();
       t.setUrl(CarePlanActivityDetailComponentExtension);

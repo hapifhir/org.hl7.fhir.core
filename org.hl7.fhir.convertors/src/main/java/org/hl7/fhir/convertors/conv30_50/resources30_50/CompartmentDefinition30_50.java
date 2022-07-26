@@ -89,7 +89,7 @@ public class CompartmentDefinition30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent tgt = new org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCodeElement(Code30_50.convertCode(src.getCodeElement()));
     for (org.hl7.fhir.dstu3.model.StringType t : src.getParam()) tgt.addParam(t.getValue());
@@ -102,7 +102,7 @@ public class CompartmentDefinition30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.CompartmentDefinition.CompartmentDefinitionResourceComponent tgt = new org.hl7.fhir.dstu3.model.CompartmentDefinition.CompartmentDefinitionResourceComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCodeElement(Code30_50.convertCode(src.getCodeElement()));
     for (org.hl7.fhir.r5.model.StringType t : src.getParam()) tgt.addParam(t.getValue());

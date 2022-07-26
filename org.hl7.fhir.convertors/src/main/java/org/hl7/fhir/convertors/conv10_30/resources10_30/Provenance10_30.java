@@ -64,7 +64,7 @@ public class Provenance10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Provenance.ProvenanceAgentComponent tgt = new org.hl7.fhir.dstu2.model.Provenance.ProvenanceAgentComponent();
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyBackboneElement(src,tgt);
     if (src.hasWhoReference())
       tgt.setActor(Reference10_30.convertReference(src.getWhoReference()));
     return tgt;
@@ -74,7 +74,7 @@ public class Provenance10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Provenance.ProvenanceAgentComponent tgt = new org.hl7.fhir.dstu3.model.Provenance.ProvenanceAgentComponent();
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyBackboneElement(src,tgt);
     if (src.hasActor())
       tgt.setWho(Reference10_30.convertReference(src.getActor()));
     return tgt;
@@ -84,7 +84,7 @@ public class Provenance10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Provenance.ProvenanceEntityComponent tgt = new org.hl7.fhir.dstu2.model.Provenance.ProvenanceEntityComponent();
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyBackboneElement(src,tgt);
     if (src.hasRole())
       tgt.setRoleElement(convertProvenanceEntityRole(src.getRoleElement()));
     if (src.hasWhatReference() && src.getWhatReference().hasReference())
@@ -98,7 +98,7 @@ public class Provenance10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Provenance.ProvenanceEntityComponent tgt = new org.hl7.fhir.dstu3.model.Provenance.ProvenanceEntityComponent();
-    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyBackboneElement(src,tgt);
     if (src.hasRole())
       tgt.setRoleElement(convertProvenanceEntityRole(src.getRoleElement()));
     if (src.hasReference())

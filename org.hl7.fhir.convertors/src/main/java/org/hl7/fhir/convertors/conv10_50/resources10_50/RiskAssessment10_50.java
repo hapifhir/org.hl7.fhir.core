@@ -64,7 +64,7 @@ public class RiskAssessment10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentPredictionComponent tgt = new org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentPredictionComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasOutcome())
       tgt.setOutcome(CodeableConcept10_50.convertCodeableConcept(src.getOutcome()));
     if (src.hasProbability())
@@ -82,7 +82,7 @@ public class RiskAssessment10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.RiskAssessment.RiskAssessmentPredictionComponent tgt = new org.hl7.fhir.dstu2.model.RiskAssessment.RiskAssessmentPredictionComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasOutcome())
       tgt.setOutcome(CodeableConcept10_50.convertCodeableConcept(src.getOutcome()));
     if (src.hasProbability())

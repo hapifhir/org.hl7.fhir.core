@@ -42,7 +42,7 @@ public class Patient30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Patient.ContactComponent tgt = new org.hl7.fhir.r5.model.Patient.ContactComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getRelationship())
       tgt.addRelationship(CodeableConcept30_50.convertCodeableConcept(t));
     if (src.hasName())
@@ -64,7 +64,7 @@ public class Patient30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Patient.ContactComponent tgt = new org.hl7.fhir.dstu3.model.Patient.ContactComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getRelationship())
       tgt.addRelationship(CodeableConcept30_50.convertCodeableConcept(t));
     if (src.hasName())
@@ -214,7 +214,7 @@ public class Patient30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Patient.PatientCommunicationComponent tgt = new org.hl7.fhir.r5.model.Patient.PatientCommunicationComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasLanguage())
       tgt.setLanguage(CodeableConcept30_50.convertCodeableConcept(src.getLanguage()));
     if (src.hasPreferred())
@@ -226,7 +226,7 @@ public class Patient30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Patient.PatientCommunicationComponent tgt = new org.hl7.fhir.dstu3.model.Patient.PatientCommunicationComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasLanguage())
       tgt.setLanguage(CodeableConcept30_50.convertCodeableConcept(src.getLanguage()));
     if (src.hasPreferred())
@@ -238,7 +238,7 @@ public class Patient30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Patient.PatientLinkComponent tgt = new org.hl7.fhir.r5.model.Patient.PatientLinkComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasOther())
       tgt.setOther(Reference30_50.convertReference(src.getOther()));
     if (src.hasType())
@@ -250,7 +250,7 @@ public class Patient30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Patient.PatientLinkComponent tgt = new org.hl7.fhir.dstu3.model.Patient.PatientLinkComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasOther())
       tgt.setOther(Reference30_50.convertReference(src.getOther()));
     if (src.hasType())

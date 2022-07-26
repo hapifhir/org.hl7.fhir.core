@@ -30,7 +30,7 @@ public class Parameters14_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent tgt = new org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent();
-    ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
+    ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyBackboneElement(src,tgt);
     if (src.hasNameElement())
       tgt.setNameElement(String14_50.convertString(src.getNameElement()));
     if (src.hasValue())
@@ -46,7 +46,7 @@ public class Parameters14_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2016may.model.Parameters.ParametersParameterComponent tgt = new org.hl7.fhir.dstu2016may.model.Parameters.ParametersParameterComponent();
-    ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
+    ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyBackboneElement(src,tgt);
     if (src.hasNameElement())
       tgt.setNameElement(String14_50.convertString(src.getNameElement()));
     if (src.hasValue())

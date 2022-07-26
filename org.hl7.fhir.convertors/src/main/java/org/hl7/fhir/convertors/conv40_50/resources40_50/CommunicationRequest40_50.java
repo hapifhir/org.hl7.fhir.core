@@ -261,7 +261,7 @@ public class CommunicationRequest40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.CommunicationRequest.CommunicationRequestPayloadComponent tgt = new org.hl7.fhir.r5.model.CommunicationRequest.CommunicationRequestPayloadComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (org.hl7.fhir.r4.utils.ToolingExtensions.hasExtension(src, EXT_PAYLOAD_CONTENT)) {
       org.hl7.fhir.r4.model.Extension e = org.hl7.fhir.r4.utils.ToolingExtensions.getExtension(src, EXT_PAYLOAD_CONTENT);
       tgt.setContent(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(e.getValue()));
@@ -283,7 +283,7 @@ public class CommunicationRequest40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.CommunicationRequest.CommunicationRequestPayloadComponent tgt = new org.hl7.fhir.r4.model.CommunicationRequest.CommunicationRequestPayloadComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasContent()) {
       org.hl7.fhir.r5.model.DataType content = src.getContent();
       if (content instanceof org.hl7.fhir.r5.model.CodeableConcept) {

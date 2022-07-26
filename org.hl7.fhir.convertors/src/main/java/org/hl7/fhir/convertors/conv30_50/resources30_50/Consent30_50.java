@@ -23,7 +23,7 @@ public class Consent30_50 {
   public static org.hl7.fhir.r5.model.Consent.ConsentPolicyBasisComponent convertConsentPolicyComponent(org.hl7.fhir.dstu3.model.Consent.ConsentPolicyComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.Consent.ConsentPolicyBasisComponent tgt = new org.hl7.fhir.r5.model.Consent.ConsentPolicyBasisComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
 //    if (src.hasAuthority()) tgt.setRefereceElement(Uri30_50.convertUri(src.getAuthorityElement()));
     if (src.hasUri()) tgt.setUrl(src.getUri());
     return tgt;
@@ -32,7 +32,7 @@ public class Consent30_50 {
   public static org.hl7.fhir.dstu3.model.Consent.ConsentPolicyComponent convertConsentPolicyComponent(org.hl7.fhir.r5.model.Consent.ConsentPolicyBasisComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.dstu3.model.Consent.ConsentPolicyComponent tgt = new org.hl7.fhir.dstu3.model.Consent.ConsentPolicyComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
 //    if (src.hasAuthority()) tgt.setAuthorityElement(Uri30_50.convertUri(src.getReferenceElement()));
     if (src.hasUrl()) tgt.setUriElement(Uri30_50.convertUri(src.getUrlElement()));
     return tgt;

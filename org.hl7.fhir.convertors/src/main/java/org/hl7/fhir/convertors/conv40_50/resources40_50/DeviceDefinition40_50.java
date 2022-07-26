@@ -139,7 +139,7 @@ public class DeviceDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionUdiDeviceIdentifierComponent tgt = new org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionUdiDeviceIdentifierComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasDeviceIdentifier())
       tgt.setDeviceIdentifierElement(String40_50.convertString(src.getDeviceIdentifierElement()));
     if (src.hasIssuer())
@@ -153,7 +153,7 @@ public class DeviceDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionUdiDeviceIdentifierComponent tgt = new org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionUdiDeviceIdentifierComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasDeviceIdentifier())
       tgt.setDeviceIdentifierElement(String40_50.convertString(src.getDeviceIdentifierElement()));
     if (src.hasIssuer())
@@ -167,7 +167,7 @@ public class DeviceDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionDeviceNameComponent tgt = new org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionDeviceNameComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasName())
       tgt.setNameElement(String40_50.convertString(src.getNameElement()));
     if (src.hasType())
@@ -179,7 +179,7 @@ public class DeviceDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionDeviceNameComponent tgt = new org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionDeviceNameComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasName())
       tgt.setNameElement(String40_50.convertString(src.getNameElement()));
     if (src.hasType())
@@ -286,7 +286,7 @@ public class DeviceDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionPropertyComponent tgt = new org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionPropertyComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     for (org.hl7.fhir.r4.model.Quantity t : src.getValueQuantity())
@@ -300,7 +300,7 @@ public class DeviceDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionPropertyComponent tgt = new org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionPropertyComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasValueQuantity())
@@ -314,7 +314,7 @@ public class DeviceDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionMaterialComponent tgt = new org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionMaterialComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSubstance())
       tgt.setSubstance(CodeableConcept40_50.convertCodeableConcept(src.getSubstance()));
     if (src.hasAlternate())
@@ -328,7 +328,7 @@ public class DeviceDefinition40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionMaterialComponent tgt = new org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionMaterialComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSubstance())
       tgt.setSubstance(CodeableConcept40_50.convertCodeableConcept(src.getSubstance()));
     if (src.hasAlternate())

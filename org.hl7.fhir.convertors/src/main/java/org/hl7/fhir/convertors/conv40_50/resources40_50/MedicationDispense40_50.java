@@ -241,7 +241,7 @@ public class MedicationDispense40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MedicationDispense.MedicationDispensePerformerComponent tgt = new org.hl7.fhir.r5.model.MedicationDispense.MedicationDispensePerformerComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasFunction())
       tgt.setFunction(CodeableConcept40_50.convertCodeableConcept(src.getFunction()));
     if (src.hasActor())
@@ -253,7 +253,7 @@ public class MedicationDispense40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MedicationDispense.MedicationDispensePerformerComponent tgt = new org.hl7.fhir.r4.model.MedicationDispense.MedicationDispensePerformerComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasFunction())
       tgt.setFunction(CodeableConcept40_50.convertCodeableConcept(src.getFunction()));
     if (src.hasActor())
@@ -265,7 +265,7 @@ public class MedicationDispense40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseSubstitutionComponent tgt = new org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseSubstitutionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasWasSubstituted())
       tgt.setWasSubstitutedElement(Boolean40_50.convertBoolean(src.getWasSubstitutedElement()));
     if (src.hasType())
@@ -281,7 +281,7 @@ public class MedicationDispense40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseSubstitutionComponent tgt = new org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseSubstitutionComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasWasSubstituted())
       tgt.setWasSubstitutedElement(Boolean40_50.convertBoolean(src.getWasSubstitutedElement()));
     if (src.hasType())

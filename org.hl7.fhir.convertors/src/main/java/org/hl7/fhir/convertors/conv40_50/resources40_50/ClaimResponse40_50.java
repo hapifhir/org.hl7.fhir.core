@@ -303,7 +303,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ClaimResponse.ItemComponent tgt = new org.hl7.fhir.r5.model.ClaimResponse.ItemComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasItemSequence())
       tgt.setItemSequenceElement(PositiveInt40_50.convertPositiveInt(src.getItemSequenceElement()));
     for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber())
@@ -319,7 +319,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ClaimResponse.ItemComponent tgt = new org.hl7.fhir.r4.model.ClaimResponse.ItemComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasItemSequence())
       tgt.setItemSequenceElement(PositiveInt40_50.convertPositiveInt(src.getItemSequenceElement()));
     for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber())
@@ -335,7 +335,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ClaimResponse.AdjudicationComponent tgt = new org.hl7.fhir.r5.model.ClaimResponse.AdjudicationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept40_50.convertCodeableConcept(src.getCategory()));
     if (src.hasReason())
@@ -351,7 +351,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ClaimResponse.AdjudicationComponent tgt = new org.hl7.fhir.r4.model.ClaimResponse.AdjudicationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept40_50.convertCodeableConcept(src.getCategory()));
     if (src.hasReason())
@@ -367,7 +367,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ClaimResponse.ItemDetailComponent tgt = new org.hl7.fhir.r5.model.ClaimResponse.ItemDetailComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasDetailSequence())
       tgt.setDetailSequenceElement(PositiveInt40_50.convertPositiveInt(src.getDetailSequenceElement()));
     for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber())
@@ -383,7 +383,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ClaimResponse.ItemDetailComponent tgt = new org.hl7.fhir.r4.model.ClaimResponse.ItemDetailComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasDetailSequence())
       tgt.setDetailSequenceElement(PositiveInt40_50.convertPositiveInt(src.getDetailSequenceElement()));
     for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber())
@@ -399,7 +399,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ClaimResponse.SubDetailComponent tgt = new org.hl7.fhir.r5.model.ClaimResponse.SubDetailComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSubDetailSequence())
       tgt.setSubDetailSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSubDetailSequenceElement()));
     for (org.hl7.fhir.r4.model.PositiveIntType t : src.getNoteNumber())
@@ -413,7 +413,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ClaimResponse.SubDetailComponent tgt = new org.hl7.fhir.r4.model.ClaimResponse.SubDetailComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSubDetailSequence())
       tgt.setSubDetailSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSubDetailSequenceElement()));
     for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber())
@@ -427,7 +427,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ClaimResponse.AddedItemComponent tgt = new org.hl7.fhir.r5.model.ClaimResponse.AddedItemComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4.model.PositiveIntType t : src.getItemSequence())
       tgt.getItemSequence().add(PositiveInt40_50.convertPositiveInt(t));
     for (org.hl7.fhir.r4.model.PositiveIntType t : src.getDetailSequence())
@@ -470,7 +470,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ClaimResponse.AddedItemComponent tgt = new org.hl7.fhir.r4.model.ClaimResponse.AddedItemComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r5.model.PositiveIntType t : src.getItemSequence())
       tgt.getItemSequence().add(PositiveInt40_50.convertPositiveInt(t));
     for (org.hl7.fhir.r5.model.PositiveIntType t : src.getDetailSequence())
@@ -513,7 +513,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ClaimResponse.AddedItemDetailComponent tgt = new org.hl7.fhir.r5.model.ClaimResponse.AddedItemDetailComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasProductOrService())
       tgt.setProductOrService(CodeableConcept40_50.convertCodeableConcept(src.getProductOrService()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier())
@@ -539,7 +539,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ClaimResponse.AddedItemDetailComponent tgt = new org.hl7.fhir.r4.model.ClaimResponse.AddedItemDetailComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasProductOrService())
       tgt.setProductOrService(CodeableConcept40_50.convertCodeableConcept(src.getProductOrService()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier())
@@ -565,7 +565,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ClaimResponse.AddedItemSubDetailComponent tgt = new org.hl7.fhir.r5.model.ClaimResponse.AddedItemSubDetailComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasProductOrService())
       tgt.setProductOrService(CodeableConcept40_50.convertCodeableConcept(src.getProductOrService()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getModifier())
@@ -589,7 +589,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ClaimResponse.AddedItemSubDetailComponent tgt = new org.hl7.fhir.r4.model.ClaimResponse.AddedItemSubDetailComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasProductOrService())
       tgt.setProductOrService(CodeableConcept40_50.convertCodeableConcept(src.getProductOrService()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getModifier())
@@ -613,7 +613,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ClaimResponse.TotalComponent tgt = new org.hl7.fhir.r5.model.ClaimResponse.TotalComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept40_50.convertCodeableConcept(src.getCategory()));
     if (src.hasAmount())
@@ -625,7 +625,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ClaimResponse.TotalComponent tgt = new org.hl7.fhir.r4.model.ClaimResponse.TotalComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept40_50.convertCodeableConcept(src.getCategory()));
     if (src.hasAmount())
@@ -637,7 +637,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ClaimResponse.PaymentComponent tgt = new org.hl7.fhir.r5.model.ClaimResponse.PaymentComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasAdjustment())
@@ -657,7 +657,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ClaimResponse.PaymentComponent tgt = new org.hl7.fhir.r4.model.ClaimResponse.PaymentComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasAdjustment())
@@ -677,7 +677,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ClaimResponse.NoteComponent tgt = new org.hl7.fhir.r5.model.ClaimResponse.NoteComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasNumber())
       tgt.setNumberElement(PositiveInt40_50.convertPositiveInt(src.getNumberElement()));
     if (src.hasType())
@@ -693,7 +693,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ClaimResponse.NoteComponent tgt = new org.hl7.fhir.r4.model.ClaimResponse.NoteComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasNumber())
       tgt.setNumberElement(PositiveInt40_50.convertPositiveInt(src.getNumberElement()));
     if (src.hasType())
@@ -709,7 +709,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ClaimResponse.InsuranceComponent tgt = new org.hl7.fhir.r5.model.ClaimResponse.InsuranceComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSequenceElement()));
     if (src.hasFocal())
@@ -727,7 +727,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ClaimResponse.InsuranceComponent tgt = new org.hl7.fhir.r4.model.ClaimResponse.InsuranceComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSequenceElement()));
     if (src.hasFocal())
@@ -745,7 +745,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.ClaimResponse.ErrorComponent tgt = new org.hl7.fhir.r5.model.ClaimResponse.ErrorComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasItemSequence())
       tgt.setItemSequenceElement(PositiveInt40_50.convertPositiveInt(src.getItemSequenceElement()));
     if (src.hasDetailSequence())
@@ -761,7 +761,7 @@ public class ClaimResponse40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ClaimResponse.ErrorComponent tgt = new org.hl7.fhir.r4.model.ClaimResponse.ErrorComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
     if (src.hasItemSequence())
       tgt.setItemSequenceElement(PositiveInt40_50.convertPositiveInt(src.getItemSequenceElement()));
     if (src.hasDetailSequence())

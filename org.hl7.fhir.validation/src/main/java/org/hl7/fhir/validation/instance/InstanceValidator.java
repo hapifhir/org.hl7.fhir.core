@@ -1880,7 +1880,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (!ok) {
       if (definition.hasUserData(XVerExtensionManager.XVER_EXT_MARKER)) {
         warning(errors, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false,
-            modifier ? I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG_XVER : I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG_XVER, extUrl, contexts.toString(), plist.toString());
+            modifier ? I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG_XVER : I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG_XVER, extUrl, contexts.toString(), plist.toString());
       } else {
         rule(errors, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false,
             modifier ? I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG : I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG, extUrl, contexts.toString(), plist.toString());        
@@ -2164,8 +2164,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       if (url != null && url.startsWith("urn:oid:")) {
         String cc = url.substring(8);
-        // OIDs shorter than 5 chars are almost never valid for namespaces, except for the special OID 1.3.88
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isOid(cc) && (cc.lastIndexOf('.') >= 5 || "1.3.88".equals(cc)), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_VALID, cc);
+        // OIDs shorter than 5 chars are almost never valid for namespaces, except for the special OIDs 1.3.88 and 1.3.160
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isOid(cc) && (cc.lastIndexOf('.') >= 5 ||
+            Utilities.existsInList(cc, "1.3.160", "1.3.88")), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_VALID, cc);
       }
 
       if (isCanonicalURLElement(e)) {

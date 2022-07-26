@@ -127,7 +127,7 @@ public class DocumentReference10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.DocumentReference.DocumentReferenceContentComponent tgt = new org.hl7.fhir.dstu2.model.DocumentReference.DocumentReferenceContentComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasAttachment())
       tgt.setAttachment(Attachment10_50.convertAttachment(src.getAttachment()));
     return tgt;
@@ -137,7 +137,7 @@ public class DocumentReference10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceContentComponent tgt = new org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceContentComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasAttachment())
       tgt.setAttachment(Attachment10_50.convertAttachment(src.getAttachment()));
     return tgt;
@@ -203,7 +203,7 @@ public class DocumentReference10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.DocumentReference.DocumentReferenceRelatesToComponent tgt = new org.hl7.fhir.dstu2.model.DocumentReference.DocumentReferenceRelatesToComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCodeElement(convertDocumentRelationshipType(src.getCode()));
     if (src.hasTarget())
@@ -215,7 +215,7 @@ public class DocumentReference10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceRelatesToComponent tgt = new org.hl7.fhir.r5.model.DocumentReference.DocumentReferenceRelatesToComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasCode())
       tgt.setCode(convertDocumentRelationshipType(src.getCodeElement()));
     if (src.hasTarget())

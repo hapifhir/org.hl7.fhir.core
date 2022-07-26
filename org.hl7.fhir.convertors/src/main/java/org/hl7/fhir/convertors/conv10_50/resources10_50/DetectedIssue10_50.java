@@ -70,7 +70,7 @@ public class DetectedIssue10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueMitigationComponent tgt = new org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueMitigationComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasAction())
       tgt.setAction(CodeableConcept10_50.convertCodeableConcept(src.getAction()));
     if (src.hasDate())
@@ -84,7 +84,7 @@ public class DetectedIssue10_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueMitigationComponent tgt = new org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueMitigationComponent();
-    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
+    ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasAction())
       tgt.setAction(CodeableConcept10_50.convertCodeableConcept(src.getAction()));
     if (src.hasDate())
