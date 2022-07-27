@@ -6699,8 +6699,12 @@ The primary difference between a medicationusage and a medicationadministration 
         /**
          * R5 Snapshot1
          */
-        _5_0_0SNAPSHOT1, 
+        _5_0_0SNAPSHOT1,
         /**
+         * R5 Snapshot2
+         */
+        _5_0_0SNAPSHOT2,
+      /**
          * added to help the parsers
          */
         NULL;
@@ -6813,6 +6817,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return _5_0_0CIBUILD;
         if ("5.0.0-snapshot1".equals(codeString))
           return _5_0_0SNAPSHOT1;
+        if ("5.0.0-snapshot2".equals(codeString))
+          return _5_0_0SNAPSHOT2;
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public String toCode() {
@@ -6870,6 +6876,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _5_0_0: return "5.0.0";
             case _5_0_0CIBUILD: return "5.0.0-cibuild";
             case _5_0_0SNAPSHOT1: return "5.0.0-snapshot1";
+            case _5_0_0SNAPSHOT2: return "5.0.0-snapshot2";
             case NULL: return null;
             default: return "?";
           }
@@ -6929,6 +6936,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _5_0_0: return "http://hl7.org/fhir/FHIR-version";
             case _5_0_0CIBUILD: return "http://hl7.org/fhir/FHIR-version";
             case _5_0_0SNAPSHOT1: return "http://hl7.org/fhir/FHIR-version";
+            case _5_0_0SNAPSHOT2: return "http://hl7.org/fhir/FHIR-version";
             case NULL: return null;
             default: return "?";
           }
@@ -6988,6 +6996,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _5_0_0: return "R5";
             case _5_0_0CIBUILD: return "R5 CIBuild";
             case _5_0_0SNAPSHOT1: return "R5 Snapshot1";
+            case _5_0_0SNAPSHOT2: return "R5 Snapshot2";
             case NULL: return null;
             default: return "?";
           }
@@ -7047,6 +7056,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _5_0_0: return "5.0.0";
             case _5_0_0CIBUILD: return "5.0.0-cibuild";
             case _5_0_0SNAPSHOT1: return "5.0.0-snapshot1";
+            case _5_0_0SNAPSHOT2: return "5.0.0-snapshot2";
             case NULL: return null;
             default: return "?";
           }
@@ -7064,7 +7074,7 @@ The primary difference between a medicationusage and a medicationadministration 
         public static boolean isValidCode(String codeString) {
           return Utilities.existsInList(codeString, "0.01", "0.05", "0.06", "0.11", "0.0.80", "0.0.81" ,"0.0.82", "0.4.0", "0.5.0",
               "1.0.0", "1.0.1", "1.0.2", "1.1.0", "1.4.0", "1.6.0", "1.8.0", "3.0.0", "3.0.1", "3.0.2", "3.3.0", "3.5.0", 
-              "4.0.0", "4.0.1", "4.1.0" ,"4.2.0" ,"4.3.0-snapshot1" ,"4.3.0-cibuild" ,"4.3.0",  "5.0.0", "5.0.0-cibuild", "5.0.0-snapshot1"); 
+              "4.0.0", "4.0.1", "4.1.0" ,"4.2.0" ,"4.3.0-snapshot1" ,"4.3.0-cibuild" ,"4.3.0",  "5.0.0", "5.0.0-cibuild", "5.0.0-snapshot1", "5.0.0-snapshot2");
         }
 
 
@@ -7192,6 +7202,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRVersion._5_0_0CIBUILD;
         if ("5.0.0-snapshot1".equals(codeString))
           return FHIRVersion._5_0_0SNAPSHOT1;
+        if ("5.0.0-snapshot2".equals(codeString))
+          return FHIRVersion._5_0_0SNAPSHOT2;
         throw new IllegalArgumentException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public Enumeration<FHIRVersion> fromType(Base code) throws FHIRException {
@@ -7308,6 +7320,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0CIBUILD);
         if ("5.0.0-snapshot1".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0SNAPSHOT1);
+          if ("5.0.0-snapshot2".equals(codeString))
+            return new Enumeration<FHIRVersion>(this, FHIRVersion._5_0_0SNAPSHOT2);
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
     public String toCode(FHIRVersion code) {
@@ -7417,6 +7431,8 @@ The primary difference between a medicationusage and a medicationadministration 
         return "5.0.0-cibuild";
       if (code == FHIRVersion._5_0_0SNAPSHOT1)
         return "5.0.0-snapshot1";
+      if (code == FHIRVersion._5_0_0SNAPSHOT2)
+        return "5.0.0-snapshot2";
       return "?";
       }
     public String toSystem(FHIRVersion code) {
