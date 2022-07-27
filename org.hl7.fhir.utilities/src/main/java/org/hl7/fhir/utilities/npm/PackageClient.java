@@ -244,7 +244,7 @@ public class PackageClient {
 
   public void findDependents(Set<String> list, String id) {
     CommaSeparatedStringBuilder params = new CommaSeparatedStringBuilder("&");
-    params.append("dependency="+id);
+    params.append("dependency="+id.replace("#", "|"));
     try {
       JsonArray json = fetchJsonArray(Utilities.pathURL(address, "catalog?")+params.toString());
       for (JsonElement e : json) {
