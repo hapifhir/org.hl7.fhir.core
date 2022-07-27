@@ -12,6 +12,7 @@ import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CompartmentDefinition;
 import org.hl7.fhir.r5.model.ConceptMap;
+import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ExampleScenario;
 import org.hl7.fhir.r5.model.GraphDefinition;
 import org.hl7.fhir.r5.model.ImplementationGuide;
@@ -69,5 +70,12 @@ class ResourceTests {
     Resource res = xml.parse(SRC);
     String output = xml.composeString(res);
     assertEquals(TGT, output);
+  }
+
+  @Test
+  void testCapabilityStatementFhirVersion() {
+    CapabilityStatement cap = new CapabilityStatement();
+    cap.getFhirVersionElement().setValueAsString(Constants.VERSION);
+    assertEquals(Constants.VERSION, cap.getFhirVersion().getDisplay());
   }
 }
