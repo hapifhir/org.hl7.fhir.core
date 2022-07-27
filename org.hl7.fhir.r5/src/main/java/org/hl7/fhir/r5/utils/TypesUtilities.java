@@ -170,6 +170,6 @@ public class TypesUtilities {
   }
 
   public static boolean isPrimitive(String code) {
-    return Utilities.existsInList(code, "boolean", "integer", "integer64", "string", "decimal", "uri", "url", "canonical", "base64Binary", "instant", "date", "dateTime", "time", "code", "oid", "id", "markdown", "unsignedInt", "positiveInt", "xhtml");
+    return Utilities.existsInList(code, "boolean", "integer", "integer64", "string", "decimal", "uri", "url", "canonical", "base64Binary", "instant", "date", "dateTime", "time", "code", "oid", "id", "uuid", "markdown", "unsignedInt", "positiveInt", "xhtml");
   }
 }
