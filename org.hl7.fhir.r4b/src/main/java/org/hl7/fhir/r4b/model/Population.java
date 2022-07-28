@@ -48,7 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * Base StructureDefinition for Population Type: A populatioof people with some set of grouping criteria.
  */
 @DatatypeDef(name="Population")
-public class Population extends DataType implements ICompositeType {
+public class Population extends BackboneType implements ICompositeType {
 
     /**
      * The age of the specific population.
