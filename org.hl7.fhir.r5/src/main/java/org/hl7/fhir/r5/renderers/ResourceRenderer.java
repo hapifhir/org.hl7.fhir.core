@@ -414,6 +414,8 @@ public abstract class ResourceRenderer extends DataRenderer {
     if (id != null || lang != null || versionId != null || lastUpdated != null) {
       XhtmlNode p = plateStyle(div.para());
       p.tx("Resource ");
+      p.tx(r.fhirType());
+      p.tx(" ");
       if (id != null) {
         p.tx("\""+id+"\" ");
       }
