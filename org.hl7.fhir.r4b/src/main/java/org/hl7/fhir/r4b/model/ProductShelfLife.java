@@ -48,7 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * Base StructureDefinition for ProductShelfLife Type: The shelf-life and storage information for a medicinal product item or container can be described using this class.
  */
 @DatatypeDef(name="ProductShelfLife")
-public class ProductShelfLife extends DataType implements ICompositeType {
+public class ProductShelfLife extends BackboneType implements ICompositeType {
 
     /**
      * This describes the shelf life, taking into account various scenarios such as shelf life of the packaged Medicinal Product itself, shelf life after transformation where necessary and shelf life after the first opening of a bottle, etc. The shelf life type shall be specified using an appropriate controlled vocabulary The controlled term and the controlled term identifier shall be specified.

@@ -55,7 +55,7 @@ import  org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
  * Base StructureDefinition for ElementDefinition Type: Captures constraints on each element within the resource, profile, or extension.
  */
 @DatatypeDef(name="ElementDefinition")
-public class ElementDefinition extends DataType implements ICompositeType {
+public class ElementDefinition extends BackboneType implements ICompositeType {
 
     public enum AggregationMode {
         /**

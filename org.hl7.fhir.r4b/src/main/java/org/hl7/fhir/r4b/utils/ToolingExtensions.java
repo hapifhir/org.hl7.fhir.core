@@ -202,6 +202,9 @@ public class ToolingExtensions {
   public static final String EXT_EXPAND_GROUP = "http://hl7.org/fhir/StructureDefinition/valueset-expand-group";
   public static final String EXT_BINDING_ADDITIONAL = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding";
   
+  public static final String EXT_ORIGINAL_ITEM_TYPE = "http://hl7.org/fhir/tools/StructureDefinition/original-item-type";
+  public static final String EXT_ORIGINAL_ELEMENT_TYPE = "http://hl7.org/fhir/tools/StructureDefinition/original-item-type";
+
   // specific extension helpers
 
   public static Extension makeIssueSource(Source source) {
