@@ -104,7 +104,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
   @Override
   public boolean render(XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
     if (context.isAddGeneratedNarrativeHeader()) {
-      x.para().b().tx("Generated Narrative");
+      x.para().b().tx("Generated Narrative: "+r.fhirType());
     }
     if (context.isTechnicalMode()) {
       renderResourceHeader(r, x);
