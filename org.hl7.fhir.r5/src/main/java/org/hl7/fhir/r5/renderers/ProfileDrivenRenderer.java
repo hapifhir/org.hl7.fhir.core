@@ -104,7 +104,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
   @Override
   public boolean render(XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
     if (context.isAddGeneratedNarrativeHeader()) {
-      x.para().b().tx("Generated Narrative");
+      x.para().b().tx("Generated Narrative: "+r.fhirType());
     }
     if (context.isTechnicalMode()) {
       renderResourceHeader(r, x);
@@ -647,7 +647,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
   private boolean generateByProfile(StructureDefinition profile, boolean showCodeDetails) {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     if(context.isAddGeneratedNarrativeHeader()) {
-      x.para().b().tx("Generated Narrative"+(showCodeDetails ? " with Details" : ""));
+      x.para().b().tx("Generated Narrative: "+profile.present()+(showCodeDetails ? " with Details" : ""));
     }
     try {
       generateByProfile(rcontext.getResourceResource(), profile, rcontext.getResourceResource(), profile.getSnapshot().getElement(), profile.getSnapshot().getElement().get(0), getChildrenForPath(profile.getSnapshot().getElement(), rcontext.getResourceResource().getResourceType().toString()), x, rcontext.getResourceResource().getResourceType().toString(), showCodeDetails);
