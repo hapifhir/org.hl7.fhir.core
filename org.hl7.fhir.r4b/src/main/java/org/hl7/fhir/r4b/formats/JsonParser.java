@@ -201,6 +201,17 @@ public class JsonParser extends JsonParserBase {
     };
   }
 
+
+  protected void parseBackboneTypeProperties(JsonObject json, BackboneType res) throws IOException, FHIRFormatError {
+    parseDataTypeProperties(json, res);
+    if (json.has("modifierExtension")) {
+      JsonArray array = getJArray(json, "modifierExtension");
+      for (int i = 0; i < array.size(); i++) {
+        res.getModifierExtension().add(parseExtension(array.get(i).getAsJsonObject()));
+      }
+    };
+  }
+
   protected void parseDataTypeProperties(JsonObject json, DataType res) throws IOException, FHIRFormatError {
     parseElementProperties(json, res);
   }
@@ -648,7 +659,7 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected void parseDosageProperties(JsonObject json, Dosage res) throws IOException, FHIRFormatError {
-    parseDataTypeProperties(json, res);
+    parseBackboneTypeProperties(json, res);
     if (json.has("sequence"))
       res.setSequenceElement(parseInteger(json.get("sequence").getAsLong()));
     if (json.has("_sequence"))
@@ -1319,7 +1330,7 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected void parseMarketingStatusProperties(JsonObject json, MarketingStatus res) throws IOException, FHIRFormatError {
-    parseDataTypeProperties(json, res);
+    parseBackboneTypeProperties(json, res);
     if (json.has("country"))
       res.setCountry(parseCodeableConcept(getJObject(json, "country")));
     if (json.has("jurisdiction"))
@@ -1484,7 +1495,7 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected void parsePopulationProperties(JsonObject json, Population res) throws IOException, FHIRFormatError {
-    parseDataTypeProperties(json, res);
+    parseBackboneTypeProperties(json, res);
     DataType age = parseType("age", json);
     if (age != null)
       res.setAge(age);
@@ -1503,7 +1514,7 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected void parseProdCharacteristicProperties(JsonObject json, ProdCharacteristic res) throws IOException, FHIRFormatError {
-    parseDataTypeProperties(json, res);
+    parseBackboneTypeProperties(json, res);
     if (json.has("height"))
       res.setHeight(parseQuantity(getJObject(json, "height")));
     if (json.has("width"))
@@ -1575,7 +1586,7 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected void parseProductShelfLifeProperties(JsonObject json, ProductShelfLife res) throws IOException, FHIRFormatError {
-    parseDataTypeProperties(json, res);
+    parseBackboneTypeProperties(json, res);
     if (json.has("type"))
       res.setType(parseCodeableConcept(getJObject(json, "type")));
     DataType period = parseType("period", json);
@@ -1802,7 +1813,7 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected void parseTimingProperties(JsonObject json, Timing res) throws IOException, FHIRFormatError {
-    parseDataTypeProperties(json, res);
+    parseBackboneTypeProperties(json, res);
     if (json.has("event")) {
       JsonArray array = getJArray(json, "event");
       for (int i = 0; i < array.size(); i++) {
@@ -30250,6 +30261,16 @@ public class JsonParser extends JsonParserBase {
       };
   }
 
+  protected void composeBackboneTypeProperties(BackboneType element) throws IOException {
+    composeDataTypeProperties(element);
+    if (element.hasModifierExtension()) {
+      openArray("modifierExtension");
+      for (Extension e : element.getModifierExtension()) 
+        composeExtension(null, e);
+      closeArray();
+    };
+  }
+  
   protected void composeDataTypeProperties(DataType element) throws IOException {
       composeElementProperties(element);
   }
@@ -30720,7 +30741,7 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected void composeDosageProperties(Dosage element) throws IOException {
-    composeDataTypeProperties(element);
+    composeBackboneTypeProperties(element);
       if (element.hasSequenceElement()) {
         composeIntegerCore("sequence", element.getSequenceElement(), false);
         composeIntegerExtras("sequence", element.getSequenceElement(), false);
@@ -30813,7 +30834,7 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected void composeElementDefinitionProperties(ElementDefinition element) throws IOException {
-    composeDataTypeProperties(element);
+    composeBackboneTypeProperties(element);
       if (element.hasPathElement()) {
         composeStringCore("path", element.getPathElement(), false);
         composeStringExtras("path", element.getPathElement(), false);
@@ -31389,7 +31410,7 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected void composeMarketingStatusProperties(MarketingStatus element) throws IOException {
-    composeDataTypeProperties(element);
+    composeBackboneTypeProperties(element);
       if (element.hasCountry()) {
         composeCodeableConcept("country", element.getCountry());
       }
@@ -31570,7 +31591,7 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected void composePopulationProperties(Population element) throws IOException {
-    composeDataTypeProperties(element);
+    composeBackboneTypeProperties(element);
       if (element.hasAge()) {
         composeType("age", element.getAge());
       }
@@ -31594,7 +31615,7 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected void composeProdCharacteristicProperties(ProdCharacteristic element) throws IOException {
-    composeDataTypeProperties(element);
+    composeBackboneTypeProperties(element);
       if (element.hasHeight()) {
         composeQuantity("height", element.getHeight());
       }
@@ -31665,7 +31686,7 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected void composeProductShelfLifeProperties(ProductShelfLife element) throws IOException {
-    composeDataTypeProperties(element);
+    composeBackboneTypeProperties(element);
       if (element.hasType()) {
         composeCodeableConcept("type", element.getType());
       }
@@ -31923,7 +31944,7 @@ public class JsonParser extends JsonParserBase {
   }
 
   protected void composeTimingProperties(Timing element) throws IOException {
-    composeDataTypeProperties(element);
+    composeBackboneTypeProperties(element);
       if (element.hasEvent()) {
         if (anyHasValue(element.getEvent())) {
           openArray("event");

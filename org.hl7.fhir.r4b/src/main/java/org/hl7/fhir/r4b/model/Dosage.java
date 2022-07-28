@@ -49,7 +49,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * Base StructureDefinition for Dosage Type: Indicates how the medication is/was taken or should be taken by the patient.
  */
 @DatatypeDef(name="Dosage")
-public class Dosage extends DataType implements ICompositeType {
+public class Dosage extends BackboneType implements ICompositeType {
 
     @Block()
     public static class DosageDoseAndRateComponent extends Element implements IBaseDatatypeElement {
