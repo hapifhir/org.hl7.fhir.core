@@ -6881,7 +6881,11 @@ The primary difference between a medicationusage and a medicationadministration 
             default: return "?";
           }
         }
-        public String getSystem() {
+
+      public String toString() {
+        return toCode();
+      }
+      public String getSystem() {
           switch (this) {
             case _0_01: return "http://hl7.org/fhir/FHIR-version";
             case _0_05: return "http://hl7.org/fhir/FHIR-version";
