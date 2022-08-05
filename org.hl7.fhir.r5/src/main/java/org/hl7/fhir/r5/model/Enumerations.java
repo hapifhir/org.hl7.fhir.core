@@ -6881,10 +6881,6 @@ The primary difference between a medicationusage and a medicationadministration 
             default: return "?";
           }
         }
-        public String toString() {
-          return toCode();
-        }
-
         public String getSystem() {
           switch (this) {
             case _0_01: return "http://hl7.org/fhir/FHIR-version";
@@ -12426,9 +12422,9 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         NOTIN, 
         /**
-         * The search parameter has the format system|code|value, where the system and code refer to a Identifier.type.coding.system and .code, and match if any of the type codes match. All 3 parts must be present.
+         * The search parameter has the format system|code|value, where the system and code refer to a Identifier.type.coding.system and .code, and match if any of the type codes match. All 3 parts must be present.
          */
-        OFTYPE,
+        OFTYPE, 
         /**
          * added to help the parsers
          */
@@ -12526,7 +12522,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case BELOW: return "The search parameter is a concept with the form [system]|[code], and the search parameter tests whether the coding in a resource is subsumed by the specified search code.";
             case IN: return "The search parameter is a member of a Group or List, or the search parameter is a URI (relative or absolute) that identifies a value set, and the search parameter tests whether the value is present in the specified Group, List, or Value Set.";
             case NOTIN: return "The search parameter is a member of a Group or List, or the search parameter is a URI (relative or absolute) that identifies a value set, and the search parameter tests whether the value is NOT present in the specified Group, List, or Value Set.";
-            case OFTYPE: return "The search parameter has the format system|code|value, where the system and code refer to a Identifier.type.coding.system and .code, and match if any of the type codes match. All 3 parts must be present.";
+            case OFTYPE: return "The search parameter has the format system|code|value, where the system and code refer to a Identifier.type.coding.system and .code, and match if any of the type codes match. All 3 parts must be present.";
             case NULL: return null;
             default: return "?";
           }
