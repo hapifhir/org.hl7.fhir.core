@@ -18,6 +18,9 @@ public class Resolver {
 
   public interface IReferenceResolver {
     ResourceWithReference resolve(RenderingContext context, String url);
+    
+    // returns null if contained resource is inlined 
+    String urlForContained(RenderingContext context, String containingType, String containingId, String containedType, String containedId);
   }
 
   public static class ResourceContext {

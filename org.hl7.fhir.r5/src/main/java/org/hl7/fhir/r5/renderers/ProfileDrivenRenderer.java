@@ -699,7 +699,6 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       boolean showCodeDetails, int indent, PropertyWrapper p, ElementDefinition child) throws UnsupportedEncodingException, IOException, EOperationOutcome {
     Map<String, String> displayHints = readDisplayHints(child);
     if ("DomainResource.contained".equals(child.getBase().getPath())) {
-      System.out.print("-");
 //      for (BaseWrapper v : p.getValues()) {
 //        x.hr();
 //        RenderingContext ctxt = context.clone();

@@ -53,7 +53,10 @@ public class Renderer {
   protected static final String RENDER_BUNDLE_IF_MOD = "RENDER_BUNDLE_IF_MOD";
   protected static final String RENDER_BUNDLE_IF_MATCH = "RENDER_BUNDLE_IF_MATCH";
   protected static final String RENDER_BUNDLE_IF_NONE = "RENDER_BUNDLE_IF_NONE";
-
+  protected static final String RENDER_BUNDLE_DOCUMENT_CONTENT = "RENDER_BUNDLE_DOCUMENT_CONTENT";
+  protected static final String RENDER_BUNDLE_HEADER_DOC_ENTRY_URD = "RENDER_BUNDLE_HEADER_DOC_ENTRY_URD";
+  protected static final String RENDER_BUNDLE_HEADER_DOC_ENTRY_U = "RENDER_BUNDLE_HEADER_DOC_ENTRY_U";
+  protected static final String RENDER_BUNDLE_HEADER_DOC_ENTRY_RD = "RENDER_BUNDLE_HEADER_DOC_ENTRY_RD";
 
   /** the plan here is to make this have it's own implementation of messages, rather than using the 
    * validator messages, for better alignment with publisher I18n strategy
