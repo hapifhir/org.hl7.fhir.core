@@ -158,9 +158,8 @@ public abstract class ResourceRenderer extends DataRenderer {
         if (target.hasUserData("path")) {
           x.ah(target.getUserString("path")).tx(cr.present());
         } else {
-          url = url.substring(0, url.indexOf("|"));
           x.code().tx(url);
-          x.tx(": "+cr.present());          
+          x.tx(" ("+cr.present()+")");          
         }
       }
     }
@@ -414,6 +413,8 @@ public abstract class ResourceRenderer extends DataRenderer {
     if (id != null || lang != null || versionId != null || lastUpdated != null) {
       XhtmlNode p = plateStyle(div.para());
       p.tx("Resource ");
+      p.tx(r.fhirType());
+      p.tx(" ");
       if (id != null) {
         p.tx("\""+id+"\" ");
       }
@@ -488,5 +489,17 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   private String getPrimitiveValue(ResourceWrapper r, String name) throws UnsupportedEncodingException, FHIRException, IOException {
     return r.has(name) && r.getChildByName(name).hasValues() ? r.getChildByName(name).getValues().get(0).getBase().primitiveValue() : null;
+  }
+
+  public void renderOrError(DomainResource dr) {
+    try {
+      render(dr);
+    } catch (Exception e) {
+      XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+      x.para().tx("Error rendering: "+e.getMessage());
+      dr.setText(null);
+      inject(dr, x, NarrativeStatus.GENERATED);   
+    }
+    
   }
 }
