@@ -193,6 +193,10 @@ public interface IWorkerContext {
     public Date getDate() {
       return date;
     }
+    public boolean isHTO() {
+      boolean b = id.startsWith("hl7.terminology.r");
+      return b;
+    }
     
   }
 
