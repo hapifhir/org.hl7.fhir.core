@@ -639,6 +639,8 @@ public class ProfileUtilities extends TranslatingUtilities {
       throw new DefinitionException(context.formatMessage(I18nConstants.BASE__DERIVED_PROFILES_HAVE_DIFFERENT_TYPES____VS___, base.getUrl(), base.getType(), derived.getUrl(), derived.getType()));
     }
 
+    fixTypeOfResourceId(base);
+    
     if (snapshotStack.contains(derived.getUrl())) {
       throw new DefinitionException(context.formatMessage(I18nConstants.CIRCULAR_SNAPSHOT_REFERENCES_DETECTED_CANNOT_GENERATE_SNAPSHOT_STACK__, snapshotStack.toString()));
     }
@@ -816,6 +818,25 @@ public class ProfileUtilities extends TranslatingUtilities {
       derived.clearUserData("profileutils.snapshot.generating");
       snapshotStack.remove(derived.getUrl());
     }
+  }
+
+  private void fixTypeOfResourceId(StructureDefinition base) {
+    if (base.getKind() == StructureDefinitionKind.RESOURCE && (base.getFhirVersion() == null || VersionUtilities.isR4Plus(base.getFhirVersion().toCode()))) {
+      fixTypeOfResourceId(base.getSnapshot().getElement());
+      fixTypeOfResourceId(base.getDifferential().getElement());      
+    }
+  }
+
+  private void fixTypeOfResourceId(List<ElementDefinition> list) {
+    for (ElementDefinition ed : list) {
+      if (ed.hasBase() && ed.getBase().getPath().equals("Resource.id")) {
+        for (TypeRefComponent tr : ed.getType()) {
+          tr.setCode("http://hl7.org/fhirpath/System.String");
+          tr.removeExtension(ToolingExtensions.EXT_FHIR_TYPE);
+          ToolingExtensions.addUrlExtension(tr, ToolingExtensions.EXT_FHIR_TYPE, "id");
+        }
+      }
+    }    
   }
 
   public void checkDifferentialBaseType(StructureDefinition derived) throws Error {
