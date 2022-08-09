@@ -66,6 +66,7 @@ import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.DOMWrappers.BaseWrapperElement;
 import org.hl7.fhir.r5.renderers.utils.DOMWrappers.ResourceWrapperElement;
 import org.hl7.fhir.r5.renderers.utils.DirectWrappers;
+import org.hl7.fhir.r5.renderers.utils.ElementWrappers;
 import org.hl7.fhir.r5.renderers.utils.DirectWrappers.BaseWrapperDirect;
 import org.hl7.fhir.r5.renderers.utils.DirectWrappers.PropertyWrapperDirect;
 import org.hl7.fhir.r5.renderers.utils.DirectWrappers.ResourceWrapperDirect;
@@ -106,7 +107,10 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     if (context.isAddGeneratedNarrativeHeader()) {
       x.para().b().tx("Generated Narrative: "+r.fhirType());
     }
-    if (context.isTechnicalMode()) {
+    if (!Utilities.noString(r.getId())) {
+      x.an(r.getId());
+    }
+    if (context.isTechnicalMode() && !context.isContained()) {
       renderResourceHeader(r, x);
     }
     try {
@@ -384,7 +388,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       if (r.getReference() != null && r.getReference().contains("#")) {
         if (containedIds.contains(r.getReference().substring(1))) {
           x.ah(r.getReference()).tx("See "+r.getReference());
-        } else {
+        } else {          
           // in this case, we render the resource in line
           ResourceWrapper rw = null;
           for (ResourceWrapper t : res.getContained()) {
@@ -395,9 +399,17 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
           if (rw == null) {
             renderReference(res, x, r);
           } else {
-            x.an(rw.getId());
-            ResourceRenderer rr = RendererFactory.factory(rw, context.copy().setAddGeneratedNarrativeHeader(false));
-            rr.render(parent.blockquote(), rw);
+            String ref = context.getResolver().urlForContained(context, res.fhirType(), res.getId(), rw.fhirType(), rw.getId());
+            if (ref == null) {
+              x.an(rw.getId());
+              RenderingContext ctxtc = context.copy();
+              ctxtc.setAddGeneratedNarrativeHeader(false);
+              ctxtc.setContained(true);
+              ResourceRenderer rr = RendererFactory.factory(rw, ctxtc);
+              rr.render(parent.blockquote(), rw);
+            } else {
+              x.ah(ref).tx("See "+rw.fhirType());              
+            }
           }
         }
       } else {
@@ -687,11 +699,15 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       boolean showCodeDetails, int indent, PropertyWrapper p, ElementDefinition child) throws UnsupportedEncodingException, IOException, EOperationOutcome {
     Map<String, String> displayHints = readDisplayHints(child);
     if ("DomainResource.contained".equals(child.getBase().getPath())) {
-//              if (p.getValues().size() > 0 && child != null) {
-//                for (BaseWrapper v : p.getValues()) {
-//                  x.an(v.get("id").primitiveValue());
-//                }
-//              }
+      System.out.print("-");
+//      for (BaseWrapper v : p.getValues()) {
+//        x.hr();
+//        RenderingContext ctxt = context.clone();
+//        ctxt.setContained(true);
+//        ResourceRenderer rnd = RendererFactory.factory(v.fhirType(), ctxt);
+//        ResourceWrapper rw = new ElementWrappers.ResourceWrapperMetaElement(ctxt, (org.hl7.fhir.r5.elementmodel.Element) v.getBase());
+//        rnd.render(x.blockquote(), rw);
+//      }
     } else if (!exemptFromRendering(child)) {
       if (isExtension(p)) {
         hasExtensions = true;

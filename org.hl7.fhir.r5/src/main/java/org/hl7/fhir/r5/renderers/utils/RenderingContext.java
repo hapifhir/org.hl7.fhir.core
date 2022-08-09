@@ -105,6 +105,7 @@ public class RenderingContext {
   private boolean canonicalUrlsAsLinks;
   private boolean pretty;
   private boolean header;
+  private boolean contained;
 
   private ValidationOptions terminologyServiceOptions = new ValidationOptions();
   private boolean noSlowLookup;
@@ -153,11 +154,53 @@ public class RenderingContext {
     this.locale = new Locale.Builder().setLanguageTag("en-US").build(); 
     profileUtilities = new ProfileUtilities(worker, null, null);
   }
+  public RenderingContext copy() {
+    RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, specificationLink, localPrefix, lang, mode);
+
+    res.resolver = resolver;
+    res.templateProvider = templateProvider;
+    res.services = services;
+    res.parser = parser;
+
+    res.headerLevelContext = headerLevelContext;
+    res.canonicalUrlsAsLinks = canonicalUrlsAsLinks;
+    res.pretty = pretty;
+    res.contained = contained;
+    
+    res.noSlowLookup = noSlowLookup;
+    res.tooCostlyNoteEmpty = tooCostlyNoteEmpty;
+    res.tooCostlyNoteNotEmpty = tooCostlyNoteNotEmpty;
+    res.tooCostlyNoteEmptyDependent = tooCostlyNoteEmptyDependent;
+    res.tooCostlyNoteNotEmptyDependent = tooCostlyNoteNotEmptyDependent;
+    res.codeSystemPropList.addAll(codeSystemPropList);
+
+    res.profileUtilities = profileUtilities;
+    res.definitionsTarget = definitionsTarget;
+    res.destDir = destDir;
+    res.addGeneratedNarrativeHeader = addGeneratedNarrativeHeader;
+    res.questionnaireMode = questionnaireMode;
+    res.header = header;
+    res.selfLink = selfLink;
+    res.inlineGraphics = inlineGraphics;
+    res.timeZoneId = timeZoneId;
+    res.dateTimeFormat = dateTimeFormat;
+    res.dateFormat = dateFormat;
+    res.dateYearFormat = dateYearFormat;
+    res.dateYearMonthFormat = dateYearMonthFormat;
+    res.targetVersion = targetVersion;
+    res.locale = locale;
+
+    res.terminologyServiceOptions = terminologyServiceOptions.copy();
+    return res;
+  }
+  
 
   public IWorkerContext getContext() {
     return worker;
   }
 
+
+  
   // -- 2. Markdown support -------------------------------------------------------
 
   public ProfileUtilities getProfileUtilities() {
@@ -338,41 +381,6 @@ public class RenderingContext {
     return this;
   }
 
-  public RenderingContext copy() {
-    RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, specificationLink, localPrefix, lang, mode);
-
-    res.resolver = resolver;
-    res.templateProvider = templateProvider;
-    res.services = services;
-    res.parser = parser;
-
-    res.headerLevelContext = headerLevelContext;
-    res.canonicalUrlsAsLinks = canonicalUrlsAsLinks;
-    res.pretty = pretty;
-
-    res.noSlowLookup = noSlowLookup;
-    res.tooCostlyNoteEmpty = tooCostlyNoteEmpty;
-    res.tooCostlyNoteNotEmpty = tooCostlyNoteNotEmpty;
-    res.tooCostlyNoteEmptyDependent = tooCostlyNoteEmptyDependent;
-    res.tooCostlyNoteNotEmptyDependent = tooCostlyNoteNotEmptyDependent;
-    res.codeSystemPropList.addAll(codeSystemPropList);
-
-    res.profileUtilities = profileUtilities;
-    res.definitionsTarget = definitionsTarget;
-    res.destDir = destDir;
-    res.addGeneratedNarrativeHeader = addGeneratedNarrativeHeader;
-    res.questionnaireMode = questionnaireMode;
-    res.header = header;
-    res.selfLink = selfLink;
-    res.inlineGraphics = inlineGraphics;
-    res.timeZoneId = timeZoneId;
-    res.dateTimeFormat = dateTimeFormat;
-    res.dateFormat = dateFormat;
-    res.dateYearFormat = dateYearFormat;
-    res.dateYearMonthFormat = dateYearMonthFormat;
-
-    return res;
-  }
 
   public boolean isInlineGraphics() {
     return inlineGraphics;
@@ -555,6 +563,14 @@ public class RenderingContext {
 
   public void setMode(ResourceRendererMode mode) {
     this.mode = mode;
+  }
+
+  public boolean isContained() {
+    return contained;
+  }
+
+  public void setContained(boolean contained) {
+    this.contained = contained;
   }
   
   
