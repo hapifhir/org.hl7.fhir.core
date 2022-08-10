@@ -104,14 +104,19 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
 
   @Override
   public boolean render(XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
+    boolean idDone = false;
+    XhtmlNode p = x.para();
     if (context.isAddGeneratedNarrativeHeader()) {
-      x.para().b().tx("Generated Narrative: "+r.fhirType());
-    }
-    if (!Utilities.noString(r.getId())) {
-      x.an(r.getId());
+      p.b().tx("Generated Narrative: "+r.fhirType());
+      p.an(r.getId());
+      idDone = true;      
     }
     if (context.isTechnicalMode() && !context.isContained()) {
-      renderResourceHeader(r, x);
+      renderResourceHeader(r, x, !idDone);
+      idDone = true;
+    }
+    if (!Utilities.noString(r.getId()) && !idDone) {
+      x.para().an(r.getId());
     }
     try {
       StructureDefinition sd = r.getDefinition();
