@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -37,7 +38,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
   }
   
   public boolean render(XhtmlNode x, Resource dr) throws IOException, FHIRException, EOperationOutcome {
-    return render(x, (OperationDefinition) dr);
+    return render(x, (SearchParameter) dr);
   }
 
   public boolean render(XhtmlNode x, SearchParameter spd) throws IOException, FHIRException, EOperationOutcome {
@@ -56,7 +57,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     for (CodeType t : spd.getBase()) {
       StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.toString());
       if (sd != null && sd.hasUserData("path")) {
-        td.sep(", ").ah(sd.getUserString("path")).tx(t.getCode());
+        td.ah(sd.getUserString("path")).sep(", ").tx(t.getCode());
       } else {
         td.sep(", ").tx(t.getCode());
       }
@@ -82,12 +83,18 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       tr = tbl.tr();
       tr.td().tx(Utilities.pluralize("Target Resources", spd.getTarget().size()));
       td = tr.td();
-      for (CodeType t : spd.getTarget()) {
-        StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.toString());
-        if (sd != null && sd.hasUserData("path")) {
-          td.sep(", ").ah(sd.getUserString("path")).tx(t.getCode());
-        } else {
-          td.sep(", ").tx(t.getCode());
+      if (isAllConcreteResources(spd.getTarget())) {
+        td.ah(Utilities.pathURL(context.getSpecificationLink(), "resourcelist.html")).tx("All Resources");
+      } else {
+        for (CodeType t : spd.getTarget()) {
+          StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.toString());
+          if (sd != null && sd.hasUserData("path")) {
+            td.sep(", ");
+            td.ah(sd.getUserString("path")).tx(t.getCode());
+          } else {
+            td.sep(", ");
+            td.tx(t.getCode());
+          }
         }
       }
     }
@@ -105,9 +112,11 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     if (spd.hasComparator()) {
       tr = tbl.tr();
       tr.td().tx("Comparators");
-      td = tr.td().tx("Allowed: ");
+      td = tr.td();
+      td.tx("Allowed: ");
       for (Enumeration<SearchComparator> t : spd.getComparator()) {
-        td.sep(", ").tx(t.asStringValue());
+        td.sep(", ");
+        td.tx(t.asStringValue());
       }      
     }
     if (spd.hasModifier()) {
@@ -115,7 +124,8 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       tr.td().tx("Modifiers");
       td = tr.td().tx("Allowed: ");
       for (Enumeration<SearchModifierCode> t : spd.getModifier()) {
-        td.sep(", ").tx(t.asStringValue());
+        td.sep(", ");
+        td.tx(t.asStringValue());
       }      
     }
     if (spd.hasChain()) {
@@ -123,7 +133,8 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       tr.td().tx("Chains");
       td = tr.td().tx("Allowed: ");
       for (StringType t : spd.getChain()) {
-        td.sep(", ").tx(t.asStringValue());
+        td.sep(", ");
+        td.tx(t.asStringValue());
       }      
     }
     
@@ -142,6 +153,22 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       }
     }
     return false;
+  }
+
+  private boolean isAllConcreteResources(List<CodeType> target) {
+    for (String s : context.getWorker().getResourceNames()) {
+      StructureDefinition sd = context.getWorker().fetchTypeDefinition(s);
+      if (!sd.getAbstract() && !Utilities.existsInList(sd.getType(), "Parameters")) {
+        boolean found = false;
+        for (CodeType c : target) {
+          found = found || sd.getName().equals(c.getValue());
+        }
+        if (!found) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
   public void describe(XhtmlNode x, OperationDefinition opd) {
