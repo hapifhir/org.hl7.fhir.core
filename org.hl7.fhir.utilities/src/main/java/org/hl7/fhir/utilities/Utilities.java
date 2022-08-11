@@ -892,6 +892,14 @@ public class Utilities {
     return false;
   }
 
+  public static String stringJoin(String sep, String... array) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(sep);
+    for (String s : array)
+      if (!noString(s))
+        b.append(s);
+    return b.toString();
+  }
+
 
   public static String getFileNameForName(String name) {
     return name.toLowerCase();
