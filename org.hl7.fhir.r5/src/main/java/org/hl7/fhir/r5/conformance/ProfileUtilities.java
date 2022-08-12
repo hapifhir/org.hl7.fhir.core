@@ -3721,14 +3721,19 @@ public class ProfileUtilities extends TranslatingUtilities {
               if (ref != null) {
                 String[] parts = ref.split("\\|");
                 if (parts[0].startsWith("http:") || parts[0].startsWith("https:")) {
-                  //            c.addPiece(checkForNoChange(t, gen.new Piece(parts[0], "<" + parts[1] + ">", t.getCode()))); Lloyd
-                  c.addPiece(checkForNoChange(t, gen.new Piece(parts[0], parts[1], t.getWorkingCode())));
+                  if (p.hasExtension(ToolingExtensions.EXT_PROFILE_ELEMENT)) {
+                    String pp = p.getExtensionString(ToolingExtensions.EXT_PROFILE_ELEMENT);
+                    pp = pp.substring(pp.indexOf("."));
+                    c.addPiece(checkForNoChange(t, gen.new Piece(parts[0], parts[1]+pp, t.getWorkingCode())));
+                  } else {
+                    c.addPiece(checkForNoChange(t, gen.new Piece(parts[0], parts[1], t.getWorkingCode())));
+                  }
                 } else {
-                  //            c.addPiece(checkForNoChange(t, gen.new Piece((t.getProfile().startsWith(corePath)? corePath: "")+parts[0], "<" + parts[1] + ">", t.getCode())));
                   c.addPiece(checkForNoChange(t, gen.new Piece((p.getValue().startsWith(corePath+"StructureDefinition")? corePath: "")+parts[0], parts[1], t.getWorkingCode())));
                 }
-              } else
+              } else {
                 c.addPiece(checkForNoChange(t, gen.new Piece((p.getValue().startsWith(corePath)? corePath: "")+ref, t.getWorkingCode(), null)));
+              }
               if (!mustSupportMode && isMustSupport(p) && e.getMustSupport()) {
                 c.addPiece(gen.new Piece(null, " ", null));
                 c.addStyledText(translate("sd.table", "This profile must be supported"), "S", "white", "red", null, false);
@@ -5026,7 +5031,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
             Cell c = gen.new Cell();
             row.getCells().add(c);
-            c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : (VersionUtilities.isThisOrLater("4.1", context.getVersion()) ? corePath+"types-definitions.html#"+ed.getBase().getPath() : corePath+"element-definitions.html#"+ed.getBase().getPath())), t.getName(), null));
+            c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : (VersionUtilities.isR5Ver(context.getVersion()) ? corePath+"types-definitions.html#"+ed.getBase().getPath() : corePath+"element-definitions.html#"+ed.getBase().getPath())), t.getName(), null));
 
             c = gen.new Cell();
             row.getCells().add(c);
