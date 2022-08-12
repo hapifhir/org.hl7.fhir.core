@@ -558,5 +558,12 @@ public class VersionUtilities {
     return version != null && (version.startsWith("4.") || version.startsWith("5.") || "current".equals(version));
   }
 
+  public static boolean refersTo(String refVer, String v) {
+    if (v.length() > refVer.length()) {
+      v = v.substring(0, refVer.length());
+    }
+    return refVer.equals(v);
+  }
+
 
 }
