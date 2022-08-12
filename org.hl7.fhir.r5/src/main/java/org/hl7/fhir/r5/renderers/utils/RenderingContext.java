@@ -115,7 +115,7 @@ public class RenderingContext {
   private String tooCostlyNoteNotEmptyDependent;
   private List<String> codeSystemPropList = new ArrayList<>();
 
-  private ProfileUtilities profileUtilities;
+  private ProfileUtilities profileUtilitiesR;
   private String definitionsTarget;
   private String destDir;
   private boolean inlineGraphics;
@@ -152,7 +152,6 @@ public class RenderingContext {
     }
  // default to US locale - discussion here: https://github.com/hapifhir/org.hl7.fhir.core/issues/666
     this.locale = new Locale.Builder().setLanguageTag("en-US").build(); 
-    profileUtilities = new ProfileUtilities(worker, null, null);
   }
   public RenderingContext copy() {
     RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, specificationLink, localPrefix, lang, mode);
@@ -174,7 +173,7 @@ public class RenderingContext {
     res.tooCostlyNoteNotEmptyDependent = tooCostlyNoteNotEmptyDependent;
     res.codeSystemPropList.addAll(codeSystemPropList);
 
-    res.profileUtilities = profileUtilities;
+    res.profileUtilitiesR = profileUtilitiesR;
     res.definitionsTarget = definitionsTarget;
     res.destDir = destDir;
     res.addGeneratedNarrativeHeader = addGeneratedNarrativeHeader;
@@ -204,7 +203,10 @@ public class RenderingContext {
   // -- 2. Markdown support -------------------------------------------------------
 
   public ProfileUtilities getProfileUtilities() {
-    return profileUtilities;
+    if (profileUtilitiesR == null) {
+      profileUtilitiesR = new ProfileUtilities(worker, null, null);
+    }
+    return profileUtilitiesR;
   }
 
   public IWorkerContext getWorker() {
@@ -331,7 +333,7 @@ public class RenderingContext {
   }
 
   public RenderingContext setProfileUtilities(ProfileUtilities profileUtilities) {
-    this.profileUtilities = profileUtilities;
+    this.profileUtilitiesR = profileUtilities;
     return this;
   }
 

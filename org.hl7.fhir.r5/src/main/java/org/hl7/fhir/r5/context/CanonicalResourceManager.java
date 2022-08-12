@@ -21,6 +21,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 
   private final String[] INVALID_TERMINOLOGY_URLS = {
     "http://snomed.info/sct",
+    "http://dicom.nema.org/resources/ontology/DCM",
     "http://nucc.org/provider-taxonomy"
   };
 
