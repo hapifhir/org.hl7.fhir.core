@@ -101,6 +101,9 @@ public class PatientRenderer extends ResourceRenderer {
     if (newUse == null) {
       return true;
     }
+    if (oldUse == null) {
+      return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
+    }
     switch (oldUse) {
       case ANONYMOUS: return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
       case MAIDEN: return existsInList(newUse, NameUse.OFFICIAL, NameUse.USUAL);
