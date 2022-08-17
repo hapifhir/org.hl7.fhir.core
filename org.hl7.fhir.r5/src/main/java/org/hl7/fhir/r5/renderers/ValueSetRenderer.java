@@ -108,6 +108,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
         ConceptMap cm = (ConceptMap) md;
         if (isSource(vs, cm.getSourceScope())) {
           ConceptMapRenderInstructions re = findByTarget(cm.getTargetScope());
+          if (re == null) {
+            re = new ConceptMapRenderInstructions(cm.present(), cm.getUrl(), false);
+          }
           if (re != null) {
             ValueSet vst = cm.hasTargetScope() ? getContext().getWorker().fetchResource(ValueSet.class, cm.hasTargetScopeCanonicalType() ? cm.getTargetScopeCanonicalType().getValue() : cm.getTargetScopeUriType().asStringValue()) : null;
             res.add(new UsedConceptMap(re, vst == null ? cm.getUserString("path") : vst.getUserString("path"), cm));
@@ -346,12 +349,14 @@ public class ValueSetRenderer extends TerminologyRenderer {
       return null;
     }
     String src = source.primitiveValue();
-    if (src != null)
-      for (ConceptMapRenderInstructions t : renderingMaps) {
-        if (src.equals(t.getUrl()))
-          return t;
-      }
-    return null;
+    if (src == null) {
+      return null;
+    }
+    for (ConceptMapRenderInstructions t : renderingMaps) {
+      if (src.equals(t.getUrl()))
+        return t;
+    }
+    return null;    
   }
 
 
