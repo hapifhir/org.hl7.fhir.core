@@ -108,7 +108,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     XhtmlNode p = x.para();
     if (context.isAddGeneratedNarrativeHeader()) {
       p.b().tx("Generated Narrative: "+r.fhirType());
-      p.an(r.getId());
+      if (!Utilities.noString(r.getId())) {
+        p.an(r.getId());
+      }
       idDone = true;      
     }
     if (context.isTechnicalMode() && !context.isContained()) {
