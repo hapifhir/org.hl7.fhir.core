@@ -129,7 +129,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         XhtmlNode tr = tbl.tr();
         tr.td().b().tx("Source Code");
         tr.td().b().tx("Relationship");
-        tr.td().b().tx("Destination Code");
+        tr.td().b().tx("Target Code");
         if (comment)
           tr.td().b().tx("Comment");
         tr = tbl.tr();
