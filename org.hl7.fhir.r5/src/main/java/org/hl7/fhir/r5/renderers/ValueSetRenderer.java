@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hamcrest.beans.HasProperty;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -36,6 +37,7 @@ import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
@@ -44,6 +46,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
@@ -158,6 +161,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     boolean hasExtensions = false;
     List<String> langs = new ArrayList<String>();
     Map<String, String> designations = new HashMap<>(); //  map of url = description, where url is the designation code. Designations that are for languages won't make it into this list
+    Map<String, String> properties = new HashMap<>(); //  map of url = description, where url is the designation code. Designations that are for languages won't make it into this list
 
     if (header) {
       XhtmlNode h = x.addTag(getHeader());
@@ -198,40 +202,32 @@ public class ValueSetRenderer extends TerminologyRenderer {
       }
     }
     
-    boolean doSystem = true; // checkDoSystem(vs, src);
     boolean doDefinition = checkDoDefinition(vs.getExpansion().getContains());
-    if (doSystem && allFromOneSystem(vs)) {
-      doSystem = false;
-      XhtmlNode p = x.para();
-      p.tx("All codes in this table are from the system ");
-      allCS = getContext().getWorker().fetchCodeSystem(vs.getExpansion().getContains().get(0).getSystem());
-      String ref = null;
-      if (allCS != null)
-        ref = getCsRef(allCS);
-      if (ref == null)
-        p.code(vs.getExpansion().getContains().get(0).getSystem());
-      else
-        p.ah(context.fixReference(ref)).code(vs.getExpansion().getContains().get(0).getSystem());
-    }
     XhtmlNode t = x.table( "codes");
     XhtmlNode tr = t.tr();
     if (doLevel)
       tr.td().b().tx("Level");
     tr.td().attribute("style", "white-space:nowrap").b().tx("Code");
-    if (doSystem)
-      tr.td().b().tx("System");
+    tr.td().b().tx("System");
     XhtmlNode tdDisp = tr.td();
     tdDisp.b().tx("Display");
     boolean doDesignations = false;
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
       scanForDesignations(c, langs, designations);
     }
+    scanForProperties(vs.getExpansion(), langs, properties);
     if (doDefinition) {
       tr.td().b().tx("Definition");
       doDesignations = false;
+      for (String n : Utilities.sorted(properties.keySet())) {
+        tr.td().b().ah(properties.get(n)).addText(n);        
+      }
     } else {
+      for (String n : Utilities.sorted(properties.keySet())) {
+        tr.td().b().ah(properties.get(n)).addText(n);        
+      }
       // if we're not doing definitions and we don't have too many languages, we'll do them in line
-      doDesignations = langs.size() + designations.size() < MAX_DESIGNATIONS_IN_LINE;
+      doDesignations = langs.size() + properties.size() + designations.size() < MAX_DESIGNATIONS_IN_LINE;
 
       if (doDesignations) {
         if (vs.hasLanguage()) {
@@ -249,7 +245,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     
     addMapHeaders(tr, maps);
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
-      addExpansionRowToTable(t, c, 1, doLevel, doSystem, doDefinition, maps, allCS, langs, designations, doDesignations);
+      addExpansionRowToTable(t, c, 1, doLevel, true, doDefinition, maps, allCS, langs, designations, doDesignations, properties);
     }
 
     // now, build observed languages
@@ -278,6 +274,30 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
 
     return hasExtensions;
+  }
+
+
+  private void scanForProperties(ValueSetExpansionComponent exp, List<String> langs, Map<String, String> properties) {
+    properties.clear();
+    for (ValueSetExpansionPropertyComponent pp : exp.getProperty()) {
+      if (pp.hasCode() && pp.hasUri() && anyActualproperties(exp.getContains(), pp.getCode())) {
+        properties.put(pp.getCode(), pp.getUri());
+      }
+    }
+  }
+
+  private boolean anyActualproperties(List<ValueSetExpansionContainsComponent> contains, String pp) {
+    for (ValueSetExpansionContainsComponent c : contains) {
+      for (ConceptPropertyComponent cp : c.getProperty()) {
+        if (pp.equals(cp.getCode())) {
+          return true;
+        }
+      }
+      if (anyActualproperties(c.getContains(), pp)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private void generateContentModeNotices(XhtmlNode x, ValueSetExpansionComponent expansion) {
@@ -715,7 +735,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }    
   }
 
-  private void addExpansionRowToTable(XhtmlNode t, ValueSetExpansionContainsComponent c, int i, boolean doLevel, boolean doSystem, boolean doDefinition, List<UsedConceptMap> maps, CodeSystem allCS, List<String> langs, Map<String, String> designations, boolean doDesignations) {
+  private void addExpansionRowToTable(XhtmlNode t, ValueSetExpansionContainsComponent c, int i, boolean doLevel, boolean doSystem, boolean doDefinition, List<UsedConceptMap> maps, CodeSystem allCS, List<String> langs, Map<String, String> designations, boolean doDesignations, Map<String, String> properties) {
     XhtmlNode tr = t.tr();
     XhtmlNode td = tr.td();
 
@@ -745,6 +765,13 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if (cs != null)
         td.addText(CodeSystemUtilities.getCodeDefinition(cs, c.getCode()));
     }
+    for (String n  : Utilities.sorted(properties.keySet())) {
+      td = tr.td();
+      String ps = getPropertyValue(c, n); 
+      if (!Utilities.noString(ps)) {  
+        td.addText(ps);        
+      }
+    }
     for (UsedConceptMap m : maps) {
       td = tr.td();
       List<TargetElementComponentWrapper> mappings = findMappingsForCode(c.getCode(), m.getMap());
@@ -765,13 +792,22 @@ public class ValueSetRenderer extends TerminologyRenderer {
       addLangaugesToRow(c, langs, tr);
     }
     for (ValueSetExpansionContainsComponent cc : c.getContains()) {
-      addExpansionRowToTable(t, cc, i+1, doLevel, doSystem, doDefinition, maps, allCS, langs, designations, doDesignations);
+      addExpansionRowToTable(t, cc, i+1, doLevel, doSystem, doDefinition, maps, allCS, langs, designations, doDesignations, properties);
     }
   }
 
 
 
 
+
+  private String getPropertyValue(ValueSetExpansionContainsComponent c, String n) {
+    for (ConceptPropertyComponent  cp : c.getProperty()) {
+      if (n.equals(cp.getCode())) {
+        return cp.getValue().primitiveValue();
+      }
+    }
+    return null;
+  }
 
   private boolean checkSystemMatches(String system, ValueSetExpansionContainsComponent cc) {
     if (!system.equals(cc.getSystem()))
