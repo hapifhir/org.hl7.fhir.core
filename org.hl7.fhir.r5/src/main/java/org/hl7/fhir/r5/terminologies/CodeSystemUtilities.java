@@ -241,10 +241,32 @@ public class CodeSystemUtilities {
     }
   }
 
+  public static boolean isInactive(CodeSystem cs, ConceptDefinitionComponent def, boolean ignoreStatus)  {
+    try {
+      for (ConceptPropertyComponent p : def.getProperty()) {
+        if (!ignoreStatus) {
+          if ("status".equals(p.getCode()) && p.hasValue() && p.hasValueCodeType() && "inactive".equals(p.getValueCodeType().getCode()))
+            return true;
+        }
+        // legacy  
+        if ("inactive".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType) 
+          return ((BooleanType) p.getValue()).getValue();
+      }
+      return false;
+    } catch (FHIRException e) {
+      return false;
+    }
+  }
+
   public static void setDeprecated(CodeSystem cs, ConceptDefinitionComponent concept, DateTimeType date) throws FHIRFormatError {
     setStatus(cs, concept, ConceptStatus.Deprecated);
     defineDeprecatedProperty(cs);
     concept.addProperty().setCode("deprecationDate").setValue(date);    
+  }
+
+
+  public static void setDeprecated(CodeSystem cs, ConceptDefinitionComponent concept) throws FHIRFormatError {
+    setStatus(cs, concept, ConceptStatus.Deprecated);
   }
   
   public static boolean isInactive(CodeSystem cs, ConceptDefinitionComponent def) throws FHIRException {
