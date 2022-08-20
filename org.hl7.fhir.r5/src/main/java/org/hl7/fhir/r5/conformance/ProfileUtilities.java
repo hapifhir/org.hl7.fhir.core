@@ -312,7 +312,8 @@ public class ProfileUtilities extends TranslatingUtilities {
       return null;
     }
   }
-
+  
+  public static final String CONSTRAINT_STYLE = "padding-left: 3px; padding-right: 3px; border: 1px maroon solid; font-weight: bold; color: #301212; background-color: #fdeeee;";
   private static final String ROW_COLOR_ERROR = "#ffcccc";
   private static final String ROW_COLOR_FATAL = "#ff9999";
   private static final String ROW_COLOR_WARNING = "#ffebcc";
@@ -3613,7 +3614,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private static final int AGG_IND = 1;
   private static final int AGG_GR = 2;
   private static final boolean TABLE_FORMAT_FOR_FIXED_VALUES = false;
-  
+
   private Cell genTypes(HierarchicalTableGenerator gen, Row r, ElementDefinition e, String profileBaseFileName, StructureDefinition profile, String corePath, String imagePath, boolean root, boolean mustSupportMode) {
     Cell c = gen.new Cell();
     r.getCells().add(c);
@@ -4364,7 +4365,10 @@ public class ProfileUtilities extends TranslatingUtilities {
       checkForNoChange(element.getIsSummaryElement(), gc.addStyledText(translate("sd.table", "This element is included in summaries"), "\u03A3", null, null, null, false));
     }
     if (element != null && (hasNonBaseConstraints(element.getConstraint()) || hasNonBaseConditions(element.getCondition()))) {
-      gc.addStyledText(translate("sd.table", "This element has or is affected by some invariants ("+listConstraintsAndConditions(element)+")"), "I", null, null, null, false);
+      Piece p = gc.addText("I");
+      p.setHint(translate("sd.table", "This element has or is affected by some invariants ("+listConstraintsAndConditions(element)+")"));
+      p.addStyle(CONSTRAINT_STYLE);
+      p.setReference(context.getSpecUrl()+"conformance-rules.html#constraints");
     }
 
     ExtensionContext extDefn = null;

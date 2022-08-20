@@ -44,23 +44,45 @@ public class CommaSeparatedStringBuilder {
   String sep = ", ";
   StringBuilder b = new StringBuilder();
   int count = 0;
+  String pending = null;
+  private String lastSep;
 
   public CommaSeparatedStringBuilder() {
+    this.sep = ", ";
+    this.lastSep = ", ";
   }
   
   public CommaSeparatedStringBuilder(String sep) {
     this.sep = sep;
+    this.lastSep = sep;
   }
 
+  public CommaSeparatedStringBuilder(String sep, String lastSep) {
+    this.sep = sep;
+    this.lastSep = lastSep;
+  }
+
+  private void commit(boolean last) {
+    if (pending != null) {
+      if (!first) {
+        if (last) {
+          b.append(lastSep);
+        } else {
+          b.append(sep);
+        }
+      }
+      b.append(pending);
+      first = false;  
+    }
+  }
   public void append(String value) {
-    if (!first)
-      b.append(sep);
-    b.append(value);
-    first = false;
+    commit(false);
+    pending = value;
     count++;    
   }
   
   public int length() {
+    commit(false);
     return b.length();
   }
   
@@ -70,6 +92,7 @@ public class CommaSeparatedStringBuilder {
 
   @Override
   public String toString() {
+    commit(true);
     return b.toString();
   }
 
@@ -81,7 +104,7 @@ public class CommaSeparatedStringBuilder {
 
   public void addAll(List<String> list) {
     for (String s : list) {
-      append(s);
+      appendIfNotNull(s);
     }
     
   }
