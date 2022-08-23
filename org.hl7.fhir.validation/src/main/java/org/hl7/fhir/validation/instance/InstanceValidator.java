@@ -4994,11 +4994,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       type = checkDefn.getType().get(0).getWorkingCode();
       String stype = ei.getElement().fhirType();
       if (checkDefn.isChoice() && !stype.equals(type)) {
-        if ("Extension".equals(profile.getType())) {
-          // error will be raised elsewhere
-        } else {
+        if (extensionUrl != null && !isAbsolute(extensionUrl)) {
           rule(errors, IssueType.STRUCTURE, element.line(), element.col(), ei.getPath(), false, I18nConstants.EXTENSION_PROF_TYPE, profile.getUrl(), type, stype);
+        } else if (!isAbstractType(type) && !"Extension".equals(profile.getType())) {
+          rule(errors, IssueType.STRUCTURE, element.line(), element.col(), ei.getPath(), stype.equals(type), I18nConstants.EXTENSION_PROF_TYPE, profile.getUrl(), type, stype);                  
         }
+      } else if (!isAbstractType(type)) {
+        rule(errors, IssueType.STRUCTURE, element.line(), element.col(), ei.getPath(), stype.equals(type) || 
+            (Utilities.existsInList(type, "string", "id") && Utilities.existsInList(stype, "string", "id")), // work around a r4 problem with id/string
+            I18nConstants.EXTENSION_PROF_TYPE, profile.getUrl(), type, stype);        
       }
 
       // Excluding reference is a kludge to get around versioning issues
@@ -5229,6 +5233,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           validateElement(hostContext, errors, profile, checkDefn, null, null, resource, ei.getElement(), type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension, pct);
       }
     }
+  }
+
+  private boolean isAbstractType(String type) {
+    StructureDefinition sd = context.fetchTypeDefinition(type);
+    return sd != null && sd.getAbstract();
   }
 
   private boolean isResourceAndTypes(ElementDefinition ed) {
