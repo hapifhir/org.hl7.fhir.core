@@ -3614,6 +3614,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private static final int AGG_IND = 1;
   private static final int AGG_GR = 2;
   private static final boolean TABLE_FORMAT_FOR_FIXED_VALUES = false;
+  public static final String CONSTRAINT_CHAR = "C";
 
   private Cell genTypes(HierarchicalTableGenerator gen, Row r, ElementDefinition e, String profileBaseFileName, StructureDefinition profile, String corePath, String imagePath, boolean root, boolean mustSupportMode) {
     Cell c = gen.new Cell();
@@ -4365,7 +4366,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       checkForNoChange(element.getIsSummaryElement(), gc.addStyledText(translate("sd.table", "This element is included in summaries"), "\u03A3", null, null, null, false));
     }
     if (element != null && (hasNonBaseConstraints(element.getConstraint()) || hasNonBaseConditions(element.getCondition()))) {
-      Piece p = gc.addText("I");
+      Piece p = gc.addText(ProfileUtilities.CONSTRAINT_CHAR);
       p.setHint(translate("sd.table", "This element has or is affected by some invariants ("+listConstraintsAndConditions(element)+")"));
       p.addStyle(CONSTRAINT_STYLE);
       p.setReference(context.getSpecUrl()+"conformance-rules.html#constraints");
