@@ -14,5 +14,5 @@ jobs:
           jdkVersions:  [ '1.11', '1.17']
         - name: macos-latest
           jdkVersions: [ '1.11', '1.17']
-        - name: windows-2019
+        - name: windows-latest
           jdkVersions: [ '1.11', '1.17']
