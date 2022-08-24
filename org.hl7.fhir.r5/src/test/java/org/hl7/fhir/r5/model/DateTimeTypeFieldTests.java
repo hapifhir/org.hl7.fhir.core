@@ -9,7 +9,7 @@ public class DateTimeTypeFieldTests {
   @Test
   public void testFieldSet() {
     final int YEAR = 1979;
-    final int MONTH = 1;
+    final int MONTH = 0; // January
     final int DAY = 23;
     final DateTimeType dateTimeYearFirst = new DateTimeType();
     dateTimeYearFirst.setPrecision(TemporalPrecisionEnum.DAY);
@@ -23,6 +23,7 @@ public class DateTimeTypeFieldTests {
     dateTimeDayFirst.setYear(YEAR);
     dateTimeDayFirst.setMonth(MONTH);
 
-    assertEquals(dateTimeYearFirst.asStringValue(), dateTimeDayFirst.asStringValue());
+    assertEquals("1979-01-23",dateTimeDayFirst.asStringValue());
+    assertEquals("1979-01-23",dateTimeYearFirst.asStringValue());
   }
 }
