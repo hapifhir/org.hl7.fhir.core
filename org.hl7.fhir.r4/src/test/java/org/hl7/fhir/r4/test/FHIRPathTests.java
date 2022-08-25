@@ -11,10 +11,7 @@ import org.hl7.fhir.r4.utils.FHIRPathEngine;
 import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.XMLUtil;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -27,24 +24,24 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
-@Disabled
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+
 public class FHIRPathTests {
 
   public class FHIRPathTestEvaluationServices implements IEvaluationContext {
 
     @Override
-    public Base resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+    public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
       throw new NotImplementedException("Not done yet (FHIRPathTestEvaluationServices.resolveConstant), when item is element");
     }
 
     @Override
     public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException {
+
       throw new NotImplementedException("Not done yet (FHIRPathTestEvaluationServices.resolveConstantType), when item is element");
     }
 
@@ -136,9 +133,11 @@ public class FHIRPathTests {
 
 
   @SuppressWarnings("deprecation")
+  @Disabled
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
   public void test(String name, Element test) throws FileNotFoundException, IOException, FHIRException, org.hl7.fhir.exceptions.FHIRException, UcumException {
+
     fp.setHostServices(new FHIRPathTestEvaluationServices());
     String input = test.getAttribute("inputfile");
     String expression = XMLUtil.getNamedChild(test, "expression").getTextContent();
@@ -210,5 +209,28 @@ public class FHIRPathTests {
         }
       }
     }
+  }
+
+  @Test
+  @DisplayName("resolveConstant returns a list of Base")
+  public void resolveConstantReturnsList() {
+    final String DUMMY_CONSTANT_1 = "dummyConstant1";
+    final String DUMMY_CONSTANT_2 = "dummyConstant2";
+    fp.setHostServices(new FHIRPathTestEvaluationServices() {
+      @Override
+      public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+
+        return Arrays.asList(
+          new StringType(DUMMY_CONSTANT_1).noExtensions(),
+          new StringType(DUMMY_CONSTANT_2).noExtensions());
+      }
+    });
+
+    ExpressionNode expressionNode = fp.parse("%dummyConstant");
+
+    List<Base> result = fp.evaluate(null, expressionNode);
+    assertEquals(2, result.size());
+    assertEquals(DUMMY_CONSTANT_1, result.get(0).primitiveValue());
+    assertEquals(DUMMY_CONSTANT_2, result.get(1).primitiveValue());
   }
 }
