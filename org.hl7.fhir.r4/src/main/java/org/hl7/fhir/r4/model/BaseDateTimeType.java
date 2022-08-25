@@ -537,7 +537,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 		validateValueInRange(theValue, theMinimum, theMaximum);
 		Calendar cal;
 		if (getValue() == null) {
-			cal = new GregorianCalendar();
+			cal = new GregorianCalendar(0,0,0);
 		} else {
 			cal = getValueAsCalendar();
 		}
