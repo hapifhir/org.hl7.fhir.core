@@ -129,6 +129,8 @@ public class StructureDefinitionValidator extends BaseValidator {
     boolean typeMustSupport = false;
     List<Element> types = element.getChildrenByName("type");
     Set<String> typeCodes = new HashSet<>();
+    Set<String> characteristics = new HashSet<>();
+    
     for (Element type : types) {
       if (hasMustSupportExtension(type)) {
         typeMustSupport = true;
@@ -143,6 +145,12 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
       }
       typeCodes.add(tc);
+      Set<String> tcharacteristics = new HashSet<>();
+      addCharacteristics(tcharacteristics, tc);
+      characteristics.addAll(tcharacteristics);
+      if (type.hasChildren("targetProfile")) {
+        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), tcharacteristics.contains("has-target") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "targetProfile");
+      }
       // check the stated profile - must be a constraint on the type 
       if (snapshot || sd != null) {
         validateElementType(errors, type, stack.push(type, -1, null, null), sd, element.getChildValue("path"));
@@ -156,6 +164,8 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
     }
     if (element.hasChild("binding")) {
+      rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("can-bind") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "Binding");
+    
       Element binding = element.getNamedChild("binding");
       validateBinding(errors, binding, stack.push(binding, -1, null, null), typeCodes, snapshot, element.getNamedChildValue("path"));
     } else {
@@ -163,6 +173,25 @@ public class StructureDefinitionValidator extends BaseValidator {
 //      String bt = boundType(typeCodes);
 //      hint(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || bt == null, I18nConstants.SD_ED_SHOULD_BIND, element.getNamedChildValue("path"), bt);              
     }
+    if (element.hasChild("maxLength")) {
+      rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-length") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MaxLength");      
+    }
+    if (element.hasExtension(ToolingExtensions.EXT_MIN_LENGTH)) {
+      rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-length") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MinLength Extension");      
+    }
+    if (element.hasChild("minValue")) {
+      rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-range") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MinValue");      
+    }
+    if (element.hasChild("maxValue")) {
+      rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-range") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MaxValue");      
+    }
+    if (element.hasExtension(ToolingExtensions.EXT_MAX_DECIMALS)) {
+      rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("is-continuous") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "Max Decimal Places Extension");      
+    }
+    if (element.hasExtension(ToolingExtensions.EXT_MAX_SIZE)) {
+      rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-size") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "Max Size");      
+    }
+
     // in a snapshot, we validate that fixedValue, pattern, and defaultValue, if present, are all of the right type
     if (snapshot && (element.getIdBase() != null) && (element.getIdBase().contains("."))) {
       if (rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), !typeCodes.isEmpty() || element.hasChild("contentReference"), I18nConstants.SD_NO_TYPES_OR_CONTENTREF, element.getIdBase())) {     
@@ -179,7 +208,9 @@ public class StructureDefinitionValidator extends BaseValidator {
           hint(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), !repeating, I18nConstants.SD_VALUE_TYPE_REPEAT_HINT, element.getIdBase(), "fixed");
           if (isPrimitiveType(v.fhirType())) {
             warning(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), !repeating, I18nConstants.SD_VALUE_TYPE_REPEAT_WARNING_DOTNET, element.getIdBase(), "fixed");
-          }          
+          } else {
+            warning(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), false, I18nConstants.SD_VALUE_COMPLEX_FIXED, v.fhirType());            
+          }
         }
         v = element.getNamedChild("pattern");
         if (v != null) {
@@ -194,8 +225,81 @@ public class StructureDefinitionValidator extends BaseValidator {
       
     }
   }
-
   
+  
+  private boolean addCharacteristics(Set<String> set, String tc) {
+    switch (tc) {
+    case "boolean" : return addCharacteristicsForType(set);
+    case "integer" : return addCharacteristicsForType(set, "has-range", "has-length");
+    case "integer64" : return addCharacteristicsForType(set, "has-range", "has-length");
+    case "decimal" :return  addCharacteristicsForType(set, "has-range", "is-continuous", "has-length");
+    case "base64Binary" : return addCharacteristicsForType(set, "has-size");
+    case "instant" : return addCharacteristicsForType(set, "has-range", "is-continuous", "has-length");
+    case "string" : return addCharacteristicsForType(set, "has-length", "do-translations");
+    case "uri" : return addCharacteristicsForType(set, "has-length", "can-bind");
+    case "date" :return  addCharacteristicsForType(set, "has-range", "has-length");
+    case "dateTime" : return addCharacteristicsForType(set, "has-range", "is-continuous", "has-length");
+    case "time" :return  addCharacteristicsForType(set, "has-range", "is-continuous", "has-length");
+    case "canonical" :return  addCharacteristicsForType(set, "has-target", "has-length");
+    case "code" :return  addCharacteristicsForType(set, "has-length", "can-bind");
+    case "id" :return  addCharacteristicsForType(set, "has-length");
+    case "markdown" :return  addCharacteristicsForType(set, "do-translations");
+    case "oid" :return  addCharacteristicsForType(set, "has-length", "can-bind");
+    case "positiveInt" :return  addCharacteristicsForType(set, "has-range", "has-length");
+    case "unsignedInt" :return  addCharacteristicsForType(set, "has-range", "has-length");
+    case "url" :return  addCharacteristicsForType(set, "has-length", "can-bind");
+    case "uuid" :return  addCharacteristicsForType(set, "has-length", "can-bind");
+    case "Address" :return  addCharacteristicsForType(set, "do-translations");
+    case "Age" : return addCharacteristicsForType(set, "has-range", "is-continuous");
+    case "Annotation" :return  addCharacteristicsForType(set);
+    case "Attachment" :return  addCharacteristicsForType(set, "has-size", "do-translations");
+    case "CodeableConcept" :return  addCharacteristicsForType(set, "can-bind", "do-translations");
+    case "CodeableReference" : return addCharacteristicsForType(set, "has-target", "can-bind", "do-translations");
+    case "Coding" : return addCharacteristicsForType(set, "can-bind", "do-translations");
+    case "ContactPoint" :return  addCharacteristicsForType(set);
+    case "Count" :return  addCharacteristicsForType(set, "has-range");
+    case "Distance" :return  addCharacteristicsForType(set, "has-range", "is-continuous");
+    case "Duration" : return addCharacteristicsForType(set, "has-range", "is-continuous");
+    case "HumanName" :return  addCharacteristicsForType(set);
+    case "Identifier" : return addCharacteristicsForType(set);
+    case "Money" : return addCharacteristicsForType(set, "has-range", "is-continuous");
+    case "Period" : return addCharacteristicsForType(set);
+    case "Quantity" :return  addCharacteristicsForType(set, "has-range", "is-continuous", "can-bind", "has-units");
+    case "Range" :return  addCharacteristicsForType(set, "has-units");
+    case "Ratio" :return  addCharacteristicsForType(set, "has-units");
+    case "RatioRange" : return addCharacteristicsForType(set, "has-units");
+    case "Reference" : return addCharacteristicsForType(set, "has-target");
+    case "SampledData" :return  addCharacteristicsForType(set);
+    case "Signature" : return addCharacteristicsForType(set);
+    case "Timing" : return addCharacteristicsForType(set);
+    case "ContactDetail" :return  addCharacteristicsForType(set);
+    case "Contributor" :return  addCharacteristicsForType(set);
+    case "DataRequirement" :return  addCharacteristicsForType(set);
+    case "Expression" : return addCharacteristicsForType(set);
+    case "ParameterDefinition" : return addCharacteristicsForType(set);
+    case "RelatedArtifact" :return  addCharacteristicsForType(set);
+    case "TriggerDefinition" :return  addCharacteristicsForType(set);
+    case "UsageContext" :return  addCharacteristicsForType(set);
+    case "Dosage" : return addCharacteristicsForType(set);
+    case "Meta" :return  addCharacteristicsForType(set);
+    case "Resource" :return  addCharacteristicsForType(set);
+    case "Extension" :return  addCharacteristicsForType(set);
+    case "Narrative" :return  addCharacteristicsForType(set);
+    case "Element" :return  addCharacteristicsForType(set);
+    case "BackboneElement" :return  addCharacteristicsForType(set);
+    default:
+      throw new Error("Unhandled data type in addCharacterstics: "+tc);
+    }
+  }
+
+
+  private boolean addCharacteristicsForType(Set<String> set, String... cl) {
+    for (String c : cl) {
+      set.add(c);
+    }
+    return true;
+  }
+
   private boolean isPrimitiveType(String fhirType) {
     StructureDefinition sd = context.fetchTypeDefinition(fhirType);
     return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;

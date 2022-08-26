@@ -95,9 +95,11 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     if (cs.hasProperty()) {
       boolean hasRendered = false;
       boolean hasURI = false;
+      boolean hasDescription = false;
       for (PropertyComponent p : cs.getProperty()) {
         hasRendered = hasRendered || !p.getCode().equals(ToolingExtensions.getPresentation(p, p.getCodeElement()));
         hasURI = hasURI || p.hasUri();
+        hasDescription = hasDescription || p.hasDescription();
       }
       
       x.para().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Properties", getContext().getLang()));
@@ -111,7 +113,9 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "URL", getContext().getLang()));
       }
       tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Type", getContext().getLang()));
-      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Description", getContext().getLang()));
+      if (hasDescription) {
+        tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Description", getContext().getLang()));
+      }
       for (PropertyComponent p : cs.getProperty()) {
         tr = tbl.tr();
         if (hasRendered) {
@@ -122,21 +126,25 @@ public class CodeSystemRenderer extends TerminologyRenderer {
           tr.td().tx(p.getUri());
         }
         tr.td().tx(p.hasType() ? p.getType().toCode() : "");
-        tr.td().tx(p.getDescription());
+        if (hasDescription) {
+          tr.td().tx(p.getDescription());
+        }
       }
     }
   }
 
   private boolean generateCodeSystemContent(XhtmlNode x, CodeSystem cs, boolean hasExtensions, List<UsedConceptMap> maps) throws FHIRFormatError, DefinitionException, IOException {
     XhtmlNode p = x.para();
+    p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system "));
+    p.code().tx(cs.getUrl());
     if (cs.getContent() == CodeSystemContentMode.COMPLETE)
-      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system %s defines the following codes", cs.getUrl())+":");
+      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), " defines the following codes")+":");
     else if (cs.getContent() == CodeSystemContentMode.EXAMPLE)
-      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system %s defines some example codes", cs.getUrl())+":");
+      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), " defines some example codes")+":");
     else if (cs.getContent() == CodeSystemContentMode.FRAGMENT )
-      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system %s defines many codes, of which the following are a subset", cs.getUrl())+":");
+      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), " defines many codes, of which the following are a subset")+":");
     else if (cs.getContent() == CodeSystemContentMode.NOTPRESENT ) {
-      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system %s defines many codes, but they are not represented here", cs.getUrl()));
+      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), " defines many codes, but they are not represented here"));
       return false;
     }
     XhtmlNode t = x.table( "codes");

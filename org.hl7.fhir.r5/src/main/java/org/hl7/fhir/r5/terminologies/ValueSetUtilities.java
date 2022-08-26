@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.terminologies;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /*
@@ -47,9 +49,11 @@ import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptDefinitionComponentSorter;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptStatus;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.StandardsStatus;
@@ -252,6 +256,20 @@ public class ValueSetUtilities {
       }
     }
     vsProp.add(new ValueSetExpansionPropertyComponent().setCode("status").setUri("http://hl7.org/fhir/concept-properties#status"));
+  }
+
+
+  public static class ConceptReferenceComponentSorter implements Comparator<ConceptReferenceComponent> {
+
+    @Override
+    public int compare(ConceptReferenceComponent o1, ConceptReferenceComponent o2) {
+      return o1.getCode().compareToIgnoreCase(o2.getCode());
+    }
+  }
+
+
+  public static void sortInclude(ConceptSetComponent inc) {
+    Collections.sort(inc.getConcept(), new ConceptReferenceComponentSorter());
   }
 
 

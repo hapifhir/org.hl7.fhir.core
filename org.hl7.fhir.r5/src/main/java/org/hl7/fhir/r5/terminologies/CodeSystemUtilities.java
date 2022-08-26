@@ -53,10 +53,13 @@ import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
+import org.hl7.fhir.r5.model.DecimalType;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptDefinitionComponentSorter;
 import org.hl7.fhir.r5.model.Identifier;
+import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Meta;
+import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.StandardsStatus;
@@ -68,7 +71,7 @@ public class CodeSystemUtilities {
 
     @Override
     public int compare(ConceptDefinitionComponent o1, ConceptDefinitionComponent o2) {
-      return o1.getCode().compareTo(o2.getCode());
+      return o1.getCode().compareToIgnoreCase(o2.getCode());
     }
 
   }
@@ -175,6 +178,58 @@ public class CodeSystemUtilities {
       p.setValue(new BooleanType(true));
     else
       concept.addProperty().setCode("notSelectable").setValue(new BooleanType(true));    
+  }
+
+  public static void setProperty(CodeSystem cs, ConceptDefinitionComponent concept, String code, DataType value) throws FHIRFormatError {
+    defineProperty(cs, code, propertyTypeForValue(value));
+    ConceptPropertyComponent p = getProperty(concept,  code);
+    if (p != null)
+      p.setValue(value);
+    else
+      concept.addProperty().setCode(code).setValue(value);    
+  }
+  
+
+  private static PropertyType propertyTypeForValue(DataType value) {
+    if (value instanceof BooleanType) {
+      return PropertyType.BOOLEAN;
+    }
+    if (value instanceof CodeType) {
+      return PropertyType.CODE;
+    }
+    if (value instanceof Coding) {
+      return PropertyType.CODING;
+    }
+    if (value instanceof DateTimeType) {
+      return PropertyType.DATETIME;
+    }
+    if (value instanceof DecimalType) {
+      return PropertyType.DECIMAL;
+    }
+    if (value instanceof IntegerType) {
+      return PropertyType.INTEGER;
+    }
+    if (value instanceof StringType) {
+      return PropertyType.STRING;
+    }
+    throw new Error("Unknown property type "+value.getClass().getName());
+  }
+
+  private static void defineProperty(CodeSystem cs, String code, PropertyType pt) {
+    String url = "http://hl7.org/fhir/concept-properties#"+code;
+    for (PropertyComponent p : cs.getProperty()) {
+      if (p.getCode().equals(code)) {
+        if (!p.getUri().equals(url)) {
+          throw new Error("URI mismatch for code "+code+" url = "+p.getUri()+" vs "+url);
+        }
+        if (!p.getType().equals(pt)) {
+          throw new Error("Type mismatch for code "+code+" type = "+p.getType()+" vs "+pt);
+        }
+        return;
+      }
+    }
+    cs.addProperty().setCode(code).setUri(url).setType(pt).setUri(url);
+  
   }
 
   public static void defineNotSelectableProperty(CodeSystem cs) {

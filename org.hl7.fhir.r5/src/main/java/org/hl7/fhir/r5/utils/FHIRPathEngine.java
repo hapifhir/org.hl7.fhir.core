@@ -583,7 +583,7 @@ public class FHIRPathEngine {
       fmt = fmt + " "+worker.formatMessage(I18nConstants.FHIRPATH_LOCATION, location);
     }
     if (holder != null) {      
-      return new PathEngineException(fmt, holder.getStart(), holder.toString());
+       return new PathEngineException(fmt, holder.getStart(), holder.toString());
     } else {
       return new PathEngineException(fmt);
     }
@@ -5503,10 +5503,11 @@ public class FHIRPathEngine {
             if (dt == null) {
               throw makeException(expr, I18nConstants.FHIRPATH_NO_TYPE, ProfileUtilities.sdNs(t.getCode(), worker.getOverrideVersionNs()), "getChildTypesByName");
             }
-            sdl.add(dt);
+            addTypeAndDescendents(sdl, dt, worker.allStructures());
+            // also add any descendant types
           }
       } else {
-        sdl.add(sd);
+        addTypeAndDescendents(sdl, sd, worker.allStructures());
         if (type.contains("#")) {
           tail = type.substring(type.indexOf("#")+1);
           tail = tail.substring(tail.indexOf("."));
@@ -5594,6 +5595,15 @@ public class FHIRPathEngine {
         }
       }
     }
+  }
+
+  private void addTypeAndDescendents(List<StructureDefinition> sdl, StructureDefinition dt, List<StructureDefinition> types) {
+    sdl.add(dt);
+    for (StructureDefinition sd : types) {
+      if (sd.hasBaseDefinition() && sd.getBaseDefinition().equals(dt.getUrl()) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+        addTypeAndDescendents(sdl, sd, types);
+      }
+    }  
   }
 
   private void getClassInfoChildTypesByName(String name, TypeDetails result) {
