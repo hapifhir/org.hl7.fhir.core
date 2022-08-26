@@ -950,7 +950,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             done = true;
           }           
         } 
-        hint(errors, IssueType.UNKNOWN, element.line(), element.col(), path, done, I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system);
+        if (!isAllowExamples() || !Utilities.startsWithInList(system, "http://example.org", "https://example.org")) {
+          hint(errors, IssueType.UNKNOWN, element.line(), element.col(), path, done, I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system);
+        }
         return true;
       } catch (Exception e) {
         return true;
@@ -3205,6 +3207,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (pol == ReferenceValidationPolicy.CHECK_VALID) {
       // todo....
     }
+    
+    // todo: if the content is a resource, check that Reference.type is describing a resource
   }
 
   private boolean isSuspiciousReference(String url) {
