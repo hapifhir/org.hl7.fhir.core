@@ -199,7 +199,7 @@ public class FHIRPathEngine {
      * @param beforeContext - whether this is being called before the name is resolved locally, or not
      * @return the value of the reference (or null, if it's not valid, though can throw an exception if desired)
      */
-    public Base resolveConstant(Object appContext, String name, boolean beforeContext)  throws PathEngineException;
+    public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext)  throws PathEngineException;
     public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException;
     
     /**
@@ -1162,9 +1162,9 @@ public class FHIRPathEngine {
       work.addAll(work2);
       break;
     case Constant:
-      Base b = resolveConstant(context, exp.getConstant(), false, exp);
+      List<Base> b = resolveConstant(context, exp.getConstant(), false, exp);
       if (b != null)
-        work.add(b);
+        work.addAll(b);
       break;
     case Group:
       work2 = execute(context, focus, exp.getGroup(), atEntry);
@@ -1292,14 +1292,14 @@ public class FHIRPathEngine {
     return result;
   }
 
-  private Base resolveConstant(ExecutionContext context, Base constant, boolean beforeContext, ExpressionNode expr) throws PathEngineException {
+  private List<Base> resolveConstant(ExecutionContext context, Base constant, boolean beforeContext, ExpressionNode expr) throws PathEngineException {
     if (!(constant instanceof FHIRConstant))
-      return constant;
+      return new ArrayList<>(Arrays.asList(constant));
     FHIRConstant c = (FHIRConstant) constant;
     if (c.getValue().startsWith("%")) {
       return resolveConstant(context, c.getValue(), beforeContext, expr);
     } else if (c.getValue().startsWith("@")) {
-      return processDateConstant(context.appInfo, c.getValue().substring(1));
+      return new ArrayList<>(Arrays.asList(processDateConstant(context.appInfo, c.getValue().substring(1))));
     } else 
       throw new PathEngineException("Invaild FHIR Constant "+c.getValue(), expr.getStart(), expr.toString());
   }
@@ -1323,31 +1323,31 @@ public class FHIRPathEngine {
   }
 
 
-  private Base resolveConstant(ExecutionContext context, String s, boolean beforeContext, ExpressionNode expr) throws PathEngineException {
+  private List<Base> resolveConstant(ExecutionContext context, String s, boolean beforeContext, ExpressionNode expr) throws PathEngineException {
     if (s.equals("%sct"))
-      return new StringType("http://snomed.info/sct").noExtensions();
+      return new ArrayList<>(Arrays.asList(new StringType("http://snomed.info/sct").noExtensions()));
     else if (s.equals("%loinc"))
-      return new StringType("http://loinc.org").noExtensions();
+      return new ArrayList<>(Arrays.asList(new StringType("http://loinc.org").noExtensions()));
     else if (s.equals("%ucum"))
-      return new StringType("http://unitsofmeasure.org").noExtensions();
+      return new ArrayList<>(Arrays.asList(new StringType("http://unitsofmeasure.org").noExtensions()));
     else if (s.equals("%resource")) {
       if (context.focusResource == null)
         throw new PathEngineException("Cannot use %resource in this context", expr.getStart(), expr.toString());
-      return context.focusResource;
+      return new ArrayList<>(Arrays.asList(context.focusResource));
     } else if (s.equals("%rootResource")) {
       if (context.rootResource == null)
         throw new PathEngineException("Cannot use %rootResource in this context", expr.getStart(), expr.toString());
-      return context.rootResource;
+      return new ArrayList<>(Arrays.asList(context.rootResource));
     } else if (s.equals("%context")) {
-      return context.context;
+      return new ArrayList<>(Arrays.asList(context.context));
     } else if (s.equals("%us-zip"))
-      return new StringType("[0-9]{5}(-[0-9]{4}){0,1}").noExtensions();
+      return new ArrayList<>(Arrays.asList(new StringType("[0-9]{5}(-[0-9]{4}){0,1}").noExtensions()));
     else if (s.startsWith("%`vs-"))
-      return new StringType("http://hl7.org/fhir/ValueSet/"+s.substring(5, s.length()-1)+"").noExtensions();
+      return new ArrayList<>(Arrays.asList(new StringType("http://hl7.org/fhir/ValueSet/"+s.substring(5, s.length()-1)+"").noExtensions()));
     else if (s.startsWith("%`cs-"))
-      return new StringType("http://hl7.org/fhir/"+s.substring(5, s.length()-1)+"").noExtensions();
+      return new ArrayList<>(Arrays.asList(new StringType("http://hl7.org/fhir/"+s.substring(5, s.length()-1)+"").noExtensions()));
     else if (s.startsWith("%`ext-"))
-      return new StringType("http://hl7.org/fhir/StructureDefinition/"+s.substring(6, s.length()-1)).noExtensions();
+      return new ArrayList<>(Arrays.asList(new StringType("http://hl7.org/fhir/StructureDefinition/"+s.substring(6, s.length()-1)).noExtensions()));
     else if (hostServices == null)
       throw new PathEngineException("Unknown fixed constant '"+s+"'", expr.getStart(), expr.toString());
     else
@@ -2401,9 +2401,9 @@ public class FHIRPathEngine {
     List<Base> result = new ArrayList<Base>(); 
     if (atEntry && context.appInfo != null && hostServices != null) {
       // we'll see if the name matches a constant known by the context.
-      Base temp = hostServices.resolveConstant(context.appInfo, exp.getName(), true);
+      List<Base> temp = hostServices.resolveConstant(context.appInfo, exp.getName(), true);
       if (temp != null) {
-        result.add(temp);
+        result.addAll(temp);
         return result;
       }
     }
@@ -2415,9 +2415,9 @@ public class FHIRPathEngine {
     if (atEntry && context.appInfo != null && hostServices != null && result.isEmpty()) {
       // well, we didn't get a match on the name - we'll see if the name matches a constant known by the context.
       // (if the name does match, and the user wants to get the constant value, they'll have to try harder...
-      Base temp = hostServices.resolveConstant(context.appInfo, exp.getName(), false);
+      List<Base> temp = hostServices.resolveConstant(context.appInfo, exp.getName(), false);
       if (temp != null) {
-        result.add(temp);
+        result.addAll(temp);
       }
     }
     return result;
