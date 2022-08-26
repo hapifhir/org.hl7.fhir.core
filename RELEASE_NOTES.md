@@ -8,3 +8,4 @@
 * Fix type analysis in FHIRPath for abstract types
 * Terminology utilitty improvements for fhir-types code system
 * Lighten invariant background colour
+* Fixes to DateTimeType for setFieldValue() method
