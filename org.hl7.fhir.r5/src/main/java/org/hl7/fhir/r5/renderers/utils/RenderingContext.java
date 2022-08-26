@@ -122,6 +122,7 @@ public class RenderingContext {
 
   private QuestionnaireRendererMode questionnaireMode = QuestionnaireRendererMode.FORM;
   private boolean addGeneratedNarrativeHeader = true;
+  private boolean showComments = false;
 
   private FhirPublication targetVersion;
   private Locale locale;
@@ -188,6 +189,7 @@ public class RenderingContext {
     res.dateYearMonthFormat = dateYearMonthFormat;
     res.targetVersion = targetVersion;
     res.locale = locale;
+    res.showComments = showComments;
 
     res.terminologyServiceOptions = terminologyServiceOptions.copy();
     return res;
@@ -453,8 +455,9 @@ public class RenderingContext {
     return targetVersion;
   }
 
-  public void setTargetVersion(FhirPublication targetVersion) {
+  public RenderingContext setTargetVersion(FhirPublication targetVersion) {
     this.targetVersion = targetVersion;
+    return this;
   }
 
   public boolean isTechnicalMode() {
@@ -473,8 +476,9 @@ public class RenderingContext {
     }
   }
 
-  public void setLocale(Locale locale) {
+  public RenderingContext setLocale(Locale locale) {
     this.locale = locale;
+    return this;
   }
 
 
@@ -494,8 +498,9 @@ public class RenderingContext {
     return timeZoneId;
   }
 
-  public void setTimeZoneId(ZoneId timeZoneId) {
+  public RenderingContext setTimeZoneId(ZoneId timeZoneId) {
     this.timeZoneId = timeZoneId;
+    return this;
   }
 
 
@@ -509,12 +514,14 @@ public class RenderingContext {
     return this.dateTimeFormat;
   }
 
-  public void setDateTimeFormat(DateTimeFormatter dateTimeFormat) {
+  public RenderingContext setDateTimeFormat(DateTimeFormatter dateTimeFormat) {
     this.dateTimeFormat = dateTimeFormat;
+    return this;
   }
 
-  public void setDateTimeFormatString(String dateTimeFormat) {
+  public RenderingContext setDateTimeFormatString(String dateTimeFormat) {
     this.dateTimeFormat = DateTimeFormatter.ofPattern(dateTimeFormat);
+    return this;
   }
 
   /**
@@ -527,52 +534,67 @@ public class RenderingContext {
     return this.dateFormat;
   }
 
-  public void setDateFormat(DateTimeFormatter dateFormat) {
+  public RenderingContext setDateFormat(DateTimeFormatter dateFormat) {
     this.dateFormat = dateFormat;
+    return this;
   }
 
-  public void setDateFormatString(String dateFormat) {
+  public RenderingContext setDateFormatString(String dateFormat) {
     this.dateFormat = DateTimeFormatter.ofPattern(dateFormat);
+    return this;
   }
 
   public DateTimeFormatter getDateYearFormat() {
     return dateYearFormat;
   }
 
-  public void setDateYearFormat(DateTimeFormatter dateYearFormat) {
+  public RenderingContext setDateYearFormat(DateTimeFormatter dateYearFormat) {
     this.dateYearFormat = dateYearFormat;
+    return this;
   }
 
-  public void setDateYearFormatString(String dateYearFormat) {
+  public RenderingContext setDateYearFormatString(String dateYearFormat) {
     this.dateYearFormat = DateTimeFormatter.ofPattern(dateYearFormat);
+    return this;
   }
 
   public DateTimeFormatter getDateYearMonthFormat() {
     return dateYearMonthFormat;
   }
 
-  public void setDateYearMonthFormat(DateTimeFormatter dateYearMonthFormat) {
+  public RenderingContext setDateYearMonthFormat(DateTimeFormatter dateYearMonthFormat) {
     this.dateYearMonthFormat = dateYearMonthFormat;
+    return this;
   }
 
-  public void setDateYearMonthFormatString(String dateYearMonthFormat) {
+  public RenderingContext setDateYearMonthFormatString(String dateYearMonthFormat) {
     this.dateYearMonthFormat = DateTimeFormatter.ofPattern(dateYearMonthFormat);
+    return this;
   }
 
   public ResourceRendererMode getMode() {
     return mode;
   }
 
-  public void setMode(ResourceRendererMode mode) {
+  public RenderingContext setMode(ResourceRendererMode mode) {
     this.mode = mode;
+    return this;
   }
 
   public boolean isContained() {
     return contained;
   }
 
-  public void setContained(boolean contained) {
+  public RenderingContext setContained(boolean contained) {
     this.contained = contained;
+    return this;
+  }
+  public boolean isShowComments() {
+    return showComments;
+  }
+  public RenderingContext setShowComments(boolean showComments) {
+    this.showComments = showComments;
+    return this;
   }
   
   
