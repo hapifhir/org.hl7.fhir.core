@@ -442,7 +442,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
 
   private XhtmlNode renderCommentsSpan(XhtmlNode x, Base e) {
     if (e.hasFormatComment()) {      
-      return x.span(null, CommaSeparatedStringBuilder.join("&#10;", e.getFormatCommentsPost()));
+      return x.span(null, CommaSeparatedStringBuilder.join("&#10;", e.getFormatCommentsPre()));
     } else {
       return x;
     }
