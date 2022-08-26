@@ -135,14 +135,16 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
   private boolean generateCodeSystemContent(XhtmlNode x, CodeSystem cs, boolean hasExtensions, List<UsedConceptMap> maps) throws FHIRFormatError, DefinitionException, IOException {
     XhtmlNode p = x.para();
+    p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system "));
+    p.code().tx(cs.getUrl());
     if (cs.getContent() == CodeSystemContentMode.COMPLETE)
-      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system <code>%s</code> defines the following codes", cs.getUrl())+":");
+      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), " defines the following codes")+":");
     else if (cs.getContent() == CodeSystemContentMode.EXAMPLE)
-      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system <code>%s</code> defines some example codes", cs.getUrl())+":");
+      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), " defines some example codes")+":");
     else if (cs.getContent() == CodeSystemContentMode.FRAGMENT )
-      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system <code>%s</code> defines many codes, of which the following are a subset", cs.getUrl())+":");
+      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), " defines many codes, of which the following are a subset")+":");
     else if (cs.getContent() == CodeSystemContentMode.NOTPRESENT ) {
-      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), "This code system <code>%s</code> defines many codes, but they are not represented here", cs.getUrl()));
+      p.tx(getContext().getWorker().translator().translateAndFormat("xhtml-gen-cs", getContext().getLang(), " defines many codes, but they are not represented here"));
       return false;
     }
     XhtmlNode t = x.table( "codes");
