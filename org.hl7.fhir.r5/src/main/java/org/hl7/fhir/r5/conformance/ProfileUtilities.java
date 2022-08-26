@@ -313,7 +313,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
   }
   
-  public static final String CONSTRAINT_STYLE = "padding-left: 3px; padding-right: 3px; border: 1px maroon solid; font-weight: bold; color: #301212; background-color: #fdeeee;";
+  public static final String CONSTRAINT_STYLE = "padding-left: 3px; padding-right: 3px; border: 1px maroon solid; font-weight: bold; color: #301212; background-color: #fdf4f4;";
   private static final String ROW_COLOR_ERROR = "#ffcccc";
   private static final String ROW_COLOR_FATAL = "#ff9999";
   private static final String ROW_COLOR_WARNING = "#ffebcc";
