@@ -77,6 +77,7 @@ import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -306,6 +307,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       return;
 
     Base e = ew.getBase();
+    if (context.isShowComments()) {
+      x = renderCommentsSpan(x, e);
+    }
 
     if (e instanceof StringType)
       x.addText(((StringType) e).getValue());
@@ -433,6 +437,14 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       x.tx("todo-bundle");
     } else if (e != null && !(e instanceof Attachment) && !(e instanceof Narrative) && !(e instanceof Meta)) {
       throw new NotImplementedException("type "+e.getClass().getName()+" not handled - should not be here");
+    }
+  }
+
+  private XhtmlNode renderCommentsSpan(XhtmlNode x, Base e) {
+    if (e.hasFormatComment()) {      
+      return x.span(null, CommaSeparatedStringBuilder.join("&#10;", e.getFormatCommentsPost()));
+    } else {
+      return x;
     }
   }
 
