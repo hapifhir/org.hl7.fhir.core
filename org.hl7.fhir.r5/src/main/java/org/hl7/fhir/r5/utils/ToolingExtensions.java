@@ -207,6 +207,9 @@ public class ToolingExtensions {
   public static final String EXT_EXPAND_RULES = "http://hl7.org/fhir/StructureDefinition/valueset-expand-rules";
   public static final String EXT_EXPAND_GROUP = "http://hl7.org/fhir/StructureDefinition/valueset-expand-group";
   public static final String EXT_BINDING_ADDITIONAL = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding";
+  public static final String EXT_MIN_LENGTH = "http://hl7.org/fhir/StructureDefinition/minLength";
+  public static final String EXT_MAX_DECIMALS = "http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces";
+  public static final String EXT_MAX_SIZE = "http://hl7.org/fhir/StructureDefinition/maxSize";
   
   // specific extension helpers
 

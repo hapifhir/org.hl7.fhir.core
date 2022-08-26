@@ -443,7 +443,7 @@ public class QuestionnaireBuilder {
 	        if (u.getValue().startsWith("http://hl7.org/fhir/StructureDefinition/")) { 
 	          ValueSetExpansionContainsComponent cc = vs.getExpansion().addContains();
     	      cc.setCode(u.getValue().substring(40));
-            cc.setSystem("http://hl7.org/fhir/resource-types");
+            cc.setSystem("http://hl7.org/fhir/fhir-types");
     	      cc.setDisplay(cc.getCode());
 	        }
         }
@@ -451,7 +451,7 @@ public class QuestionnaireBuilder {
         ValueSetExpansionContainsComponent cc = vs.getExpansion().addContains();
         cc.setCode(t.getWorkingCode());
         cc.setDisplay(t.getWorkingCode());
-        cc.setSystem("http://hl7.org/fhir/data-types");
+        cc.setSystem("http://hl7.org/fhir/fhir-types");
       } else for (UriType u : t.getProfile()) {
         ProfileUtilities pu = new ProfileUtilities(context, null, null);
         StructureDefinition ps = pu.getProfile(profile, u.getValue());
@@ -459,7 +459,7 @@ public class QuestionnaireBuilder {
           ValueSetExpansionContainsComponent cc = vs.getExpansion().addContains();
 	        cc.setCode(u.getValue());
           cc.setDisplay(ps.getType());
-          cc.setSystem("http://hl7.org/fhir/resource-types");
+          cc.setSystem("http://hl7.org/fhir/fhir-types");
         }
       }
     }
@@ -489,7 +489,7 @@ public class QuestionnaireBuilder {
             Coding cc = new Coding();
             a.setValue(cc);
             cc.setCode(u.getValue().substring(40));
-            cc.setSystem("http://hl7.org/fhir/resource-types");
+            cc.setSystem("http://hl7.org/fhir/fhir-types");
           }
         }
       } else {
@@ -502,10 +502,10 @@ public class QuestionnaireBuilder {
 
         if (ps != null) {
           cc.setCode(t.getProfile().get(0).getValue());
-          cc.setSystem("http://hl7.org/fhir/resource-types");
+          cc.setSystem("http://hl7.org/fhir/fhir-types");
         } else {
           cc.setCode(t.getWorkingCode());
-          cc.setSystem("http://hl7.org/fhir/data-types");
+          cc.setSystem("http://hl7.org/fhir/fhir-types");
         }
       }
 

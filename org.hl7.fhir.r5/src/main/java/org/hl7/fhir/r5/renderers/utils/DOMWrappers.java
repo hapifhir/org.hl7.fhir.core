@@ -27,6 +27,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.utilities.xml.XmlGenerator;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 public class DOMWrappers {
 
@@ -58,7 +59,15 @@ public class DOMWrappers {
       } catch (org.hl7.fhir.exceptions.FHIRException e) {
         throw new FHIRException(e.getMessage(), e);
       }
-      return context.getParser().parseType(xml, type);
+      Node n = element.getPreviousSibling();
+      Base ret = context.getParser().parseType(xml, type);
+      while (n != null && (n.getNodeType() == Node.COMMENT_NODE || n.getNodeType() == Node.TEXT_NODE)) {
+        if (n.getNodeType() == Node.COMMENT_NODE) {
+          ret.getFormatCommentsPre().add(0, n.getTextContent());
+        }
+        n = n.getPreviousSibling();
+      }
+      return ret;
     }
 
     @Override
