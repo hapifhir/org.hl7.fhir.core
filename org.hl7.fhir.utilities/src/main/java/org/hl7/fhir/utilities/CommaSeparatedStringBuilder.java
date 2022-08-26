@@ -108,4 +108,12 @@ public class CommaSeparatedStringBuilder {
     }
     
   }
+
+  public static String join(String sep, List<String> list) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(sep);
+    for (String s : list) {
+      b.append(s);
+    }
+    return b.toString();
+  }
 }
