@@ -15,6 +15,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
@@ -38,6 +39,7 @@ public class RenderingContext {
   // parses xml to an XML instance. Whatever codes provides this needs to provide something that parses the right version 
   public interface ITypeParser {
     Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException ;
+    Base parseType(Element base) throws FHIRFormatError, IOException, FHIRException ;
   }
 
   /**
@@ -131,6 +133,7 @@ public class RenderingContext {
   private DateTimeFormatter dateFormat;
   private DateTimeFormatter dateYearFormat;
   private DateTimeFormatter dateYearMonthFormat;
+  private boolean copyButton;
   
   /**
    * 
@@ -190,6 +193,7 @@ public class RenderingContext {
     res.targetVersion = targetVersion;
     res.locale = locale;
     res.showComments = showComments;
+    res.copyButton = copyButton;
 
     res.terminologyServiceOptions = terminologyServiceOptions.copy();
     return res;
@@ -594,6 +598,13 @@ public class RenderingContext {
   }
   public RenderingContext setShowComments(boolean showComments) {
     this.showComments = showComments;
+    return this;
+  }
+  public boolean isCopyButton() {
+    return copyButton;
+  }
+  public RenderingContext setCopyButton(boolean copyButton) {
+    this.copyButton = copyButton;
     return this;
   }
   
