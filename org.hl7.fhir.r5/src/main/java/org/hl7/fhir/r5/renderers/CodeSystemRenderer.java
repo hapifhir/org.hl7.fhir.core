@@ -183,7 +183,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     hierarchy = hierarchy || csNav.isRestructure();
     
     List<String> langs = new ArrayList<>();
-    addMapHeaders(addTableHeaderRowStandard(t, hierarchy, display, definitions, commentS, version, deprecated, properties, null, null, false), maps);
+    addCopyColumn(addMapHeaders(addTableHeaderRowStandard(t, hierarchy, display, definitions, commentS, version, deprecated, properties, null, null, false), maps));
     for (ConceptDefinitionComponent c : csNav.getConcepts(null)) {
       hasExtensions = addDefineRowToTable(t, c, 0, hierarchy, display, definitions, commentS, version, deprecated, maps, cs.getUrl(), cs, properties, csNav, langs, isSupplement) || hasExtensions;
     }
@@ -200,6 +200,13 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       }
     }
     return hasExtensions;
+  }
+
+  private void addCopyColumn(XhtmlNode tr) {
+    if (context.isCopyButton()) {
+      tr.td().b().tx("Copy");
+    }
+    
   }
 
   private boolean conceptsHaveDefinition(ConceptDefinitionComponent c) {
@@ -491,6 +498,12 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         w = w + properties.size();
       }
       td = tr.td().colspan(Integer.toString(w));
+    }
+    if (context.isCopyButton()) {
+      td = tr.td();
+      clipboard(td, "icon_clipboard_x.png", "XML", "<system value=\""+Utilities.escapeXml(cs.getUrl())+"\">\n"+(cs.getVersionNeeded() ? "<version value=\""+Utilities.escapeXml(cs.getVersion())+"\">\n" : "")+"<code value=\""+Utilities.escapeXml(c.getCode())+"\">\n<display value=\""+Utilities.escapeXml(c.getDisplay())+"\">\n");
+      td.nbsp();
+      clipboard(td, "icon_clipboard_j.png", "JSON", "\"system\" : \""+Utilities.escapeXml(cs.getUrl())+"\",\n"+(cs.getVersionNeeded() ? "\"version\" : \""+Utilities.escapeXml(cs.getVersion())+"\",\n" : "")+"\"code\" : \""+Utilities.escapeXml(c.getCode())+"\",\n\"display\" : \""+Utilities.escapeXml(c.getDisplay())+"\"\n");
     }
     return hasExtensions;
   }
