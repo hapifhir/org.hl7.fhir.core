@@ -1015,4 +1015,8 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     return context.getWorker().getResourceNames().contains(resource.fhirType());
   }
 
+  public RendererType getRendererType() {
+    return RendererType.PROFILE;
+  }
+
 }

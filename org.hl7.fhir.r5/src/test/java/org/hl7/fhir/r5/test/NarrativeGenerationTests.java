@@ -111,6 +111,10 @@ public class NarrativeGenerationTests {
     public Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException {
       return new org.hl7.fhir.r5.formats.XmlParser().parseType(xml, type); 
     }
+    @Override
+    public Base parseType(org.hl7.fhir.r5.elementmodel.Element e) throws FHIRFormatError, IOException, FHIRException {
+      throw new NotImplementedException(); 
+    }
   }
 
   public static final String WINDOWS = "WINDOWS";
