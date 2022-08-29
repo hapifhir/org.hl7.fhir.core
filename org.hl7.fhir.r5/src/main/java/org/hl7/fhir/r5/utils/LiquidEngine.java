@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.utils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,21 +38,30 @@ import java.util.Map;
  */
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.Tuple;
 import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
+import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.ExpressionNodeWithOffset;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r5.utils.LiquidEngine.ILiquidRenderingSupport;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class LiquidEngine implements IEvaluationContext {
+
+  public interface ILiquidRenderingSupport {
+    String renderForLiquid(Base i) throws FHIRException;
+  }
 
   public interface ILiquidEngineIncludeResolver {
     public String fetchInclude(LiquidEngine engine, String name);
@@ -60,6 +70,7 @@ public class LiquidEngine implements IEvaluationContext {
   private IEvaluationContext externalHostServices;
   private FHIRPathEngine engine;
   private ILiquidEngineIncludeResolver includeResolver;
+  private ILiquidRenderingSupport renderingSupport;
 
   private class LiquidEngineContext {
     private Object externalContext;
@@ -92,6 +103,14 @@ public class LiquidEngine implements IEvaluationContext {
     this.includeResolver = includeResolver;
   }
 
+  public ILiquidRenderingSupport getRenderingSupport() {
+    return renderingSupport;
+  }
+
+  public void setRenderingSupport(ILiquidRenderingSupport renderingSupport) {
+    this.renderingSupport = renderingSupport;
+  }
+
   public LiquidDocument parse(String source, String sourceName) throws FHIRException {
     return new LiquidParser(source).parse(sourceName);
   }
@@ -104,6 +123,7 @@ public class LiquidEngine implements IEvaluationContext {
     }
     return b.toString();
   }
+  
 
   private abstract class LiquidNode {
     protected void closeUp() {
@@ -130,6 +150,7 @@ public class LiquidEngine implements IEvaluationContext {
     public void evaluate(StringBuilder b, Base resource, LiquidEngineContext ctxt) {
       b.append(constant);
     }
+
   }
 
   private class LiquidStatement extends LiquidNode {
@@ -140,7 +161,13 @@ public class LiquidEngine implements IEvaluationContext {
     public void evaluate(StringBuilder b, Base resource, LiquidEngineContext ctxt) throws FHIRException {
       if (compiled == null)
         compiled = engine.parse(statement);
-      b.append(engine.evaluateToString(ctxt, resource, resource, resource, compiled));
+      List<Base> items = engine.evaluate(ctxt, resource, resource, resource, compiled);
+      boolean first = true;
+      for (Base i : items) {
+        if (first) first = false; else b.append(", ");
+        String s = renderingSupport != null ? renderingSupport.renderForLiquid(i) : null;
+        b.append(s != null ? s : engine.convertToString(i));
+      }
     }
   }
 
