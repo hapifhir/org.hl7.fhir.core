@@ -26,6 +26,7 @@ import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.DirectWrappers.ResourceWrapperDirect;
 import org.hl7.fhir.r5.renderers.utils.ElementWrappers.ResourceWrapperMetaElement;
+import org.hl7.fhir.r5.renderers.ResourceRenderer.RendererType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
@@ -38,6 +39,11 @@ import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public abstract class ResourceRenderer extends DataRenderer {
+
+  public enum RendererType {
+    NATIVE, PROFILE, LIQUID
+
+  }
 
   protected ResourceContext rcontext;
   protected XVerExtensionManager xverManager;
@@ -506,5 +512,9 @@ public abstract class ResourceRenderer extends DataRenderer {
       inject(dr, x, NarrativeStatus.GENERATED);   
     }
     
+  }
+  
+  public RendererType getRendererType() {
+    return RendererType.NATIVE;
   }
 }

@@ -5,6 +5,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.utilities.Utilities;
 
 public class RendererFactory {
 
@@ -131,5 +132,11 @@ public class RendererFactory {
     return factory(rw, lrc, null);
   }
 
-
+  public static boolean hasSpecificRenderer(String rt) {
+    
+    return Utilities.existsInList(rt, 
+        "CodeSystem", "ValueSet", "ConceptMap", 
+        "CapabilityStatement", "CompartmentDefinition", "ImplementationGuide", "Library", "NamingSystem", "OperationDefinition", "Questionnaire", "SearchParameter", "StructureDefinition");
+  }
+  
 }

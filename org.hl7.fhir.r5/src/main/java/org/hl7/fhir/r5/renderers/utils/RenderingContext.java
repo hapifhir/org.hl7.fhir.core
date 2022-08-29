@@ -15,6 +15,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
@@ -38,6 +39,7 @@ public class RenderingContext {
   // parses xml to an XML instance. Whatever codes provides this needs to provide something that parses the right version 
   public interface ITypeParser {
     Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException ;
+    Base parseType(Element base) throws FHIRFormatError, IOException, FHIRException ;
   }
 
   /**
