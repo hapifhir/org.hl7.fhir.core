@@ -131,6 +131,7 @@ public class RenderingContext {
   private DateTimeFormatter dateFormat;
   private DateTimeFormatter dateYearFormat;
   private DateTimeFormatter dateYearMonthFormat;
+  private boolean copyButton;
   
   /**
    * 
@@ -190,6 +191,7 @@ public class RenderingContext {
     res.targetVersion = targetVersion;
     res.locale = locale;
     res.showComments = showComments;
+    res.copyButton = copyButton;
 
     res.terminologyServiceOptions = terminologyServiceOptions.copy();
     return res;
@@ -594,6 +596,13 @@ public class RenderingContext {
   }
   public RenderingContext setShowComments(boolean showComments) {
     this.showComments = showComments;
+    return this;
+  }
+  public boolean isCopyButton() {
+    return copyButton;
+  }
+  public RenderingContext setCopyButton(boolean copyButton) {
+    this.copyButton = copyButton;
     return this;
   }
   
