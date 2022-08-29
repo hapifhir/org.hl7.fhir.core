@@ -8,6 +8,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
@@ -18,6 +19,7 @@ import org.hl7.fhir.r5.utils.LiquidEngine;
 import org.hl7.fhir.r5.utils.LiquidEngine.ILiquidRenderingSupport;
 import org.hl7.fhir.r5.utils.LiquidEngine.LiquidDocument;
 import org.hl7.fhir.utilities.xhtml.NodeType;
+import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
@@ -94,6 +96,7 @@ public class LiquidRenderer extends ResourceRenderer implements ILiquidRendering
     XhtmlNode xn;
     try {
       LiquidDocument doc = engine.parse(liquidTemplate, "template");
+      engine.setRenderingSupport(this);
       String html = engine.evaluate(doc, r.getBase(), rcontext);
       xn = new XhtmlParser().parseFragment(html);
       if (!x.getName().equals("div"))
@@ -114,10 +117,16 @@ public class LiquidRenderer extends ResourceRenderer implements ILiquidRendering
   public String renderForLiquid(Base base) throws FHIRException {
     try {
       if (base instanceof Element) {
-        return displayBase(context.getParser().parseType((Element) base));
-      } else {
-        return displayBase(base);
+        base = context.getParser().parseType((Element) base);
       }
+      XhtmlNode x = new XhtmlNode(NodeType.Element);
+      if (base instanceof DataType) {
+        render(x, (DataType) base);
+      } else {
+        x.tx(base.toString());
+      }
+      String res = new XhtmlComposer(true).compose(x).substring(5);
+      return res.substring(0, res.length()-6);
     } catch (FHIRFormatError e) {
       throw new FHIRException(e);
     } catch (IOException e) {
