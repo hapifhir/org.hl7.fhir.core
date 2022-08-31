@@ -55,7 +55,7 @@ import  org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
  * Base StructureDefinition for ElementDefinition Type: Captures constraints on each element within the resource, profile, or extension.
  */
 @DatatypeDef(name="ElementDefinition")
-public class ElementDefinition extends DataType implements ICompositeType {
+public class ElementDefinition extends BackboneType implements ICompositeType {
 
     public enum AggregationMode {
         /**
@@ -11463,6 +11463,26 @@ When pattern[x] is used to constrain a complex object, it means that each proper
   public boolean isInlineType() {
     return getType().size() == 1 && Utilities.existsInList(getType().get(0).getCode(), "Element", "BackboneElement");
   }  
+
+  public boolean prohibited() { 
+    return "0".equals(getMax()); 
+  } 
+
+  public boolean hasFixedOrPattern() { 
+    return hasFixed() || hasPattern(); 
+  } 
+
+  public DataType getFixedOrPattern() { 
+    return hasFixed() ? getFixed() : getPattern(); 
+  } 
+
+  public boolean isProhibited() { 
+    return "0".equals(getMax()); 
+  }   
+
+  public boolean isRequired() { 
+    return getMin() == 1; 
+  }
 
 
 // end addition

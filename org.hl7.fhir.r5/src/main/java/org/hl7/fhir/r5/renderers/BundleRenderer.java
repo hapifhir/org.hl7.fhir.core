@@ -209,15 +209,14 @@ public class BundleRenderer extends ResourceRenderer {
     }
     x.hr();
     if (!comp.getText().hasDiv()) {
-      ResourceRenderer rr = RendererFactory.factory(comp, getContext());
-      rr.render(comp);
+      ResourceRenderer rr = RendererFactory.factory(comp, getContext());      rr.render(comp);
     }
     if (comp.getText().hasDiv()) {
       x.addChildren(comp.getText().getDiv());
       x.hr();    
     }
     for (SectionComponent section : comp.getSection()) {
-      addSection(x, section, 2, false);
+      addSection(x, section, 2, false, comp);
     }
     return false;
   }
@@ -236,7 +235,7 @@ public class BundleRenderer extends ResourceRenderer {
   }
 
 
-  private void addSection(XhtmlNode x, SectionComponent section, int level, boolean nested) throws UnsupportedEncodingException, FHIRException, IOException {
+  private void addSection(XhtmlNode x, SectionComponent section, int level, boolean nested, Composition c) throws UnsupportedEncodingException, FHIRException, IOException {
     if (section.hasTitle() || section.hasCode() || section.hasText() || section.hasSection()) {
       XhtmlNode div = x.div();
       if (section.hasTitle()) {
@@ -246,14 +245,20 @@ public class BundleRenderer extends ResourceRenderer {
       }
       if (section.hasText()) {
         x.addChildren(section.getText().getDiv());
-      }      
+      } 
+      if (section.hasEntry()) {
+        XhtmlNode ul = x.ul();
+        for (Reference r : section.getEntry()) {
+          renderReference(c, ul.li(), r);
+        }
+      }
       if (section.hasSection()) {
         List<SectionComponent> sections = section.getSection();
         for (SectionComponent child : sections) {
           if (nested) {
-            addSection(x.blockquote().para(), child, level+1, true);
+            addSection(x.blockquote().para(), child, level+1, true, c);
           } else {
-            addSection(x, child, level+1, true);            
+            addSection(x, child, level+1, true, c);            
           }
         }
       }      
@@ -263,58 +268,78 @@ public class BundleRenderer extends ResourceRenderer {
 
   
   public XhtmlNode render(Bundle b) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    if (b.getType() == BundleType.DOCUMENT) {
-      if (!b.hasEntry() || !(b.getEntryFirstRep().hasResource() && b.getEntryFirstRep().getResource() instanceof Composition)) {
-        throw new FHIRException("Invalid document - first entry is not a Composition");
-      }
-      XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-      renderDocument(x, b);
-      return x;
-    } else if ((b.getType() == BundleType.COLLECTION && allEntresAreHistoryProvenance(b))) {
+    if ((b.getType() == BundleType.COLLECTION && allEntresAreHistoryProvenance(b))) {
       return null;
     } else {
-      XhtmlNode root = new XhtmlNode(NodeType.Element, "div");
-      root.para().addText(formatMessage(RENDER_BUNDLE_HEADER_ROOT, b.getId(), b.getType().toCode()));
+      int start = 0;
+      boolean docMode = false;
+      XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+      if (b.getType() == BundleType.DOCUMENT) {
+        if (!b.hasEntry() || !(b.getEntryFirstRep().hasResource() && b.getEntryFirstRep().getResource() instanceof Composition)) {
+          throw new FHIRException("Invalid document - first entry is not a Composition");
+        }
+        renderDocument(x, b);
+        start = 1;
+        docMode = true;
+        x.hr();
+        x.h2().addText(formatMessage(RENDER_BUNDLE_DOCUMENT_CONTENT, b.getId(), b.getType().toCode()));
+      } else {
+        x.para().addText(formatMessage(RENDER_BUNDLE_HEADER_ROOT, b.getId(), b.getType().toCode()));
+      }
       int i = 0;
       for (BundleEntryComponent be : b.getEntry()) {
         i++;
-        if (be.hasFullUrl())
-          root.an(makeInternalBundleLink(be.getFullUrl()));
-        if (be.hasResource() && be.getResource().hasId())
-          root.an(be.getResource().getResourceType().name() + "_" + be.getResource().getId());
-        root.hr();
-        if (be.hasFullUrl()) {
-          root.para().addText(formatMessage(RENDER_BUNDLE_HEADER_ENTRY_URL, Integer.toString(i), be.getFullUrl()));
-        } else {
-          root.para().addText(formatMessage(RENDER_BUNDLE_HEADER_ENTRY, Integer.toString(i)));
-        }
-        if (be.hasRequest())
-          renderRequest(root, be.getRequest());
-        if (be.hasSearch())
-          renderSearch(root, be.getSearch());
-        if (be.hasResponse())
-          renderResponse(root, be.getResponse());
-        if (be.hasResource()) {
-          root.para().addText(formatMessage(RENDER_BUNDLE_RESOURCE, be.getResource().fhirType()));
+        if (i > start) {
+          if (be.hasFullUrl())
+            x.an(makeInternalBundleLink(be.getFullUrl()));
+          if (be.hasResource() && be.getResource().hasId())
+            x.an(be.getResource().getResourceType().name() + "_" + be.getResource().getId());
+          x.hr();
+          if (docMode) {
+            if (be.hasFullUrl() && be.hasResource()) {
+              x.para().addText(formatMessage(RENDER_BUNDLE_HEADER_DOC_ENTRY_URD, Integer.toString(i), be.getFullUrl(), be.getResource().fhirType(), be.getResource().getIdBase()));
+            } else if (be.hasFullUrl()) {
+              x.para().addText(formatMessage(RENDER_BUNDLE_HEADER_DOC_ENTRY_U, Integer.toString(i), be.getFullUrl()));
+            } else if (be.hasResource()) {
+              x.para().addText(formatMessage(RENDER_BUNDLE_HEADER_DOC_ENTRY_RD, Integer.toString(i), be.getResource().fhirType(), be.getResource().getIdBase()));              
+            }
+          } else {
+            if (be.hasFullUrl()) {
+              x.para().addText(formatMessage(RENDER_BUNDLE_HEADER_ENTRY_URL, Integer.toString(i), be.getFullUrl()));
+            } else {
+              x.para().addText(formatMessage(RENDER_BUNDLE_HEADER_ENTRY, Integer.toString(i)));
+            }
+            if (be.hasRequest())
+              renderRequest(x, be.getRequest());
+            if (be.hasSearch())
+              renderSearch(x, be.getSearch());
+            if (be.hasResponse())
+              renderResponse(x, be.getResponse());
+          }
           if (be.hasResource()) {
-            XhtmlNode xn = null;
-            if (be.getResource() instanceof DomainResource) {
-              DomainResource dr = (DomainResource) be.getResource();
-              xn = dr.getText().getDiv();
+            if (!docMode) {
+              x.para().addText(formatMessage(RENDER_BUNDLE_RESOURCE, be.getResource().fhirType()));
             }
-            if (xn == null || xn.isEmpty()) {
-              ResourceRenderer rr = RendererFactory.factory(be.getResource(), context);
-              try {
-                xn = rr.build(be.getResource());
-              } catch (Exception e) {
-                xn = makeExceptionXhtml(e, "generating narrative");
+            if (be.hasResource()) {
+              XhtmlNode xn = null;
+              if (be.getResource() instanceof DomainResource) {
+                DomainResource dr = (DomainResource) be.getResource();
+                xn = dr.getText().getDiv();
               }
+              if (xn == null || xn.isEmpty()) {
+                ResourceRenderer rr = RendererFactory.factory(be.getResource(), context);
+                try {
+                  xn = rr.build(be.getResource());
+                } catch (Exception e) {
+                  xn = makeExceptionXhtml(e, "generating narrative");
+                }
+              }
+              x.blockquote().para().getChildNodes().addAll(checkInternalLinks(b, xn.getChildNodes()));
             }
-            root.blockquote().para().getChildNodes().addAll(checkInternalLinks(b, xn.getChildNodes()));
           }
         }
       }
-      return root;
+      return x;
     }
   }
 

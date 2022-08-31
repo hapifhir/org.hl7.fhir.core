@@ -158,9 +158,8 @@ public abstract class ResourceRenderer extends DataRenderer {
         if (target.hasUserData("path")) {
           x.ah(target.getUserString("path")).tx(cr.present());
         } else {
-          url = url.substring(0, url.indexOf("|"));
           x.code().tx(url);
-          x.tx(": "+cr.present());          
+          x.tx(" ("+cr.present()+")");          
         }
       }
     }
@@ -398,12 +397,16 @@ public abstract class ResourceRenderer extends DataRenderer {
     return true;
   }
 
-  protected void renderResourceHeader(ResourceWrapper r, XhtmlNode x) throws UnsupportedEncodingException, FHIRException, IOException {
+  protected void renderResourceHeader(ResourceWrapper r, XhtmlNode x, boolean doId) throws UnsupportedEncodingException, FHIRException, IOException {
     XhtmlNode div = x.div().style("display: inline-block").style("background-color: #d9e0e7").style("padding: 6px")
          .style("margin: 4px").style("border: 1px solid #8da1b4")
          .style("border-radius: 5px").style("line-height: 60%");
 
     String id = getPrimitiveValue(r, "id"); 
+    if (doId) {
+      div.an(id);
+    }
+
     String lang = getPrimitiveValue(r, "language"); 
     String ir = getPrimitiveValue(r, "implicitRules"); 
     BaseWrapper meta = r.getChildByName("meta").hasValues() ? r.getChildByName("meta").getValues().get(0) : null;
@@ -414,6 +417,8 @@ public abstract class ResourceRenderer extends DataRenderer {
     if (id != null || lang != null || versionId != null || lastUpdated != null) {
       XhtmlNode p = plateStyle(div.para());
       p.tx("Resource ");
+      p.tx(r.fhirType());
+      p.tx(" ");
       if (id != null) {
         p.tx("\""+id+"\" ");
       }
@@ -488,5 +493,17 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   private String getPrimitiveValue(ResourceWrapper r, String name) throws UnsupportedEncodingException, FHIRException, IOException {
     return r.has(name) && r.getChildByName(name).hasValues() ? r.getChildByName(name).getValues().get(0).getBase().primitiveValue() : null;
+  }
+
+  public void renderOrError(DomainResource dr) {
+    try {
+      render(dr);
+    } catch (Exception e) {
+      XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+      x.para().tx("Error rendering: "+e.getMessage());
+      dr.setText(null);
+      inject(dr, x, NarrativeStatus.GENERATED);   
+    }
+    
   }
 }

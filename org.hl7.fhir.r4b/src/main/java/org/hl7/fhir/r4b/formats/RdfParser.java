@@ -245,6 +245,15 @@ public class RdfParser extends RdfParserBase {
     composeDataType(t, parentType, name, element, index);
   }
 
+
+  protected void composeBackboneType(Complex t, String parentType, String name, BackboneType element, int index) {
+    composeDataType(t, parentType, name, element, index);
+    for (int i = 0; i < element.getModifierExtension().size(); i++) {
+      composeExtension(t, "BackboneElement", "modifierExtension", element.getModifierExtension().get(i), i);
+    }
+  }
+
+  
   protected void composeAddress(Complex parent, String parentType, String name, Address element, int index) {
     if (element == null) 
       return;
@@ -619,7 +628,7 @@ public class RdfParser extends RdfParserBase {
     else {
       t = parent.predicate("fhir:"+parentType+'.'+name);
     }
-    composeDataType(t, "Dosage", name, element, index);
+    composeBackboneType(t, "Dosage", name, element, index);
     if (element.hasSequenceElement()) {
       composeInteger(t, "Dosage", "sequence", element.getSequenceElement(), -1);
     }
@@ -703,7 +712,7 @@ public class RdfParser extends RdfParserBase {
     else {
       t = parent.predicate("fhir:"+parentType+'.'+name);
     }
-    composeDataType(t, "ElementDefinition", name, element, index);
+    composeBackboneType(t, "ElementDefinition", name, element, index);
     if (element.hasPathElement()) {
       composeString(t, "ElementDefinition", "path", element.getPathElement(), -1);
     }
@@ -1111,7 +1120,7 @@ public class RdfParser extends RdfParserBase {
     else {
       t = parent.predicate("fhir:"+parentType+'.'+name);
     }
-    composeDataType(t, "MarketingStatus", name, element, index);
+    composeBackboneType(t, "MarketingStatus", name, element, index);
     if (element.hasCountry()) {
       composeCodeableConcept(t, "MarketingStatus", "country", element.getCountry(), -1);
     }
@@ -1255,7 +1264,7 @@ public class RdfParser extends RdfParserBase {
     else {
       t = parent.predicate("fhir:"+parentType+'.'+name);
     }
-    composeDataType(t, "Population", name, element, index);
+    composeBackboneType(t, "Population", name, element, index);
     if (element.hasAge()) {
       composeType(t, "Population", "age", element.getAge(), -1);
     }
@@ -1279,7 +1288,7 @@ public class RdfParser extends RdfParserBase {
     else {
       t = parent.predicate("fhir:"+parentType+'.'+name);
     }
-    composeDataType(t, "ProdCharacteristic", name, element, index);
+    composeBackboneType(t, "ProdCharacteristic", name, element, index);
     if (element.hasHeight()) {
       composeQuantity(t, "ProdCharacteristic", "height", element.getHeight(), -1);
     }
@@ -1324,7 +1333,7 @@ public class RdfParser extends RdfParserBase {
     else {
       t = parent.predicate("fhir:"+parentType+'.'+name);
     }
-    composeDataType(t, "ProductShelfLife", name, element, index);
+    composeBackboneType(t, "ProductShelfLife", name, element, index);
     if (element.hasType()) {
       composeCodeableConcept(t, "ProductShelfLife", "type", element.getType(), -1);
     }
@@ -1552,7 +1561,7 @@ public class RdfParser extends RdfParserBase {
     else {
       t = parent.predicate("fhir:"+parentType+'.'+name);
     }
-    composeDataType(t, "Timing", name, element, index);
+    composeBackboneType(t, "Timing", name, element, index);
     for (int i = 0; i < element.getEvent().size(); i++) {
       composeDateTime(t, "Timing", "event", element.getEvent().get(i), i);
     }

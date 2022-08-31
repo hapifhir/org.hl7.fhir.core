@@ -392,6 +392,15 @@ public class XmlParser extends XmlParserBase {
     return true;
   }
 
+  protected boolean parseBackboneTypeContent(int eventType, XmlPullParser xpp, BackboneType res) throws XmlPullParserException, IOException, FHIRFormatError {
+    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("modifierExtension")) {
+      res.getModifierExtension().add(parseExtension(xpp));
+    } else if (!parseDataTypeContent(eventType, xpp, res)){ 
+      return false;
+    }
+    return true;
+  }
+
   protected boolean parseDataTypeContent(int eventType, XmlPullParser xpp, DataType res) throws XmlPullParserException, IOException, FHIRFormatError {
     if (!parseElementContent(eventType, xpp, res)){ 
         return false;
@@ -907,7 +916,7 @@ public class XmlParser extends XmlParserBase {
       res.setMaxDosePerAdministration(parseQuantity(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("maxDosePerLifetime")) {
       res.setMaxDosePerLifetime(parseQuantity(xpp));
-    } else if (!parseDataTypeContent(eventType, xpp, res)){ 
+    } else if (!parseBackboneTypeContent(eventType, xpp, res)){ 
       return false;
     }
     return true;
@@ -1047,7 +1056,7 @@ public class XmlParser extends XmlParserBase {
       res.setBinding(parseElementDefinitionBindingComponent(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("mapping")) {
       res.getMapping().add(parseElementDefinitionMappingComponent(xpp));
-    } else if (!parseDataTypeContent(eventType, xpp, res)){ 
+    } else if (!parseBackboneTypeContent(eventType, xpp, res)){ 
       return false;
     }
     return true;
@@ -1443,7 +1452,7 @@ public class XmlParser extends XmlParserBase {
       res.setDateRange(parsePeriod(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("restoreDate")) {
       res.setRestoreDateElement(parseDateTime(xpp));
-    } else if (!parseDataTypeContent(eventType, xpp, res)){ 
+    } else if (!parseBackboneTypeContent(eventType, xpp, res)){ 
       return false;
     }
     return true;
@@ -1621,7 +1630,7 @@ public class XmlParser extends XmlParserBase {
       res.setRace(parseCodeableConcept(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("physiologicalCondition")) {
       res.setPhysiologicalCondition(parseCodeableConcept(xpp));
-    } else if (!parseDataTypeContent(eventType, xpp, res)){ 
+    } else if (!parseBackboneTypeContent(eventType, xpp, res)){ 
       return false;
     }
     return true;
@@ -1665,7 +1674,7 @@ public class XmlParser extends XmlParserBase {
       res.getImage().add(parseAttachment(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("scoring")) {
       res.setScoring(parseCodeableConcept(xpp));
-    } else if (!parseDataTypeContent(eventType, xpp, res)){ 
+    } else if (!parseBackboneTypeContent(eventType, xpp, res)){ 
       return false;
     }
     return true;
@@ -1693,7 +1702,7 @@ public class XmlParser extends XmlParserBase {
       res.setPeriod(parseType("period", xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("specialPrecautionsForStorage")) {
       res.getSpecialPrecautionsForStorage().add(parseCodeableConcept(xpp));
-    } else if (!parseDataTypeContent(eventType, xpp, res)){ 
+    } else if (!parseBackboneTypeContent(eventType, xpp, res)){ 
       return false;
     }
     return true;
@@ -1971,7 +1980,7 @@ public class XmlParser extends XmlParserBase {
       res.setRepeat(parseTimingRepeatComponent(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("code")) {
       res.setCode(parseCodeableConcept(xpp));
-    } else if (!parseDataTypeContent(eventType, xpp, res)){ 
+    } else if (!parseBackboneTypeContent(eventType, xpp, res)){ 
       return false;
     }
     return true;
@@ -26548,6 +26557,14 @@ public class XmlParser extends XmlParserBase {
           composeExtension("modifierExtension", e);
     }
   }
+  
+  protected void composeBackboneTypeElements(BackboneType element) throws IOException {
+    composeDataTypeElements(element);
+    if (element.hasModifierExtension()) { 
+      for (Extension e : element.getModifierExtension()) 
+          composeExtension("modifierExtension", e);
+    }
+  }
 
   protected void composeDataTypeElements(DataType element) throws IOException {
     composeElementElements(element);
@@ -26959,7 +26976,7 @@ public class XmlParser extends XmlParserBase {
   }
 
   protected void composeDosageElements(Dosage element) throws IOException {
-    composeDataTypeElements(element);
+    composeBackboneTypeElements(element);
     if (element.hasSequenceElement()) {
       composeInteger("sequence", element.getSequenceElement());
     }
@@ -27048,7 +27065,7 @@ public class XmlParser extends XmlParserBase {
   }
 
   protected void composeElementDefinitionElements(ElementDefinition element) throws IOException {
-    composeDataTypeElements(element);
+    composeBackboneTypeElements(element);
     if (element.hasPathElement()) {
       composeString("path", element.getPathElement());
     }
@@ -27480,7 +27497,7 @@ public class XmlParser extends XmlParserBase {
   }
 
   protected void composeMarketingStatusElements(MarketingStatus element) throws IOException {
-    composeDataTypeElements(element);
+    composeBackboneTypeElements(element);
     if (element.hasCountry()) {
       composeCodeableConcept("country", element.getCountry());
     }
@@ -27636,7 +27653,7 @@ public class XmlParser extends XmlParserBase {
   }
 
   protected void composePopulationElements(Population element) throws IOException {
-    composeDataTypeElements(element);
+    composeBackboneTypeElements(element);
     if (element.hasAge()) {
       composeType("age", element.getAge());
     }    if (element.hasGender()) {
@@ -27661,7 +27678,7 @@ public class XmlParser extends XmlParserBase {
   }
 
   protected void composeProdCharacteristicElements(ProdCharacteristic element) throws IOException {
-    composeDataTypeElements(element);
+    composeBackboneTypeElements(element);
     if (element.hasHeight()) {
       composeQuantity("height", element.getHeight());
     }
@@ -27711,7 +27728,7 @@ public class XmlParser extends XmlParserBase {
   }
 
   protected void composeProductShelfLifeElements(ProductShelfLife element) throws IOException {
-    composeDataTypeElements(element);
+    composeBackboneTypeElements(element);
     if (element.hasType()) {
       composeCodeableConcept("type", element.getType());
     }
@@ -27956,7 +27973,7 @@ public class XmlParser extends XmlParserBase {
   }
 
   protected void composeTimingElements(Timing element) throws IOException {
-    composeDataTypeElements(element);
+    composeBackboneTypeElements(element);
     if (element.hasEvent()) { 
       for (DateTimeType e : element.getEvent()) 
           composeDateTime("event", e);

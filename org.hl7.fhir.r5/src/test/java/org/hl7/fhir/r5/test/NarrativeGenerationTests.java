@@ -8,24 +8,31 @@ import java.util.stream.Stream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.ElementWrappers;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ITypeParser;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
+import org.hl7.fhir.r5.test.NarrativeGenerationTests.TestProfileKnowledgeProvider;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xml.XMLUtil;
@@ -40,11 +47,73 @@ import org.xml.sax.SAXException;
 
 public class NarrativeGenerationTests {
 
+  public class TestProfileKnowledgeProvider implements ProfileKnowledgeProvider {
+
+    private IWorkerContext context;
+
+    public TestProfileKnowledgeProvider(IWorkerContext context) {
+      this.context = context;
+    }
+
+    @Override
+    public boolean isDatatype(String typeSimple) {
+      throw new NotImplementedException();      
+    }
+
+    @Override
+    public boolean isResource(String typeSimple) {
+      throw new NotImplementedException();      
+    }
+
+    @Override
+    public boolean hasLinkFor(String typeSimple) {
+      throw new NotImplementedException();      
+    }
+
+    @Override
+    public String getLinkFor(String corePath, String typeSimple) {
+      throw new NotImplementedException();      
+    }
+
+    @Override
+    public BindingResolution resolveBinding(StructureDefinition def, ElementDefinitionBindingComponent binding, String path) throws FHIRException {
+      throw new NotImplementedException();      
+    }
+
+    @Override
+    public BindingResolution resolveBinding(StructureDefinition def, String url, String path) throws FHIRException {
+      throw new NotImplementedException();      
+    }
+
+    @Override
+    public String getLinkForProfile(StructureDefinition profile, String url) {
+      if ("http://hl7.org/fhir/StructureDefinition/Composition".equals(url)) {
+        return "http://hl7.org/fhir/composition.html|TestComposition";
+      }
+      throw new NotImplementedException();      
+    }
+
+    @Override
+    public boolean prependLinks() {
+      throw new NotImplementedException();      
+    }
+
+    @Override
+    public String getLinkForUrl(String corePath, String s) {
+      throw new NotImplementedException();      
+    }
+
+  }
+
   public class TestTypeParser implements ITypeParser {
 
     @Override
     public Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException {
       return new org.hl7.fhir.r5.formats.XmlParser().parseType(xml, type); 
+    }
+    @Override
+    public Base parseType(org.hl7.fhir.r5.elementmodel.Element e) throws FHIRFormatError, IOException, FHIRException {
+      throw new NotImplementedException(); 
     }
   }
 
@@ -111,7 +180,7 @@ public class NarrativeGenerationTests {
   @MethodSource("data")
   public void test(String id, TestDetails test) throws Exception {
     RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER);
-    rc.setDestDir("");
+    rc.setDestDir(Utilities.path("[tmp]", "narrative"));
     rc.setHeader(test.isHeader());
     rc.setDefinitionsTarget("test.html");
     rc.setTerminologyServiceOptions(TerminologyServiceOptions.defaults());
@@ -123,6 +192,7 @@ public class NarrativeGenerationTests {
     rc.setDateTimeFormatString("yyyy-MM-dd'T'HH:mm:ssZZZZZ"); 
     rc.setDateFormatString("yyyy-MM-dd"); 
     rc.setMode(test.technical ? ResourceRendererMode.TECHNICAL : ResourceRendererMode.END_USER);
+    rc.setProfileUtilities(new ProfileUtilities(rc.getContext(), null, new TestProfileKnowledgeProvider(rc.getContext())));
         
     
     Resource source;

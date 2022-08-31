@@ -50,7 +50,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
  * Base StructureDefinition for Timing Type: Specifies an event that may occur multiple times. Timing schedules are used to record when things are planned, expected or requested to occur. The most common usage is in dosage instructions for medications. They are also used when planning care of various kinds, and may be used for reporting the schedule to which past regular activities were carried out.
  */
 @DatatypeDef(name="Timing")
-public class Timing extends DataType implements ICompositeType {
+public class Timing extends BackboneType implements ICompositeType {
 
     public enum EventTiming {
         /**
