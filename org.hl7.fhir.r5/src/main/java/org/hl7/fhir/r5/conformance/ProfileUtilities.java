@@ -3540,7 +3540,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         if (ved != null && ued != null) {
           Row r1 = gen.new Row();
           r.getSubRows().add(r1);
-          r1.getCells().add(gen.new Cell(null, defFile == null ? "" : defFile+"-definitions.html#extension."+ed.getName(), ((UriType) ued.getFixed()).getValue(), null, null));
+          r1.getCells().add(gen.new Cell(null, defFile == null ? "" : defFile+"-definitions.html#"+ed.getId()+"."+c.getId(), ((UriType) ued.getFixed()).getValue(), null, null));
           r1.getCells().add(gen.new Cell());
           r1.getCells().add(gen.new Cell(null, null, describeCardinality(c, null, new UnusedTracker()), null, null));
           genTypes(gen, r1, ved, defFile, ed, corePath, imagePath, false, false);
@@ -6880,6 +6880,17 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   public void setMasterSourceFileNames(Set<String> masterSourceFileNames) {
     this.masterSourceFileNames = masterSourceFileNames;
+  }
+
+  public static ElementDefinitionConstraintComponent findConstraint(StructureDefinition sd, String inv) {
+    for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+      for (ElementDefinitionConstraintComponent c : ed.getConstraint()) {
+        if (c.getKey().equals(inv)) {
+          return c;
+        }
+      }
+    }
+    return null;
   }
 
 
