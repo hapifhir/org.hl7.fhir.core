@@ -427,7 +427,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     focus.getExpansion().setTimestampElement(DateTimeType.now());
     focus.getExpansion().setIdentifier(Factory.createUUID()); 
     for (ParametersParameterComponent p : expParams.getParameter()) {
-      if (Utilities.existsInList(p.getName(), "includeDesignations", "excludeNested"))
+      if (Utilities.existsInList(p.getName(), "includeDesignations", "excludeNested", "activeOnly"))
         focus.getExpansion().addParameter().setName(p.getName()).setValue(p.getValue());
     }
 
@@ -487,8 +487,22 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
         first = false;
       else
         canBeHeirarchy = false;
-      includeCodes(inc, exp, expParams, canBeHeirarchy, compose.hasInactive() && !compose.getInactive(), extensions, valueSet);
+      includeCodes(inc, exp, expParams, canBeHeirarchy, compose.hasInactive() ? !compose.getInactive() : checkNoInActiveFromParam(expParams), extensions, valueSet);
     }
+  }
+
+  /**
+   * returns true if activeOnly = true 
+   * @param expParams
+   * @return
+   */
+  private boolean checkNoInActiveFromParam(Parameters expParams) {
+    for (ParametersParameterComponent p : expParams.getParameter()) {
+      if (p.getName().equals("activeOnly")) {
+        return p.getValueBooleanType().getValue();
+      }
+    }
+    return false;
   }
 
   private ValueSet importValueSet(String value, ValueSetExpansionComponent exp, Parameters expParams, boolean noInactive, ValueSet valueSet) throws ETooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
