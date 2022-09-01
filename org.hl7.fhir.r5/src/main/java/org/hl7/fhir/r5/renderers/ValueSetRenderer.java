@@ -726,7 +726,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }    
   }
 
-  private void addExpansionRowToTable(XhtmlNode t, ValueSetExpansionContainsComponent c, int i, boolean doLevel, boolean doSystem, boolean doDefinition, List<UsedConceptMap> maps, CodeSystem allCS, List<String> langs, Map<String, String> designations, boolean doDesignations, Map<String, String> properties) {
+  private void addExpansionRowToTable(XhtmlNode t, ValueSetExpansionContainsComponent c, int i, boolean doLevel, boolean doSystem, boolean doDefinition, List<UsedConceptMap> maps, CodeSystem allCS, List<String> langs, Map<String, String> designations, boolean doDesignations, Map<String, String> properties) throws FHIRFormatError, DefinitionException, IOException {
     XhtmlNode tr = t.tr();
     XhtmlNode td = tr.td();
 
@@ -753,8 +753,10 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if (cs == null)
         cs = getContext().getWorker().fetchCodeSystem(c.getSystem());
       td = tr.td();
-      if (cs != null)
-        td.addText(CodeSystemUtilities.getCodeDefinition(cs, c.getCode()));
+      if (cs != null) {
+        String defn = CodeSystemUtilities.getCodeDefinition(cs, c.getCode());
+        addMarkdown(td, defn);
+      }
     }
     for (String n  : Utilities.sorted(properties.keySet())) {
       td = tr.td();
