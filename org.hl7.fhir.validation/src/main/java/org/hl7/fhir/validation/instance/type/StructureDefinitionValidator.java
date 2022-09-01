@@ -164,8 +164,9 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
     }
     if (element.hasChild("binding")) {
-      rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("can-bind") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "Binding");
-    
+      if (!typeCodes.isEmpty()) {
+        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("can-bind") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "Binding");
+      }
       Element binding = element.getNamedChild("binding");
       validateBinding(errors, binding, stack.push(binding, -1, null, null), typeCodes, snapshot, element.getNamedChildValue("path"));
     } else {
@@ -173,25 +174,26 @@ public class StructureDefinitionValidator extends BaseValidator {
 //      String bt = boundType(typeCodes);
 //      hint(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || bt == null, I18nConstants.SD_ED_SHOULD_BIND, element.getNamedChildValue("path"), bt);              
     }
-    if (element.hasChild("maxLength")) {
-      rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-length") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MaxLength");      
+    if (!typeCodes.isEmpty()) {
+      if (element.hasChild("maxLength")) {
+        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-length") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MaxLength");      
+      }
+      if (element.hasExtension(ToolingExtensions.EXT_MIN_LENGTH)) {
+        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-length") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MinLength Extension");      
+      }
+      if (element.hasChild("minValue")) {
+        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-range") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MinValue");      
+      }
+      if (element.hasChild("maxValue")) {
+        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-range") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MaxValue");      
+      }
+      if (element.hasExtension(ToolingExtensions.EXT_MAX_DECIMALS)) {
+        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("is-continuous") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "Max Decimal Places Extension");      
+      }
+      if (element.hasExtension(ToolingExtensions.EXT_MAX_SIZE)) {
+        rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-size") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "Max Size");      
+      }
     }
-    if (element.hasExtension(ToolingExtensions.EXT_MIN_LENGTH)) {
-      rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-length") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MinLength Extension");      
-    }
-    if (element.hasChild("minValue")) {
-      rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-range") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MinValue");      
-    }
-    if (element.hasChild("maxValue")) {
-      rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-range") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MaxValue");      
-    }
-    if (element.hasExtension(ToolingExtensions.EXT_MAX_DECIMALS)) {
-      rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("is-continuous") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "Max Decimal Places Extension");      
-    }
-    if (element.hasExtension(ToolingExtensions.EXT_MAX_SIZE)) {
-      rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-size") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "Max Size");      
-    }
-
     // in a snapshot, we validate that fixedValue, pattern, and defaultValue, if present, are all of the right type
     if (snapshot && (element.getIdBase() != null) && (element.getIdBase().contains("."))) {
       if (rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), !typeCodes.isEmpty() || element.hasChild("contentReference"), I18nConstants.SD_NO_TYPES_OR_CONTENTREF, element.getIdBase())) {     
