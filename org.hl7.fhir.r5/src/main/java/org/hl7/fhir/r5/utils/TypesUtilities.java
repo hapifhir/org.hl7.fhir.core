@@ -46,7 +46,7 @@ public class TypesUtilities {
 
     public String toDisplay() {
       switch (this) {
-      case DATATYPE: return "Data Type";
+      case DATATYPE: return "Datatype";
       case METADATATYPE: return "MetaDataType";
       case PRIMITIVE: return "Primitive Type";
       case SPECIAL: return "Special Type";
