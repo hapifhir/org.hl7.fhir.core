@@ -5657,7 +5657,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (n == null) {
       long t = System.nanoTime();
       try {
-        n = fpe.parse(FHIRPathExpressionFixer.fixExpr(inv.getExpression(), inv.getKey()));
+        String expr = FHIRPathExpressionFixer.fixExpr(inv.getExpression(), inv.getKey());
+        n = fpe.parse(expr);
       } catch (FHIRLexerException e) {
         rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, false, I18nConstants.PROBLEM_PROCESSING_EXPRESSION__IN_PROFILE__PATH__, inv.getExpression(), profile.getUrl(), path, e.getMessage());
         return;

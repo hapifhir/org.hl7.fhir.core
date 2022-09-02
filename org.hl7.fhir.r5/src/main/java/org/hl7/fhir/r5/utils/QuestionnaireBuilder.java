@@ -5,8 +5,10 @@ package org.hl7.fhir.r5.utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -114,6 +116,7 @@ public class QuestionnaireBuilder {
   private Factory factory = new Factory();
   private Map<String, String> vsCache = new HashMap<String, String>();
   private ValueSetExpander expander;
+  private Set<String> linkIds = new HashSet<>();
 
   // sometimes, when this is used, the questionnaire is already build and cached, and we are
   // processing the response. for technical reasons, we still go through the process, but
@@ -209,9 +212,9 @@ public class QuestionnaireBuilder {
       // give it a fake group to build
       Questionnaire.QuestionnaireItemComponent group = new Questionnaire.QuestionnaireItemComponent();
       group.setType(QuestionnaireItemType.GROUP);
-      buildGroup(group, profile, profile.getSnapshot().getElement().get(0), list, answerGroups);
+      buildGroup(group, profile, profile.getSnapshot().getElement().get(0), profile.getSnapshot().getElement().get(0).getPath(), list, answerGroups);
     } else
-      buildGroup(questionnaire.getItem().get(0), profile, profile.getSnapshot().getElement().get(0), list, answerGroups);
+      buildGroup(questionnaire.getItem().get(0), profile, profile.getSnapshot().getElement().get(0), profile.getSnapshot().getElement().get(0).getPath(), list, answerGroups);
     //
     //     NarrativeGenerator ngen = new NarrativeGenerator(context);
     //     ngen.generate(result);
@@ -253,9 +256,13 @@ public class QuestionnaireBuilder {
     return prefix+Integer.toString(lastid);
   }
 
-  private void buildGroup(QuestionnaireItemComponent group, StructureDefinition profile, ElementDefinition element,
+  private void buildGroup(QuestionnaireItemComponent group, StructureDefinition profile, ElementDefinition element, String path,
       List<ElementDefinition> parents, List<QuestionnaireResponse.QuestionnaireResponseItemComponent> answerGroups) throws FHIRException {
-	  group.setLinkId(element.getPath()); // todo: this will be wrong when we start slicing
+	  if (linkIds.contains(path)) {
+	    return;
+	  }
+	  linkIds.add(path);
+    group.setLinkId(path); // todo: this will be wrong when we start slicing
 	  group.setText(element.getShort()); // todo - may need to prepend the name tail... 
 	  if (element.getComment() != null) {
 	  	Questionnaire.QuestionnaireItemComponent display = new Questionnaire.QuestionnaireItemComponent();
@@ -273,8 +280,10 @@ public class QuestionnaireBuilder {
     if (!element.getMax().equals("*"))
     	ToolingExtensions.addMax(group, Integer.parseInt(element.getMax()));
 
+    int i = 0;
     for (org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent ag : answerGroups) {
-      ag.setLinkId(group.getLinkId());
+      i++;
+      ag.setLinkId(group.getLinkId()+i);
       ag.setText(group.getText());
     }
 
@@ -295,9 +304,9 @@ public class QuestionnaireBuilder {
         // if the element has a type, we add a question. else we add a group on the basis that
         // it will have children of its own
         if (child.getType().isEmpty() || isAbstractType(child.getType())) 
-          buildGroup(childGroup, profile, child, nparents, nResponse);
+          buildGroup(childGroup, profile, child, path+"."+child.getName(), nparents, nResponse);
         else if (isInlineDataType(child.getType()))
-          buildGroup(childGroup, profile, child, nparents, nResponse); // todo: get the right children for this one...
+          buildGroup(childGroup, profile, child, path+"."+child.getName(), nparents, nResponse); // todo: get the right children for this one...
         else
           buildQuestion(childGroup, profile, child, child.getPath(), nResponse, parents);
       }
@@ -765,7 +774,7 @@ public class QuestionnaireBuilder {
       StructureDefinition sd = context.fetchTypeDefinition(tc);
       if (sd == null)
         throw new NotImplementedException("Unhandled Data Type: "+tc+" on element "+element.getPath());
-      buildGroup(group, sd, sd.getSnapshot().getElementFirstRep(), parents, answerGroups);
+      buildGroup(group, sd, sd.getSnapshot().getElementFirstRep(), path+"."+sd.getSnapshot().getElementFirstRep().getPath(), parents, answerGroups);
     }
   }
 

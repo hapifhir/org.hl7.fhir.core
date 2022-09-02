@@ -160,6 +160,8 @@ public class TypesUtilities {
     res.add(new WildcardInformation("RelatedArtifact", TypeClassification.METADATATYPE));
     res.add(new WildcardInformation("TriggerDefinition", TypeClassification.METADATATYPE));
     res.add(new WildcardInformation("UsageContext", TypeClassification.METADATATYPE));
+    res.add(new WildcardInformation("Availability", TypeClassification.METADATATYPE));
+    res.add(new WildcardInformation("ExtendedContactDetail", TypeClassification.METADATATYPE));
     
     // special cases
     res.add(new WildcardInformation("Dosage", TypeClassification.SPECIAL));
