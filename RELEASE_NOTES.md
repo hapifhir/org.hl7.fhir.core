@@ -1,7 +1,9 @@
 ## Validator Changes
 
-* no changes
+* Allow binding as a type characteristic for Extension
 
 ## Other code changes
 
-* no changes
+* OID support refactoring
+* Remove Contributor Datatype from R5
+* R5 Build efficiency fixes
