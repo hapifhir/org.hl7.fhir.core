@@ -35,6 +35,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.json.JsonUtilities;
+
+import com.google.gson.JsonObject;
+
 import org.hl7.fhir.r5.model.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -562,6 +566,15 @@ public abstract class CanonicalResource extends DomainResource {
   public String oid() {
     for (Identifier id : getIdentifier()) {
       if (id.getValue().startsWith("urn:oid:")) {
+        return id.getValue().substring(8);
+      }
+    }
+    return null;
+  }
+
+  public String getOid() {
+    for (Identifier id : getIdentifier()) {
+      if ("urn:ietf:rfc:3986".equals(id.getSystem()) && id.hasValue() && id.getValue().startsWith("urn:oid:")) {
         return id.getValue().substring(8);
       }
     }

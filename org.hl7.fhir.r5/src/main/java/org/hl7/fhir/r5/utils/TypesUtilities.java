@@ -153,7 +153,6 @@ public class TypesUtilities {
     
     // metadata types
     res.add(new WildcardInformation("ContactDetail", TypeClassification.METADATATYPE));
-    res.add(new WildcardInformation("Contributor", TypeClassification.METADATATYPE));
     res.add(new WildcardInformation("DataRequirement", TypeClassification.METADATATYPE));
     res.add(new WildcardInformation("Expression", TypeClassification.METADATATYPE));
     res.add(new WildcardInformation("ParameterDefinition", TypeClassification.METADATATYPE));
