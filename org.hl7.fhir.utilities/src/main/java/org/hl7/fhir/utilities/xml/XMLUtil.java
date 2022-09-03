@@ -461,6 +461,13 @@ public class XMLUtil {
     return builder.parse(new FileInputStream(filename));
   }
 
+  public static Document parseFileToDom(String filename, boolean ns) throws ParserConfigurationException, SAXException, IOException  {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(ns);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    return builder.parse(new FileInputStream(filename));
+  }
+
   public static Element getLastChild(Element e) {
     if (e == null)
       return null;
