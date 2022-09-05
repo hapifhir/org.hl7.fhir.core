@@ -269,7 +269,7 @@ public class GraphDefinition30_50 {
     org.hl7.fhir.dstu3.model.GraphDefinition.GraphDefinitionLinkTargetComponent tgt = new org.hl7.fhir.dstu3.model.GraphDefinition.GraphDefinitionLinkTargetComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasType())
-      tgt.setTypeElement(Code30_50.convertCode(src.getTypeElement()));
+      tgt.setTypeElement(Code30_50.convertResourceEnum(src.getTypeElement()));
     if (src.hasProfile())
       tgt.setProfile(src.getProfile());
     for (org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent t : src.getCompartment())
@@ -285,7 +285,7 @@ public class GraphDefinition30_50 {
     org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetComponent tgt = new org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasType())
-      tgt.setTypeElement(Code30_50.convertCode(src.getTypeElement()));
+      tgt.setTypeElement(Code30_50.convertResourceEnum(src.getTypeElement()));
     if (src.hasProfile())
       tgt.setProfile(src.getProfile());
     for (org.hl7.fhir.dstu3.model.GraphDefinition.GraphDefinitionLinkTargetCompartmentComponent t : src.getCompartment())

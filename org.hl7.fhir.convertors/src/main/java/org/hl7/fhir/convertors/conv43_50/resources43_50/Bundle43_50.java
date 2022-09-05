@@ -5,6 +5,7 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier4
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Signature43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.*;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Bundle.LinkRelationTypes;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -165,7 +166,7 @@ public class Bundle43_50 {
     org.hl7.fhir.r5.model.Bundle.BundleLinkComponent tgt = new org.hl7.fhir.r5.model.Bundle.BundleLinkComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasRelation())
-      tgt.setRelationElement(String43_50.convertString(src.getRelationElement()));
+      tgt.setRelation(LinkRelationTypes.fromCode(src.getRelation()));
     if (src.hasUrl())
       tgt.setUrlElement(Uri43_50.convertUri(src.getUrlElement()));
     return tgt;
@@ -177,7 +178,7 @@ public class Bundle43_50 {
     org.hl7.fhir.r4b.model.Bundle.BundleLinkComponent tgt = new org.hl7.fhir.r4b.model.Bundle.BundleLinkComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasRelation())
-      tgt.setRelationElement(String43_50.convertString(src.getRelationElement()));
+      tgt.setRelation((src.getRelation().toCode()));
     if (src.hasUrl())
       tgt.setUrlElement(Uri43_50.convertUri(src.getUrlElement()));
     return tgt;

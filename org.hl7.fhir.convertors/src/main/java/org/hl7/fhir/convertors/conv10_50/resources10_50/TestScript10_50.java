@@ -286,7 +286,7 @@ public class TestScript10_50 {
     if (src.hasPathElement())
       tgt.setPathElement(String10_50.convertString(src.getPathElement()));
     if (src.hasResource())
-      tgt.setResource(TestScript.FHIRDefinedType.fromCode(src.getResource()));
+      tgt.setResource(src.getResource());
     if (src.hasResponse())
       tgt.setResponseElement(convertAssertionResponseTypes(src.getResponseElement()));
     if (src.hasResponseCodeElement())
@@ -329,7 +329,7 @@ public class TestScript10_50 {
       tgt.setOperatorElement(convertAssertionOperatorType(src.getOperatorElement()));
     if (src.hasPathElement())
       tgt.setPathElement(String10_50.convertString(src.getPathElement()));
-    tgt.setResource(src.getResource().toCode());
+    tgt.setResource(src.getResource());
     if (src.hasResponse())
       tgt.setResponseElement(convertAssertionResponseTypes(src.getResponseElement()));
     if (src.hasResponseCodeElement())

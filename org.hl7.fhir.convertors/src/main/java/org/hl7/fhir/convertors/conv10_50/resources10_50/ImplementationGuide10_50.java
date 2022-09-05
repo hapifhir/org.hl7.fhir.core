@@ -212,8 +212,8 @@ public class ImplementationGuide10_50 {
       return null;
     org.hl7.fhir.dstu2.model.ImplementationGuide.ImplementationGuidePackageResourceComponent tgt = new org.hl7.fhir.dstu2.model.ImplementationGuide.ImplementationGuidePackageResourceComponent();
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
-    if (src.hasExampleCanonicalType())
-      tgt.setExampleFor(Reference10_50.convertCanonicalToReference(src.getExampleCanonicalType()));
+    if (src.hasProfile())
+      tgt.setExampleFor(Reference10_50.convertCanonicalToReference(src.getProfile().get(0)));
     if (src.hasName())
       tgt.setNameElement(String10_50.convertString(src.getNameElement()));
     if (src.hasDescription())
@@ -229,7 +229,7 @@ public class ImplementationGuide10_50 {
     org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionResourceComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionResourceComponent();
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasExampleFor())
-      tgt.setExample(Reference10_50.convertReferenceToCanonical(src.getExampleFor()));
+      tgt.getProfile().add(Reference10_50.convertReferenceToCanonical(src.getExampleFor()));
     if (src.hasName())
       tgt.setNameElement(String10_50.convertString(src.getNameElement()));
     if (src.hasDescription())
@@ -248,7 +248,7 @@ public class ImplementationGuide10_50 {
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
     if (src.hasSource()) {
       if (src.hasSourceElement())
-        tgt.setName(convertUriToUrl(src.getSourceElement()));
+        tgt.setName(src.getSource());
     }
     if (src.hasNameElement())
       tgt.setTitleElement(String10_50.convertString(src.getNameElement()));
@@ -264,8 +264,8 @@ public class ImplementationGuide10_50 {
       return null;
     org.hl7.fhir.dstu2.model.ImplementationGuide.ImplementationGuidePageComponent tgt = new org.hl7.fhir.dstu2.model.ImplementationGuide.ImplementationGuidePageComponent();
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyBackboneElement(src,tgt);
-    if (src.hasNameUrlType())
-      tgt.setSource(src.getNameUrlType().getValue());
+    if (src.hasName())
+      tgt.setSource(src.getName());
     if (src.hasTitleElement())
       tgt.setNameElement(String10_50.convertString(src.getTitleElement()));
     if (src.hasGeneration())

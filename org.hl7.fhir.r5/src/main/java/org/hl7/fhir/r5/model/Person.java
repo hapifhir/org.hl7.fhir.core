@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -184,10 +184,10 @@ public class Person extends DomainResource {
     @Block()
     public static class PersonCommunicationComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. "en" for English, or "en-US" for American English versus "en-EN" for England English.
+         * The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. "en" for English, or "en-US" for American English versus "en-AU" for Australian English.
          */
         @Child(name = "language", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The language which can be used to communicate with the person about his or her health", formalDefinition="The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. \"en\" for English, or \"en-US\" for American English versus \"en-EN\" for England English." )
+        @Description(shortDefinition="The language which can be used to communicate with the person about his or her health", formalDefinition="The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. \"en\" for English, or \"en-US\" for American English versus \"en-AU\" for Australian English." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/languages")
         protected CodeableConcept language;
 
@@ -216,7 +216,7 @@ public class Person extends DomainResource {
       }
 
         /**
-         * @return {@link #language} (The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. "en" for English, or "en-US" for American English versus "en-EN" for England English.)
+         * @return {@link #language} (The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. "en" for English, or "en-US" for American English versus "en-AU" for Australian English.)
          */
         public CodeableConcept getLanguage() { 
           if (this.language == null)
@@ -232,7 +232,7 @@ public class Person extends DomainResource {
         }
 
         /**
-         * @param value {@link #language} (The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. "en" for English, or "en-US" for American English versus "en-EN" for England English.)
+         * @param value {@link #language} (The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. "en" for English, or "en-US" for American English versus "en-AU" for Australian English.)
          */
         public PersonCommunicationComponent setLanguage(CodeableConcept value) { 
           this.language = value;
@@ -286,14 +286,14 @@ public class Person extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("language", "CodeableConcept", "The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. \"en\" for English, or \"en-US\" for American English versus \"en-EN\" for England English.", 0, 1, language));
+          children.add(new Property("language", "CodeableConcept", "The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. \"en\" for English, or \"en-US\" for American English versus \"en-AU\" for Australian English.", 0, 1, language));
           children.add(new Property("preferred", "boolean", "Indicates whether or not the person prefers this language (over other languages he masters up a certain level).", 0, 1, preferred));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1613589672: /*language*/  return new Property("language", "CodeableConcept", "The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. \"en\" for English, or \"en-US\" for American English versus \"en-EN\" for England English.", 0, 1, language);
+          case -1613589672: /*language*/  return new Property("language", "CodeableConcept", "The ISO-639-1 alpha 2 code in lower case for the language, optionally followed by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g. \"en\" for English, or \"en-US\" for American English versus \"en-AU\" for Australian English.", 0, 1, language);
           case -1294005119: /*preferred*/  return new Property("preferred", "boolean", "Indicates whether or not the person prefers this language (over other languages he masters up a certain level).", 0, 1, preferred);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -650,7 +650,7 @@ public class Person extends DomainResource {
     /**
      * Identifier for a person within a particular scope.
      */
-    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A human identifier for this person", formalDefinition="Identifier for a person within a particular scope." )
     protected List<Identifier> identifier;
 
@@ -700,7 +700,7 @@ public class Person extends DomainResource {
     /**
      * One or more addresses for the person.
      */
-    @Child(name = "address", type = {Address.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "address", type = {Address.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="One or more addresses for the person", formalDefinition="One or more addresses for the person." )
     protected List<Address> address;
 
@@ -720,18 +720,18 @@ public class Person extends DomainResource {
     protected List<Attachment> photo;
 
     /**
-     * The organization that is the custodian of the person record.
-     */
-    @Child(name = "managingOrganization", type = {Organization.class}, order=10, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The organization that is the custodian of the person record", formalDefinition="The organization that is the custodian of the person record." )
-    protected Reference managingOrganization;
-
-    /**
      * A language which may be used to communicate with the person about his or her health.
      */
-    @Child(name = "communication", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "communication", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A language which may be used to communicate with the person about his or her health", formalDefinition="A language which may be used to communicate with the person about his or her health." )
     protected List<PersonCommunicationComponent> communication;
+
+    /**
+     * The organization that is the custodian of the person record.
+     */
+    @Child(name = "managingOrganization", type = {Organization.class}, order=11, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="The organization that is the custodian of the person record", formalDefinition="The organization that is the custodian of the person record." )
+    protected Reference managingOrganization;
 
     /**
      * Link to a resource that concerns the same actual person.
@@ -740,7 +740,7 @@ public class Person extends DomainResource {
     @Description(shortDefinition="Link to a resource that concerns the same actual person", formalDefinition="Link to a resource that concerns the same actual person." )
     protected List<PersonLinkComponent> link;
 
-    private static final long serialVersionUID = -1013247270L;
+    private static final long serialVersionUID = -1871612358L;
 
   /**
    * Constructor
@@ -1233,30 +1233,6 @@ public class Person extends DomainResource {
     }
 
     /**
-     * @return {@link #managingOrganization} (The organization that is the custodian of the person record.)
-     */
-    public Reference getManagingOrganization() { 
-      if (this.managingOrganization == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Person.managingOrganization");
-        else if (Configuration.doAutoCreate())
-          this.managingOrganization = new Reference(); // cc
-      return this.managingOrganization;
-    }
-
-    public boolean hasManagingOrganization() { 
-      return this.managingOrganization != null && !this.managingOrganization.isEmpty();
-    }
-
-    /**
-     * @param value {@link #managingOrganization} (The organization that is the custodian of the person record.)
-     */
-    public Person setManagingOrganization(Reference value) { 
-      this.managingOrganization = value;
-      return this;
-    }
-
-    /**
      * @return {@link #communication} (A language which may be used to communicate with the person about his or her health.)
      */
     public List<PersonCommunicationComponent> getCommunication() { 
@@ -1307,6 +1283,30 @@ public class Person extends DomainResource {
         addCommunication();
       }
       return getCommunication().get(0);
+    }
+
+    /**
+     * @return {@link #managingOrganization} (The organization that is the custodian of the person record.)
+     */
+    public Reference getManagingOrganization() { 
+      if (this.managingOrganization == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Person.managingOrganization");
+        else if (Configuration.doAutoCreate())
+          this.managingOrganization = new Reference(); // cc
+      return this.managingOrganization;
+    }
+
+    public boolean hasManagingOrganization() { 
+      return this.managingOrganization != null && !this.managingOrganization.isEmpty();
+    }
+
+    /**
+     * @param value {@link #managingOrganization} (The organization that is the custodian of the person record.)
+     */
+    public Person setManagingOrganization(Reference value) { 
+      this.managingOrganization = value;
+      return this;
     }
 
     /**
@@ -1374,8 +1374,8 @@ public class Person extends DomainResource {
         children.add(new Property("address", "Address", "One or more addresses for the person.", 0, java.lang.Integer.MAX_VALUE, address));
         children.add(new Property("maritalStatus", "CodeableConcept", "This field contains a person's most recent marital (civil) status.", 0, 1, maritalStatus));
         children.add(new Property("photo", "Attachment", "An image that can be displayed as a thumbnail of the person to enhance the identification of the individual.", 0, java.lang.Integer.MAX_VALUE, photo));
-        children.add(new Property("managingOrganization", "Reference(Organization)", "The organization that is the custodian of the person record.", 0, 1, managingOrganization));
         children.add(new Property("communication", "", "A language which may be used to communicate with the person about his or her health.", 0, java.lang.Integer.MAX_VALUE, communication));
+        children.add(new Property("managingOrganization", "Reference(Organization)", "The organization that is the custodian of the person record.", 0, 1, managingOrganization));
         children.add(new Property("link", "", "Link to a resource that concerns the same actual person.", 0, java.lang.Integer.MAX_VALUE, link));
       }
 
@@ -1395,8 +1395,8 @@ public class Person extends DomainResource {
         case -1147692044: /*address*/  return new Property("address", "Address", "One or more addresses for the person.", 0, java.lang.Integer.MAX_VALUE, address);
         case 1756919302: /*maritalStatus*/  return new Property("maritalStatus", "CodeableConcept", "This field contains a person's most recent marital (civil) status.", 0, 1, maritalStatus);
         case 106642994: /*photo*/  return new Property("photo", "Attachment", "An image that can be displayed as a thumbnail of the person to enhance the identification of the individual.", 0, java.lang.Integer.MAX_VALUE, photo);
-        case -2058947787: /*managingOrganization*/  return new Property("managingOrganization", "Reference(Organization)", "The organization that is the custodian of the person record.", 0, 1, managingOrganization);
         case -1035284522: /*communication*/  return new Property("communication", "", "A language which may be used to communicate with the person about his or her health.", 0, java.lang.Integer.MAX_VALUE, communication);
+        case -2058947787: /*managingOrganization*/  return new Property("managingOrganization", "Reference(Organization)", "The organization that is the custodian of the person record.", 0, 1, managingOrganization);
         case 3321850: /*link*/  return new Property("link", "", "Link to a resource that concerns the same actual person.", 0, java.lang.Integer.MAX_VALUE, link);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -1416,8 +1416,8 @@ public class Person extends DomainResource {
         case -1147692044: /*address*/ return this.address == null ? new Base[0] : this.address.toArray(new Base[this.address.size()]); // Address
         case 1756919302: /*maritalStatus*/ return this.maritalStatus == null ? new Base[0] : new Base[] {this.maritalStatus}; // CodeableConcept
         case 106642994: /*photo*/ return this.photo == null ? new Base[0] : this.photo.toArray(new Base[this.photo.size()]); // Attachment
-        case -2058947787: /*managingOrganization*/ return this.managingOrganization == null ? new Base[0] : new Base[] {this.managingOrganization}; // Reference
         case -1035284522: /*communication*/ return this.communication == null ? new Base[0] : this.communication.toArray(new Base[this.communication.size()]); // PersonCommunicationComponent
+        case -2058947787: /*managingOrganization*/ return this.managingOrganization == null ? new Base[0] : new Base[] {this.managingOrganization}; // Reference
         case 3321850: /*link*/ return this.link == null ? new Base[0] : this.link.toArray(new Base[this.link.size()]); // PersonLinkComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -1458,11 +1458,11 @@ public class Person extends DomainResource {
         case 106642994: // photo
           this.getPhoto().add(TypeConvertor.castToAttachment(value)); // Attachment
           return value;
-        case -2058947787: // managingOrganization
-          this.managingOrganization = TypeConvertor.castToReference(value); // Reference
-          return value;
         case -1035284522: // communication
           this.getCommunication().add((PersonCommunicationComponent) value); // PersonCommunicationComponent
+          return value;
+        case -2058947787: // managingOrganization
+          this.managingOrganization = TypeConvertor.castToReference(value); // Reference
           return value;
         case 3321850: // link
           this.getLink().add((PersonLinkComponent) value); // PersonLinkComponent
@@ -1495,10 +1495,10 @@ public class Person extends DomainResource {
           this.maritalStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("photo")) {
           this.getPhoto().add(TypeConvertor.castToAttachment(value));
-        } else if (name.equals("managingOrganization")) {
-          this.managingOrganization = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("communication")) {
           this.getCommunication().add((PersonCommunicationComponent) value);
+        } else if (name.equals("managingOrganization")) {
+          this.managingOrganization = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("link")) {
           this.getLink().add((PersonLinkComponent) value);
         } else
@@ -1520,8 +1520,8 @@ public class Person extends DomainResource {
         case -1147692044:  return addAddress(); 
         case 1756919302:  return getMaritalStatus();
         case 106642994:  return addPhoto(); 
-        case -2058947787:  return getManagingOrganization();
         case -1035284522:  return addCommunication(); 
+        case -2058947787:  return getManagingOrganization();
         case 3321850:  return addLink(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1541,8 +1541,8 @@ public class Person extends DomainResource {
         case -1147692044: /*address*/ return new String[] {"Address"};
         case 1756919302: /*maritalStatus*/ return new String[] {"CodeableConcept"};
         case 106642994: /*photo*/ return new String[] {"Attachment"};
-        case -2058947787: /*managingOrganization*/ return new String[] {"Reference"};
         case -1035284522: /*communication*/ return new String[] {};
+        case -2058947787: /*managingOrganization*/ return new String[] {"Reference"};
         case 3321850: /*link*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -1587,12 +1587,12 @@ public class Person extends DomainResource {
         else if (name.equals("photo")) {
           return addPhoto();
         }
+        else if (name.equals("communication")) {
+          return addCommunication();
+        }
         else if (name.equals("managingOrganization")) {
           this.managingOrganization = new Reference();
           return this.managingOrganization;
-        }
-        else if (name.equals("communication")) {
-          return addCommunication();
         }
         else if (name.equals("link")) {
           return addLink();
@@ -1644,12 +1644,12 @@ public class Person extends DomainResource {
           for (Attachment i : photo)
             dst.photo.add(i.copy());
         };
-        dst.managingOrganization = managingOrganization == null ? null : managingOrganization.copy();
         if (communication != null) {
           dst.communication = new ArrayList<PersonCommunicationComponent>();
           for (PersonCommunicationComponent i : communication)
             dst.communication.add(i.copy());
         };
+        dst.managingOrganization = managingOrganization == null ? null : managingOrganization.copy();
         if (link != null) {
           dst.link = new ArrayList<PersonLinkComponent>();
           for (PersonLinkComponent i : link)
@@ -1671,8 +1671,8 @@ public class Person extends DomainResource {
         return compareDeep(identifier, o.identifier, true) && compareDeep(active, o.active, true) && compareDeep(name, o.name, true)
            && compareDeep(telecom, o.telecom, true) && compareDeep(gender, o.gender, true) && compareDeep(birthDate, o.birthDate, true)
            && compareDeep(deceased, o.deceased, true) && compareDeep(address, o.address, true) && compareDeep(maritalStatus, o.maritalStatus, true)
-           && compareDeep(photo, o.photo, true) && compareDeep(managingOrganization, o.managingOrganization, true)
-           && compareDeep(communication, o.communication, true) && compareDeep(link, o.link, true);
+           && compareDeep(photo, o.photo, true) && compareDeep(communication, o.communication, true) && compareDeep(managingOrganization, o.managingOrganization, true)
+           && compareDeep(link, o.link, true);
       }
 
       @Override
@@ -1688,8 +1688,8 @@ public class Person extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, active, name
-          , telecom, gender, birthDate, deceased, address, maritalStatus, photo, managingOrganization
-          , communication, link);
+          , telecom, gender, birthDate, deceased, address, maritalStatus, photo, communication
+          , managingOrganization, link);
       }
 
   @Override
@@ -2181,10 +2181,10 @@ public class Person extends DomainResource {
 * [RelatedPerson](relatedperson.html): A value in an email contact
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')</b><br>
+   * Path: <b>Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.contact.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="email", path="Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A value in an email contact\r\n* [Person](person.html): A value in an email contact\r\n* [Practitioner](practitioner.html): A value in an email contact\r\n* [PractitionerRole](practitionerrole.html): A value in an email contact\r\n* [RelatedPerson](relatedperson.html): A value in an email contact\r\n", type="token" )
+  @SearchParamDefinition(name="email", path="Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.contact.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A value in an email contact\r\n* [Person](person.html): A value in an email contact\r\n* [Practitioner](practitioner.html): A value in an email contact\r\n* [PractitionerRole](practitionerrole.html): A value in an email contact\r\n* [RelatedPerson](relatedperson.html): A value in an email contact\r\n", type="token" )
   public static final String SP_EMAIL = "email";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>email</b>
@@ -2198,7 +2198,7 @@ public class Person extends DomainResource {
 * [RelatedPerson](relatedperson.html): A value in an email contact
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')</b><br>
+   * Path: <b>Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.contact.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam EMAIL = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EMAIL);
@@ -2247,10 +2247,10 @@ public class Person extends DomainResource {
 * [RelatedPerson](relatedperson.html): A value in a phone contact
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')</b><br>
+   * Path: <b>Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.contact.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="phone", path="Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A value in a phone contact\r\n* [Person](person.html): A value in a phone contact\r\n* [Practitioner](practitioner.html): A value in a phone contact\r\n* [PractitionerRole](practitionerrole.html): A value in a phone contact\r\n* [RelatedPerson](relatedperson.html): A value in a phone contact\r\n", type="token" )
+  @SearchParamDefinition(name="phone", path="Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.contact.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A value in a phone contact\r\n* [Person](person.html): A value in a phone contact\r\n* [Practitioner](practitioner.html): A value in a phone contact\r\n* [PractitionerRole](practitionerrole.html): A value in a phone contact\r\n* [RelatedPerson](relatedperson.html): A value in a phone contact\r\n", type="token" )
   public static final String SP_PHONE = "phone";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>phone</b>
@@ -2264,7 +2264,7 @@ public class Person extends DomainResource {
 * [RelatedPerson](relatedperson.html): A value in a phone contact
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')</b><br>
+   * Path: <b>Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.contact.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam PHONE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PHONE);
@@ -2313,10 +2313,10 @@ public class Person extends DomainResource {
 * [RelatedPerson](relatedperson.html): The value in any kind of contact
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.telecom | RelatedPerson.telecom</b><br>
+   * Path: <b>Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.contact.telecom | RelatedPerson.telecom</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="telecom", path="Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.telecom | RelatedPerson.telecom", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): The value in any kind of telecom details of the patient\r\n* [Person](person.html): The value in any kind of contact\r\n* [Practitioner](practitioner.html): The value in any kind of contact\r\n* [PractitionerRole](practitionerrole.html): The value in any kind of contact\r\n* [RelatedPerson](relatedperson.html): The value in any kind of contact\r\n", type="token" )
+  @SearchParamDefinition(name="telecom", path="Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.contact.telecom | RelatedPerson.telecom", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): The value in any kind of telecom details of the patient\r\n* [Person](person.html): The value in any kind of contact\r\n* [Practitioner](practitioner.html): The value in any kind of contact\r\n* [PractitionerRole](practitionerrole.html): The value in any kind of contact\r\n* [RelatedPerson](relatedperson.html): The value in any kind of contact\r\n", type="token" )
   public static final String SP_TELECOM = "telecom";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>telecom</b>
@@ -2330,7 +2330,7 @@ public class Person extends DomainResource {
 * [RelatedPerson](relatedperson.html): The value in any kind of contact
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.telecom | RelatedPerson.telecom</b><br>
+   * Path: <b>Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.contact.telecom | RelatedPerson.telecom</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TELECOM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TELECOM);

@@ -306,26 +306,26 @@ public class CapabilityStatement43_50 {
     return tgt;
   }
 
-  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RestfulCapabilityMode> convertRestfulCapabilityMode(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.CapabilityStatement.RestfulCapabilityMode> src) throws FHIRException {
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode> convertRestfulCapabilityMode(org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.CapabilityStatement.RestfulCapabilityMode> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
-    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RestfulCapabilityMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.RestfulCapabilityModeEnumFactory());
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityModeEnumFactory());
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case CLIENT:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RestfulCapabilityMode.CLIENT);
+        tgt.setValue(org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode.CLIENT);
         break;
       case SERVER:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RestfulCapabilityMode.SERVER);
+        tgt.setValue(org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode.SERVER);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RestfulCapabilityMode.NULL);
+        tgt.setValue(org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode.NULL);
         break;
     }
     return tgt;
   }
 
-  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.CapabilityStatement.RestfulCapabilityMode> convertRestfulCapabilityMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RestfulCapabilityMode> src) throws FHIRException {
+  static public org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.CapabilityStatement.RestfulCapabilityMode> convertRestfulCapabilityMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode> src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4b.model.Enumeration<org.hl7.fhir.r4b.model.CapabilityStatement.RestfulCapabilityMode> tgt = new org.hl7.fhir.r4b.model.Enumeration<>(new org.hl7.fhir.r4b.model.CapabilityStatement.RestfulCapabilityModeEnumFactory());
@@ -378,7 +378,7 @@ public class CapabilityStatement43_50 {
     org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent tgt = new org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasType())
-      tgt.setTypeElement(Code43_50.convertResourceEnum(src.getTypeElement()));
+      tgt.setTypeElement(Code43_50.convertCode(src.getTypeElement()));
     if (src.hasProfile())
       tgt.setProfileElement(Canonical43_50.convertCanonical(src.getProfileElement()));
     for (org.hl7.fhir.r4b.model.CanonicalType t : src.getSupportedProfile())
@@ -421,7 +421,7 @@ public class CapabilityStatement43_50 {
     org.hl7.fhir.r4b.model.CapabilityStatement.CapabilityStatementRestResourceComponent tgt = new org.hl7.fhir.r4b.model.CapabilityStatement.CapabilityStatementRestResourceComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasType())
-      tgt.setTypeElement(Code43_50.convertResourceEnum(src.getTypeElement()));
+      tgt.setTypeElement(Code43_50.convertCode(src.getTypeElement()));
     if (src.hasProfile())
       tgt.setProfileElement(Canonical43_50.convertCanonical(src.getProfileElement()));
     for (org.hl7.fhir.r5.model.CanonicalType t : src.getSupportedProfile())

@@ -6,6 +6,7 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.ExtendedContactDetail;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -53,7 +54,7 @@ public class Organization43_50 {
       tgt.setNameElement(String43_50.convertString(src.getNameElement()));
     for (org.hl7.fhir.r4b.model.StringType t : src.getAlias()) tgt.getAlias().add(String43_50.convertString(t));
     for (org.hl7.fhir.r4b.model.ContactPoint t : src.getTelecom())
-      tgt.addTelecom(ContactPoint43_50.convertContactPoint(t));
+      tgt.getContactFirstRep().addTelecom(ContactPoint43_50.convertContactPoint(t));
     for (org.hl7.fhir.r4b.model.Address t : src.getAddress()) tgt.addAddress(Address43_50.convertAddress(t));
     if (src.hasPartOf())
       tgt.setPartOf(Reference43_50.convertReference(src.getPartOf()));
@@ -77,8 +78,9 @@ public class Organization43_50 {
     if (src.hasName())
       tgt.setNameElement(String43_50.convertString(src.getNameElement()));
     for (org.hl7.fhir.r5.model.StringType t : src.getAlias()) tgt.getAlias().add(String43_50.convertString(t));
-    for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom())
-      tgt.addTelecom(ContactPoint43_50.convertContactPoint(t));
+    for (ExtendedContactDetail t1 : src.getContact())
+      for (org.hl7.fhir.r5.model.ContactPoint t : t1.getTelecom())
+        tgt.addTelecom(ContactPoint43_50.convertContactPoint(t));
     for (org.hl7.fhir.r5.model.Address t : src.getAddress()) tgt.addAddress(Address43_50.convertAddress(t));
     if (src.hasPartOf())
       tgt.setPartOf(Reference43_50.convertReference(src.getPartOf()));

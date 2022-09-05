@@ -68,7 +68,7 @@ public class GraphDefinition43_50 {
     if (src.hasPurpose())
       tgt.setPurposeElement(MarkDown43_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasStart())
-      tgt.setStartElement(Code43_50.convertResourceEnum(src.getStartElement()));
+      tgt.setStartElement(Code43_50.convertCode(src.getStartElement()));
     if (src.hasProfile())
       tgt.setProfileElement(Canonical43_50.convertCanonical(src.getProfileElement()));
     for (org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkComponent t : src.getLink())
@@ -106,7 +106,7 @@ public class GraphDefinition43_50 {
     if (src.hasPurpose())
       tgt.setPurposeElement(MarkDown43_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasStart())
-      tgt.setStartElement(Code43_50.convertResourceEnum(src.getStartElement()));
+      tgt.setStartElement(Code43_50.convertCode(src.getStartElement()));
     if (src.hasProfile())
       tgt.setProfileElement(Canonical43_50.convertCanonical(src.getProfileElement()));
     for (org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkComponent t : src.getLink())

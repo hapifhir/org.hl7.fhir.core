@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2051,7 +2051,7 @@ public class NutritionIntake extends DomainResource {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Identifiers associated with this Nutrition Intake that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate. They are business identifiers assigned to this resource by the performer or other systems and remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("instantiatesCanonical", "canonical(ActivityDefinition|ArtifactAssessment|EventDefinition|EvidenceVariable|Measure|OperationDefinition|PlanDefinition|Questionnaire|SubscriptionTopic)", "Instantiates FHIR protocol or definition.", 0, java.lang.Integer.MAX_VALUE, instantiatesCanonical));
+        children.add(new Property("instantiatesCanonical", "canonical(ActivityDefinition|ChargeItemDefinition|EventDefinition|Measure|MessageDefinition|ObservationDefinition|OperationDefinition|PlanDefinition|Questionnaire|SubscriptionTopic|TestScript)", "Instantiates FHIR protocol or definition.", 0, java.lang.Integer.MAX_VALUE, instantiatesCanonical));
         children.add(new Property("instantiatesUri", "uri", "Instantiates external protocol or definition.", 0, java.lang.Integer.MAX_VALUE, instantiatesUri));
         children.add(new Property("basedOn", "Reference(NutritionOrder|CarePlan|ServiceRequest)", "A plan, proposal or order that is fulfilled in whole or in part by this event.", 0, java.lang.Integer.MAX_VALUE, basedOn));
         children.add(new Property("partOf", "Reference(NutritionIntake|Procedure|Observation)", "A larger event of which this particular event is a component or step.", 0, java.lang.Integer.MAX_VALUE, partOf));
@@ -2076,7 +2076,7 @@ public class NutritionIntake extends DomainResource {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifiers associated with this Nutrition Intake that are defined by business processes and/or used to refer to it when a direct URL reference to the resource itself is not appropriate. They are business identifiers assigned to this resource by the performer or other systems and remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case 8911915: /*instantiatesCanonical*/  return new Property("instantiatesCanonical", "canonical(ActivityDefinition|ArtifactAssessment|EventDefinition|EvidenceVariable|Measure|OperationDefinition|PlanDefinition|Questionnaire|SubscriptionTopic)", "Instantiates FHIR protocol or definition.", 0, java.lang.Integer.MAX_VALUE, instantiatesCanonical);
+        case 8911915: /*instantiatesCanonical*/  return new Property("instantiatesCanonical", "canonical(ActivityDefinition|ChargeItemDefinition|EventDefinition|Measure|MessageDefinition|ObservationDefinition|OperationDefinition|PlanDefinition|Questionnaire|SubscriptionTopic|TestScript)", "Instantiates FHIR protocol or definition.", 0, java.lang.Integer.MAX_VALUE, instantiatesCanonical);
         case -1926393373: /*instantiatesUri*/  return new Property("instantiatesUri", "uri", "Instantiates external protocol or definition.", 0, java.lang.Integer.MAX_VALUE, instantiatesUri);
         case -332612366: /*basedOn*/  return new Property("basedOn", "Reference(NutritionOrder|CarePlan|ServiceRequest)", "A plan, proposal or order that is fulfilled in whole or in part by this event.", 0, java.lang.Integer.MAX_VALUE, basedOn);
         case -995410646: /*partOf*/  return new Property("partOf", "Reference(NutritionIntake|Procedure|Observation)", "A larger event of which this particular event is a component or step.", 0, java.lang.Integer.MAX_VALUE, partOf);

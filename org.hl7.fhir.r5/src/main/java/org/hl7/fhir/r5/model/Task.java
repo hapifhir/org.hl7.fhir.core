@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -87,7 +87,7 @@ public class Task extends DomainResource {
          */
         INSTANCEORDER, 
         /**
-         * The request represents a component or option for a RequestGroup that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestGroup]]] for additional information on how this status is used.
+         * The request represents a component or option for a RequestOrchestration that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestOrchestration]]] for additional information on how this status is used.
          */
         OPTION, 
         /**
@@ -160,7 +160,7 @@ public class Task extends DomainResource {
             case REFLEXORDER: return "The request represents an automatically generated supplemental authorization for action based on a parent authorization together with initial results of the action taken against that parent authorization.";
             case FILLERORDER: return "The request represents the view of an authorization instantiated by a fulfilling system representing the details of the fulfiller's intention to act upon a submitted order.";
             case INSTANCEORDER: return "An order created in fulfillment of a broader order that represents the authorization for a single activity occurrence.  E.g. The administration of a single dose of a drug.";
-            case OPTION: return "The request represents a component or option for a RequestGroup that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestGroup]]] for additional information on how this status is used.";
+            case OPTION: return "The request represents a component or option for a RequestOrchestration that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestOrchestration]]] for additional information on how this status is used.";
             case NULL: return null;
             default: return "?";
           }
@@ -527,10 +527,10 @@ public class Task extends DomainResource {
         protected PositiveIntType repetitions;
 
         /**
-         * Over what time-period is fulfillment sought.
+         * The time-period for which fulfillment is sought. This must fall within the overall time period authorized in the referenced request.  E.g. ServiceRequest.occurance[x].
          */
         @Child(name = "period", type = {Period.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="When fulfillment sought", formalDefinition="Over what time-period is fulfillment sought." )
+        @Description(shortDefinition="When fulfillment is sought", formalDefinition="The time-period for which fulfillment is sought. This must fall within the overall time period authorized in the referenced request.  E.g. ServiceRequest.occurance[x]." )
         protected Period period;
 
         /**
@@ -595,7 +595,7 @@ public class Task extends DomainResource {
         }
 
         /**
-         * @return {@link #period} (Over what time-period is fulfillment sought.)
+         * @return {@link #period} (The time-period for which fulfillment is sought. This must fall within the overall time period authorized in the referenced request.  E.g. ServiceRequest.occurance[x].)
          */
         public Period getPeriod() { 
           if (this.period == null)
@@ -611,7 +611,7 @@ public class Task extends DomainResource {
         }
 
         /**
-         * @param value {@link #period} (Over what time-period is fulfillment sought.)
+         * @param value {@link #period} (The time-period for which fulfillment is sought. This must fall within the overall time period authorized in the referenced request.  E.g. ServiceRequest.occurance[x].)
          */
         public TaskRestrictionComponent setPeriod(Period value) { 
           this.period = value;
@@ -674,7 +674,7 @@ public class Task extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("repetitions", "positiveInt", "Indicates the number of times the requested action should occur.", 0, 1, repetitions));
-          children.add(new Property("period", "Period", "Over what time-period is fulfillment sought.", 0, 1, period));
+          children.add(new Property("period", "Period", "The time-period for which fulfillment is sought. This must fall within the overall time period authorized in the referenced request.  E.g. ServiceRequest.occurance[x].", 0, 1, period));
           children.add(new Property("recipient", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson|Group|Organization)", "For requests that are targeted to more than one potential recipient/target, to identify who is fulfillment is sought for.", 0, java.lang.Integer.MAX_VALUE, recipient));
         }
 
@@ -682,7 +682,7 @@ public class Task extends DomainResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 984367650: /*repetitions*/  return new Property("repetitions", "positiveInt", "Indicates the number of times the requested action should occur.", 0, 1, repetitions);
-          case -991726143: /*period*/  return new Property("period", "Period", "Over what time-period is fulfillment sought.", 0, 1, period);
+          case -991726143: /*period*/  return new Property("period", "Period", "The time-period for which fulfillment is sought. This must fall within the overall time period authorized in the referenced request.  E.g. ServiceRequest.occurance[x].", 0, 1, period);
           case 820081177: /*recipient*/  return new Property("recipient", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson|Group|Organization)", "For requests that are targeted to more than one potential recipient/target, to identify who is fulfillment is sought for.", 0, java.lang.Integer.MAX_VALUE, recipient);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -819,7 +819,7 @@ public class Task extends DomainResource {
   }
 
     @Block()
-    public static class ParameterComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class TaskInputComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * A code or description indicating how the input is intended to be used as part of the task execution.
          */
@@ -830,7 +830,7 @@ public class Task extends DomainResource {
         /**
          * The value of the input parameter as a basic type.
          */
-        @Child(name = "value", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, CodeableReference.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, RatioRange.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "value", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, CodeableReference.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, RatioRange.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Availability.class, ExtendedContactDetail.class, Dosage.class, Meta.class}, order=2, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Content to use in performing the task", formalDefinition="The value of the input parameter as a basic type." )
         protected DataType value;
 
@@ -839,14 +839,14 @@ public class Task extends DomainResource {
     /**
      * Constructor
      */
-      public ParameterComponent() {
+      public TaskInputComponent() {
         super();
       }
 
     /**
      * Constructor
      */
-      public ParameterComponent(CodeableConcept type, DataType value) {
+      public TaskInputComponent(CodeableConcept type, DataType value) {
         super();
         this.setType(type);
         this.setValue(value);
@@ -858,7 +858,7 @@ public class Task extends DomainResource {
         public CodeableConcept getType() { 
           if (this.type == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ParameterComponent.type");
+              throw new Error("Attempt to auto-create TaskInputComponent.type");
             else if (Configuration.doAutoCreate())
               this.type = new CodeableConcept(); // cc
           return this.type;
@@ -871,7 +871,7 @@ public class Task extends DomainResource {
         /**
          * @param value {@link #type} (A code or description indicating how the input is intended to be used as part of the task execution.)
          */
-        public ParameterComponent setType(CodeableConcept value) { 
+        public TaskInputComponent setType(CodeableConcept value) { 
           this.type = value;
           return this;
         }
@@ -1546,21 +1546,6 @@ public class Task extends DomainResource {
         /**
          * @return {@link #value} (The value of the input parameter as a basic type.)
          */
-        public Contributor getValueContributor() throws FHIRException { 
-          if (this.value == null)
-            this.value = new Contributor();
-          if (!(this.value instanceof Contributor))
-            throw new FHIRException("Type mismatch: the type Contributor was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (Contributor) this.value;
-        }
-
-        public boolean hasValueContributor() { 
-          return this != null && this.value instanceof Contributor;
-        }
-
-        /**
-         * @return {@link #value} (The value of the input parameter as a basic type.)
-         */
         public DataRequirement getValueDataRequirement() throws FHIRException { 
           if (this.value == null)
             this.value = new DataRequirement();
@@ -1651,6 +1636,36 @@ public class Task extends DomainResource {
         /**
          * @return {@link #value} (The value of the input parameter as a basic type.)
          */
+        public Availability getValueAvailability() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Availability();
+          if (!(this.value instanceof Availability))
+            throw new FHIRException("Type mismatch: the type Availability was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Availability) this.value;
+        }
+
+        public boolean hasValueAvailability() { 
+          return this != null && this.value instanceof Availability;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
+        public ExtendedContactDetail getValueExtendedContactDetail() throws FHIRException { 
+          if (this.value == null)
+            this.value = new ExtendedContactDetail();
+          if (!(this.value instanceof ExtendedContactDetail))
+            throw new FHIRException("Type mismatch: the type ExtendedContactDetail was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (ExtendedContactDetail) this.value;
+        }
+
+        public boolean hasValueExtendedContactDetail() { 
+          return this != null && this.value instanceof ExtendedContactDetail;
+        }
+
+        /**
+         * @return {@link #value} (The value of the input parameter as a basic type.)
+         */
         public Dosage getValueDosage() throws FHIRException { 
           if (this.value == null)
             this.value = new Dosage();
@@ -1685,8 +1700,8 @@ public class Task extends DomainResource {
         /**
          * @param value {@link #value} (The value of the input parameter as a basic type.)
          */
-        public ParameterComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof CodeableReference || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof RatioRange || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
+        public TaskInputComponent setValue(DataType value) { 
+          if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof CodeableReference || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof RatioRange || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Availability || value instanceof ExtendedContactDetail || value instanceof Dosage || value instanceof Meta))
             throw new Error("Not the right type for Task.input.value[x]: "+value.fhirType());
           this.value = value;
           return this;
@@ -1695,15 +1710,15 @@ public class Task extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "A code or description indicating how the input is intended to be used as part of the task execution.", 0, 1, type));
-          children.add(new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value of the input parameter as a basic type.", 0, 1, value));
+          children.add(new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Availability|ExtendedContactDetail|Dosage|Meta", "The value of the input parameter as a basic type.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "A code or description indicating how the input is intended to be used as part of the task execution.", 0, 1, type);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value of the input parameter as a basic type.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Availability|ExtendedContactDetail|Dosage|Meta", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Availability|ExtendedContactDetail|Dosage|Meta", "The value of the input parameter as a basic type.", 0, 1, value);
           case -1535024575: /*valueBase64Binary*/  return new Property("value[x]", "base64Binary", "The value of the input parameter as a basic type.", 0, 1, value);
           case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "The value of the input parameter as a basic type.", 0, 1, value);
           case -786218365: /*valueCanonical*/  return new Property("value[x]", "canonical", "The value of the input parameter as a basic type.", 0, 1, value);
@@ -1748,13 +1763,14 @@ public class Task extends DomainResource {
           case -540985785: /*valueSignature*/  return new Property("value[x]", "Signature", "The value of the input parameter as a basic type.", 0, 1, value);
           case -1406282469: /*valueTiming*/  return new Property("value[x]", "Timing", "The value of the input parameter as a basic type.", 0, 1, value);
           case -1125200224: /*valueContactDetail*/  return new Property("value[x]", "ContactDetail", "The value of the input parameter as a basic type.", 0, 1, value);
-          case 1281021610: /*valueContributor*/  return new Property("value[x]", "Contributor", "The value of the input parameter as a basic type.", 0, 1, value);
           case 1710554248: /*valueDataRequirement*/  return new Property("value[x]", "DataRequirement", "The value of the input parameter as a basic type.", 0, 1, value);
           case -307517719: /*valueExpression*/  return new Property("value[x]", "Expression", "The value of the input parameter as a basic type.", 0, 1, value);
           case 1387478187: /*valueParameterDefinition*/  return new Property("value[x]", "ParameterDefinition", "The value of the input parameter as a basic type.", 0, 1, value);
           case 1748214124: /*valueRelatedArtifact*/  return new Property("value[x]", "RelatedArtifact", "The value of the input parameter as a basic type.", 0, 1, value);
           case 976830394: /*valueTriggerDefinition*/  return new Property("value[x]", "TriggerDefinition", "The value of the input parameter as a basic type.", 0, 1, value);
           case 588000479: /*valueUsageContext*/  return new Property("value[x]", "UsageContext", "The value of the input parameter as a basic type.", 0, 1, value);
+          case 1678530924: /*valueAvailability*/  return new Property("value[x]", "Availability", "The value of the input parameter as a basic type.", 0, 1, value);
+          case -1567222041: /*valueExtendedContactDetail*/  return new Property("value[x]", "ExtendedContactDetail", "The value of the input parameter as a basic type.", 0, 1, value);
           case -1858636920: /*valueDosage*/  return new Property("value[x]", "Dosage", "The value of the input parameter as a basic type.", 0, 1, value);
           case -765920490: /*valueMeta*/  return new Property("value[x]", "Meta", "The value of the input parameter as a basic type.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -1812,7 +1828,7 @@ public class Task extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case 111972721: /*value*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "CodeableReference", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "RatioRange", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
+        case 111972721: /*value*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "CodeableReference", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "RatioRange", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Availability", "ExtendedContactDetail", "Dosage", "Meta"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -2000,10 +2016,6 @@ public class Task extends DomainResource {
           this.value = new ContactDetail();
           return this.value;
         }
-        else if (name.equals("valueContributor")) {
-          this.value = new Contributor();
-          return this.value;
-        }
         else if (name.equals("valueDataRequirement")) {
           this.value = new DataRequirement();
           return this.value;
@@ -2028,6 +2040,14 @@ public class Task extends DomainResource {
           this.value = new UsageContext();
           return this.value;
         }
+        else if (name.equals("valueAvailability")) {
+          this.value = new Availability();
+          return this.value;
+        }
+        else if (name.equals("valueExtendedContactDetail")) {
+          this.value = new ExtendedContactDetail();
+          return this.value;
+        }
         else if (name.equals("valueDosage")) {
           this.value = new Dosage();
           return this.value;
@@ -2040,13 +2060,13 @@ public class Task extends DomainResource {
           return super.addChild(name);
       }
 
-      public ParameterComponent copy() {
-        ParameterComponent dst = new ParameterComponent();
+      public TaskInputComponent copy() {
+        TaskInputComponent dst = new TaskInputComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(ParameterComponent dst) {
+      public void copyValues(TaskInputComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.value = value == null ? null : value.copy();
@@ -2056,9 +2076,9 @@ public class Task extends DomainResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof ParameterComponent))
+        if (!(other_ instanceof TaskInputComponent))
           return false;
-        ParameterComponent o = (ParameterComponent) other_;
+        TaskInputComponent o = (TaskInputComponent) other_;
         return compareDeep(type, o.type, true) && compareDeep(value, o.value, true);
       }
 
@@ -2066,9 +2086,9 @@ public class Task extends DomainResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof ParameterComponent))
+        if (!(other_ instanceof TaskInputComponent))
           return false;
-        ParameterComponent o = (ParameterComponent) other_;
+        TaskInputComponent o = (TaskInputComponent) other_;
         return true;
       }
 
@@ -2095,7 +2115,7 @@ public class Task extends DomainResource {
         /**
          * The value of the Output parameter as a basic type.
          */
-        @Child(name = "value", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, CodeableReference.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, RatioRange.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, Contributor.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Dosage.class, Meta.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "value", type = {Base64BinaryType.class, BooleanType.class, CanonicalType.class, CodeType.class, DateType.class, DateTimeType.class, DecimalType.class, IdType.class, InstantType.class, IntegerType.class, Integer64Type.class, MarkdownType.class, OidType.class, PositiveIntType.class, StringType.class, TimeType.class, UnsignedIntType.class, UriType.class, UrlType.class, UuidType.class, Address.class, Age.class, Annotation.class, Attachment.class, CodeableConcept.class, CodeableReference.class, Coding.class, ContactPoint.class, Count.class, Distance.class, Duration.class, HumanName.class, Identifier.class, Money.class, Period.class, Quantity.class, Range.class, Ratio.class, RatioRange.class, Reference.class, SampledData.class, Signature.class, Timing.class, ContactDetail.class, DataRequirement.class, Expression.class, ParameterDefinition.class, RelatedArtifact.class, TriggerDefinition.class, UsageContext.class, Availability.class, ExtendedContactDetail.class, Dosage.class, Meta.class}, order=2, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Result of output", formalDefinition="The value of the Output parameter as a basic type." )
         protected DataType value;
 
@@ -2811,21 +2831,6 @@ public class Task extends DomainResource {
         /**
          * @return {@link #value} (The value of the Output parameter as a basic type.)
          */
-        public Contributor getValueContributor() throws FHIRException { 
-          if (this.value == null)
-            this.value = new Contributor();
-          if (!(this.value instanceof Contributor))
-            throw new FHIRException("Type mismatch: the type Contributor was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (Contributor) this.value;
-        }
-
-        public boolean hasValueContributor() { 
-          return this != null && this.value instanceof Contributor;
-        }
-
-        /**
-         * @return {@link #value} (The value of the Output parameter as a basic type.)
-         */
         public DataRequirement getValueDataRequirement() throws FHIRException { 
           if (this.value == null)
             this.value = new DataRequirement();
@@ -2916,6 +2921,36 @@ public class Task extends DomainResource {
         /**
          * @return {@link #value} (The value of the Output parameter as a basic type.)
          */
+        public Availability getValueAvailability() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Availability();
+          if (!(this.value instanceof Availability))
+            throw new FHIRException("Type mismatch: the type Availability was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Availability) this.value;
+        }
+
+        public boolean hasValueAvailability() { 
+          return this != null && this.value instanceof Availability;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
+        public ExtendedContactDetail getValueExtendedContactDetail() throws FHIRException { 
+          if (this.value == null)
+            this.value = new ExtendedContactDetail();
+          if (!(this.value instanceof ExtendedContactDetail))
+            throw new FHIRException("Type mismatch: the type ExtendedContactDetail was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (ExtendedContactDetail) this.value;
+        }
+
+        public boolean hasValueExtendedContactDetail() { 
+          return this != null && this.value instanceof ExtendedContactDetail;
+        }
+
+        /**
+         * @return {@link #value} (The value of the Output parameter as a basic type.)
+         */
         public Dosage getValueDosage() throws FHIRException { 
           if (this.value == null)
             this.value = new Dosage();
@@ -2951,7 +2986,7 @@ public class Task extends DomainResource {
          * @param value {@link #value} (The value of the Output parameter as a basic type.)
          */
         public TaskOutputComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof CodeableReference || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof RatioRange || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof Contributor || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Dosage || value instanceof Meta))
+          if (value != null && !(value instanceof Base64BinaryType || value instanceof BooleanType || value instanceof CanonicalType || value instanceof CodeType || value instanceof DateType || value instanceof DateTimeType || value instanceof DecimalType || value instanceof IdType || value instanceof InstantType || value instanceof IntegerType || value instanceof Integer64Type || value instanceof MarkdownType || value instanceof OidType || value instanceof PositiveIntType || value instanceof StringType || value instanceof TimeType || value instanceof UnsignedIntType || value instanceof UriType || value instanceof UrlType || value instanceof UuidType || value instanceof Address || value instanceof Age || value instanceof Annotation || value instanceof Attachment || value instanceof CodeableConcept || value instanceof CodeableReference || value instanceof Coding || value instanceof ContactPoint || value instanceof Count || value instanceof Distance || value instanceof Duration || value instanceof HumanName || value instanceof Identifier || value instanceof Money || value instanceof Period || value instanceof Quantity || value instanceof Range || value instanceof Ratio || value instanceof RatioRange || value instanceof Reference || value instanceof SampledData || value instanceof Signature || value instanceof Timing || value instanceof ContactDetail || value instanceof DataRequirement || value instanceof Expression || value instanceof ParameterDefinition || value instanceof RelatedArtifact || value instanceof TriggerDefinition || value instanceof UsageContext || value instanceof Availability || value instanceof ExtendedContactDetail || value instanceof Dosage || value instanceof Meta))
             throw new Error("Not the right type for Task.output.value[x]: "+value.fhirType());
           this.value = value;
           return this;
@@ -2960,15 +2995,15 @@ public class Task extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "The name of the Output parameter.", 0, 1, type));
-          children.add(new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value of the Output parameter as a basic type.", 0, 1, value));
+          children.add(new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Availability|ExtendedContactDetail|Dosage|Meta", "The value of the Output parameter as a basic type.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The name of the Output parameter.", 0, 1, type);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|Contributor|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Dosage|Meta", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Availability|ExtendedContactDetail|Dosage|Meta", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "base64Binary|boolean|canonical|code|date|dateTime|decimal|id|instant|integer|integer64|markdown|oid|positiveInt|string|time|unsignedInt|uri|url|uuid|Address|Age|Annotation|Attachment|CodeableConcept|CodeableReference|Coding|ContactPoint|Count|Distance|Duration|HumanName|Identifier|Money|Period|Quantity|Range|Ratio|RatioRange|Reference|SampledData|Signature|Timing|ContactDetail|DataRequirement|Expression|ParameterDefinition|RelatedArtifact|TriggerDefinition|UsageContext|Availability|ExtendedContactDetail|Dosage|Meta", "The value of the Output parameter as a basic type.", 0, 1, value);
           case -1535024575: /*valueBase64Binary*/  return new Property("value[x]", "base64Binary", "The value of the Output parameter as a basic type.", 0, 1, value);
           case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "The value of the Output parameter as a basic type.", 0, 1, value);
           case -786218365: /*valueCanonical*/  return new Property("value[x]", "canonical", "The value of the Output parameter as a basic type.", 0, 1, value);
@@ -3013,13 +3048,14 @@ public class Task extends DomainResource {
           case -540985785: /*valueSignature*/  return new Property("value[x]", "Signature", "The value of the Output parameter as a basic type.", 0, 1, value);
           case -1406282469: /*valueTiming*/  return new Property("value[x]", "Timing", "The value of the Output parameter as a basic type.", 0, 1, value);
           case -1125200224: /*valueContactDetail*/  return new Property("value[x]", "ContactDetail", "The value of the Output parameter as a basic type.", 0, 1, value);
-          case 1281021610: /*valueContributor*/  return new Property("value[x]", "Contributor", "The value of the Output parameter as a basic type.", 0, 1, value);
           case 1710554248: /*valueDataRequirement*/  return new Property("value[x]", "DataRequirement", "The value of the Output parameter as a basic type.", 0, 1, value);
           case -307517719: /*valueExpression*/  return new Property("value[x]", "Expression", "The value of the Output parameter as a basic type.", 0, 1, value);
           case 1387478187: /*valueParameterDefinition*/  return new Property("value[x]", "ParameterDefinition", "The value of the Output parameter as a basic type.", 0, 1, value);
           case 1748214124: /*valueRelatedArtifact*/  return new Property("value[x]", "RelatedArtifact", "The value of the Output parameter as a basic type.", 0, 1, value);
           case 976830394: /*valueTriggerDefinition*/  return new Property("value[x]", "TriggerDefinition", "The value of the Output parameter as a basic type.", 0, 1, value);
           case 588000479: /*valueUsageContext*/  return new Property("value[x]", "UsageContext", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case 1678530924: /*valueAvailability*/  return new Property("value[x]", "Availability", "The value of the Output parameter as a basic type.", 0, 1, value);
+          case -1567222041: /*valueExtendedContactDetail*/  return new Property("value[x]", "ExtendedContactDetail", "The value of the Output parameter as a basic type.", 0, 1, value);
           case -1858636920: /*valueDosage*/  return new Property("value[x]", "Dosage", "The value of the Output parameter as a basic type.", 0, 1, value);
           case -765920490: /*valueMeta*/  return new Property("value[x]", "Meta", "The value of the Output parameter as a basic type.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -3077,7 +3113,7 @@ public class Task extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case 111972721: /*value*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "CodeableReference", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "RatioRange", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Dosage", "Meta"};
+        case 111972721: /*value*/ return new String[] {"base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid", "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "CodeableReference", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "RatioRange", "Reference", "SampledData", "Signature", "Timing", "ContactDetail", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext", "Availability", "ExtendedContactDetail", "Dosage", "Meta"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -3265,10 +3301,6 @@ public class Task extends DomainResource {
           this.value = new ContactDetail();
           return this.value;
         }
-        else if (name.equals("valueContributor")) {
-          this.value = new Contributor();
-          return this.value;
-        }
         else if (name.equals("valueDataRequirement")) {
           this.value = new DataRequirement();
           return this.value;
@@ -3291,6 +3323,14 @@ public class Task extends DomainResource {
         }
         else if (name.equals("valueUsageContext")) {
           this.value = new UsageContext();
+          return this.value;
+        }
+        else if (name.equals("valueAvailability")) {
+          this.value = new Availability();
+          return this.value;
+        }
+        else if (name.equals("valueExtendedContactDetail")) {
+          this.value = new ExtendedContactDetail();
           return this.value;
         }
         else if (name.equals("valueDosage")) {
@@ -3370,10 +3410,10 @@ public class Task extends DomainResource {
     protected UriType instantiatesUri;
 
     /**
-     * BasedOn refers to a higher-level authorization that triggered the creation of the task.  It references a "request" resource such as a ServiceRequest, MedicationRequest, ServiceRequest, CarePlan, etc. which is distinct from the "request" resource the task is seeking to fulfill.  This latter resource is referenced by FocusOn.  For example, based on a ServiceRequest (= BasedOn), a task is created to fulfill a procedureRequest ( = FocusOn ) to collect a specimen from a patient.
+     * BasedOn refers to a higher-level authorization that triggered the creation of the task.  It references a "request" resource such as a ServiceRequest, MedicationRequest, CarePlan, etc. which is distinct from the "request" resource the task is seeking to fulfill.  This latter resource is referenced by focus.  For example, based on a CarePlan (= basedOn), a task is created to fulfill a ServiceRequest ( = focus ) to collect a specimen from a patient.
      */
     @Child(name = "basedOn", type = {Reference.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Request fulfilled by this task", formalDefinition="BasedOn refers to a higher-level authorization that triggered the creation of the task.  It references a \"request\" resource such as a ServiceRequest, MedicationRequest, ServiceRequest, CarePlan, etc. which is distinct from the \"request\" resource the task is seeking to fulfill.  This latter resource is referenced by FocusOn.  For example, based on a ServiceRequest (= BasedOn), a task is created to fulfill a procedureRequest ( = FocusOn ) to collect a specimen from a patient." )
+    @Description(shortDefinition="Request fulfilled by this task", formalDefinition="BasedOn refers to a higher-level authorization that triggered the creation of the task.  It references a \"request\" resource such as a ServiceRequest, MedicationRequest, CarePlan, etc. which is distinct from the \"request\" resource the task is seeking to fulfill.  This latter resource is referenced by focus.  For example, based on a CarePlan (= basedOn), a task is created to fulfill a ServiceRequest ( = focus ) to collect a specimen from a patient." )
     protected List<Reference> basedOn;
 
     /**
@@ -3401,9 +3441,10 @@ public class Task extends DomainResource {
     /**
      * An explanation as to why this task is held, failed, was refused, etc.
      */
-    @Child(name = "statusReason", type = {CodeableConcept.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "statusReason", type = {CodeableReference.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Reason for current status", formalDefinition="An explanation as to why this task is held, failed, was refused, etc." )
-    protected CodeableConcept statusReason;
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/task-status-reason")
+    protected CodeableReference statusReason;
 
     /**
      * Contains business-specific nuances of the business state.
@@ -3429,9 +3470,16 @@ public class Task extends DomainResource {
     protected Enumeration<RequestPriority> priority;
 
     /**
+     * If true indicates that the Task is asking for the specified action to *not* occur.
+     */
+    @Child(name = "doNotPerform", type = {BooleanType.class}, order=11, min=0, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="True if Task is prohibiting action", formalDefinition="If true indicates that the Task is asking for the specified action to *not* occur." )
+    protected BooleanType doNotPerform;
+
+    /**
      * A name or code (or both) briefly describing what the task involves.
      */
-    @Child(name = "code", type = {CodeableConcept.class}, order=11, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "code", type = {CodeableConcept.class}, order=12, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Task Type", formalDefinition="A name or code (or both) briefly describing what the task involves." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/task-code")
     protected CodeableConcept code;
@@ -3439,138 +3487,138 @@ public class Task extends DomainResource {
     /**
      * A free-text description of what is to be performed.
      */
-    @Child(name = "description", type = {StringType.class}, order=12, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "description", type = {StringType.class}, order=13, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Human-readable explanation of task", formalDefinition="A free-text description of what is to be performed." )
     protected StringType description;
 
     /**
-     * The request being actioned or the resource being manipulated by this task.
+     * The request being fulfilled or the resource being manipulated (changed, suspended, etc.) by this task.
      */
-    @Child(name = "focus", type = {Reference.class}, order=13, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="What task is acting on", formalDefinition="The request being actioned or the resource being manipulated by this task." )
+    @Child(name = "focus", type = {Reference.class}, order=14, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="What task is acting on", formalDefinition="The request being fulfilled or the resource being manipulated (changed, suspended, etc.) by this task." )
     protected Reference focus;
 
     /**
      * The entity who benefits from the performance of the service specified in the task (e.g., the patient).
      */
-    @Child(name = "for", type = {Reference.class}, order=14, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "for", type = {Reference.class}, order=15, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Beneficiary of the Task", formalDefinition="The entity who benefits from the performance of the service specified in the task (e.g., the patient)." )
     protected Reference for_;
 
     /**
      * The healthcare event  (e.g. a patient and healthcare provider interaction) during which this task was created.
      */
-    @Child(name = "encounter", type = {Encounter.class}, order=15, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "encounter", type = {Encounter.class}, order=16, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Healthcare event during which this task originated", formalDefinition="The healthcare event  (e.g. a patient and healthcare provider interaction) during which this task was created." )
     protected Reference encounter;
 
     /**
+     * Indicates the start and/or end of the period of time when completion of the task is desired to take place.
+     */
+    @Child(name = "requestedPeriod", type = {Period.class}, order=17, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="When the task should be performed", formalDefinition="Indicates the start and/or end of the period of time when completion of the task is desired to take place." )
+    protected Period requestedPeriod;
+
+    /**
      * Identifies the time action was first taken against the task (start) and/or the time final action was taken against the task prior to marking it as completed (end).
      */
-    @Child(name = "executionPeriod", type = {Period.class}, order=16, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "executionPeriod", type = {Period.class}, order=18, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Start and end time of execution", formalDefinition="Identifies the time action was first taken against the task (start) and/or the time final action was taken against the task prior to marking it as completed (end)." )
     protected Period executionPeriod;
 
     /**
      * The date and time this task was created.
      */
-    @Child(name = "authoredOn", type = {DateTimeType.class}, order=17, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "authoredOn", type = {DateTimeType.class}, order=19, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Task Creation Date", formalDefinition="The date and time this task was created." )
     protected DateTimeType authoredOn;
 
     /**
      * The date and time of last modification to this task.
      */
-    @Child(name = "lastModified", type = {DateTimeType.class}, order=18, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "lastModified", type = {DateTimeType.class}, order=20, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Task Last Modified Date", formalDefinition="The date and time of last modification to this task." )
     protected DateTimeType lastModified;
 
     /**
      * The creator of the task.
      */
-    @Child(name = "requester", type = {Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class}, order=19, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "requester", type = {Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class}, order=21, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Who is asking for task to be done", formalDefinition="The creator of the task." )
     protected Reference requester;
 
     /**
-     * The kind of participant that should perform the task.
+     * The kind of participant or specific participant that should perform the task.
      */
-    @Child(name = "performerType", type = {CodeableConcept.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Requested performer", formalDefinition="The kind of participant that should perform the task." )
+    @Child(name = "requestedPerformer", type = {CodeableReference.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Who should perform Task", formalDefinition="The kind of participant or specific participant that should perform the task." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/performer-role")
-    protected List<CodeableConcept> performerType;
+    protected List<CodeableReference> requestedPerformer;
 
     /**
      * Individual organization or Device currently responsible for task execution.
      */
-    @Child(name = "owner", type = {Practitioner.class, PractitionerRole.class, Organization.class, CareTeam.class, HealthcareService.class, Patient.class, Device.class, RelatedPerson.class}, order=21, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "owner", type = {Practitioner.class, PractitionerRole.class, Organization.class, CareTeam.class, HealthcareService.class, Patient.class, Device.class, RelatedPerson.class}, order=23, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Responsible individual", formalDefinition="Individual organization or Device currently responsible for task execution." )
     protected Reference owner;
 
     /**
      * Principal physical location where the this task is performed.
      */
-    @Child(name = "location", type = {Location.class}, order=22, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "location", type = {Location.class}, order=24, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Where task occurs", formalDefinition="Principal physical location where the this task is performed." )
     protected Reference location;
 
     /**
-     * A description or code indicating why this task needs to be performed.
+     * A description, code, or reference indicating why this task needs to be performed.
      */
-    @Child(name = "reasonCode", type = {CodeableConcept.class}, order=23, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Why task is needed", formalDefinition="A description or code indicating why this task needs to be performed." )
-    protected CodeableConcept reasonCode;
-
-    /**
-     * A resource reference indicating why this task needs to be performed.
-     */
-    @Child(name = "reasonReference", type = {Reference.class}, order=24, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Why task is needed", formalDefinition="A resource reference indicating why this task needs to be performed." )
-    protected Reference reasonReference;
+    @Child(name = "reason", type = {CodeableReference.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Why task is needed", formalDefinition="A description, code, or reference indicating why this task needs to be performed." )
+    protected List<CodeableReference> reason;
 
     /**
      * Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be relevant to the Task.
      */
-    @Child(name = "insurance", type = {Coverage.class, ClaimResponse.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "insurance", type = {Coverage.class, ClaimResponse.class}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Associated insurance coverage", formalDefinition="Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be relevant to the Task." )
     protected List<Reference> insurance;
 
     /**
      * Free-text information captured about the task as it progresses.
      */
-    @Child(name = "note", type = {Annotation.class}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Comments made about the task", formalDefinition="Free-text information captured about the task as it progresses." )
     protected List<Annotation> note;
 
     /**
      * Links to Provenance records for past versions of this Task that identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the task.
      */
-    @Child(name = "relevantHistory", type = {Provenance.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "relevantHistory", type = {Provenance.class}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Key events in history of the Task", formalDefinition="Links to Provenance records for past versions of this Task that identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the task." )
     protected List<Reference> relevantHistory;
 
     /**
      * If the Task.focus is a request resource and the task is seeking fulfillment (i.e. is asking for the request to be actioned), this element identifies any limitations on what parts of the referenced request should be actioned.
      */
-    @Child(name = "restriction", type = {}, order=28, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "restriction", type = {}, order=29, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Constraints on fulfillment tasks", formalDefinition="If the Task.focus is a request resource and the task is seeking fulfillment (i.e. is asking for the request to be actioned), this element identifies any limitations on what parts of the referenced request should be actioned." )
     protected TaskRestrictionComponent restriction;
 
     /**
      * Additional information that may be needed in the execution of the task.
      */
-    @Child(name = "input", type = {}, order=29, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "input", type = {}, order=30, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Information used to perform task", formalDefinition="Additional information that may be needed in the execution of the task." )
-    protected List<ParameterComponent> input;
+    protected List<TaskInputComponent> input;
 
     /**
      * Outputs produced by the Task.
      */
-    @Child(name = "output", type = {}, order=30, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "output", type = {}, order=31, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Information produced as part of task", formalDefinition="Outputs produced by the Task." )
     protected List<TaskOutputComponent> output;
 
-    private static final long serialVersionUID = -1820039698L;
+    private static final long serialVersionUID = -15240003L;
 
   /**
    * Constructor
@@ -3740,7 +3788,7 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @return {@link #basedOn} (BasedOn refers to a higher-level authorization that triggered the creation of the task.  It references a "request" resource such as a ServiceRequest, MedicationRequest, ServiceRequest, CarePlan, etc. which is distinct from the "request" resource the task is seeking to fulfill.  This latter resource is referenced by FocusOn.  For example, based on a ServiceRequest (= BasedOn), a task is created to fulfill a procedureRequest ( = FocusOn ) to collect a specimen from a patient.)
+     * @return {@link #basedOn} (BasedOn refers to a higher-level authorization that triggered the creation of the task.  It references a "request" resource such as a ServiceRequest, MedicationRequest, CarePlan, etc. which is distinct from the "request" resource the task is seeking to fulfill.  This latter resource is referenced by focus.  For example, based on a CarePlan (= basedOn), a task is created to fulfill a ServiceRequest ( = focus ) to collect a specimen from a patient.)
      */
     public List<Reference> getBasedOn() { 
       if (this.basedOn == null)
@@ -3917,12 +3965,12 @@ public class Task extends DomainResource {
     /**
      * @return {@link #statusReason} (An explanation as to why this task is held, failed, was refused, etc.)
      */
-    public CodeableConcept getStatusReason() { 
+    public CodeableReference getStatusReason() { 
       if (this.statusReason == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Task.statusReason");
         else if (Configuration.doAutoCreate())
-          this.statusReason = new CodeableConcept(); // cc
+          this.statusReason = new CodeableReference(); // cc
       return this.statusReason;
     }
 
@@ -3933,7 +3981,7 @@ public class Task extends DomainResource {
     /**
      * @param value {@link #statusReason} (An explanation as to why this task is held, failed, was refused, etc.)
      */
-    public Task setStatusReason(CodeableConcept value) { 
+    public Task setStatusReason(CodeableReference value) { 
       this.statusReason = value;
       return this;
     }
@@ -4057,6 +4105,51 @@ public class Task extends DomainResource {
     }
 
     /**
+     * @return {@link #doNotPerform} (If true indicates that the Task is asking for the specified action to *not* occur.). This is the underlying object with id, value and extensions. The accessor "getDoNotPerform" gives direct access to the value
+     */
+    public BooleanType getDoNotPerformElement() { 
+      if (this.doNotPerform == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Task.doNotPerform");
+        else if (Configuration.doAutoCreate())
+          this.doNotPerform = new BooleanType(); // bb
+      return this.doNotPerform;
+    }
+
+    public boolean hasDoNotPerformElement() { 
+      return this.doNotPerform != null && !this.doNotPerform.isEmpty();
+    }
+
+    public boolean hasDoNotPerform() { 
+      return this.doNotPerform != null && !this.doNotPerform.isEmpty();
+    }
+
+    /**
+     * @param value {@link #doNotPerform} (If true indicates that the Task is asking for the specified action to *not* occur.). This is the underlying object with id, value and extensions. The accessor "getDoNotPerform" gives direct access to the value
+     */
+    public Task setDoNotPerformElement(BooleanType value) { 
+      this.doNotPerform = value;
+      return this;
+    }
+
+    /**
+     * @return If true indicates that the Task is asking for the specified action to *not* occur.
+     */
+    public boolean getDoNotPerform() { 
+      return this.doNotPerform == null || this.doNotPerform.isEmpty() ? false : this.doNotPerform.getValue();
+    }
+
+    /**
+     * @param value If true indicates that the Task is asking for the specified action to *not* occur.
+     */
+    public Task setDoNotPerform(boolean value) { 
+        if (this.doNotPerform == null)
+          this.doNotPerform = new BooleanType();
+        this.doNotPerform.setValue(value);
+      return this;
+    }
+
+    /**
      * @return {@link #code} (A name or code (or both) briefly describing what the task involves.)
      */
     public CodeableConcept getCode() { 
@@ -4130,7 +4223,7 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @return {@link #focus} (The request being actioned or the resource being manipulated by this task.)
+     * @return {@link #focus} (The request being fulfilled or the resource being manipulated (changed, suspended, etc.) by this task.)
      */
     public Reference getFocus() { 
       if (this.focus == null)
@@ -4146,7 +4239,7 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @param value {@link #focus} (The request being actioned or the resource being manipulated by this task.)
+     * @param value {@link #focus} (The request being fulfilled or the resource being manipulated (changed, suspended, etc.) by this task.)
      */
     public Task setFocus(Reference value) { 
       this.focus = value;
@@ -4198,6 +4291,30 @@ public class Task extends DomainResource {
      */
     public Task setEncounter(Reference value) { 
       this.encounter = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #requestedPeriod} (Indicates the start and/or end of the period of time when completion of the task is desired to take place.)
+     */
+    public Period getRequestedPeriod() { 
+      if (this.requestedPeriod == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Task.requestedPeriod");
+        else if (Configuration.doAutoCreate())
+          this.requestedPeriod = new Period(); // cc
+      return this.requestedPeriod;
+    }
+
+    public boolean hasRequestedPeriod() { 
+      return this.requestedPeriod != null && !this.requestedPeriod.isEmpty();
+    }
+
+    /**
+     * @param value {@link #requestedPeriod} (Indicates the start and/or end of the period of time when completion of the task is desired to take place.)
+     */
+    public Task setRequestedPeriod(Period value) { 
+      this.requestedPeriod = value;
       return this;
     }
 
@@ -4348,56 +4465,56 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @return {@link #performerType} (The kind of participant that should perform the task.)
+     * @return {@link #requestedPerformer} (The kind of participant or specific participant that should perform the task.)
      */
-    public List<CodeableConcept> getPerformerType() { 
-      if (this.performerType == null)
-        this.performerType = new ArrayList<CodeableConcept>();
-      return this.performerType;
+    public List<CodeableReference> getRequestedPerformer() { 
+      if (this.requestedPerformer == null)
+        this.requestedPerformer = new ArrayList<CodeableReference>();
+      return this.requestedPerformer;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Task setPerformerType(List<CodeableConcept> thePerformerType) { 
-      this.performerType = thePerformerType;
+    public Task setRequestedPerformer(List<CodeableReference> theRequestedPerformer) { 
+      this.requestedPerformer = theRequestedPerformer;
       return this;
     }
 
-    public boolean hasPerformerType() { 
-      if (this.performerType == null)
+    public boolean hasRequestedPerformer() { 
+      if (this.requestedPerformer == null)
         return false;
-      for (CodeableConcept item : this.performerType)
+      for (CodeableReference item : this.requestedPerformer)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public CodeableConcept addPerformerType() { //3
-      CodeableConcept t = new CodeableConcept();
-      if (this.performerType == null)
-        this.performerType = new ArrayList<CodeableConcept>();
-      this.performerType.add(t);
+    public CodeableReference addRequestedPerformer() { //3
+      CodeableReference t = new CodeableReference();
+      if (this.requestedPerformer == null)
+        this.requestedPerformer = new ArrayList<CodeableReference>();
+      this.requestedPerformer.add(t);
       return t;
     }
 
-    public Task addPerformerType(CodeableConcept t) { //3
+    public Task addRequestedPerformer(CodeableReference t) { //3
       if (t == null)
         return this;
-      if (this.performerType == null)
-        this.performerType = new ArrayList<CodeableConcept>();
-      this.performerType.add(t);
+      if (this.requestedPerformer == null)
+        this.requestedPerformer = new ArrayList<CodeableReference>();
+      this.requestedPerformer.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #performerType}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #requestedPerformer}, creating it if it does not already exist {3}
      */
-    public CodeableConcept getPerformerTypeFirstRep() { 
-      if (getPerformerType().isEmpty()) {
-        addPerformerType();
+    public CodeableReference getRequestedPerformerFirstRep() { 
+      if (getRequestedPerformer().isEmpty()) {
+        addRequestedPerformer();
       }
-      return getPerformerType().get(0);
+      return getRequestedPerformer().get(0);
     }
 
     /**
@@ -4449,51 +4566,56 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @return {@link #reasonCode} (A description or code indicating why this task needs to be performed.)
+     * @return {@link #reason} (A description, code, or reference indicating why this task needs to be performed.)
      */
-    public CodeableConcept getReasonCode() { 
-      if (this.reasonCode == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Task.reasonCode");
-        else if (Configuration.doAutoCreate())
-          this.reasonCode = new CodeableConcept(); // cc
-      return this.reasonCode;
-    }
-
-    public boolean hasReasonCode() { 
-      return this.reasonCode != null && !this.reasonCode.isEmpty();
+    public List<CodeableReference> getReason() { 
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      return this.reason;
     }
 
     /**
-     * @param value {@link #reasonCode} (A description or code indicating why this task needs to be performed.)
+     * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Task setReasonCode(CodeableConcept value) { 
-      this.reasonCode = value;
+    public Task setReason(List<CodeableReference> theReason) { 
+      this.reason = theReason;
+      return this;
+    }
+
+    public boolean hasReason() { 
+      if (this.reason == null)
+        return false;
+      for (CodeableReference item : this.reason)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableReference addReason() { //3
+      CodeableReference t = new CodeableReference();
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      this.reason.add(t);
+      return t;
+    }
+
+    public Task addReason(CodeableReference t) { //3
+      if (t == null)
+        return this;
+      if (this.reason == null)
+        this.reason = new ArrayList<CodeableReference>();
+      this.reason.add(t);
       return this;
     }
 
     /**
-     * @return {@link #reasonReference} (A resource reference indicating why this task needs to be performed.)
+     * @return The first repetition of repeating field {@link #reason}, creating it if it does not already exist {3}
      */
-    public Reference getReasonReference() { 
-      if (this.reasonReference == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Task.reasonReference");
-        else if (Configuration.doAutoCreate())
-          this.reasonReference = new Reference(); // cc
-      return this.reasonReference;
-    }
-
-    public boolean hasReasonReference() { 
-      return this.reasonReference != null && !this.reasonReference.isEmpty();
-    }
-
-    /**
-     * @param value {@link #reasonReference} (A resource reference indicating why this task needs to be performed.)
-     */
-    public Task setReasonReference(Reference value) { 
-      this.reasonReference = value;
-      return this;
+    public CodeableReference getReasonFirstRep() { 
+      if (getReason().isEmpty()) {
+        addReason();
+      }
+      return getReason().get(0);
     }
 
     /**
@@ -4682,16 +4804,16 @@ public class Task extends DomainResource {
     /**
      * @return {@link #input} (Additional information that may be needed in the execution of the task.)
      */
-    public List<ParameterComponent> getInput() { 
+    public List<TaskInputComponent> getInput() { 
       if (this.input == null)
-        this.input = new ArrayList<ParameterComponent>();
+        this.input = new ArrayList<TaskInputComponent>();
       return this.input;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Task setInput(List<ParameterComponent> theInput) { 
+    public Task setInput(List<TaskInputComponent> theInput) { 
       this.input = theInput;
       return this;
     }
@@ -4699,25 +4821,25 @@ public class Task extends DomainResource {
     public boolean hasInput() { 
       if (this.input == null)
         return false;
-      for (ParameterComponent item : this.input)
+      for (TaskInputComponent item : this.input)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public ParameterComponent addInput() { //3
-      ParameterComponent t = new ParameterComponent();
+    public TaskInputComponent addInput() { //3
+      TaskInputComponent t = new TaskInputComponent();
       if (this.input == null)
-        this.input = new ArrayList<ParameterComponent>();
+        this.input = new ArrayList<TaskInputComponent>();
       this.input.add(t);
       return t;
     }
 
-    public Task addInput(ParameterComponent t) { //3
+    public Task addInput(TaskInputComponent t) { //3
       if (t == null)
         return this;
       if (this.input == null)
-        this.input = new ArrayList<ParameterComponent>();
+        this.input = new ArrayList<TaskInputComponent>();
       this.input.add(t);
       return this;
     }
@@ -4725,7 +4847,7 @@ public class Task extends DomainResource {
     /**
      * @return The first repetition of repeating field {@link #input}, creating it if it does not already exist {3}
      */
-    public ParameterComponent getInputFirstRep() { 
+    public TaskInputComponent getInputFirstRep() { 
       if (getInput().isEmpty()) {
         addInput();
       }
@@ -4790,28 +4912,29 @@ public class Task extends DomainResource {
         children.add(new Property("identifier", "Identifier", "The business identifier for this task.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("instantiatesCanonical", "canonical(ActivityDefinition)", "The URL pointing to a *FHIR*-defined protocol, guideline, orderset or other definition that is adhered to in whole or in part by this Task.", 0, 1, instantiatesCanonical));
         children.add(new Property("instantiatesUri", "uri", "The URL pointing to an *externally* maintained  protocol, guideline, orderset or other definition that is adhered to in whole or in part by this Task.", 0, 1, instantiatesUri));
-        children.add(new Property("basedOn", "Reference(Any)", "BasedOn refers to a higher-level authorization that triggered the creation of the task.  It references a \"request\" resource such as a ServiceRequest, MedicationRequest, ServiceRequest, CarePlan, etc. which is distinct from the \"request\" resource the task is seeking to fulfill.  This latter resource is referenced by FocusOn.  For example, based on a ServiceRequest (= BasedOn), a task is created to fulfill a procedureRequest ( = FocusOn ) to collect a specimen from a patient.", 0, java.lang.Integer.MAX_VALUE, basedOn));
+        children.add(new Property("basedOn", "Reference(Any)", "BasedOn refers to a higher-level authorization that triggered the creation of the task.  It references a \"request\" resource such as a ServiceRequest, MedicationRequest, CarePlan, etc. which is distinct from the \"request\" resource the task is seeking to fulfill.  This latter resource is referenced by focus.  For example, based on a CarePlan (= basedOn), a task is created to fulfill a ServiceRequest ( = focus ) to collect a specimen from a patient.", 0, java.lang.Integer.MAX_VALUE, basedOn));
         children.add(new Property("groupIdentifier", "Identifier", "An identifier that links together multiple tasks and other requests that were created in the same context.", 0, 1, groupIdentifier));
         children.add(new Property("partOf", "Reference(Task)", "Task that this particular task is part of.", 0, java.lang.Integer.MAX_VALUE, partOf));
         children.add(new Property("status", "code", "The current status of the task.", 0, 1, status));
-        children.add(new Property("statusReason", "CodeableConcept", "An explanation as to why this task is held, failed, was refused, etc.", 0, 1, statusReason));
+        children.add(new Property("statusReason", "CodeableReference", "An explanation as to why this task is held, failed, was refused, etc.", 0, 1, statusReason));
         children.add(new Property("businessStatus", "CodeableConcept", "Contains business-specific nuances of the business state.", 0, 1, businessStatus));
         children.add(new Property("intent", "code", "Indicates the \"level\" of actionability associated with the Task, i.e. i+R[9]Cs this a proposed task, a planned task, an actionable task, etc.", 0, 1, intent));
         children.add(new Property("priority", "code", "Indicates how quickly the Task should be addressed with respect to other requests.", 0, 1, priority));
+        children.add(new Property("doNotPerform", "boolean", "If true indicates that the Task is asking for the specified action to *not* occur.", 0, 1, doNotPerform));
         children.add(new Property("code", "CodeableConcept", "A name or code (or both) briefly describing what the task involves.", 0, 1, code));
         children.add(new Property("description", "string", "A free-text description of what is to be performed.", 0, 1, description));
-        children.add(new Property("focus", "Reference(Any)", "The request being actioned or the resource being manipulated by this task.", 0, 1, focus));
+        children.add(new Property("focus", "Reference(Any)", "The request being fulfilled or the resource being manipulated (changed, suspended, etc.) by this task.", 0, 1, focus));
         children.add(new Property("for", "Reference(Any)", "The entity who benefits from the performance of the service specified in the task (e.g., the patient).", 0, 1, for_));
         children.add(new Property("encounter", "Reference(Encounter)", "The healthcare event  (e.g. a patient and healthcare provider interaction) during which this task was created.", 0, 1, encounter));
+        children.add(new Property("requestedPeriod", "Period", "Indicates the start and/or end of the period of time when completion of the task is desired to take place.", 0, 1, requestedPeriod));
         children.add(new Property("executionPeriod", "Period", "Identifies the time action was first taken against the task (start) and/or the time final action was taken against the task prior to marking it as completed (end).", 0, 1, executionPeriod));
         children.add(new Property("authoredOn", "dateTime", "The date and time this task was created.", 0, 1, authoredOn));
         children.add(new Property("lastModified", "dateTime", "The date and time of last modification to this task.", 0, 1, lastModified));
         children.add(new Property("requester", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The creator of the task.", 0, 1, requester));
-        children.add(new Property("performerType", "CodeableConcept", "The kind of participant that should perform the task.", 0, java.lang.Integer.MAX_VALUE, performerType));
+        children.add(new Property("requestedPerformer", "CodeableReference(Practitioner|PractitionerRole|Organization|CareTeam|HealthcareService|Patient|Device|RelatedPerson)", "The kind of participant or specific participant that should perform the task.", 0, java.lang.Integer.MAX_VALUE, requestedPerformer));
         children.add(new Property("owner", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|HealthcareService|Patient|Device|RelatedPerson)", "Individual organization or Device currently responsible for task execution.", 0, 1, owner));
         children.add(new Property("location", "Reference(Location)", "Principal physical location where the this task is performed.", 0, 1, location));
-        children.add(new Property("reasonCode", "CodeableConcept", "A description or code indicating why this task needs to be performed.", 0, 1, reasonCode));
-        children.add(new Property("reasonReference", "Reference(Any)", "A resource reference indicating why this task needs to be performed.", 0, 1, reasonReference));
+        children.add(new Property("reason", "CodeableReference", "A description, code, or reference indicating why this task needs to be performed.", 0, java.lang.Integer.MAX_VALUE, reason));
         children.add(new Property("insurance", "Reference(Coverage|ClaimResponse)", "Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be relevant to the Task.", 0, java.lang.Integer.MAX_VALUE, insurance));
         children.add(new Property("note", "Annotation", "Free-text information captured about the task as it progresses.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("relevantHistory", "Reference(Provenance)", "Links to Provenance records for past versions of this Task that identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the task.", 0, java.lang.Integer.MAX_VALUE, relevantHistory));
@@ -4826,28 +4949,29 @@ public class Task extends DomainResource {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "The business identifier for this task.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 8911915: /*instantiatesCanonical*/  return new Property("instantiatesCanonical", "canonical(ActivityDefinition)", "The URL pointing to a *FHIR*-defined protocol, guideline, orderset or other definition that is adhered to in whole or in part by this Task.", 0, 1, instantiatesCanonical);
         case -1926393373: /*instantiatesUri*/  return new Property("instantiatesUri", "uri", "The URL pointing to an *externally* maintained  protocol, guideline, orderset or other definition that is adhered to in whole or in part by this Task.", 0, 1, instantiatesUri);
-        case -332612366: /*basedOn*/  return new Property("basedOn", "Reference(Any)", "BasedOn refers to a higher-level authorization that triggered the creation of the task.  It references a \"request\" resource such as a ServiceRequest, MedicationRequest, ServiceRequest, CarePlan, etc. which is distinct from the \"request\" resource the task is seeking to fulfill.  This latter resource is referenced by FocusOn.  For example, based on a ServiceRequest (= BasedOn), a task is created to fulfill a procedureRequest ( = FocusOn ) to collect a specimen from a patient.", 0, java.lang.Integer.MAX_VALUE, basedOn);
+        case -332612366: /*basedOn*/  return new Property("basedOn", "Reference(Any)", "BasedOn refers to a higher-level authorization that triggered the creation of the task.  It references a \"request\" resource such as a ServiceRequest, MedicationRequest, CarePlan, etc. which is distinct from the \"request\" resource the task is seeking to fulfill.  This latter resource is referenced by focus.  For example, based on a CarePlan (= basedOn), a task is created to fulfill a ServiceRequest ( = focus ) to collect a specimen from a patient.", 0, java.lang.Integer.MAX_VALUE, basedOn);
         case -445338488: /*groupIdentifier*/  return new Property("groupIdentifier", "Identifier", "An identifier that links together multiple tasks and other requests that were created in the same context.", 0, 1, groupIdentifier);
         case -995410646: /*partOf*/  return new Property("partOf", "Reference(Task)", "Task that this particular task is part of.", 0, java.lang.Integer.MAX_VALUE, partOf);
         case -892481550: /*status*/  return new Property("status", "code", "The current status of the task.", 0, 1, status);
-        case 2051346646: /*statusReason*/  return new Property("statusReason", "CodeableConcept", "An explanation as to why this task is held, failed, was refused, etc.", 0, 1, statusReason);
+        case 2051346646: /*statusReason*/  return new Property("statusReason", "CodeableReference", "An explanation as to why this task is held, failed, was refused, etc.", 0, 1, statusReason);
         case 2008591314: /*businessStatus*/  return new Property("businessStatus", "CodeableConcept", "Contains business-specific nuances of the business state.", 0, 1, businessStatus);
         case -1183762788: /*intent*/  return new Property("intent", "code", "Indicates the \"level\" of actionability associated with the Task, i.e. i+R[9]Cs this a proposed task, a planned task, an actionable task, etc.", 0, 1, intent);
         case -1165461084: /*priority*/  return new Property("priority", "code", "Indicates how quickly the Task should be addressed with respect to other requests.", 0, 1, priority);
+        case -1788508167: /*doNotPerform*/  return new Property("doNotPerform", "boolean", "If true indicates that the Task is asking for the specified action to *not* occur.", 0, 1, doNotPerform);
         case 3059181: /*code*/  return new Property("code", "CodeableConcept", "A name or code (or both) briefly describing what the task involves.", 0, 1, code);
         case -1724546052: /*description*/  return new Property("description", "string", "A free-text description of what is to be performed.", 0, 1, description);
-        case 97604824: /*focus*/  return new Property("focus", "Reference(Any)", "The request being actioned or the resource being manipulated by this task.", 0, 1, focus);
+        case 97604824: /*focus*/  return new Property("focus", "Reference(Any)", "The request being fulfilled or the resource being manipulated (changed, suspended, etc.) by this task.", 0, 1, focus);
         case 101577: /*for*/  return new Property("for", "Reference(Any)", "The entity who benefits from the performance of the service specified in the task (e.g., the patient).", 0, 1, for_);
         case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The healthcare event  (e.g. a patient and healthcare provider interaction) during which this task was created.", 0, 1, encounter);
+        case -897241393: /*requestedPeriod*/  return new Property("requestedPeriod", "Period", "Indicates the start and/or end of the period of time when completion of the task is desired to take place.", 0, 1, requestedPeriod);
         case 1218624249: /*executionPeriod*/  return new Property("executionPeriod", "Period", "Identifies the time action was first taken against the task (start) and/or the time final action was taken against the task prior to marking it as completed (end).", 0, 1, executionPeriod);
         case -1500852503: /*authoredOn*/  return new Property("authoredOn", "dateTime", "The date and time this task was created.", 0, 1, authoredOn);
         case 1959003007: /*lastModified*/  return new Property("lastModified", "dateTime", "The date and time of last modification to this task.", 0, 1, lastModified);
         case 693933948: /*requester*/  return new Property("requester", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The creator of the task.", 0, 1, requester);
-        case -901444568: /*performerType*/  return new Property("performerType", "CodeableConcept", "The kind of participant that should perform the task.", 0, java.lang.Integer.MAX_VALUE, performerType);
+        case 2072749056: /*requestedPerformer*/  return new Property("requestedPerformer", "CodeableReference(Practitioner|PractitionerRole|Organization|CareTeam|HealthcareService|Patient|Device|RelatedPerson)", "The kind of participant or specific participant that should perform the task.", 0, java.lang.Integer.MAX_VALUE, requestedPerformer);
         case 106164915: /*owner*/  return new Property("owner", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|HealthcareService|Patient|Device|RelatedPerson)", "Individual organization or Device currently responsible for task execution.", 0, 1, owner);
         case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "Principal physical location where the this task is performed.", 0, 1, location);
-        case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "A description or code indicating why this task needs to be performed.", 0, 1, reasonCode);
-        case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Any)", "A resource reference indicating why this task needs to be performed.", 0, 1, reasonReference);
+        case -934964668: /*reason*/  return new Property("reason", "CodeableReference", "A description, code, or reference indicating why this task needs to be performed.", 0, java.lang.Integer.MAX_VALUE, reason);
         case 73049818: /*insurance*/  return new Property("insurance", "Reference(Coverage|ClaimResponse)", "Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be relevant to the Task.", 0, java.lang.Integer.MAX_VALUE, insurance);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Free-text information captured about the task as it progresses.", 0, java.lang.Integer.MAX_VALUE, note);
         case 1538891575: /*relevantHistory*/  return new Property("relevantHistory", "Reference(Provenance)", "Links to Provenance records for past versions of this Task that identify key state transitions or updates that are likely to be relevant to a user looking at the current version of the task.", 0, java.lang.Integer.MAX_VALUE, relevantHistory);
@@ -4869,29 +4993,30 @@ public class Task extends DomainResource {
         case -445338488: /*groupIdentifier*/ return this.groupIdentifier == null ? new Base[0] : new Base[] {this.groupIdentifier}; // Identifier
         case -995410646: /*partOf*/ return this.partOf == null ? new Base[0] : this.partOf.toArray(new Base[this.partOf.size()]); // Reference
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<TaskStatus>
-        case 2051346646: /*statusReason*/ return this.statusReason == null ? new Base[0] : new Base[] {this.statusReason}; // CodeableConcept
+        case 2051346646: /*statusReason*/ return this.statusReason == null ? new Base[0] : new Base[] {this.statusReason}; // CodeableReference
         case 2008591314: /*businessStatus*/ return this.businessStatus == null ? new Base[0] : new Base[] {this.businessStatus}; // CodeableConcept
         case -1183762788: /*intent*/ return this.intent == null ? new Base[0] : new Base[] {this.intent}; // Enumeration<TaskIntent>
         case -1165461084: /*priority*/ return this.priority == null ? new Base[0] : new Base[] {this.priority}; // Enumeration<RequestPriority>
+        case -1788508167: /*doNotPerform*/ return this.doNotPerform == null ? new Base[0] : new Base[] {this.doNotPerform}; // BooleanType
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case 97604824: /*focus*/ return this.focus == null ? new Base[0] : new Base[] {this.focus}; // Reference
         case 101577: /*for*/ return this.for_ == null ? new Base[0] : new Base[] {this.for_}; // Reference
         case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : new Base[] {this.encounter}; // Reference
+        case -897241393: /*requestedPeriod*/ return this.requestedPeriod == null ? new Base[0] : new Base[] {this.requestedPeriod}; // Period
         case 1218624249: /*executionPeriod*/ return this.executionPeriod == null ? new Base[0] : new Base[] {this.executionPeriod}; // Period
         case -1500852503: /*authoredOn*/ return this.authoredOn == null ? new Base[0] : new Base[] {this.authoredOn}; // DateTimeType
         case 1959003007: /*lastModified*/ return this.lastModified == null ? new Base[0] : new Base[] {this.lastModified}; // DateTimeType
         case 693933948: /*requester*/ return this.requester == null ? new Base[0] : new Base[] {this.requester}; // Reference
-        case -901444568: /*performerType*/ return this.performerType == null ? new Base[0] : this.performerType.toArray(new Base[this.performerType.size()]); // CodeableConcept
+        case 2072749056: /*requestedPerformer*/ return this.requestedPerformer == null ? new Base[0] : this.requestedPerformer.toArray(new Base[this.requestedPerformer.size()]); // CodeableReference
         case 106164915: /*owner*/ return this.owner == null ? new Base[0] : new Base[] {this.owner}; // Reference
         case 1901043637: /*location*/ return this.location == null ? new Base[0] : new Base[] {this.location}; // Reference
-        case 722137681: /*reasonCode*/ return this.reasonCode == null ? new Base[0] : new Base[] {this.reasonCode}; // CodeableConcept
-        case -1146218137: /*reasonReference*/ return this.reasonReference == null ? new Base[0] : new Base[] {this.reasonReference}; // Reference
+        case -934964668: /*reason*/ return this.reason == null ? new Base[0] : this.reason.toArray(new Base[this.reason.size()]); // CodeableReference
         case 73049818: /*insurance*/ return this.insurance == null ? new Base[0] : this.insurance.toArray(new Base[this.insurance.size()]); // Reference
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         case 1538891575: /*relevantHistory*/ return this.relevantHistory == null ? new Base[0] : this.relevantHistory.toArray(new Base[this.relevantHistory.size()]); // Reference
         case -1561062452: /*restriction*/ return this.restriction == null ? new Base[0] : new Base[] {this.restriction}; // TaskRestrictionComponent
-        case 100358090: /*input*/ return this.input == null ? new Base[0] : this.input.toArray(new Base[this.input.size()]); // ParameterComponent
+        case 100358090: /*input*/ return this.input == null ? new Base[0] : this.input.toArray(new Base[this.input.size()]); // TaskInputComponent
         case -1005512447: /*output*/ return this.output == null ? new Base[0] : this.output.toArray(new Base[this.output.size()]); // TaskOutputComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -4924,7 +5049,7 @@ public class Task extends DomainResource {
           this.status = (Enumeration) value; // Enumeration<TaskStatus>
           return value;
         case 2051346646: // statusReason
-          this.statusReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.statusReason = TypeConvertor.castToCodeableReference(value); // CodeableReference
           return value;
         case 2008591314: // businessStatus
           this.businessStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -4936,6 +5061,9 @@ public class Task extends DomainResource {
         case -1165461084: // priority
           value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<RequestPriority>
+          return value;
+        case -1788508167: // doNotPerform
+          this.doNotPerform = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case 3059181: // code
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -4952,6 +5080,9 @@ public class Task extends DomainResource {
         case 1524132147: // encounter
           this.encounter = TypeConvertor.castToReference(value); // Reference
           return value;
+        case -897241393: // requestedPeriod
+          this.requestedPeriod = TypeConvertor.castToPeriod(value); // Period
+          return value;
         case 1218624249: // executionPeriod
           this.executionPeriod = TypeConvertor.castToPeriod(value); // Period
           return value;
@@ -4964,8 +5095,8 @@ public class Task extends DomainResource {
         case 693933948: // requester
           this.requester = TypeConvertor.castToReference(value); // Reference
           return value;
-        case -901444568: // performerType
-          this.getPerformerType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+        case 2072749056: // requestedPerformer
+          this.getRequestedPerformer().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case 106164915: // owner
           this.owner = TypeConvertor.castToReference(value); // Reference
@@ -4973,11 +5104,8 @@ public class Task extends DomainResource {
         case 1901043637: // location
           this.location = TypeConvertor.castToReference(value); // Reference
           return value;
-        case 722137681: // reasonCode
-          this.reasonCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case -1146218137: // reasonReference
-          this.reasonReference = TypeConvertor.castToReference(value); // Reference
+        case -934964668: // reason
+          this.getReason().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case 73049818: // insurance
           this.getInsurance().add(TypeConvertor.castToReference(value)); // Reference
@@ -4992,7 +5120,7 @@ public class Task extends DomainResource {
           this.restriction = (TaskRestrictionComponent) value; // TaskRestrictionComponent
           return value;
         case 100358090: // input
-          this.getInput().add((ParameterComponent) value); // ParameterComponent
+          this.getInput().add((TaskInputComponent) value); // TaskInputComponent
           return value;
         case -1005512447: // output
           this.getOutput().add((TaskOutputComponent) value); // TaskOutputComponent
@@ -5020,7 +5148,7 @@ public class Task extends DomainResource {
           value = new TaskStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<TaskStatus>
         } else if (name.equals("statusReason")) {
-          this.statusReason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.statusReason = TypeConvertor.castToCodeableReference(value); // CodeableReference
         } else if (name.equals("businessStatus")) {
           this.businessStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("intent")) {
@@ -5029,6 +5157,8 @@ public class Task extends DomainResource {
         } else if (name.equals("priority")) {
           value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.priority = (Enumeration) value; // Enumeration<RequestPriority>
+        } else if (name.equals("doNotPerform")) {
+          this.doNotPerform = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("code")) {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("description")) {
@@ -5039,6 +5169,8 @@ public class Task extends DomainResource {
           this.for_ = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("encounter")) {
           this.encounter = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("requestedPeriod")) {
+          this.requestedPeriod = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("executionPeriod")) {
           this.executionPeriod = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("authoredOn")) {
@@ -5047,16 +5179,14 @@ public class Task extends DomainResource {
           this.lastModified = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("requester")) {
           this.requester = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("performerType")) {
-          this.getPerformerType().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("requestedPerformer")) {
+          this.getRequestedPerformer().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("owner")) {
           this.owner = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("location")) {
           this.location = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("reasonCode")) {
-          this.reasonCode = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("reasonReference")) {
-          this.reasonReference = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("reason")) {
+          this.getReason().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("insurance")) {
           this.getInsurance().add(TypeConvertor.castToReference(value));
         } else if (name.equals("note")) {
@@ -5066,7 +5196,7 @@ public class Task extends DomainResource {
         } else if (name.equals("restriction")) {
           this.restriction = (TaskRestrictionComponent) value; // TaskRestrictionComponent
         } else if (name.equals("input")) {
-          this.getInput().add((ParameterComponent) value);
+          this.getInput().add((TaskInputComponent) value);
         } else if (name.equals("output")) {
           this.getOutput().add((TaskOutputComponent) value);
         } else
@@ -5088,20 +5218,21 @@ public class Task extends DomainResource {
         case 2008591314:  return getBusinessStatus();
         case -1183762788:  return getIntentElement();
         case -1165461084:  return getPriorityElement();
+        case -1788508167:  return getDoNotPerformElement();
         case 3059181:  return getCode();
         case -1724546052:  return getDescriptionElement();
         case 97604824:  return getFocus();
         case 101577:  return getFor();
         case 1524132147:  return getEncounter();
+        case -897241393:  return getRequestedPeriod();
         case 1218624249:  return getExecutionPeriod();
         case -1500852503:  return getAuthoredOnElement();
         case 1959003007:  return getLastModifiedElement();
         case 693933948:  return getRequester();
-        case -901444568:  return addPerformerType(); 
+        case 2072749056:  return addRequestedPerformer(); 
         case 106164915:  return getOwner();
         case 1901043637:  return getLocation();
-        case 722137681:  return getReasonCode();
-        case -1146218137:  return getReasonReference();
+        case -934964668:  return addReason(); 
         case 73049818:  return addInsurance(); 
         case 3387378:  return addNote(); 
         case 1538891575:  return addRelevantHistory(); 
@@ -5123,24 +5254,25 @@ public class Task extends DomainResource {
         case -445338488: /*groupIdentifier*/ return new String[] {"Identifier"};
         case -995410646: /*partOf*/ return new String[] {"Reference"};
         case -892481550: /*status*/ return new String[] {"code"};
-        case 2051346646: /*statusReason*/ return new String[] {"CodeableConcept"};
+        case 2051346646: /*statusReason*/ return new String[] {"CodeableReference"};
         case 2008591314: /*businessStatus*/ return new String[] {"CodeableConcept"};
         case -1183762788: /*intent*/ return new String[] {"code"};
         case -1165461084: /*priority*/ return new String[] {"code"};
+        case -1788508167: /*doNotPerform*/ return new String[] {"boolean"};
         case 3059181: /*code*/ return new String[] {"CodeableConcept"};
         case -1724546052: /*description*/ return new String[] {"string"};
         case 97604824: /*focus*/ return new String[] {"Reference"};
         case 101577: /*for*/ return new String[] {"Reference"};
         case 1524132147: /*encounter*/ return new String[] {"Reference"};
+        case -897241393: /*requestedPeriod*/ return new String[] {"Period"};
         case 1218624249: /*executionPeriod*/ return new String[] {"Period"};
         case -1500852503: /*authoredOn*/ return new String[] {"dateTime"};
         case 1959003007: /*lastModified*/ return new String[] {"dateTime"};
         case 693933948: /*requester*/ return new String[] {"Reference"};
-        case -901444568: /*performerType*/ return new String[] {"CodeableConcept"};
+        case 2072749056: /*requestedPerformer*/ return new String[] {"CodeableReference"};
         case 106164915: /*owner*/ return new String[] {"Reference"};
         case 1901043637: /*location*/ return new String[] {"Reference"};
-        case 722137681: /*reasonCode*/ return new String[] {"CodeableConcept"};
-        case -1146218137: /*reasonReference*/ return new String[] {"Reference"};
+        case -934964668: /*reason*/ return new String[] {"CodeableReference"};
         case 73049818: /*insurance*/ return new String[] {"Reference"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         case 1538891575: /*relevantHistory*/ return new String[] {"Reference"};
@@ -5177,7 +5309,7 @@ public class Task extends DomainResource {
           throw new FHIRException("Cannot call addChild on a primitive type Task.status");
         }
         else if (name.equals("statusReason")) {
-          this.statusReason = new CodeableConcept();
+          this.statusReason = new CodeableReference();
           return this.statusReason;
         }
         else if (name.equals("businessStatus")) {
@@ -5189,6 +5321,9 @@ public class Task extends DomainResource {
         }
         else if (name.equals("priority")) {
           throw new FHIRException("Cannot call addChild on a primitive type Task.priority");
+        }
+        else if (name.equals("doNotPerform")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Task.doNotPerform");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
@@ -5209,6 +5344,10 @@ public class Task extends DomainResource {
           this.encounter = new Reference();
           return this.encounter;
         }
+        else if (name.equals("requestedPeriod")) {
+          this.requestedPeriod = new Period();
+          return this.requestedPeriod;
+        }
         else if (name.equals("executionPeriod")) {
           this.executionPeriod = new Period();
           return this.executionPeriod;
@@ -5223,8 +5362,8 @@ public class Task extends DomainResource {
           this.requester = new Reference();
           return this.requester;
         }
-        else if (name.equals("performerType")) {
-          return addPerformerType();
+        else if (name.equals("requestedPerformer")) {
+          return addRequestedPerformer();
         }
         else if (name.equals("owner")) {
           this.owner = new Reference();
@@ -5234,13 +5373,8 @@ public class Task extends DomainResource {
           this.location = new Reference();
           return this.location;
         }
-        else if (name.equals("reasonCode")) {
-          this.reasonCode = new CodeableConcept();
-          return this.reasonCode;
-        }
-        else if (name.equals("reasonReference")) {
-          this.reasonReference = new Reference();
-          return this.reasonReference;
+        else if (name.equals("reason")) {
+          return addReason();
         }
         else if (name.equals("insurance")) {
           return addInsurance();
@@ -5301,24 +5435,29 @@ public class Task extends DomainResource {
         dst.businessStatus = businessStatus == null ? null : businessStatus.copy();
         dst.intent = intent == null ? null : intent.copy();
         dst.priority = priority == null ? null : priority.copy();
+        dst.doNotPerform = doNotPerform == null ? null : doNotPerform.copy();
         dst.code = code == null ? null : code.copy();
         dst.description = description == null ? null : description.copy();
         dst.focus = focus == null ? null : focus.copy();
         dst.for_ = for_ == null ? null : for_.copy();
         dst.encounter = encounter == null ? null : encounter.copy();
+        dst.requestedPeriod = requestedPeriod == null ? null : requestedPeriod.copy();
         dst.executionPeriod = executionPeriod == null ? null : executionPeriod.copy();
         dst.authoredOn = authoredOn == null ? null : authoredOn.copy();
         dst.lastModified = lastModified == null ? null : lastModified.copy();
         dst.requester = requester == null ? null : requester.copy();
-        if (performerType != null) {
-          dst.performerType = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : performerType)
-            dst.performerType.add(i.copy());
+        if (requestedPerformer != null) {
+          dst.requestedPerformer = new ArrayList<CodeableReference>();
+          for (CodeableReference i : requestedPerformer)
+            dst.requestedPerformer.add(i.copy());
         };
         dst.owner = owner == null ? null : owner.copy();
         dst.location = location == null ? null : location.copy();
-        dst.reasonCode = reasonCode == null ? null : reasonCode.copy();
-        dst.reasonReference = reasonReference == null ? null : reasonReference.copy();
+        if (reason != null) {
+          dst.reason = new ArrayList<CodeableReference>();
+          for (CodeableReference i : reason)
+            dst.reason.add(i.copy());
+        };
         if (insurance != null) {
           dst.insurance = new ArrayList<Reference>();
           for (Reference i : insurance)
@@ -5336,8 +5475,8 @@ public class Task extends DomainResource {
         };
         dst.restriction = restriction == null ? null : restriction.copy();
         if (input != null) {
-          dst.input = new ArrayList<ParameterComponent>();
-          for (ParameterComponent i : input)
+          dst.input = new ArrayList<TaskInputComponent>();
+          for (TaskInputComponent i : input)
             dst.input.add(i.copy());
         };
         if (output != null) {
@@ -5362,13 +5501,13 @@ public class Task extends DomainResource {
            && compareDeep(instantiatesUri, o.instantiatesUri, true) && compareDeep(basedOn, o.basedOn, true)
            && compareDeep(groupIdentifier, o.groupIdentifier, true) && compareDeep(partOf, o.partOf, true)
            && compareDeep(status, o.status, true) && compareDeep(statusReason, o.statusReason, true) && compareDeep(businessStatus, o.businessStatus, true)
-           && compareDeep(intent, o.intent, true) && compareDeep(priority, o.priority, true) && compareDeep(code, o.code, true)
-           && compareDeep(description, o.description, true) && compareDeep(focus, o.focus, true) && compareDeep(for_, o.for_, true)
-           && compareDeep(encounter, o.encounter, true) && compareDeep(executionPeriod, o.executionPeriod, true)
-           && compareDeep(authoredOn, o.authoredOn, true) && compareDeep(lastModified, o.lastModified, true)
-           && compareDeep(requester, o.requester, true) && compareDeep(performerType, o.performerType, true)
-           && compareDeep(owner, o.owner, true) && compareDeep(location, o.location, true) && compareDeep(reasonCode, o.reasonCode, true)
-           && compareDeep(reasonReference, o.reasonReference, true) && compareDeep(insurance, o.insurance, true)
+           && compareDeep(intent, o.intent, true) && compareDeep(priority, o.priority, true) && compareDeep(doNotPerform, o.doNotPerform, true)
+           && compareDeep(code, o.code, true) && compareDeep(description, o.description, true) && compareDeep(focus, o.focus, true)
+           && compareDeep(for_, o.for_, true) && compareDeep(encounter, o.encounter, true) && compareDeep(requestedPeriod, o.requestedPeriod, true)
+           && compareDeep(executionPeriod, o.executionPeriod, true) && compareDeep(authoredOn, o.authoredOn, true)
+           && compareDeep(lastModified, o.lastModified, true) && compareDeep(requester, o.requester, true)
+           && compareDeep(requestedPerformer, o.requestedPerformer, true) && compareDeep(owner, o.owner, true)
+           && compareDeep(location, o.location, true) && compareDeep(reason, o.reason, true) && compareDeep(insurance, o.insurance, true)
            && compareDeep(note, o.note, true) && compareDeep(relevantHistory, o.relevantHistory, true) && compareDeep(restriction, o.restriction, true)
            && compareDeep(input, o.input, true) && compareDeep(output, o.output, true);
       }
@@ -5382,17 +5521,18 @@ public class Task extends DomainResource {
         Task o = (Task) other_;
         return compareValues(instantiatesCanonical, o.instantiatesCanonical, true) && compareValues(instantiatesUri, o.instantiatesUri, true)
            && compareValues(status, o.status, true) && compareValues(intent, o.intent, true) && compareValues(priority, o.priority, true)
-           && compareValues(description, o.description, true) && compareValues(authoredOn, o.authoredOn, true)
-           && compareValues(lastModified, o.lastModified, true);
+           && compareValues(doNotPerform, o.doNotPerform, true) && compareValues(description, o.description, true)
+           && compareValues(authoredOn, o.authoredOn, true) && compareValues(lastModified, o.lastModified, true)
+          ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, instantiatesCanonical
           , instantiatesUri, basedOn, groupIdentifier, partOf, status, statusReason, businessStatus
-          , intent, priority, code, description, focus, for_, encounter, executionPeriod
-          , authoredOn, lastModified, requester, performerType, owner, location, reasonCode
-          , reasonReference, insurance, note, relevantHistory, restriction, input, output
-          );
+          , intent, priority, doNotPerform, code, description, focus, for_, encounter
+          , requestedPeriod, executionPeriod, authoredOn, lastModified, requester, requestedPerformer
+          , owner, location, reason, insurance, note, relevantHistory, restriction, input
+          , output);
       }
 
   @Override
@@ -5428,7 +5568,7 @@ public class Task extends DomainResource {
    * Path: <b>Task.basedOn</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="based-on", path="Task.basedOn", description="Search by requests this task is based on", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="based-on", path="Task.basedOn", description="Search by requests this task is based on", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_BASED_ON = "based-on";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>based-on</b>
@@ -5520,7 +5660,7 @@ public class Task extends DomainResource {
    * Path: <b>Task.focus</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="focus", path="Task.focus", description="Search by task focus", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="focus", path="Task.focus", description="Search by task focus", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_FOCUS = "focus";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>focus</b>
@@ -5619,6 +5759,32 @@ public class Task extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.DateClientParam MODIFIED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_MODIFIED);
 
  /**
+   * Search parameter: <b>output</b>
+   * <p>
+   * Description: <b>Search by task output</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Task.output</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="output", path="Task.output", description="Search by task output", type="reference" )
+  public static final String SP_OUTPUT = "output";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>output</b>
+   * <p>
+   * Description: <b>Search by task output</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Task.output</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam OUTPUT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_OUTPUT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Task:output</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_OUTPUT = new ca.uhn.fhir.model.api.Include("Task:output").toLocked();
+
+ /**
    * Search parameter: <b>owner</b>
    * <p>
    * Description: <b>Search by task owner</b><br>
@@ -5699,22 +5865,28 @@ public class Task extends DomainResource {
  /**
    * Search parameter: <b>performer</b>
    * <p>
-   * Description: <b>Search by recommended type of performer (e.g., Requester, Performer, Scheduler).</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Task.performerType</b><br>
+   * Description: <b>Search by specific requested performer.</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Task.requestedPerformer.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="performer", path="Task.performerType", description="Search by recommended type of performer (e.g., Requester, Performer, Scheduler).", type="token" )
+  @SearchParamDefinition(name="performer", path="Task.requestedPerformer.reference", description="Search by specific requested performer.", type="reference" )
   public static final String SP_PERFORMER = "performer";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>performer</b>
    * <p>
-   * Description: <b>Search by recommended type of performer (e.g., Requester, Performer, Scheduler).</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Task.performerType</b><br>
+   * Description: <b>Search by specific requested performer.</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Task.requestedPerformer.reference</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PERFORMER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PERFORMER);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PERFORMER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PERFORMER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Task:performer</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PERFORMER = new ca.uhn.fhir.model.api.Include("Task:performer").toLocked();
 
  /**
    * Search parameter: <b>period</b>
@@ -5810,7 +5982,7 @@ public class Task extends DomainResource {
    * Path: <b>Task.for</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="Task.for", description="Search by subject", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="subject", path="Task.for", description="Search by subject", type="reference", target={Account.class, ActivityDefinition.class, ActorDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, ArtifactAssessment.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CarePlan.class, CareTeam.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseDefinition.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceDispense.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, FormularyItem.class, GenomicStudy.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingSelection.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestOrchestration.class, Requirements.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, Transport.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_SUBJECT = "subject";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>subject</b>

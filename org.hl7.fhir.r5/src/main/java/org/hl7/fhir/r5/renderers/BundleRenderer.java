@@ -198,7 +198,7 @@ public class BundleRenderer extends ResourceRenderer {
     // * The Composition resource Narrative
     // * The section.text Narratives
     Composition comp = (Composition) b.getEntry().get(0).getResource();
-    Resource subject = resolveReference(b, comp.getSubject());
+    Resource subject = resolveReference(b, comp.getSubjectFirstRep());
     if (subject != null) {
       XhtmlNode nx = (subject instanceof DomainResource) ? ((DomainResource) subject).getText().getDiv() : null;
       if (nx != null && !nx.isEmpty()) {

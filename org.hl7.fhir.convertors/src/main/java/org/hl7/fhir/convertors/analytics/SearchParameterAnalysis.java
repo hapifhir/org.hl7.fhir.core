@@ -130,12 +130,12 @@ public class SearchParameterAnalysis implements IPackageVisitorProcessor {
       for (org.hl7.fhir.r5.model.Bundle.BundleEntryComponent bnd : ((org.hl7.fhir.r5.model.Bundle) res).getEntry()) {
         if (bnd.getResource() != null && bnd.getResource() instanceof org.hl7.fhir.r5.model.SearchParameter) {
           org.hl7.fhir.r5.model.SearchParameter sp = (org.hl7.fhir.r5.model.SearchParameter) bnd.getResource();
-          analysis.seeUsage(core, sp.getTypeElement().primitiveValue(), sp.getXpathUsageElement().primitiveValue(), sp.getUrl());          
+          analysis.seeUsage(core, sp.getTypeElement().primitiveValue(), sp.getProcessingModeElement().primitiveValue(), sp.getUrl());          
         }
       }
     } else {
       org.hl7.fhir.r5.model.SearchParameter sp = (org.hl7.fhir.r5.model.SearchParameter) res;
-      analysis.seeUsage(core, sp.getTypeElement().primitiveValue(), sp.getXpathUsageElement().primitiveValue(), sp.getUrl());
+      analysis.seeUsage(core, sp.getTypeElement().primitiveValue(), sp.getProcessingModeElement().primitiveValue(), sp.getUrl());
     }
   }
 

@@ -10,7 +10,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Enumerations;
-import org.hl7.fhir.r5.model.Enumerations.FHIRAllTypes;
+import org.hl7.fhir.r5.model.Enumerations.FHIRTypes;
 import org.hl7.fhir.r5.model.Enumerations.SearchParamType;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -180,14 +180,14 @@ public class OperationDefinition10_50 {
     if (src.hasMaxElement())
       tgt.setMaxElement(String10_50.convertString(src.getMaxElement()));
     if (src.hasDocumentationElement())
-      tgt.setDocumentationElement(String10_50.convertString(src.getDocumentationElement()));
+      tgt.setDocumentationElement(String10_50.convertStringToMarkdown(src.getDocumentationElement()));
     if (Utilities.existsInList(src.getType(), "token", "reference", "composite", "number", "date", "quantity", "uri")) {
-      tgt.setType(FHIRAllTypes.STRING);
+      tgt.setType(Enumerations.FHIRTypes.STRING);
       if (src.hasType())
         tgt.setSearchType(SearchParamType.fromCode(src.getType()));
     } else {
       if (src.hasType())
-        tgt.setType(Enumerations.FHIRAllTypes.fromCode(src.getType()));
+        tgt.setType(Enumerations.FHIRTypes.fromCode(src.getType()));
     }
     tgt.addTargetProfile(src.getProfile().getReference());
     if (src.hasBinding())

@@ -14,8 +14,8 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.AllResourceTypes;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r5.model.Enumerations.ResourceTypeEnum;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -309,8 +309,8 @@ public class Analyser {
     if (!Utilities.existsInList(name, "Resource")) {
       for (SearchParameter sp : definitions.getSearchParams().getList()) {
         boolean relevant = false;
-        for (CodeType c : sp.getBase()) {
-          if (c.getValue().equals(name)) {
+        for (Enumeration<AllResourceTypes> c : sp.getBase()) {
+          if (c.getValue().toCode().equals(name)) {
             relevant = true;
             break;
           }

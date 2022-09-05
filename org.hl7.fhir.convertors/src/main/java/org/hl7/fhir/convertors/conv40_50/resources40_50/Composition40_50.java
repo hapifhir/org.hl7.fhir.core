@@ -6,10 +6,12 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Period40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Code40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Narrative40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Code43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.RelatedArtifact;
 
@@ -50,7 +52,7 @@ public class Composition40_50 {
     org.hl7.fhir.r5.model.Composition tgt = new org.hl7.fhir.r5.model.Composition();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     if (src.hasIdentifier())
-      tgt.setIdentifier(Identifier40_50.convertIdentifier(src.getIdentifier()));
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(src.getIdentifier()));
     if (src.hasStatus())
       tgt.setStatusElement(convertCompositionStatus(src.getStatusElement()));
     if (src.hasType())
@@ -58,7 +60,7 @@ public class Composition40_50 {
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory())
       tgt.addCategory(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasSubject())
-      tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
+      tgt.addSubject(Reference40_50.convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
     if (src.hasDate())
@@ -67,7 +69,7 @@ public class Composition40_50 {
     if (src.hasTitle())
       tgt.setTitleElement(String40_50.convertString(src.getTitleElement()));
     if (src.hasConfidentiality())
-      tgt.setConfidentialityElement(convertDocumentConfidentiality(src.getConfidentialityElement()));
+      tgt.getMeta().addSecurity().setCodeElement(Code40_50.convertCode(src.getConfidentialityElement()));
     for (org.hl7.fhir.r4.model.Composition.CompositionAttesterComponent t : src.getAttester())
       tgt.addAttester(convertCompositionAttesterComponent(t));
     if (src.hasCustodian())
@@ -87,7 +89,7 @@ public class Composition40_50 {
     org.hl7.fhir.r4.model.Composition tgt = new org.hl7.fhir.r4.model.Composition();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     if (src.hasIdentifier())
-      tgt.setIdentifier(Identifier40_50.convertIdentifier(src.getIdentifier()));
+      tgt.setIdentifier(Identifier40_50.convertIdentifier(src.getIdentifierFirstRep()));
     if (src.hasStatus())
       tgt.setStatusElement(convertCompositionStatus(src.getStatusElement()));
     if (src.hasType())
@@ -95,7 +97,7 @@ public class Composition40_50 {
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory())
       tgt.addCategory(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasSubject())
-      tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
+      tgt.setSubject(Reference40_50.convertReference(src.getSubjectFirstRep()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
     if (src.hasDate())

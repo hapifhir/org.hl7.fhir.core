@@ -45,7 +45,7 @@ public class Encounter30_50 {
     for (org.hl7.fhir.dstu3.model.Encounter.StatusHistoryComponent t : src.getStatusHistory())
       tgt.addStatusHistory(convertStatusHistoryComponent(t));
     if (src.hasClass_())
-      tgt.setClass_(new org.hl7.fhir.r5.model.CodeableConcept().addCoding(Coding30_50.convertCoding(src.getClass_())));
+      tgt.addClass_(new org.hl7.fhir.r5.model.CodeableConcept().addCoding(Coding30_50.convertCoding(src.getClass_())));
     for (org.hl7.fhir.dstu3.model.Encounter.ClassHistoryComponent t : src.getClassHistory())
       tgt.addClassHistory(convertClassHistoryComponent(t));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getType())
@@ -72,7 +72,7 @@ public class Encounter30_50 {
       tgt.addDiagnosis(convertDiagnosisComponent(t));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getAccount()) tgt.addAccount(Reference30_50.convertReference(t));
     if (src.hasHospitalization())
-      tgt.setHospitalization(convertEncounterHospitalizationComponent(src.getHospitalization()));
+      tgt.setAdmission(convertEncounterHospitalizationComponent(src.getHospitalization()));
     for (org.hl7.fhir.dstu3.model.Encounter.EncounterLocationComponent t : src.getLocation())
       tgt.addLocation(convertEncounterLocationComponent(t));
     if (src.hasServiceProvider())
@@ -94,7 +94,7 @@ public class Encounter30_50 {
     for (org.hl7.fhir.r5.model.Encounter.StatusHistoryComponent t : src.getStatusHistory())
       tgt.addStatusHistory(convertStatusHistoryComponent(t));
     if (src.hasClass_())
-      tgt.setClass_(Coding30_50.convertCoding(src.getClass_()));
+      tgt.setClass_(Coding30_50.convertCoding(src.getClass_FirstRep()));
     for (org.hl7.fhir.r5.model.Encounter.ClassHistoryComponent t : src.getClassHistory())
       tgt.addClassHistory(convertClassHistoryComponent(t));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType())
@@ -121,8 +121,8 @@ public class Encounter30_50 {
     for (org.hl7.fhir.r5.model.Encounter.DiagnosisComponent t : src.getDiagnosis())
       tgt.addDiagnosis(convertDiagnosisComponent(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getAccount()) tgt.addAccount(Reference30_50.convertReference(t));
-    if (src.hasHospitalization())
-      tgt.setHospitalization(convertEncounterHospitalizationComponent(src.getHospitalization()));
+    if (src.hasAdmission())
+      tgt.setHospitalization(convertEncounterHospitalizationComponent(src.getAdmission()));
     for (org.hl7.fhir.r5.model.Encounter.EncounterLocationComponent t : src.getLocation())
       tgt.addLocation(convertEncounterLocationComponent(t));
     if (src.hasServiceProvider())
@@ -132,7 +132,7 @@ public class Encounter30_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.dstu3.model.Encounter.EncounterHospitalizationComponent convertEncounterHospitalizationComponent(org.hl7.fhir.r5.model.Encounter.EncounterHospitalizationComponent src) throws FHIRException {
+  public static org.hl7.fhir.dstu3.model.Encounter.EncounterHospitalizationComponent convertEncounterHospitalizationComponent(org.hl7.fhir.r5.model.Encounter.EncounterAdmissionComponent src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.Encounter.EncounterHospitalizationComponent tgt = new org.hl7.fhir.dstu3.model.Encounter.EncounterHospitalizationComponent();
@@ -158,10 +158,10 @@ public class Encounter30_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r5.model.Encounter.EncounterHospitalizationComponent convertEncounterHospitalizationComponent(org.hl7.fhir.dstu3.model.Encounter.EncounterHospitalizationComponent src) throws FHIRException {
+  public static org.hl7.fhir.r5.model.Encounter.EncounterAdmissionComponent convertEncounterHospitalizationComponent(org.hl7.fhir.dstu3.model.Encounter.EncounterHospitalizationComponent src) throws FHIRException {
     if (src == null)
       return null;
-    org.hl7.fhir.r5.model.Encounter.EncounterHospitalizationComponent tgt = new org.hl7.fhir.r5.model.Encounter.EncounterHospitalizationComponent();
+    org.hl7.fhir.r5.model.Encounter.EncounterAdmissionComponent tgt = new org.hl7.fhir.r5.model.Encounter.EncounterAdmissionComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
     if (src.hasPreAdmissionIdentifier())
       tgt.setPreAdmissionIdentifier(Identifier30_50.convertIdentifier(src.getPreAdmissionIdentifier()));

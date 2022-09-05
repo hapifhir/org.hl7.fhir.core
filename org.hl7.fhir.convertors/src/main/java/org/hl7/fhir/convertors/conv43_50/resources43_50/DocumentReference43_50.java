@@ -274,8 +274,8 @@ public class DocumentReference43_50 {
       tgt.setFacilityType(CodeableConcept43_50.convertCodeableConcept(src.getFacilityType()));
     if (src.hasPracticeSetting())
       tgt.setPracticeSetting(CodeableConcept43_50.convertCodeableConcept(src.getPracticeSetting()));
-    if (src.hasSourcePatientInfo())
-      tgt.setSourcePatientInfo(Reference43_50.convertReference(src.getSourcePatientInfo()));
+//    if (src.hasSourcePatientInfo())
+//      tgt.setSourcePatientInfo(Reference43_50.convertReference(src.getSourcePatientInfo()));
 //    for (org.hl7.fhir.r4b.model.Reference t : src.getRelated()) tgt.addRelated(Reference43_50.convertReference(t));
   }
 
@@ -290,8 +290,8 @@ public class DocumentReference43_50 {
       tgt.setFacilityType(CodeableConcept43_50.convertCodeableConcept(src.getFacilityType()));
     if (src.hasPracticeSetting())
       tgt.setPracticeSetting(CodeableConcept43_50.convertCodeableConcept(src.getPracticeSetting()));
-    if (src.hasSourcePatientInfo())
-      tgt.setSourcePatientInfo(Reference43_50.convertReference(src.getSourcePatientInfo()));
+//    if (src.hasSourcePatientInfo())
+//      tgt.setSourcePatientInfo(Reference43_50.convertReference(src.getSourcePatientInfo()));
 //    for (org.hl7.fhir.r5.model.Reference t : src.getRelated()) tgt.addRelated(Reference43_50.convertReference(t));
   }
 }

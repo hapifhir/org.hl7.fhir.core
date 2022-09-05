@@ -10,6 +10,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.AllResourceTypes;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.OperationDefinition;
 import org.hl7.fhir.r5.model.OperationDefinition.OperationDefinitionParameterComponent;
@@ -54,7 +55,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     XhtmlNode tr = tbl.tr();
     tr.td().tx(Utilities.pluralize("Resource", spd.getBase().size()));
     XhtmlNode td = tr.td();
-    for (CodeType t : spd.getBase()) {
+    for (Enumeration<AllResourceTypes> t : spd.getBase()) {
       StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.toString());
       if (sd != null && sd.hasUserData("path")) {
         td.ah(sd.getUserString("path")).sep(", ").tx(t.getCode());
@@ -69,15 +70,10 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     } else {
       tr.td().tx("(none)");
     }
-    if (spd.hasXpathUsage()) {
+    if (spd.hasProcessingMode()) {
       tr = tbl.tr();
       tr.td().tx("Usage");
-      tr.td().tx(spd.getXpathUsage().getDisplay());      
-    }
-    if (spd.hasXpath()) {
-      tr = tbl.tr();
-      tr.td().tx("XPath");
-      tr.td().code().tx(spd.getXpath());      
+      tr.td().tx(spd.getProcessingMode().getDisplay());      
     }
     if (spd.hasTarget()) {
       tr = tbl.tr();

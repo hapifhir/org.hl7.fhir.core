@@ -1607,8 +1607,12 @@ public class DataRenderer extends Renderer {
     if (s.hasOrigin())
       b.append("Origin: "+displayQuantity(s.getOrigin()));
 
-    if (s.hasPeriod())
-      b.append("Period: "+s.getPeriod().toString());
+    if (s.hasInterval()) {
+      b.append("Interval: "+s.getInterval().toString());
+
+      if (s.hasIntervalUnit())
+        b.append(s.getIntervalUnit().toString());
+    }
 
     if (s.hasFactor())
       b.append("Factor: "+s.getFactor().toString());

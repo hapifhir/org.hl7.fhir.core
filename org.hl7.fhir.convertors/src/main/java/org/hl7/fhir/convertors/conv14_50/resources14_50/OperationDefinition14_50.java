@@ -217,9 +217,9 @@ public class OperationDefinition14_50 {
     if (src.hasMaxElement())
       tgt.setMaxElement(String14_50.convertString(src.getMaxElement()));
     if (src.hasDocumentation())
-      tgt.setDocumentationElement(String14_50.convertString(src.getDocumentationElement()));
+      tgt.setDocumentationElement(String14_50.convertStringToMarkdown(src.getDocumentationElement()));
     if (src.hasType())
-      tgt.setType(Enumerations.FHIRAllTypes.fromCode(src.getType()));
+      tgt.setType(Enumerations.FHIRTypes.fromCode(src.getType()));
     if (src.hasSearchType())
       tgt.setSearchTypeElement(Enumerations14_50.convertSearchParamType(src.getSearchTypeElement()));
     tgt.addTargetProfile(src.getProfile().getReference());

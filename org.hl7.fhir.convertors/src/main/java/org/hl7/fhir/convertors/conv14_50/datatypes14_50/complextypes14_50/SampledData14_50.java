@@ -12,7 +12,7 @@ public class SampledData14_50 {
     org.hl7.fhir.r5.model.SampledData tgt = new org.hl7.fhir.r5.model.SampledData();
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     if (src.hasOrigin()) tgt.setOrigin(SimpleQuantity14_50.convertSimpleQuantity(src.getOrigin()));
-    if (src.hasPeriodElement()) tgt.setPeriodElement(Decimal14_50.convertDecimal(src.getPeriodElement()));
+    if (src.hasPeriodElement()) tgt.setIntervalElement(Decimal14_50.convertDecimal(src.getPeriodElement()));
     if (src.hasFactor()) tgt.setFactorElement(Decimal14_50.convertDecimal(src.getFactorElement()));
     if (src.hasLowerLimit()) tgt.setLowerLimitElement(Decimal14_50.convertDecimal(src.getLowerLimitElement()));
     if (src.hasUpperLimit()) tgt.setUpperLimitElement(Decimal14_50.convertDecimal(src.getUpperLimitElement()));
@@ -27,7 +27,7 @@ public class SampledData14_50 {
     org.hl7.fhir.dstu2016may.model.SampledData tgt = new org.hl7.fhir.dstu2016may.model.SampledData();
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     if (src.hasOrigin()) tgt.setOrigin(SimpleQuantity14_50.convertSimpleQuantity(src.getOrigin()));
-    if (src.hasPeriodElement()) tgt.setPeriodElement(Decimal14_50.convertDecimal(src.getPeriodElement()));
+    if (src.hasIntervalElement()) tgt.setPeriodElement(Decimal14_50.convertDecimal(src.getIntervalElement()));
     if (src.hasFactor()) tgt.setFactorElement(Decimal14_50.convertDecimal(src.getFactorElement()));
     if (src.hasLowerLimit()) tgt.setLowerLimitElement(Decimal14_50.convertDecimal(src.getLowerLimitElement()));
     if (src.hasUpperLimit()) tgt.setUpperLimitElement(Decimal14_50.convertDecimal(src.getUpperLimitElement()));
