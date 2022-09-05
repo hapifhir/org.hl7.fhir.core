@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -302,7 +302,7 @@ public class GuidanceResponse extends DomainResource {
     /**
      * The actions, if any, produced by the evaluation of the artifact.
      */
-    @Child(name = "result", type = {CarePlan.class, RequestGroup.class}, order=12, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "result", type = {CarePlan.class, RequestOrchestration.class}, order=12, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Proposed actions, if any", formalDefinition="The actions, if any, produced by the evaluation of the artifact." )
     protected Reference result;
 
@@ -910,11 +910,11 @@ public class GuidanceResponse extends DomainResource {
         children.add(new Property("encounter", "Reference(Encounter)", "The encounter during which this response was created or to which the creation of this record is tightly associated.", 0, 1, encounter));
         children.add(new Property("occurrenceDateTime", "dateTime", "Indicates when the guidance response was processed.", 0, 1, occurrenceDateTime));
         children.add(new Property("performer", "Reference(Device)", "Provides a reference to the device that performed the guidance.", 0, 1, performer));
-        children.add(new Property("reason", "CodeableReference(Condition|Observation|DiagnosticReport|DocumentReference)", "Describes the reason for the guidance response in coded or textual form, or Indicates the reason the request was initiated. This is typically provided as a parameter to the evaluation and echoed by the service, although for some use cases, such as subscription- or event-based scenarios, it may provide an indication of the cause for the response.", 0, java.lang.Integer.MAX_VALUE, reason));
+        children.add(new Property("reason", "CodeableReference", "Describes the reason for the guidance response in coded or textual form, or Indicates the reason the request was initiated. This is typically provided as a parameter to the evaluation and echoed by the service, although for some use cases, such as subscription- or event-based scenarios, it may provide an indication of the cause for the response.", 0, java.lang.Integer.MAX_VALUE, reason));
         children.add(new Property("note", "Annotation", "Provides a mechanism to communicate additional information about the response.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("evaluationMessage", "Reference(OperationOutcome)", "Messages resulting from the evaluation of the artifact or artifacts. As part of evaluating the request, the engine may produce informational or warning messages. These messages will be provided by this element.", 0, java.lang.Integer.MAX_VALUE, evaluationMessage));
         children.add(new Property("outputParameters", "Reference(Parameters)", "The output parameters of the evaluation, if any. Many modules will result in the return of specific resources such as procedure or communication requests that are returned as part of the operation result. However, modules may define specific outputs that would be returned as the result of the evaluation, and these would be returned in this element.", 0, 1, outputParameters));
-        children.add(new Property("result", "Reference(CarePlan|RequestGroup)", "The actions, if any, produced by the evaluation of the artifact.", 0, 1, result));
+        children.add(new Property("result", "Reference(CarePlan|RequestOrchestration)", "The actions, if any, produced by the evaluation of the artifact.", 0, 1, result));
         children.add(new Property("dataRequirement", "DataRequirement", "If the evaluation could not be completed due to lack of information, or additional information would potentially result in a more accurate response, this element will a description of the data required in order to proceed with the evaluation. A subsequent request to the service should include this data.", 0, java.lang.Integer.MAX_VALUE, dataRequirement));
       }
 
@@ -933,11 +933,11 @@ public class GuidanceResponse extends DomainResource {
         case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The encounter during which this response was created or to which the creation of this record is tightly associated.", 0, 1, encounter);
         case -298443636: /*occurrenceDateTime*/  return new Property("occurrenceDateTime", "dateTime", "Indicates when the guidance response was processed.", 0, 1, occurrenceDateTime);
         case 481140686: /*performer*/  return new Property("performer", "Reference(Device)", "Provides a reference to the device that performed the guidance.", 0, 1, performer);
-        case -934964668: /*reason*/  return new Property("reason", "CodeableReference(Condition|Observation|DiagnosticReport|DocumentReference)", "Describes the reason for the guidance response in coded or textual form, or Indicates the reason the request was initiated. This is typically provided as a parameter to the evaluation and echoed by the service, although for some use cases, such as subscription- or event-based scenarios, it may provide an indication of the cause for the response.", 0, java.lang.Integer.MAX_VALUE, reason);
+        case -934964668: /*reason*/  return new Property("reason", "CodeableReference", "Describes the reason for the guidance response in coded or textual form, or Indicates the reason the request was initiated. This is typically provided as a parameter to the evaluation and echoed by the service, although for some use cases, such as subscription- or event-based scenarios, it may provide an indication of the cause for the response.", 0, java.lang.Integer.MAX_VALUE, reason);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Provides a mechanism to communicate additional information about the response.", 0, java.lang.Integer.MAX_VALUE, note);
         case 1081619755: /*evaluationMessage*/  return new Property("evaluationMessage", "Reference(OperationOutcome)", "Messages resulting from the evaluation of the artifact or artifacts. As part of evaluating the request, the engine may produce informational or warning messages. These messages will be provided by this element.", 0, java.lang.Integer.MAX_VALUE, evaluationMessage);
         case 525609419: /*outputParameters*/  return new Property("outputParameters", "Reference(Parameters)", "The output parameters of the evaluation, if any. Many modules will result in the return of specific resources such as procedure or communication requests that are returned as part of the operation result. However, modules may define specific outputs that would be returned as the result of the evaluation, and these would be returned in this element.", 0, 1, outputParameters);
-        case -934426595: /*result*/  return new Property("result", "Reference(CarePlan|RequestGroup)", "The actions, if any, produced by the evaluation of the artifact.", 0, 1, result);
+        case -934426595: /*result*/  return new Property("result", "Reference(CarePlan|RequestOrchestration)", "The actions, if any, produced by the evaluation of the artifact.", 0, 1, result);
         case 629147193: /*dataRequirement*/  return new Property("dataRequirement", "DataRequirement", "If the evaluation could not be completed due to lack of information, or additional information would potentially result in a more accurate response, this element will a description of the data required in order to proceed with the evaluation. A subsequent request to the service should include this data.", 0, java.lang.Integer.MAX_VALUE, dataRequirement);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }

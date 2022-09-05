@@ -653,7 +653,7 @@ public class TestScript40_50 {
     if (src.hasRequestURL())
       tgt.setRequestURLElement(String40_50.convertString(src.getRequestURLElement()));
     if (src.hasResource())
-      tgt.setResource(org.hl7.fhir.r5.model.TestScript.FHIRDefinedType.fromCode(src.getResource()));
+      tgt.setResource(src.getResource());
     if (src.hasResponse())
       tgt.setResponseElement(convertAssertionResponseTypes(src.getResponseElement()));
     if (src.hasResponseCode())
@@ -705,7 +705,7 @@ public class TestScript40_50 {
     if (src.hasRequestURL())
       tgt.setRequestURLElement(String40_50.convertString(src.getRequestURLElement()));
     if (src.hasResource())
-      tgt.setResource(src.getResource().toCode());
+      tgt.setResource(src.getResource());
     if (src.hasResponse())
       tgt.setResponseElement(convertAssertionResponseTypes(src.getResponseElement()));
     if (src.hasResponseCode())

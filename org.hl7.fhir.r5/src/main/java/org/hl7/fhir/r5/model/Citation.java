@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,13 +55,17 @@ public class Citation extends MetadataResource {
 
     public enum RelatedArtifactTypeExpanded {
         /**
-         * Additional documentation for the knowledge resource. This would include additional instructions on usage as well as additional information on clinical context or appropriateness
+         * Additional documentation for the knowledge resource. This would include additional instructions on usage as well as additional information on clinical context or appropriateness.
          */
         DOCUMENTATION, 
         /**
          * The target artifact is a summary of the justification for the knowledge resource including supporting evidence, relevant guidelines, or other clinically important information. This information is intended to provide a way to make the justification for the knowledge resource available to the consumer of interventions or results produced by the knowledge resource.
          */
         JUSTIFICATION, 
+        /**
+         * Bibliographic citation for papers, references, or other relevant material for the knowledge resource. This is intended to allow for citation of related material, but that was not necessarily specifically prepared in connection with this knowledge resource.
+         */
+        CITATION, 
         /**
          * The previous version of the knowledge artifact, used to establish an ordering of versions of an artifact, independent of the status of each version.
          */
@@ -75,11 +79,11 @@ public class Citation extends MetadataResource {
          */
         DERIVEDFROM, 
         /**
-         * This artifact depends on the target artifact. There is a requirement to use the target artifact in the implementation or interpretation of this artifact.
+         * This artifact depends on the target artifact. There is a requirement to use the target artifact in the creation or interpretation of this artifact.
          */
         DEPENDSON, 
         /**
-         * This artifact is composed of the target artifact. This artifact is constructed with the target artifact as a component. The target artifact is a part of this artifact. (A dataset is composed of data.)
+         * This artifact is composed of the target artifact. This artifact is constructed with the target artifact as a component. The target artifact is a part of this artifact. (A dataset is composed of data.).
          */
         COMPOSEDOF, 
         /**
@@ -111,15 +115,15 @@ public class Citation extends MetadataResource {
          */
         CITEDBY, 
         /**
-         * This artifact contains comments about the target artifact. 
+         * This artifact contains comments about the target artifact.
          */
         COMMENTSON, 
         /**
-         * This artifact has comments about it in the target artifact.  The type of comments may be expressed in the targetClassifier element such as reply, review, editorial, feedback, solicited, unsolicited, structured, unstructured.
+         * This artifact has comments about it in the target artifact.  The type of comments may be expressed in the targetClassifier element such as reply, review, editorial, feedback, solicited, unsolicited, structured, unstructured.
          */
         COMMENTIN, 
         /**
-         * This artifact is a container in which the target artifact is contained. A container is a data structure whose instances are collections of other objects. (A database contains the dataset.)
+         * This artifact is a container in which the target artifact is contained. A container is a data structure whose instances are collections of other objects. (A database contains the dataset.).
          */
         CONTAINS, 
         /**
@@ -179,17 +183,21 @@ public class Citation extends MetadataResource {
          */
         TRANSFORMEDWITH, 
         /**
-         * The related artifact is the citation for this artifact.
+         * This artifact provides additional documentation for the target artifact. This could include additional instructions on usage as well as additional information on clinical context or appropriateness.
          */
-        CITEAS, 
+        DOCUMENTS, 
+        /**
+         * The target artifact is a precise description of a concept in this artifact. This may be used when the RelatedArtifact datatype is used in elements contained in this artifact.
+         */
+        SPECIFICATIONOF, 
         /**
          * This artifact was created with the target artifact. The target artifact is a tool or support material used in the creation of the artifact, and not content that the artifact was derived from.
          */
         CREATEDWITH, 
         /**
-         * This artifact provides additional documentation for the target artifact. This could include additional instructions on usage as well as additional information on clinical context or appropriateness.
+         * The related artifact is the citation for this artifact.
          */
-        DOCUMENTS, 
+        CITEAS, 
         /**
          * A copy of the artifact in a publication with a different artifact identifier.
          */
@@ -198,10 +206,6 @@ public class Citation extends MetadataResource {
          * The original version of record for which the current artifact is a copy.
          */
         REPRINTOF, 
-        /**
-         * The target artifact is a precise description of a concept in this artifact. This may be used when the RelatedArtifact datatype is used in elements contained in this artifact.
-         */
-        SPECIFICATIONOF, 
         /**
          * added to help the parsers with the generic types
          */
@@ -213,6 +217,8 @@ public class Citation extends MetadataResource {
           return DOCUMENTATION;
         if ("justification".equals(codeString))
           return JUSTIFICATION;
+        if ("citation".equals(codeString))
+          return CITATION;
         if ("predecessor".equals(codeString))
           return PREDECESSOR;
         if ("successor".equals(codeString))
@@ -271,18 +277,18 @@ public class Citation extends MetadataResource {
           return TRANSFORMEDINTO;
         if ("transformed-with".equals(codeString))
           return TRANSFORMEDWITH;
-        if ("cite-as".equals(codeString))
-          return CITEAS;
-        if ("created-with".equals(codeString))
-          return CREATEDWITH;
         if ("documents".equals(codeString))
           return DOCUMENTS;
+        if ("specification-of".equals(codeString))
+          return SPECIFICATIONOF;
+        if ("created-with".equals(codeString))
+          return CREATEDWITH;
+        if ("cite-as".equals(codeString))
+          return CITEAS;
         if ("reprint".equals(codeString))
           return REPRINT;
         if ("reprint-of".equals(codeString))
           return REPRINTOF;
-        if ("specification-of".equals(codeString))
-          return SPECIFICATIONOF;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
@@ -292,6 +298,7 @@ public class Citation extends MetadataResource {
           switch (this) {
             case DOCUMENTATION: return "documentation";
             case JUSTIFICATION: return "justification";
+            case CITATION: return "citation";
             case PREDECESSOR: return "predecessor";
             case SUCCESSOR: return "successor";
             case DERIVEDFROM: return "derived-from";
@@ -321,68 +328,70 @@ public class Citation extends MetadataResource {
             case TRANSFORMS: return "transforms";
             case TRANSFORMEDINTO: return "transformed-into";
             case TRANSFORMEDWITH: return "transformed-with";
-            case CITEAS: return "cite-as";
-            case CREATEDWITH: return "created-with";
             case DOCUMENTS: return "documents";
+            case SPECIFICATIONOF: return "specification-of";
+            case CREATEDWITH: return "created-with";
+            case CITEAS: return "cite-as";
             case REPRINT: return "reprint";
             case REPRINTOF: return "reprint-of";
-            case SPECIFICATIONOF: return "specification-of";
             case NULL: return null;
             default: return "?";
           }
         }
         public String getSystem() {
           switch (this) {
-            case DOCUMENTATION: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case JUSTIFICATION: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case PREDECESSOR: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case SUCCESSOR: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case DERIVEDFROM: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case DEPENDSON: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case COMPOSEDOF: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case PARTOF: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case AMENDS: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case AMENDEDWITH: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case APPENDS: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case APPENDEDWITH: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case CITES: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case CITEDBY: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case COMMENTSON: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case COMMENTIN: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case CONTAINS: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case CONTAINEDIN: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case CORRECTS: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case CORRECTIONIN: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case REPLACES: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case REPLACEDWITH: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case RETRACTS: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case RETRACTEDBY: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case SIGNS: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case SIMILARTO: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case SUPPORTS: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case SUPPORTEDWITH: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case TRANSFORMS: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case TRANSFORMEDINTO: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case TRANSFORMEDWITH: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case CITEAS: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case CREATEDWITH: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case DOCUMENTS: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
+            case DOCUMENTATION: return "http://hl7.org/fhir/related-artifact-type";
+            case JUSTIFICATION: return "http://hl7.org/fhir/related-artifact-type";
+            case CITATION: return "http://hl7.org/fhir/related-artifact-type";
+            case PREDECESSOR: return "http://hl7.org/fhir/related-artifact-type";
+            case SUCCESSOR: return "http://hl7.org/fhir/related-artifact-type";
+            case DERIVEDFROM: return "http://hl7.org/fhir/related-artifact-type";
+            case DEPENDSON: return "http://hl7.org/fhir/related-artifact-type";
+            case COMPOSEDOF: return "http://hl7.org/fhir/related-artifact-type";
+            case PARTOF: return "http://hl7.org/fhir/related-artifact-type";
+            case AMENDS: return "http://hl7.org/fhir/related-artifact-type";
+            case AMENDEDWITH: return "http://hl7.org/fhir/related-artifact-type";
+            case APPENDS: return "http://hl7.org/fhir/related-artifact-type";
+            case APPENDEDWITH: return "http://hl7.org/fhir/related-artifact-type";
+            case CITES: return "http://hl7.org/fhir/related-artifact-type";
+            case CITEDBY: return "http://hl7.org/fhir/related-artifact-type";
+            case COMMENTSON: return "http://hl7.org/fhir/related-artifact-type";
+            case COMMENTIN: return "http://hl7.org/fhir/related-artifact-type";
+            case CONTAINS: return "http://hl7.org/fhir/related-artifact-type";
+            case CONTAINEDIN: return "http://hl7.org/fhir/related-artifact-type";
+            case CORRECTS: return "http://hl7.org/fhir/related-artifact-type";
+            case CORRECTIONIN: return "http://hl7.org/fhir/related-artifact-type";
+            case REPLACES: return "http://hl7.org/fhir/related-artifact-type";
+            case REPLACEDWITH: return "http://hl7.org/fhir/related-artifact-type";
+            case RETRACTS: return "http://hl7.org/fhir/related-artifact-type";
+            case RETRACTEDBY: return "http://hl7.org/fhir/related-artifact-type";
+            case SIGNS: return "http://hl7.org/fhir/related-artifact-type";
+            case SIMILARTO: return "http://hl7.org/fhir/related-artifact-type";
+            case SUPPORTS: return "http://hl7.org/fhir/related-artifact-type";
+            case SUPPORTEDWITH: return "http://hl7.org/fhir/related-artifact-type";
+            case TRANSFORMS: return "http://hl7.org/fhir/related-artifact-type";
+            case TRANSFORMEDINTO: return "http://hl7.org/fhir/related-artifact-type";
+            case TRANSFORMEDWITH: return "http://hl7.org/fhir/related-artifact-type";
+            case DOCUMENTS: return "http://hl7.org/fhir/related-artifact-type";
+            case SPECIFICATIONOF: return "http://hl7.org/fhir/related-artifact-type";
+            case CREATEDWITH: return "http://hl7.org/fhir/related-artifact-type";
+            case CITEAS: return "http://hl7.org/fhir/related-artifact-type";
             case REPRINT: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
             case REPRINTOF: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
-            case SPECIFICATIONOF: return "http://terminology.hl7.org/CodeSystem/related-artifact-type-expanded";
             case NULL: return null;
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
-            case DOCUMENTATION: return "Additional documentation for the knowledge resource. This would include additional instructions on usage as well as additional information on clinical context or appropriateness";
+            case DOCUMENTATION: return "Additional documentation for the knowledge resource. This would include additional instructions on usage as well as additional information on clinical context or appropriateness.";
             case JUSTIFICATION: return "The target artifact is a summary of the justification for the knowledge resource including supporting evidence, relevant guidelines, or other clinically important information. This information is intended to provide a way to make the justification for the knowledge resource available to the consumer of interventions or results produced by the knowledge resource.";
+            case CITATION: return "Bibliographic citation for papers, references, or other relevant material for the knowledge resource. This is intended to allow for citation of related material, but that was not necessarily specifically prepared in connection with this knowledge resource.";
             case PREDECESSOR: return "The previous version of the knowledge artifact, used to establish an ordering of versions of an artifact, independent of the status of each version.";
             case SUCCESSOR: return "The subsequent version of the knowledge artfact, used to establish an ordering of versions of an artifact, independent of the status of each version.";
             case DERIVEDFROM: return "This artifact is derived from the target artifact. This is intended to capture the relationship in which a particular knowledge resource is based on the content of another artifact, but is modified to capture either a different set of overall requirements, or a more specific set of requirements such as those involved in a particular institution or clinical setting. The artifact may be derived from one or more target artifacts.";
-            case DEPENDSON: return "This artifact depends on the target artifact. There is a requirement to use the target artifact in the implementation or interpretation of this artifact.";
-            case COMPOSEDOF: return "This artifact is composed of the target artifact. This artifact is constructed with the target artifact as a component. The target artifact is a part of this artifact. (A dataset is composed of data.)";
+            case DEPENDSON: return "This artifact depends on the target artifact. There is a requirement to use the target artifact in the creation or interpretation of this artifact.";
+            case COMPOSEDOF: return "This artifact is composed of the target artifact. This artifact is constructed with the target artifact as a component. The target artifact is a part of this artifact. (A dataset is composed of data.).";
             case PARTOF: return "This artifact is a part of the target artifact. The target artifact is composed of this artifact (and possibly other artifacts).";
             case AMENDS: return "This artifact amends or changes the target artifact. This artifact adds additional information that is functionally expected to replace information in the target artifact. This artifact replaces a part but not all of the target artifact.";
             case AMENDEDWITH: return "This artifact is amended with or changed by the target artifact. There is information in this artifact that should be functionally replaced with information in the target artifact.";
@@ -390,9 +399,9 @@ public class Citation extends MetadataResource {
             case APPENDEDWITH: return "This artifact has additional information in the target artifact.";
             case CITES: return "This artifact cites the target artifact. This may be a bibliographic citation for papers, references, or other relevant material for the knowledge resource. This is intended to allow for citation of related material, but that was not necessarily specifically prepared in connection with this knowledge resource.";
             case CITEDBY: return "This artifact is cited by the target artifact.";
-            case COMMENTSON: return "This artifact contains comments about the target artifact. ";
-            case COMMENTIN: return "This artifact has comments about it in the target artifact.  The type of comments may be expressed in the targetClassifier element such as reply, review, editorial, feedback, solicited, unsolicited, structured, unstructured.";
-            case CONTAINS: return "This artifact is a container in which the target artifact is contained. A container is a data structure whose instances are collections of other objects. (A database contains the dataset.)";
+            case COMMENTSON: return "This artifact contains comments about the target artifact.";
+            case COMMENTIN: return "This artifact has comments about it in the target artifact.  The type of comments may be expressed in the targetClassifier element such as reply, review, editorial, feedback, solicited, unsolicited, structured, unstructured.";
+            case CONTAINS: return "This artifact is a container in which the target artifact is contained. A container is a data structure whose instances are collections of other objects. (A database contains the dataset.).";
             case CONTAINEDIN: return "This artifact is contained in the target artifact. The target artifact is a data structure whose instances are collections of other objects.";
             case CORRECTS: return "This artifact identifies errors and replacement content for the target artifact.";
             case CORRECTIONIN: return "This artifact has corrections to it in the target artifact. The target artifact identifies errors and replacement content for this artifact.";
@@ -407,12 +416,12 @@ public class Citation extends MetadataResource {
             case TRANSFORMS: return "This artifact was generated by transforming the target artifact (e.g., format or language conversion). This is intended to capture the relationship in which a particular knowledge resource is based on the content of another artifact, but changes are only apparent in form and there is only one target artifact with the “transforms” relationship type.";
             case TRANSFORMEDINTO: return "This artifact was transformed into the target artifact (e.g., by format or language conversion).";
             case TRANSFORMEDWITH: return "This artifact was generated by transforming a related artifact (e.g., format or language conversion), noted separately with the “transforms” relationship type. This transformation used the target artifact to inform the transformation. The target artifact may be a conversion script or translation guide.";
-            case CITEAS: return "The related artifact is the citation for this artifact.";
-            case CREATEDWITH: return "This artifact was created with the target artifact. The target artifact is a tool or support material used in the creation of the artifact, and not content that the artifact was derived from.";
             case DOCUMENTS: return "This artifact provides additional documentation for the target artifact. This could include additional instructions on usage as well as additional information on clinical context or appropriateness.";
+            case SPECIFICATIONOF: return "The target artifact is a precise description of a concept in this artifact. This may be used when the RelatedArtifact datatype is used in elements contained in this artifact.";
+            case CREATEDWITH: return "This artifact was created with the target artifact. The target artifact is a tool or support material used in the creation of the artifact, and not content that the artifact was derived from.";
+            case CITEAS: return "The related artifact is the citation for this artifact.";
             case REPRINT: return "A copy of the artifact in a publication with a different artifact identifier.";
             case REPRINTOF: return "The original version of record for which the current artifact is a copy.";
-            case SPECIFICATIONOF: return "The target artifact is a precise description of a concept in this artifact. This may be used when the RelatedArtifact datatype is used in elements contained in this artifact.";
             case NULL: return null;
             default: return "?";
           }
@@ -421,6 +430,7 @@ public class Citation extends MetadataResource {
           switch (this) {
             case DOCUMENTATION: return "Documentation";
             case JUSTIFICATION: return "Justification";
+            case CITATION: return "Citation";
             case PREDECESSOR: return "Predecessor";
             case SUCCESSOR: return "Successor";
             case DERIVEDFROM: return "Derived From";
@@ -450,12 +460,12 @@ public class Citation extends MetadataResource {
             case TRANSFORMS: return "Transforms";
             case TRANSFORMEDINTO: return "Transformed Into";
             case TRANSFORMEDWITH: return "Transformed With";
-            case CITEAS: return "Citation for";
-            case CREATEDWITH: return "Created With";
             case DOCUMENTS: return "Documents";
+            case SPECIFICATIONOF: return "Specification Of";
+            case CREATEDWITH: return "Created With";
+            case CITEAS: return "Cite As";
             case REPRINT: return "Reprint";
             case REPRINTOF: return "Reprint Of";
-            case SPECIFICATIONOF: return "Specification of";
             case NULL: return null;
             default: return "?";
           }
@@ -471,6 +481,8 @@ public class Citation extends MetadataResource {
           return RelatedArtifactTypeExpanded.DOCUMENTATION;
         if ("justification".equals(codeString))
           return RelatedArtifactTypeExpanded.JUSTIFICATION;
+        if ("citation".equals(codeString))
+          return RelatedArtifactTypeExpanded.CITATION;
         if ("predecessor".equals(codeString))
           return RelatedArtifactTypeExpanded.PREDECESSOR;
         if ("successor".equals(codeString))
@@ -529,18 +541,18 @@ public class Citation extends MetadataResource {
           return RelatedArtifactTypeExpanded.TRANSFORMEDINTO;
         if ("transformed-with".equals(codeString))
           return RelatedArtifactTypeExpanded.TRANSFORMEDWITH;
-        if ("cite-as".equals(codeString))
-          return RelatedArtifactTypeExpanded.CITEAS;
-        if ("created-with".equals(codeString))
-          return RelatedArtifactTypeExpanded.CREATEDWITH;
         if ("documents".equals(codeString))
           return RelatedArtifactTypeExpanded.DOCUMENTS;
+        if ("specification-of".equals(codeString))
+          return RelatedArtifactTypeExpanded.SPECIFICATIONOF;
+        if ("created-with".equals(codeString))
+          return RelatedArtifactTypeExpanded.CREATEDWITH;
+        if ("cite-as".equals(codeString))
+          return RelatedArtifactTypeExpanded.CITEAS;
         if ("reprint".equals(codeString))
           return RelatedArtifactTypeExpanded.REPRINT;
         if ("reprint-of".equals(codeString))
           return RelatedArtifactTypeExpanded.REPRINTOF;
-        if ("specification-of".equals(codeString))
-          return RelatedArtifactTypeExpanded.SPECIFICATIONOF;
         throw new IllegalArgumentException("Unknown RelatedArtifactTypeExpanded code '"+codeString+"'");
         }
         public Enumeration<RelatedArtifactTypeExpanded> fromType(Base code) throws FHIRException {
@@ -555,6 +567,8 @@ public class Citation extends MetadataResource {
           return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.DOCUMENTATION);
         if ("justification".equals(codeString))
           return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.JUSTIFICATION);
+        if ("citation".equals(codeString))
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CITATION);
         if ("predecessor".equals(codeString))
           return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.PREDECESSOR);
         if ("successor".equals(codeString))
@@ -613,18 +627,18 @@ public class Citation extends MetadataResource {
           return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.TRANSFORMEDINTO);
         if ("transformed-with".equals(codeString))
           return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.TRANSFORMEDWITH);
-        if ("cite-as".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CITEAS);
-        if ("created-with".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CREATEDWITH);
         if ("documents".equals(codeString))
           return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.DOCUMENTS);
+        if ("specification-of".equals(codeString))
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.SPECIFICATIONOF);
+        if ("created-with".equals(codeString))
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CREATEDWITH);
+        if ("cite-as".equals(codeString))
+          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.CITEAS);
         if ("reprint".equals(codeString))
           return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.REPRINT);
         if ("reprint-of".equals(codeString))
           return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.REPRINTOF);
-        if ("specification-of".equals(codeString))
-          return new Enumeration<RelatedArtifactTypeExpanded>(this, RelatedArtifactTypeExpanded.SPECIFICATIONOF);
         throw new FHIRException("Unknown RelatedArtifactTypeExpanded code '"+codeString+"'");
         }
     public String toCode(RelatedArtifactTypeExpanded code) {
@@ -632,6 +646,8 @@ public class Citation extends MetadataResource {
         return "documentation";
       if (code == RelatedArtifactTypeExpanded.JUSTIFICATION)
         return "justification";
+      if (code == RelatedArtifactTypeExpanded.CITATION)
+        return "citation";
       if (code == RelatedArtifactTypeExpanded.PREDECESSOR)
         return "predecessor";
       if (code == RelatedArtifactTypeExpanded.SUCCESSOR)
@@ -690,18 +706,18 @@ public class Citation extends MetadataResource {
         return "transformed-into";
       if (code == RelatedArtifactTypeExpanded.TRANSFORMEDWITH)
         return "transformed-with";
-      if (code == RelatedArtifactTypeExpanded.CITEAS)
-        return "cite-as";
-      if (code == RelatedArtifactTypeExpanded.CREATEDWITH)
-        return "created-with";
       if (code == RelatedArtifactTypeExpanded.DOCUMENTS)
         return "documents";
+      if (code == RelatedArtifactTypeExpanded.SPECIFICATIONOF)
+        return "specification-of";
+      if (code == RelatedArtifactTypeExpanded.CREATEDWITH)
+        return "created-with";
+      if (code == RelatedArtifactTypeExpanded.CITEAS)
+        return "cite-as";
       if (code == RelatedArtifactTypeExpanded.REPRINT)
         return "reprint";
       if (code == RelatedArtifactTypeExpanded.REPRINTOF)
         return "reprint-of";
-      if (code == RelatedArtifactTypeExpanded.SPECIFICATIONOF)
-        return "specification-of";
       return "?";
       }
     public String toSystem(RelatedArtifactTypeExpanded code) {
@@ -4083,7 +4099,7 @@ public class Citation extends MetadataResource {
          * The type of relationship to the related artifact.
          */
         @Child(name = "type", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="documentation | justification | predecessor | successor | derived-from | depends-on | composed-of | part-of | amends | amended-with | appends | appended-with | cites | cited-by | comments-on | comment-in | contains | contained-in | corrects | correction-in | replaces | replaced-with | retracts | retracted-by | signs | similar-to | supports | supported-with | transforms | transformed-into | transformed-with | cite-as | created-with | documents | reprint | reprint-of | specification-of", formalDefinition="The type of relationship to the related artifact." )
+        @Description(shortDefinition="documentation | justification | citation | predecessor | successor | derived-from | depends-on | composed-of | part-of | amends | amended-with | appends | appended-with | cites | cited-by | comments-on | comment-in | contains | contained-in | corrects | correction-in | replaces | replaced-with | retracts | retracted-by | signs | similar-to | supports | supported-with | transforms | transformed-into | transformed-with | documents | specification-of | created-with | cite-as | reprint | reprint-of", formalDefinition="The type of relationship to the related artifact." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/related-artifact-type-expanded")
         protected Enumeration<RelatedArtifactTypeExpanded> type;
 
@@ -4729,30 +4745,80 @@ public class Citation extends MetadataResource {
         protected CitationCitedArtifactPublicationFormPublishedInComponent publishedIn;
 
         /**
-         * The specific issue in which the cited article resides.
+         * Describes the form of the medium cited. Common codes are "Internet" or "Print".
          */
-        @Child(name = "periodicRelease", type = {}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The specific issue in which the cited article resides", formalDefinition="The specific issue in which the cited article resides." )
-        protected CitationCitedArtifactPublicationFormPeriodicReleaseComponent periodicRelease;
+        @Child(name = "citedMedium", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Internet or Print", formalDefinition="Describes the form of the medium cited. Common codes are \"Internet\" or \"Print\"." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/cited-medium")
+        protected CodeableConcept citedMedium;
+
+        /**
+         * Volume number of journal in which the article is published.
+         */
+        @Child(name = "volume", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Volume number of journal in which the article is published", formalDefinition="Volume number of journal in which the article is published." )
+        protected StringType volume;
+
+        /**
+         * Issue, part or supplement of journal in which the article is published.
+         */
+        @Child(name = "issue", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Issue, part or supplement of journal in which the article is published", formalDefinition="Issue, part or supplement of journal in which the article is published." )
+        protected StringType issue;
+
+        /**
+         * Year on which the issue of the journal was published.
+         */
+        @Child(name = "publicationDateYear", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Year on which the issue of the journal was published", formalDefinition="Year on which the issue of the journal was published." )
+        protected StringType publicationDateYear;
+
+        /**
+         * Month on which the issue of the journal was published.
+         */
+        @Child(name = "publicationDateMonth", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Month on which the issue of the journal was published", formalDefinition="Month on which the issue of the journal was published." )
+        protected StringType publicationDateMonth;
+
+        /**
+         * Day on which the issue of the journal was published.
+         */
+        @Child(name = "publicationDateDay", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Day on which the issue of the journal was published", formalDefinition="Day on which the issue of the journal was published." )
+        protected StringType publicationDateDay;
+
+        /**
+         * Spring, Summer, Fall/Autumn, Winter.
+         */
+        @Child(name = "publicationDateSeason", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Season on which the issue of the journal was published", formalDefinition="Spring, Summer, Fall/Autumn, Winter." )
+        protected StringType publicationDateSeason;
+
+        /**
+         * Text representation of the date of which the issue of the journal was published.
+         */
+        @Child(name = "publicationDateText", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Text representation of the date of which the issue of the journal was published", formalDefinition="Text representation of the date of which the issue of the journal was published." )
+        protected StringType publicationDateText;
 
         /**
          * The date the article was added to the database, or the date the article was released (which may differ from the journal issue publication date).
          */
-        @Child(name = "articleDate", type = {DateTimeType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "articleDate", type = {DateTimeType.class}, order=10, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The date the article was added to the database, or the date the article was released", formalDefinition="The date the article was added to the database, or the date the article was released (which may differ from the journal issue publication date)." )
         protected DateTimeType articleDate;
 
         /**
          * The date the article was last revised or updated in the database.
          */
-        @Child(name = "lastRevisionDate", type = {DateTimeType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "lastRevisionDate", type = {DateTimeType.class}, order=11, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The date the article was last revised or updated in the database", formalDefinition="The date the article was last revised or updated in the database." )
         protected DateTimeType lastRevisionDate;
 
         /**
          * Language in which this form of the article is published.
          */
-        @Child(name = "language", type = {CodeableConcept.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "language", type = {CodeableConcept.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Language in which this form of the article is published", formalDefinition="Language in which this form of the article is published." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/languages")
         protected List<CodeableConcept> language;
@@ -4760,46 +4826,46 @@ public class Citation extends MetadataResource {
         /**
          * Entry number or identifier for inclusion in a database.
          */
-        @Child(name = "accessionNumber", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "accessionNumber", type = {StringType.class}, order=13, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Entry number or identifier for inclusion in a database", formalDefinition="Entry number or identifier for inclusion in a database." )
         protected StringType accessionNumber;
 
         /**
          * Used for full display of pagination.
          */
-        @Child(name = "pageString", type = {StringType.class}, order=7, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "pageString", type = {StringType.class}, order=14, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Used for full display of pagination", formalDefinition="Used for full display of pagination." )
         protected StringType pageString;
 
         /**
          * Used for isolated representation of first page.
          */
-        @Child(name = "firstPage", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "firstPage", type = {StringType.class}, order=15, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Used for isolated representation of first page", formalDefinition="Used for isolated representation of first page." )
         protected StringType firstPage;
 
         /**
          * Used for isolated representation of last page.
          */
-        @Child(name = "lastPage", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "lastPage", type = {StringType.class}, order=16, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Used for isolated representation of last page", formalDefinition="Used for isolated representation of last page." )
         protected StringType lastPage;
 
         /**
          * Actual or approximate number of pages or screens.
          */
-        @Child(name = "pageCount", type = {StringType.class}, order=10, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "pageCount", type = {StringType.class}, order=17, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Number of pages or screens", formalDefinition="Actual or approximate number of pages or screens." )
         protected StringType pageCount;
 
         /**
          * Copyright notice for the full article or artifact.
          */
-        @Child(name = "copyright", type = {MarkdownType.class}, order=11, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "copyright", type = {MarkdownType.class}, order=18, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Copyright notice for the full article or artifact", formalDefinition="Copyright notice for the full article or artifact." )
         protected MarkdownType copyright;
 
-        private static final long serialVersionUID = -191740896L;
+        private static final long serialVersionUID = -1750822803L;
 
     /**
      * Constructor
@@ -4833,26 +4899,369 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #periodicRelease} (The specific issue in which the cited article resides.)
+         * @return {@link #citedMedium} (Describes the form of the medium cited. Common codes are "Internet" or "Print".)
          */
-        public CitationCitedArtifactPublicationFormPeriodicReleaseComponent getPeriodicRelease() { 
-          if (this.periodicRelease == null)
+        public CodeableConcept getCitedMedium() { 
+          if (this.citedMedium == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormComponent.periodicRelease");
+              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormComponent.citedMedium");
             else if (Configuration.doAutoCreate())
-              this.periodicRelease = new CitationCitedArtifactPublicationFormPeriodicReleaseComponent(); // cc
-          return this.periodicRelease;
+              this.citedMedium = new CodeableConcept(); // cc
+          return this.citedMedium;
         }
 
-        public boolean hasPeriodicRelease() { 
-          return this.periodicRelease != null && !this.periodicRelease.isEmpty();
+        public boolean hasCitedMedium() { 
+          return this.citedMedium != null && !this.citedMedium.isEmpty();
         }
 
         /**
-         * @param value {@link #periodicRelease} (The specific issue in which the cited article resides.)
+         * @param value {@link #citedMedium} (Describes the form of the medium cited. Common codes are "Internet" or "Print".)
          */
-        public CitationCitedArtifactPublicationFormComponent setPeriodicRelease(CitationCitedArtifactPublicationFormPeriodicReleaseComponent value) { 
-          this.periodicRelease = value;
+        public CitationCitedArtifactPublicationFormComponent setCitedMedium(CodeableConcept value) { 
+          this.citedMedium = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #volume} (Volume number of journal in which the article is published.). This is the underlying object with id, value and extensions. The accessor "getVolume" gives direct access to the value
+         */
+        public StringType getVolumeElement() { 
+          if (this.volume == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormComponent.volume");
+            else if (Configuration.doAutoCreate())
+              this.volume = new StringType(); // bb
+          return this.volume;
+        }
+
+        public boolean hasVolumeElement() { 
+          return this.volume != null && !this.volume.isEmpty();
+        }
+
+        public boolean hasVolume() { 
+          return this.volume != null && !this.volume.isEmpty();
+        }
+
+        /**
+         * @param value {@link #volume} (Volume number of journal in which the article is published.). This is the underlying object with id, value and extensions. The accessor "getVolume" gives direct access to the value
+         */
+        public CitationCitedArtifactPublicationFormComponent setVolumeElement(StringType value) { 
+          this.volume = value;
+          return this;
+        }
+
+        /**
+         * @return Volume number of journal in which the article is published.
+         */
+        public String getVolume() { 
+          return this.volume == null ? null : this.volume.getValue();
+        }
+
+        /**
+         * @param value Volume number of journal in which the article is published.
+         */
+        public CitationCitedArtifactPublicationFormComponent setVolume(String value) { 
+          if (Utilities.noString(value))
+            this.volume = null;
+          else {
+            if (this.volume == null)
+              this.volume = new StringType();
+            this.volume.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #issue} (Issue, part or supplement of journal in which the article is published.). This is the underlying object with id, value and extensions. The accessor "getIssue" gives direct access to the value
+         */
+        public StringType getIssueElement() { 
+          if (this.issue == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormComponent.issue");
+            else if (Configuration.doAutoCreate())
+              this.issue = new StringType(); // bb
+          return this.issue;
+        }
+
+        public boolean hasIssueElement() { 
+          return this.issue != null && !this.issue.isEmpty();
+        }
+
+        public boolean hasIssue() { 
+          return this.issue != null && !this.issue.isEmpty();
+        }
+
+        /**
+         * @param value {@link #issue} (Issue, part or supplement of journal in which the article is published.). This is the underlying object with id, value and extensions. The accessor "getIssue" gives direct access to the value
+         */
+        public CitationCitedArtifactPublicationFormComponent setIssueElement(StringType value) { 
+          this.issue = value;
+          return this;
+        }
+
+        /**
+         * @return Issue, part or supplement of journal in which the article is published.
+         */
+        public String getIssue() { 
+          return this.issue == null ? null : this.issue.getValue();
+        }
+
+        /**
+         * @param value Issue, part or supplement of journal in which the article is published.
+         */
+        public CitationCitedArtifactPublicationFormComponent setIssue(String value) { 
+          if (Utilities.noString(value))
+            this.issue = null;
+          else {
+            if (this.issue == null)
+              this.issue = new StringType();
+            this.issue.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #publicationDateYear} (Year on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getPublicationDateYear" gives direct access to the value
+         */
+        public StringType getPublicationDateYearElement() { 
+          if (this.publicationDateYear == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormComponent.publicationDateYear");
+            else if (Configuration.doAutoCreate())
+              this.publicationDateYear = new StringType(); // bb
+          return this.publicationDateYear;
+        }
+
+        public boolean hasPublicationDateYearElement() { 
+          return this.publicationDateYear != null && !this.publicationDateYear.isEmpty();
+        }
+
+        public boolean hasPublicationDateYear() { 
+          return this.publicationDateYear != null && !this.publicationDateYear.isEmpty();
+        }
+
+        /**
+         * @param value {@link #publicationDateYear} (Year on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getPublicationDateYear" gives direct access to the value
+         */
+        public CitationCitedArtifactPublicationFormComponent setPublicationDateYearElement(StringType value) { 
+          this.publicationDateYear = value;
+          return this;
+        }
+
+        /**
+         * @return Year on which the issue of the journal was published.
+         */
+        public String getPublicationDateYear() { 
+          return this.publicationDateYear == null ? null : this.publicationDateYear.getValue();
+        }
+
+        /**
+         * @param value Year on which the issue of the journal was published.
+         */
+        public CitationCitedArtifactPublicationFormComponent setPublicationDateYear(String value) { 
+          if (Utilities.noString(value))
+            this.publicationDateYear = null;
+          else {
+            if (this.publicationDateYear == null)
+              this.publicationDateYear = new StringType();
+            this.publicationDateYear.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #publicationDateMonth} (Month on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getPublicationDateMonth" gives direct access to the value
+         */
+        public StringType getPublicationDateMonthElement() { 
+          if (this.publicationDateMonth == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormComponent.publicationDateMonth");
+            else if (Configuration.doAutoCreate())
+              this.publicationDateMonth = new StringType(); // bb
+          return this.publicationDateMonth;
+        }
+
+        public boolean hasPublicationDateMonthElement() { 
+          return this.publicationDateMonth != null && !this.publicationDateMonth.isEmpty();
+        }
+
+        public boolean hasPublicationDateMonth() { 
+          return this.publicationDateMonth != null && !this.publicationDateMonth.isEmpty();
+        }
+
+        /**
+         * @param value {@link #publicationDateMonth} (Month on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getPublicationDateMonth" gives direct access to the value
+         */
+        public CitationCitedArtifactPublicationFormComponent setPublicationDateMonthElement(StringType value) { 
+          this.publicationDateMonth = value;
+          return this;
+        }
+
+        /**
+         * @return Month on which the issue of the journal was published.
+         */
+        public String getPublicationDateMonth() { 
+          return this.publicationDateMonth == null ? null : this.publicationDateMonth.getValue();
+        }
+
+        /**
+         * @param value Month on which the issue of the journal was published.
+         */
+        public CitationCitedArtifactPublicationFormComponent setPublicationDateMonth(String value) { 
+          if (Utilities.noString(value))
+            this.publicationDateMonth = null;
+          else {
+            if (this.publicationDateMonth == null)
+              this.publicationDateMonth = new StringType();
+            this.publicationDateMonth.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #publicationDateDay} (Day on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getPublicationDateDay" gives direct access to the value
+         */
+        public StringType getPublicationDateDayElement() { 
+          if (this.publicationDateDay == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormComponent.publicationDateDay");
+            else if (Configuration.doAutoCreate())
+              this.publicationDateDay = new StringType(); // bb
+          return this.publicationDateDay;
+        }
+
+        public boolean hasPublicationDateDayElement() { 
+          return this.publicationDateDay != null && !this.publicationDateDay.isEmpty();
+        }
+
+        public boolean hasPublicationDateDay() { 
+          return this.publicationDateDay != null && !this.publicationDateDay.isEmpty();
+        }
+
+        /**
+         * @param value {@link #publicationDateDay} (Day on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getPublicationDateDay" gives direct access to the value
+         */
+        public CitationCitedArtifactPublicationFormComponent setPublicationDateDayElement(StringType value) { 
+          this.publicationDateDay = value;
+          return this;
+        }
+
+        /**
+         * @return Day on which the issue of the journal was published.
+         */
+        public String getPublicationDateDay() { 
+          return this.publicationDateDay == null ? null : this.publicationDateDay.getValue();
+        }
+
+        /**
+         * @param value Day on which the issue of the journal was published.
+         */
+        public CitationCitedArtifactPublicationFormComponent setPublicationDateDay(String value) { 
+          if (Utilities.noString(value))
+            this.publicationDateDay = null;
+          else {
+            if (this.publicationDateDay == null)
+              this.publicationDateDay = new StringType();
+            this.publicationDateDay.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #publicationDateSeason} (Spring, Summer, Fall/Autumn, Winter.). This is the underlying object with id, value and extensions. The accessor "getPublicationDateSeason" gives direct access to the value
+         */
+        public StringType getPublicationDateSeasonElement() { 
+          if (this.publicationDateSeason == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormComponent.publicationDateSeason");
+            else if (Configuration.doAutoCreate())
+              this.publicationDateSeason = new StringType(); // bb
+          return this.publicationDateSeason;
+        }
+
+        public boolean hasPublicationDateSeasonElement() { 
+          return this.publicationDateSeason != null && !this.publicationDateSeason.isEmpty();
+        }
+
+        public boolean hasPublicationDateSeason() { 
+          return this.publicationDateSeason != null && !this.publicationDateSeason.isEmpty();
+        }
+
+        /**
+         * @param value {@link #publicationDateSeason} (Spring, Summer, Fall/Autumn, Winter.). This is the underlying object with id, value and extensions. The accessor "getPublicationDateSeason" gives direct access to the value
+         */
+        public CitationCitedArtifactPublicationFormComponent setPublicationDateSeasonElement(StringType value) { 
+          this.publicationDateSeason = value;
+          return this;
+        }
+
+        /**
+         * @return Spring, Summer, Fall/Autumn, Winter.
+         */
+        public String getPublicationDateSeason() { 
+          return this.publicationDateSeason == null ? null : this.publicationDateSeason.getValue();
+        }
+
+        /**
+         * @param value Spring, Summer, Fall/Autumn, Winter.
+         */
+        public CitationCitedArtifactPublicationFormComponent setPublicationDateSeason(String value) { 
+          if (Utilities.noString(value))
+            this.publicationDateSeason = null;
+          else {
+            if (this.publicationDateSeason == null)
+              this.publicationDateSeason = new StringType();
+            this.publicationDateSeason.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #publicationDateText} (Text representation of the date of which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getPublicationDateText" gives direct access to the value
+         */
+        public StringType getPublicationDateTextElement() { 
+          if (this.publicationDateText == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormComponent.publicationDateText");
+            else if (Configuration.doAutoCreate())
+              this.publicationDateText = new StringType(); // bb
+          return this.publicationDateText;
+        }
+
+        public boolean hasPublicationDateTextElement() { 
+          return this.publicationDateText != null && !this.publicationDateText.isEmpty();
+        }
+
+        public boolean hasPublicationDateText() { 
+          return this.publicationDateText != null && !this.publicationDateText.isEmpty();
+        }
+
+        /**
+         * @param value {@link #publicationDateText} (Text representation of the date of which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getPublicationDateText" gives direct access to the value
+         */
+        public CitationCitedArtifactPublicationFormComponent setPublicationDateTextElement(StringType value) { 
+          this.publicationDateText = value;
+          return this;
+        }
+
+        /**
+         * @return Text representation of the date of which the issue of the journal was published.
+         */
+        public String getPublicationDateText() { 
+          return this.publicationDateText == null ? null : this.publicationDateText.getValue();
+        }
+
+        /**
+         * @param value Text representation of the date of which the issue of the journal was published.
+         */
+        public CitationCitedArtifactPublicationFormComponent setPublicationDateText(String value) { 
+          if (Utilities.noString(value))
+            this.publicationDateText = null;
+          else {
+            if (this.publicationDateText == null)
+              this.publicationDateText = new StringType();
+            this.publicationDateText.setValue(value);
+          }
           return this;
         }
 
@@ -5304,7 +5713,14 @@ public class Citation extends MetadataResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("publishedIn", "", "The collection the cited article or artifact is published in.", 0, 1, publishedIn));
-          children.add(new Property("periodicRelease", "", "The specific issue in which the cited article resides.", 0, 1, periodicRelease));
+          children.add(new Property("citedMedium", "CodeableConcept", "Describes the form of the medium cited. Common codes are \"Internet\" or \"Print\".", 0, 1, citedMedium));
+          children.add(new Property("volume", "string", "Volume number of journal in which the article is published.", 0, 1, volume));
+          children.add(new Property("issue", "string", "Issue, part or supplement of journal in which the article is published.", 0, 1, issue));
+          children.add(new Property("publicationDateYear", "string", "Year on which the issue of the journal was published.", 0, 1, publicationDateYear));
+          children.add(new Property("publicationDateMonth", "string", "Month on which the issue of the journal was published.", 0, 1, publicationDateMonth));
+          children.add(new Property("publicationDateDay", "string", "Day on which the issue of the journal was published.", 0, 1, publicationDateDay));
+          children.add(new Property("publicationDateSeason", "string", "Spring, Summer, Fall/Autumn, Winter.", 0, 1, publicationDateSeason));
+          children.add(new Property("publicationDateText", "string", "Text representation of the date of which the issue of the journal was published.", 0, 1, publicationDateText));
           children.add(new Property("articleDate", "dateTime", "The date the article was added to the database, or the date the article was released (which may differ from the journal issue publication date).", 0, 1, articleDate));
           children.add(new Property("lastRevisionDate", "dateTime", "The date the article was last revised or updated in the database.", 0, 1, lastRevisionDate));
           children.add(new Property("language", "CodeableConcept", "Language in which this form of the article is published.", 0, java.lang.Integer.MAX_VALUE, language));
@@ -5320,7 +5736,14 @@ public class Citation extends MetadataResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case -614144077: /*publishedIn*/  return new Property("publishedIn", "", "The collection the cited article or artifact is published in.", 0, 1, publishedIn);
-          case 1726878956: /*periodicRelease*/  return new Property("periodicRelease", "", "The specific issue in which the cited article resides.", 0, 1, periodicRelease);
+          case 612116418: /*citedMedium*/  return new Property("citedMedium", "CodeableConcept", "Describes the form of the medium cited. Common codes are \"Internet\" or \"Print\".", 0, 1, citedMedium);
+          case -810883302: /*volume*/  return new Property("volume", "string", "Volume number of journal in which the article is published.", 0, 1, volume);
+          case 100509913: /*issue*/  return new Property("issue", "string", "Issue, part or supplement of journal in which the article is published.", 0, 1, issue);
+          case 225738583: /*publicationDateYear*/  return new Property("publicationDateYear", "string", "Year on which the issue of the journal was published.", 0, 1, publicationDateYear);
+          case -1602810202: /*publicationDateMonth*/  return new Property("publicationDateMonth", "string", "Month on which the issue of the journal was published.", 0, 1, publicationDateMonth);
+          case 977092930: /*publicationDateDay*/  return new Property("publicationDateDay", "string", "Day on which the issue of the journal was published.", 0, 1, publicationDateDay);
+          case 2014643069: /*publicationDateSeason*/  return new Property("publicationDateSeason", "string", "Spring, Summer, Fall/Autumn, Winter.", 0, 1, publicationDateSeason);
+          case 225590343: /*publicationDateText*/  return new Property("publicationDateText", "string", "Text representation of the date of which the issue of the journal was published.", 0, 1, publicationDateText);
           case 817743300: /*articleDate*/  return new Property("articleDate", "dateTime", "The date the article was added to the database, or the date the article was released (which may differ from the journal issue publication date).", 0, 1, articleDate);
           case 2129161183: /*lastRevisionDate*/  return new Property("lastRevisionDate", "dateTime", "The date the article was last revised or updated in the database.", 0, 1, lastRevisionDate);
           case -1613589672: /*language*/  return new Property("language", "CodeableConcept", "Language in which this form of the article is published.", 0, java.lang.Integer.MAX_VALUE, language);
@@ -5339,7 +5762,14 @@ public class Citation extends MetadataResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -614144077: /*publishedIn*/ return this.publishedIn == null ? new Base[0] : new Base[] {this.publishedIn}; // CitationCitedArtifactPublicationFormPublishedInComponent
-        case 1726878956: /*periodicRelease*/ return this.periodicRelease == null ? new Base[0] : new Base[] {this.periodicRelease}; // CitationCitedArtifactPublicationFormPeriodicReleaseComponent
+        case 612116418: /*citedMedium*/ return this.citedMedium == null ? new Base[0] : new Base[] {this.citedMedium}; // CodeableConcept
+        case -810883302: /*volume*/ return this.volume == null ? new Base[0] : new Base[] {this.volume}; // StringType
+        case 100509913: /*issue*/ return this.issue == null ? new Base[0] : new Base[] {this.issue}; // StringType
+        case 225738583: /*publicationDateYear*/ return this.publicationDateYear == null ? new Base[0] : new Base[] {this.publicationDateYear}; // StringType
+        case -1602810202: /*publicationDateMonth*/ return this.publicationDateMonth == null ? new Base[0] : new Base[] {this.publicationDateMonth}; // StringType
+        case 977092930: /*publicationDateDay*/ return this.publicationDateDay == null ? new Base[0] : new Base[] {this.publicationDateDay}; // StringType
+        case 2014643069: /*publicationDateSeason*/ return this.publicationDateSeason == null ? new Base[0] : new Base[] {this.publicationDateSeason}; // StringType
+        case 225590343: /*publicationDateText*/ return this.publicationDateText == null ? new Base[0] : new Base[] {this.publicationDateText}; // StringType
         case 817743300: /*articleDate*/ return this.articleDate == null ? new Base[0] : new Base[] {this.articleDate}; // DateTimeType
         case 2129161183: /*lastRevisionDate*/ return this.lastRevisionDate == null ? new Base[0] : new Base[] {this.lastRevisionDate}; // DateTimeType
         case -1613589672: /*language*/ return this.language == null ? new Base[0] : this.language.toArray(new Base[this.language.size()]); // CodeableConcept
@@ -5360,8 +5790,29 @@ public class Citation extends MetadataResource {
         case -614144077: // publishedIn
           this.publishedIn = (CitationCitedArtifactPublicationFormPublishedInComponent) value; // CitationCitedArtifactPublicationFormPublishedInComponent
           return value;
-        case 1726878956: // periodicRelease
-          this.periodicRelease = (CitationCitedArtifactPublicationFormPeriodicReleaseComponent) value; // CitationCitedArtifactPublicationFormPeriodicReleaseComponent
+        case 612116418: // citedMedium
+          this.citedMedium = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -810883302: // volume
+          this.volume = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 100509913: // issue
+          this.issue = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 225738583: // publicationDateYear
+          this.publicationDateYear = TypeConvertor.castToString(value); // StringType
+          return value;
+        case -1602810202: // publicationDateMonth
+          this.publicationDateMonth = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 977092930: // publicationDateDay
+          this.publicationDateDay = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 2014643069: // publicationDateSeason
+          this.publicationDateSeason = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 225590343: // publicationDateText
+          this.publicationDateText = TypeConvertor.castToString(value); // StringType
           return value;
         case 817743300: // articleDate
           this.articleDate = TypeConvertor.castToDateTime(value); // DateTimeType
@@ -5399,8 +5850,22 @@ public class Citation extends MetadataResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("publishedIn")) {
           this.publishedIn = (CitationCitedArtifactPublicationFormPublishedInComponent) value; // CitationCitedArtifactPublicationFormPublishedInComponent
-        } else if (name.equals("periodicRelease")) {
-          this.periodicRelease = (CitationCitedArtifactPublicationFormPeriodicReleaseComponent) value; // CitationCitedArtifactPublicationFormPeriodicReleaseComponent
+        } else if (name.equals("citedMedium")) {
+          this.citedMedium = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("volume")) {
+          this.volume = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("issue")) {
+          this.issue = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("publicationDateYear")) {
+          this.publicationDateYear = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("publicationDateMonth")) {
+          this.publicationDateMonth = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("publicationDateDay")) {
+          this.publicationDateDay = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("publicationDateSeason")) {
+          this.publicationDateSeason = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("publicationDateText")) {
+          this.publicationDateText = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("articleDate")) {
           this.articleDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("lastRevisionDate")) {
@@ -5428,7 +5893,14 @@ public class Citation extends MetadataResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -614144077:  return getPublishedIn();
-        case 1726878956:  return getPeriodicRelease();
+        case 612116418:  return getCitedMedium();
+        case -810883302:  return getVolumeElement();
+        case 100509913:  return getIssueElement();
+        case 225738583:  return getPublicationDateYearElement();
+        case -1602810202:  return getPublicationDateMonthElement();
+        case 977092930:  return getPublicationDateDayElement();
+        case 2014643069:  return getPublicationDateSeasonElement();
+        case 225590343:  return getPublicationDateTextElement();
         case 817743300:  return getArticleDateElement();
         case 2129161183:  return getLastRevisionDateElement();
         case -1613589672:  return addLanguage(); 
@@ -5447,7 +5919,14 @@ public class Citation extends MetadataResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -614144077: /*publishedIn*/ return new String[] {};
-        case 1726878956: /*periodicRelease*/ return new String[] {};
+        case 612116418: /*citedMedium*/ return new String[] {"CodeableConcept"};
+        case -810883302: /*volume*/ return new String[] {"string"};
+        case 100509913: /*issue*/ return new String[] {"string"};
+        case 225738583: /*publicationDateYear*/ return new String[] {"string"};
+        case -1602810202: /*publicationDateMonth*/ return new String[] {"string"};
+        case 977092930: /*publicationDateDay*/ return new String[] {"string"};
+        case 2014643069: /*publicationDateSeason*/ return new String[] {"string"};
+        case 225590343: /*publicationDateText*/ return new String[] {"string"};
         case 817743300: /*articleDate*/ return new String[] {"dateTime"};
         case 2129161183: /*lastRevisionDate*/ return new String[] {"dateTime"};
         case -1613589672: /*language*/ return new String[] {"CodeableConcept"};
@@ -5468,9 +5947,30 @@ public class Citation extends MetadataResource {
           this.publishedIn = new CitationCitedArtifactPublicationFormPublishedInComponent();
           return this.publishedIn;
         }
-        else if (name.equals("periodicRelease")) {
-          this.periodicRelease = new CitationCitedArtifactPublicationFormPeriodicReleaseComponent();
-          return this.periodicRelease;
+        else if (name.equals("citedMedium")) {
+          this.citedMedium = new CodeableConcept();
+          return this.citedMedium;
+        }
+        else if (name.equals("volume")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.volume");
+        }
+        else if (name.equals("issue")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.issue");
+        }
+        else if (name.equals("publicationDateYear")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.publicationDateYear");
+        }
+        else if (name.equals("publicationDateMonth")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.publicationDateMonth");
+        }
+        else if (name.equals("publicationDateDay")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.publicationDateDay");
+        }
+        else if (name.equals("publicationDateSeason")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.publicationDateSeason");
+        }
+        else if (name.equals("publicationDateText")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.publicationDateText");
         }
         else if (name.equals("articleDate")) {
           throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.articleDate");
@@ -5512,7 +6012,14 @@ public class Citation extends MetadataResource {
       public void copyValues(CitationCitedArtifactPublicationFormComponent dst) {
         super.copyValues(dst);
         dst.publishedIn = publishedIn == null ? null : publishedIn.copy();
-        dst.periodicRelease = periodicRelease == null ? null : periodicRelease.copy();
+        dst.citedMedium = citedMedium == null ? null : citedMedium.copy();
+        dst.volume = volume == null ? null : volume.copy();
+        dst.issue = issue == null ? null : issue.copy();
+        dst.publicationDateYear = publicationDateYear == null ? null : publicationDateYear.copy();
+        dst.publicationDateMonth = publicationDateMonth == null ? null : publicationDateMonth.copy();
+        dst.publicationDateDay = publicationDateDay == null ? null : publicationDateDay.copy();
+        dst.publicationDateSeason = publicationDateSeason == null ? null : publicationDateSeason.copy();
+        dst.publicationDateText = publicationDateText == null ? null : publicationDateText.copy();
         dst.articleDate = articleDate == null ? null : articleDate.copy();
         dst.lastRevisionDate = lastRevisionDate == null ? null : lastRevisionDate.copy();
         if (language != null) {
@@ -5535,7 +6042,10 @@ public class Citation extends MetadataResource {
         if (!(other_ instanceof CitationCitedArtifactPublicationFormComponent))
           return false;
         CitationCitedArtifactPublicationFormComponent o = (CitationCitedArtifactPublicationFormComponent) other_;
-        return compareDeep(publishedIn, o.publishedIn, true) && compareDeep(periodicRelease, o.periodicRelease, true)
+        return compareDeep(publishedIn, o.publishedIn, true) && compareDeep(citedMedium, o.citedMedium, true)
+           && compareDeep(volume, o.volume, true) && compareDeep(issue, o.issue, true) && compareDeep(publicationDateYear, o.publicationDateYear, true)
+           && compareDeep(publicationDateMonth, o.publicationDateMonth, true) && compareDeep(publicationDateDay, o.publicationDateDay, true)
+           && compareDeep(publicationDateSeason, o.publicationDateSeason, true) && compareDeep(publicationDateText, o.publicationDateText, true)
            && compareDeep(articleDate, o.articleDate, true) && compareDeep(lastRevisionDate, o.lastRevisionDate, true)
            && compareDeep(language, o.language, true) && compareDeep(accessionNumber, o.accessionNumber, true)
            && compareDeep(pageString, o.pageString, true) && compareDeep(firstPage, o.firstPage, true) && compareDeep(lastPage, o.lastPage, true)
@@ -5549,16 +6059,20 @@ public class Citation extends MetadataResource {
         if (!(other_ instanceof CitationCitedArtifactPublicationFormComponent))
           return false;
         CitationCitedArtifactPublicationFormComponent o = (CitationCitedArtifactPublicationFormComponent) other_;
-        return compareValues(articleDate, o.articleDate, true) && compareValues(lastRevisionDate, o.lastRevisionDate, true)
+        return compareValues(volume, o.volume, true) && compareValues(issue, o.issue, true) && compareValues(publicationDateYear, o.publicationDateYear, true)
+           && compareValues(publicationDateMonth, o.publicationDateMonth, true) && compareValues(publicationDateDay, o.publicationDateDay, true)
+           && compareValues(publicationDateSeason, o.publicationDateSeason, true) && compareValues(publicationDateText, o.publicationDateText, true)
+           && compareValues(articleDate, o.articleDate, true) && compareValues(lastRevisionDate, o.lastRevisionDate, true)
            && compareValues(accessionNumber, o.accessionNumber, true) && compareValues(pageString, o.pageString, true)
            && compareValues(firstPage, o.firstPage, true) && compareValues(lastPage, o.lastPage, true) && compareValues(pageCount, o.pageCount, true)
            && compareValues(copyright, o.copyright, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(publishedIn, periodicRelease
-          , articleDate, lastRevisionDate, language, accessionNumber, pageString, firstPage
-          , lastPage, pageCount, copyright);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(publishedIn, citedMedium, volume
+          , issue, publicationDateYear, publicationDateMonth, publicationDateDay, publicationDateSeason
+          , publicationDateText, articleDate, lastRevisionDate, language, accessionNumber, pageString
+          , firstPage, lastPage, pageCount, copyright);
       }
 
   public String fhirType() {
@@ -5987,884 +6501,6 @@ public class Citation extends MetadataResource {
 
   public String fhirType() {
     return "Citation.citedArtifact.publicationForm.publishedIn";
-
-  }
-
-  }
-
-    @Block()
-    public static class CitationCitedArtifactPublicationFormPeriodicReleaseComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * Describes the form of the medium cited. Common codes are "Internet" or "Print".
-         */
-        @Child(name = "citedMedium", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Internet or Print", formalDefinition="Describes the form of the medium cited. Common codes are \"Internet\" or \"Print\"." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/cited-medium")
-        protected CodeableConcept citedMedium;
-
-        /**
-         * Volume number of journal in which the article is published.
-         */
-        @Child(name = "volume", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Volume number of journal in which the article is published", formalDefinition="Volume number of journal in which the article is published." )
-        protected StringType volume;
-
-        /**
-         * Issue, part or supplement of journal in which the article is published.
-         */
-        @Child(name = "issue", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Issue, part or supplement of journal in which the article is published", formalDefinition="Issue, part or supplement of journal in which the article is published." )
-        protected StringType issue;
-
-        /**
-         * Defining the date on which the issue of the journal was published.
-         */
-        @Child(name = "dateOfPublication", type = {}, order=4, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Defining the date on which the issue of the journal was published", formalDefinition="Defining the date on which the issue of the journal was published." )
-        protected CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent dateOfPublication;
-
-        private static final long serialVersionUID = -474554951L;
-
-    /**
-     * Constructor
-     */
-      public CitationCitedArtifactPublicationFormPeriodicReleaseComponent() {
-        super();
-      }
-
-        /**
-         * @return {@link #citedMedium} (Describes the form of the medium cited. Common codes are "Internet" or "Print".)
-         */
-        public CodeableConcept getCitedMedium() { 
-          if (this.citedMedium == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormPeriodicReleaseComponent.citedMedium");
-            else if (Configuration.doAutoCreate())
-              this.citedMedium = new CodeableConcept(); // cc
-          return this.citedMedium;
-        }
-
-        public boolean hasCitedMedium() { 
-          return this.citedMedium != null && !this.citedMedium.isEmpty();
-        }
-
-        /**
-         * @param value {@link #citedMedium} (Describes the form of the medium cited. Common codes are "Internet" or "Print".)
-         */
-        public CitationCitedArtifactPublicationFormPeriodicReleaseComponent setCitedMedium(CodeableConcept value) { 
-          this.citedMedium = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #volume} (Volume number of journal in which the article is published.). This is the underlying object with id, value and extensions. The accessor "getVolume" gives direct access to the value
-         */
-        public StringType getVolumeElement() { 
-          if (this.volume == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormPeriodicReleaseComponent.volume");
-            else if (Configuration.doAutoCreate())
-              this.volume = new StringType(); // bb
-          return this.volume;
-        }
-
-        public boolean hasVolumeElement() { 
-          return this.volume != null && !this.volume.isEmpty();
-        }
-
-        public boolean hasVolume() { 
-          return this.volume != null && !this.volume.isEmpty();
-        }
-
-        /**
-         * @param value {@link #volume} (Volume number of journal in which the article is published.). This is the underlying object with id, value and extensions. The accessor "getVolume" gives direct access to the value
-         */
-        public CitationCitedArtifactPublicationFormPeriodicReleaseComponent setVolumeElement(StringType value) { 
-          this.volume = value;
-          return this;
-        }
-
-        /**
-         * @return Volume number of journal in which the article is published.
-         */
-        public String getVolume() { 
-          return this.volume == null ? null : this.volume.getValue();
-        }
-
-        /**
-         * @param value Volume number of journal in which the article is published.
-         */
-        public CitationCitedArtifactPublicationFormPeriodicReleaseComponent setVolume(String value) { 
-          if (Utilities.noString(value))
-            this.volume = null;
-          else {
-            if (this.volume == null)
-              this.volume = new StringType();
-            this.volume.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #issue} (Issue, part or supplement of journal in which the article is published.). This is the underlying object with id, value and extensions. The accessor "getIssue" gives direct access to the value
-         */
-        public StringType getIssueElement() { 
-          if (this.issue == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormPeriodicReleaseComponent.issue");
-            else if (Configuration.doAutoCreate())
-              this.issue = new StringType(); // bb
-          return this.issue;
-        }
-
-        public boolean hasIssueElement() { 
-          return this.issue != null && !this.issue.isEmpty();
-        }
-
-        public boolean hasIssue() { 
-          return this.issue != null && !this.issue.isEmpty();
-        }
-
-        /**
-         * @param value {@link #issue} (Issue, part or supplement of journal in which the article is published.). This is the underlying object with id, value and extensions. The accessor "getIssue" gives direct access to the value
-         */
-        public CitationCitedArtifactPublicationFormPeriodicReleaseComponent setIssueElement(StringType value) { 
-          this.issue = value;
-          return this;
-        }
-
-        /**
-         * @return Issue, part or supplement of journal in which the article is published.
-         */
-        public String getIssue() { 
-          return this.issue == null ? null : this.issue.getValue();
-        }
-
-        /**
-         * @param value Issue, part or supplement of journal in which the article is published.
-         */
-        public CitationCitedArtifactPublicationFormPeriodicReleaseComponent setIssue(String value) { 
-          if (Utilities.noString(value))
-            this.issue = null;
-          else {
-            if (this.issue == null)
-              this.issue = new StringType();
-            this.issue.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #dateOfPublication} (Defining the date on which the issue of the journal was published.)
-         */
-        public CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent getDateOfPublication() { 
-          if (this.dateOfPublication == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormPeriodicReleaseComponent.dateOfPublication");
-            else if (Configuration.doAutoCreate())
-              this.dateOfPublication = new CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent(); // cc
-          return this.dateOfPublication;
-        }
-
-        public boolean hasDateOfPublication() { 
-          return this.dateOfPublication != null && !this.dateOfPublication.isEmpty();
-        }
-
-        /**
-         * @param value {@link #dateOfPublication} (Defining the date on which the issue of the journal was published.)
-         */
-        public CitationCitedArtifactPublicationFormPeriodicReleaseComponent setDateOfPublication(CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent value) { 
-          this.dateOfPublication = value;
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("citedMedium", "CodeableConcept", "Describes the form of the medium cited. Common codes are \"Internet\" or \"Print\".", 0, 1, citedMedium));
-          children.add(new Property("volume", "string", "Volume number of journal in which the article is published.", 0, 1, volume));
-          children.add(new Property("issue", "string", "Issue, part or supplement of journal in which the article is published.", 0, 1, issue));
-          children.add(new Property("dateOfPublication", "", "Defining the date on which the issue of the journal was published.", 0, 1, dateOfPublication));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case 612116418: /*citedMedium*/  return new Property("citedMedium", "CodeableConcept", "Describes the form of the medium cited. Common codes are \"Internet\" or \"Print\".", 0, 1, citedMedium);
-          case -810883302: /*volume*/  return new Property("volume", "string", "Volume number of journal in which the article is published.", 0, 1, volume);
-          case 100509913: /*issue*/  return new Property("issue", "string", "Issue, part or supplement of journal in which the article is published.", 0, 1, issue);
-          case -1662473529: /*dateOfPublication*/  return new Property("dateOfPublication", "", "Defining the date on which the issue of the journal was published.", 0, 1, dateOfPublication);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case 612116418: /*citedMedium*/ return this.citedMedium == null ? new Base[0] : new Base[] {this.citedMedium}; // CodeableConcept
-        case -810883302: /*volume*/ return this.volume == null ? new Base[0] : new Base[] {this.volume}; // StringType
-        case 100509913: /*issue*/ return this.issue == null ? new Base[0] : new Base[] {this.issue}; // StringType
-        case -1662473529: /*dateOfPublication*/ return this.dateOfPublication == null ? new Base[0] : new Base[] {this.dateOfPublication}; // CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case 612116418: // citedMedium
-          this.citedMedium = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case -810883302: // volume
-          this.volume = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 100509913: // issue
-          this.issue = TypeConvertor.castToString(value); // StringType
-          return value;
-        case -1662473529: // dateOfPublication
-          this.dateOfPublication = (CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent) value; // CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("citedMedium")) {
-          this.citedMedium = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("volume")) {
-          this.volume = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("issue")) {
-          this.issue = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("dateOfPublication")) {
-          this.dateOfPublication = (CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent) value; // CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 612116418:  return getCitedMedium();
-        case -810883302:  return getVolumeElement();
-        case 100509913:  return getIssueElement();
-        case -1662473529:  return getDateOfPublication();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 612116418: /*citedMedium*/ return new String[] {"CodeableConcept"};
-        case -810883302: /*volume*/ return new String[] {"string"};
-        case 100509913: /*issue*/ return new String[] {"string"};
-        case -1662473529: /*dateOfPublication*/ return new String[] {};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("citedMedium")) {
-          this.citedMedium = new CodeableConcept();
-          return this.citedMedium;
-        }
-        else if (name.equals("volume")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.periodicRelease.volume");
-        }
-        else if (name.equals("issue")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.periodicRelease.issue");
-        }
-        else if (name.equals("dateOfPublication")) {
-          this.dateOfPublication = new CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent();
-          return this.dateOfPublication;
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public CitationCitedArtifactPublicationFormPeriodicReleaseComponent copy() {
-        CitationCitedArtifactPublicationFormPeriodicReleaseComponent dst = new CitationCitedArtifactPublicationFormPeriodicReleaseComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(CitationCitedArtifactPublicationFormPeriodicReleaseComponent dst) {
-        super.copyValues(dst);
-        dst.citedMedium = citedMedium == null ? null : citedMedium.copy();
-        dst.volume = volume == null ? null : volume.copy();
-        dst.issue = issue == null ? null : issue.copy();
-        dst.dateOfPublication = dateOfPublication == null ? null : dateOfPublication.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof CitationCitedArtifactPublicationFormPeriodicReleaseComponent))
-          return false;
-        CitationCitedArtifactPublicationFormPeriodicReleaseComponent o = (CitationCitedArtifactPublicationFormPeriodicReleaseComponent) other_;
-        return compareDeep(citedMedium, o.citedMedium, true) && compareDeep(volume, o.volume, true) && compareDeep(issue, o.issue, true)
-           && compareDeep(dateOfPublication, o.dateOfPublication, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof CitationCitedArtifactPublicationFormPeriodicReleaseComponent))
-          return false;
-        CitationCitedArtifactPublicationFormPeriodicReleaseComponent o = (CitationCitedArtifactPublicationFormPeriodicReleaseComponent) other_;
-        return compareValues(volume, o.volume, true) && compareValues(issue, o.issue, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(citedMedium, volume, issue
-          , dateOfPublication);
-      }
-
-  public String fhirType() {
-    return "Citation.citedArtifact.publicationForm.periodicRelease";
-
-  }
-
-  }
-
-    @Block()
-    public static class CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * Date on which the issue of the journal was published.
-         */
-        @Child(name = "date", type = {DateType.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Date on which the issue of the journal was published", formalDefinition="Date on which the issue of the journal was published." )
-        protected DateType date;
-
-        /**
-         * Year on which the issue of the journal was published.
-         */
-        @Child(name = "year", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Year on which the issue of the journal was published", formalDefinition="Year on which the issue of the journal was published." )
-        protected StringType year;
-
-        /**
-         * Month on which the issue of the journal was published.
-         */
-        @Child(name = "month", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Month on which the issue of the journal was published", formalDefinition="Month on which the issue of the journal was published." )
-        protected StringType month;
-
-        /**
-         * Day on which the issue of the journal was published.
-         */
-        @Child(name = "day", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Day on which the issue of the journal was published", formalDefinition="Day on which the issue of the journal was published." )
-        protected StringType day;
-
-        /**
-         * Spring, Summer, Fall/Autumn, Winter.
-         */
-        @Child(name = "season", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Season on which the issue of the journal was published", formalDefinition="Spring, Summer, Fall/Autumn, Winter." )
-        protected StringType season;
-
-        /**
-         * Text representation of the date of which the issue of the journal was published.
-         */
-        @Child(name = "text", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Text representation of the date of which the issue of the journal was published", formalDefinition="Text representation of the date of which the issue of the journal was published." )
-        protected StringType text;
-
-        private static final long serialVersionUID = 1585589146L;
-
-    /**
-     * Constructor
-     */
-      public CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent() {
-        super();
-      }
-
-        /**
-         * @return {@link #date} (Date on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
-         */
-        public DateType getDateElement() { 
-          if (this.date == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent.date");
-            else if (Configuration.doAutoCreate())
-              this.date = new DateType(); // bb
-          return this.date;
-        }
-
-        public boolean hasDateElement() { 
-          return this.date != null && !this.date.isEmpty();
-        }
-
-        public boolean hasDate() { 
-          return this.date != null && !this.date.isEmpty();
-        }
-
-        /**
-         * @param value {@link #date} (Date on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
-         */
-        public CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent setDateElement(DateType value) { 
-          this.date = value;
-          return this;
-        }
-
-        /**
-         * @return Date on which the issue of the journal was published.
-         */
-        public Date getDate() { 
-          return this.date == null ? null : this.date.getValue();
-        }
-
-        /**
-         * @param value Date on which the issue of the journal was published.
-         */
-        public CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent setDate(Date value) { 
-          if (value == null)
-            this.date = null;
-          else {
-            if (this.date == null)
-              this.date = new DateType();
-            this.date.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #year} (Year on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getYear" gives direct access to the value
-         */
-        public StringType getYearElement() { 
-          if (this.year == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent.year");
-            else if (Configuration.doAutoCreate())
-              this.year = new StringType(); // bb
-          return this.year;
-        }
-
-        public boolean hasYearElement() { 
-          return this.year != null && !this.year.isEmpty();
-        }
-
-        public boolean hasYear() { 
-          return this.year != null && !this.year.isEmpty();
-        }
-
-        /**
-         * @param value {@link #year} (Year on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getYear" gives direct access to the value
-         */
-        public CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent setYearElement(StringType value) { 
-          this.year = value;
-          return this;
-        }
-
-        /**
-         * @return Year on which the issue of the journal was published.
-         */
-        public String getYear() { 
-          return this.year == null ? null : this.year.getValue();
-        }
-
-        /**
-         * @param value Year on which the issue of the journal was published.
-         */
-        public CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent setYear(String value) { 
-          if (Utilities.noString(value))
-            this.year = null;
-          else {
-            if (this.year == null)
-              this.year = new StringType();
-            this.year.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #month} (Month on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getMonth" gives direct access to the value
-         */
-        public StringType getMonthElement() { 
-          if (this.month == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent.month");
-            else if (Configuration.doAutoCreate())
-              this.month = new StringType(); // bb
-          return this.month;
-        }
-
-        public boolean hasMonthElement() { 
-          return this.month != null && !this.month.isEmpty();
-        }
-
-        public boolean hasMonth() { 
-          return this.month != null && !this.month.isEmpty();
-        }
-
-        /**
-         * @param value {@link #month} (Month on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getMonth" gives direct access to the value
-         */
-        public CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent setMonthElement(StringType value) { 
-          this.month = value;
-          return this;
-        }
-
-        /**
-         * @return Month on which the issue of the journal was published.
-         */
-        public String getMonth() { 
-          return this.month == null ? null : this.month.getValue();
-        }
-
-        /**
-         * @param value Month on which the issue of the journal was published.
-         */
-        public CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent setMonth(String value) { 
-          if (Utilities.noString(value))
-            this.month = null;
-          else {
-            if (this.month == null)
-              this.month = new StringType();
-            this.month.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #day} (Day on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getDay" gives direct access to the value
-         */
-        public StringType getDayElement() { 
-          if (this.day == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent.day");
-            else if (Configuration.doAutoCreate())
-              this.day = new StringType(); // bb
-          return this.day;
-        }
-
-        public boolean hasDayElement() { 
-          return this.day != null && !this.day.isEmpty();
-        }
-
-        public boolean hasDay() { 
-          return this.day != null && !this.day.isEmpty();
-        }
-
-        /**
-         * @param value {@link #day} (Day on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getDay" gives direct access to the value
-         */
-        public CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent setDayElement(StringType value) { 
-          this.day = value;
-          return this;
-        }
-
-        /**
-         * @return Day on which the issue of the journal was published.
-         */
-        public String getDay() { 
-          return this.day == null ? null : this.day.getValue();
-        }
-
-        /**
-         * @param value Day on which the issue of the journal was published.
-         */
-        public CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent setDay(String value) { 
-          if (Utilities.noString(value))
-            this.day = null;
-          else {
-            if (this.day == null)
-              this.day = new StringType();
-            this.day.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #season} (Spring, Summer, Fall/Autumn, Winter.). This is the underlying object with id, value and extensions. The accessor "getSeason" gives direct access to the value
-         */
-        public StringType getSeasonElement() { 
-          if (this.season == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent.season");
-            else if (Configuration.doAutoCreate())
-              this.season = new StringType(); // bb
-          return this.season;
-        }
-
-        public boolean hasSeasonElement() { 
-          return this.season != null && !this.season.isEmpty();
-        }
-
-        public boolean hasSeason() { 
-          return this.season != null && !this.season.isEmpty();
-        }
-
-        /**
-         * @param value {@link #season} (Spring, Summer, Fall/Autumn, Winter.). This is the underlying object with id, value and extensions. The accessor "getSeason" gives direct access to the value
-         */
-        public CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent setSeasonElement(StringType value) { 
-          this.season = value;
-          return this;
-        }
-
-        /**
-         * @return Spring, Summer, Fall/Autumn, Winter.
-         */
-        public String getSeason() { 
-          return this.season == null ? null : this.season.getValue();
-        }
-
-        /**
-         * @param value Spring, Summer, Fall/Autumn, Winter.
-         */
-        public CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent setSeason(String value) { 
-          if (Utilities.noString(value))
-            this.season = null;
-          else {
-            if (this.season == null)
-              this.season = new StringType();
-            this.season.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #text} (Text representation of the date of which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
-         */
-        public StringType getTextElement() { 
-          if (this.text == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent.text");
-            else if (Configuration.doAutoCreate())
-              this.text = new StringType(); // bb
-          return this.text;
-        }
-
-        public boolean hasTextElement() { 
-          return this.text != null && !this.text.isEmpty();
-        }
-
-        public boolean hasText() { 
-          return this.text != null && !this.text.isEmpty();
-        }
-
-        /**
-         * @param value {@link #text} (Text representation of the date of which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
-         */
-        public CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent setTextElement(StringType value) { 
-          this.text = value;
-          return this;
-        }
-
-        /**
-         * @return Text representation of the date of which the issue of the journal was published.
-         */
-        public String getText() { 
-          return this.text == null ? null : this.text.getValue();
-        }
-
-        /**
-         * @param value Text representation of the date of which the issue of the journal was published.
-         */
-        public CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent setText(String value) { 
-          if (Utilities.noString(value))
-            this.text = null;
-          else {
-            if (this.text == null)
-              this.text = new StringType();
-            this.text.setValue(value);
-          }
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("date", "date", "Date on which the issue of the journal was published.", 0, 1, date));
-          children.add(new Property("year", "string", "Year on which the issue of the journal was published.", 0, 1, year));
-          children.add(new Property("month", "string", "Month on which the issue of the journal was published.", 0, 1, month));
-          children.add(new Property("day", "string", "Day on which the issue of the journal was published.", 0, 1, day));
-          children.add(new Property("season", "string", "Spring, Summer, Fall/Autumn, Winter.", 0, 1, season));
-          children.add(new Property("text", "string", "Text representation of the date of which the issue of the journal was published.", 0, 1, text));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case 3076014: /*date*/  return new Property("date", "date", "Date on which the issue of the journal was published.", 0, 1, date);
-          case 3704893: /*year*/  return new Property("year", "string", "Year on which the issue of the journal was published.", 0, 1, year);
-          case 104080000: /*month*/  return new Property("month", "string", "Month on which the issue of the journal was published.", 0, 1, month);
-          case 99228: /*day*/  return new Property("day", "string", "Day on which the issue of the journal was published.", 0, 1, day);
-          case -906335517: /*season*/  return new Property("season", "string", "Spring, Summer, Fall/Autumn, Winter.", 0, 1, season);
-          case 3556653: /*text*/  return new Property("text", "string", "Text representation of the date of which the issue of the journal was published.", 0, 1, text);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateType
-        case 3704893: /*year*/ return this.year == null ? new Base[0] : new Base[] {this.year}; // StringType
-        case 104080000: /*month*/ return this.month == null ? new Base[0] : new Base[] {this.month}; // StringType
-        case 99228: /*day*/ return this.day == null ? new Base[0] : new Base[] {this.day}; // StringType
-        case -906335517: /*season*/ return this.season == null ? new Base[0] : new Base[] {this.season}; // StringType
-        case 3556653: /*text*/ return this.text == null ? new Base[0] : new Base[] {this.text}; // StringType
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case 3076014: // date
-          this.date = TypeConvertor.castToDate(value); // DateType
-          return value;
-        case 3704893: // year
-          this.year = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 104080000: // month
-          this.month = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 99228: // day
-          this.day = TypeConvertor.castToString(value); // StringType
-          return value;
-        case -906335517: // season
-          this.season = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 3556653: // text
-          this.text = TypeConvertor.castToString(value); // StringType
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("date")) {
-          this.date = TypeConvertor.castToDate(value); // DateType
-        } else if (name.equals("year")) {
-          this.year = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("month")) {
-          this.month = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("day")) {
-          this.day = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("season")) {
-          this.season = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("text")) {
-          this.text = TypeConvertor.castToString(value); // StringType
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 3076014:  return getDateElement();
-        case 3704893:  return getYearElement();
-        case 104080000:  return getMonthElement();
-        case 99228:  return getDayElement();
-        case -906335517:  return getSeasonElement();
-        case 3556653:  return getTextElement();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 3076014: /*date*/ return new String[] {"date"};
-        case 3704893: /*year*/ return new String[] {"string"};
-        case 104080000: /*month*/ return new String[] {"string"};
-        case 99228: /*day*/ return new String[] {"string"};
-        case -906335517: /*season*/ return new String[] {"string"};
-        case 3556653: /*text*/ return new String[] {"string"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.periodicRelease.dateOfPublication.date");
-        }
-        else if (name.equals("year")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.periodicRelease.dateOfPublication.year");
-        }
-        else if (name.equals("month")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.periodicRelease.dateOfPublication.month");
-        }
-        else if (name.equals("day")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.periodicRelease.dateOfPublication.day");
-        }
-        else if (name.equals("season")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.periodicRelease.dateOfPublication.season");
-        }
-        else if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.citedArtifact.publicationForm.periodicRelease.dateOfPublication.text");
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent copy() {
-        CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent dst = new CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent dst) {
-        super.copyValues(dst);
-        dst.date = date == null ? null : date.copy();
-        dst.year = year == null ? null : year.copy();
-        dst.month = month == null ? null : month.copy();
-        dst.day = day == null ? null : day.copy();
-        dst.season = season == null ? null : season.copy();
-        dst.text = text == null ? null : text.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent))
-          return false;
-        CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent o = (CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent) other_;
-        return compareDeep(date, o.date, true) && compareDeep(year, o.year, true) && compareDeep(month, o.month, true)
-           && compareDeep(day, o.day, true) && compareDeep(season, o.season, true) && compareDeep(text, o.text, true)
-          ;
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent))
-          return false;
-        CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent o = (CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent) other_;
-        return compareValues(date, o.date, true) && compareValues(year, o.year, true) && compareValues(month, o.month, true)
-           && compareValues(day, o.day, true) && compareValues(season, o.season, true) && compareValues(text, o.text, true)
-          ;
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(date, year, month, day
-          , season, text);
-      }
-
-  public String fhirType() {
-    return "Citation.citedArtifact.publicationForm.periodicRelease.dateOfPublication";
 
   }
 
@@ -8991,10 +8627,10 @@ public class Citation extends MetadataResource {
   }
 
     /**
-     * An absolute URI that is used to identify this citation when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.
+     * An absolute URI that is used to identify this citation when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.
      */
     @Child(name = "url", type = {UriType.class}, order=0, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Canonical identifier for this citation, represented as a globally unique URI", formalDefinition="An absolute URI that is used to identify this citation when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers." )
+    @Description(shortDefinition="Canonical identifier for this citation, represented as a globally unique URI", formalDefinition="An absolute URI that is used to identify this citation when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers." )
     protected UriType url;
 
     /**
@@ -9214,7 +8850,7 @@ public class Citation extends MetadataResource {
     }
 
     /**
-     * @return {@link #url} (An absolute URI that is used to identify this citation when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @return {@link #url} (An absolute URI that is used to identify this citation when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public UriType getUrlElement() { 
       if (this.url == null)
@@ -9234,7 +8870,7 @@ public class Citation extends MetadataResource {
     }
 
     /**
-     * @param value {@link #url} (An absolute URI that is used to identify this citation when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @param value {@link #url} (An absolute URI that is used to identify this citation when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public Citation setUrlElement(UriType value) { 
       this.url = value;
@@ -9242,14 +8878,14 @@ public class Citation extends MetadataResource {
     }
 
     /**
-     * @return An absolute URI that is used to identify this citation when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.
+     * @return An absolute URI that is used to identify this citation when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.
      */
     public String getUrl() { 
       return this.url == null ? null : this.url.getValue();
     }
 
     /**
-     * @param value An absolute URI that is used to identify this citation when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.
+     * @param value An absolute URI that is used to identify this citation when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.
      */
     public Citation setUrl(String value) { 
       if (Utilities.noString(value))
@@ -10636,11 +10272,88 @@ public class Citation extends MetadataResource {
      * not supported on this implementation
      */
     @Override
+    public int getVersionAlgorithmMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public DataType getVersionAlgorithm() { 
+      throw new Error("The resource type \"Citation\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public StringType getVersionAlgorithmStringType() { 
+      throw new Error("The resource type \"Citation\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    public boolean hasVersionAlgorithmStringType() { 
+      return false;////K 
+    }
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public Coding getVersionAlgorithmCoding() { 
+      throw new Error("The resource type \"Citation\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+    public boolean hasVersionAlgorithmCoding() { 
+      return false;////K 
+    }
+    public boolean hasVersionAlgorithm() { 
+      return false;
+    }
+    /**
+     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public Citation setVersionAlgorithm(DataType value) { 
+      throw new Error("The resource type \"Citation\" does not implement the property \"versionAlgorithm[x]\""); 
+    }
+
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getCopyrightLabelMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public StringType getCopyrightLabelElement() { 
+      throw new Error("The resource type \"Citation\" does not implement the property \"copyrightLabel\"");
+    }
+
+    public boolean hasCopyrightLabelElement() { 
+      return false;
+    }
+    public boolean hasCopyrightLabel() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public Citation setCopyrightLabelElement(StringType value) { 
+      throw new Error("The resource type \"Citation\" does not implement the property \"copyrightLabel\""); 
+    }
+    public String getCopyrightLabel() { 
+      throw new Error("The resource type \"Citation\" does not implement the property \"copyrightLabel\""); 
+    }
+    /**
+     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public Citation setCopyrightLabel(String value) { 
+      throw new Error("The resource type \"Citation\" does not implement the property \"copyrightLabel\""); 
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
     public int getTopicMax() { 
       return 0;
     }
     /**
-     * @return {@link #topic} (Descriptive topics related to the content of the citation. Topics provide a high-level categorization of the citation that can be useful for filtering and searching.)
+     * @return {@link #topic} (Descriptive topics related to the content of the citation. Topics provide a high-level categorization as well as keywords for the citation that can be useful for filtering and searching.)
      */
     public List<CodeableConcept> getTopic() { 
       return new ArrayList<>();
@@ -10649,27 +10362,27 @@ public class Citation extends MetadataResource {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public Citation setTopic(List<CodeableConcept> theTopic) { 
-      throw new Error("The resource type \"Citation\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"Citation\" does not implement the property \"topic\""); 
     }
     public boolean hasTopic() { 
       return false;
     }
 
     public CodeableConcept addTopic() { //3
-      throw new Error("The resource type \"Citation\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"Citation\" does not implement the property \"topic\""); 
     }
     public Citation addTopic(CodeableConcept t) { //3
-      throw new Error("The resource type \"Citation\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"Citation\" does not implement the property \"topic\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist {2}
      */
     public CodeableConcept getTopicFirstRep() { 
-      throw new Error("The resource type \"Citation\" does not implement the property \"topic\"");
+      throw new Error("The resource type \"Citation\" does not implement the property \"topic\""); 
     }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("url", "uri", "An absolute URI that is used to identify this citation when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.", 0, 1, url));
+        children.add(new Property("url", "uri", "An absolute URI that is used to identify this citation when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.", 0, 1, url));
         children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this citation when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("version", "string", "The identifier that is used to identify this version of the citation when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the citation author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version));
         children.add(new Property("name", "string", "A natural language name identifying the citation. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name));
@@ -10703,7 +10416,7 @@ public class Citation extends MetadataResource {
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this citation when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.", 0, 1, url);
+        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this citation when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.", 0, 1, url);
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A formal identifier that is used to identify this citation when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the citation when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the citation author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version);
         case 3373707: /*name*/  return new Property("name", "string", "A natural language name identifying the citation. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name);

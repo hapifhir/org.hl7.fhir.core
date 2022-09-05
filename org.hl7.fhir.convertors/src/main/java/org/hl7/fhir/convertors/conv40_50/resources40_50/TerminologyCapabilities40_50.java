@@ -6,6 +6,10 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.ContactDet
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.UsageContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.CodeType;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.TerminologyCapabilities.CommonLanguages;
+import org.hl7.fhir.r5.model.TerminologyCapabilities.CommonLanguagesEnumFactory;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -201,10 +205,10 @@ public class TerminologyCapabilities40_50 {
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case EXPLICIT:
-        tgt.setValue(org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport.EXPLICIT);
+        tgt.setValue(org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport.INCOMPOSE);
         break;
       case ALL:
-        tgt.setValue(org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport.ALL);
+        tgt.setValue(org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport.INCOMPOSEOREXPANSION);
         break;
       default:
         tgt.setValue(org.hl7.fhir.r5.model.TerminologyCapabilities.CodeSearchSupport.NULL);
@@ -219,10 +223,10 @@ public class TerminologyCapabilities40_50 {
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupport> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupportEnumFactory());
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
-      case EXPLICIT:
+      case INCOMPOSE:
         tgt.setValue(org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupport.EXPLICIT);
         break;
-      case ALL:
+      case INCOMPOSEOREXPANSION:
         tgt.setValue(org.hl7.fhir.r4.model.TerminologyCapabilities.CodeSearchSupport.ALL);
         break;
       default:
@@ -319,7 +323,7 @@ public class TerminologyCapabilities40_50 {
       tgt.setIsDefaultElement(Boolean40_50.convertBoolean(src.getIsDefaultElement()));
     if (src.hasCompositional())
       tgt.setCompositionalElement(Boolean40_50.convertBoolean(src.getCompositionalElement()));
-    for (org.hl7.fhir.r4.model.CodeType t : src.getLanguage()) tgt.getLanguage().add(Code40_50.convertCode(t));
+    for (org.hl7.fhir.r4.model.CodeType t : src.getLanguage()) tgt.getLanguage().add(new Enumeration<CommonLanguages>(new CommonLanguagesEnumFactory(), t.getCode()));
     for (org.hl7.fhir.r4.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionFilterComponent t : src.getFilter())
       tgt.addFilter(convertTerminologyCapabilitiesCodeSystemVersionFilterComponent(t));
     for (org.hl7.fhir.r4.model.CodeType t : src.getProperty()) tgt.getProperty().add(Code40_50.convertCode(t));
@@ -337,7 +341,7 @@ public class TerminologyCapabilities40_50 {
       tgt.setIsDefaultElement(Boolean40_50.convertBoolean(src.getIsDefaultElement()));
     if (src.hasCompositional())
       tgt.setCompositionalElement(Boolean40_50.convertBoolean(src.getCompositionalElement()));
-    for (org.hl7.fhir.r5.model.CodeType t : src.getLanguage()) tgt.getLanguage().add(Code40_50.convertCode(t));
+    for (Enumeration<CommonLanguages> t : src.getLanguage()) tgt.getLanguage().add(new CodeType(t.getCode()));
     for (org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionFilterComponent t : src.getFilter())
       tgt.addFilter(convertTerminologyCapabilitiesCodeSystemVersionFilterComponent(t));
     for (org.hl7.fhir.r5.model.CodeType t : src.getProperty()) tgt.getProperty().add(Code40_50.convertCode(t));

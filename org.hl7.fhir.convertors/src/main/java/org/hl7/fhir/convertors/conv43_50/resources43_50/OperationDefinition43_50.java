@@ -209,9 +209,9 @@ public class OperationDefinition43_50 {
     if (src.hasMax())
       tgt.setMaxElement(String43_50.convertString(src.getMaxElement()));
     if (src.hasDocumentation())
-      tgt.setDocumentationElement(String43_50.convertString(src.getDocumentationElement()));
+      tgt.setDocumentationElement(String43_50.convertStringToMarkdown(src.getDocumentationElement()));
     if (src.hasType())
-      tgt.getTypeElement().setValue(org.hl7.fhir.r5.model.Enumerations.FHIRAllTypes.fromCode(src.getType().toCode()));
+      tgt.getTypeElement().setValue(org.hl7.fhir.r5.model.Enumerations.FHIRTypes.fromCode(src.getType().toCode()));
     for (org.hl7.fhir.r4b.model.CanonicalType t : src.getTargetProfile())
       tgt.getTargetProfile().add(Canonical43_50.convertCanonical(t));
     if (src.hasSearchType())

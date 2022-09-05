@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,7 +46,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * Base StructureDefinition for DataRequirement Type: Describes a required data item for evaluation in terms of the type of data, and optional code or date-based filters of the data.
+ * DataRequirement Type: Describes a required data item for evaluation in terms of the type of data, and optional code or date-based filters of the data.
  */
 @DatatypeDef(name="DataRequirement")
 public class DataRequirement extends DataType implements ICompositeType {
@@ -143,6 +143,182 @@ public class DataRequirement extends DataType implements ICompositeType {
       return "?";
       }
     public String toSystem(SortDirection code) {
+      return code.getSystem();
+      }
+    }
+
+    public enum ValueFilterComparator {
+        /**
+         * the value for the parameter in the resource is equal to the provided value.
+         */
+        EQ, 
+        /**
+         * the value for the parameter in the resource is greater than the provided value.
+         */
+        GT, 
+        /**
+         * the value for the parameter in the resource is less than the provided value.
+         */
+        LT, 
+        /**
+         * the value for the parameter in the resource is greater or equal to the provided value.
+         */
+        GE, 
+        /**
+         * the value for the parameter in the resource is less or equal to the provided value.
+         */
+        LE, 
+        /**
+         * the value for the parameter in the resource starts after the provided value.
+         */
+        SA, 
+        /**
+         * the value for the parameter in the resource ends before the provided value.
+         */
+        EB, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static ValueFilterComparator fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("eq".equals(codeString))
+          return EQ;
+        if ("gt".equals(codeString))
+          return GT;
+        if ("lt".equals(codeString))
+          return LT;
+        if ("ge".equals(codeString))
+          return GE;
+        if ("le".equals(codeString))
+          return LE;
+        if ("sa".equals(codeString))
+          return SA;
+        if ("eb".equals(codeString))
+          return EB;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown ValueFilterComparator code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case EQ: return "eq";
+            case GT: return "gt";
+            case LT: return "lt";
+            case GE: return "ge";
+            case LE: return "le";
+            case SA: return "sa";
+            case EB: return "eb";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case EQ: return "http://hl7.org/fhir/search-comparator";
+            case GT: return "http://hl7.org/fhir/search-comparator";
+            case LT: return "http://hl7.org/fhir/search-comparator";
+            case GE: return "http://hl7.org/fhir/search-comparator";
+            case LE: return "http://hl7.org/fhir/search-comparator";
+            case SA: return "http://hl7.org/fhir/search-comparator";
+            case EB: return "http://hl7.org/fhir/search-comparator";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case EQ: return "the value for the parameter in the resource is equal to the provided value.";
+            case GT: return "the value for the parameter in the resource is greater than the provided value.";
+            case LT: return "the value for the parameter in the resource is less than the provided value.";
+            case GE: return "the value for the parameter in the resource is greater or equal to the provided value.";
+            case LE: return "the value for the parameter in the resource is less or equal to the provided value.";
+            case SA: return "the value for the parameter in the resource starts after the provided value.";
+            case EB: return "the value for the parameter in the resource ends before the provided value.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case EQ: return "Equals";
+            case GT: return "Greater Than";
+            case LT: return "Less Than";
+            case GE: return "Greater or Equals";
+            case LE: return "Less of Equal";
+            case SA: return "Starts After";
+            case EB: return "Ends Before";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+    }
+
+  public static class ValueFilterComparatorEnumFactory implements EnumFactory<ValueFilterComparator> {
+    public ValueFilterComparator fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("eq".equals(codeString))
+          return ValueFilterComparator.EQ;
+        if ("gt".equals(codeString))
+          return ValueFilterComparator.GT;
+        if ("lt".equals(codeString))
+          return ValueFilterComparator.LT;
+        if ("ge".equals(codeString))
+          return ValueFilterComparator.GE;
+        if ("le".equals(codeString))
+          return ValueFilterComparator.LE;
+        if ("sa".equals(codeString))
+          return ValueFilterComparator.SA;
+        if ("eb".equals(codeString))
+          return ValueFilterComparator.EB;
+        throw new IllegalArgumentException("Unknown ValueFilterComparator code '"+codeString+"'");
+        }
+        public Enumeration<ValueFilterComparator> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<ValueFilterComparator>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("eq".equals(codeString))
+          return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.EQ);
+        if ("gt".equals(codeString))
+          return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.GT);
+        if ("lt".equals(codeString))
+          return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.LT);
+        if ("ge".equals(codeString))
+          return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.GE);
+        if ("le".equals(codeString))
+          return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.LE);
+        if ("sa".equals(codeString))
+          return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.SA);
+        if ("eb".equals(codeString))
+          return new Enumeration<ValueFilterComparator>(this, ValueFilterComparator.EB);
+        throw new FHIRException("Unknown ValueFilterComparator code '"+codeString+"'");
+        }
+    public String toCode(ValueFilterComparator code) {
+      if (code == ValueFilterComparator.EQ)
+        return "eq";
+      if (code == ValueFilterComparator.GT)
+        return "gt";
+      if (code == ValueFilterComparator.LT)
+        return "lt";
+      if (code == ValueFilterComparator.GE)
+        return "ge";
+      if (code == ValueFilterComparator.LE)
+        return "le";
+      if (code == ValueFilterComparator.SA)
+        return "sa";
+      if (code == ValueFilterComparator.EB)
+        return "eb";
+      return "?";
+      }
+    public String toSystem(ValueFilterComparator code) {
       return code.getSystem();
       }
     }
@@ -900,6 +1076,432 @@ public class DataRequirement extends DataType implements ICompositeType {
   }
 
     @Block()
+    public static class DataRequirementValueFilterComponent extends Element implements IBaseDatatypeElement {
+        /**
+         * The attribute of the filter. The specified path SHALL be a FHIRPath resolveable on the specified type of the DataRequirement, and SHALL consist only of identifiers, constant indexers, and .resolve(). The path is allowed to contain qualifiers (.) to traverse sub-elements, as well as indexers ([x]) to traverse multiple-cardinality sub-elements (see the [Simple FHIRPath Profile](fhirpath.html#simple) for full details). Note that the index must be an integer constant. The path must resolve to an element of a type that is comparable to the valueFilter.value[x] element for the filter.
+         */
+        @Child(name = "path", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="An attribute to filter on", formalDefinition="The attribute of the filter. The specified path SHALL be a FHIRPath resolveable on the specified type of the DataRequirement, and SHALL consist only of identifiers, constant indexers, and .resolve(). The path is allowed to contain qualifiers (.) to traverse sub-elements, as well as indexers ([x]) to traverse multiple-cardinality sub-elements (see the [Simple FHIRPath Profile](fhirpath.html#simple) for full details). Note that the index must be an integer constant. The path must resolve to an element of a type that is comparable to the valueFilter.value[x] element for the filter." )
+        protected StringType path;
+
+        /**
+         * A search parameter defined on the specified type of the DataRequirement, and which searches on elements of a type compatible with the type of the valueFilter.value[x] for the filter.
+         */
+        @Child(name = "searchParam", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="A parameter to search on", formalDefinition="A search parameter defined on the specified type of the DataRequirement, and which searches on elements of a type compatible with the type of the valueFilter.value[x] for the filter." )
+        protected StringType searchParam;
+
+        /**
+         * The comparator to be used to determine whether the value is matching.
+         */
+        @Child(name = "comparator", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="eq | gt | lt | ge | le | sa | eb", formalDefinition="The comparator to be used to determine whether the value is matching." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/value-filter-comparator")
+        protected Enumeration<ValueFilterComparator> comparator;
+
+        /**
+         * The value of the filter.
+         */
+        @Child(name = "value", type = {DateTimeType.class, Period.class, Duration.class}, order=4, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="The value of the filter, as a Period, DateTime, or Duration value", formalDefinition="The value of the filter." )
+        protected DataType value;
+
+        private static final long serialVersionUID = 2106988483L;
+
+    /**
+     * Constructor
+     */
+      public DataRequirementValueFilterComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #path} (The attribute of the filter. The specified path SHALL be a FHIRPath resolveable on the specified type of the DataRequirement, and SHALL consist only of identifiers, constant indexers, and .resolve(). The path is allowed to contain qualifiers (.) to traverse sub-elements, as well as indexers ([x]) to traverse multiple-cardinality sub-elements (see the [Simple FHIRPath Profile](fhirpath.html#simple) for full details). Note that the index must be an integer constant. The path must resolve to an element of a type that is comparable to the valueFilter.value[x] element for the filter.). This is the underlying object with id, value and extensions. The accessor "getPath" gives direct access to the value
+         */
+        public StringType getPathElement() { 
+          if (this.path == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create DataRequirementValueFilterComponent.path");
+            else if (Configuration.doAutoCreate())
+              this.path = new StringType(); // bb
+          return this.path;
+        }
+
+        public boolean hasPathElement() { 
+          return this.path != null && !this.path.isEmpty();
+        }
+
+        public boolean hasPath() { 
+          return this.path != null && !this.path.isEmpty();
+        }
+
+        /**
+         * @param value {@link #path} (The attribute of the filter. The specified path SHALL be a FHIRPath resolveable on the specified type of the DataRequirement, and SHALL consist only of identifiers, constant indexers, and .resolve(). The path is allowed to contain qualifiers (.) to traverse sub-elements, as well as indexers ([x]) to traverse multiple-cardinality sub-elements (see the [Simple FHIRPath Profile](fhirpath.html#simple) for full details). Note that the index must be an integer constant. The path must resolve to an element of a type that is comparable to the valueFilter.value[x] element for the filter.). This is the underlying object with id, value and extensions. The accessor "getPath" gives direct access to the value
+         */
+        public DataRequirementValueFilterComponent setPathElement(StringType value) { 
+          this.path = value;
+          return this;
+        }
+
+        /**
+         * @return The attribute of the filter. The specified path SHALL be a FHIRPath resolveable on the specified type of the DataRequirement, and SHALL consist only of identifiers, constant indexers, and .resolve(). The path is allowed to contain qualifiers (.) to traverse sub-elements, as well as indexers ([x]) to traverse multiple-cardinality sub-elements (see the [Simple FHIRPath Profile](fhirpath.html#simple) for full details). Note that the index must be an integer constant. The path must resolve to an element of a type that is comparable to the valueFilter.value[x] element for the filter.
+         */
+        public String getPath() { 
+          return this.path == null ? null : this.path.getValue();
+        }
+
+        /**
+         * @param value The attribute of the filter. The specified path SHALL be a FHIRPath resolveable on the specified type of the DataRequirement, and SHALL consist only of identifiers, constant indexers, and .resolve(). The path is allowed to contain qualifiers (.) to traverse sub-elements, as well as indexers ([x]) to traverse multiple-cardinality sub-elements (see the [Simple FHIRPath Profile](fhirpath.html#simple) for full details). Note that the index must be an integer constant. The path must resolve to an element of a type that is comparable to the valueFilter.value[x] element for the filter.
+         */
+        public DataRequirementValueFilterComponent setPath(String value) { 
+          if (Utilities.noString(value))
+            this.path = null;
+          else {
+            if (this.path == null)
+              this.path = new StringType();
+            this.path.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #searchParam} (A search parameter defined on the specified type of the DataRequirement, and which searches on elements of a type compatible with the type of the valueFilter.value[x] for the filter.). This is the underlying object with id, value and extensions. The accessor "getSearchParam" gives direct access to the value
+         */
+        public StringType getSearchParamElement() { 
+          if (this.searchParam == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create DataRequirementValueFilterComponent.searchParam");
+            else if (Configuration.doAutoCreate())
+              this.searchParam = new StringType(); // bb
+          return this.searchParam;
+        }
+
+        public boolean hasSearchParamElement() { 
+          return this.searchParam != null && !this.searchParam.isEmpty();
+        }
+
+        public boolean hasSearchParam() { 
+          return this.searchParam != null && !this.searchParam.isEmpty();
+        }
+
+        /**
+         * @param value {@link #searchParam} (A search parameter defined on the specified type of the DataRequirement, and which searches on elements of a type compatible with the type of the valueFilter.value[x] for the filter.). This is the underlying object with id, value and extensions. The accessor "getSearchParam" gives direct access to the value
+         */
+        public DataRequirementValueFilterComponent setSearchParamElement(StringType value) { 
+          this.searchParam = value;
+          return this;
+        }
+
+        /**
+         * @return A search parameter defined on the specified type of the DataRequirement, and which searches on elements of a type compatible with the type of the valueFilter.value[x] for the filter.
+         */
+        public String getSearchParam() { 
+          return this.searchParam == null ? null : this.searchParam.getValue();
+        }
+
+        /**
+         * @param value A search parameter defined on the specified type of the DataRequirement, and which searches on elements of a type compatible with the type of the valueFilter.value[x] for the filter.
+         */
+        public DataRequirementValueFilterComponent setSearchParam(String value) { 
+          if (Utilities.noString(value))
+            this.searchParam = null;
+          else {
+            if (this.searchParam == null)
+              this.searchParam = new StringType();
+            this.searchParam.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #comparator} (The comparator to be used to determine whether the value is matching.). This is the underlying object with id, value and extensions. The accessor "getComparator" gives direct access to the value
+         */
+        public Enumeration<ValueFilterComparator> getComparatorElement() { 
+          if (this.comparator == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create DataRequirementValueFilterComponent.comparator");
+            else if (Configuration.doAutoCreate())
+              this.comparator = new Enumeration<ValueFilterComparator>(new ValueFilterComparatorEnumFactory()); // bb
+          return this.comparator;
+        }
+
+        public boolean hasComparatorElement() { 
+          return this.comparator != null && !this.comparator.isEmpty();
+        }
+
+        public boolean hasComparator() { 
+          return this.comparator != null && !this.comparator.isEmpty();
+        }
+
+        /**
+         * @param value {@link #comparator} (The comparator to be used to determine whether the value is matching.). This is the underlying object with id, value and extensions. The accessor "getComparator" gives direct access to the value
+         */
+        public DataRequirementValueFilterComponent setComparatorElement(Enumeration<ValueFilterComparator> value) { 
+          this.comparator = value;
+          return this;
+        }
+
+        /**
+         * @return The comparator to be used to determine whether the value is matching.
+         */
+        public ValueFilterComparator getComparator() { 
+          return this.comparator == null ? null : this.comparator.getValue();
+        }
+
+        /**
+         * @param value The comparator to be used to determine whether the value is matching.
+         */
+        public DataRequirementValueFilterComponent setComparator(ValueFilterComparator value) { 
+          if (value == null)
+            this.comparator = null;
+          else {
+            if (this.comparator == null)
+              this.comparator = new Enumeration<ValueFilterComparator>(new ValueFilterComparatorEnumFactory());
+            this.comparator.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #value} (The value of the filter.)
+         */
+        public DataType getValue() { 
+          return this.value;
+        }
+
+        /**
+         * @return {@link #value} (The value of the filter.)
+         */
+        public DateTimeType getValueDateTimeType() throws FHIRException { 
+          if (this.value == null)
+            this.value = new DateTimeType();
+          if (!(this.value instanceof DateTimeType))
+            throw new FHIRException("Type mismatch: the type DateTimeType was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (DateTimeType) this.value;
+        }
+
+        public boolean hasValueDateTimeType() { 
+          return this != null && this.value instanceof DateTimeType;
+        }
+
+        /**
+         * @return {@link #value} (The value of the filter.)
+         */
+        public Period getValuePeriod() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Period();
+          if (!(this.value instanceof Period))
+            throw new FHIRException("Type mismatch: the type Period was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Period) this.value;
+        }
+
+        public boolean hasValuePeriod() { 
+          return this != null && this.value instanceof Period;
+        }
+
+        /**
+         * @return {@link #value} (The value of the filter.)
+         */
+        public Duration getValueDuration() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Duration();
+          if (!(this.value instanceof Duration))
+            throw new FHIRException("Type mismatch: the type Duration was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Duration) this.value;
+        }
+
+        public boolean hasValueDuration() { 
+          return this != null && this.value instanceof Duration;
+        }
+
+        public boolean hasValue() { 
+          return this.value != null && !this.value.isEmpty();
+        }
+
+        /**
+         * @param value {@link #value} (The value of the filter.)
+         */
+        public DataRequirementValueFilterComponent setValue(DataType value) { 
+          if (value != null && !(value instanceof DateTimeType || value instanceof Period || value instanceof Duration))
+            throw new Error("Not the right type for DataRequirement.valueFilter.value[x]: "+value.fhirType());
+          this.value = value;
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("path", "string", "The attribute of the filter. The specified path SHALL be a FHIRPath resolveable on the specified type of the DataRequirement, and SHALL consist only of identifiers, constant indexers, and .resolve(). The path is allowed to contain qualifiers (.) to traverse sub-elements, as well as indexers ([x]) to traverse multiple-cardinality sub-elements (see the [Simple FHIRPath Profile](fhirpath.html#simple) for full details). Note that the index must be an integer constant. The path must resolve to an element of a type that is comparable to the valueFilter.value[x] element for the filter.", 0, 1, path));
+          children.add(new Property("searchParam", "string", "A search parameter defined on the specified type of the DataRequirement, and which searches on elements of a type compatible with the type of the valueFilter.value[x] for the filter.", 0, 1, searchParam));
+          children.add(new Property("comparator", "code", "The comparator to be used to determine whether the value is matching.", 0, 1, comparator));
+          children.add(new Property("value[x]", "dateTime|Period|Duration", "The value of the filter.", 0, 1, value));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3433509: /*path*/  return new Property("path", "string", "The attribute of the filter. The specified path SHALL be a FHIRPath resolveable on the specified type of the DataRequirement, and SHALL consist only of identifiers, constant indexers, and .resolve(). The path is allowed to contain qualifiers (.) to traverse sub-elements, as well as indexers ([x]) to traverse multiple-cardinality sub-elements (see the [Simple FHIRPath Profile](fhirpath.html#simple) for full details). Note that the index must be an integer constant. The path must resolve to an element of a type that is comparable to the valueFilter.value[x] element for the filter.", 0, 1, path);
+          case -553645115: /*searchParam*/  return new Property("searchParam", "string", "A search parameter defined on the specified type of the DataRequirement, and which searches on elements of a type compatible with the type of the valueFilter.value[x] for the filter.", 0, 1, searchParam);
+          case -844673834: /*comparator*/  return new Property("comparator", "code", "The comparator to be used to determine whether the value is matching.", 0, 1, comparator);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "dateTime|Period|Duration", "The value of the filter.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "dateTime|Period|Duration", "The value of the filter.", 0, 1, value);
+          case 1047929900: /*valueDateTime*/  return new Property("value[x]", "dateTime", "The value of the filter.", 0, 1, value);
+          case -1524344174: /*valuePeriod*/  return new Property("value[x]", "Period", "The value of the filter.", 0, 1, value);
+          case 1558135333: /*valueDuration*/  return new Property("value[x]", "Duration", "The value of the filter.", 0, 1, value);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3433509: /*path*/ return this.path == null ? new Base[0] : new Base[] {this.path}; // StringType
+        case -553645115: /*searchParam*/ return this.searchParam == null ? new Base[0] : new Base[] {this.searchParam}; // StringType
+        case -844673834: /*comparator*/ return this.comparator == null ? new Base[0] : new Base[] {this.comparator}; // Enumeration<ValueFilterComparator>
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3433509: // path
+          this.path = TypeConvertor.castToString(value); // StringType
+          return value;
+        case -553645115: // searchParam
+          this.searchParam = TypeConvertor.castToString(value); // StringType
+          return value;
+        case -844673834: // comparator
+          value = new ValueFilterComparatorEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.comparator = (Enumeration) value; // Enumeration<ValueFilterComparator>
+          return value;
+        case 111972721: // value
+          this.value = TypeConvertor.castToType(value); // DataType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("path")) {
+          this.path = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("searchParam")) {
+          this.searchParam = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("comparator")) {
+          value = new ValueFilterComparatorEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.comparator = (Enumeration) value; // Enumeration<ValueFilterComparator>
+        } else if (name.equals("value[x]")) {
+          this.value = TypeConvertor.castToType(value); // DataType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3433509:  return getPathElement();
+        case -553645115:  return getSearchParamElement();
+        case -844673834:  return getComparatorElement();
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3433509: /*path*/ return new String[] {"string"};
+        case -553645115: /*searchParam*/ return new String[] {"string"};
+        case -844673834: /*comparator*/ return new String[] {"code"};
+        case 111972721: /*value*/ return new String[] {"dateTime", "Period", "Duration"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("path")) {
+          throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.valueFilter.path");
+        }
+        else if (name.equals("searchParam")) {
+          throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.valueFilter.searchParam");
+        }
+        else if (name.equals("comparator")) {
+          throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.valueFilter.comparator");
+        }
+        else if (name.equals("valueDateTime")) {
+          this.value = new DateTimeType();
+          return this.value;
+        }
+        else if (name.equals("valuePeriod")) {
+          this.value = new Period();
+          return this.value;
+        }
+        else if (name.equals("valueDuration")) {
+          this.value = new Duration();
+          return this.value;
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public DataRequirementValueFilterComponent copy() {
+        DataRequirementValueFilterComponent dst = new DataRequirementValueFilterComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DataRequirementValueFilterComponent dst) {
+        super.copyValues(dst);
+        dst.path = path == null ? null : path.copy();
+        dst.searchParam = searchParam == null ? null : searchParam.copy();
+        dst.comparator = comparator == null ? null : comparator.copy();
+        dst.value = value == null ? null : value.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof DataRequirementValueFilterComponent))
+          return false;
+        DataRequirementValueFilterComponent o = (DataRequirementValueFilterComponent) other_;
+        return compareDeep(path, o.path, true) && compareDeep(searchParam, o.searchParam, true) && compareDeep(comparator, o.comparator, true)
+           && compareDeep(value, o.value, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof DataRequirementValueFilterComponent))
+          return false;
+        DataRequirementValueFilterComponent o = (DataRequirementValueFilterComponent) other_;
+        return compareValues(path, o.path, true) && compareValues(searchParam, o.searchParam, true) && compareValues(comparator, o.comparator, true)
+          ;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(path, searchParam, comparator
+          , value);
+      }
+
+  public String fhirType() {
+    return "DataRequirement.valueFilter";
+
+  }
+
+  }
+
+    @Block()
     public static class DataRequirementSortComponent extends Element implements IBaseDatatypeElement {
         /**
          * The attribute of the sort. The specified path must be resolvable from the type of the required data. The path is allowed to contain qualifiers (.) to traverse sub-elements, as well as indexers ([x]) to traverse multiple-cardinality sub-elements. Note that the index must be an integer constant.
@@ -1157,8 +1759,8 @@ public class DataRequirement extends DataType implements ICompositeType {
      */
     @Child(name = "type", type = {CodeType.class}, order=0, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The type of the required data", formalDefinition="The type of the required data, specified as the type name of a resource. For profiles, this value is set to the type of the base resource of the profile." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/all-types")
-    protected Enumeration<FHIRAllTypes> type;
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/fhir-types")
+    protected Enumeration<FHIRTypes> type;
 
     /**
      * The profile of the required data, specified as the uri of the profile definition.
@@ -1172,7 +1774,7 @@ public class DataRequirement extends DataType implements ICompositeType {
      */
     @Child(name = "subject", type = {CodeableConcept.class, Group.class}, order=2, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="E.g. Patient, Practitioner, RelatedPerson, Organization, Location, Device", formalDefinition="The intended subjects of the data requirement. If this element is not provided, a Patient subject is assumed." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subject-type")
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/participant-resource-types")
     protected DataType subject;
 
     /**
@@ -1199,20 +1801,27 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
     protected List<DataRequirementDateFilterComponent> dateFilter;
 
     /**
+     * Value filters specify additional constraints on the data for elements other than code-valued or date-valued. Each value filter specifies an additional constraint on the data (i.e. valueFilters are AND'ed, not OR'ed).
+     */
+    @Child(name = "valueFilter", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="What values are expected", formalDefinition="Value filters specify additional constraints on the data for elements other than code-valued or date-valued. Each value filter specifies an additional constraint on the data (i.e. valueFilters are AND'ed, not OR'ed)." )
+    protected List<DataRequirementValueFilterComponent> valueFilter;
+
+    /**
      * Specifies a maximum number of results that are required (uses the _count search parameter).
      */
-    @Child(name = "limit", type = {PositiveIntType.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "limit", type = {PositiveIntType.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Number of results", formalDefinition="Specifies a maximum number of results that are required (uses the _count search parameter)." )
     protected PositiveIntType limit;
 
     /**
      * Specifies the order of the results to be returned.
      */
-    @Child(name = "sort", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "sort", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Order of the results", formalDefinition="Specifies the order of the results to be returned." )
     protected List<DataRequirementSortComponent> sort;
 
-    private static final long serialVersionUID = -1379674933L;
+    private static final long serialVersionUID = -2078097376L;
 
   /**
    * Constructor
@@ -1224,7 +1833,7 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
   /**
    * Constructor
    */
-    public DataRequirement(FHIRAllTypes type) {
+    public DataRequirement(FHIRTypes type) {
       super();
       this.setType(type);
     }
@@ -1232,12 +1841,12 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
     /**
      * @return {@link #type} (The type of the required data, specified as the type name of a resource. For profiles, this value is set to the type of the base resource of the profile.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
      */
-    public Enumeration<FHIRAllTypes> getTypeElement() { 
+    public Enumeration<FHIRTypes> getTypeElement() { 
       if (this.type == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create DataRequirement.type");
         else if (Configuration.doAutoCreate())
-          this.type = new Enumeration<FHIRAllTypes>(new FHIRAllTypesEnumFactory()); // bb
+          this.type = new Enumeration<FHIRTypes>(new FHIRTypesEnumFactory()); // bb
       return this.type;
     }
 
@@ -1252,7 +1861,7 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
     /**
      * @param value {@link #type} (The type of the required data, specified as the type name of a resource. For profiles, this value is set to the type of the base resource of the profile.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
      */
-    public DataRequirement setTypeElement(Enumeration<FHIRAllTypes> value) { 
+    public DataRequirement setTypeElement(Enumeration<FHIRTypes> value) { 
       this.type = value;
       return this;
     }
@@ -1260,16 +1869,16 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
     /**
      * @return The type of the required data, specified as the type name of a resource. For profiles, this value is set to the type of the base resource of the profile.
      */
-    public FHIRAllTypes getType() { 
+    public FHIRTypes getType() { 
       return this.type == null ? null : this.type.getValue();
     }
 
     /**
      * @param value The type of the required data, specified as the type name of a resource. For profiles, this value is set to the type of the base resource of the profile.
      */
-    public DataRequirement setType(FHIRAllTypes value) { 
+    public DataRequirement setType(FHIRTypes value) { 
         if (this.type == null)
-          this.type = new Enumeration<FHIRAllTypes>(new FHIRAllTypesEnumFactory());
+          this.type = new Enumeration<FHIRTypes>(new FHIRTypesEnumFactory());
         this.type.setValue(value);
       return this;
     }
@@ -1562,6 +2171,59 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
     }
 
     /**
+     * @return {@link #valueFilter} (Value filters specify additional constraints on the data for elements other than code-valued or date-valued. Each value filter specifies an additional constraint on the data (i.e. valueFilters are AND'ed, not OR'ed).)
+     */
+    public List<DataRequirementValueFilterComponent> getValueFilter() { 
+      if (this.valueFilter == null)
+        this.valueFilter = new ArrayList<DataRequirementValueFilterComponent>();
+      return this.valueFilter;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public DataRequirement setValueFilter(List<DataRequirementValueFilterComponent> theValueFilter) { 
+      this.valueFilter = theValueFilter;
+      return this;
+    }
+
+    public boolean hasValueFilter() { 
+      if (this.valueFilter == null)
+        return false;
+      for (DataRequirementValueFilterComponent item : this.valueFilter)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public DataRequirementValueFilterComponent addValueFilter() { //3
+      DataRequirementValueFilterComponent t = new DataRequirementValueFilterComponent();
+      if (this.valueFilter == null)
+        this.valueFilter = new ArrayList<DataRequirementValueFilterComponent>();
+      this.valueFilter.add(t);
+      return t;
+    }
+
+    public DataRequirement addValueFilter(DataRequirementValueFilterComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.valueFilter == null)
+        this.valueFilter = new ArrayList<DataRequirementValueFilterComponent>();
+      this.valueFilter.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #valueFilter}, creating it if it does not already exist {3}
+     */
+    public DataRequirementValueFilterComponent getValueFilterFirstRep() { 
+      if (getValueFilter().isEmpty()) {
+        addValueFilter();
+      }
+      return getValueFilter().get(0);
+    }
+
+    /**
      * @return {@link #limit} (Specifies a maximum number of results that are required (uses the _count search parameter).). This is the underlying object with id, value and extensions. The accessor "getLimit" gives direct access to the value
      */
     public PositiveIntType getLimitElement() { 
@@ -1667,6 +2329,7 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
         children.add(new Property("mustSupport", "string", "Indicates that specific elements of the type are referenced by the knowledge module and must be supported by the consumer in order to obtain an effective evaluation. This does not mean that a value is required for this element, only that the consuming system must understand the element and be able to provide values for it if they are available. \n\nThe value of mustSupport SHALL be a FHIRPath resolveable on the type of the DataRequirement. The path SHALL consist only of identifiers, constant indexers, and .resolve() (see the [Simple FHIRPath Profile](fhirpath.html#simple) for full details).", 0, java.lang.Integer.MAX_VALUE, mustSupport));
         children.add(new Property("codeFilter", "", "Code filters specify additional constraints on the data, specifying the value set of interest for a particular element of the data. Each code filter defines an additional constraint on the data, i.e. code filters are AND'ed, not OR'ed.", 0, java.lang.Integer.MAX_VALUE, codeFilter));
         children.add(new Property("dateFilter", "", "Date filters specify additional constraints on the data in terms of the applicable date range for specific elements. Each date filter specifies an additional constraint on the data, i.e. date filters are AND'ed, not OR'ed.", 0, java.lang.Integer.MAX_VALUE, dateFilter));
+        children.add(new Property("valueFilter", "", "Value filters specify additional constraints on the data for elements other than code-valued or date-valued. Each value filter specifies an additional constraint on the data (i.e. valueFilters are AND'ed, not OR'ed).", 0, java.lang.Integer.MAX_VALUE, valueFilter));
         children.add(new Property("limit", "positiveInt", "Specifies a maximum number of results that are required (uses the _count search parameter).", 0, 1, limit));
         children.add(new Property("sort", "", "Specifies the order of the results to be returned.", 0, java.lang.Integer.MAX_VALUE, sort));
       }
@@ -1683,6 +2346,7 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
         case -1402857082: /*mustSupport*/  return new Property("mustSupport", "string", "Indicates that specific elements of the type are referenced by the knowledge module and must be supported by the consumer in order to obtain an effective evaluation. This does not mean that a value is required for this element, only that the consuming system must understand the element and be able to provide values for it if they are available. \n\nThe value of mustSupport SHALL be a FHIRPath resolveable on the type of the DataRequirement. The path SHALL consist only of identifiers, constant indexers, and .resolve() (see the [Simple FHIRPath Profile](fhirpath.html#simple) for full details).", 0, java.lang.Integer.MAX_VALUE, mustSupport);
         case -1303674939: /*codeFilter*/  return new Property("codeFilter", "", "Code filters specify additional constraints on the data, specifying the value set of interest for a particular element of the data. Each code filter defines an additional constraint on the data, i.e. code filters are AND'ed, not OR'ed.", 0, java.lang.Integer.MAX_VALUE, codeFilter);
         case 149531846: /*dateFilter*/  return new Property("dateFilter", "", "Date filters specify additional constraints on the data in terms of the applicable date range for specific elements. Each date filter specifies an additional constraint on the data, i.e. date filters are AND'ed, not OR'ed.", 0, java.lang.Integer.MAX_VALUE, dateFilter);
+        case -1807110071: /*valueFilter*/  return new Property("valueFilter", "", "Value filters specify additional constraints on the data for elements other than code-valued or date-valued. Each value filter specifies an additional constraint on the data (i.e. valueFilters are AND'ed, not OR'ed).", 0, java.lang.Integer.MAX_VALUE, valueFilter);
         case 102976443: /*limit*/  return new Property("limit", "positiveInt", "Specifies a maximum number of results that are required (uses the _count search parameter).", 0, 1, limit);
         case 3536286: /*sort*/  return new Property("sort", "", "Specifies the order of the results to be returned.", 0, java.lang.Integer.MAX_VALUE, sort);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -1693,12 +2357,13 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<FHIRAllTypes>
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<FHIRTypes>
         case -309425751: /*profile*/ return this.profile == null ? new Base[0] : this.profile.toArray(new Base[this.profile.size()]); // CanonicalType
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // DataType
         case -1402857082: /*mustSupport*/ return this.mustSupport == null ? new Base[0] : this.mustSupport.toArray(new Base[this.mustSupport.size()]); // StringType
         case -1303674939: /*codeFilter*/ return this.codeFilter == null ? new Base[0] : this.codeFilter.toArray(new Base[this.codeFilter.size()]); // DataRequirementCodeFilterComponent
         case 149531846: /*dateFilter*/ return this.dateFilter == null ? new Base[0] : this.dateFilter.toArray(new Base[this.dateFilter.size()]); // DataRequirementDateFilterComponent
+        case -1807110071: /*valueFilter*/ return this.valueFilter == null ? new Base[0] : this.valueFilter.toArray(new Base[this.valueFilter.size()]); // DataRequirementValueFilterComponent
         case 102976443: /*limit*/ return this.limit == null ? new Base[0] : new Base[] {this.limit}; // PositiveIntType
         case 3536286: /*sort*/ return this.sort == null ? new Base[0] : this.sort.toArray(new Base[this.sort.size()]); // DataRequirementSortComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -1710,8 +2375,8 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case 3575610: // type
-          value = new FHIRAllTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.type = (Enumeration) value; // Enumeration<FHIRAllTypes>
+          value = new FHIRTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<FHIRTypes>
           return value;
         case -309425751: // profile
           this.getProfile().add(TypeConvertor.castToCanonical(value)); // CanonicalType
@@ -1728,6 +2393,9 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
         case 149531846: // dateFilter
           this.getDateFilter().add((DataRequirementDateFilterComponent) value); // DataRequirementDateFilterComponent
           return value;
+        case -1807110071: // valueFilter
+          this.getValueFilter().add((DataRequirementValueFilterComponent) value); // DataRequirementValueFilterComponent
+          return value;
         case 102976443: // limit
           this.limit = TypeConvertor.castToPositiveInt(value); // PositiveIntType
           return value;
@@ -1742,8 +2410,8 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
-          value = new FHIRAllTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.type = (Enumeration) value; // Enumeration<FHIRAllTypes>
+          value = new FHIRTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<FHIRTypes>
         } else if (name.equals("profile")) {
           this.getProfile().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("subject[x]")) {
@@ -1754,6 +2422,8 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
           this.getCodeFilter().add((DataRequirementCodeFilterComponent) value);
         } else if (name.equals("dateFilter")) {
           this.getDateFilter().add((DataRequirementDateFilterComponent) value);
+        } else if (name.equals("valueFilter")) {
+          this.getValueFilter().add((DataRequirementValueFilterComponent) value);
         } else if (name.equals("limit")) {
           this.limit = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else if (name.equals("sort")) {
@@ -1773,6 +2443,7 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
         case -1402857082:  return addMustSupportElement();
         case -1303674939:  return addCodeFilter(); 
         case 149531846:  return addDateFilter(); 
+        case -1807110071:  return addValueFilter(); 
         case 102976443:  return getLimitElement();
         case 3536286:  return addSort(); 
         default: return super.makeProperty(hash, name);
@@ -1789,6 +2460,7 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
         case -1402857082: /*mustSupport*/ return new String[] {"string"};
         case -1303674939: /*codeFilter*/ return new String[] {};
         case 149531846: /*dateFilter*/ return new String[] {};
+        case -1807110071: /*valueFilter*/ return new String[] {};
         case 102976443: /*limit*/ return new String[] {"positiveInt"};
         case 3536286: /*sort*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
@@ -1820,6 +2492,9 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
         }
         else if (name.equals("dateFilter")) {
           return addDateFilter();
+        }
+        else if (name.equals("valueFilter")) {
+          return addValueFilter();
         }
         else if (name.equals("limit")) {
           throw new FHIRException("Cannot call addChild on a primitive type DataRequirement.limit");
@@ -1866,6 +2541,11 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
           for (DataRequirementDateFilterComponent i : dateFilter)
             dst.dateFilter.add(i.copy());
         };
+        if (valueFilter != null) {
+          dst.valueFilter = new ArrayList<DataRequirementValueFilterComponent>();
+          for (DataRequirementValueFilterComponent i : valueFilter)
+            dst.valueFilter.add(i.copy());
+        };
         dst.limit = limit == null ? null : limit.copy();
         if (sort != null) {
           dst.sort = new ArrayList<DataRequirementSortComponent>();
@@ -1887,8 +2567,8 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
         DataRequirement o = (DataRequirement) other_;
         return compareDeep(type, o.type, true) && compareDeep(profile, o.profile, true) && compareDeep(subject, o.subject, true)
            && compareDeep(mustSupport, o.mustSupport, true) && compareDeep(codeFilter, o.codeFilter, true)
-           && compareDeep(dateFilter, o.dateFilter, true) && compareDeep(limit, o.limit, true) && compareDeep(sort, o.sort, true)
-          ;
+           && compareDeep(dateFilter, o.dateFilter, true) && compareDeep(valueFilter, o.valueFilter, true)
+           && compareDeep(limit, o.limit, true) && compareDeep(sort, o.sort, true);
       }
 
       @Override
@@ -1904,7 +2584,7 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, profile, subject, mustSupport
-          , codeFilter, dateFilter, limit, sort);
+          , codeFilter, dateFilter, valueFilter, limit, sort);
       }
 
 

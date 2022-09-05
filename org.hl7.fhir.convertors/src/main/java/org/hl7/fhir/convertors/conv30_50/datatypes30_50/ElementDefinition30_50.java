@@ -548,7 +548,7 @@ public class ElementDefinition30_50 {
     ElementDefinition.ElementDefinitionConstraintComponent tgt = new ElementDefinition.ElementDefinitionConstraintComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasKey()) tgt.setKeyElement(Id30_50.convertId(src.getKeyElement()));
-    if (src.hasRequirements()) tgt.setRequirementsElement(String30_50.convertString(src.getRequirementsElement()));
+    if (src.hasRequirements()) tgt.setRequirementsElement(String30_50.convertStringToMarkdown(src.getRequirementsElement()));
     if (src.hasSeverity()) tgt.setSeverityElement(convertConstraintSeverity(src.getSeverityElement()));
     if (src.hasHuman()) tgt.setHumanElement(String30_50.convertString(src.getHumanElement()));
     if (src.hasExpression()) tgt.setExpressionElement(String30_50.convertString(src.getExpressionElement()));
@@ -620,7 +620,7 @@ public class ElementDefinition30_50 {
     ElementDefinition.ElementDefinitionBindingComponent tgt = new ElementDefinition.ElementDefinitionBindingComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt, VersionConvertor_30_50.EXT_SRC_TYPE);
     if (src.hasStrength()) tgt.setStrengthElement(Enumerations30_50.convertBindingStrength(src.getStrengthElement()));
-    if (src.hasDescription()) tgt.setDescriptionElement(String30_50.convertString(src.getDescriptionElement()));
+    if (src.hasDescription()) tgt.setDescriptionElement(String30_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasValueSet()) {
       DataType t = ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValueSet());
       if (t instanceof org.hl7.fhir.r5.model.Reference) {
@@ -665,7 +665,7 @@ public class ElementDefinition30_50 {
     if (src.hasIdentity()) tgt.setIdentityElement(Id30_50.convertId(src.getIdentityElement()));
     if (src.hasLanguage()) tgt.setLanguageElement(Code30_50.convertCode(src.getLanguageElement()));
     if (src.hasMap()) tgt.setMapElement(String30_50.convertString(src.getMapElement()));
-    if (src.hasComment()) tgt.setCommentElement(String30_50.convertString(src.getCommentElement()));
+    if (src.hasComment()) tgt.setCommentElement(String30_50.convertStringToMarkdown(src.getCommentElement()));
     return tgt;
   }
 

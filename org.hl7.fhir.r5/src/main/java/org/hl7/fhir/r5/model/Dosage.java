@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,7 +46,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * Base StructureDefinition for Dosage Type: Indicates how the medication is/was taken or should be taken by the patient.
+ * Dosage Type: Indicates how the medication is/was taken or should be taken by the patient.
  */
 @DatatypeDef(name="Dosage")
 public class Dosage extends BackboneType implements ICompositeType {

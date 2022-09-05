@@ -538,7 +538,7 @@ public class TestScript30_50 {
       tgt.setRequestMethodElement(convertTestScriptRequestMethodCode(src.getRequestMethodElement()));
     if (src.hasRequestURL()) tgt.setRequestURLElement(String30_50.convertString(src.getRequestURLElement()));
     if (src.hasResource())
-      tgt.setResource(org.hl7.fhir.r5.model.TestScript.FHIRDefinedType.fromCode(src.getResource()));
+      tgt.setResource(src.getResource());
     if (src.hasResponse()) tgt.setResponseElement(convertAssertionResponseTypes(src.getResponseElement()));
     if (src.hasResponseCode()) tgt.setResponseCodeElement(String30_50.convertString(src.getResponseCodeElement()));
     if (src.hasSourceId()) tgt.setSourceIdElement(Id30_50.convertId(src.getSourceIdElement()));
@@ -573,7 +573,7 @@ public class TestScript30_50 {
     if (src.hasRequestMethod())
       tgt.setRequestMethodElement(convertTestScriptRequestMethodCode(src.getRequestMethodElement()));
     if (src.hasRequestURL()) tgt.setRequestURLElement(String30_50.convertString(src.getRequestURLElement()));
-    if (src.hasResource()) tgt.setResource(src.getResource().toCode());
+    if (src.hasResource()) tgt.setResource(src.getResource());
     if (src.hasResponse()) tgt.setResponseElement(convertAssertionResponseTypes(src.getResponseElement()));
     if (src.hasResponseCode()) tgt.setResponseCodeElement(String30_50.convertString(src.getResponseCodeElement()));
     if (src.hasSourceId()) tgt.setSourceIdElement(Id30_50.convertId(src.getSourceIdElement()));

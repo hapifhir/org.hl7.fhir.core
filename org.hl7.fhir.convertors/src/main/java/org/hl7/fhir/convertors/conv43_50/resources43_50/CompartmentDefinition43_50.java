@@ -171,7 +171,7 @@ public class CompartmentDefinition43_50 {
     org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent tgt = new org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
-      tgt.setCodeElement(Code43_50.convertResourceEnum(src.getCodeElement()));
+      tgt.setCodeElement(Code43_50.convertCode(src.getCodeElement()));
     for (org.hl7.fhir.r4b.model.StringType t : src.getParam()) tgt.getParam().add(String43_50.convertString(t));
     if (src.hasDocumentation())
       tgt.setDocumentationElement(String43_50.convertString(src.getDocumentationElement()));
@@ -184,7 +184,7 @@ public class CompartmentDefinition43_50 {
     org.hl7.fhir.r4b.model.CompartmentDefinition.CompartmentDefinitionResourceComponent tgt = new org.hl7.fhir.r4b.model.CompartmentDefinition.CompartmentDefinitionResourceComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasCode())
-      tgt.setCodeElement(Code43_50.convertResourceEnum(src.getCodeElement()));
+      tgt.setCodeElement(Code43_50.convertCode(src.getCodeElement()));
     for (org.hl7.fhir.r5.model.StringType t : src.getParam()) tgt.getParam().add(String43_50.convertString(t));
     if (src.hasDocumentation())
       tgt.setDocumentationElement(String43_50.convertString(src.getDocumentationElement()));

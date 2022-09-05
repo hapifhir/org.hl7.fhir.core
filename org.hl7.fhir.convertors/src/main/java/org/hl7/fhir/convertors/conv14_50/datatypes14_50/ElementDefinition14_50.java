@@ -486,7 +486,7 @@ public class ElementDefinition14_50 {
     org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent tgt = new org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent();
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     if (src.hasKeyElement()) tgt.setKeyElement(Id14_50.convertId(src.getKeyElement()));
-    if (src.hasRequirements()) tgt.setRequirementsElement(String14_50.convertString(src.getRequirementsElement()));
+    if (src.hasRequirements()) tgt.setRequirementsElement(String14_50.convertStringToMarkdown(src.getRequirementsElement()));
     if (src.hasSeverity()) tgt.setSeverityElement(convertConstraintSeverity(src.getSeverityElement()));
     if (src.hasHumanElement()) tgt.setHumanElement(String14_50.convertString(src.getHumanElement()));
     if (src.hasExpression()) tgt.setExpression(convertToR4Expression(src.getExpression()));
@@ -556,7 +556,7 @@ public class ElementDefinition14_50 {
     org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent tgt = new org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent();
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     if (src.hasStrength()) tgt.setStrengthElement(Enumerations14_50.convertBindingStrength(src.getStrengthElement()));
-    if (src.hasDescription()) tgt.setDescriptionElement(String14_50.convertString(src.getDescriptionElement()));
+    if (src.hasDescription()) tgt.setDescriptionElement(String14_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasValueSet()) {
       org.hl7.fhir.r5.model.DataType t = ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().convertType(src.getValueSet());
       if (t instanceof org.hl7.fhir.r5.model.Reference)

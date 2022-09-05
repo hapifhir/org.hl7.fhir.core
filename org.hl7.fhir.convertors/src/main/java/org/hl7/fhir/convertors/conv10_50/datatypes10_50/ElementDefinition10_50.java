@@ -372,7 +372,7 @@ public class ElementDefinition10_50 {
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
     if (src.hasKeyElement()) tgt.setKeyElement(Id10_50.convertId(src.getKeyElement()));
     if (src.hasRequirementsElement())
-      tgt.setRequirementsElement(String10_50.convertString(src.getRequirementsElement()));
+      tgt.setRequirementsElement(String10_50.convertStringToMarkdown(src.getRequirementsElement()));
     if (src.hasSeverity()) tgt.setSeverityElement(convertConstraintSeverity(src.getSeverityElement()));
     if (src.hasHumanElement()) tgt.setHumanElement(String10_50.convertString(src.getHumanElement()));
     tgt.setExpression(ToolingExtensions.readStringExtension(src, ToolingExtensions.EXT_EXPRESSION));
@@ -444,7 +444,7 @@ public class ElementDefinition10_50 {
     ElementDefinition.ElementDefinitionBindingComponent tgt = new ElementDefinition.ElementDefinitionBindingComponent();
     ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().copyElement(src, tgt);
     if (src.hasStrength()) tgt.setStrengthElement(Enumerations10_50.convertBindingStrength(src.getStrengthElement()));
-    if (src.hasDescriptionElement()) tgt.setDescriptionElement(String10_50.convertString(src.getDescriptionElement()));
+    if (src.hasDescriptionElement()) tgt.setDescriptionElement(String10_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasValueSet()) {
       org.hl7.fhir.r5.model.DataType vs = ConversionContext10_50.INSTANCE.getVersionConvertor_10_50().convertType(src.getValueSet());
       if (vs != null) {

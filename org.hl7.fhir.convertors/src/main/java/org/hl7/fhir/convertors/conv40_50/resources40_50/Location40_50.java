@@ -8,6 +8,8 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Time40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.ContactPoint;
+import org.hl7.fhir.r5.model.ExtendedContactDetail;
 
 import java.util.stream.Collectors;
 
@@ -63,21 +65,21 @@ public class Location40_50 {
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType())
       tgt.addType(CodeableConcept40_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom())
-      tgt.addTelecom(ContactPoint40_50.convertContactPoint(t));
+      tgt.getContactFirstRep().addTelecom(ContactPoint40_50.convertContactPoint(t));
     if (src.hasAddress())
       tgt.setAddress(Address40_50.convertAddress(src.getAddress()));
     if (src.hasPhysicalType())
-      tgt.setPhysicalType(CodeableConcept40_50.convertCodeableConcept(src.getPhysicalType()));
+      tgt.setForm(CodeableConcept40_50.convertCodeableConcept(src.getPhysicalType()));
     if (src.hasPosition())
       tgt.setPosition(convertLocationPositionComponent(src.getPosition()));
     if (src.hasManagingOrganization())
       tgt.setManagingOrganization(Reference40_50.convertReference(src.getManagingOrganization()));
     if (src.hasPartOf())
       tgt.setPartOf(Reference40_50.convertReference(src.getPartOf()));
-    for (org.hl7.fhir.r4.model.Location.LocationHoursOfOperationComponent t : src.getHoursOfOperation())
-      tgt.addHoursOfOperation(convertLocationHoursOfOperationComponent(t));
-    if (src.hasAvailabilityExceptions())
-      tgt.setAvailabilityExceptionsElement(String40_50.convertString(src.getAvailabilityExceptionsElement()));
+//    for (org.hl7.fhir.r4.model.Location.LocationHoursOfOperationComponent t : src.getHoursOfOperation())
+//      tgt.addHoursOfOperation(convertLocationHoursOfOperationComponent(t));
+//    if (src.hasAvailabilityExceptions())
+//      tgt.setAvailabilityExceptionsElement(String40_50.convertString(src.getAvailabilityExceptionsElement()));
     for (org.hl7.fhir.r4.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference40_50.convertReference(t));
     return tgt;
   }
@@ -102,22 +104,23 @@ public class Location40_50 {
       tgt.setModeElement(convertLocationMode(src.getModeElement()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType())
       tgt.addType(CodeableConcept40_50.convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom())
-      tgt.addTelecom(ContactPoint40_50.convertContactPoint(t));
+    for (ExtendedContactDetail t1 : src.getContact())
+      for (ContactPoint t : t1.getTelecom())
+        tgt.addTelecom(ContactPoint40_50.convertContactPoint(t));
     if (src.hasAddress())
       tgt.setAddress(Address40_50.convertAddress(src.getAddress()));
-    if (src.hasPhysicalType())
-      tgt.setPhysicalType(CodeableConcept40_50.convertCodeableConcept(src.getPhysicalType()));
+    if (src.hasForm())
+      tgt.setPhysicalType(CodeableConcept40_50.convertCodeableConcept(src.getForm()));
     if (src.hasPosition())
       tgt.setPosition(convertLocationPositionComponent(src.getPosition()));
     if (src.hasManagingOrganization())
       tgt.setManagingOrganization(Reference40_50.convertReference(src.getManagingOrganization()));
     if (src.hasPartOf())
       tgt.setPartOf(Reference40_50.convertReference(src.getPartOf()));
-    for (org.hl7.fhir.r5.model.Location.LocationHoursOfOperationComponent t : src.getHoursOfOperation())
-      tgt.addHoursOfOperation(convertLocationHoursOfOperationComponent(t));
-    if (src.hasAvailabilityExceptions())
-      tgt.setAvailabilityExceptionsElement(String40_50.convertString(src.getAvailabilityExceptionsElement()));
+//    for (org.hl7.fhir.r5.model.Location.LocationHoursOfOperationComponent t : src.getHoursOfOperation())
+//      tgt.addHoursOfOperation(convertLocationHoursOfOperationComponent(t));
+//    if (src.hasAvailabilityExceptions())
+//      tgt.setAvailabilityExceptionsElement(String40_50.convertString(src.getAvailabilityExceptionsElement()));
     for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference40_50.convertReference(t));
     return tgt;
   }
@@ -231,40 +234,40 @@ public class Location40_50 {
       tgt.setAltitudeElement(Decimal40_50.convertDecimal(src.getAltitudeElement()));
     return tgt;
   }
-
-  public static org.hl7.fhir.r5.model.Location.LocationHoursOfOperationComponent convertLocationHoursOfOperationComponent(org.hl7.fhir.r4.model.Location.LocationHoursOfOperationComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r5.model.Location.LocationHoursOfOperationComponent tgt = new org.hl7.fhir.r5.model.Location.LocationHoursOfOperationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
-    tgt.setDaysOfWeek(src.getDaysOfWeek().stream()
-      .map(Location40_50::convertDaysOfWeek)
-      .collect(Collectors.toList()));
-    if (src.hasAllDay())
-      tgt.setAllDayElement(Boolean40_50.convertBoolean(src.getAllDayElement()));
-    if (src.hasOpeningTime())
-      tgt.setOpeningTimeElement(Time40_50.convertTime(src.getOpeningTimeElement()));
-    if (src.hasClosingTime())
-      tgt.setClosingTimeElement(Time40_50.convertTime(src.getClosingTimeElement()));
-    return tgt;
-  }
-
-  public static org.hl7.fhir.r4.model.Location.LocationHoursOfOperationComponent convertLocationHoursOfOperationComponent(org.hl7.fhir.r5.model.Location.LocationHoursOfOperationComponent src) throws FHIRException {
-    if (src == null)
-      return null;
-    org.hl7.fhir.r4.model.Location.LocationHoursOfOperationComponent tgt = new org.hl7.fhir.r4.model.Location.LocationHoursOfOperationComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
-    tgt.setDaysOfWeek(src.getDaysOfWeek().stream()
-      .map(Location40_50::convertDaysOfWeek)
-      .collect(Collectors.toList()));
-    if (src.hasAllDay())
-      tgt.setAllDayElement(Boolean40_50.convertBoolean(src.getAllDayElement()));
-    if (src.hasOpeningTime())
-      tgt.setOpeningTimeElement(Time40_50.convertTime(src.getOpeningTimeElement()));
-    if (src.hasClosingTime())
-      tgt.setClosingTimeElement(Time40_50.convertTime(src.getClosingTimeElement()));
-    return tgt;
-  }
+//
+//  public static org.hl7.fhir.r5.model.Location.LocationHoursOfOperationComponent convertLocationHoursOfOperationComponent(org.hl7.fhir.r4.model.Location.LocationHoursOfOperationComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r5.model.Location.LocationHoursOfOperationComponent tgt = new org.hl7.fhir.r5.model.Location.LocationHoursOfOperationComponent();
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+//    tgt.setDaysOfWeek(src.getDaysOfWeek().stream()
+//      .map(Location40_50::convertDaysOfWeek)
+//      .collect(Collectors.toList()));
+//    if (src.hasAllDay())
+//      tgt.setAllDayElement(Boolean40_50.convertBoolean(src.getAllDayElement()));
+//    if (src.hasOpeningTime())
+//      tgt.setOpeningTimeElement(Time40_50.convertTime(src.getOpeningTimeElement()));
+//    if (src.hasClosingTime())
+//      tgt.setClosingTimeElement(Time40_50.convertTime(src.getClosingTimeElement()));
+//    return tgt;
+//  }
+//
+//  public static org.hl7.fhir.r4.model.Location.LocationHoursOfOperationComponent convertLocationHoursOfOperationComponent(org.hl7.fhir.r5.model.Location.LocationHoursOfOperationComponent src) throws FHIRException {
+//    if (src == null)
+//      return null;
+//    org.hl7.fhir.r4.model.Location.LocationHoursOfOperationComponent tgt = new org.hl7.fhir.r4.model.Location.LocationHoursOfOperationComponent();
+//    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyBackboneElement(src, tgt);
+//    tgt.setDaysOfWeek(src.getDaysOfWeek().stream()
+//      .map(Location40_50::convertDaysOfWeek)
+//      .collect(Collectors.toList()));
+//    if (src.hasAllDay())
+//      tgt.setAllDayElement(Boolean40_50.convertBoolean(src.getAllDayElement()));
+//    if (src.hasOpeningTime())
+//      tgt.setOpeningTimeElement(Time40_50.convertTime(src.getOpeningTimeElement()));
+//    if (src.hasClosingTime())
+//      tgt.setClosingTimeElement(Time40_50.convertTime(src.getClosingTimeElement()));
+//    return tgt;
+//  }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DaysOfWeek> convertDaysOfWeek(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Location.DaysOfWeek> src) throws FHIRException {
     if (src == null || src.isEmpty())

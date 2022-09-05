@@ -35,8 +35,6 @@ public class DiagnosticReport30_50 {
       tgt.setIssuedElement(Instant30_50.convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getSpecimen()) tgt.addSpecimen(Reference30_50.convertReference(t));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getResult()) tgt.addResult(Reference30_50.convertReference(t));
-    for (org.hl7.fhir.dstu3.model.Reference t : src.getImagingStudy())
-      tgt.addImagingStudy(Reference30_50.convertReference(t));
     for (org.hl7.fhir.dstu3.model.DiagnosticReport.DiagnosticReportImageComponent t : src.getImage())
       tgt.addMedia(convertDiagnosticReportImageComponent(t));
     if (src.hasConclusion())
@@ -72,8 +70,6 @@ public class DiagnosticReport30_50 {
       tgt.setIssuedElement(Instant30_50.convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.r5.model.Reference t : src.getSpecimen()) tgt.addSpecimen(Reference30_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getResult()) tgt.addResult(Reference30_50.convertReference(t));
-    for (org.hl7.fhir.r5.model.Reference t : src.getImagingStudy())
-      tgt.addImagingStudy(Reference30_50.convertReference(t));
     for (org.hl7.fhir.r5.model.DiagnosticReport.DiagnosticReportMediaComponent t : src.getMedia())
       tgt.addImage(convertDiagnosticReportImageComponent(t));
     if (src.hasConclusion())

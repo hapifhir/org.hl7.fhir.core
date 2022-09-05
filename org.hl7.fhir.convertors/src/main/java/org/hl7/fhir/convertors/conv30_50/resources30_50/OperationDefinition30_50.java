@@ -190,9 +190,9 @@ public class OperationDefinition30_50 {
     if (src.hasMax())
       tgt.setMaxElement(String30_50.convertString(src.getMaxElement()));
     if (src.hasDocumentation())
-      tgt.setDocumentationElement(String30_50.convertString(src.getDocumentationElement()));
+      tgt.setDocumentationElement(String30_50.convertStringToMarkdown(src.getDocumentationElement()));
     if (src.hasType())
-      tgt.setType(Enumerations.FHIRAllTypes.fromCode(src.getType()));
+      tgt.setType(Enumerations.FHIRTypes.fromCode(src.getType()));
     if (src.hasSearchType())
       tgt.setSearchTypeElement(Enumerations30_50.convertSearchParamType(src.getSearchTypeElement()));
     if (src.hasProfile())

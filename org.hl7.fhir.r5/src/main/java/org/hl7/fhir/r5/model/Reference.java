@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,7 +50,7 @@ import  org.hl7.fhir.instance.model.api.IBaseReference;
 import  org.hl7.fhir.instance.model.api.ICompositeType;
 import  org.hl7.fhir.instance.model.api.IIdType;
 /**
- * Base StructureDefinition for Reference Type: A reference from one resource to another.
+ * Reference Type: A reference from one resource to another.
  */
 @DatatypeDef(name="Reference")
 public class Reference extends BaseReference implements IBaseReference, ICompositeType {
@@ -68,7 +68,7 @@ public class Reference extends BaseReference implements IBaseReference, IComposi
 The type is the Canonical URL of Resource Definition that is the type this reference refers to. References are URLs that are relative to http://hl7.org/fhir/StructureDefinition/ e.g. "Patient" is a reference to http://hl7.org/fhir/StructureDefinition/Patient. Absolute URLs are only allowed for logical models (and can only be used in references in logical models, not resources).
      */
     @Child(name = "type", type = {UriType.class}, order=1, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Type the reference refers to (e.g. \"Patient\")", formalDefinition="The expected type of the target of the reference. If both Reference.type and Reference.reference are populated and Reference.reference is a FHIR URL, both SHALL be consistent.\n\nThe type is the Canonical URL of Resource Definition that is the type this reference refers to. References are URLs that are relative to http://hl7.org/fhir/StructureDefinition/ e.g. \"Patient\" is a reference to http://hl7.org/fhir/StructureDefinition/Patient. Absolute URLs are only allowed for logical models (and can only be used in references in logical models, not resources)." )
+    @Description(shortDefinition="Type the reference refers to (e.g. \"Patient\") - must be a resource in resources", formalDefinition="The expected type of the target of the reference. If both Reference.type and Reference.reference are populated and Reference.reference is a FHIR URL, both SHALL be consistent.\n\nThe type is the Canonical URL of Resource Definition that is the type this reference refers to. References are URLs that are relative to http://hl7.org/fhir/StructureDefinition/ e.g. \"Patient\" is a reference to http://hl7.org/fhir/StructureDefinition/Patient. Absolute URLs are only allowed for logical models (and can only be used in references in logical models, not resources)." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/resource-types")
     protected UriType type;
 

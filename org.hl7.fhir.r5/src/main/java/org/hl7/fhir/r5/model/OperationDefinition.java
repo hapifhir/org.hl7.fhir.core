@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -149,6 +149,118 @@ public class OperationDefinition extends CanonicalResource {
       }
     }
 
+    public enum OperationParameterScope {
+        /**
+         * This is a parameter that can be used at the instance level.
+         */
+        INSTANCE, 
+        /**
+         * This is a parameter that can be used at the type level.
+         */
+        TYPE, 
+        /**
+         * This is a parameter that can be used at the system level.
+         */
+        SYSTEM, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static OperationParameterScope fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("instance".equals(codeString))
+          return INSTANCE;
+        if ("type".equals(codeString))
+          return TYPE;
+        if ("system".equals(codeString))
+          return SYSTEM;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown OperationParameterScope code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case INSTANCE: return "instance";
+            case TYPE: return "type";
+            case SYSTEM: return "system";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case INSTANCE: return "http://hl7.org/fhir/operation-parameter-scope";
+            case TYPE: return "http://hl7.org/fhir/operation-parameter-scope";
+            case SYSTEM: return "http://hl7.org/fhir/operation-parameter-scope";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case INSTANCE: return "This is a parameter that can be used at the instance level.";
+            case TYPE: return "This is a parameter that can be used at the type level.";
+            case SYSTEM: return "This is a parameter that can be used at the system level.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case INSTANCE: return "Instance";
+            case TYPE: return "Type";
+            case SYSTEM: return "System";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+    }
+
+  public static class OperationParameterScopeEnumFactory implements EnumFactory<OperationParameterScope> {
+    public OperationParameterScope fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("instance".equals(codeString))
+          return OperationParameterScope.INSTANCE;
+        if ("type".equals(codeString))
+          return OperationParameterScope.TYPE;
+        if ("system".equals(codeString))
+          return OperationParameterScope.SYSTEM;
+        throw new IllegalArgumentException("Unknown OperationParameterScope code '"+codeString+"'");
+        }
+        public Enumeration<OperationParameterScope> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<OperationParameterScope>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("instance".equals(codeString))
+          return new Enumeration<OperationParameterScope>(this, OperationParameterScope.INSTANCE);
+        if ("type".equals(codeString))
+          return new Enumeration<OperationParameterScope>(this, OperationParameterScope.TYPE);
+        if ("system".equals(codeString))
+          return new Enumeration<OperationParameterScope>(this, OperationParameterScope.SYSTEM);
+        throw new FHIRException("Unknown OperationParameterScope code '"+codeString+"'");
+        }
+    public String toCode(OperationParameterScope code) {
+      if (code == OperationParameterScope.INSTANCE)
+        return "instance";
+      if (code == OperationParameterScope.TYPE)
+        return "type";
+      if (code == OperationParameterScope.SYSTEM)
+        return "system";
+      return "?";
+      }
+    public String toSystem(OperationParameterScope code) {
+      return code.getSystem();
+      }
+    }
+
     @Block()
     public static class OperationDefinitionParameterComponent extends BackboneElement implements IBaseBackboneElement {
         /**
@@ -167,71 +279,87 @@ public class OperationDefinition extends CanonicalResource {
         protected Enumeration<OperationParameterUse> use;
 
         /**
+         * If present, indicates that the parameter applies when the operation is being invoked at the specified level.
+         */
+        @Child(name = "scope", type = {CodeType.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="instance | type | system", formalDefinition="If present, indicates that the parameter applies when the operation is being invoked at the specified level." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/operation-parameter-scope")
+        protected List<Enumeration<OperationParameterScope>> scope;
+
+        /**
          * The minimum number of times this parameter SHALL appear in the request or response.
          */
-        @Child(name = "min", type = {IntegerType.class}, order=3, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "min", type = {IntegerType.class}, order=4, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Minimum Cardinality", formalDefinition="The minimum number of times this parameter SHALL appear in the request or response." )
         protected IntegerType min;
 
         /**
          * The maximum number of times this element is permitted to appear in the request or response.
          */
-        @Child(name = "max", type = {StringType.class}, order=4, min=1, max=1, modifier=false, summary=false)
+        @Child(name = "max", type = {StringType.class}, order=5, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Maximum Cardinality (a number or *)", formalDefinition="The maximum number of times this element is permitted to appear in the request or response." )
         protected StringType max;
 
         /**
          * Describes the meaning or use of this parameter.
          */
-        @Child(name = "documentation", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "documentation", type = {MarkdownType.class}, order=6, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Description of meaning/use", formalDefinition="Describes the meaning or use of this parameter." )
-        protected StringType documentation;
+        protected MarkdownType documentation;
 
         /**
          * The type for this parameter.
          */
-        @Child(name = "type", type = {CodeType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "type", type = {CodeType.class}, order=7, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="What type this parameter has", formalDefinition="The type for this parameter." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/all-types")
-        protected Enumeration<FHIRAllTypes> type;
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/fhir-types")
+        protected Enumeration<FHIRTypes> type;
+
+        /**
+         * Support for polymorphic types. If the parameter type is abstract, this element lists allowed sub-types for the parameter.
+         */
+        @Child(name = "allowedType", type = {CodeType.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Allowed sub-type this parameter can have (if type is abstract)", formalDefinition="Support for polymorphic types. If the parameter type is abstract, this element lists allowed sub-types for the parameter." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/fhir-types")
+        protected List<Enumeration<FHIRTypes>> allowedType;
 
         /**
          * Used when the type is "Reference" or "canonical", and identifies a profile structure or implementation Guide that applies to the target of the reference this parameter refers to. If any profiles are specified, then the content must conform to at least one of them. The URL can be a local reference - to a contained StructureDefinition, or a reference to another StructureDefinition or Implementation Guide by a canonical URL. When an implementation guide is specified, the target resource SHALL conform to at least one profile defined in the implementation guide.
          */
-        @Child(name = "targetProfile", type = {CanonicalType.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="If type is Reference | canonical, allowed targets", formalDefinition="Used when the type is \"Reference\" or \"canonical\", and identifies a profile structure or implementation Guide that applies to the target of the reference this parameter refers to. If any profiles are specified, then the content must conform to at least one of them. The URL can be a local reference - to a contained StructureDefinition, or a reference to another StructureDefinition or Implementation Guide by a canonical URL. When an implementation guide is specified, the target resource SHALL conform to at least one profile defined in the implementation guide." )
+        @Child(name = "targetProfile", type = {CanonicalType.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="If type is Reference | canonical, allowed targets. If type is 'Resource', then this constrains the allowed reosurce types", formalDefinition="Used when the type is \"Reference\" or \"canonical\", and identifies a profile structure or implementation Guide that applies to the target of the reference this parameter refers to. If any profiles are specified, then the content must conform to at least one of them. The URL can be a local reference - to a contained StructureDefinition, or a reference to another StructureDefinition or Implementation Guide by a canonical URL. When an implementation guide is specified, the target resource SHALL conform to at least one profile defined in the implementation guide." )
         protected List<CanonicalType> targetProfile;
 
         /**
-         * How the parameter is understood as a search parameter. This is only used if the parameter type is 'string'.
+         * How the parameter is understood if/when it used as search parameter. This is only used if the parameter is a string.
          */
-        @Child(name = "searchType", type = {CodeType.class}, order=8, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="number | date | string | token | reference | composite | quantity | uri | special", formalDefinition="How the parameter is understood as a search parameter. This is only used if the parameter type is 'string'." )
+        @Child(name = "searchType", type = {CodeType.class}, order=10, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="number | date | string | token | reference | composite | quantity | uri | special", formalDefinition="How the parameter is understood if/when it used as search parameter. This is only used if the parameter is a string." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/search-param-type")
         protected Enumeration<SearchParamType> searchType;
 
         /**
          * Binds to a value set if this parameter is coded (code, Coding, CodeableConcept).
          */
-        @Child(name = "binding", type = {}, order=9, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "binding", type = {}, order=11, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="ValueSet details if this is coded", formalDefinition="Binds to a value set if this parameter is coded (code, Coding, CodeableConcept)." )
         protected OperationDefinitionParameterBindingComponent binding;
 
         /**
          * Identifies other resource parameters within the operation invocation that are expected to resolve to this resource.
          */
-        @Child(name = "referencedFrom", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "referencedFrom", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="References to this parameter", formalDefinition="Identifies other resource parameters within the operation invocation that are expected to resolve to this resource." )
         protected List<OperationDefinitionParameterReferencedFromComponent> referencedFrom;
 
         /**
          * The parts of a nested Parameter.
          */
-        @Child(name = "part", type = {OperationDefinitionParameterComponent.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "part", type = {OperationDefinitionParameterComponent.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Parts of a nested Parameter", formalDefinition="The parts of a nested Parameter." )
         protected List<OperationDefinitionParameterComponent> part;
 
-        private static final long serialVersionUID = -153032790L;
+        private static final long serialVersionUID = -395202201L;
 
     /**
      * Constructor
@@ -342,6 +470,67 @@ public class OperationDefinition extends CanonicalResource {
         }
 
         /**
+         * @return {@link #scope} (If present, indicates that the parameter applies when the operation is being invoked at the specified level.)
+         */
+        public List<Enumeration<OperationParameterScope>> getScope() { 
+          if (this.scope == null)
+            this.scope = new ArrayList<Enumeration<OperationParameterScope>>();
+          return this.scope;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public OperationDefinitionParameterComponent setScope(List<Enumeration<OperationParameterScope>> theScope) { 
+          this.scope = theScope;
+          return this;
+        }
+
+        public boolean hasScope() { 
+          if (this.scope == null)
+            return false;
+          for (Enumeration<OperationParameterScope> item : this.scope)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        /**
+         * @return {@link #scope} (If present, indicates that the parameter applies when the operation is being invoked at the specified level.)
+         */
+        public Enumeration<OperationParameterScope> addScopeElement() {//2 
+          Enumeration<OperationParameterScope> t = new Enumeration<OperationParameterScope>(new OperationParameterScopeEnumFactory());
+          if (this.scope == null)
+            this.scope = new ArrayList<Enumeration<OperationParameterScope>>();
+          this.scope.add(t);
+          return t;
+        }
+
+        /**
+         * @param value {@link #scope} (If present, indicates that the parameter applies when the operation is being invoked at the specified level.)
+         */
+        public OperationDefinitionParameterComponent addScope(OperationParameterScope value) { //1
+          Enumeration<OperationParameterScope> t = new Enumeration<OperationParameterScope>(new OperationParameterScopeEnumFactory());
+          t.setValue(value);
+          if (this.scope == null)
+            this.scope = new ArrayList<Enumeration<OperationParameterScope>>();
+          this.scope.add(t);
+          return this;
+        }
+
+        /**
+         * @param value {@link #scope} (If present, indicates that the parameter applies when the operation is being invoked at the specified level.)
+         */
+        public boolean hasScope(OperationParameterScope value) { 
+          if (this.scope == null)
+            return false;
+          for (Enumeration<OperationParameterScope> v : this.scope)
+            if (v.getValue().equals(value)) // code
+              return true;
+          return false;
+        }
+
+        /**
          * @return {@link #min} (The minimum number of times this parameter SHALL appear in the request or response.). This is the underlying object with id, value and extensions. The accessor "getMin" gives direct access to the value
          */
         public IntegerType getMinElement() { 
@@ -434,12 +623,12 @@ public class OperationDefinition extends CanonicalResource {
         /**
          * @return {@link #documentation} (Describes the meaning or use of this parameter.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
          */
-        public StringType getDocumentationElement() { 
+        public MarkdownType getDocumentationElement() { 
           if (this.documentation == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create OperationDefinitionParameterComponent.documentation");
             else if (Configuration.doAutoCreate())
-              this.documentation = new StringType(); // bb
+              this.documentation = new MarkdownType(); // bb
           return this.documentation;
         }
 
@@ -454,7 +643,7 @@ public class OperationDefinition extends CanonicalResource {
         /**
          * @param value {@link #documentation} (Describes the meaning or use of this parameter.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
          */
-        public OperationDefinitionParameterComponent setDocumentationElement(StringType value) { 
+        public OperationDefinitionParameterComponent setDocumentationElement(MarkdownType value) { 
           this.documentation = value;
           return this;
         }
@@ -470,11 +659,11 @@ public class OperationDefinition extends CanonicalResource {
          * @param value Describes the meaning or use of this parameter.
          */
         public OperationDefinitionParameterComponent setDocumentation(String value) { 
-          if (Utilities.noString(value))
+          if (value == null)
             this.documentation = null;
           else {
             if (this.documentation == null)
-              this.documentation = new StringType();
+              this.documentation = new MarkdownType();
             this.documentation.setValue(value);
           }
           return this;
@@ -483,12 +672,12 @@ public class OperationDefinition extends CanonicalResource {
         /**
          * @return {@link #type} (The type for this parameter.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
          */
-        public Enumeration<FHIRAllTypes> getTypeElement() { 
+        public Enumeration<FHIRTypes> getTypeElement() { 
           if (this.type == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create OperationDefinitionParameterComponent.type");
             else if (Configuration.doAutoCreate())
-              this.type = new Enumeration<FHIRAllTypes>(new FHIRAllTypesEnumFactory()); // bb
+              this.type = new Enumeration<FHIRTypes>(new FHIRTypesEnumFactory()); // bb
           return this.type;
         }
 
@@ -503,7 +692,7 @@ public class OperationDefinition extends CanonicalResource {
         /**
          * @param value {@link #type} (The type for this parameter.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
          */
-        public OperationDefinitionParameterComponent setTypeElement(Enumeration<FHIRAllTypes> value) { 
+        public OperationDefinitionParameterComponent setTypeElement(Enumeration<FHIRTypes> value) { 
           this.type = value;
           return this;
         }
@@ -511,22 +700,83 @@ public class OperationDefinition extends CanonicalResource {
         /**
          * @return The type for this parameter.
          */
-        public FHIRAllTypes getType() { 
+        public FHIRTypes getType() { 
           return this.type == null ? null : this.type.getValue();
         }
 
         /**
          * @param value The type for this parameter.
          */
-        public OperationDefinitionParameterComponent setType(FHIRAllTypes value) { 
+        public OperationDefinitionParameterComponent setType(FHIRTypes value) { 
           if (value == null)
             this.type = null;
           else {
             if (this.type == null)
-              this.type = new Enumeration<FHIRAllTypes>(new FHIRAllTypesEnumFactory());
+              this.type = new Enumeration<FHIRTypes>(new FHIRTypesEnumFactory());
             this.type.setValue(value);
           }
           return this;
+        }
+
+        /**
+         * @return {@link #allowedType} (Support for polymorphic types. If the parameter type is abstract, this element lists allowed sub-types for the parameter.)
+         */
+        public List<Enumeration<FHIRTypes>> getAllowedType() { 
+          if (this.allowedType == null)
+            this.allowedType = new ArrayList<Enumeration<FHIRTypes>>();
+          return this.allowedType;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public OperationDefinitionParameterComponent setAllowedType(List<Enumeration<FHIRTypes>> theAllowedType) { 
+          this.allowedType = theAllowedType;
+          return this;
+        }
+
+        public boolean hasAllowedType() { 
+          if (this.allowedType == null)
+            return false;
+          for (Enumeration<FHIRTypes> item : this.allowedType)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        /**
+         * @return {@link #allowedType} (Support for polymorphic types. If the parameter type is abstract, this element lists allowed sub-types for the parameter.)
+         */
+        public Enumeration<FHIRTypes> addAllowedTypeElement() {//2 
+          Enumeration<FHIRTypes> t = new Enumeration<FHIRTypes>(new FHIRTypesEnumFactory());
+          if (this.allowedType == null)
+            this.allowedType = new ArrayList<Enumeration<FHIRTypes>>();
+          this.allowedType.add(t);
+          return t;
+        }
+
+        /**
+         * @param value {@link #allowedType} (Support for polymorphic types. If the parameter type is abstract, this element lists allowed sub-types for the parameter.)
+         */
+        public OperationDefinitionParameterComponent addAllowedType(FHIRTypes value) { //1
+          Enumeration<FHIRTypes> t = new Enumeration<FHIRTypes>(new FHIRTypesEnumFactory());
+          t.setValue(value);
+          if (this.allowedType == null)
+            this.allowedType = new ArrayList<Enumeration<FHIRTypes>>();
+          this.allowedType.add(t);
+          return this;
+        }
+
+        /**
+         * @param value {@link #allowedType} (Support for polymorphic types. If the parameter type is abstract, this element lists allowed sub-types for the parameter.)
+         */
+        public boolean hasAllowedType(FHIRTypes value) { 
+          if (this.allowedType == null)
+            return false;
+          for (Enumeration<FHIRTypes> v : this.allowedType)
+            if (v.getValue().equals(value)) // code
+              return true;
+          return false;
         }
 
         /**
@@ -591,7 +841,7 @@ public class OperationDefinition extends CanonicalResource {
         }
 
         /**
-         * @return {@link #searchType} (How the parameter is understood as a search parameter. This is only used if the parameter type is 'string'.). This is the underlying object with id, value and extensions. The accessor "getSearchType" gives direct access to the value
+         * @return {@link #searchType} (How the parameter is understood if/when it used as search parameter. This is only used if the parameter is a string.). This is the underlying object with id, value and extensions. The accessor "getSearchType" gives direct access to the value
          */
         public Enumeration<SearchParamType> getSearchTypeElement() { 
           if (this.searchType == null)
@@ -611,7 +861,7 @@ public class OperationDefinition extends CanonicalResource {
         }
 
         /**
-         * @param value {@link #searchType} (How the parameter is understood as a search parameter. This is only used if the parameter type is 'string'.). This is the underlying object with id, value and extensions. The accessor "getSearchType" gives direct access to the value
+         * @param value {@link #searchType} (How the parameter is understood if/when it used as search parameter. This is only used if the parameter is a string.). This is the underlying object with id, value and extensions. The accessor "getSearchType" gives direct access to the value
          */
         public OperationDefinitionParameterComponent setSearchTypeElement(Enumeration<SearchParamType> value) { 
           this.searchType = value;
@@ -619,14 +869,14 @@ public class OperationDefinition extends CanonicalResource {
         }
 
         /**
-         * @return How the parameter is understood as a search parameter. This is only used if the parameter type is 'string'.
+         * @return How the parameter is understood if/when it used as search parameter. This is only used if the parameter is a string.
          */
         public SearchParamType getSearchType() { 
           return this.searchType == null ? null : this.searchType.getValue();
         }
 
         /**
-         * @param value How the parameter is understood as a search parameter. This is only used if the parameter type is 'string'.
+         * @param value How the parameter is understood if/when it used as search parameter. This is only used if the parameter is a string.
          */
         public OperationDefinitionParameterComponent setSearchType(SearchParamType value) { 
           if (value == null)
@@ -773,12 +1023,14 @@ public class OperationDefinition extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("name", "code", "The name of used to identify the parameter.", 0, 1, name));
           children.add(new Property("use", "code", "Whether this is an input or an output parameter.", 0, 1, use));
+          children.add(new Property("scope", "code", "If present, indicates that the parameter applies when the operation is being invoked at the specified level.", 0, java.lang.Integer.MAX_VALUE, scope));
           children.add(new Property("min", "integer", "The minimum number of times this parameter SHALL appear in the request or response.", 0, 1, min));
           children.add(new Property("max", "string", "The maximum number of times this element is permitted to appear in the request or response.", 0, 1, max));
-          children.add(new Property("documentation", "string", "Describes the meaning or use of this parameter.", 0, 1, documentation));
+          children.add(new Property("documentation", "markdown", "Describes the meaning or use of this parameter.", 0, 1, documentation));
           children.add(new Property("type", "code", "The type for this parameter.", 0, 1, type));
+          children.add(new Property("allowedType", "code", "Support for polymorphic types. If the parameter type is abstract, this element lists allowed sub-types for the parameter.", 0, java.lang.Integer.MAX_VALUE, allowedType));
           children.add(new Property("targetProfile", "canonical(StructureDefinition)", "Used when the type is \"Reference\" or \"canonical\", and identifies a profile structure or implementation Guide that applies to the target of the reference this parameter refers to. If any profiles are specified, then the content must conform to at least one of them. The URL can be a local reference - to a contained StructureDefinition, or a reference to another StructureDefinition or Implementation Guide by a canonical URL. When an implementation guide is specified, the target resource SHALL conform to at least one profile defined in the implementation guide.", 0, java.lang.Integer.MAX_VALUE, targetProfile));
-          children.add(new Property("searchType", "code", "How the parameter is understood as a search parameter. This is only used if the parameter type is 'string'.", 0, 1, searchType));
+          children.add(new Property("searchType", "code", "How the parameter is understood if/when it used as search parameter. This is only used if the parameter is a string.", 0, 1, searchType));
           children.add(new Property("binding", "", "Binds to a value set if this parameter is coded (code, Coding, CodeableConcept).", 0, 1, binding));
           children.add(new Property("referencedFrom", "", "Identifies other resource parameters within the operation invocation that are expected to resolve to this resource.", 0, java.lang.Integer.MAX_VALUE, referencedFrom));
           children.add(new Property("part", "@OperationDefinition.parameter", "The parts of a nested Parameter.", 0, java.lang.Integer.MAX_VALUE, part));
@@ -789,12 +1041,14 @@ public class OperationDefinition extends CanonicalResource {
           switch (_hash) {
           case 3373707: /*name*/  return new Property("name", "code", "The name of used to identify the parameter.", 0, 1, name);
           case 116103: /*use*/  return new Property("use", "code", "Whether this is an input or an output parameter.", 0, 1, use);
+          case 109264468: /*scope*/  return new Property("scope", "code", "If present, indicates that the parameter applies when the operation is being invoked at the specified level.", 0, java.lang.Integer.MAX_VALUE, scope);
           case 108114: /*min*/  return new Property("min", "integer", "The minimum number of times this parameter SHALL appear in the request or response.", 0, 1, min);
           case 107876: /*max*/  return new Property("max", "string", "The maximum number of times this element is permitted to appear in the request or response.", 0, 1, max);
-          case 1587405498: /*documentation*/  return new Property("documentation", "string", "Describes the meaning or use of this parameter.", 0, 1, documentation);
+          case 1587405498: /*documentation*/  return new Property("documentation", "markdown", "Describes the meaning or use of this parameter.", 0, 1, documentation);
           case 3575610: /*type*/  return new Property("type", "code", "The type for this parameter.", 0, 1, type);
+          case 1512894722: /*allowedType*/  return new Property("allowedType", "code", "Support for polymorphic types. If the parameter type is abstract, this element lists allowed sub-types for the parameter.", 0, java.lang.Integer.MAX_VALUE, allowedType);
           case 1994521304: /*targetProfile*/  return new Property("targetProfile", "canonical(StructureDefinition)", "Used when the type is \"Reference\" or \"canonical\", and identifies a profile structure or implementation Guide that applies to the target of the reference this parameter refers to. If any profiles are specified, then the content must conform to at least one of them. The URL can be a local reference - to a contained StructureDefinition, or a reference to another StructureDefinition or Implementation Guide by a canonical URL. When an implementation guide is specified, the target resource SHALL conform to at least one profile defined in the implementation guide.", 0, java.lang.Integer.MAX_VALUE, targetProfile);
-          case -710454014: /*searchType*/  return new Property("searchType", "code", "How the parameter is understood as a search parameter. This is only used if the parameter type is 'string'.", 0, 1, searchType);
+          case -710454014: /*searchType*/  return new Property("searchType", "code", "How the parameter is understood if/when it used as search parameter. This is only used if the parameter is a string.", 0, 1, searchType);
           case -108220795: /*binding*/  return new Property("binding", "", "Binds to a value set if this parameter is coded (code, Coding, CodeableConcept).", 0, 1, binding);
           case -1896721981: /*referencedFrom*/  return new Property("referencedFrom", "", "Identifies other resource parameters within the operation invocation that are expected to resolve to this resource.", 0, java.lang.Integer.MAX_VALUE, referencedFrom);
           case 3433459: /*part*/  return new Property("part", "@OperationDefinition.parameter", "The parts of a nested Parameter.", 0, java.lang.Integer.MAX_VALUE, part);
@@ -808,10 +1062,12 @@ public class OperationDefinition extends CanonicalResource {
         switch (hash) {
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // CodeType
         case 116103: /*use*/ return this.use == null ? new Base[0] : new Base[] {this.use}; // Enumeration<OperationParameterUse>
+        case 109264468: /*scope*/ return this.scope == null ? new Base[0] : this.scope.toArray(new Base[this.scope.size()]); // Enumeration<OperationParameterScope>
         case 108114: /*min*/ return this.min == null ? new Base[0] : new Base[] {this.min}; // IntegerType
         case 107876: /*max*/ return this.max == null ? new Base[0] : new Base[] {this.max}; // StringType
-        case 1587405498: /*documentation*/ return this.documentation == null ? new Base[0] : new Base[] {this.documentation}; // StringType
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<FHIRAllTypes>
+        case 1587405498: /*documentation*/ return this.documentation == null ? new Base[0] : new Base[] {this.documentation}; // MarkdownType
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<FHIRTypes>
+        case 1512894722: /*allowedType*/ return this.allowedType == null ? new Base[0] : this.allowedType.toArray(new Base[this.allowedType.size()]); // Enumeration<FHIRTypes>
         case 1994521304: /*targetProfile*/ return this.targetProfile == null ? new Base[0] : this.targetProfile.toArray(new Base[this.targetProfile.size()]); // CanonicalType
         case -710454014: /*searchType*/ return this.searchType == null ? new Base[0] : new Base[] {this.searchType}; // Enumeration<SearchParamType>
         case -108220795: /*binding*/ return this.binding == null ? new Base[0] : new Base[] {this.binding}; // OperationDefinitionParameterBindingComponent
@@ -832,6 +1088,10 @@ public class OperationDefinition extends CanonicalResource {
           value = new OperationParameterUseEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.use = (Enumeration) value; // Enumeration<OperationParameterUse>
           return value;
+        case 109264468: // scope
+          value = new OperationParameterScopeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getScope().add((Enumeration) value); // Enumeration<OperationParameterScope>
+          return value;
         case 108114: // min
           this.min = TypeConvertor.castToInteger(value); // IntegerType
           return value;
@@ -839,11 +1099,15 @@ public class OperationDefinition extends CanonicalResource {
           this.max = TypeConvertor.castToString(value); // StringType
           return value;
         case 1587405498: // documentation
-          this.documentation = TypeConvertor.castToString(value); // StringType
+          this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case 3575610: // type
-          value = new FHIRAllTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.type = (Enumeration) value; // Enumeration<FHIRAllTypes>
+          value = new FHIRTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<FHIRTypes>
+          return value;
+        case 1512894722: // allowedType
+          value = new FHIRTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getAllowedType().add((Enumeration) value); // Enumeration<FHIRTypes>
           return value;
         case 1994521304: // targetProfile
           this.getTargetProfile().add(TypeConvertor.castToCanonical(value)); // CanonicalType
@@ -873,15 +1137,21 @@ public class OperationDefinition extends CanonicalResource {
         } else if (name.equals("use")) {
           value = new OperationParameterUseEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.use = (Enumeration) value; // Enumeration<OperationParameterUse>
+        } else if (name.equals("scope")) {
+          value = new OperationParameterScopeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getScope().add((Enumeration) value);
         } else if (name.equals("min")) {
           this.min = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("max")) {
           this.max = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("documentation")) {
-          this.documentation = TypeConvertor.castToString(value); // StringType
+          this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("type")) {
-          value = new FHIRAllTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.type = (Enumeration) value; // Enumeration<FHIRAllTypes>
+          value = new FHIRTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<FHIRTypes>
+        } else if (name.equals("allowedType")) {
+          value = new FHIRTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getAllowedType().add((Enumeration) value);
         } else if (name.equals("targetProfile")) {
           this.getTargetProfile().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("searchType")) {
@@ -903,10 +1173,12 @@ public class OperationDefinition extends CanonicalResource {
         switch (hash) {
         case 3373707:  return getNameElement();
         case 116103:  return getUseElement();
+        case 109264468:  return addScopeElement();
         case 108114:  return getMinElement();
         case 107876:  return getMaxElement();
         case 1587405498:  return getDocumentationElement();
         case 3575610:  return getTypeElement();
+        case 1512894722:  return addAllowedTypeElement();
         case 1994521304:  return addTargetProfileElement();
         case -710454014:  return getSearchTypeElement();
         case -108220795:  return getBinding();
@@ -922,10 +1194,12 @@ public class OperationDefinition extends CanonicalResource {
         switch (hash) {
         case 3373707: /*name*/ return new String[] {"code"};
         case 116103: /*use*/ return new String[] {"code"};
+        case 109264468: /*scope*/ return new String[] {"code"};
         case 108114: /*min*/ return new String[] {"integer"};
         case 107876: /*max*/ return new String[] {"string"};
-        case 1587405498: /*documentation*/ return new String[] {"string"};
+        case 1587405498: /*documentation*/ return new String[] {"markdown"};
         case 3575610: /*type*/ return new String[] {"code"};
+        case 1512894722: /*allowedType*/ return new String[] {"code"};
         case 1994521304: /*targetProfile*/ return new String[] {"canonical"};
         case -710454014: /*searchType*/ return new String[] {"code"};
         case -108220795: /*binding*/ return new String[] {};
@@ -944,6 +1218,9 @@ public class OperationDefinition extends CanonicalResource {
         else if (name.equals("use")) {
           throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.parameter.use");
         }
+        else if (name.equals("scope")) {
+          throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.parameter.scope");
+        }
         else if (name.equals("min")) {
           throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.parameter.min");
         }
@@ -955,6 +1232,9 @@ public class OperationDefinition extends CanonicalResource {
         }
         else if (name.equals("type")) {
           throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.parameter.type");
+        }
+        else if (name.equals("allowedType")) {
+          throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.parameter.allowedType");
         }
         else if (name.equals("targetProfile")) {
           throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.parameter.targetProfile");
@@ -986,10 +1266,20 @@ public class OperationDefinition extends CanonicalResource {
         super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.use = use == null ? null : use.copy();
+        if (scope != null) {
+          dst.scope = new ArrayList<Enumeration<OperationParameterScope>>();
+          for (Enumeration<OperationParameterScope> i : scope)
+            dst.scope.add(i.copy());
+        };
         dst.min = min == null ? null : min.copy();
         dst.max = max == null ? null : max.copy();
         dst.documentation = documentation == null ? null : documentation.copy();
         dst.type = type == null ? null : type.copy();
+        if (allowedType != null) {
+          dst.allowedType = new ArrayList<Enumeration<FHIRTypes>>();
+          for (Enumeration<FHIRTypes> i : allowedType)
+            dst.allowedType.add(i.copy());
+        };
         if (targetProfile != null) {
           dst.targetProfile = new ArrayList<CanonicalType>();
           for (CanonicalType i : targetProfile)
@@ -1016,10 +1306,10 @@ public class OperationDefinition extends CanonicalResource {
         if (!(other_ instanceof OperationDefinitionParameterComponent))
           return false;
         OperationDefinitionParameterComponent o = (OperationDefinitionParameterComponent) other_;
-        return compareDeep(name, o.name, true) && compareDeep(use, o.use, true) && compareDeep(min, o.min, true)
-           && compareDeep(max, o.max, true) && compareDeep(documentation, o.documentation, true) && compareDeep(type, o.type, true)
-           && compareDeep(targetProfile, o.targetProfile, true) && compareDeep(searchType, o.searchType, true)
-           && compareDeep(binding, o.binding, true) && compareDeep(referencedFrom, o.referencedFrom, true)
+        return compareDeep(name, o.name, true) && compareDeep(use, o.use, true) && compareDeep(scope, o.scope, true)
+           && compareDeep(min, o.min, true) && compareDeep(max, o.max, true) && compareDeep(documentation, o.documentation, true)
+           && compareDeep(type, o.type, true) && compareDeep(allowedType, o.allowedType, true) && compareDeep(targetProfile, o.targetProfile, true)
+           && compareDeep(searchType, o.searchType, true) && compareDeep(binding, o.binding, true) && compareDeep(referencedFrom, o.referencedFrom, true)
            && compareDeep(part, o.part, true);
       }
 
@@ -1030,15 +1320,16 @@ public class OperationDefinition extends CanonicalResource {
         if (!(other_ instanceof OperationDefinitionParameterComponent))
           return false;
         OperationDefinitionParameterComponent o = (OperationDefinitionParameterComponent) other_;
-        return compareValues(name, o.name, true) && compareValues(use, o.use, true) && compareValues(min, o.min, true)
-           && compareValues(max, o.max, true) && compareValues(documentation, o.documentation, true) && compareValues(type, o.type, true)
-           && compareValues(targetProfile, o.targetProfile, true) && compareValues(searchType, o.searchType, true)
-          ;
+        return compareValues(name, o.name, true) && compareValues(use, o.use, true) && compareValues(scope, o.scope, true)
+           && compareValues(min, o.min, true) && compareValues(max, o.max, true) && compareValues(documentation, o.documentation, true)
+           && compareValues(type, o.type, true) && compareValues(allowedType, o.allowedType, true) && compareValues(targetProfile, o.targetProfile, true)
+           && compareValues(searchType, o.searchType, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, use, min, max, documentation
-          , type, targetProfile, searchType, binding, referencedFrom, part);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, use, scope, min
+          , max, documentation, type, allowedType, targetProfile, searchType, binding, referencedFrom
+          , part);
       }
 
   public String fhirType() {
@@ -1822,10 +2113,10 @@ public class OperationDefinition extends CanonicalResource {
   }
 
     /**
-     * An absolute URI that is used to identify this operation definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this operation definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the operation definition is stored on different servers.
+     * An absolute URI that is used to identify this operation definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this operation definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the operation definition is stored on different servers.
      */
     @Child(name = "url", type = {UriType.class}, order=0, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Canonical identifier for this operation definition, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this operation definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this operation definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the operation definition is stored on different servers." )
+    @Description(shortDefinition="Canonical identifier for this operation definition, represented as a URI (globally unique)", formalDefinition="An absolute URI that is used to identify this operation definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this operation definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the operation definition is stored on different servers." )
     protected UriType url;
 
     /**
@@ -1836,23 +2127,31 @@ public class OperationDefinition extends CanonicalResource {
     protected StringType version;
 
     /**
+     * Indicates the mechanism used to compare versions to determine which is more current.
+     */
+    @Child(name = "versionAlgorithm", type = {StringType.class, Coding.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="How to compare versions", formalDefinition="Indicates the mechanism used to compare versions to determine which is more current." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/version-algorithm")
+    protected DataType versionAlgorithm;
+
+    /**
      * A natural language name identifying the operation definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.
      */
-    @Child(name = "name", type = {StringType.class}, order=2, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "name", type = {StringType.class}, order=3, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name for this operation definition (computer friendly)", formalDefinition="A natural language name identifying the operation definition. This name should be usable as an identifier for the module by machine processing applications such as code generation." )
     protected StringType name;
 
     /**
      * A short, descriptive, user-friendly title for the operation definition.
      */
-    @Child(name = "title", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "title", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name for this operation definition (human friendly)", formalDefinition="A short, descriptive, user-friendly title for the operation definition." )
     protected StringType title;
 
     /**
      * The status of this operation definition. Enables tracking the life-cycle of the content.
      */
-    @Child(name = "status", type = {CodeType.class}, order=4, min=1, max=1, modifier=true, summary=true)
+    @Child(name = "status", type = {CodeType.class}, order=5, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this operation definition. Enables tracking the life-cycle of the content." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
     protected Enumeration<PublicationStatus> status;
@@ -1860,7 +2159,7 @@ public class OperationDefinition extends CanonicalResource {
     /**
      * Whether this is an operation or a named query.
      */
-    @Child(name = "kind", type = {CodeType.class}, order=5, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "kind", type = {CodeType.class}, order=6, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="operation | query", formalDefinition="Whether this is an operation or a named query." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/operation-kind")
     protected Enumeration<OperationKind> kind;
@@ -1868,49 +2167,49 @@ public class OperationDefinition extends CanonicalResource {
     /**
      * A Boolean value to indicate that this operation definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.
      */
-    @Child(name = "experimental", type = {BooleanType.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "experimental", type = {BooleanType.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="For testing purposes, not real usage", formalDefinition="A Boolean value to indicate that this operation definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage." )
     protected BooleanType experimental;
 
     /**
      * The date  (and optionally time) when the operation definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the operation definition changes.
      */
-    @Child(name = "date", type = {DateTimeType.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "date", type = {DateTimeType.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Date last changed", formalDefinition="The date  (and optionally time) when the operation definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the operation definition changes." )
     protected DateTimeType date;
 
     /**
-     * The name of the organization or individual that published the operation definition.
+     * The name of the organization or individual responsible for the release and ongoing maintenance of the operation definition.
      */
-    @Child(name = "publisher", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the operation definition." )
+    @Child(name = "publisher", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name of the publisher/steward (organization or individual)", formalDefinition="The name of the organization or individual responsible for the release and ongoing maintenance of the operation definition." )
     protected StringType publisher;
 
     /**
      * Contact details to assist a user in finding and communicating with the publisher.
      */
-    @Child(name = "contact", type = {ContactDetail.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "contact", type = {ContactDetail.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
     protected List<ContactDetail> contact;
 
     /**
      * A free text natural language description of the operation definition from a consumer's perspective.
      */
-    @Child(name = "description", type = {MarkdownType.class}, order=10, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "description", type = {MarkdownType.class}, order=11, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Natural language description of the operation definition", formalDefinition="A free text natural language description of the operation definition from a consumer's perspective." )
     protected MarkdownType description;
 
     /**
      * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate operation definition instances.
      */
-    @Child(name = "useContext", type = {UsageContext.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "useContext", type = {UsageContext.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The context that the content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate operation definition instances." )
     protected List<UsageContext> useContext;
 
     /**
      * A legal or geographic region in which the operation definition is intended to be used.
      */
-    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Intended jurisdiction for operation definition (if applicable)", formalDefinition="A legal or geographic region in which the operation definition is intended to be used." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/jurisdiction")
     protected List<CodeableConcept> jurisdiction;
@@ -1918,42 +2217,56 @@ public class OperationDefinition extends CanonicalResource {
     /**
      * Explanation of why this operation definition is needed and why it has been designed as it has.
      */
-    @Child(name = "purpose", type = {MarkdownType.class}, order=13, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "purpose", type = {MarkdownType.class}, order=14, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Why this operation definition is defined", formalDefinition="Explanation of why this operation definition is needed and why it has been designed as it has." )
     protected MarkdownType purpose;
 
     /**
+     * A copyright statement relating to the OperationDefinition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the OperationDefinition.
+     */
+    @Child(name = "copyright", type = {MarkdownType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Use and/or publishing restrictions", formalDefinition="A copyright statement relating to the OperationDefinition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the OperationDefinition." )
+    protected MarkdownType copyright;
+
+    /**
+     * A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    @Child(name = "copyrightLabel", type = {StringType.class}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Copyright holder and year(s)", formalDefinition="A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved')." )
+    protected StringType copyrightLabel;
+
+    /**
      * Whether the operation affects state. Side effects such as producing audit trail entries do not count as 'affecting  state'.
      */
-    @Child(name = "affectsState", type = {BooleanType.class}, order=14, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "affectsState", type = {BooleanType.class}, order=17, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Whether content is changed by the operation", formalDefinition="Whether the operation affects state. Side effects such as producing audit trail entries do not count as 'affecting  state'." )
     protected BooleanType affectsState;
 
     /**
-     * The name used to invoke the operation.
+     * The label that is recommended to be used in the URL for this operation. In some cases, servers may need to use a different CapabilityStatement operation.name to differentiate between multiple SearchParameters that happen to have the same code.
      */
-    @Child(name = "code", type = {CodeType.class}, order=15, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name used to invoke the operation", formalDefinition="The name used to invoke the operation." )
+    @Child(name = "code", type = {CodeType.class}, order=18, min=1, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Recommended name for operation in search url", formalDefinition="The label that is recommended to be used in the URL for this operation. In some cases, servers may need to use a different CapabilityStatement operation.name to differentiate between multiple SearchParameters that happen to have the same code." )
     protected CodeType code;
 
     /**
      * Additional information about how to use this operation or named query.
      */
-    @Child(name = "comment", type = {MarkdownType.class}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "comment", type = {MarkdownType.class}, order=19, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Additional information about use", formalDefinition="Additional information about how to use this operation or named query." )
     protected MarkdownType comment;
 
     /**
      * Indicates that this operation definition is a constraining profile on the base.
      */
-    @Child(name = "base", type = {CanonicalType.class}, order=17, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "base", type = {CanonicalType.class}, order=20, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Marks this as a profile of the base", formalDefinition="Indicates that this operation definition is a constraining profile on the base." )
     protected CanonicalType base;
 
     /**
      * The types on which this operation can be executed.
      */
-    @Child(name = "resource", type = {CodeType.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "resource", type = {CodeType.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Types this operation applies to", formalDefinition="The types on which this operation can be executed." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/resource-types")
     protected List<CodeType> resource;
@@ -1961,53 +2274,53 @@ public class OperationDefinition extends CanonicalResource {
     /**
      * Indicates whether this operation or named query can be invoked at the system level (e.g. without needing to choose a resource type for the context).
      */
-    @Child(name = "system", type = {BooleanType.class}, order=19, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "system", type = {BooleanType.class}, order=22, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Invoke at the system level?", formalDefinition="Indicates whether this operation or named query can be invoked at the system level (e.g. without needing to choose a resource type for the context)." )
     protected BooleanType system;
 
     /**
      * Indicates whether this operation or named query can be invoked at the resource type level for any given resource type level (e.g. without needing to choose a specific resource id for the context).
      */
-    @Child(name = "type", type = {BooleanType.class}, order=20, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "type", type = {BooleanType.class}, order=23, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Invoke at the type level?", formalDefinition="Indicates whether this operation or named query can be invoked at the resource type level for any given resource type level (e.g. without needing to choose a specific resource id for the context)." )
     protected BooleanType type;
 
     /**
      * Indicates whether this operation can be invoked on a particular instance of one of the given types.
      */
-    @Child(name = "instance", type = {BooleanType.class}, order=21, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "instance", type = {BooleanType.class}, order=24, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Invoke on an instance?", formalDefinition="Indicates whether this operation can be invoked on a particular instance of one of the given types." )
     protected BooleanType instance;
 
     /**
      * Additional validation information for the in parameters - a single profile that covers all the parameters. The profile is a constraint on the parameters resource as a whole.
      */
-    @Child(name = "inputProfile", type = {CanonicalType.class}, order=22, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "inputProfile", type = {CanonicalType.class}, order=25, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Validation information for in parameters", formalDefinition="Additional validation information for the in parameters - a single profile that covers all the parameters. The profile is a constraint on the parameters resource as a whole." )
     protected CanonicalType inputProfile;
 
     /**
      * Additional validation information for the out parameters - a single profile that covers all the parameters. The profile is a constraint on the parameters resource.
      */
-    @Child(name = "outputProfile", type = {CanonicalType.class}, order=23, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "outputProfile", type = {CanonicalType.class}, order=26, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Validation information for out parameters", formalDefinition="Additional validation information for the out parameters - a single profile that covers all the parameters. The profile is a constraint on the parameters resource." )
     protected CanonicalType outputProfile;
 
     /**
      * The parameters for the operation/query.
      */
-    @Child(name = "parameter", type = {}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "parameter", type = {}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Parameters for the operation/query", formalDefinition="The parameters for the operation/query." )
     protected List<OperationDefinitionParameterComponent> parameter;
 
     /**
      * Defines an appropriate combination of parameters to use when invoking this operation, to help code generators when generating overloaded parameter sets for this operation.
      */
-    @Child(name = "overload", type = {}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "overload", type = {}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Define overloaded variants for when  generating code", formalDefinition="Defines an appropriate combination of parameters to use when invoking this operation, to help code generators when generating overloaded parameter sets for this operation." )
     protected List<OperationDefinitionOverloadComponent> overload;
 
-    private static final long serialVersionUID = 715394391L;
+    private static final long serialVersionUID = 269077042L;
 
   /**
    * Constructor
@@ -2031,7 +2344,7 @@ public class OperationDefinition extends CanonicalResource {
     }
 
     /**
-     * @return {@link #url} (An absolute URI that is used to identify this operation definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this operation definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the operation definition is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @return {@link #url} (An absolute URI that is used to identify this operation definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this operation definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the operation definition is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public UriType getUrlElement() { 
       if (this.url == null)
@@ -2051,7 +2364,7 @@ public class OperationDefinition extends CanonicalResource {
     }
 
     /**
-     * @param value {@link #url} (An absolute URI that is used to identify this operation definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this operation definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the operation definition is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     * @param value {@link #url} (An absolute URI that is used to identify this operation definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this operation definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the operation definition is stored on different servers.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
      */
     public OperationDefinition setUrlElement(UriType value) { 
       this.url = value;
@@ -2059,14 +2372,14 @@ public class OperationDefinition extends CanonicalResource {
     }
 
     /**
-     * @return An absolute URI that is used to identify this operation definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this operation definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the operation definition is stored on different servers.
+     * @return An absolute URI that is used to identify this operation definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this operation definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the operation definition is stored on different servers.
      */
     public String getUrl() { 
       return this.url == null ? null : this.url.getValue();
     }
 
     /**
-     * @param value An absolute URI that is used to identify this operation definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this operation definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the operation definition is stored on different servers.
+     * @param value An absolute URI that is used to identify this operation definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this operation definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the operation definition is stored on different servers.
      */
     public OperationDefinition setUrl(String value) { 
       if (Utilities.noString(value))
@@ -2125,6 +2438,57 @@ public class OperationDefinition extends CanonicalResource {
           this.version = new StringType();
         this.version.setValue(value);
       }
+      return this;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public DataType getVersionAlgorithm() { 
+      return this.versionAlgorithm;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public StringType getVersionAlgorithmStringType() throws FHIRException { 
+      if (this.versionAlgorithm == null)
+        this.versionAlgorithm = new StringType();
+      if (!(this.versionAlgorithm instanceof StringType))
+        throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.versionAlgorithm.getClass().getName()+" was encountered");
+      return (StringType) this.versionAlgorithm;
+    }
+
+    public boolean hasVersionAlgorithmStringType() { 
+      return this != null && this.versionAlgorithm instanceof StringType;
+    }
+
+    /**
+     * @return {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public Coding getVersionAlgorithmCoding() throws FHIRException { 
+      if (this.versionAlgorithm == null)
+        this.versionAlgorithm = new Coding();
+      if (!(this.versionAlgorithm instanceof Coding))
+        throw new FHIRException("Type mismatch: the type Coding was expected, but "+this.versionAlgorithm.getClass().getName()+" was encountered");
+      return (Coding) this.versionAlgorithm;
+    }
+
+    public boolean hasVersionAlgorithmCoding() { 
+      return this != null && this.versionAlgorithm instanceof Coding;
+    }
+
+    public boolean hasVersionAlgorithm() { 
+      return this.versionAlgorithm != null && !this.versionAlgorithm.isEmpty();
+    }
+
+    /**
+     * @param value {@link #versionAlgorithm} (Indicates the mechanism used to compare versions to determine which is more current.)
+     */
+    public OperationDefinition setVersionAlgorithm(DataType value) { 
+      if (value != null && !(value instanceof StringType || value instanceof Coding))
+        throw new Error("Not the right type for OperationDefinition.versionAlgorithm[x]: "+value.fhirType());
+      this.versionAlgorithm = value;
       return this;
     }
 
@@ -2407,7 +2771,7 @@ public class OperationDefinition extends CanonicalResource {
     }
 
     /**
-     * @return {@link #publisher} (The name of the organization or individual that published the operation definition.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @return {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the operation definition.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public StringType getPublisherElement() { 
       if (this.publisher == null)
@@ -2427,7 +2791,7 @@ public class OperationDefinition extends CanonicalResource {
     }
 
     /**
-     * @param value {@link #publisher} (The name of the organization or individual that published the operation definition.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     * @param value {@link #publisher} (The name of the organization or individual responsible for the release and ongoing maintenance of the operation definition.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
     public OperationDefinition setPublisherElement(StringType value) { 
       this.publisher = value;
@@ -2435,14 +2799,14 @@ public class OperationDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The name of the organization or individual that published the operation definition.
+     * @return The name of the organization or individual responsible for the release and ongoing maintenance of the operation definition.
      */
     public String getPublisher() { 
       return this.publisher == null ? null : this.publisher.getValue();
     }
 
     /**
-     * @param value The name of the organization or individual that published the operation definition.
+     * @param value The name of the organization or individual responsible for the release and ongoing maintenance of the operation definition.
      */
     public OperationDefinition setPublisher(String value) { 
       if (Utilities.noString(value))
@@ -2713,6 +3077,104 @@ public class OperationDefinition extends CanonicalResource {
     }
 
     /**
+     * @return {@link #copyright} (A copyright statement relating to the OperationDefinition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the OperationDefinition.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
+     */
+    public MarkdownType getCopyrightElement() { 
+      if (this.copyright == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create OperationDefinition.copyright");
+        else if (Configuration.doAutoCreate())
+          this.copyright = new MarkdownType(); // bb
+      return this.copyright;
+    }
+
+    public boolean hasCopyrightElement() { 
+      return this.copyright != null && !this.copyright.isEmpty();
+    }
+
+    public boolean hasCopyright() { 
+      return this.copyright != null && !this.copyright.isEmpty();
+    }
+
+    /**
+     * @param value {@link #copyright} (A copyright statement relating to the OperationDefinition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the OperationDefinition.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
+     */
+    public OperationDefinition setCopyrightElement(MarkdownType value) { 
+      this.copyright = value;
+      return this;
+    }
+
+    /**
+     * @return A copyright statement relating to the OperationDefinition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the OperationDefinition.
+     */
+    public String getCopyright() { 
+      return this.copyright == null ? null : this.copyright.getValue();
+    }
+
+    /**
+     * @param value A copyright statement relating to the OperationDefinition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the OperationDefinition.
+     */
+    public OperationDefinition setCopyright(String value) { 
+      if (value == null)
+        this.copyright = null;
+      else {
+        if (this.copyright == null)
+          this.copyright = new MarkdownType();
+        this.copyright.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public StringType getCopyrightLabelElement() { 
+      if (this.copyrightLabel == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create OperationDefinition.copyrightLabel");
+        else if (Configuration.doAutoCreate())
+          this.copyrightLabel = new StringType(); // bb
+      return this.copyrightLabel;
+    }
+
+    public boolean hasCopyrightLabelElement() { 
+      return this.copyrightLabel != null && !this.copyrightLabel.isEmpty();
+    }
+
+    public boolean hasCopyrightLabel() { 
+      return this.copyrightLabel != null && !this.copyrightLabel.isEmpty();
+    }
+
+    /**
+     * @param value {@link #copyrightLabel} (A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').). This is the underlying object with id, value and extensions. The accessor "getCopyrightLabel" gives direct access to the value
+     */
+    public OperationDefinition setCopyrightLabelElement(StringType value) { 
+      this.copyrightLabel = value;
+      return this;
+    }
+
+    /**
+     * @return A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public String getCopyrightLabel() { 
+      return this.copyrightLabel == null ? null : this.copyrightLabel.getValue();
+    }
+
+    /**
+     * @param value A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').
+     */
+    public OperationDefinition setCopyrightLabel(String value) { 
+      if (Utilities.noString(value))
+        this.copyrightLabel = null;
+      else {
+        if (this.copyrightLabel == null)
+          this.copyrightLabel = new StringType();
+        this.copyrightLabel.setValue(value);
+      }
+      return this;
+    }
+
+    /**
      * @return {@link #affectsState} (Whether the operation affects state. Side effects such as producing audit trail entries do not count as 'affecting  state'.). This is the underlying object with id, value and extensions. The accessor "getAffectsState" gives direct access to the value
      */
     public BooleanType getAffectsStateElement() { 
@@ -2758,7 +3220,7 @@ public class OperationDefinition extends CanonicalResource {
     }
 
     /**
-     * @return {@link #code} (The name used to invoke the operation.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
+     * @return {@link #code} (The label that is recommended to be used in the URL for this operation. In some cases, servers may need to use a different CapabilityStatement operation.name to differentiate between multiple SearchParameters that happen to have the same code.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
      */
     public CodeType getCodeElement() { 
       if (this.code == null)
@@ -2778,7 +3240,7 @@ public class OperationDefinition extends CanonicalResource {
     }
 
     /**
-     * @param value {@link #code} (The name used to invoke the operation.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
+     * @param value {@link #code} (The label that is recommended to be used in the URL for this operation. In some cases, servers may need to use a different CapabilityStatement operation.name to differentiate between multiple SearchParameters that happen to have the same code.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
      */
     public OperationDefinition setCodeElement(CodeType value) { 
       this.code = value;
@@ -2786,14 +3248,14 @@ public class OperationDefinition extends CanonicalResource {
     }
 
     /**
-     * @return The name used to invoke the operation.
+     * @return The label that is recommended to be used in the URL for this operation. In some cases, servers may need to use a different CapabilityStatement operation.name to differentiate between multiple SearchParameters that happen to have the same code.
      */
     public String getCode() { 
       return this.code == null ? null : this.code.getValue();
     }
 
     /**
-     * @param value The name used to invoke the operation.
+     * @param value The label that is recommended to be used in the URL for this operation. In some cases, servers may need to use a different CapabilityStatement operation.name to differentiate between multiple SearchParameters that happen to have the same code.
      */
     public OperationDefinition setCode(String value) { 
         if (this.code == null)
@@ -3317,78 +3779,45 @@ public class OperationDefinition extends CanonicalResource {
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public OperationDefinition setIdentifier(List<Identifier> theIdentifier) { 
-      throw new Error("The resource type \"OperationDefinition\" does not implement the property \"identifier\"");
+      throw new Error("The resource type \"OperationDefinition\" does not implement the property \"identifier\""); 
     }
     public boolean hasIdentifier() { 
       return false;
     }
 
     public Identifier addIdentifier() { //3
-      throw new Error("The resource type \"OperationDefinition\" does not implement the property \"identifier\"");
+      throw new Error("The resource type \"OperationDefinition\" does not implement the property \"identifier\""); 
     }
     public OperationDefinition addIdentifier(Identifier t) { //3
-      throw new Error("The resource type \"OperationDefinition\" does not implement the property \"identifier\"");
+      throw new Error("The resource type \"OperationDefinition\" does not implement the property \"identifier\""); 
     }
     /**
      * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {2}
      */
     public Identifier getIdentifierFirstRep() { 
-      throw new Error("The resource type \"OperationDefinition\" does not implement the property \"identifier\"");
-    }
-    /**
-     * not supported on this implementation
-     */
-    @Override
-    public int getCopyrightMax() { 
-      return 0;
-    }
-    /**
-     * @return {@link #copyright} (A copyright statement relating to the operation definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the operation definition.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
-     */
-    public MarkdownType getCopyrightElement() { 
-      throw new Error("The resource type \"OperationDefinition\" does not implement the property \"copyright\"");
-    }
-
-    public boolean hasCopyrightElement() { 
-      return false;
-    }
-    public boolean hasCopyright() {
-      return false;
-    }
-
-    /**
-     * @param value {@link #copyright} (A copyright statement relating to the operation definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the operation definition.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
-     */
-    public OperationDefinition setCopyrightElement(MarkdownType value) { 
-      throw new Error("The resource type \"OperationDefinition\" does not implement the property \"copyright\"");
-    }
-    public String getCopyright() { 
-      throw new Error("The resource type \"OperationDefinition\" does not implement the property \"copyright\"");
-    }
-    /**
-     * @param value A copyright statement relating to the operation definition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the operation definition.
-     */
-    public OperationDefinition setCopyright(String value) { 
-      throw new Error("The resource type \"OperationDefinition\" does not implement the property \"copyright\"");
+      throw new Error("The resource type \"OperationDefinition\" does not implement the property \"identifier\""); 
     }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("url", "uri", "An absolute URI that is used to identify this operation definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this operation definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the operation definition is stored on different servers.", 0, 1, url));
+        children.add(new Property("url", "uri", "An absolute URI that is used to identify this operation definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this operation definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the operation definition is stored on different servers.", 0, 1, url));
         children.add(new Property("version", "string", "The identifier that is used to identify this version of the operation definition when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the operation definition author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version));
+        children.add(new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm));
         children.add(new Property("name", "string", "A natural language name identifying the operation definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name));
         children.add(new Property("title", "string", "A short, descriptive, user-friendly title for the operation definition.", 0, 1, title));
         children.add(new Property("status", "code", "The status of this operation definition. Enables tracking the life-cycle of the content.", 0, 1, status));
         children.add(new Property("kind", "code", "Whether this is an operation or a named query.", 0, 1, kind));
         children.add(new Property("experimental", "boolean", "A Boolean value to indicate that this operation definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental));
         children.add(new Property("date", "dateTime", "The date  (and optionally time) when the operation definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the operation definition changes.", 0, 1, date));
-        children.add(new Property("publisher", "string", "The name of the organization or individual that published the operation definition.", 0, 1, publisher));
+        children.add(new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the operation definition.", 0, 1, publisher));
         children.add(new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("description", "markdown", "A free text natural language description of the operation definition from a consumer's perspective.", 0, 1, description));
         children.add(new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate operation definition instances.", 0, java.lang.Integer.MAX_VALUE, useContext));
         children.add(new Property("jurisdiction", "CodeableConcept", "A legal or geographic region in which the operation definition is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction));
         children.add(new Property("purpose", "markdown", "Explanation of why this operation definition is needed and why it has been designed as it has.", 0, 1, purpose));
+        children.add(new Property("copyright", "markdown", "A copyright statement relating to the OperationDefinition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the OperationDefinition.", 0, 1, copyright));
+        children.add(new Property("copyrightLabel", "string", "A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').", 0, 1, copyrightLabel));
         children.add(new Property("affectsState", "boolean", "Whether the operation affects state. Side effects such as producing audit trail entries do not count as 'affecting  state'.", 0, 1, affectsState));
-        children.add(new Property("code", "code", "The name used to invoke the operation.", 0, 1, code));
+        children.add(new Property("code", "code", "The label that is recommended to be used in the URL for this operation. In some cases, servers may need to use a different CapabilityStatement operation.name to differentiate between multiple SearchParameters that happen to have the same code.", 0, 1, code));
         children.add(new Property("comment", "markdown", "Additional information about how to use this operation or named query.", 0, 1, comment));
         children.add(new Property("base", "canonical(OperationDefinition)", "Indicates that this operation definition is a constraining profile on the base.", 0, 1, base));
         children.add(new Property("resource", "code", "The types on which this operation can be executed.", 0, java.lang.Integer.MAX_VALUE, resource));
@@ -3404,22 +3833,28 @@ public class OperationDefinition extends CanonicalResource {
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this operation definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this operation definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the operation definition is stored on different servers.", 0, 1, url);
+        case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this operation definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which an authoritative instance of this operation definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the operation definition is stored on different servers.", 0, 1, url);
         case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the operation definition when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the operation definition author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version);
+        case -115699031: /*versionAlgorithm[x]*/  return new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
+        case 1508158071: /*versionAlgorithm*/  return new Property("versionAlgorithm[x]", "string|Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
+        case 1836908904: /*versionAlgorithmString*/  return new Property("versionAlgorithm[x]", "string", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
+        case 1373807809: /*versionAlgorithmCoding*/  return new Property("versionAlgorithm[x]", "Coding", "Indicates the mechanism used to compare versions to determine which is more current.", 0, 1, versionAlgorithm);
         case 3373707: /*name*/  return new Property("name", "string", "A natural language name identifying the operation definition. This name should be usable as an identifier for the module by machine processing applications such as code generation.", 0, 1, name);
         case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive, user-friendly title for the operation definition.", 0, 1, title);
         case -892481550: /*status*/  return new Property("status", "code", "The status of this operation definition. Enables tracking the life-cycle of the content.", 0, 1, status);
         case 3292052: /*kind*/  return new Property("kind", "code", "Whether this is an operation or a named query.", 0, 1, kind);
         case -404562712: /*experimental*/  return new Property("experimental", "boolean", "A Boolean value to indicate that this operation definition is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental);
         case 3076014: /*date*/  return new Property("date", "dateTime", "The date  (and optionally time) when the operation definition was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the operation definition changes.", 0, 1, date);
-        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual that published the operation definition.", 0, 1, publisher);
+        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual responsible for the release and ongoing maintenance of the operation definition.", 0, 1, publisher);
         case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact);
         case -1724546052: /*description*/  return new Property("description", "markdown", "A free text natural language description of the operation definition from a consumer's perspective.", 0, 1, description);
         case -669707736: /*useContext*/  return new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate operation definition instances.", 0, java.lang.Integer.MAX_VALUE, useContext);
         case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "CodeableConcept", "A legal or geographic region in which the operation definition is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction);
         case -220463842: /*purpose*/  return new Property("purpose", "markdown", "Explanation of why this operation definition is needed and why it has been designed as it has.", 0, 1, purpose);
+        case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to the OperationDefinition and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the OperationDefinition.", 0, 1, copyright);
+        case 765157229: /*copyrightLabel*/  return new Property("copyrightLabel", "string", "A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').", 0, 1, copyrightLabel);
         case -14805197: /*affectsState*/  return new Property("affectsState", "boolean", "Whether the operation affects state. Side effects such as producing audit trail entries do not count as 'affecting  state'.", 0, 1, affectsState);
-        case 3059181: /*code*/  return new Property("code", "code", "The name used to invoke the operation.", 0, 1, code);
+        case 3059181: /*code*/  return new Property("code", "code", "The label that is recommended to be used in the URL for this operation. In some cases, servers may need to use a different CapabilityStatement operation.name to differentiate between multiple SearchParameters that happen to have the same code.", 0, 1, code);
         case 950398559: /*comment*/  return new Property("comment", "markdown", "Additional information about how to use this operation or named query.", 0, 1, comment);
         case 3016401: /*base*/  return new Property("base", "canonical(OperationDefinition)", "Indicates that this operation definition is a constraining profile on the base.", 0, 1, base);
         case -341064690: /*resource*/  return new Property("resource", "code", "The types on which this operation can be executed.", 0, java.lang.Integer.MAX_VALUE, resource);
@@ -3440,6 +3875,7 @@ public class OperationDefinition extends CanonicalResource {
         switch (hash) {
         case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
         case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
+        case 1508158071: /*versionAlgorithm*/ return this.versionAlgorithm == null ? new Base[0] : new Base[] {this.versionAlgorithm}; // DataType
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
@@ -3452,6 +3888,8 @@ public class OperationDefinition extends CanonicalResource {
         case -669707736: /*useContext*/ return this.useContext == null ? new Base[0] : this.useContext.toArray(new Base[this.useContext.size()]); // UsageContext
         case -507075711: /*jurisdiction*/ return this.jurisdiction == null ? new Base[0] : this.jurisdiction.toArray(new Base[this.jurisdiction.size()]); // CodeableConcept
         case -220463842: /*purpose*/ return this.purpose == null ? new Base[0] : new Base[] {this.purpose}; // MarkdownType
+        case 1522889671: /*copyright*/ return this.copyright == null ? new Base[0] : new Base[] {this.copyright}; // MarkdownType
+        case 765157229: /*copyrightLabel*/ return this.copyrightLabel == null ? new Base[0] : new Base[] {this.copyrightLabel}; // StringType
         case -14805197: /*affectsState*/ return this.affectsState == null ? new Base[0] : new Base[] {this.affectsState}; // BooleanType
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeType
         case 950398559: /*comment*/ return this.comment == null ? new Base[0] : new Base[] {this.comment}; // MarkdownType
@@ -3477,6 +3915,9 @@ public class OperationDefinition extends CanonicalResource {
           return value;
         case 351608024: // version
           this.version = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 1508158071: // versionAlgorithm
+          this.versionAlgorithm = TypeConvertor.castToType(value); // DataType
           return value;
         case 3373707: // name
           this.name = TypeConvertor.castToString(value); // StringType
@@ -3515,6 +3956,12 @@ public class OperationDefinition extends CanonicalResource {
           return value;
         case -220463842: // purpose
           this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
+          return value;
+        case 1522889671: // copyright
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
+          return value;
+        case 765157229: // copyrightLabel
+          this.copyrightLabel = TypeConvertor.castToString(value); // StringType
           return value;
         case -14805197: // affectsState
           this.affectsState = TypeConvertor.castToBoolean(value); // BooleanType
@@ -3563,6 +4010,8 @@ public class OperationDefinition extends CanonicalResource {
           this.url = TypeConvertor.castToUri(value); // UriType
         } else if (name.equals("version")) {
           this.version = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("name")) {
           this.name = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
@@ -3589,6 +4038,10 @@ public class OperationDefinition extends CanonicalResource {
           this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("purpose")) {
           this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else if (name.equals("copyright")) {
+          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else if (name.equals("copyrightLabel")) {
+          this.copyrightLabel = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("affectsState")) {
           this.affectsState = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("code")) {
@@ -3623,6 +4076,8 @@ public class OperationDefinition extends CanonicalResource {
         switch (hash) {
         case 116079:  return getUrlElement();
         case 351608024:  return getVersionElement();
+        case -115699031:  return getVersionAlgorithm();
+        case 1508158071:  return getVersionAlgorithm();
         case 3373707:  return getNameElement();
         case 110371416:  return getTitleElement();
         case -892481550:  return getStatusElement();
@@ -3635,6 +4090,8 @@ public class OperationDefinition extends CanonicalResource {
         case -669707736:  return addUseContext(); 
         case -507075711:  return addJurisdiction(); 
         case -220463842:  return getPurposeElement();
+        case 1522889671:  return getCopyrightElement();
+        case 765157229:  return getCopyrightLabelElement();
         case -14805197:  return getAffectsStateElement();
         case 3059181:  return getCodeElement();
         case 950398559:  return getCommentElement();
@@ -3657,6 +4114,7 @@ public class OperationDefinition extends CanonicalResource {
         switch (hash) {
         case 116079: /*url*/ return new String[] {"uri"};
         case 351608024: /*version*/ return new String[] {"string"};
+        case 1508158071: /*versionAlgorithm*/ return new String[] {"string", "Coding"};
         case 3373707: /*name*/ return new String[] {"string"};
         case 110371416: /*title*/ return new String[] {"string"};
         case -892481550: /*status*/ return new String[] {"code"};
@@ -3669,6 +4127,8 @@ public class OperationDefinition extends CanonicalResource {
         case -669707736: /*useContext*/ return new String[] {"UsageContext"};
         case -507075711: /*jurisdiction*/ return new String[] {"CodeableConcept"};
         case -220463842: /*purpose*/ return new String[] {"markdown"};
+        case 1522889671: /*copyright*/ return new String[] {"markdown"};
+        case 765157229: /*copyrightLabel*/ return new String[] {"string"};
         case -14805197: /*affectsState*/ return new String[] {"boolean"};
         case 3059181: /*code*/ return new String[] {"code"};
         case 950398559: /*comment*/ return new String[] {"markdown"};
@@ -3693,6 +4153,14 @@ public class OperationDefinition extends CanonicalResource {
         }
         else if (name.equals("version")) {
           throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.version");
+        }
+        else if (name.equals("versionAlgorithmString")) {
+          this.versionAlgorithm = new StringType();
+          return this.versionAlgorithm;
+        }
+        else if (name.equals("versionAlgorithmCoding")) {
+          this.versionAlgorithm = new Coding();
+          return this.versionAlgorithm;
         }
         else if (name.equals("name")) {
           throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.name");
@@ -3729,6 +4197,12 @@ public class OperationDefinition extends CanonicalResource {
         }
         else if (name.equals("purpose")) {
           throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.purpose");
+        }
+        else if (name.equals("copyright")) {
+          throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.copyright");
+        }
+        else if (name.equals("copyrightLabel")) {
+          throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.copyrightLabel");
         }
         else if (name.equals("affectsState")) {
           throw new FHIRException("Cannot call addChild on a primitive type OperationDefinition.affectsState");
@@ -3785,6 +4259,7 @@ public class OperationDefinition extends CanonicalResource {
         super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         dst.version = version == null ? null : version.copy();
+        dst.versionAlgorithm = versionAlgorithm == null ? null : versionAlgorithm.copy();
         dst.name = name == null ? null : name.copy();
         dst.title = title == null ? null : title.copy();
         dst.status = status == null ? null : status.copy();
@@ -3809,6 +4284,8 @@ public class OperationDefinition extends CanonicalResource {
             dst.jurisdiction.add(i.copy());
         };
         dst.purpose = purpose == null ? null : purpose.copy();
+        dst.copyright = copyright == null ? null : copyright.copy();
+        dst.copyrightLabel = copyrightLabel == null ? null : copyrightLabel.copy();
         dst.affectsState = affectsState == null ? null : affectsState.copy();
         dst.code = code == null ? null : code.copy();
         dst.comment = comment == null ? null : comment.copy();
@@ -3846,15 +4323,17 @@ public class OperationDefinition extends CanonicalResource {
         if (!(other_ instanceof OperationDefinition))
           return false;
         OperationDefinition o = (OperationDefinition) other_;
-        return compareDeep(url, o.url, true) && compareDeep(version, o.version, true) && compareDeep(name, o.name, true)
-           && compareDeep(title, o.title, true) && compareDeep(status, o.status, true) && compareDeep(kind, o.kind, true)
-           && compareDeep(experimental, o.experimental, true) && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true)
-           && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
-           && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(purpose, o.purpose, true) && compareDeep(affectsState, o.affectsState, true)
-           && compareDeep(code, o.code, true) && compareDeep(comment, o.comment, true) && compareDeep(base, o.base, true)
-           && compareDeep(resource, o.resource, true) && compareDeep(system, o.system, true) && compareDeep(type, o.type, true)
-           && compareDeep(instance, o.instance, true) && compareDeep(inputProfile, o.inputProfile, true) && compareDeep(outputProfile, o.outputProfile, true)
-           && compareDeep(parameter, o.parameter, true) && compareDeep(overload, o.overload, true);
+        return compareDeep(url, o.url, true) && compareDeep(version, o.version, true) && compareDeep(versionAlgorithm, o.versionAlgorithm, true)
+           && compareDeep(name, o.name, true) && compareDeep(title, o.title, true) && compareDeep(status, o.status, true)
+           && compareDeep(kind, o.kind, true) && compareDeep(experimental, o.experimental, true) && compareDeep(date, o.date, true)
+           && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true)
+           && compareDeep(useContext, o.useContext, true) && compareDeep(jurisdiction, o.jurisdiction, true)
+           && compareDeep(purpose, o.purpose, true) && compareDeep(copyright, o.copyright, true) && compareDeep(copyrightLabel, o.copyrightLabel, true)
+           && compareDeep(affectsState, o.affectsState, true) && compareDeep(code, o.code, true) && compareDeep(comment, o.comment, true)
+           && compareDeep(base, o.base, true) && compareDeep(resource, o.resource, true) && compareDeep(system, o.system, true)
+           && compareDeep(type, o.type, true) && compareDeep(instance, o.instance, true) && compareDeep(inputProfile, o.inputProfile, true)
+           && compareDeep(outputProfile, o.outputProfile, true) && compareDeep(parameter, o.parameter, true)
+           && compareDeep(overload, o.overload, true);
       }
 
       @Override
@@ -3867,7 +4346,8 @@ public class OperationDefinition extends CanonicalResource {
         return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(name, o.name, true)
            && compareValues(title, o.title, true) && compareValues(status, o.status, true) && compareValues(kind, o.kind, true)
            && compareValues(experimental, o.experimental, true) && compareValues(date, o.date, true) && compareValues(publisher, o.publisher, true)
-           && compareValues(description, o.description, true) && compareValues(purpose, o.purpose, true) && compareValues(affectsState, o.affectsState, true)
+           && compareValues(description, o.description, true) && compareValues(purpose, o.purpose, true) && compareValues(copyright, o.copyright, true)
+           && compareValues(copyrightLabel, o.copyrightLabel, true) && compareValues(affectsState, o.affectsState, true)
            && compareValues(code, o.code, true) && compareValues(comment, o.comment, true) && compareValues(base, o.base, true)
            && compareValues(resource, o.resource, true) && compareValues(system, o.system, true) && compareValues(type, o.type, true)
            && compareValues(instance, o.instance, true) && compareValues(inputProfile, o.inputProfile, true) && compareValues(outputProfile, o.outputProfile, true)
@@ -3875,10 +4355,11 @@ public class OperationDefinition extends CanonicalResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, version, name, title
-          , status, kind, experimental, date, publisher, contact, description, useContext
-          , jurisdiction, purpose, affectsState, code, comment, base, resource, system
-          , type, instance, inputProfile, outputProfile, parameter, overload);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, version, versionAlgorithm
+          , name, title, status, kind, experimental, date, publisher, contact, description
+          , useContext, jurisdiction, purpose, copyright, copyrightLabel, affectsState, code
+          , comment, base, resource, system, type, instance, inputProfile, outputProfile
+          , parameter, overload);
       }
 
   @Override
@@ -4686,7 +5167,7 @@ public class OperationDefinition extends CanonicalResource {
 * [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement
 * [CodeSystem](codesystem.html): The uri that identifies the code system
 * [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition
-* [ConceptMap](conceptmap.html): The uri that identifies the concept map
+* [ConceptMap](conceptmap.html): The URI that identifies the concept map
 * [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition
 * [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide
 * [MessageDefinition](messagedefinition.html): The uri that identifies the message definition
@@ -4702,7 +5183,7 @@ public class OperationDefinition extends CanonicalResource {
    * Path: <b>CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="url", path="CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement\r\n* [CodeSystem](codesystem.html): The uri that identifies the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition\r\n* [ConceptMap](conceptmap.html): The uri that identifies the concept map\r\n* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition\r\n* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition\r\n* [NamingSystem](namingsystem.html): The uri that identifies the naming system\r\n* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition\r\n* [SearchParameter](searchparameter.html): The uri that identifies the search parameter\r\n* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition\r\n* [StructureMap](structuremap.html): The uri that identifies the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities\r\n* [ValueSet](valueset.html): The uri that identifies the value set\r\n", type="uri" )
+  @SearchParamDefinition(name="url", path="CapabilityStatement.url | CodeSystem.url | CompartmentDefinition.url | ConceptMap.url | GraphDefinition.url | ImplementationGuide.url | MessageDefinition.url | NamingSystem.url | OperationDefinition.url | SearchParameter.url | StructureDefinition.url | StructureMap.url | TerminologyCapabilities.url | ValueSet.url", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement\r\n* [CodeSystem](codesystem.html): The uri that identifies the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition\r\n* [ConceptMap](conceptmap.html): The URI that identifies the concept map\r\n* [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition\r\n* [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide\r\n* [MessageDefinition](messagedefinition.html): The uri that identifies the message definition\r\n* [NamingSystem](namingsystem.html): The uri that identifies the naming system\r\n* [OperationDefinition](operationdefinition.html): The uri that identifies the operation definition\r\n* [SearchParameter](searchparameter.html): The uri that identifies the search parameter\r\n* [StructureDefinition](structuredefinition.html): The uri that identifies the structure definition\r\n* [StructureMap](structuremap.html): The uri that identifies the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): The uri that identifies the terminology capabilities\r\n* [ValueSet](valueset.html): The uri that identifies the value set\r\n", type="uri" )
   public static final String SP_URL = "url";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>url</b>
@@ -4712,7 +5193,7 @@ public class OperationDefinition extends CanonicalResource {
 * [CapabilityStatement](capabilitystatement.html): The uri that identifies the capability statement
 * [CodeSystem](codesystem.html): The uri that identifies the code system
 * [CompartmentDefinition](compartmentdefinition.html): The uri that identifies the compartment definition
-* [ConceptMap](conceptmap.html): The uri that identifies the concept map
+* [ConceptMap](conceptmap.html): The URI that identifies the concept map
 * [GraphDefinition](graphdefinition.html): The uri that identifies the graph definition
 * [ImplementationGuide](implementationguide.html): The uri that identifies the implementation guide
 * [MessageDefinition](messagedefinition.html): The uri that identifies the message definition

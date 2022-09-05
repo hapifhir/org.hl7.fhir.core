@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Fri, Jul 15, 2022 11:20+1000 for FHIR v5.0.0-snapshot2
+// Generated on Mon, Sep 5, 2022 20:11+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,7 +46,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * Base StructureDefinition for Expression Type: A expression that is evaluated in a specified context and returns a value. The context of use of the expression must specify the context in which the expression is evaluated, and how the result of the expression is used.
+ * Expression Type: A expression that is evaluated in a specified context and returns a value. The context of use of the expression must specify the context in which the expression is evaluated, and how the result of the expression is used.
  */
 @DatatypeDef(name="Expression")
 public class Expression extends DataType implements ICompositeType {
@@ -68,7 +68,7 @@ public class Expression extends DataType implements ICompositeType {
     /**
      * The media type of the language for the expression.
      */
-    @Child(name = "language", type = {CodeType.class}, order=2, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "language", type = {CodeType.class}, order=2, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="text/cql | text/fhirpath | application/x-fhir-query | etc.", formalDefinition="The media type of the language for the expression." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/expression-language")
     protected CodeType language;
@@ -94,14 +94,6 @@ public class Expression extends DataType implements ICompositeType {
    */
     public Expression() {
       super();
-    }
-
-  /**
-   * Constructor
-   */
-    public Expression(String language) {
-      super();
-      this.setLanguage(language);
     }
 
     /**
@@ -241,9 +233,13 @@ public class Expression extends DataType implements ICompositeType {
      * @param value The media type of the language for the expression.
      */
     public Expression setLanguage(String value) { 
+      if (Utilities.noString(value))
+        this.language = null;
+      else {
         if (this.language == null)
           this.language = new CodeType();
         this.language.setValue(value);
+      }
       return this;
     }
 

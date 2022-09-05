@@ -6,6 +6,7 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.*;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Boolean10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.ExtendedContactDetail;
 
 public class Organization10_50 {
 
@@ -23,7 +24,7 @@ public class Organization10_50 {
     if (src.hasNameElement())
       tgt.setNameElement(String10_50.convertString(src.getNameElement()));
     for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom())
-      tgt.addTelecom(ContactPoint10_50.convertContactPoint(t));
+      tgt.getContactFirstRep().addTelecom(ContactPoint10_50.convertContactPoint(t));
     for (org.hl7.fhir.dstu2.model.Address t : src.getAddress()) tgt.addAddress(Address10_50.convertAddress(t));
     if (src.hasPartOf())
       tgt.setPartOf(Reference10_50.convertReference(src.getPartOf()));
@@ -45,8 +46,9 @@ public class Organization10_50 {
       tgt.setType(CodeableConcept10_50.convertCodeableConcept(src.getTypeFirstRep()));
     if (src.hasNameElement())
       tgt.setNameElement(String10_50.convertString(src.getNameElement()));
-    for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom())
-      tgt.addTelecom(ContactPoint10_50.convertContactPoint(t));
+    for (ExtendedContactDetail t1 : src.getContact())
+      for (org.hl7.fhir.r5.model.ContactPoint t : t1.getTelecom())
+        tgt.addTelecom(ContactPoint10_50.convertContactPoint(t));
     for (org.hl7.fhir.r5.model.Address t : src.getAddress()) tgt.addAddress(Address10_50.convertAddress(t));
     if (src.hasPartOf())
       tgt.setPartOf(Reference10_50.convertReference(src.getPartOf()));
