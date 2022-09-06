@@ -3322,7 +3322,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private void checkSampledData(List<ValidationMessage> errors, String path, Element focus, SampledData fixed, String fixedSource, boolean pattern) {
     checkFixedValue(errors, path + ".origin", focus.getNamedChild("origin"), fixed.getOrigin(), fixedSource, "origin", focus, pattern);
-    checkFixedValue(errors, path + ".period", focus.getNamedChild("period"), fixed.getPeriodElement(), fixedSource, "period", focus, pattern);
+    if (VersionUtilities.isR5VerOrLater(context.getVersion())) {
+      checkFixedValue(errors, path + ".interval", focus.getNamedChild("period"), fixed.getIntervalElement(), fixedSource, "interval", focus, pattern);
+      checkFixedValue(errors, path + ".intervalUnit", focus.getNamedChild("period"), fixed.getIntervalUnitElement(), fixedSource, "intervalUnit", focus, pattern);
+    } else {
+      checkFixedValue(errors, path + ".period", focus.getNamedChild("period"), fixed.getIntervalElement(), fixedSource, "period", focus, pattern);
+    }
     checkFixedValue(errors, path + ".factor", focus.getNamedChild("factor"), fixed.getFactorElement(), fixedSource, "factor", focus, pattern);
     checkFixedValue(errors, path + ".lowerLimit", focus.getNamedChild("lowerLimit"), fixed.getLowerLimitElement(), fixedSource, "lowerLimit", focus, pattern);
     checkFixedValue(errors, path + ".upperLimit", focus.getNamedChild("upperLimit"), fixed.getUpperLimitElement(), fixedSource, "upperLimit", focus, pattern);

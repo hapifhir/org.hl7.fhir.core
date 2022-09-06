@@ -1,17 +1,20 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
+import java.util.stream.Collectors;
+
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.ContactDetail40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.UsageContext40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Code40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.MarkDown40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeType;
-import org.hl7.fhir.r5.model.Enumeration;
-import org.hl7.fhir.r5.model.Enumerations;
-import org.hl7.fhir.r5.model.Enumerations.AllResourceTypes;
-
-import java.util.stream.Collectors;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -77,7 +80,7 @@ public class SearchParameter40_50 {
       tgt.setPurposeElement(MarkDown40_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasCode())
       tgt.setCodeElement(Code40_50.convertCode(src.getCodeElement()));
-    for (org.hl7.fhir.r4.model.CodeType t : src.getBase()) tgt.getBase().add(new Enumeration<AllResourceTypes>(new Enumerations.AllResourceTypesEnumFactory(), t.getCode()));
+    for (org.hl7.fhir.r4.model.CodeType t : src.getBase()) tgt.getBase().add(Code40_50.convertCode(t));
     if (src.hasType())
       tgt.setTypeElement(Enumerations40_50.convertSearchParamType(src.getTypeElement()));
     if (src.hasExpression())
@@ -86,7 +89,7 @@ public class SearchParameter40_50 {
 //      tgt.setXpathElement(String40_50.convertString(src.getXpathElement()));
     if (src.hasXpathUsage())
       tgt.setProcessingModeElement(convertXPathUsageType(src.getXpathUsageElement()));
-    for (org.hl7.fhir.r4.model.CodeType t : src.getTarget()) tgt.getTarget().add(Code40_50.convertResourceEnum(t));
+    for (org.hl7.fhir.r4.model.CodeType t : src.getTarget()) tgt.getTarget().add(Code40_50.convertCode(t));
     if (src.hasMultipleOr())
       tgt.setMultipleOrElement(Boolean40_50.convertBoolean(src.getMultipleOrElement()));
     if (src.hasMultipleAnd())
@@ -136,7 +139,7 @@ public class SearchParameter40_50 {
       tgt.setPurposeElement(MarkDown40_50.convertMarkdown(src.getPurposeElement()));
     if (src.hasCode())
       tgt.setCodeElement(Code40_50.convertCode(src.getCodeElement()));
-    for (Enumeration<AllResourceTypes> t : src.getBase()) tgt.getBase().add(new org.hl7.fhir.r4.model.CodeType(t.getCode()));
+    for (CodeType t : src.getBase()) tgt.getBase().add(Code40_50.convertCode(t));
     if (src.hasType())
       tgt.setTypeElement(Enumerations40_50.convertSearchParamType(src.getTypeElement()));
     if (src.hasExpression())
@@ -145,7 +148,7 @@ public class SearchParameter40_50 {
 //      tgt.setXpathElement(String40_50.convertString(src.getXpathElement()));
     if (src.hasProcessingMode())
       tgt.setXpathUsageElement(convertXPathUsageType(src.getProcessingModeElement()));
-    for (CodeType t : src.getTarget()) tgt.getTarget().add(Code40_50.convertResourceEnum(t));
+    for (CodeType t : src.getTarget()) tgt.getTarget().add(Code40_50.convertCode(t));
     if (src.hasMultipleOr())
       tgt.setMultipleOrElement(Boolean40_50.convertBoolean(src.getMultipleOrElement()));
     if (src.hasMultipleAnd())

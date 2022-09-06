@@ -4,7 +4,11 @@ import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Annotation40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
@@ -66,7 +70,7 @@ public class ServiceRequest40_50 {
     if (src.hasDoNotPerform())
       tgt.setDoNotPerformElement(Boolean40_50.convertBoolean(src.getDoNotPerformElement()));
     if (src.hasCode())
-      tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
+      tgt.setCode(CodeableConcept40_50.convertCodeableConceptToCodeableReference(src.getCode()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getOrderDetail())
       tgt.addOrderDetail(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasQuantity())
@@ -134,7 +138,7 @@ public class ServiceRequest40_50 {
     if (src.hasDoNotPerform())
       tgt.setDoNotPerformElement(Boolean40_50.convertBoolean(src.getDoNotPerformElement()));
     if (src.hasCode())
-      tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
+      tgt.setCode(CodeableConcept40_50.convertCodeableReferenceToCodeableConcept(src.getCode()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getOrderDetail())
       tgt.addOrderDetail(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasQuantity())

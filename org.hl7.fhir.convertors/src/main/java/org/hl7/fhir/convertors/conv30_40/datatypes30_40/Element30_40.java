@@ -1,9 +1,9 @@
 package org.hl7.fhir.convertors.conv30_40.datatypes30_40;
 
+import java.util.Arrays;
+
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import java.util.Arrays;
 
 public class Element30_40 {
 

@@ -27278,10 +27278,25 @@ public class JsonParser extends JsonParserBase {
       res.setLabelElement(parseString(json.get("label").getAsString()));
     if (json.has("_label"))
       parseElementProperties(getJObject(json, "_label"), res.getLabelElement());
-    if (json.has("conformance"))
-      res.setConformanceElement(parseEnumeration(json.get("conformance").getAsString(), Requirements.ConformanceExpectation.NULL, new Requirements.ConformanceExpectationEnumFactory()));
-    if (json.has("_conformance"))
-      parseElementProperties(getJObject(json, "_conformance"), res.getConformanceElement());
+    if (json.has("conformance")) {
+      JsonArray array = getJArray(json, "conformance");
+      for (int i = 0; i < array.size(); i++) {
+        if (array.get(i).isJsonNull()) {
+          res.getConformance().add(new Enumeration<Requirements.ConformanceExpectation>(new Requirements.ConformanceExpectationEnumFactory(), Requirements.ConformanceExpectation.NULL));
+        } else {;
+          res.getConformance().add(parseEnumeration(array.get(i).getAsString(), Requirements.ConformanceExpectation.NULL, new Requirements.ConformanceExpectationEnumFactory()));
+        }
+      }
+    };
+    if (json.has("_conformance")) {
+      JsonArray array = getJArray(json, "_conformance");
+      for (int i = 0; i < array.size(); i++) {
+        if (i == res.getConformance().size())
+          res.getConformance().add(parseEnumeration(null, Requirements.ConformanceExpectation.NULL, new Requirements.ConformanceExpectationEnumFactory()));
+        if (array.get(i) instanceof JsonObject) 
+          parseElementProperties(array.get(i).getAsJsonObject(), res.getConformance().get(i));
+      }
+    };
     if (json.has("requirement"))
       res.setRequirementElement(parseMarkdown(json.get("requirement").getAsString()));
     if (json.has("_requirement"))
@@ -28007,9 +28022,9 @@ public class JsonParser extends JsonParserBase {
       JsonArray array = getJArray(json, "base");
       for (int i = 0; i < array.size(); i++) {
         if (array.get(i).isJsonNull()) {
-          res.getBase().add(new Enumeration<Enumerations.AllResourceTypes>(new Enumerations.AllResourceTypesEnumFactory(), Enumerations.AllResourceTypes.NULL));
+          res.getBase().add(new CodeType());
         } else {;
-          res.getBase().add(parseEnumeration(array.get(i).getAsString(), Enumerations.AllResourceTypes.NULL, new Enumerations.AllResourceTypesEnumFactory()));
+          res.getBase().add(parseCode(array.get(i).getAsString()));
         }
       }
     };
@@ -28017,7 +28032,7 @@ public class JsonParser extends JsonParserBase {
       JsonArray array = getJArray(json, "_base");
       for (int i = 0; i < array.size(); i++) {
         if (i == res.getBase().size())
-          res.getBase().add(parseEnumeration(null, Enumerations.AllResourceTypes.NULL, new Enumerations.AllResourceTypesEnumFactory()));
+          res.getBase().add(new CodeType());
         if (array.get(i) instanceof JsonObject) 
           parseElementProperties(array.get(i).getAsJsonObject(), res.getBase().get(i));
       }
@@ -64128,10 +64143,18 @@ public class JsonParser extends JsonParserBase {
         composeStringCore("label", element.getLabelElement(), false);
         composeStringExtras("label", element.getLabelElement(), false);
       }
-      if (element.hasConformanceElement()) {
-        composeEnumerationCore("conformance", element.getConformanceElement(), new Requirements.ConformanceExpectationEnumFactory(), false);
-        composeEnumerationExtras("conformance", element.getConformanceElement(), new Requirements.ConformanceExpectationEnumFactory(), false);
+      if (element.hasConformance()) {
+        openArray("conformance");
+        for (Enumeration<Requirements.ConformanceExpectation> e : element.getConformance()) 
+          composeEnumerationCore(null, e, new Requirements.ConformanceExpectationEnumFactory(), true);
+        closeArray();
+        if (anyHasExtras(element.getConformance())) {
+          openArray("_conformance");
+          for (Enumeration<Requirements.ConformanceExpectation> e : element.getConformance()) 
+            composeEnumerationExtras(null, e, new Requirements.ConformanceExpectationEnumFactory(), true);
+          closeArray();
       }
+      };
       if (element.hasRequirementElement()) {
         composeMarkdownCore("requirement", element.getRequirementElement(), false);
         composeMarkdownExtras("requirement", element.getRequirementElement(), false);
@@ -64909,13 +64932,13 @@ public class JsonParser extends JsonParserBase {
       }
       if (element.hasBase()) {
         openArray("base");
-        for (Enumeration<Enumerations.AllResourceTypes> e : element.getBase()) 
-          composeEnumerationCore(null, e, new Enumerations.AllResourceTypesEnumFactory(), true);
+        for (CodeType e : element.getBase()) 
+          composeCodeCore(null, e, true);
         closeArray();
         if (anyHasExtras(element.getBase())) {
           openArray("_base");
-          for (Enumeration<Enumerations.AllResourceTypes> e : element.getBase()) 
-            composeEnumerationExtras(null, e, new Enumerations.AllResourceTypesEnumFactory(), true);
+          for (CodeType e : element.getBase()) 
+            composeCodeExtras(null, e, true);
           closeArray();
         }
       };

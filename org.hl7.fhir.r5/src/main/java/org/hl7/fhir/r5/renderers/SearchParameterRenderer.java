@@ -55,7 +55,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     XhtmlNode tr = tbl.tr();
     tr.td().tx(Utilities.pluralize("Resource", spd.getBase().size()));
     XhtmlNode td = tr.td();
-    for (Enumeration<AllResourceTypes> t : spd.getBase()) {
+    for (CodeType t : spd.getBase()) {
       StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.toString());
       if (sd != null && sd.hasUserData("path")) {
         td.ah(sd.getUserString("path")).sep(", ").tx(t.getCode());

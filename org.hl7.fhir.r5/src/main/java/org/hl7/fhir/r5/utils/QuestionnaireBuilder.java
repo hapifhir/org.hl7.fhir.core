@@ -235,7 +235,7 @@ public class QuestionnaireBuilder {
       questionnaire.addItem(item);
       item.setLinkId("meta");
       item.getCode().addAll(profile.getKeyword());
-      questionnaire.setId(nextId("qs"));
+      questionnaire.setId(nextId("qs-"+profile.getType()));
     }
 
     if (response != null) {

@@ -1,8 +1,6 @@
 package org.hl7.fhir.convertors.conv10_30.datatypes10_30;
 
 import org.hl7.fhir.convertors.context.ConversionContext10_30;
-import org.hl7.fhir.convertors.context.ConversionContext10_40;
-import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Extension10_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class BackboneElement10_30 {

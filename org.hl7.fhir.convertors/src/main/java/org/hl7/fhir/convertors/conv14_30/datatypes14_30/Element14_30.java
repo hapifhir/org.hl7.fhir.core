@@ -1,10 +1,10 @@
 package org.hl7.fhir.convertors.conv14_30.datatypes14_30;
 
+import java.util.Arrays;
+
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_14_30;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import java.util.Arrays;
 
 public class Element14_30 {
 

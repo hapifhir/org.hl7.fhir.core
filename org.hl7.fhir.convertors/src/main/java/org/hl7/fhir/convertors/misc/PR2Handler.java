@@ -1,13 +1,13 @@
 package org.hl7.fhir.convertors.misc;
 
+import javax.annotation.Nonnull;
+
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.CodeSystem;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.utilities.FhirPublication;
-
-import javax.annotation.Nonnull;
 
 class PR2Handler extends BaseAdvisor_10_40 {
 

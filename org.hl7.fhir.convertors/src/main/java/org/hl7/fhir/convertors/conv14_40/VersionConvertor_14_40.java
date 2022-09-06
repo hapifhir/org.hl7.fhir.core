@@ -1,5 +1,10 @@
 package org.hl7.fhir.convertors.conv14_40;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_14_40;
 import org.hl7.fhir.convertors.context.ConversionContext14_40;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.BackboneElement14_40;
@@ -8,10 +13,6 @@ import org.hl7.fhir.convertors.conv14_40.datatypes14_40.Type14_40;
 import org.hl7.fhir.convertors.conv14_40.resources14_40.Resource14_40;
 import org.hl7.fhir.dstu2016may.model.CodeableConcept;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

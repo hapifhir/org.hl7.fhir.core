@@ -1,18 +1,17 @@
 package org.hl7.fhir.convertors.conv10_50.resources10_50;
 
+import java.util.Collections;
+
 import org.hl7.fhir.convertors.context.ConversionContext10_50;
-import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Narrative10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Reference10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.CodeableConcept10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Identifier10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complextypes10_50.Period10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Code10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.DateTime10_50;
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Code43_50;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import java.util.Collections;
 
 public class Composition10_50 {
 
@@ -35,7 +34,7 @@ public class Composition10_50 {
       tgt.setStatusElement(convertCompositionStatus(src.getStatusElement()));
     try {
       if (src.hasConfidentiality())
-        tgt.getMeta().addSecurity().setCodeElement(Code43_50.convertCode(src.getConfidentialityElement()));
+        tgt.getMeta().addSecurity().setCodeElement(Code10_50.convertCode(src.getConfidentialityElement()));
     } catch (org.hl7.fhir.exceptions.FHIRException e) {
       throw new FHIRException(e);
     }

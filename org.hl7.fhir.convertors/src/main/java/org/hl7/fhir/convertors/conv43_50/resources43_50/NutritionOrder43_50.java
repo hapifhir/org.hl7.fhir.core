@@ -1,7 +1,11 @@
 package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.*;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Annotation43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.SimpleQuantity43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Timing43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Canonical43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.DateTime43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
@@ -57,7 +61,7 @@ public class NutritionOrder43_50 {
     if (src.hasIntent())
       tgt.setIntentElement(convertNutritiionOrderIntent(src.getIntentElement()));
     if (src.hasPatient())
-      tgt.setPatient(Reference43_50.convertReference(src.getPatient()));
+      tgt.setSubject(Reference43_50.convertReference(src.getPatient()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference43_50.convertReference(src.getEncounter()));
     if (src.hasDateTime())
@@ -96,8 +100,8 @@ public class NutritionOrder43_50 {
       tgt.setStatusElement(convertNutritionOrderStatus(src.getStatusElement()));
     if (src.hasIntent())
       tgt.setIntentElement(convertNutritiionOrderIntent(src.getIntentElement()));
-    if (src.hasPatient())
-      tgt.setPatient(Reference43_50.convertReference(src.getPatient()));
+    if (src.hasSubject())
+      tgt.setPatient(Reference43_50.convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference43_50.convertReference(src.getEncounter()));
     if (src.hasDateTime())
@@ -275,7 +279,7 @@ public class NutritionOrder43_50 {
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r4b.model.CodeableConcept t : src.getType())
       tgt.addType(CodeableConcept43_50.convertCodeableConcept(t));
-    for (org.hl7.fhir.r4b.model.Timing t : src.getSchedule()) tgt.addSchedule(Timing43_50.convertTiming(t));
+    for (org.hl7.fhir.r4b.model.Timing t : src.getSchedule()) tgt.getSchedule().addTiming(Timing43_50.convertTiming(t));
     for (org.hl7.fhir.r4b.model.NutritionOrder.NutritionOrderOralDietNutrientComponent t : src.getNutrient())
       tgt.addNutrient(convertNutritionOrderOralDietNutrientComponent(t));
     for (org.hl7.fhir.r4b.model.NutritionOrder.NutritionOrderOralDietTextureComponent t : src.getTexture())
@@ -294,7 +298,7 @@ public class NutritionOrder43_50 {
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType())
       tgt.addType(CodeableConcept43_50.convertCodeableConcept(t));
-    for (org.hl7.fhir.r5.model.Timing t : src.getSchedule()) tgt.addSchedule(Timing43_50.convertTiming(t));
+    for (org.hl7.fhir.r5.model.Timing t : src.getSchedule().getTiming()) tgt.addSchedule(Timing43_50.convertTiming(t));
     for (org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderOralDietNutrientComponent t : src.getNutrient())
       tgt.addNutrient(convertNutritionOrderOralDietNutrientComponent(t));
     for (org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderOralDietTextureComponent t : src.getTexture())
@@ -360,10 +364,10 @@ public class NutritionOrder43_50 {
     org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderSupplementComponent tgt = new org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderSupplementComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasType())
-      tgt.setType(CodeableConcept43_50.convertCodeableConcept(src.getType()));
+      tgt.setType(CodeableConcept43_50.convertCodeableConceptToCodeableReference(src.getType()));
     if (src.hasProductName())
       tgt.setProductNameElement(String43_50.convertString(src.getProductNameElement()));
-    for (org.hl7.fhir.r4b.model.Timing t : src.getSchedule()) tgt.addSchedule(Timing43_50.convertTiming(t));
+    for (org.hl7.fhir.r4b.model.Timing t : src.getSchedule()) tgt.getSchedule().addTiming(Timing43_50.convertTiming(t));
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity43_50.convertSimpleQuantity(src.getQuantity()));
     if (src.hasInstruction())
@@ -377,10 +381,10 @@ public class NutritionOrder43_50 {
     org.hl7.fhir.r4b.model.NutritionOrder.NutritionOrderSupplementComponent tgt = new org.hl7.fhir.r4b.model.NutritionOrder.NutritionOrderSupplementComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasType())
-      tgt.setType(CodeableConcept43_50.convertCodeableConcept(src.getType()));
+      tgt.setType(CodeableConcept43_50.convertCodeableReferenceToCodeableConcept(src.getType()));
     if (src.hasProductName())
       tgt.setProductNameElement(String43_50.convertString(src.getProductNameElement()));
-    for (org.hl7.fhir.r5.model.Timing t : src.getSchedule()) tgt.addSchedule(Timing43_50.convertTiming(t));
+    for (org.hl7.fhir.r5.model.Timing t : src.getSchedule().getTiming()) tgt.addSchedule(Timing43_50.convertTiming(t));
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity43_50.convertSimpleQuantity(src.getQuantity()));
     if (src.hasInstruction())
@@ -394,17 +398,17 @@ public class NutritionOrder43_50 {
     org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderEnteralFormulaComponent tgt = new org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderEnteralFormulaComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasBaseFormulaType())
-      tgt.setBaseFormulaType(CodeableConcept43_50.convertCodeableConcept(src.getBaseFormulaType()));
+      tgt.setBaseFormulaType(CodeableConcept43_50.convertCodeableConceptToCodeableReference(src.getBaseFormulaType()));
     if (src.hasBaseFormulaProductName())
       tgt.setBaseFormulaProductNameElement(String43_50.convertString(src.getBaseFormulaProductNameElement()));
-    if (src.hasAdditiveType())
-      tgt.setAdditiveType(CodeableConcept43_50.convertCodeableConcept(src.getAdditiveType()));
-    if (src.hasAdditiveProductName())
-      tgt.setAdditiveProductNameElement(String43_50.convertString(src.getAdditiveProductNameElement()));
+//    if (src.hasAdditiveType())
+//      tgt.setAdditiveType(CodeableConcept43_50.convertCodeableConcept(src.getAdditiveType()));
+//    if (src.hasAdditiveProductName())
+//      tgt.setAdditiveProductNameElement(String43_50.convertString(src.getAdditiveProductNameElement()));
     if (src.hasCaloricDensity())
       tgt.setCaloricDensity(SimpleQuantity43_50.convertSimpleQuantity(src.getCaloricDensity()));
     if (src.hasRouteofAdministration())
-      tgt.setRouteofAdministration(CodeableConcept43_50.convertCodeableConcept(src.getRouteofAdministration()));
+      tgt.setRouteOfAdministration(CodeableConcept43_50.convertCodeableConcept(src.getRouteofAdministration()));
     for (org.hl7.fhir.r4b.model.NutritionOrder.NutritionOrderEnteralFormulaAdministrationComponent t : src.getAdministration())
       tgt.addAdministration(convertNutritionOrderEnteralFormulaAdministrationComponent(t));
     if (src.hasMaxVolumeToDeliver())
@@ -420,17 +424,17 @@ public class NutritionOrder43_50 {
     org.hl7.fhir.r4b.model.NutritionOrder.NutritionOrderEnteralFormulaComponent tgt = new org.hl7.fhir.r4b.model.NutritionOrder.NutritionOrderEnteralFormulaComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasBaseFormulaType())
-      tgt.setBaseFormulaType(CodeableConcept43_50.convertCodeableConcept(src.getBaseFormulaType()));
+      tgt.setBaseFormulaType(CodeableConcept43_50.convertCodeableReferenceToCodeableConcept(src.getBaseFormulaType()));
     if (src.hasBaseFormulaProductName())
       tgt.setBaseFormulaProductNameElement(String43_50.convertString(src.getBaseFormulaProductNameElement()));
-    if (src.hasAdditiveType())
-      tgt.setAdditiveType(CodeableConcept43_50.convertCodeableConcept(src.getAdditiveType()));
-    if (src.hasAdditiveProductName())
-      tgt.setAdditiveProductNameElement(String43_50.convertString(src.getAdditiveProductNameElement()));
+//    if (src.hasAdditiveType())
+//      tgt.setAdditiveType(CodeableConcept43_50.convertCodeableConcept(src.getAdditiveType()));
+//    if (src.hasAdditiveProductName())
+//      tgt.setAdditiveProductNameElement(String43_50.convertString(src.getAdditiveProductNameElement()));
     if (src.hasCaloricDensity())
       tgt.setCaloricDensity(SimpleQuantity43_50.convertSimpleQuantity(src.getCaloricDensity()));
-    if (src.hasRouteofAdministration())
-      tgt.setRouteofAdministration(CodeableConcept43_50.convertCodeableConcept(src.getRouteofAdministration()));
+    if (src.hasRouteOfAdministration())
+      tgt.setRouteofAdministration(CodeableConcept43_50.convertCodeableConcept(src.getRouteOfAdministration()));
     for (org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderEnteralFormulaAdministrationComponent t : src.getAdministration())
       tgt.addAdministration(convertNutritionOrderEnteralFormulaAdministrationComponent(t));
     if (src.hasMaxVolumeToDeliver())
@@ -446,7 +450,7 @@ public class NutritionOrder43_50 {
     org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderEnteralFormulaAdministrationComponent tgt = new org.hl7.fhir.r5.model.NutritionOrder.NutritionOrderEnteralFormulaAdministrationComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasSchedule())
-      tgt.setSchedule(Timing43_50.convertTiming(src.getSchedule()));
+      tgt.getSchedule().addTiming(Timing43_50.convertTiming(src.getSchedule()));
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity43_50.convertSimpleQuantity(src.getQuantity()));
     if (src.hasRate())
@@ -459,8 +463,8 @@ public class NutritionOrder43_50 {
       return null;
     org.hl7.fhir.r4b.model.NutritionOrder.NutritionOrderEnteralFormulaAdministrationComponent tgt = new org.hl7.fhir.r4b.model.NutritionOrder.NutritionOrderEnteralFormulaAdministrationComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
-    if (src.hasSchedule())
-      tgt.setSchedule(Timing43_50.convertTiming(src.getSchedule()));
+    if (src.getSchedule().hasTiming())
+      tgt.setSchedule(Timing43_50.convertTiming(src.getSchedule().getTimingFirstRep()));
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity43_50.convertSimpleQuantity(src.getQuantity()));
     if (src.hasRate())

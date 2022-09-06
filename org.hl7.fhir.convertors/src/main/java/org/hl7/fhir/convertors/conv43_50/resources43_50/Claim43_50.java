@@ -1,8 +1,17 @@
 package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.*;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.*;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Money43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Period43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.SimpleQuantity43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Date43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.DateTime43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Decimal43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.PositiveInt43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -319,7 +328,7 @@ public class Claim43_50 {
     if (src.hasRole())
       tgt.setRole(CodeableConcept43_50.convertCodeableConcept(src.getRole()));
     if (src.hasQualification())
-      tgt.setQualification(CodeableConcept43_50.convertCodeableConcept(src.getQualification()));
+      tgt.setSpecialty(CodeableConcept43_50.convertCodeableConcept(src.getQualification()));
     return tgt;
   }
 
@@ -336,8 +345,8 @@ public class Claim43_50 {
       tgt.setResponsibleElement(Boolean43_50.convertBoolean(src.getResponsibleElement()));
     if (src.hasRole())
       tgt.setRole(CodeableConcept43_50.convertCodeableConcept(src.getRole()));
-    if (src.hasQualification())
-      tgt.setQualification(CodeableConcept43_50.convertCodeableConcept(src.getQualification()));
+    if (src.hasSpecialty())
+      tgt.setQualification(CodeableConcept43_50.convertCodeableConcept(src.getSpecialty()));
     return tgt;
   }
 
@@ -394,8 +403,8 @@ public class Claim43_50 {
       tgt.addType(CodeableConcept43_50.convertCodeableConcept(t));
     if (src.hasOnAdmission())
       tgt.setOnAdmission(CodeableConcept43_50.convertCodeableConcept(src.getOnAdmission()));
-    if (src.hasPackageCode())
-      tgt.setPackageCode(CodeableConcept43_50.convertCodeableConcept(src.getPackageCode()));
+//    if (src.hasPackageCode())
+//      tgt.setPackageCode(CodeableConcept43_50.convertCodeableConcept(src.getPackageCode()));
     return tgt;
   }
 
@@ -412,8 +421,8 @@ public class Claim43_50 {
       tgt.addType(CodeableConcept43_50.convertCodeableConcept(t));
     if (src.hasOnAdmission())
       tgt.setOnAdmission(CodeableConcept43_50.convertCodeableConcept(src.getOnAdmission()));
-    if (src.hasPackageCode())
-      tgt.setPackageCode(CodeableConcept43_50.convertCodeableConcept(src.getPackageCode()));
+//    if (src.hasPackageCode())
+//      tgt.setPackageCode(CodeableConcept43_50.convertCodeableConcept(src.getPackageCode()));
     return tgt;
   }
 
@@ -562,9 +571,9 @@ public class Claim43_50 {
       tgt.setNet(Money43_50.convertMoney(src.getNet()));
     for (org.hl7.fhir.r4b.model.Reference t : src.getUdi()) tgt.addUdi(Reference43_50.convertReference(t));
     if (src.hasBodySite())
-      tgt.setBodySite(CodeableConcept43_50.convertCodeableConcept(src.getBodySite()));
+      tgt.getBodySiteFirstRep().addSite(CodeableConcept43_50.convertCodeableConceptToCodeableReference(src.getBodySite()));
     for (org.hl7.fhir.r4b.model.CodeableConcept t : src.getSubSite())
-      tgt.addSubSite(CodeableConcept43_50.convertCodeableConcept(t));
+      tgt.getBodySiteFirstRep().addSubSite(CodeableConcept43_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r4b.model.Reference t : src.getEncounter()) tgt.addEncounter(Reference43_50.convertReference(t));
     for (org.hl7.fhir.r4b.model.Claim.DetailComponent t : src.getDetail()) tgt.addDetail(convertDetailComponent(t));
     return tgt;
@@ -609,8 +618,8 @@ public class Claim43_50 {
       tgt.setNet(Money43_50.convertMoney(src.getNet()));
     for (org.hl7.fhir.r5.model.Reference t : src.getUdi()) tgt.addUdi(Reference43_50.convertReference(t));
     if (src.hasBodySite())
-      tgt.setBodySite(CodeableConcept43_50.convertCodeableConcept(src.getBodySite()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSubSite())
+      tgt.setBodySite(CodeableConcept43_50.convertCodeableReferenceToCodeableConcept(src.getBodySiteFirstRep().getSiteFirstRep()));
+    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getBodySiteFirstRep().getSubSite())
       tgt.addSubSite(CodeableConcept43_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getEncounter()) tgt.addEncounter(Reference43_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Claim.DetailComponent t : src.getDetail()) tgt.addDetail(convertDetailComponent(t));

@@ -200,10 +200,10 @@ public class Requirements extends CanonicalResource {
         /**
          * A short human usable label for this statement.
          */
-        @Child(name = "conformance", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "conformance", type = {CodeType.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="SHALL | SHOULD | MAY | SHOULD-NOT", formalDefinition="A short human usable label for this statement." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/conformance-expectation")
-        protected Enumeration<ConformanceExpectation> conformance;
+        protected List<Enumeration<ConformanceExpectation>> conformance;
 
         /**
          * The actual requirement for human consumption.
@@ -230,17 +230,17 @@ public class Requirements extends CanonicalResource {
          * A reference to another artifact that created this requirement. This could be a Profile, etc, or external regulation, or business requirements expressed elsewhere.
          */
         @Child(name = "reference", type = {UrlType.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Design artifact that creates this requirement", formalDefinition="A reference to another artifact that created this requirement. This could be a Profile, etc, or external regulation, or business requirements expressed elsewhere." )
+        @Description(shortDefinition="External artifact (rule/document etc that) created this requirement", formalDefinition="A reference to another artifact that created this requirement. This could be a Profile, etc, or external regulation, or business requirements expressed elsewhere." )
         protected List<UrlType> reference;
 
         /**
          * Who asked for this statement to be a requirement. By default, it's assumed that the publisher knows who it is if it matters.
          */
-        @Child(name = "source", type = {Patient.class, RelatedPerson.class, Practitioner.class, Organization.class, CareTeam.class, Group.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "source", type = {Practitioner.class, Organization.class, CareTeam.class, Group.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Who asked for this statement", formalDefinition="Who asked for this statement to be a requirement. By default, it's assumed that the publisher knows who it is if it matters." )
         protected List<Reference> source;
 
-        private static final long serialVersionUID = 456033856L;
+        private static final long serialVersionUID = -811662792L;
 
     /**
      * Constructor
@@ -353,52 +353,64 @@ public class Requirements extends CanonicalResource {
         }
 
         /**
-         * @return {@link #conformance} (A short human usable label for this statement.). This is the underlying object with id, value and extensions. The accessor "getConformance" gives direct access to the value
+         * @return {@link #conformance} (A short human usable label for this statement.)
          */
-        public Enumeration<ConformanceExpectation> getConformanceElement() { 
+        public List<Enumeration<ConformanceExpectation>> getConformance() { 
           if (this.conformance == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create RequirementsStatementComponent.conformance");
-            else if (Configuration.doAutoCreate())
-              this.conformance = new Enumeration<ConformanceExpectation>(new ConformanceExpectationEnumFactory()); // bb
+            this.conformance = new ArrayList<Enumeration<ConformanceExpectation>>();
           return this.conformance;
         }
 
-        public boolean hasConformanceElement() { 
-          return this.conformance != null && !this.conformance.isEmpty();
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public RequirementsStatementComponent setConformance(List<Enumeration<ConformanceExpectation>> theConformance) { 
+          this.conformance = theConformance;
+          return this;
         }
 
         public boolean hasConformance() { 
-          return this.conformance != null && !this.conformance.isEmpty();
+          if (this.conformance == null)
+            return false;
+          for (Enumeration<ConformanceExpectation> item : this.conformance)
+            if (!item.isEmpty())
+              return true;
+          return false;
         }
 
         /**
-         * @param value {@link #conformance} (A short human usable label for this statement.). This is the underlying object with id, value and extensions. The accessor "getConformance" gives direct access to the value
+         * @return {@link #conformance} (A short human usable label for this statement.)
          */
-        public RequirementsStatementComponent setConformanceElement(Enumeration<ConformanceExpectation> value) { 
-          this.conformance = value;
+        public Enumeration<ConformanceExpectation> addConformanceElement() {//2 
+          Enumeration<ConformanceExpectation> t = new Enumeration<ConformanceExpectation>(new ConformanceExpectationEnumFactory());
+          if (this.conformance == null)
+            this.conformance = new ArrayList<Enumeration<ConformanceExpectation>>();
+          this.conformance.add(t);
+          return t;
+        }
+
+        /**
+         * @param value {@link #conformance} (A short human usable label for this statement.)
+         */
+        public RequirementsStatementComponent addConformance(ConformanceExpectation value) { //1
+          Enumeration<ConformanceExpectation> t = new Enumeration<ConformanceExpectation>(new ConformanceExpectationEnumFactory());
+          t.setValue(value);
+          if (this.conformance == null)
+            this.conformance = new ArrayList<Enumeration<ConformanceExpectation>>();
+          this.conformance.add(t);
           return this;
         }
 
         /**
-         * @return A short human usable label for this statement.
+         * @param value {@link #conformance} (A short human usable label for this statement.)
          */
-        public ConformanceExpectation getConformance() { 
-          return this.conformance == null ? null : this.conformance.getValue();
-        }
-
-        /**
-         * @param value A short human usable label for this statement.
-         */
-        public RequirementsStatementComponent setConformance(ConformanceExpectation value) { 
-          if (value == null)
-            this.conformance = null;
-          else {
+        public boolean hasConformance(ConformanceExpectation value) { 
             if (this.conformance == null)
-              this.conformance = new Enumeration<ConformanceExpectation>(new ConformanceExpectationEnumFactory());
-            this.conformance.setValue(value);
-          }
-          return this;
+            return false;
+          for (Enumeration<ConformanceExpectation> v : this.conformance)
+            if (v.getValue().equals(value)) // code
+              return true;
+          return false;
         }
 
         /**
@@ -674,12 +686,12 @@ public class Requirements extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("key", "id", "Key that identifies this statement (unique within this resource).", 0, 1, key));
           children.add(new Property("label", "string", "A short human usable label for this statement.", 0, 1, label));
-          children.add(new Property("conformance", "code", "A short human usable label for this statement.", 0, 1, conformance));
+          children.add(new Property("conformance", "code", "A short human usable label for this statement.", 0, java.lang.Integer.MAX_VALUE, conformance));
           children.add(new Property("requirement", "markdown", "The actual requirement for human consumption.", 0, 1, requirement));
           children.add(new Property("derivedFrom", "string", "Another statement on one of the requirements that this requirement clarifies or restricts.", 0, 1, derivedFrom));
           children.add(new Property("satisfiedBy", "url", "A reference to another artifact that satisfies this requirement. This could be a Profile, extension, or an element in one of those, or a CapabilityStatement, OperationDefinition, SearchParameter, CodeSystem(/code), ValueSet, Libary etc.", 0, java.lang.Integer.MAX_VALUE, satisfiedBy));
           children.add(new Property("reference", "url", "A reference to another artifact that created this requirement. This could be a Profile, etc, or external regulation, or business requirements expressed elsewhere.", 0, java.lang.Integer.MAX_VALUE, reference));
-          children.add(new Property("source", "Reference(Patient|RelatedPerson|Practitioner|Organization|CareTeam|Group)", "Who asked for this statement to be a requirement. By default, it's assumed that the publisher knows who it is if it matters.", 0, java.lang.Integer.MAX_VALUE, source));
+          children.add(new Property("source", "Reference(Practitioner|Organization|CareTeam|Group)", "Who asked for this statement to be a requirement. By default, it's assumed that the publisher knows who it is if it matters.", 0, java.lang.Integer.MAX_VALUE, source));
         }
 
         @Override
@@ -687,12 +699,12 @@ public class Requirements extends CanonicalResource {
           switch (_hash) {
           case 106079: /*key*/  return new Property("key", "id", "Key that identifies this statement (unique within this resource).", 0, 1, key);
           case 102727412: /*label*/  return new Property("label", "string", "A short human usable label for this statement.", 0, 1, label);
-          case 1374858133: /*conformance*/  return new Property("conformance", "code", "A short human usable label for this statement.", 0, 1, conformance);
+          case 1374858133: /*conformance*/  return new Property("conformance", "code", "A short human usable label for this statement.", 0, java.lang.Integer.MAX_VALUE, conformance);
           case 363387971: /*requirement*/  return new Property("requirement", "markdown", "The actual requirement for human consumption.", 0, 1, requirement);
           case 1077922663: /*derivedFrom*/  return new Property("derivedFrom", "string", "Another statement on one of the requirements that this requirement clarifies or restricts.", 0, 1, derivedFrom);
           case -1268787159: /*satisfiedBy*/  return new Property("satisfiedBy", "url", "A reference to another artifact that satisfies this requirement. This could be a Profile, extension, or an element in one of those, or a CapabilityStatement, OperationDefinition, SearchParameter, CodeSystem(/code), ValueSet, Libary etc.", 0, java.lang.Integer.MAX_VALUE, satisfiedBy);
           case -925155509: /*reference*/  return new Property("reference", "url", "A reference to another artifact that created this requirement. This could be a Profile, etc, or external regulation, or business requirements expressed elsewhere.", 0, java.lang.Integer.MAX_VALUE, reference);
-          case -896505829: /*source*/  return new Property("source", "Reference(Patient|RelatedPerson|Practitioner|Organization|CareTeam|Group)", "Who asked for this statement to be a requirement. By default, it's assumed that the publisher knows who it is if it matters.", 0, java.lang.Integer.MAX_VALUE, source);
+          case -896505829: /*source*/  return new Property("source", "Reference(Practitioner|Organization|CareTeam|Group)", "Who asked for this statement to be a requirement. By default, it's assumed that the publisher knows who it is if it matters.", 0, java.lang.Integer.MAX_VALUE, source);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -703,7 +715,7 @@ public class Requirements extends CanonicalResource {
         switch (hash) {
         case 106079: /*key*/ return this.key == null ? new Base[0] : new Base[] {this.key}; // IdType
         case 102727412: /*label*/ return this.label == null ? new Base[0] : new Base[] {this.label}; // StringType
-        case 1374858133: /*conformance*/ return this.conformance == null ? new Base[0] : new Base[] {this.conformance}; // Enumeration<ConformanceExpectation>
+        case 1374858133: /*conformance*/ return this.conformance == null ? new Base[0] : this.conformance.toArray(new Base[this.conformance.size()]); // Enumeration<ConformanceExpectation>
         case 363387971: /*requirement*/ return this.requirement == null ? new Base[0] : new Base[] {this.requirement}; // MarkdownType
         case 1077922663: /*derivedFrom*/ return this.derivedFrom == null ? new Base[0] : new Base[] {this.derivedFrom}; // StringType
         case -1268787159: /*satisfiedBy*/ return this.satisfiedBy == null ? new Base[0] : this.satisfiedBy.toArray(new Base[this.satisfiedBy.size()]); // UrlType
@@ -725,7 +737,7 @@ public class Requirements extends CanonicalResource {
           return value;
         case 1374858133: // conformance
           value = new ConformanceExpectationEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.conformance = (Enumeration) value; // Enumeration<ConformanceExpectation>
+          this.getConformance().add((Enumeration) value); // Enumeration<ConformanceExpectation>
           return value;
         case 363387971: // requirement
           this.requirement = TypeConvertor.castToMarkdown(value); // MarkdownType
@@ -755,7 +767,7 @@ public class Requirements extends CanonicalResource {
           this.label = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("conformance")) {
           value = new ConformanceExpectationEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.conformance = (Enumeration) value; // Enumeration<ConformanceExpectation>
+          this.getConformance().add((Enumeration) value);
         } else if (name.equals("requirement")) {
           this.requirement = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("derivedFrom")) {
@@ -776,7 +788,7 @@ public class Requirements extends CanonicalResource {
         switch (hash) {
         case 106079:  return getKeyElement();
         case 102727412:  return getLabelElement();
-        case 1374858133:  return getConformanceElement();
+        case 1374858133:  return addConformanceElement();
         case 363387971:  return getRequirementElement();
         case 1077922663:  return getDerivedFromElement();
         case -1268787159:  return addSatisfiedByElement();
@@ -843,7 +855,11 @@ public class Requirements extends CanonicalResource {
         super.copyValues(dst);
         dst.key = key == null ? null : key.copy();
         dst.label = label == null ? null : label.copy();
-        dst.conformance = conformance == null ? null : conformance.copy();
+        if (conformance != null) {
+          dst.conformance = new ArrayList<Enumeration<ConformanceExpectation>>();
+          for (Enumeration<ConformanceExpectation> i : conformance)
+            dst.conformance.add(i.copy());
+        };
         dst.requirement = requirement == null ? null : requirement.copy();
         dst.derivedFrom = derivedFrom == null ? null : derivedFrom.copy();
         if (satisfiedBy != null) {

@@ -8,8 +8,15 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.ContactDet
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.Expression43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.RelatedArtifact43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.UsageContext43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.*;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Canonical43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Date43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.DateTime43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.MarkDown43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Measure.MeasureTermComponent;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -122,7 +129,7 @@ public class Measure43_50 {
     if (src.hasImprovementNotation())
       tgt.setImprovementNotation(CodeableConcept43_50.convertCodeableConcept(src.getImprovementNotation()));
     for (org.hl7.fhir.r4b.model.MarkdownType t : src.getDefinition())
-      tgt.getDefinition().add(MarkDown43_50.convertMarkdown(t));
+      tgt.addTerm().setDefinitionElement(MarkDown43_50.convertMarkdown(t));
     if (src.hasGuidance())
       tgt.setGuidanceElement(MarkDown43_50.convertMarkdown(src.getGuidanceElement()));
     for (org.hl7.fhir.r4b.model.Measure.MeasureGroupComponent t : src.getGroup())
@@ -211,8 +218,8 @@ public class Measure43_50 {
       tgt.setClinicalRecommendationStatementElement(MarkDown43_50.convertMarkdown(src.getClinicalRecommendationStatementElement()));
     if (src.hasImprovementNotation())
       tgt.setImprovementNotation(CodeableConcept43_50.convertCodeableConcept(src.getImprovementNotation()));
-    for (org.hl7.fhir.r5.model.MarkdownType t : src.getDefinition())
-      tgt.getDefinition().add(MarkDown43_50.convertMarkdown(t));
+    for (MeasureTermComponent t : src.getTerm())
+      tgt.getDefinition().add(MarkDown43_50.convertMarkdown(t.getDefinitionElement()));
     if (src.hasGuidance())
       tgt.setGuidanceElement(MarkDown43_50.convertMarkdown(src.getGuidanceElement()));
     for (org.hl7.fhir.r5.model.Measure.MeasureGroupComponent t : src.getGroup())
