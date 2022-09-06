@@ -21893,8 +21893,8 @@ public class RdfParser extends RdfParserBase {
     if (element.hasLabelElement()) {
       composeString(t, "RequirementsStatementComponent", "label", element.getLabelElement(), -1);
     }
-    if (element.hasConformanceElement()) {
-      composeEnum(t, "RequirementsStatementComponent", "conformance", element.getConformanceElement(), -1);
+    for (int i = 0; i < element.getConformance().size(); i++) {
+      composeEnum(t, "RequirementsStatementComponent", "conformance", element.getConformance().get(i), i);
     }
     if (element.hasRequirementElement()) {
       composeMarkdown(t, "RequirementsStatementComponent", "requirement", element.getRequirementElement(), -1);
@@ -22485,7 +22485,7 @@ public class RdfParser extends RdfParserBase {
       composeCode(t, "SearchParameter", "code", element.getCodeElement(), -1);
     }
     for (int i = 0; i < element.getBase().size(); i++) {
-      composeEnum(t, "SearchParameter", "base", element.getBase().get(i), i);
+      composeCode(t, "SearchParameter", "base", element.getBase().get(i), i);
     }
     if (element.hasTypeElement()) {
       composeEnum(t, "SearchParameter", "type", element.getTypeElement(), -1);

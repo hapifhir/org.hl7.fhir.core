@@ -12,10 +12,8 @@ import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.hl7.fhir.convertors.analytics.PackageVisitor.IPackageVisitorProcessor;
-import org.hl7.fhir.dstu2.model.SearchParameter;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.xml.sax.SAXException;

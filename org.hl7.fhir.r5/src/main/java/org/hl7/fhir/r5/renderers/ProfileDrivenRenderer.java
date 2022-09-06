@@ -14,6 +14,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.model.Address;
 import org.hl7.fhir.r5.model.Annotation;
@@ -648,7 +649,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     return code.equals("Element") || code.equals("BackboneElement");
   }
   
-  private List<ElementDefinition> getChildrenForPath(List<ElementDefinition> elements, String path) throws DefinitionException {
+  private List<ElementDefinition> getChildrenForPath(StructureDefinition profile, List<ElementDefinition> elements, String path) throws DefinitionException {
     // do we need to do a name reference substitution?
     for (ElementDefinition e : elements) {
       if (e.getPath().equals(path) && e.hasContentReference()) {
@@ -666,10 +667,18 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       }
     }
 
+    ElementDefinition t = null;
     List<ElementDefinition> results = new ArrayList<ElementDefinition>();
     for (ElementDefinition e : elements) {
+      if (e.getPath().equals(path)) {
+        t = e; 
+      }
       if (e.getPath().startsWith(path+".") && !e.getPath().substring(path.length()+1).contains("."))
         results.add(e);
+    }
+    if (results.isEmpty() && t != null && t.getType().size() == 1) {
+       StructureDefinition tsd = context.getWorker().fetchTypeDefinition(t.getTypeFirstRep().getWorkingCode());
+       return getChildrenForPath(tsd, tsd.getSnapshot().getElement(), tsd.getType());
     }
     return results;
   }
@@ -681,7 +690,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       x.para().b().tx("Generated Narrative: "+profile.present()+(showCodeDetails ? " with Details" : ""));
     }
     try {
-      generateByProfile(rcontext.getResourceResource(), profile, rcontext.getResourceResource(), profile.getSnapshot().getElement(), profile.getSnapshot().getElement().get(0), getChildrenForPath(profile.getSnapshot().getElement(), rcontext.getResourceResource().getResourceType().toString()), x, rcontext.getResourceResource().getResourceType().toString(), showCodeDetails);
+      generateByProfile(rcontext.getResourceResource(), profile, rcontext.getResourceResource(), profile.getSnapshot().getElement(), profile.getSnapshot().getElement().get(0), getChildrenForPath(profile, profile.getSnapshot().getElement(), rcontext.getResourceResource().getResourceType().toString()), x, rcontext.getResourceResource().getResourceType().toString(), showCodeDetails);
     } catch (Exception e) {
       e.printStackTrace();
       x.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
@@ -730,7 +739,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       if (isExtension(p)) {
         hasExtensions = true;
       }
-      List<ElementDefinition> grandChildren = getChildrenForPath(allElements, path+"."+p.getName());
+      List<ElementDefinition> grandChildren = getChildrenForPath(profile, allElements, path+"."+p.getName());
       filterGrandChildren(grandChildren, path+"."+p.getName(), p);
       if (p.getValues().size() > 0) {
          if (isPrimitive(child)) {
@@ -792,7 +801,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
                 bq.para().b().addText(isExtension(p) ? p.getStructure().present() : p.getName());
                 for (BaseWrapper vv : ev.getValues()) {
                   StructureDefinition ex = context.getWorker().fetchTypeDefinition("Extension");
-                  List<ElementDefinition> children = getChildrenForPath(ex.getSnapshot().getElement(), "Extension");
+                  List<ElementDefinition> children = getChildrenForPath(profile, ex.getSnapshot().getElement(), "Extension");
                   generateByProfile(res, ex, vv, allElements, child, children, bq, "Extension", showCodeDetails, indent+1);
                 }
               }

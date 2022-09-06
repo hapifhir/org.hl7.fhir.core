@@ -12493,87 +12493,87 @@ The primary difference between a medicationusage and a medicationadministration 
         /**
          * DSTU 1 Ballot version.
          */
-        OID_0_11, 
+        _0_11, 
         /**
          * DSTU 1 version.
          */
-        OID_0_0, 
+        _0_0, 
         /**
          * DSTU 1 Official version.
          */
-        OID_0_0_80, 
+        _0_0_80, 
         /**
          * DSTU 1 Official version Technical Errata #1.
          */
-        OID_0_0_81, 
+        _0_0_81, 
         /**
          * DSTU 1 Official version Technical Errata #2.
          */
-        OID_0_0_82, 
+        _0_0_82, 
         /**
          * January 2015 Ballot.
          */
-        OID_0_4, 
+        _0_4, 
         /**
          * Draft For Comment (January 2015 Ballot).
          */
-        OID_0_4_0, 
+        _0_4_0, 
         /**
          * May 2015 Ballot.
          */
-        OID_0_5, 
+        _0_5, 
         /**
          * DSTU 2 Ballot version (May 2015 Ballot).
          */
-        OID_0_5_0, 
+        _0_5_0, 
         /**
          * DSTU 2 version.
          */
-        OID_1_0, 
+        _1_0, 
         /**
          * DSTU 2 QA Preview + CQIF Ballot (Sep 2015).
          */
-        OID_1_0_0, 
+        _1_0_0, 
         /**
          * DSTU 2 (Official version).
          */
-        OID_1_0_1, 
+        _1_0_1, 
         /**
          * DSTU 2 (Official version) with 1 technical errata.
          */
-        OID_1_0_2, 
+        _1_0_2, 
         /**
          * GAO Ballot version.
          */
-        OID_1_1, 
+        _1_1, 
         /**
          * GAO Ballot + draft changes to main FHIR standard.
          */
-        OID_1_1_0, 
+        _1_1_0, 
         /**
          * Connectathon 12 (Montreal) version.
          */
-        OID_1_4, 
+        _1_4, 
         /**
          * CQF on FHIR Ballot + Connectathon 12 (Montreal).
          */
-        OID_1_4_0, 
+        _1_4_0, 
         /**
          * Connectathon 13 (Baltimore) version.
          */
-        OID_1_6, 
+        _1_6, 
         /**
          * FHIR STU3 Ballot + Connectathon 13 (Baltimore).
          */
-        OID_1_6_0, 
+        _1_6_0, 
         /**
          * Connectathon 14 (San Antonio) version.
          */
-        OID_1_8, 
+        _1_8, 
         /**
          * FHIR STU3 Candidate + Connectathon 14 (San Antonio).
          */
-        OID_1_8_0, 
+        _1_8_0, 
         /**
          * STU3 version.
          */
@@ -12704,47 +12704,47 @@ The primary difference between a medicationusage and a medicationadministration 
         if ("0.06".equals(codeString))
           return _0_06;
         if ("0.11".equals(codeString))
-          return OID_0_11;
+          return _0_11;
         if ("0.0".equals(codeString))
-          return OID_0_0;
+          return _0_0;
         if ("0.0.80".equals(codeString))
-          return OID_0_0_80;
+          return _0_0_80;
         if ("0.0.81".equals(codeString))
-          return OID_0_0_81;
+          return _0_0_81;
         if ("0.0.82".equals(codeString))
-          return OID_0_0_82;
+          return _0_0_82;
         if ("0.4".equals(codeString))
-          return OID_0_4;
+          return _0_4;
         if ("0.4.0".equals(codeString))
-          return OID_0_4_0;
+          return _0_4_0;
         if ("0.5".equals(codeString))
-          return OID_0_5;
+          return _0_5;
         if ("0.5.0".equals(codeString))
-          return OID_0_5_0;
+          return _0_5_0;
         if ("1.0".equals(codeString))
-          return OID_1_0;
+          return _1_0;
         if ("1.0.0".equals(codeString))
-          return OID_1_0_0;
+          return _1_0_0;
         if ("1.0.1".equals(codeString))
-          return OID_1_0_1;
+          return _1_0_1;
         if ("1.0.2".equals(codeString))
-          return OID_1_0_2;
+          return _1_0_2;
         if ("1.1".equals(codeString))
-          return OID_1_1;
+          return _1_1;
         if ("1.1.0".equals(codeString))
-          return OID_1_1_0;
+          return _1_1_0;
         if ("1.4".equals(codeString))
-          return OID_1_4;
+          return _1_4;
         if ("1.4.0".equals(codeString))
-          return OID_1_4_0;
+          return _1_4_0;
         if ("1.6".equals(codeString))
-          return OID_1_6;
+          return _1_6;
         if ("1.6.0".equals(codeString))
-          return OID_1_6_0;
+          return _1_6_0;
         if ("1.8".equals(codeString))
-          return OID_1_8;
+          return _1_8;
         if ("1.8.0".equals(codeString))
-          return OID_1_8_0;
+          return _1_8_0;
         if ("3.0".equals(codeString))
           return _3_0;
         if ("3.0.0".equals(codeString))
@@ -12810,27 +12810,27 @@ The primary difference between a medicationusage and a medicationadministration 
             case _0_01: return "0.01";
             case _0_05: return "0.05";
             case _0_06: return "0.06";
-            case OID_0_11: return "0.11";
-            case OID_0_0: return "0.0";
-            case OID_0_0_80: return "0.0.80";
-            case OID_0_0_81: return "0.0.81";
-            case OID_0_0_82: return "0.0.82";
-            case OID_0_4: return "0.4";
-            case OID_0_4_0: return "0.4.0";
-            case OID_0_5: return "0.5";
-            case OID_0_5_0: return "0.5.0";
-            case OID_1_0: return "1.0";
-            case OID_1_0_0: return "1.0.0";
-            case OID_1_0_1: return "1.0.1";
-            case OID_1_0_2: return "1.0.2";
-            case OID_1_1: return "1.1";
-            case OID_1_1_0: return "1.1.0";
-            case OID_1_4: return "1.4";
-            case OID_1_4_0: return "1.4.0";
-            case OID_1_6: return "1.6";
-            case OID_1_6_0: return "1.6.0";
-            case OID_1_8: return "1.8";
-            case OID_1_8_0: return "1.8.0";
+            case _0_11: return "0.11";
+            case _0_0: return "0.0";
+            case _0_0_80: return "0.0.80";
+            case _0_0_81: return "0.0.81";
+            case _0_0_82: return "0.0.82";
+            case _0_4: return "0.4";
+            case _0_4_0: return "0.4.0";
+            case _0_5: return "0.5";
+            case _0_5_0: return "0.5.0";
+            case _1_0: return "1.0";
+            case _1_0_0: return "1.0.0";
+            case _1_0_1: return "1.0.1";
+            case _1_0_2: return "1.0.2";
+            case _1_1: return "1.1";
+            case _1_1_0: return "1.1.0";
+            case _1_4: return "1.4";
+            case _1_4_0: return "1.4.0";
+            case _1_6: return "1.6";
+            case _1_6_0: return "1.6.0";
+            case _1_8: return "1.8";
+            case _1_8_0: return "1.8.0";
             case _3_0: return "3.0";
             case _3_0_0: return "3.0.0";
             case _3_0_1: return "3.0.1";
@@ -12869,27 +12869,27 @@ The primary difference between a medicationusage and a medicationadministration 
             case _0_01: return "http://hl7.org/fhir/FHIR-version";
             case _0_05: return "http://hl7.org/fhir/FHIR-version";
             case _0_06: return "http://hl7.org/fhir/FHIR-version";
-            case OID_0_11: return "http://hl7.org/fhir/FHIR-version";
-            case OID_0_0: return "http://hl7.org/fhir/FHIR-version";
-            case OID_0_0_80: return "http://hl7.org/fhir/FHIR-version";
-            case OID_0_0_81: return "http://hl7.org/fhir/FHIR-version";
-            case OID_0_0_82: return "http://hl7.org/fhir/FHIR-version";
-            case OID_0_4: return "http://hl7.org/fhir/FHIR-version";
-            case OID_0_4_0: return "http://hl7.org/fhir/FHIR-version";
-            case OID_0_5: return "http://hl7.org/fhir/FHIR-version";
-            case OID_0_5_0: return "http://hl7.org/fhir/FHIR-version";
-            case OID_1_0: return "http://hl7.org/fhir/FHIR-version";
-            case OID_1_0_0: return "http://hl7.org/fhir/FHIR-version";
-            case OID_1_0_1: return "http://hl7.org/fhir/FHIR-version";
-            case OID_1_0_2: return "http://hl7.org/fhir/FHIR-version";
-            case OID_1_1: return "http://hl7.org/fhir/FHIR-version";
-            case OID_1_1_0: return "http://hl7.org/fhir/FHIR-version";
-            case OID_1_4: return "http://hl7.org/fhir/FHIR-version";
-            case OID_1_4_0: return "http://hl7.org/fhir/FHIR-version";
-            case OID_1_6: return "http://hl7.org/fhir/FHIR-version";
-            case OID_1_6_0: return "http://hl7.org/fhir/FHIR-version";
-            case OID_1_8: return "http://hl7.org/fhir/FHIR-version";
-            case OID_1_8_0: return "http://hl7.org/fhir/FHIR-version";
+            case _0_11: return "http://hl7.org/fhir/FHIR-version";
+            case _0_0: return "http://hl7.org/fhir/FHIR-version";
+            case _0_0_80: return "http://hl7.org/fhir/FHIR-version";
+            case _0_0_81: return "http://hl7.org/fhir/FHIR-version";
+            case _0_0_82: return "http://hl7.org/fhir/FHIR-version";
+            case _0_4: return "http://hl7.org/fhir/FHIR-version";
+            case _0_4_0: return "http://hl7.org/fhir/FHIR-version";
+            case _0_5: return "http://hl7.org/fhir/FHIR-version";
+            case _0_5_0: return "http://hl7.org/fhir/FHIR-version";
+            case _1_0: return "http://hl7.org/fhir/FHIR-version";
+            case _1_0_0: return "http://hl7.org/fhir/FHIR-version";
+            case _1_0_1: return "http://hl7.org/fhir/FHIR-version";
+            case _1_0_2: return "http://hl7.org/fhir/FHIR-version";
+            case _1_1: return "http://hl7.org/fhir/FHIR-version";
+            case _1_1_0: return "http://hl7.org/fhir/FHIR-version";
+            case _1_4: return "http://hl7.org/fhir/FHIR-version";
+            case _1_4_0: return "http://hl7.org/fhir/FHIR-version";
+            case _1_6: return "http://hl7.org/fhir/FHIR-version";
+            case _1_6_0: return "http://hl7.org/fhir/FHIR-version";
+            case _1_8: return "http://hl7.org/fhir/FHIR-version";
+            case _1_8_0: return "http://hl7.org/fhir/FHIR-version";
             case _3_0: return "http://hl7.org/fhir/FHIR-version";
             case _3_0_0: return "http://hl7.org/fhir/FHIR-version";
             case _3_0_1: return "http://hl7.org/fhir/FHIR-version";
@@ -12928,27 +12928,27 @@ The primary difference between a medicationusage and a medicationadministration 
             case _0_01: return "Oldest archived version of FHIR.";
             case _0_05: return "1st Draft for Comment (Sept 2012 Ballot).";
             case _0_06: return "2nd Draft for Comment (January 2013 Ballot).";
-            case OID_0_11: return "DSTU 1 Ballot version.";
-            case OID_0_0: return "DSTU 1 version.";
-            case OID_0_0_80: return "DSTU 1 Official version.";
-            case OID_0_0_81: return "DSTU 1 Official version Technical Errata #1.";
-            case OID_0_0_82: return "DSTU 1 Official version Technical Errata #2.";
-            case OID_0_4: return "January 2015 Ballot.";
-            case OID_0_4_0: return "Draft For Comment (January 2015 Ballot).";
-            case OID_0_5: return "May 2015 Ballot.";
-            case OID_0_5_0: return "DSTU 2 Ballot version (May 2015 Ballot).";
-            case OID_1_0: return "DSTU 2 version.";
-            case OID_1_0_0: return "DSTU 2 QA Preview + CQIF Ballot (Sep 2015).";
-            case OID_1_0_1: return "DSTU 2 (Official version).";
-            case OID_1_0_2: return "DSTU 2 (Official version) with 1 technical errata.";
-            case OID_1_1: return "GAO Ballot version.";
-            case OID_1_1_0: return "GAO Ballot + draft changes to main FHIR standard.";
-            case OID_1_4: return "Connectathon 12 (Montreal) version.";
-            case OID_1_4_0: return "CQF on FHIR Ballot + Connectathon 12 (Montreal).";
-            case OID_1_6: return "Connectathon 13 (Baltimore) version.";
-            case OID_1_6_0: return "FHIR STU3 Ballot + Connectathon 13 (Baltimore).";
-            case OID_1_8: return "Connectathon 14 (San Antonio) version.";
-            case OID_1_8_0: return "FHIR STU3 Candidate + Connectathon 14 (San Antonio).";
+            case _0_11: return "DSTU 1 Ballot version.";
+            case _0_0: return "DSTU 1 version.";
+            case _0_0_80: return "DSTU 1 Official version.";
+            case _0_0_81: return "DSTU 1 Official version Technical Errata #1.";
+            case _0_0_82: return "DSTU 1 Official version Technical Errata #2.";
+            case _0_4: return "January 2015 Ballot.";
+            case _0_4_0: return "Draft For Comment (January 2015 Ballot).";
+            case _0_5: return "May 2015 Ballot.";
+            case _0_5_0: return "DSTU 2 Ballot version (May 2015 Ballot).";
+            case _1_0: return "DSTU 2 version.";
+            case _1_0_0: return "DSTU 2 QA Preview + CQIF Ballot (Sep 2015).";
+            case _1_0_1: return "DSTU 2 (Official version).";
+            case _1_0_2: return "DSTU 2 (Official version) with 1 technical errata.";
+            case _1_1: return "GAO Ballot version.";
+            case _1_1_0: return "GAO Ballot + draft changes to main FHIR standard.";
+            case _1_4: return "Connectathon 12 (Montreal) version.";
+            case _1_4_0: return "CQF on FHIR Ballot + Connectathon 12 (Montreal).";
+            case _1_6: return "Connectathon 13 (Baltimore) version.";
+            case _1_6_0: return "FHIR STU3 Ballot + Connectathon 13 (Baltimore).";
+            case _1_8: return "Connectathon 14 (San Antonio) version.";
+            case _1_8_0: return "FHIR STU3 Candidate + Connectathon 14 (San Antonio).";
             case _3_0: return "STU3 version.";
             case _3_0_0: return "FHIR Release 3 (STU).";
             case _3_0_1: return "FHIR Release 3 (STU) with 1 technical errata.";
@@ -12987,27 +12987,27 @@ The primary difference between a medicationusage and a medicationadministration 
             case _0_01: return "0.01";
             case _0_05: return "0.05";
             case _0_06: return "0.06";
-            case OID_0_11: return "0.11";
-            case OID_0_0: return "0.0";
-            case OID_0_0_80: return "0.0.80";
-            case OID_0_0_81: return "0.0.81";
-            case OID_0_0_82: return "0.0.82";
-            case OID_0_4: return "0.4";
-            case OID_0_4_0: return "0.4.0";
-            case OID_0_5: return "0.5";
-            case OID_0_5_0: return "0.5.0";
-            case OID_1_0: return "1.0";
-            case OID_1_0_0: return "1.0.0";
-            case OID_1_0_1: return "1.0.1";
-            case OID_1_0_2: return "1.0.2";
-            case OID_1_1: return "1.1";
-            case OID_1_1_0: return "1.1.0";
-            case OID_1_4: return "1.4";
-            case OID_1_4_0: return "1.4.0";
-            case OID_1_6: return "1.6";
-            case OID_1_6_0: return "1.6.0";
-            case OID_1_8: return "1.8";
-            case OID_1_8_0: return "1.8.0";
+            case _0_11: return "0.11";
+            case _0_0: return "0.0";
+            case _0_0_80: return "0.0.80";
+            case _0_0_81: return "0.0.81";
+            case _0_0_82: return "0.0.82";
+            case _0_4: return "0.4";
+            case _0_4_0: return "0.4.0";
+            case _0_5: return "0.5";
+            case _0_5_0: return "0.5.0";
+            case _1_0: return "1.0";
+            case _1_0_0: return "1.0.0";
+            case _1_0_1: return "1.0.1";
+            case _1_0_2: return "1.0.2";
+            case _1_1: return "1.1";
+            case _1_1_0: return "1.1.0";
+            case _1_4: return "1.4";
+            case _1_4_0: return "1.4.0";
+            case _1_6: return "1.6";
+            case _1_6_0: return "1.6.0";
+            case _1_8: return "1.8";
+            case _1_8_0: return "1.8.0";
             case _3_0: return "3.0";
             case _3_0_0: return "3.0.0";
             case _3_0_1: return "3.0.1";
@@ -13072,47 +13072,47 @@ The primary difference between a medicationusage and a medicationadministration 
         if ("0.06".equals(codeString))
           return FHIRVersion._0_06;
         if ("0.11".equals(codeString))
-          return FHIRVersion.OID_0_11;
+          return FHIRVersion._0_11;
         if ("0.0".equals(codeString))
-          return FHIRVersion.OID_0_0;
+          return FHIRVersion._0_0;
         if ("0.0.80".equals(codeString))
-          return FHIRVersion.OID_0_0_80;
+          return FHIRVersion._0_0_80;
         if ("0.0.81".equals(codeString))
-          return FHIRVersion.OID_0_0_81;
+          return FHIRVersion._0_0_81;
         if ("0.0.82".equals(codeString))
-          return FHIRVersion.OID_0_0_82;
+          return FHIRVersion._0_0_82;
         if ("0.4".equals(codeString))
-          return FHIRVersion.OID_0_4;
+          return FHIRVersion._0_4;
         if ("0.4.0".equals(codeString))
-          return FHIRVersion.OID_0_4_0;
+          return FHIRVersion._0_4_0;
         if ("0.5".equals(codeString))
-          return FHIRVersion.OID_0_5;
+          return FHIRVersion._0_5;
         if ("0.5.0".equals(codeString))
-          return FHIRVersion.OID_0_5_0;
+          return FHIRVersion._0_5_0;
         if ("1.0".equals(codeString))
-          return FHIRVersion.OID_1_0;
+          return FHIRVersion._1_0;
         if ("1.0.0".equals(codeString))
-          return FHIRVersion.OID_1_0_0;
+          return FHIRVersion._1_0_0;
         if ("1.0.1".equals(codeString))
-          return FHIRVersion.OID_1_0_1;
+          return FHIRVersion._1_0_1;
         if ("1.0.2".equals(codeString))
-          return FHIRVersion.OID_1_0_2;
+          return FHIRVersion._1_0_2;
         if ("1.1".equals(codeString))
-          return FHIRVersion.OID_1_1;
+          return FHIRVersion._1_1;
         if ("1.1.0".equals(codeString))
-          return FHIRVersion.OID_1_1_0;
+          return FHIRVersion._1_1_0;
         if ("1.4".equals(codeString))
-          return FHIRVersion.OID_1_4;
+          return FHIRVersion._1_4;
         if ("1.4.0".equals(codeString))
-          return FHIRVersion.OID_1_4_0;
+          return FHIRVersion._1_4_0;
         if ("1.6".equals(codeString))
-          return FHIRVersion.OID_1_6;
+          return FHIRVersion._1_6;
         if ("1.6.0".equals(codeString))
-          return FHIRVersion.OID_1_6_0;
+          return FHIRVersion._1_6_0;
         if ("1.8".equals(codeString))
-          return FHIRVersion.OID_1_8;
+          return FHIRVersion._1_8;
         if ("1.8.0".equals(codeString))
-          return FHIRVersion.OID_1_8_0;
+          return FHIRVersion._1_8_0;
         if ("3.0".equals(codeString))
           return FHIRVersion._3_0;
         if ("3.0.0".equals(codeString))
@@ -13188,47 +13188,47 @@ The primary difference between a medicationusage and a medicationadministration 
         if ("0.06".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._0_06);
         if ("0.11".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion.OID_0_11);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_11);
         if ("0.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion.OID_0_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0);
         if ("0.0.80".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion.OID_0_0_80);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_80);
         if ("0.0.81".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion.OID_0_0_81);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_81);
         if ("0.0.82".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion.OID_0_0_82);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_0_82);
         if ("0.4".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion.OID_0_4);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_4);
         if ("0.4.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion.OID_0_4_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_4_0);
         if ("0.5".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion.OID_0_5);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_5);
         if ("0.5.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion.OID_0_5_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._0_5_0);
         if ("1.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion.OID_1_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0);
         if ("1.0.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion.OID_1_0_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_0);
         if ("1.0.1".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion.OID_1_0_1);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_1);
         if ("1.0.2".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion.OID_1_0_2);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_0_2);
         if ("1.1".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion.OID_1_1);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_1);
         if ("1.1.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion.OID_1_1_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_1_0);
         if ("1.4".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion.OID_1_4);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_4);
         if ("1.4.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion.OID_1_4_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_4_0);
         if ("1.6".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion.OID_1_6);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_6);
         if ("1.6.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion.OID_1_6_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_6_0);
         if ("1.8".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion.OID_1_8);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_8);
         if ("1.8.0".equals(codeString))
-          return new Enumeration<FHIRVersion>(this, FHIRVersion.OID_1_8_0);
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._1_8_0);
         if ("3.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._3_0);
         if ("3.0.0".equals(codeString))
@@ -13296,47 +13296,47 @@ The primary difference between a medicationusage and a medicationadministration 
         return "0.05";
       if (code == FHIRVersion._0_06)
         return "0.06";
-      if (code == FHIRVersion.OID_0_11)
+      if (code == FHIRVersion._0_11)
         return "0.11";
-      if (code == FHIRVersion.OID_0_0)
+      if (code == FHIRVersion._0_0)
         return "0.0";
-      if (code == FHIRVersion.OID_0_0_80)
+      if (code == FHIRVersion._0_0_80)
         return "0.0.80";
-      if (code == FHIRVersion.OID_0_0_81)
+      if (code == FHIRVersion._0_0_81)
         return "0.0.81";
-      if (code == FHIRVersion.OID_0_0_82)
+      if (code == FHIRVersion._0_0_82)
         return "0.0.82";
-      if (code == FHIRVersion.OID_0_4)
+      if (code == FHIRVersion._0_4)
         return "0.4";
-      if (code == FHIRVersion.OID_0_4_0)
+      if (code == FHIRVersion._0_4_0)
         return "0.4.0";
-      if (code == FHIRVersion.OID_0_5)
+      if (code == FHIRVersion._0_5)
         return "0.5";
-      if (code == FHIRVersion.OID_0_5_0)
+      if (code == FHIRVersion._0_5_0)
         return "0.5.0";
-      if (code == FHIRVersion.OID_1_0)
+      if (code == FHIRVersion._1_0)
         return "1.0";
-      if (code == FHIRVersion.OID_1_0_0)
+      if (code == FHIRVersion._1_0_0)
         return "1.0.0";
-      if (code == FHIRVersion.OID_1_0_1)
+      if (code == FHIRVersion._1_0_1)
         return "1.0.1";
-      if (code == FHIRVersion.OID_1_0_2)
+      if (code == FHIRVersion._1_0_2)
         return "1.0.2";
-      if (code == FHIRVersion.OID_1_1)
+      if (code == FHIRVersion._1_1)
         return "1.1";
-      if (code == FHIRVersion.OID_1_1_0)
+      if (code == FHIRVersion._1_1_0)
         return "1.1.0";
-      if (code == FHIRVersion.OID_1_4)
+      if (code == FHIRVersion._1_4)
         return "1.4";
-      if (code == FHIRVersion.OID_1_4_0)
+      if (code == FHIRVersion._1_4_0)
         return "1.4.0";
-      if (code == FHIRVersion.OID_1_6)
+      if (code == FHIRVersion._1_6)
         return "1.6";
-      if (code == FHIRVersion.OID_1_6_0)
+      if (code == FHIRVersion._1_6_0)
         return "1.6.0";
-      if (code == FHIRVersion.OID_1_8)
+      if (code == FHIRVersion._1_8)
         return "1.8";
-      if (code == FHIRVersion.OID_1_8_0)
+      if (code == FHIRVersion._1_8_0)
         return "1.8.0";
       if (code == FHIRVersion._3_0)
         return "3.0";

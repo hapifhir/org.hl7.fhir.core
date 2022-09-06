@@ -35,4 +35,30 @@ public class Reference40_50 {
     tgt.setReference(convertReference(src));
     return tgt;
   }
+  
+
+  public static org.hl7.fhir.r5.model.CanonicalType convertReferenceToCanonical(org.hl7.fhir.r4.model.Reference src) {
+    if (src == null) return null;
+    org.hl7.fhir.r5.model.CanonicalType tgt = new org.hl7.fhir.r5.model.CanonicalType();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    if (src.hasReference()) tgt.setValue(src.getReference());
+    return tgt;
+  }
+
+  public static org.hl7.fhir.r4.model.Reference convertReferenceToCanonical(org.hl7.fhir.r5.model.CanonicalType src) {
+    if (src == null) return null;
+    org.hl7.fhir.r4.model.Reference tgt = new org.hl7.fhir.r4.model.Reference();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    if (src.hasValue()) tgt.setReference(src.getValue());
+    return tgt;
+  }
+  
+
+  static public org.hl7.fhir.r4.model.Reference convertCodeableReferenceToReference(org.hl7.fhir.r5.model.CodeableReference src) {
+    org.hl7.fhir.r4.model.Reference tgt = new org.hl7.fhir.r4.model.Reference();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    tgt.setReference(src.getReference().getReference());
+    return tgt;
+  }
+
 }

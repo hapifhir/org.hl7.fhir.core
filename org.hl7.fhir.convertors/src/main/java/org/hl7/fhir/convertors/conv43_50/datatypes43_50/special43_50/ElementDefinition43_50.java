@@ -1,13 +1,21 @@
 package org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50;
 
+import java.util.stream.Collectors;
+
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.BackboneElement43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Coding43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.*;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Canonical43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Code43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Id43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Integer43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.MarkDown43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.UnsignedInt43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.convertors.conv43_50.resources43_50.Enumerations43_50;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import java.util.stream.Collectors;
 
 public class ElementDefinition43_50 {
   public static org.hl7.fhir.r5.model.ElementDefinition convertElementDefinition(org.hl7.fhir.r4b.model.ElementDefinition src) throws FHIRException {

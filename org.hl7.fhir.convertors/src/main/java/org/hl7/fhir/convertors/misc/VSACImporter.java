@@ -1,5 +1,13 @@
 package org.hl7.fhir.convertors.misc;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4.formats.JsonParser;
@@ -10,14 +18,6 @@ import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.Utilities;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.text.ParseException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class VSACImporter extends OIDBasedValueSetImporter {
 

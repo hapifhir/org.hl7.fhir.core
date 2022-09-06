@@ -23699,7 +23699,7 @@ public class XmlParser extends XmlParserBase {
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("label")) {
       res.setLabelElement(parseString(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("conformance")) {
-      res.setConformanceElement(parseEnumeration(xpp, Requirements.ConformanceExpectation.NULL, new Requirements.ConformanceExpectationEnumFactory()));
+      res.getConformance().add(parseEnumeration(xpp, Requirements.ConformanceExpectation.NULL, new Requirements.ConformanceExpectationEnumFactory()));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("requirement")) {
       res.setRequirementElement(parseMarkdown(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("derivedFrom")) {
@@ -24317,7 +24317,7 @@ public class XmlParser extends XmlParserBase {
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("code")) {
       res.setCodeElement(parseCode(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("base")) {
-      res.getBase().add(parseEnumeration(xpp, Enumerations.AllResourceTypes.NULL, new Enumerations.AllResourceTypesEnumFactory()));
+      res.getBase().add(parseCode(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("type")) {
       res.setTypeElement(parseEnumeration(xpp, Enumerations.SearchParamType.NULL, new Enumerations.SearchParamTypeEnumFactory()));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("expression")) {
@@ -55102,8 +55102,9 @@ public class XmlParser extends XmlParserBase {
     if (element.hasLabelElement()) {
       composeString("label", element.getLabelElement());
     }
-    if (element.hasConformanceElement())
-      composeEnumeration("conformance", element.getConformanceElement(), new Requirements.ConformanceExpectationEnumFactory());
+      if (element.hasConformance()) 
+        for (Enumeration<Requirements.ConformanceExpectation> e : element.getConformance()) 
+          composeEnumeration("conformance", e, new Requirements.ConformanceExpectationEnumFactory());
     if (element.hasRequirementElement()) {
       composeMarkdown("requirement", element.getRequirementElement());
     }
@@ -55759,8 +55760,8 @@ public class XmlParser extends XmlParserBase {
       composeCode("code", element.getCodeElement());
     }
       if (element.hasBase()) 
-        for (Enumeration<Enumerations.AllResourceTypes> e : element.getBase()) 
-          composeEnumeration("base", e, new Enumerations.AllResourceTypesEnumFactory());
+        for (CodeType e : element.getBase()) 
+          composeCode("base", e);
     if (element.hasTypeElement())
       composeEnumeration("type", element.getTypeElement(), new Enumerations.SearchParamTypeEnumFactory());
     if (element.hasExpressionElement()) {

@@ -4,7 +4,14 @@ import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.ContactDetail43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.UsageContext43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.*;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Canonical43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Code43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.DateTime43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Integer43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.MarkDown43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeType;
 
@@ -80,7 +87,7 @@ public class OperationDefinition43_50 {
       tgt.setCommentElement(MarkDown43_50.convertMarkdown(src.getCommentElement()));
     if (src.hasBase())
       tgt.setBaseElement(Canonical43_50.convertCanonical(src.getBaseElement()));
-    for (org.hl7.fhir.r4b.model.CodeType t : src.getResource()) tgt.getResource().add(Code43_50.convertResourceEnum(t));
+    for (org.hl7.fhir.r4b.model.CodeType t : src.getResource()) tgt.getResource().add(Code43_50.convertCode(t));
     if (src.hasSystem())
       tgt.setSystemElement(Boolean43_50.convertBoolean(src.getSystemElement()));
     if (src.hasType())
@@ -139,7 +146,7 @@ public class OperationDefinition43_50 {
       tgt.setCommentElement(MarkDown43_50.convertMarkdown(src.getCommentElement()));
     if (src.hasBase())
       tgt.setBaseElement(Canonical43_50.convertCanonical(src.getBaseElement()));
-    for (CodeType t : src.getResource()) tgt.getResource().add(Code43_50.convertResourceEnum(t));
+    for (CodeType t : src.getResource()) tgt.getResource().add(Code43_50.convertCode(t));
     if (src.hasSystem())
       tgt.setSystemElement(Boolean43_50.convertBoolean(src.getSystemElement()));
     if (src.hasType())

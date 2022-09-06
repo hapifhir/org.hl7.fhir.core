@@ -25,7 +25,7 @@ public class SupplyDelivery30_50 {
     if (src.hasType())
       tgt.setType(CodeableConcept30_50.convertCodeableConcept(src.getType()));
     if (src.hasSuppliedItem())
-      tgt.setSuppliedItem(convertSupplyDeliverySuppliedItemComponent(src.getSuppliedItem()));
+      tgt.addSuppliedItem(convertSupplyDeliverySuppliedItemComponent(src.getSuppliedItem()));
     if (src.hasOccurrence())
       tgt.setOccurrence(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getOccurrence()));
     if (src.hasSupplier())
@@ -52,7 +52,7 @@ public class SupplyDelivery30_50 {
     if (src.hasType())
       tgt.setType(CodeableConcept30_50.convertCodeableConcept(src.getType()));
     if (src.hasSuppliedItem())
-      tgt.setSuppliedItem(convertSupplyDeliverySuppliedItemComponent(src.getSuppliedItem()));
+      tgt.setSuppliedItem(convertSupplyDeliverySuppliedItemComponent(src.getSuppliedItemFirstRep()));
     if (src.hasOccurrence())
       tgt.setOccurrence(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getOccurrence()));
     if (src.hasSupplier())

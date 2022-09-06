@@ -1,13 +1,14 @@
 package org.hl7.fhir.convertors.misc;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import org.hl7.fhir.utilities.npm.NpmPackage;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map.Entry;
+
+import org.hl7.fhir.utilities.npm.NpmPackage;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 
 public class XMLPackageConvertor {

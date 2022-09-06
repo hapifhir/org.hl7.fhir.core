@@ -1,17 +1,23 @@
 package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
+import java.util.stream.Collectors;
+
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.ContactDetail43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.UsageContext43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.*;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Canonical43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Code43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.DateTime43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Id43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.MarkDown43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Url43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
-
-import java.util.stream.Collectors;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -2280,7 +2286,7 @@ public class ImplementationGuide43_50 {
     org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideGlobalComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideGlobalComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasType())
-      tgt.setTypeElement(Code43_50.convertResourceEnum(src.getTypeElement()));
+      tgt.setTypeElement(Code43_50.convertCode(src.getTypeElement()));
     if (src.hasProfile())
       tgt.setProfileElement(Canonical43_50.convertCanonical(src.getProfileElement()));
     return tgt;
@@ -2292,7 +2298,7 @@ public class ImplementationGuide43_50 {
     org.hl7.fhir.r4b.model.ImplementationGuide.ImplementationGuideGlobalComponent tgt = new org.hl7.fhir.r4b.model.ImplementationGuide.ImplementationGuideGlobalComponent();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyBackboneElement(src, tgt);
     if (src.hasType())
-      tgt.setTypeElement(Code43_50.convertResourceEnum(src.getTypeElement()));
+      tgt.setTypeElement(Code43_50.convertCode(src.getTypeElement()));
     if (src.hasProfile())
       tgt.setProfileElement(Canonical43_50.convertCanonical(src.getProfileElement()));
     return tgt;

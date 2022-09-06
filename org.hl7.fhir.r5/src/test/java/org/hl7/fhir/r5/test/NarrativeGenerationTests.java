@@ -173,7 +173,7 @@ public class NarrativeGenerationTests {
 
   @BeforeAll
   public static void setUp() {
-    context = TestingUtilities.getSharedWorkerContext();
+    context = TestingUtilities.getSharedWorkerContext("5.0.0-ballot");
   }
 
   @ParameterizedTest(name = "{index}: file {0}")

@@ -1,8 +1,18 @@
 package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.*;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.*;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Attachment43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Money43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Period43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.SimpleQuantity43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Date43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.DateTime43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Decimal43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.PositiveInt43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -454,9 +464,9 @@ public class ClaimResponse43_50 {
     if (src.hasNet())
       tgt.setNet(Money43_50.convertMoney(src.getNet()));
     if (src.hasBodySite())
-      tgt.setBodySite(CodeableConcept43_50.convertCodeableConcept(src.getBodySite()));
+      tgt.getBodySiteFirstRep().addSite(CodeableConcept43_50.convertCodeableConceptToCodeableReference(src.getBodySite()));
     for (org.hl7.fhir.r4b.model.CodeableConcept t : src.getSubSite())
-      tgt.addSubSite(CodeableConcept43_50.convertCodeableConcept(t));
+      tgt.getBodySiteFirstRep().addSubSite(CodeableConcept43_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r4b.model.PositiveIntType t : src.getNoteNumber())
       tgt.getNoteNumber().add(PositiveInt43_50.convertPositiveInt(t));
     for (org.hl7.fhir.r4b.model.ClaimResponse.AdjudicationComponent t : src.getAdjudication())
@@ -496,9 +506,9 @@ public class ClaimResponse43_50 {
       tgt.setFactorElement(Decimal43_50.convertDecimal(src.getFactorElement()));
     if (src.hasNet())
       tgt.setNet(Money43_50.convertMoney(src.getNet()));
-    if (src.hasBodySite())
-      tgt.setBodySite(CodeableConcept43_50.convertCodeableConcept(src.getBodySite()));
-    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSubSite())
+    if (src.getBodySiteFirstRep().hasSite())
+      tgt.setBodySite(CodeableConcept43_50.convertCodeableReferenceToCodeableConcept(src.getBodySiteFirstRep().getSiteFirstRep()));
+    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getBodySiteFirstRep().getSubSite())
       tgt.addSubSite(CodeableConcept43_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r5.model.PositiveIntType t : src.getNoteNumber())
       tgt.getNoteNumber().add(PositiveInt43_50.convertPositiveInt(t));

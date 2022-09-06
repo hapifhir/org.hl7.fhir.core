@@ -1,8 +1,15 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.*;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Annotation40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Duration40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Period40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.SimpleQuantity40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.UnsignedInt40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Dosage40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -85,10 +92,10 @@ public class MedicationRequest40_50 {
       tgt.addReason().setConcept(CodeableConcept40_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
       tgt.addReason().setReference(Reference40_50.convertReference(t));
-    for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical())
-      tgt.getInstantiatesCanonical().add(Canonical40_50.convertCanonical(t));
-    for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri())
-      tgt.getInstantiatesUri().add(Uri40_50.convertUri(t));
+//    for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical())
+//      tgt.getInstantiatesCanonical().add(Canonical40_50.convertCanonical(t));
+//    for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri())
+//      tgt.getInstantiatesUri().add(Uri40_50.convertUri(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
     if (src.hasGroupIdentifier())
       tgt.setGroupIdentifier(Identifier40_50.convertIdentifier(src.getGroupIdentifier()));
@@ -160,10 +167,10 @@ public class MedicationRequest40_50 {
       if (t.hasReference())
         tgt.addReasonReference(Reference40_50.convertReference(t.getReference()));
     }
-    for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical())
-      tgt.getInstantiatesCanonical().add(Canonical40_50.convertCanonical(t));
-    for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri())
-      tgt.getInstantiatesUri().add(Uri40_50.convertUri(t));
+//    for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical())
+//      tgt.getInstantiatesCanonical().add(Canonical40_50.convertCanonical(t));
+//    for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri())
+//      tgt.getInstantiatesUri().add(Uri40_50.convertUri(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
     if (src.hasGroupIdentifier())
       tgt.setGroupIdentifier(Identifier40_50.convertIdentifier(src.getGroupIdentifier()));

@@ -1,7 +1,11 @@
 package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.*;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Duration43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Identifier43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Range43_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.SimpleQuantity43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -43,7 +47,7 @@ public class SpecimenDefinition43_50 {
     org.hl7.fhir.r5.model.SpecimenDefinition tgt = new org.hl7.fhir.r5.model.SpecimenDefinition();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyDomainResource(src, tgt);
     if (src.hasIdentifier())
-      tgt.setIdentifier(Identifier43_50.convertIdentifier(src.getIdentifier()));
+      tgt.addIdentifier(Identifier43_50.convertIdentifier(src.getIdentifier()));
     if (src.hasTypeCollected())
       tgt.setTypeCollected(CodeableConcept43_50.convertCodeableConcept(src.getTypeCollected()));
     for (org.hl7.fhir.r4b.model.CodeableConcept t : src.getPatientPreparation())
@@ -63,7 +67,7 @@ public class SpecimenDefinition43_50 {
     org.hl7.fhir.r4b.model.SpecimenDefinition tgt = new org.hl7.fhir.r4b.model.SpecimenDefinition();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyDomainResource(src, tgt);
     if (src.hasIdentifier())
-      tgt.setIdentifier(Identifier43_50.convertIdentifier(src.getIdentifier()));
+      tgt.setIdentifier(Identifier43_50.convertIdentifier(src.getIdentifierFirstRep()));
     if (src.hasTypeCollected())
       tgt.setTypeCollected(CodeableConcept43_50.convertCodeableConcept(src.getTypeCollected()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPatientPreparation())

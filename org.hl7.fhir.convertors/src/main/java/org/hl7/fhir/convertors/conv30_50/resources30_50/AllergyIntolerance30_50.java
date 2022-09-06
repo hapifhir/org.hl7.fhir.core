@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv30_50.resources30_50;
 
+import java.util.stream.Collectors;
+
 import org.hl7.fhir.convertors.context.ConversionContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Annotation30_50;
@@ -12,8 +14,6 @@ import org.hl7.fhir.r5.model.AllergyIntolerance.AllergyIntoleranceParticipantCom
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.Coding;
-
-import java.util.stream.Collectors;
 
 public class AllergyIntolerance30_50 {
 
