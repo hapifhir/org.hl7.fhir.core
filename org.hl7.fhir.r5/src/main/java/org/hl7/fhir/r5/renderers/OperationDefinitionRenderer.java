@@ -35,11 +35,12 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
   }
 
   public boolean render(XhtmlNode x, OperationDefinition opd) throws IOException, FHIRException, EOperationOutcome {
-    x.h2().addText(opd.getName());
-    x.para().addText(Utilities.capitalize(opd.getKind().toString())+": "+opd.getName());
-    x.para().tx("The official URL for this operation definition is: ");
-    x.pre().tx(opd.getUrl());
-    addMarkdown(x, opd.getDescription());
+    if (context.isHeader()) {
+      x.h2().addText(opd.getName());
+      x.para().addText(Utilities.capitalize(opd.getKind().toString())+": "+opd.getName());    
+      x.para().tx("The official URL for this operation definition is: ");
+      x.pre().tx(opd.getUrl());
+      addMarkdown(x, opd.getDescription());}
 
     if (opd.getSystem())
       x.para().tx("URL: [base]/$"+opd.getCode());
