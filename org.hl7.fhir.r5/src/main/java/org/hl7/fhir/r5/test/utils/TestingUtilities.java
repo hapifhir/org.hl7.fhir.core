@@ -75,7 +75,7 @@ public class TestingUtilities extends BaseTestingUtilities {
 
   static public Map<String, IWorkerContext> fcontexts;
 
-  final static public String DEFAULT_CONTEXT_VERSION = "4.0.1";
+  final static public String DEFAULT_CONTEXT_VERSION = "5.0.0";
 
   /** Get an existing instantiation of a WorkerContext if available
    *
