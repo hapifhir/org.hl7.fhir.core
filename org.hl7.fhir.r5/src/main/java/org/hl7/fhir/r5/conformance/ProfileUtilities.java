@@ -3342,7 +3342,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private boolean hasBindableType(ElementDefinition ed) {
     for (TypeRefComponent tr : ed.getType()) {
-      if (Utilities.existsInList(tr.getWorkingCode(), "Coding", "CodeableConcept", "Quantity", "uri", "string", "code")) {
+      if (Utilities.existsInList(tr.getWorkingCode(), "Coding", "CodeableConcept", "Quantity", "uri", "string", "code", "CodeableReference")) {
         return true;
       }
       StructureDefinition sd = context.fetchTypeDefinition(tr.getCode());
