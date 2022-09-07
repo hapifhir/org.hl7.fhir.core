@@ -2340,16 +2340,16 @@ public class ImplementationGuide40_50 {
     if (src.hasPage())
       tgt.setPage(convertImplementationGuideDefinitionPageComponent(src.getPage()));
     for (org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent t : src.getParameter()) {
-      if (Utilities.existsInList(t.getCode().getCode(), "apply", "path-resource", "path-pages", "path-tx-cache", "expansion-parameter", "rule-broken-links", "generate-xml", "generate-json", "generate-turtle", "html-template"))
+//      if (Utilities.existsInList(t.getCode().getCode(), "apply", "path-resource", "path-pages", "path-tx-cache", "expansion-parameter", "rule-broken-links", "generate-xml", "generate-json", "generate-turtle", "html-template"))
         tgt.addParameter(convertImplementationGuideDefinitionParameterComponent(t));
-      else {
-        org.hl7.fhir.r4.model.Extension e = new org.hl7.fhir.r4.model.Extension(EXT_IG_DEFINITION_PARAMETER);
-        org.hl7.fhir.r4.model.Extension eCode = new org.hl7.fhir.r4.model.Extension("code", new org.hl7.fhir.r4.model.StringType(t.getCode().getCode()));
-        org.hl7.fhir.r4.model.Extension eValue = new org.hl7.fhir.r4.model.Extension("value", new org.hl7.fhir.r4.model.StringType(t.getValue()));
-        e.addExtension(eCode);
-        e.addExtension(eValue);
-        tgt.addExtension(e);
-      }
+//      else {
+//        org.hl7.fhir.r4.model.Extension e = new org.hl7.fhir.r4.model.Extension(EXT_IG_DEFINITION_PARAMETER);
+//        org.hl7.fhir.r4.model.Extension eCode = new org.hl7.fhir.r4.model.Extension("code", new org.hl7.fhir.r4.model.StringType(t.getCode().getCode()));
+//        org.hl7.fhir.r4.model.Extension eValue = new org.hl7.fhir.r4.model.Extension("value", new org.hl7.fhir.r4.model.StringType(t.getValue()));
+//        e.addExtension(eCode);
+//        e.addExtension(eValue);
+//        tgt.addExtension(e);
+//      }
     }
     for (org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionTemplateComponent t : src.getTemplate())
       tgt.addTemplate(convertImplementationGuideDefinitionTemplateComponent(t));
