@@ -307,10 +307,10 @@ public class XmlParser extends ParserBase {
     	  Node n = node.getFirstChild();
         while (n != null) {
           if (n.getNodeType() == Node.TEXT_NODE && !Utilities.noString(n.getTextContent().trim())) {
-            Node nt = n;
-            while (nt.getNextSibling() != null && nt.getNodeType() != Node.ELEMENT_NODE) {
-              nt = nt.getNextSibling();
+            while (n.getNextSibling() != null && n.getNodeType() != Node.ELEMENT_NODE) {
+              n = n.getNextSibling();
             }
+            Node nt = n;
             while (nt.getPreviousSibling() != null && nt.getNodeType() != Node.ELEMENT_NODE) {
               nt = nt.getPreviousSibling();
             }
