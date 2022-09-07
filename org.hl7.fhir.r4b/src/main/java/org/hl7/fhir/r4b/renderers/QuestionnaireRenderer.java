@@ -713,7 +713,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       XhtmlNode ans = item(ul, "Answers");
       if (!Utilities.noString(i.getAnswerValueSet()) && i.getAnswerValueSet().startsWith("#")) {
         ValueSet vs = (ValueSet) q.getContained(i.getAnswerValueSet().substring(1));
-        if (vs == null) {
+        if (vs == null || !vs.hasUserData("path")) {
           ans.tx(i.getAnswerValueSet());                    
         } else {
           ans.ah(vs.getUserString("path")).tx(vs.present());                              
