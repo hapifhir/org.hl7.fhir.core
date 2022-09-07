@@ -228,7 +228,6 @@ public class StructureDefinitionValidator extends BaseValidator {
     }
   }
   
-  
   private boolean addCharacteristics(Set<String> set, String tc) {
     switch (tc) {
     case "boolean" : return addCharacteristicsForType(set);
@@ -251,6 +250,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     case "unsignedInt" :return  addCharacteristicsForType(set, "has-range", "has-length");
     case "url" :return  addCharacteristicsForType(set, "has-length", "can-bind");
     case "uuid" :return  addCharacteristicsForType(set, "has-length", "can-bind");
+    case "xhtml" :return  addCharacteristicsForType(set);
     case "Address" :return  addCharacteristicsForType(set, "do-translations");
     case "Age" : return addCharacteristicsForType(set, "has-range", "is-continuous");
     case "Annotation" :return  addCharacteristicsForType(set);
@@ -290,7 +290,10 @@ public class StructureDefinitionValidator extends BaseValidator {
     case "Element" :return  addCharacteristicsForType(set);
     case "BackboneElement" :return  addCharacteristicsForType(set);
     default:
-      throw new Error("Unhandled data type in addCharacterstics: "+tc);
+      if (context.getResourceNames().contains(tc)) 
+        return addCharacteristicsForType(set);
+      else
+        throw new Error("Unhandled data type in addCharacterstics: "+tc);
     }
   }
 
