@@ -10144,6 +10144,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return VISIONPRESCRIPTION;
         if ("Parameters".equals(codeString))
           return PARAMETERS;
+        if ("Any".equals(codeString))
+          return RESOURCE;
         throw new FHIRException("Unknown FHIRTypes code '"+codeString+"'");
         }
         public String toCode() {
@@ -12805,6 +12807,118 @@ The primary difference between a medicationusage and a medicationadministration 
           return _5_0_0BALLOT;
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
+        public static boolean isValidCode(String codeString) {
+          if (codeString == null || "".equals(codeString))
+              return false;
+      if ("0.01".equals(codeString))
+        return true;
+      if ("0.05".equals(codeString))
+        return true;
+      if ("0.06".equals(codeString))
+        return true;
+      if ("0.11".equals(codeString))
+        return true;
+      if ("0.0".equals(codeString))
+        return true;
+      if ("0.0.80".equals(codeString))
+        return true;
+      if ("0.0.81".equals(codeString))
+        return true;
+      if ("0.0.82".equals(codeString))
+        return true;
+      if ("0.4".equals(codeString))
+        return true;
+      if ("0.4.0".equals(codeString))
+        return true;
+      if ("0.5".equals(codeString))
+        return true;
+      if ("0.5.0".equals(codeString))
+        return true;
+      if ("1.0".equals(codeString))
+        return true;
+      if ("1.0.0".equals(codeString))
+        return true;
+      if ("1.0.1".equals(codeString))
+        return true;
+      if ("1.0.2".equals(codeString))
+        return true;
+      if ("1.1".equals(codeString))
+        return true;
+      if ("1.1.0".equals(codeString))
+        return true;
+      if ("1.4".equals(codeString))
+        return true;
+      if ("1.4.0".equals(codeString))
+        return true;
+      if ("1.6".equals(codeString))
+        return true;
+      if ("1.6.0".equals(codeString))
+        return true;
+      if ("1.8".equals(codeString))
+        return true;
+      if ("1.8.0".equals(codeString))
+        return true;
+      if ("3.0".equals(codeString))
+        return true;
+      if ("3.0.0".equals(codeString))
+        return true;
+      if ("3.0.1".equals(codeString))
+        return true;
+      if ("3.0.2".equals(codeString))
+        return true;
+      if ("3.3".equals(codeString))
+        return true;
+      if ("3.3.0".equals(codeString))
+        return true;
+      if ("3.5".equals(codeString))
+        return true;
+      if ("3.5.0".equals(codeString))
+        return true;
+      if ("4.0".equals(codeString))
+        return true;
+      if ("4.0.0".equals(codeString))
+        return true;
+      if ("4.0.1".equals(codeString))
+        return true;
+      if ("4.1".equals(codeString))
+        return true;
+      if ("4.1.0".equals(codeString))
+        return true;
+      if ("4.2".equals(codeString))
+        return true;
+      if ("4.2.0".equals(codeString))
+        return true;
+      if ("4.3".equals(codeString))
+        return true;
+      if ("4.3.0".equals(codeString))
+        return true;
+      if ("4.4".equals(codeString))
+        return true;
+      if ("4.4.0".equals(codeString))
+        return true;
+      if ("4.5".equals(codeString))
+        return true;
+      if ("4.5.0".equals(codeString))
+        return true;
+      if ("4.6".equals(codeString))
+        return true;
+      if ("4.6.0".equals(codeString))
+        return true;
+      if ("5.0".equals(codeString))
+        return true;
+      if ("5.0.0".equals(codeString))
+        return true;
+      if ("5.0.0-cibuild".equals(codeString))
+        return true;
+      if ("5.0.0-snapshot1".equals(codeString))
+        return true;
+      if ("5.0.0-snapshot2".equals(codeString))
+        return true;
+      if ("5.0.0-ballot".equals(codeString))
+        return true;
+      return false;
+      }
+
         public String toCode() {
           switch (this) {
             case _0_01: return "0.01";
