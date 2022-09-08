@@ -679,6 +679,13 @@ public class DataRenderer extends Renderer {
       renderSampledData(x, (SampledData) type);
     } else if (type instanceof Reference) {
       renderReference(x, (Reference) type);
+    } else if (type instanceof CodeableReference) {
+      CodeableReference cr = (CodeableReference) type;
+      if (cr.hasConcept()) {
+        renderCodeableConcept(x, cr.getConcept());
+      } else { 
+        renderReference(x, cr.getReference());
+      }
     } else if (type instanceof MarkdownType) {
       addMarkdown(x, ((MarkdownType) type).asStringValue());
     } else if (type.isPrimitive()) {
