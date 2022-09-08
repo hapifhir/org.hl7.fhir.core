@@ -766,11 +766,11 @@ public class PatientRenderer extends ResourceRenderer {
             att.getData() != null && (!context.isInlineGraphics() || (att.getData().length > 0 && att.getData().length < MAX_IMAGE_LENGTH))) {
           String ext = extensionForType(att.getContentType());
           if (context.isInlineGraphics() || Utilities.noString(context.getDestDir()) || ext == null) {
-            td.img("data:"+att.getContentType()+";base64,"+att.getDataElement().asStringValue());
+            td.img("data:"+att.getContentType()+";base64,"+att.getDataElement().asStringValue(), "patient photo");
           } else {
             String n = UUID.randomUUID().toString().toLowerCase()+ext;
             TextFile.bytesToFile(att.getData(), new File(Utilities.path(context.getDestDir(), n)));
-            td.img(n);            
+            td.img(n, "patient photo");            
           }
           return;
         } 
