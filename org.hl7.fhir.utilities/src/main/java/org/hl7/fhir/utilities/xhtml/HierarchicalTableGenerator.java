@@ -815,7 +815,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     else
       tc.setAttribute("style", "vertical-align: top; text-align : left; "+(c.cellStyle != null  && c.cellStyle.contains("background-color") ? "" : "background-color: "+color+"; ")+"border: "+ border +"px #F0F0F0 solid; padding:0px 4px 0px 4px"+(c.cellStyle != null ? ";"+c.cellStyle : ""));
     if (!Utilities.noString(icon)) {
-      XhtmlNode img = tc.addTag("img").setAttribute("src", srcFor(imagePath, icon)).setAttribute("class", "hierarchy").setAttribute("style", "background-color: "+color+"; background-color: inherit").setAttribute("alt", ".");
+      XhtmlNode img = tc.addTag("img").setAttribute("alt", "icon").setAttribute("src", srcFor(imagePath, icon)).setAttribute("class", "hierarchy").setAttribute("style", "background-color: "+color+"; background-color: inherit").setAttribute("alt", ".");
       if (hint != null)
         img.setAttribute("title", hint);
       tc.addText(" ");
