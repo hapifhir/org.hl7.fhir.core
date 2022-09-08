@@ -323,7 +323,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
   protected void clipboard(XhtmlNode x, String img, String title, String source) {
     XhtmlNode span = x.span("cursor: pointer", "Copy "+title+" Format to clipboard");
     span.attribute("onClick", "navigator.clipboard.writeText('"+Utilities.escapeJson(source)+"');");
-    span.img(img).setAttribute("width", "24px").setAttribute("height", "16px");
+    span.img(img, "btn").setAttribute("width", "24px").setAttribute("height", "16px");
   }
   
 
