@@ -384,7 +384,7 @@ public class Turtle {
 
   public String asHtml() throws Exception {
     StringBuilder b = new StringBuilder();
-    b.append("<pre class=\"rdf\"><code class=\"language-turtle\">\r\n");
+    b.append("<pre class=\"rdf\" style=\"white-space: pre; overflow: hidden\"><code class=\"language-turtle\">\r\n");
     commitPrefixes(b);
     for (Section s : sections) {
       commitSection(b, s);
