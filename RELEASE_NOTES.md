@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Rendering improvements for Patient and extension summary

@@ -11,7 +11,9 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -169,6 +171,36 @@ public abstract class ResourceRenderer extends DataRenderer {
           x.tx(" ("+cr.present()+")");          
         }
       }
+    }
+  }
+
+  public void render(Resource res, XhtmlNode x, DataType type) throws FHIRFormatError, DefinitionException, IOException {
+    if (type instanceof Reference) {
+      renderReference(res, x, (Reference) type);
+    } else if (type instanceof CodeableReference) {
+      CodeableReference cr = (CodeableReference) type;
+      if (cr.hasReference()) {
+        renderReference(res, x, cr.getReference());
+      } else {
+        render(x, type);
+      } 
+    } else { 
+      render(x, type);
+    }
+  }
+
+  public void render(ResourceWrapper res, XhtmlNode x, DataType type) throws FHIRFormatError, DefinitionException, IOException {
+    if (type instanceof Reference) {
+      renderReference(res, x, (Reference) type);
+    } else if (type instanceof CodeableReference) {
+      CodeableReference cr = (CodeableReference) type;
+      if (cr.hasReference()) {
+        renderReference(res, x, cr.getReference());
+      } else {
+        render(x, type);
+      } 
+    } else { 
+      render(x, type);
     }
   }
 
