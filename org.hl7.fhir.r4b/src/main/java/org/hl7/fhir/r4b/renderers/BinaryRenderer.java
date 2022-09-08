@@ -81,7 +81,7 @@ public class BinaryRenderer {
       String fn = "Binary-Native-"+bin.getId()+ext;
       TextFile.bytesToFile(bin.getContent(), Utilities.path(folder, fn));
       filenames.add(fn);
-      x.img("Binary-Native-"+bin.getId()+ext);
+      x.img("Binary-Native-"+bin.getId()+ext, "Binary");
     }
   }
 
