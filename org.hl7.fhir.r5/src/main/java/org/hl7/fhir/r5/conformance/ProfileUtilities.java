@@ -3544,10 +3544,8 @@ public class ProfileUtilities extends TranslatingUtilities {
           r1.getCells().add(gen.new Cell());
           r1.getCells().add(gen.new Cell(null, null, describeCardinality(c, null, new UnusedTracker()), null, null));
           genTypes(gen, r1, ved, defFile, ed, corePath, imagePath, false, false);
-          Cell cell = gen.new Cell();
-          cell.addMarkdown(c.getDefinition());
-          r1.getCells().add(cell);
           r1.setIcon("icon_"+m+"extension_simple.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_SIMPLE);      
+          generateDescription(gen, r1, c, null, true, corePath, corePath, ed, corePath, imagePath, false, false, false, ved, false, false, false, rc);
         }
       }
     } else  {
@@ -4274,7 +4272,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 //            if (child.getPath().endsWith(".extension") || child.getPath().endsWith(".modifierExtension"))
 //              genElement(defPath, gen, row.getSubRows(), child, all, profiles, showMissing, profileBaseFileName, true, false, corePath, imagePath, false, logicalModel, isConstraintMode, allInvariants);
       }
-      if (typesRow != null) {
+      if (typesRow != null && !element.prohibited()) {
         makeChoiceRows(typesRow.getSubRows(), element, gen, corePath, profileBaseFileName, mustSupport);
       }
     }
@@ -4779,8 +4777,10 @@ public class ProfileUtilities extends TranslatingUtilities {
             }
           }
           if (fixedUrl == null) {
-            c.getPieces().add(gen.new Piece(null, translate("sd.table", "URL")+": ", null).addStyle("font-weight:bold"));
-            c.getPieces().add(gen.new Piece(ref, fullUrl, null));
+            if (!Utilities.noString(fullUrl)) {
+              c.getPieces().add(gen.new Piece(null, translate("sd.table", "URL")+": ", null).addStyle("font-weight:bold"));
+              c.getPieces().add(gen.new Piece(ref, fullUrl, null));
+            }
           } else { 
             // reference to a profile take on the extension show the base URL
             c.getPieces().add(gen.new Piece(null, translate("sd.table", "URL")+": ", null).addStyle("font-weight:bold"));
