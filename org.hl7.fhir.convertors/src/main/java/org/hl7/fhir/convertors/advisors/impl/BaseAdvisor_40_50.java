@@ -11,7 +11,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 public class BaseAdvisor_40_50 extends BaseAdvisor50<org.hl7.fhir.r4.model.Extension> {
 
   private static final List<String> TestScriptIgnoredUrls = Arrays.asList("http://hl7.org/fhir/5.0/StructureDefinition/extension-TestScript.scope");
-  private boolean convertImplementationGuideDefinitionParameterComponent = true;
+  private boolean produceIllegalParameters = false;
 
   public BaseAdvisor_40_50() {
 
@@ -21,9 +21,9 @@ public class BaseAdvisor_40_50 extends BaseAdvisor50<org.hl7.fhir.r4.model.Exten
     this.failFast = failFast;
   }
 
-  public BaseAdvisor_40_50(Boolean failFast, Boolean convertImplementationGuideDefinitionParameterComponent) {
+  public BaseAdvisor_40_50(Boolean failFast, Boolean produceIllegalParameters) {
     this.failFast = failFast;
-    this.convertImplementationGuideDefinitionParameterComponent = convertImplementationGuideDefinitionParameterComponent;
+    this.produceIllegalParameters = produceIllegalParameters;
   }
 
 
@@ -37,7 +37,7 @@ public class BaseAdvisor_40_50 extends BaseAdvisor50<org.hl7.fhir.r4.model.Exten
       return false;
   }
 
-  public boolean convertImplementationGuideDefinitionParameterComponent() {
-    return convertImplementationGuideDefinitionParameterComponent;
+  public boolean produceIllegalParameters() {
+    return produceIllegalParameters;
   }
 }
