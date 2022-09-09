@@ -101,7 +101,7 @@ public class ImplementationGuide40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r4.model.ImplementationGuide convertImplementationGuide(ImplementationGuide src, boolean convertImplementationGuideDefinitionParameterComponent) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ImplementationGuide convertImplementationGuide(ImplementationGuide src, boolean produceIllegalParameters) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ImplementationGuide tgt = new org.hl7.fhir.r4.model.ImplementationGuide();
@@ -144,7 +144,7 @@ public class ImplementationGuide40_50 {
     for (org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideGlobalComponent t : src.getGlobal())
       tgt.addGlobal(convertImplementationGuideGlobalComponent(t));
     if (src.hasDefinition())
-      tgt.setDefinition(convertImplementationGuideDefinitionComponent(src.getDefinition(), convertImplementationGuideDefinitionParameterComponent));
+      tgt.setDefinition(convertImplementationGuideDefinitionComponent(src.getDefinition(), produceIllegalParameters));
     if (src.hasManifest())
       tgt.setManifest(convertImplementationGuideManifestComponent(src.getManifest()));
     return tgt;
@@ -2328,7 +2328,7 @@ public class ImplementationGuide40_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionComponent convertImplementationGuideDefinitionComponent(ImplementationGuide.ImplementationGuideDefinitionComponent src, boolean convertImplementationGuideDefinitionParameterComponent) throws FHIRException {
+  public static org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionComponent convertImplementationGuideDefinitionComponent(ImplementationGuide.ImplementationGuideDefinitionComponent src, boolean produceIllegalParameters) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionComponent tgt = new org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionComponent();
@@ -2341,16 +2341,16 @@ public class ImplementationGuide40_50 {
       tgt.setPage(convertImplementationGuideDefinitionPageComponent(src.getPage()));
     for (org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent t : src.getParameter()) {
 //      if (Utilities.existsInList(t.getCode().getCode(), "apply", "path-resource", "path-pages", "path-tx-cache", "expansion-parameter", "rule-broken-links", "generate-xml", "generate-json", "generate-turtle", "html-template"))
-        if (convertImplementationGuideDefinitionParameterComponent)
+        if (produceIllegalParameters) {
           tgt.addParameter(convertImplementationGuideDefinitionParameterComponent(t));
-//      else {
-//        org.hl7.fhir.r4.model.Extension e = new org.hl7.fhir.r4.model.Extension(EXT_IG_DEFINITION_PARAMETER);
-//        org.hl7.fhir.r4.model.Extension eCode = new org.hl7.fhir.r4.model.Extension("code", new org.hl7.fhir.r4.model.StringType(t.getCode().getCode()));
-//        org.hl7.fhir.r4.model.Extension eValue = new org.hl7.fhir.r4.model.Extension("value", new org.hl7.fhir.r4.model.StringType(t.getValue()));
-//        e.addExtension(eCode);
-//        e.addExtension(eValue);
-//        tgt.addExtension(e);
-//      }
+        } else {
+        org.hl7.fhir.r4.model.Extension e = new org.hl7.fhir.r4.model.Extension(EXT_IG_DEFINITION_PARAMETER);
+        org.hl7.fhir.r4.model.Extension eCode = new org.hl7.fhir.r4.model.Extension("code", new org.hl7.fhir.r4.model.StringType(t.getCode().getCode()));
+        org.hl7.fhir.r4.model.Extension eValue = new org.hl7.fhir.r4.model.Extension("value", new org.hl7.fhir.r4.model.StringType(t.getValue()));
+        e.addExtension(eCode);
+        e.addExtension(eValue);
+          tgt.addExtension(e);
+      }
     }
     for (org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionTemplateComponent t : src.getTemplate())
       tgt.addTemplate(convertImplementationGuideDefinitionTemplateComponent(t));
