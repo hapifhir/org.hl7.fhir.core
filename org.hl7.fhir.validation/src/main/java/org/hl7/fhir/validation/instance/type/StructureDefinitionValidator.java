@@ -288,6 +288,14 @@ public class StructureDefinitionValidator extends BaseValidator {
     case "Extension" :return  addCharacteristicsForType(set, "can-bind");
     case "Narrative" :return  addCharacteristicsForType(set);
     case "Element" :return  addCharacteristicsForType(set);
+    case "MoneyQuantity" :return  addCharacteristicsForType(set);
+    case "SimpleQuantity" :return  addCharacteristicsForType(set);
+    case "MarketingStatus" :return  addCharacteristicsForType(set);
+    case "ExtendedContactDetail" :return  addCharacteristicsForType(set);
+    case "VirtualServiceDetail" :return  addCharacteristicsForType(set);
+    case "Availability" :return  addCharacteristicsForType(set);
+    case "MonetaryComponent" :return  addCharacteristicsForType(set);
+
     case "BackboneElement" :return  addCharacteristicsForType(set);
     default:
       if (context.getResourceNames().contains(tc)) 
