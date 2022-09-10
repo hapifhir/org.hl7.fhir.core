@@ -1,7 +1,8 @@
 ## Validator Changes
 
-* no changes
+* More fixing for Type Characteristics
 
 ## Other code changes
 
-* no changes
+* Fix rendering of concept map code references
+* Fix version conversion problem for MessageHeader.event
