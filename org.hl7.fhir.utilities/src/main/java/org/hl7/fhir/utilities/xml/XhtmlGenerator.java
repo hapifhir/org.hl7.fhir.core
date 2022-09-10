@@ -53,7 +53,7 @@ import org.w3c.dom.Text;
 
 public class XhtmlGenerator {
 
-	private static final int LINE_LIMIT = 85;
+	private static final int LINE_LIMIT = 78;
   private XhtmlGeneratorAdorner adorner;
 	
   public XhtmlGenerator(XhtmlGeneratorAdorner adorner) {
@@ -66,7 +66,7 @@ public class XhtmlGenerator {
     
     out.write("<div class=\"example\">\r\n");
     out.write("<p>Example Instance \""+name+"\""+(desc == null ? "" : ": "+Utilities.escapeXml(desc))+"</p>\r\n"); 
-    out.write("<pre class=\"xml\">\r\n");
+    out.write("<pre class=\"xml\" style=\"white-space: pre; overflow: hidden\">\r\n");
 
     XhtmlGeneratorAdornerState state = null; // adorner == null ? new XhtmlGeneratorAdornerState("", "") : adorner.getState(this, null, null);
     for (int i = 0; i < doc.getChildNodes().getLength(); i++)
@@ -86,7 +86,7 @@ public class XhtmlGenerator {
     out.write("<div class=\"example\">\r\n");
     out.write("<p>"+Utilities.escapeXml(desc)+"</p>\r\n"); 
     if (adorn) {
-      out.write("<pre class=\"xml\">\r\n");
+      out.write("<pre class=\"xml\" style=\"white-space: pre; overflow: hidden\">\r\n");
       out.write("&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;\r\n");
       out.write("\r\n");
 
@@ -95,7 +95,7 @@ public class XhtmlGenerator {
 	  		writeNode(out, doc.getChildNodes().item(i), state, level);
       out.write("</pre>\r\n");
     } else {
-      out.write("<code class=\"xml\">\r\n");
+      out.write("<code class=\"xml\" style=\"white-space: pre; overflow: hidden\">\r\n");
       for (int i = 0; i < doc.getChildNodes().getLength(); i++)
         writeNodePlain(out, doc.getChildNodes().item(i), level);
       

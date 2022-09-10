@@ -115,7 +115,11 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     for (UsedConceptMap m : maps) {
       XhtmlNode td = tr.td();
       XhtmlNode b = td.b();
-      XhtmlNode a = b.ah(getContext().getSpecificationLink()+m.getLink());
+      String link = m.getLink();
+      if (!Utilities.isAbsoluteUrl(link)) {
+        link = getContext().getSpecificationLink()+link;
+      }
+      XhtmlNode a = b.ah(link);
       a.addText(m.getDetails().getName());
       if (m.getDetails().isDoDescription() && m.getMap().hasDescription())
         addMarkdown(td, m.getMap().getDescription());

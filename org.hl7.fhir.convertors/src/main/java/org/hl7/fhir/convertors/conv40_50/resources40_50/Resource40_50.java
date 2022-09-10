@@ -385,7 +385,7 @@ public class Resource40_50 {
     if (src instanceof org.hl7.fhir.r5.model.ImmunizationRecommendation)
       return ImmunizationRecommendation40_50.convertImmunizationRecommendation((org.hl7.fhir.r5.model.ImmunizationRecommendation) src);
     if (src instanceof org.hl7.fhir.r5.model.ImplementationGuide)
-      return ImplementationGuide40_50.convertImplementationGuide((org.hl7.fhir.r5.model.ImplementationGuide) src);
+      return ImplementationGuide40_50.convertImplementationGuide((org.hl7.fhir.r5.model.ImplementationGuide) src, advisor.produceIllegalParameters());
     if (src instanceof org.hl7.fhir.r5.model.InsurancePlan)
       return InsurancePlan40_50.convertInsurancePlan((org.hl7.fhir.r5.model.InsurancePlan) src);
     if (src instanceof org.hl7.fhir.r5.model.Invoice)
