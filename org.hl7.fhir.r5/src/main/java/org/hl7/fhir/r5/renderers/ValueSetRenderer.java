@@ -844,14 +844,15 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
   private void addRefToCode(XhtmlNode td, String target, String vslink, String code) {
-    CodeSystem cs = getContext().getWorker().fetchCodeSystem(target);
-    String cslink = getCsRef(cs);
-    XhtmlNode a = null;
-    if (cslink != null) 
-      a = td.ah(getContext().getSpecificationLink()+cslink+"#"+cs.getId()+"-"+code);
-    else
-      a = td.ah(getContext().getSpecificationLink()+vslink+"#"+code);
-    a.addText(code);
+    addCodeToTable(false, target, code, null, td);
+//    CodeSystem cs = getContext().getWorker().fetchCodeSystem(target);
+//    String cslink = getCsRef(cs);
+//    String link = cslink != null ? cslink+"#"+cs.getId()+"-"+code : vslink+"#"+code;
+//    if (!Utilities.isAbsoluteUrl(link)) {
+//      link = getContext().getSpecificationLink()+link;
+//    }
+//    XhtmlNode a = td.ah(link);
+//    a.addText(code);
   }
 
   private boolean generateComposition(XhtmlNode x, ValueSet vs, boolean header, List<UsedConceptMap> maps) throws FHIRException, IOException {
