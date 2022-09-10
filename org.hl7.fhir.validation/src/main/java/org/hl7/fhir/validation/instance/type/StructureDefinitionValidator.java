@@ -295,6 +295,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     case "VirtualServiceDetail" :return  addCharacteristicsForType(set);
     case "Availability" :return  addCharacteristicsForType(set);
     case "MonetaryComponent" :return  addCharacteristicsForType(set);
+    case "ElementDefinition" :return  addCharacteristicsForType(set);
 
     case "BackboneElement" :return  addCharacteristicsForType(set);
     default:
