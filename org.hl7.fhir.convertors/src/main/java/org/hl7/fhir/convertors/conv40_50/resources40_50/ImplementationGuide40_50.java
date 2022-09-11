@@ -2321,7 +2321,7 @@ public class ImplementationGuide40_50 {
     for (org.hl7.fhir.r4.model.Extension e : org.hl7.fhir.r4.utils.ToolingExtensions.getExtensions(src, EXT_IG_DEFINITION_PARAMETER)) {
       org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent p = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent();
       p.getCode().setCode(org.hl7.fhir.r4.utils.ToolingExtensions.readStringExtension(e, "code"));
-      p.setValue(org.hl7.fhir.r4.utils.ToolingExtensions.readStringExtension(e, "Value"));
+      p.setValue(org.hl7.fhir.r4.utils.ToolingExtensions.readStringExtension(e, "value"));
       tgt.addParameter(p);
     }
     for (org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionTemplateComponent t : src.getTemplate())
